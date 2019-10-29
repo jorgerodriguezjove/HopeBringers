@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class CameraManager : MonoBehaviour
 
     [Header("Zoom Controls")]
     public float zoomSpeed = 4f;
-    public float zoomNearLimit = 2f;
+    public float nearZoomLimit = 2f;
     public float farZoomLimit = 16f;
     public float startingZoom = 5f;
 
@@ -40,5 +41,63 @@ public class CameraManager : MonoBehaviour
         cam.transform.LookAt(transform.position + Vector3.up * lookAtOffset);
         //Asignamos un offset de altura respecto al camera focus para dar una vista más natural(que no mire al suelo)     
     }
+
+    private void OnEnable()
+    {
+        KeyboardInputManager.OnMoveInput += UpdateFrameMove;
+        KeyboardInputManager.OnRotateInput += UpdateFrameRotate;
+        KeyboardInputManager.OnZoomInput += UpdateFrameZoom;
+    }
+
+    private void UpdateFrameMove(Vector3 moveVector)
+    {
+        frameMove += moveVector;
+    }
+
+    private void UpdateFrameRotate(float rotateAmount)
+    {
+        frameRotate += rotateAmount;
+    }
     
+    private void UpdateFrameZoom(float zoomAmount)
+    {
+        frameZoom += zoomAmount;
+    }
+
+    private void LateUpdate()
+    {
+        if(frameMove != Vector3.zero)
+        {
+            Vector3 speedModFrameMove = new Vector3(frameMove.x * lateralSpeed, frameMove.y, frameMove.z * intOutSpeed);
+            transform.position += transform.TransformDirection(speedModFrameMove) * Time.deltaTime;
+            LockPositionInBounds();
+            frameMove = Vector3.zero;
+        }
+
+        if(frameRotate != 0f)
+        {
+            transform.Rotate(Vector3.up, frameRotate * Time.deltaTime * rotateSpeed);
+            frameRotate = 0f;
+        }
+
+        if(frameZoom < 0f)
+        {
+            zoomStrategy.ZoomIn(cam, Time.deltaTime * Mathf.Abs(frameZoom) * zoomSpeed, nearZoomLimit);
+            frameZoom = 0f;
+        }
+        else if(frameZoom > 0f)
+        {
+            zoomStrategy.ZoomOut(cam, Time.deltaTime * frameZoom * zoomSpeed, farZoomLimit);
+            frameZoom = 0f;
+        }
+    }
+
+    private void LockPositionInBounds()
+    {
+        transform.position = new Vector3(
+            Mathf.Clamp(transform.position.x, minBounds.x, maxBounds.x),
+            transform.position.y,
+            Mathf.Clamp(transform.position.z, minBounds.y, maxBounds.y)
+            );
+    }
 }
