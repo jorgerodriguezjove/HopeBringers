@@ -8,10 +8,10 @@ public class TileManager : MonoBehaviour
 
     //Array donde se meten los tiles en el editor
     [SerializeField]
-    GameObject[] tilesInScene;
+    private GameObject[] tilesInScene;
 
     //2D array con las coordenadas de los tiles. (Básicamente convierte el array tilesInScene en un array 2D)
-    GameObject[,] tilesCoord;
+    private GameObject[,] tilesCoord;
 
     [HideInInspector]
     public int mapSizeX = 10;
@@ -25,14 +25,23 @@ public class TileManager : MonoBehaviour
     //Variable que se usa para almacenar el resultado del pathfinding y enviarlo.
     float tempCurrentPathCost;
 
-
-    //ACORDARSE DE PONER EN LEVEL MANAGER. AHORA MISMO SOLO ESTÁ PARA PROBAR
-    [SerializeField]
-    GameObject selectedCharacter;
+    //Lista de tiles que forman el path desde un tile hasta otro. Al igual que temCurrentPathCost se resetea cada vez que se llama a la función CalculatePathForMovement
+    [HideInInspector]
+    public List<IndividualTiles> currentPath = new List<IndividualTiles>();
 
     //Si es true se mueve en diagonal, si no se mueve en torre.
     [SerializeField]
     private bool isDiagonalMovement;
+
+    //Personaje actualmente seleccionado
+    private PlayerUnit selectedCharacter;
+
+    //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
+    List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
+
+
+    //REFERENCIAS
+    private LevelManager LM;
 
     #endregion
 
@@ -40,6 +49,7 @@ public class TileManager : MonoBehaviour
 
     private void Awake()
     {
+        LM = FindObjectOfType<LevelManager>();
         SaveTilePosition();
         GeneratePathFindingGraph();
     }
@@ -78,6 +88,7 @@ public class TileManager : MonoBehaviour
             {
                 graph[j, i] = tilesCoord[j, i].GetComponent<IndividualTiles>();
                 graph[j, i].GetComponent<IndividualTiles>().TM = this;
+                graph[j, i].GetComponent<IndividualTiles>().LM = LM;
                 graph[j, i].tileX = j;
                 graph[j, i].tileZ = i;
             }
@@ -127,29 +138,54 @@ public class TileManager : MonoBehaviour
     }
 
     //Doy feedback de que casillas están al alcance del personaje.
-    public void checkAvailableTilesForMovement(int movementUds)
+    public List<IndividualTiles> checkAvailableTilesForMovement(int movementUds, PlayerUnit selectedUnit)
     {
+        selectedCharacter = selectedUnit;
+        tilesAvailableForMovement.Clear();
+        tempCurrentPathCost = 0;
+
         for (int i = 0; i < mapSizeZ; i++)
         {
             for (int j = 0; j < mapSizeX; j++)
             {
-                if (CalculatePathForMovementCost(j, i) <= movementUds )
+                
+                CalculatePathForMovementCost(j, i);
+                Debug.Log(tempCurrentPathCost);
+                if (tempCurrentPathCost <= movementUds)
                 {
-                    if (j == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || i == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
+                    if (!isDiagonalMovement)
                     {
+                        if (j == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || i == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
+                        {
+                            //Cambio el color y guardo los tiles en una lista
+                            graph[j, i].ColorSelect();
+                            tilesAvailableForMovement.Add(graph[j, i]);
+                        }
                     }
-                    //currentPosibleTiles.Add(tilesCoord[j, i]);
-                    tilesCoord[j, i].GetComponent<IndividualTiles>().ColorSelect();
+
+                    else
+                    {
+                        //Cambio el color y guardo los tiles en una lista
+                        graph[j, i].ColorSelect();
+                        tilesAvailableForMovement.Add(graph[j, i]);
+                    }
+                  
+
+                  
                 }
                 tempCurrentPathCost = 0;
             }
         }
+
+        return tilesAvailableForMovement;
     }
 
 
     //Calculo el coste que tiene el personaje por ir a cada casilla.
-    public float CalculatePathForMovementCost(int x, int z)
+    public void CalculatePathForMovementCost(int x, int z)
     {
+        currentPath.Clear();
+
         //Diccionario con distancia a nodos
         Dictionary<IndividualTiles, float> dist = new Dictionary<IndividualTiles, float>();
         //Diccionario con nodos que forman el camino para llegar al objetivo.
@@ -230,12 +266,11 @@ public class TileManager : MonoBehaviour
         if (prev[target] == null)
         {
             //Si llega aquí significa que no hay ninguna ruta disponible desde el origen hasta el objetivo.
-            return Mathf.Infinity;
+            tempCurrentPathCost = Mathf.Infinity;
         }
 
         //Si llega hasta aquí si que hay un camino hasta el objetivo.
 
-        List<IndividualTiles> currentPath = new List<IndividualTiles>();
         IndividualTiles curr = target;
 
 
@@ -260,12 +295,11 @@ public class TileManager : MonoBehaviour
                 tempCurrentPathCost += CostToEnterTile(currentPath[i].tileX, currentPath[i].tileZ);
             }
         }
-
-        return tempCurrentPathCost;
     }
 
 
-#endregion
+
+    #endregion
 
 
 }

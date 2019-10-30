@@ -9,6 +9,8 @@ public class IndividualTiles : MonoBehaviour
     //Referencia al Tile Manager
     [HideInInspector]
     public TileManager TM;
+    //[HideInInspector]
+    public LevelManager LM;
 
     //Coordenadas del tile
     [HideInInspector]
@@ -35,15 +37,38 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public GameObject unitOnTile;
 
+    //MATERIALES. CAMBIAR ESTO POR SHADERS
+
     [SerializeField]
-    Material ColorTest;
+    private Material colorTest;
+    private Material initialColor;
 
     #endregion
+
+    #region INIT
+
+    private void Start()
+    {
+        initialColor = GetComponent<MeshRenderer>().material;
+    }
+
+    #endregion
+
 
     //Cambiar el color del tile
     public void ColorSelect()
     {
-        GetComponent<MeshRenderer>().material = ColorTest;
+        GetComponent<MeshRenderer>().material = colorTest;
+    }
+
+    public void ColorDeselect()
+    {
+        GetComponent<MeshRenderer>().material = initialColor;
+    }
+
+    private void OnMouseUp()
+    {
+        LM.MoveUnit(this);
     }
 
 }
