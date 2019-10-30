@@ -6,7 +6,7 @@ public class UnitBase : MonoBehaviour
 {
     #region VARIABLES
 
-    //Tile en el que está el personaje actualmente
+    //Tile en el que está el personaje actualmente. Se setea desde el editor.
     public IndividualTiles myCurrentTile;
 
     //Variable que se usará para ordenar a las unidades
@@ -24,6 +24,10 @@ public class UnitBase : MonoBehaviour
     //Daño de la unidad
     [SerializeField]
     protected int damage;
+
+    //Rango del ataque (en general será 1 a no ser que ataquen a distancia).
+    [SerializeField]
+    protected int range;
 
     //Enum con las cuatro posibles direcciones en las que puede estar mirando una unidad.
     [HideInInspector]

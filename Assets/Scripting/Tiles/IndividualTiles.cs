@@ -25,6 +25,16 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public List<IndividualTiles> neighbours;
 
+    //Los tiles que están en línea (cómo si fuese movimiento de torre) con este tile en función de en que dirección se encuentran.
+    [HideInInspector]
+    public List<IndividualTiles> tilesInLineUp;
+    [HideInInspector]
+    public List<IndividualTiles> tilesInLineDown;
+    [HideInInspector]
+    public List<IndividualTiles> tilesInLineRight;
+    [HideInInspector]
+    public List<IndividualTiles> tilesInLineLeft;
+
     //Coste que tiene una casilla.
     [SerializeField]    
     public int movementCost;
@@ -35,7 +45,7 @@ public class IndividualTiles : MonoBehaviour
 
     //Unidad encima del tile
     [HideInInspector]
-    public GameObject unitOnTile;
+    public UnitBase unitOnTile;
 
     //MATERIALES. CAMBIAR ESTO POR SHADERS
 
@@ -66,7 +76,7 @@ public class IndividualTiles : MonoBehaviour
         GetComponent<MeshRenderer>().material = initialColor;
     }
 
-    private void OnMouseUp()
+    private void OnMouseDown()
     {
         LM.MoveUnit(this);
     }

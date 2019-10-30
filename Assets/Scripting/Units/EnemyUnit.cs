@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class EnemyUnit : UnitBase
 {
-  
+
+
+    private void Start()
+    {
+        myCurrentTile.unitOnTile = this;
+    }
 }

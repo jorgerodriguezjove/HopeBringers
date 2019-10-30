@@ -31,7 +31,7 @@ public class TileManager : MonoBehaviour
 
     //Si es true se mueve en diagonal, si no se mueve en torre.
     [SerializeField]
-    private bool isDiagonalMovement;
+    public bool isDiagonalMovement;
 
     //Personaje actualmente seleccionado
     private PlayerUnit selectedCharacter;
@@ -104,27 +104,49 @@ public class TileManager : MonoBehaviour
                 if (j > 0)
                 {
                     graph[j, i].neighbours.Add(graph[j - 1, i]);
+
+                    for (int k = 1; j - k >= 0 ; k++)
+                    {
+                        graph[j, i].tilesInLineLeft.Add(graph[j - k, i]);
+                    }
                 }
 
                 //Casilla vecina de la derecha
                 if (j < mapSizeX - 1)
                 {
                     graph[j, i].neighbours.Add(graph[j + 1, i]);
+
+                    for (int k = 1; k < mapSizeX - j ; k++)
+                    {
+                        graph[j, i].tilesInLineRight.Add(graph[j + k, i]);
+                    }
                 }
 
                 //Casilla vecina de abajo
                 if (i > 0)
                 {
                     graph[j, i].neighbours.Add(graph[j, i - 1]);
+
+                    for (int k = 1; i - k >= 0; k++)
+                    {
+                        graph[j, i].tilesInLineDown.Add(graph[j, i- k]);
+                    }
                 }
 
                 //Casilla vecina de arriba
                 if (i < mapSizeZ - 1)
                 {
                     graph[j, i].neighbours.Add(graph[j, i + 1]);
+
+                    for (int k = 1; k < mapSizeZ - i; k++)
+                    {
+                        graph[j, i].tilesInLineUp.Add(graph[j, i + k]);
+                    }
                 }
             }
         }
+
+      
     }
 
     #endregion
@@ -150,7 +172,6 @@ public class TileManager : MonoBehaviour
             {
                 
                 CalculatePathForMovementCost(j, i);
-                Debug.Log(tempCurrentPathCost);
                 if (tempCurrentPathCost <= movementUds)
                 {
                     if (!isDiagonalMovement)

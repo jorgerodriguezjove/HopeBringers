@@ -87,6 +87,8 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+
+    //Quizás tendría más sentido que el move Unit estuviese en la propia unidad.
     public void MoveUnit(IndividualTiles tileToMove)
     {
         for (int i = 0; i < tilesAvailableForMovement.Count; i++)
@@ -96,6 +98,18 @@ public class LevelManager : MonoBehaviour
                 previousCharacterTile = selectedCharacter.myCurrentTile;
 
                 TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
+
+                selectedCharacter.CheckTileDirection(tileToMove);
+
+                //Al terminar de moverse se deseleccionan los tiles
+                for (int j = 0; j < tilesAvailableForMovement.Count; j++)
+                {
+                    tilesAvailableForMovement[j].ColorDeselect();
+                }
+
+                tilesAvailableForMovement.Clear();
+                selectedCharacter.hasMoved = true;
+
                 StartCoroutine("MovingUnitAnimation");
                 selectedCharacter.myCurrentTile = tileToMove;
             }
@@ -111,17 +125,11 @@ public class LevelManager : MonoBehaviour
             currentTileVectorToMove = new Vector3(TM.currentPath[j].transform.position.x, TM.currentPath[j].transform.position.y +1, TM.currentPath[j].transform.position.z);
 
             selectedCharacter.gameObject.transform.DOMove(currentTileVectorToMove, timeForMovementAnimation);
+
             yield return new WaitForSeconds(timeForMovementAnimation);
         }
 
-        //Al terminar de moverse se deseleccionan los tiles
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-        {
-            tilesAvailableForMovement[i].ColorDeselect();
-        }
-
-        tilesAvailableForMovement.Clear();
-        selectedCharacter.hasMoved = true;
+      
     }
 
     //Al deseleccionar la unidad acordarse de avisar al TileManager de que ha cambiado
