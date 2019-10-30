@@ -607,7 +607,7 @@ MonoBehaviour:
   minBounds: {x: -1, y: -8}
   maxBounds: {x: 8, y: 6}
   zoomSpeed: 4
-  nearZoomLimit: 2
+  nearZoomLimit: 1
   farZoomLimit: 16
   startingZoom: 5
 --- !u!4 &82148090
@@ -5625,6 +5625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1181919722}
   - component: {fileID: 1181919721}
+  - component: {fileID: 1181919723}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -5658,6 +5659,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1181919723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181919720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9735ca7b4da92e349952b8c7a9f2ba3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1184547530
 PrefabInstance:
   m_ObjectHideFlags: 0

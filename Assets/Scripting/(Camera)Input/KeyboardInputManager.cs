@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KeyboardInputManager : InputManager
 {
-    // Eventos
+    // EVENTOS
     public static event MoveInputHandler OnMoveInput;
     public static event RotateInputHandler OnRotateInput;
     public static event ZoomInputHandler OnZoomInput;

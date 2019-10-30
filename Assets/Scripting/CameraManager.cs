@@ -29,7 +29,7 @@ public class CameraManager : MonoBehaviour
     float frameZoom;
     Camera cam;
 
-    //Métodos
+    //MÉTODOS
 
     private void Awake()
     {
@@ -37,7 +37,11 @@ public class CameraManager : MonoBehaviour
         cam.transform.localPosition = new Vector3(0f, Mathf.Abs(cameraOffset.y), -Mathf.Abs(cameraOffset.x));
         //Mathf.Abs para asegurar que la cámara no se va debajo del tablero
         //-Mathf porque si la cámara es negativa en la Z cuando mire hacia delante mire hacia el camera focus
-        zoomStrategy = new OrtographicZoomStrategy(cam, startingZoom); //asignamos la cámara y el zoom inicial
+
+        //zoomStrategy = new OrtographicZoomStrategy(cam, startingZoom); //asignamos la cámara y el zoom inicial
+
+        //Asigna automáticamente el zoom ortográfico o perspectiva
+        zoomStrategy = cam.orthographic ? (IZoomStrategy)new OrtographicZoomStrategy(cam, startingZoom) : new PerspectiveZoomStrategy(cam, cameraOffset, startingZoom);
         cam.transform.LookAt(transform.position + Vector3.up * lookAtOffset);
         //Asignamos un offset de altura respecto al camera focus para dar una vista más natural(que no mire al suelo)     
     }
@@ -47,6 +51,21 @@ public class CameraManager : MonoBehaviour
         KeyboardInputManager.OnMoveInput += UpdateFrameMove;
         KeyboardInputManager.OnRotateInput += UpdateFrameRotate;
         KeyboardInputManager.OnZoomInput += UpdateFrameZoom;
+        
+        MouseInputManager.OnMoveInput += UpdateFrameMove;
+        MouseInputManager.OnRotateInput += UpdateFrameRotate;
+        MouseInputManager.OnZoomInput += UpdateFrameZoom;
+    }
+
+    private void OnDisable()
+    {
+        KeyboardInputManager.OnMoveInput -= UpdateFrameMove;
+        KeyboardInputManager.OnRotateInput -= UpdateFrameRotate;
+        KeyboardInputManager.OnZoomInput -= UpdateFrameZoom;
+
+        MouseInputManager.OnMoveInput -= UpdateFrameMove;
+        MouseInputManager.OnRotateInput -= UpdateFrameRotate;
+        MouseInputManager.OnZoomInput -= UpdateFrameZoom;
     }
 
     private void UpdateFrameMove(Vector3 moveVector)
