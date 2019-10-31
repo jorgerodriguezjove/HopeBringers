@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class BookMenu : MonoBehaviour
 {
-
+    public PlayableDirector DollyCamera;
     public Animator anim;
     // Start
     void Start()
@@ -17,7 +18,7 @@ public class BookMenu : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetBool("isOpen?", true);
-            
+            DollyCamera.Play();
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -25,6 +26,5 @@ public class BookMenu : MonoBehaviour
             
            
         }
-
     }
 }
