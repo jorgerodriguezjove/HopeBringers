@@ -190,9 +190,6 @@ public class TileManager : MonoBehaviour
                         graph[j, i].ColorSelect();
                         tilesAvailableForMovement.Add(graph[j, i]);
                     }
-                  
-
-                  
                 }
                 tempCurrentPathCost = 0;
             }

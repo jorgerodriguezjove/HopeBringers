@@ -16,11 +16,41 @@ public class PlayerUnit : UnitBase
     public bool hasMoved = false;
     [HideInInspector]
     public bool hasAttacked = false;
+    [HideInInspector]
+    public bool isMoving = false;
+
+    //MOVIMIENTO--------------------------------------------------------
+
+    //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
+    float timeForMovementAnimation = 0.2f;
+
+    //Posición a la que tiene que moverse la unidad actualmente
+    private Vector3 currentTileVectorToMove;
+
+    //Camino que tiene que seguir la unidad para moverse
+    private List<IndividualTiles> myCurrentPath;
 
     //Tiempo que tarda en rotar a la unidad.
     private float timeDurationRotation = 0.2f;
 
-    //REFERENCIAS
+    //ATAQUE------------------------------------------------------------
+
+    //Lista de posibles unidades a las que atacar
+    [HideInInspector]
+    public List<UnitBase> currentUnitsAvailableToAttack;
+
+    //Variable que guarda el número más pequeño al comparar el rango del personaje con el número de tiles disponibles para atacar.
+    int rangeVSTilesInLineLimitant;
+
+    //FEEDBACK------------------------------------------------------------
+
+    //Material inicial y al ser seleccionado
+    private Material initMaterial;
+    [SerializeField]
+    private Material selectedMaterial;
+
+    //REFERENCIAS---------------------------------------------------------
+
     //Ahora mismo se setea desde el inspector
     public GameObject LevelManagerRef;
     private LevelManager LM;
@@ -29,10 +59,18 @@ public class PlayerUnit : UnitBase
 
     #region INIT
 
+    private void Awake()
+    {
+        //Referencia al LM y me incluyo en la lista de personajes del jugador
+        LM = LevelManagerRef.GetComponent<LevelManager>();
+        LM.characthersOnTheBoard.Add(this);
+        initMaterial = GetComponent<MeshRenderer>().material;
+    }
+
     private void Start()
     {
         currentHealth = maxHealth;
-        LM = LevelManagerRef.GetComponent<LevelManager>();
+
         //Aviso al tile en el que empiezo que soy su unidad.
         myCurrentTile.unitOnTile = this;
     }
@@ -41,30 +79,84 @@ public class PlayerUnit : UnitBase
 
     #region INTERACTION
 
-
+    //Al clickar en una unidad aviso al LM
     private void OnMouseDown()
     {
-        if (!hasMoved)
-        {
-            LM.SelectUnit(movementUds, this);
-
-            //ESTO DEBERÍA COMPROBARLO AL MOVERSE Y AL EMPEZAR EL TURNO
-            CheckUnitsInRangeToAttack();
-        }
-
-        
-        if (!hasAttacked && !hasMoved)
-        {
-            //Avisa al LM
-            //LM Comprueba que no hay unidad seleccionada actualmente y la selecciona
-        }
-
-        //Primero compruebo si me he movido
-
-        //Avisar a LM de click
-
+        LM.SelectUnit(movementUds, this);
     }
 
+    //El LevelManager avisa a la unidad de que debe moverse.
+    public void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
+    {
+        //Compruebo la dirección en la que se mueve para girar a la unidad
+        CheckTileDirection(tileToMove);
+
+        hasMoved = true;
+        myCurrentPath = pathReceived;
+
+        StartCoroutine("MovingUnitAnimation");
+        myCurrentTile = tileToMove;
+       
+    }
+
+    IEnumerator MovingUnitAnimation()
+    {
+        isMoving = true;
+
+        //Animación de movimiento
+        for (int j = 1; j < myCurrentPath.Count; j++)
+        {
+            currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y + 1, myCurrentPath[j].transform.position.z);
+
+            transform.DOMove(currentTileVectorToMove, timeForMovementAnimation);
+
+            yield return new WaitForSeconds(timeForMovementAnimation);
+        }
+
+        isMoving = false;
+    }
+
+    #endregion
+
+    #region ATTACK
+
+    //Función de ataque que se hace override en cada clase
+    public virtual void Attack(UnitBase unitToAttack)
+    {
+        //Hago daño
+        unitToAttack.ReceiveDamage(damage);
+
+        //Cada unidad se encargará de aplicar su efecto.
+    }
+
+    //Función que muestra el efecto del ataque y que se hace override en cada clase.
+    public virtual void ShowHover()
+    {
+        //Cada unidad muestra su efecto
+    }
+
+    public override void ReceiveDamage(int damageReceived)
+    {
+        currentHealth -= damageReceived;
+    }
+
+    #endregion
+
+    #region FEEDBACK
+
+    public void SelectedColor()
+    {
+        GetComponent<MeshRenderer>().material = selectedMaterial;
+    }
+
+    public void InitialColor()
+    {
+        GetComponent<MeshRenderer>().material = initMaterial;
+    }
+
+    #endregion
+
+    #region CHECKS
 
     //En caso de querer generalizar la comprobación de en que dirección está un tile en comparación a mi posición, lo que se puede hacer es que la función no sea un void, si no que 
     //devuelva un valor de un enum como el de la rotación del personaje, de tal forma que los 4 ifs solo se ponen una vez y siempre devuelven una dirección
@@ -106,12 +198,12 @@ public class PlayerUnit : UnitBase
         }
     }
 
-    //Variable que guarda el número más pequeño al comparar el rango con el número de tiles disponibles para atacar
-    int rangeVSTilesInLineLimitant;
-
+    
     //Comprueba las unidades (tanto aliadas como enemigas) que están en alcance para ser atacadas.
     public void CheckUnitsInRangeToAttack()
     {
+        currentUnitsAvailableToAttack.Clear();
+
         if (currentFacingDirection == FacingDirection.North)
         {
            if (range <= myCurrentTile.tilesInLineUp.Count)
@@ -127,8 +219,8 @@ public class PlayerUnit : UnitBase
             {
                 if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                 {
-                    //Puedo atacar
-                    Debug.Log("up");
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
                     break;
                 }
             }
@@ -149,8 +241,9 @@ public class PlayerUnit : UnitBase
             {
                 if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                 {
-                    //Puedo atacar
-                    Debug.Log("down");
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    Debug.Log(currentUnitsAvailableToAttack.Count);
                     break;
                 }
             }
@@ -171,8 +264,8 @@ public class PlayerUnit : UnitBase
             {
                 if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                 {
-                    //Puedo atacar
-                    Debug.Log("right");
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
                     break;
                 }
             }
@@ -193,8 +286,8 @@ public class PlayerUnit : UnitBase
             {
                 if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                 {
-                    //Puedo atacar
-                    Debug.Log("left");
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
                     break;
                 }
             }
@@ -203,6 +296,5 @@ public class PlayerUnit : UnitBase
 
 
     #endregion
-
 
 }

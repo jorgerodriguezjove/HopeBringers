@@ -38,6 +38,48 @@ public class UnitBase : MonoBehaviour
     public FacingDirection currentFacingDirection;
 
 
+    //Función para recibir daño
+    public virtual void ReceiveDamage(int damageReceived)
+    {
+        //Cada unidad se resta vida con esta función.
+        //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
+    }
+
+
+
+    //Función genérica que sirve para que las unidades se muevan al ser empujadas.
+    public void MoveByPush(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision)
+    {
+        //Comprobar si tiles vacios
+        //Comprobar si tiles con obstáculo
+        //Comprobar tiles con unidad
+        //Comprobar si es borde
+
+        for (int i = 0; i < tilesToCheckForCollision.Count; i++)
+        {
+            if (tilesToCheckForCollision.Count == 0)
+            {
+                //Es un borde
+            }
+
+            //else if (tilesToCheckForCollision[i].)
+            //{
+
+            //}
+
+            //else if ()
+            //{
+
+            //}
+
+            //else if ()
+            //{
+
+            //}
+        }
+    }
+
+
 
     ////Texto que describe a la unidad.
     //[SerializeField]
