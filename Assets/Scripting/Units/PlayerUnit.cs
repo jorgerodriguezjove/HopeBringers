@@ -48,6 +48,8 @@ public class PlayerUnit : UnitBase
     private Material initMaterial;
     [SerializeField]
     private Material selectedMaterial;
+    [SerializeField]
+    private Material finishedMaterial;
 
     //REFERENCIAS---------------------------------------------------------
 
@@ -116,6 +118,20 @@ public class PlayerUnit : UnitBase
         isMoving = false;
     }
 
+    //La unidad ha atacado y por tanto no puede hacer nada más.
+    private void FinishMyActions()
+    {
+        //La unidad ha atacado
+        hasAttacked = true;
+
+        //Aviso al LM que deseleccione la unidad
+        LM.DeSelectUnit();
+
+        //Doy feedback de que esa unidad no puede hacer nada
+        GetComponent<MeshRenderer>().material = finishedMaterial;
+        Debug.Log(finishedMaterial);
+    }
+
     #endregion
 
     #region ATTACK
@@ -127,6 +143,9 @@ public class PlayerUnit : UnitBase
         unitToAttack.ReceiveDamage(damage);
 
         //Cada unidad se encargará de aplicar su efecto.
+
+        //La unidad ha atacado y por tanto no puede hacer nada más.
+        FinishMyActions();
     }
 
     //Función que muestra el efecto del ataque y que se hace override en cada clase.
@@ -138,6 +157,9 @@ public class PlayerUnit : UnitBase
     public override void ReceiveDamage(int damageReceived)
     {
         currentHealth -= damageReceived;
+
+        Debug.Log("me han hecho daño");
+        Debug.Log(gameObject.name);
     }
 
     #endregion
@@ -242,8 +264,7 @@ public class PlayerUnit : UnitBase
                 if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                    Debug.Log(currentUnitsAvailableToAttack.Count);
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
                     break;
                 }
             }
@@ -265,7 +286,7 @@ public class PlayerUnit : UnitBase
                 if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
                     break;
                 }
             }
@@ -287,7 +308,7 @@ public class PlayerUnit : UnitBase
                 if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                     break;
                 }
             }

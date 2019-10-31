@@ -27,6 +27,9 @@ public class LevelManager : MonoBehaviour
     //Tile en el que ha empezado a moverse el personaje seleccionado. Se usa para volver a ponerlo donde estaba.
     private IndividualTiles previousCharacterTile;
 
+    //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
+    private int enemiesNumber;
+
     //TURNOS Y FASES--------------------------------------------
 
     //Enum que indica si es la fase del jugador o del enemigo.
@@ -118,7 +121,6 @@ public class LevelManager : MonoBehaviour
     //Al clickar sobre una unidad del jugador se llama a esta función
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
     {
-        tilesAvailableForMovement.Clear();
 
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
         if (currentLevelState == LevelState.ProcessingPlayerActions)
@@ -127,7 +129,7 @@ public class LevelManager : MonoBehaviour
             if (selectedCharacter == null)
             {
                 //Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
-                if (!clickedUnit.hasMoved)
+                if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
                 {
                     selectedCharacter = clickedUnit;
                     selectedCharacter.SelectedColor();
@@ -155,17 +157,25 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+   
+
     //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
     public void SelectUnitToAttack(UnitBase clickedUnit)
     {
-        Debug.Log("comprobaçao");
-        //Compruebo si está en la lista de posibles targets
-        for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
+        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
         {
-            if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
+            enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+
+            //Compruebo si está en la lista de posibles targets
+            for (int i = 0; i < enemiesNumber; i++)
             {
-                Debug.Log("adasda");
-                selectedCharacter.Attack(clickedUnit);
+                if (selectedCharacter != null)
+                {
+                    if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
+                    {
+                        selectedCharacter.Attack(clickedUnit);
+                    }
+                }
             }
         }
     }

@@ -16,10 +16,6 @@ public class Knight : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
-        Debug.Log("ataco");
-
-        base.Attack(unitToAttack);
-
         if (currentFacingDirection == FacingDirection.North)
         {
             unitToAttack.MoveByPush(tilesToPush, myCurrentTile.tilesInLineUp);
@@ -39,5 +35,8 @@ public class Knight : PlayerUnit
         {
             unitToAttack.MoveByPush(tilesToPush, myCurrentTile.tilesInLineLeft);
         }
+
+        //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+        base.Attack(unitToAttack);
     }
 }

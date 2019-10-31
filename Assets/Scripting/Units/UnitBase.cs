@@ -41,6 +41,7 @@ public class UnitBase : MonoBehaviour
     //Función para recibir daño
     public virtual void ReceiveDamage(int damageReceived)
     {
+
         //Cada unidad se resta vida con esta función.
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
     }

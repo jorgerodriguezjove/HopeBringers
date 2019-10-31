@@ -179,16 +179,23 @@ public class TileManager : MonoBehaviour
                         if (j == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || i == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
                         {
                             //Cambio el color y guardo los tiles en una lista
-                            graph[j, i].ColorSelect();
-                            tilesAvailableForMovement.Add(graph[j, i]);
+                            if (graph[j,i].unitOnTile == null)
+                            {
+                                graph[j, i].ColorSelect();
+                                tilesAvailableForMovement.Add(graph[j, i]);
+                            }
+                            
                         }
                     }
 
                     else
                     {
                         //Cambio el color y guardo los tiles en una lista
-                        graph[j, i].ColorSelect();
-                        tilesAvailableForMovement.Add(graph[j, i]);
+                        if (graph[j, i].unitOnTile == null)
+                        {
+                            graph[j, i].ColorSelect();
+                            tilesAvailableForMovement.Add(graph[j, i]);
+                        }
                     }
                 }
                 tempCurrentPathCost = 0;

@@ -9,7 +9,7 @@ public class IndividualTiles : MonoBehaviour
     //Referencia al Tile Manager
     [HideInInspector]
     public TileManager TM;
-    //[HideInInspector]
+    [HideInInspector]
     public LevelManager LM;
 
     //Coordenadas del tile
@@ -44,7 +44,7 @@ public class IndividualTiles : MonoBehaviour
     public bool isWalkable;
 
     //Unidad encima del tile
-    [HideInInspector]
+    [SerializeField]
     public UnitBase unitOnTile;
 
     //MATERIALES. CAMBIAR ESTO POR SHADERS

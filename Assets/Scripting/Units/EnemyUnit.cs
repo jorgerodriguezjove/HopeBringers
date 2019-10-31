@@ -6,6 +6,10 @@ public class EnemyUnit : UnitBase
 {
     #region VARIABLES
 
+    //Vida actual de la unidad.
+    [HideInInspector]
+    public int currentHealth;
+
     //REFERENCIAS
     //Ahora mismo se setea desde el inspector
     public GameObject LevelManagerRef;
@@ -24,6 +28,7 @@ public class EnemyUnit : UnitBase
 
     private void Start()
     {
+        currentHealth = maxHealth;
         myCurrentTile.unitOnTile = this;
     }
 
@@ -32,7 +37,14 @@ public class EnemyUnit : UnitBase
     //Al clickar en una unidad aviso al LM
     private void OnMouseDown()
     {
-        Debug.Log("clickao");
         LM.SelectUnitToAttack(GetComponent<UnitBase>());
+    }
+
+    public override void ReceiveDamage(int damageReceived)
+    {
+        currentHealth -= damageReceived;
+
+        Debug.Log("me han hecho daño " + gameObject.name);
+        Debug.Log(currentHealth);
     }
 }
