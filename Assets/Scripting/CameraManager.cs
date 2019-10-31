@@ -38,7 +38,7 @@ public class CameraManager : MonoBehaviour
         //Mathf.Abs para asegurar que la cámara no se va debajo del tablero
         //-Mathf porque si la cámara es negativa en la Z cuando mire hacia delante mire hacia el camera focus
 
-        //zoomStrategy = new OrtographicZoomStrategy(cam, startingZoom); //asignamos la cámara y el zoom inicial
+        //zoomStrategy = new OrtographicZoomStrategy(cam, startingZoom); //asignamos la cámara y el zoom inicial(deprecated?)
 
         //Asigna automáticamente el zoom ortográfico o perspectiva
         zoomStrategy = cam.orthographic ? (IZoomStrategy)new OrtographicZoomStrategy(cam, startingZoom) : new PerspectiveZoomStrategy(cam, cameraOffset, startingZoom);
