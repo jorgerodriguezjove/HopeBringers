@@ -226,6 +226,34 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.
+    public void CheckIfHoverShouldAppear(UnitBase enemyToCheck)
+    {
+        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+        {
+            enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+
+            for (int i = 0; i < enemiesNumber; i++)
+            {
+                if (enemyToCheck == selectedCharacter.currentUnitsAvailableToAttack[i])
+                {
+                    //Muestro hover avisando a Selected Character
+                    selectedCharacter.ShowHover(enemyToCheck);
+
+                    //Cambiar icono del cursor
+                }
+            }
+        }
+    }
+
+    //Hago desaparecer el hover
+    public void HideHover(UnitBase enemyToCheck)
+    {
+        //Ocultar hover
+        enemyToCheck.DisableCanvasHover();
+    }
+
+
     #endregion
 
     #region TURN_STATE

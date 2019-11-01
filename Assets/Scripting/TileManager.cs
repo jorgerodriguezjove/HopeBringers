@@ -15,10 +15,10 @@ public class TileManager : MonoBehaviour
     //2D array con las coordenadas de los tiles. (Básicamente convierte el array tilesInScene en un array 2D)
     private GameObject[,] tilesCoord;
 
-    [HideInInspector]
-    public int mapSizeX = 10;
-    [HideInInspector]
-    public int mapSizeZ = 10;
+    [SerializeField]
+    public int mapSizeX;
+    [SerializeField]
+    public int mapSizeZ;
 
     //Array con script de tiles que voy a usar para calcular el pathfinding
     [HideInInspector]
@@ -61,7 +61,16 @@ public class TileManager : MonoBehaviour
     //Ordeno el array tilesInScene con los 100 tiles en un array 2D 10x10
     void SaveTilePosition()
     {
-        tilesCoord = new GameObject[mapSizeZ, mapSizeX];
+        if (mapSizeX >= mapSizeZ)
+        {
+            tilesCoord = new GameObject[mapSizeX, mapSizeZ];
+        }
+
+        else
+        {
+            tilesCoord = new GameObject[mapSizeZ, mapSizeX];
+        }
+        
         int k = 0;
         for (int i = 0; i < mapSizeZ; i++)
         {

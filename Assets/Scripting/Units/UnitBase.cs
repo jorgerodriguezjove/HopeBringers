@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using DG.Tweening;
 
 public class UnitBase : MonoBehaviour
@@ -83,6 +84,9 @@ public class UnitBase : MonoBehaviour
     protected Material initMaterial;
     [SerializeField]
     private Material AvailableToBeAttackedColor;
+
+    [SerializeField]
+    private GameObject canvasHover;
 
     //[Header("TEXT")]
 
@@ -267,6 +271,18 @@ public class UnitBase : MonoBehaviour
     }
 
     #endregion
+
+    public void EnableCanvasHover(int damageReceived)
+    {
+        canvasHover.SetActive(true);
+        canvasHover.GetComponent<CanvasHover>().damageNumber.SetText(damageReceived.ToString());
+    }
+
+    public void DisableCanvasHover()
+    {
+        canvasHover.SetActive(false);
+    }
+
 
 
     //private void OnMouseEnter()

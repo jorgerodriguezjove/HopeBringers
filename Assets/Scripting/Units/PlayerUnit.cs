@@ -122,8 +122,8 @@ public class PlayerUnit : UnitBase
 
     #region ATTACK_&_HEALTH
 
-    //Calcula y aplica el daño a la unidad elegida
-    protected void DoDamage(UnitBase unitToDealDamage)
+    //Calcula PERO NO aplico el daño a la unidad elegida
+    protected void CalculateDamage(UnitBase unitToDealDamage)
     {
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;
@@ -146,7 +146,11 @@ public class PlayerUnit : UnitBase
             //Ataque por la espalda
             damageWithMultipliersApplied *= multiplicatorBackAttack;
         }
+    }
 
+    //Aplico el daño a la unidad elegida
+    protected void DoDamage(UnitBase unitToDealDamage)
+    {
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
     }
@@ -175,12 +179,6 @@ public class PlayerUnit : UnitBase
         GetComponent<MeshRenderer>().material = finishedMaterial;
     }
 
-    //Función que muestra el efecto del ataque y que se hace override en cada clase.
-    public virtual void ShowHover()
-    {
-        //Cada unidad muestra su efecto
-    }
-
     public override void ReceiveDamage(int damageReceived)
     {
         currentHealth -= damageReceived;
@@ -202,6 +200,17 @@ public class PlayerUnit : UnitBase
     #endregion
 
     #region FEEDBACK
+
+    //Función que muestra el efecto del ataque y que se hace override en cada clase.
+    public virtual void ShowHover(UnitBase enemyToAttack)
+    {
+        //Cada unidad muestra su efecto
+
+        CalculateDamage(enemyToAttack);
+
+        //Mostrar el daño es común a todos
+        enemyToAttack.EnableCanvasHover(Mathf.RoundToInt(damageWithMultipliersApplied));
+    }
 
     public void SelectedColor()
     {
@@ -355,7 +364,6 @@ public class PlayerUnit : UnitBase
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
         }
     }
-
 
     #endregion
 

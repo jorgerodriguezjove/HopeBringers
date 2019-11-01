@@ -17,6 +17,7 @@ public class Knight : PlayerUnit
     public override void Attack(UnitBase unitToAttack)
     {
         //Hago daño
+        CalculateDamage(unitToAttack);
         DoDamage(unitToAttack);
 
         if (currentFacingDirection == FacingDirection.North)
@@ -42,4 +43,6 @@ public class Knight : PlayerUnit
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }
+
+
 }

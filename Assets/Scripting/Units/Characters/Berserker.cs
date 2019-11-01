@@ -14,7 +14,7 @@ public class Berserker : PlayerUnit
     public override void Attack(UnitBase unitToAttack)
     {
         //Hago daño
-        DoDamage(unitToAttack);
+        CalculateDamage(unitToAttack);
 
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);

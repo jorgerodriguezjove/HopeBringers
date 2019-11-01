@@ -83,7 +83,7 @@ public class Rogue : PlayerUnit
         }
                
         //Hago daño
-        DoDamage(unitToAttack);
+        CalculateDamage(unitToAttack);
 
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);

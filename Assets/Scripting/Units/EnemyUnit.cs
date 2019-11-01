@@ -28,7 +28,6 @@ public class EnemyUnit : UnitBase
     private void Start()
     {
         currentHealth = maxHealth;
-        
     }
 
     #endregion
@@ -40,6 +39,20 @@ public class EnemyUnit : UnitBase
     {
         LM.SelectUnitToAttack(GetComponent<UnitBase>());
     }
+
+    private void OnMouseEnter()
+    {
+        Debug.Log("enemy");
+        //Llamo a LevelManager para activar hover
+        LM.CheckIfHoverShouldAppear(this);
+    }
+
+    private void OnMouseExit()
+    {
+        //Llamo a LevelManager para desactivar hover
+        LM.HideHover(this);
+    }
+
 
     #endregion
 
