@@ -6,12 +6,6 @@ public class EnemyUnit : UnitBase
 {
     #region VARIABLES
 
-    [Header("STATS ESPECÍFICO")]
-
-    //Vida actual de la unidad.
-    [HideInInspector]
-    public int currentHealth;
-
     [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
@@ -28,6 +22,7 @@ public class EnemyUnit : UnitBase
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
         myCurrentTile.unitOnTile = this;
+        initMaterial = GetComponent<MeshRenderer>().material;
     }
 
     private void Start()
@@ -56,6 +51,17 @@ public class EnemyUnit : UnitBase
 
         Debug.Log("Soy " + gameObject.name + "y me han hecho " + damageReceived + " de daño");
         Debug.Log("Mi vida actual es " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
+    }
+
+    public override void Die()
+    {
+        Debug.Log("Soy " + gameObject.name + " y he muerto");
     }
 
     #endregion

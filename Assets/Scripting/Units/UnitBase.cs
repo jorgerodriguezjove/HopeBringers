@@ -17,18 +17,35 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int maxHealth;
 
+    //Vida actual de la unidad.
+    [HideInInspector]
+    public int currentHealth;
+
     //Uds movimiento máximas de la unidad.
     [SerializeField]
     public int movementUds;
 
+    [Header("DAMAGE")]
+
     //Daño de la unidad
     [SerializeField]
-    protected int damage;
+    protected int baseDamage;
+
+    //Daño cuándo ataca por la espalda
+    [SerializeField]
+    protected float multiplicatorBackAttack;
+
+    //Daño cuándo ataca por la espalda
+    [SerializeField]
+    protected float multiplicatorMoreHeight;
+
+    //Daño cuándo ataca por la espalda
+    [SerializeField]
+    protected float multiplicatorLessHeight;
 
     //Rango del ataque (en general será 1 a no ser que ataquen a distancia).
     [SerializeField]
     protected int range;
-
 
     [Header("LOGIC")]
 
@@ -60,6 +77,13 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected int damageMadeByFall;
 
+    [Header("FEEDBACK")]
+
+    //Material inicial y al ser seleccionado
+    protected Material initMaterial;
+    [SerializeField]
+    private Material AvailableToBeAttackedColor;
+
     //[Header("TEXT")]
 
     ////Texto que describe a la unidad.
@@ -85,20 +109,27 @@ public class UnitBase : MonoBehaviour
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
     }
 
+    public virtual void Die()
+    {
+        //Cada unidad hace lo propio al morir
+    }
+
     //Función genérica que sirve para calcular a que tile debe ser empujada una unidad
-    public void CalculatePushPosition(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush)
+    //La función pide tatno el daño pro caída como el daño de empujón de la unidad atacante ya que pueden existir mejoras que modifiquen estos valores.
+    public void CalculatePushPosition(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
     {
         Debug.Log("Empuje");
 
         //Si no hay tiles en la lista me han empujado contra un borde
-        if (tilesToCheckForCollision.Count == 0)
+        //Tiene que ser menor o igual que 1 en vez de 0 porque para empujar a una unidad contra el borde, la unidad que empuja siempre va a necesitar 1 tile para atacar (que es donde está la unidad a la que voy a atacar)
+        if (tilesToCheckForCollision.Count <= 1)
         {
             Debug.Log("borde");
 
             //Recibo daño 
             ReceiveDamage(attackersDamageByPush);
 
-            //Hago animación de rebote
+            //Hago animación de rebote??
         }
 
         //Si hay tiles en la lista me empjuan contra tiles que no son bordes 
@@ -122,19 +153,39 @@ public class UnitBase : MonoBehaviour
                 }
 
                 //El tile al que empujo está más bajo (caída)
-                else if (tilesToCheckForCollision[i].height < myCurrentTile.height)
+                else if (Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
                 {
-
                     Debug.Log("caída");
-                    //if (tilesToCheckForCollision[i].height -myCurrentTile.height < )
-                    //{
 
-                    //}
+                    //Compruebo la altura de la que lo tiro??
 
-                    //Compruebo la altura de la que lo tiro 
                     //Compruebo si hay otra unidad
-                    //Compruebo si es tile vacío y entonces cuenta simplemente cómo choque con pared
+                    if (tilesToCheckForCollision[i].unitOnTile != null)
+                    {
+                        ReceiveDamage(attackersDamageByFall);
+                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush);
+
+                        if (tilesToCheckForCollision[i].unitOnTile.currentHealth > currentHealth)
+                        {
+                            //Muere la unidad que cae
+                            Die();
+                        }
+
+                        else
+                        {
+                            //Muere la unidad de abajo
+                            tilesToCheckForCollision[i].unitOnTile.Die();
+                        }
+                    }
+
+                    else
+                    {
+                        ReceiveDamage(attackersDamageByFall);
+                    }
+
                     //Que pasa si hay un obstáculo en el tile de abajo?
+
+                    MoveToTilePushed(tilesToCheckForCollision[i]);
 
                     return;
                 }
@@ -142,29 +193,14 @@ public class UnitBase : MonoBehaviour
                 //Si la altura del tile al que empujo y la mía son iguales compruebo si el tile está vacío, es un obstáculo o tiene una unidad.
                 else
                 {
-                    //Es tile vacío
-                    if (tilesToCheckForCollision[i].isEmpty)
+                    //Es tile vacío u obstáculo
+                    if (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle)
                     {
                         Debug.Log("vacío");
                         //Recibo daño 
                         ReceiveDamage(attackersDamageByPush);
 
                         // Desplazo a la unidad
-                        MoveToTilePushed(tilesToCheckForCollision[i - 1]);
-
-                        //Animación de rebote??
-
-                        return;
-                    }
-
-                    //Es tile con obstáculo
-                    else if (tilesToCheckForCollision[i].isObstacle)
-                    {
-                        Debug.Log("obstáculo");
-                        //Recibo daño 
-                        ReceiveDamage(attackersDamageByPush);
-
-                        //Desplazo a la unidad
                         MoveToTilePushed(tilesToCheckForCollision[i - 1]);
 
                         //Animación de rebote??
@@ -189,8 +225,6 @@ public class UnitBase : MonoBehaviour
 
                         return;
                     }
-
-                    Debug.Log(i);
                 }
             }
 
@@ -208,7 +242,7 @@ public class UnitBase : MonoBehaviour
     {
         //Mover al nuevo tile
         currentTileVectorToMove = new Vector3(newTile.tileX, newTile.height + 1, newTile.tileZ);
-        transform.DOMove(currentTileVectorToMove, timePushAnimation).SetEase(Ease.OutElastic);
+        transform.DOMove(currentTileVectorToMove, timePushAnimation);
 
         //Aviso a los tiles del cambio de posición
         myCurrentTile.unitOnTile = null;
@@ -218,7 +252,23 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
-  
+    #region COLORS
+
+    //Cambiar a color que indica que puede ser atacado
+    public void ColorInitial()
+    {
+        GetComponent<MeshRenderer>().material = initMaterial;
+    }
+
+    //Cambiar a color que indica que puede ser atacado
+    public void ColorAvailableToBeAttacked()
+    {
+        GetComponent<MeshRenderer>().material = AvailableToBeAttackedColor;
+    }
+
+    #endregion
+
+
     //private void OnMouseEnter()
     //{
     //    myCanvasHealthbar.gameObject.SetActive(true);

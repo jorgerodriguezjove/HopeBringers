@@ -9,10 +9,6 @@ public class PlayerUnit : UnitBase
 
     [Header("STATS ESPECÍFICO")]
 
-    //Vida actual de la unidad.
-    [HideInInspector]
-    public int currentHealth;
-
     //Bools que indican si el personaje se ha movido y si ha atacado.
     [HideInInspector]
     public bool hasMoved = false;
@@ -32,21 +28,25 @@ public class PlayerUnit : UnitBase
 
     //Tiempo que tarda en rotar a la unidad.
     [SerializeField]
-    private float timeDurationRotation;
+    protected float timeDurationRotation;
 
     [Header("ATAQUE")]
 
     //Lista de posibles unidades a las que atacar
-    [HideInInspector]
+    [SerializeField]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Variable que guarda el número más pequeño al comparar el rango del personaje con el número de tiles disponibles para atacar.
     int rangeVSTilesInLineLimitant;
 
-    [Header("FEEDBACK")]
+    //Variable en la que guardo el daño a realizar
+    private float damageWithMultipliersApplied;
 
-    //Material inicial y al ser seleccionado
-    private Material initMaterial;
+    [SerializeField]
+    private float maxHeightDifferenceToAttack;
+
+    [Header("FEEDBACK")]
+    
     [SerializeField]
     private Material selectedMaterial;
     [SerializeField]
@@ -75,9 +75,6 @@ public class PlayerUnit : UnitBase
     private void Start()
     {
         currentHealth = maxHealth;
-
-        
-        
     }
 
     #endregion
@@ -123,13 +120,41 @@ public class PlayerUnit : UnitBase
     }
     #endregion
 
-    #region ATTACK
+    #region ATTACK_&_HEALTH
+
+    //Calcula y aplica el daño a la unidad elegida
+    protected void DoDamage(UnitBase unitToDealDamage)
+    {
+        //Reseteo la variable de daño a realizar
+        damageWithMultipliersApplied = baseDamage;
+
+        //Si estoy en desventaja de altura hago menos daño
+        if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
+        {
+            damageWithMultipliersApplied *= multiplicatorLessHeight;
+        }
+
+        //Si estoy en ventaja de altura hago más daño
+        else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
+        {
+            damageWithMultipliersApplied *= multiplicatorMoreHeight;
+        }
+        
+        //Si le ataco por la espalda hago más daño
+        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+        {
+            //Ataque por la espalda
+            damageWithMultipliersApplied *= multiplicatorBackAttack;
+        }
+
+        //Una vez aplicados los multiplicadores efectuo el daño.
+        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+    }
 
     //Función de ataque que se hace override en cada clase
     public virtual void Attack(UnitBase unitToAttack)
     {
-        //Hago daño
-        unitToAttack.ReceiveDamage(damage);
+        //El daño no lo pongo aquí porque tiene que ser lo primero que se calcule.
 
         //Cada unidad se encargará de aplicar su efecto.
 
@@ -162,6 +187,16 @@ public class PlayerUnit : UnitBase
 
         Debug.Log("me han hecho daño");
         Debug.Log(gameObject.name);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    public override void Die()
+    {
+        Debug.Log("Soy " + gameObject.name + " y he muerto");
     }
 
     #endregion
@@ -227,9 +262,9 @@ public class PlayerUnit : UnitBase
     {
         currentUnitsAvailableToAttack.Clear();
 
-        if (currentFacingDirection == FacingDirection.North)
+        if (currentFacingDirection == FacingDirection.North || GetComponent<Rogue>())
         {
-           if (range <= myCurrentTile.tilesInLineUp.Count)
+            if (range <= myCurrentTile.tilesInLineUp.Count)
             {
                 rangeVSTilesInLineLimitant = range;
             }
@@ -240,7 +275,7 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height -myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
@@ -249,7 +284,7 @@ public class PlayerUnit : UnitBase
             }
         }
 
-        else if (currentFacingDirection == FacingDirection.South)
+        if (currentFacingDirection == FacingDirection.South || GetComponent<Rogue>())
         {
             if (range <= myCurrentTile.tilesInLineDown.Count)
             {
@@ -262,7 +297,7 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
@@ -271,7 +306,7 @@ public class PlayerUnit : UnitBase
             }
         }
 
-        else if (currentFacingDirection == FacingDirection.East)
+        if (currentFacingDirection == FacingDirection.East || GetComponent<Rogue>())
         {
             if (range <= myCurrentTile.tilesInLineRight.Count)
             {
@@ -284,7 +319,7 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
@@ -293,7 +328,7 @@ public class PlayerUnit : UnitBase
             }
         }
 
-        else if (currentFacingDirection == FacingDirection.West)
+        if (currentFacingDirection == FacingDirection.West || GetComponent<Rogue>())
         {
             if (range <= myCurrentTile.tilesInLineLeft.Count)
             {
@@ -306,13 +341,18 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                     break;
                 }
             }
+        }
+
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
         }
     }
 

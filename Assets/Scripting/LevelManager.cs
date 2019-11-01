@@ -108,7 +108,6 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter.SelectedColor();
                     tilesAvailableForMovement = TM.checkAvailableTilesForMovement(movementUds, clickedUnit);
 
-                    //ESTO DEBERÍA COMPROBARLO AL MOVERSE Y AL EMPEZAR EL TURNO
                     selectedCharacter.CheckUnitsInRangeToAttack();
                 }
 
@@ -155,11 +154,18 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter != null && !selectedCharacter.isMoving)
         {
+            //Desmarco las unidades disponibles para atacar
+            for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
+            {
+                selectedCharacter.currentUnitsAvailableToAttack[i].ColorInitial();
+            }
+
             //Si no se ha movido lo deselecciono.
             for (int i = 0; i < tilesAvailableForMovement.Count; i++)
             {
                 tilesAvailableForMovement[i].ColorDeselect();
             }
+
             tilesAvailableForMovement.Clear();
             selectedCharacter.InitialColor();
             selectedCharacter = null;

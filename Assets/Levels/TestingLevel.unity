@@ -777,15 +777,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   maxHealth: 20
+  currentHealth: 0
   movementUds: 1
-  damage: 1
+  baseDamage: 0
+  multiplicatorBackAttack: 0
+  multiplicatorMoreHeight: 0
+  multiplicatorLessHeight: 0
   range: 3
   myCurrentTile: {fileID: 1011514085}
-  currentFacingDirection: 0
+  currentFacingDirection: 3
   timePushAnimation: 1
   damageMadeByPush: 0
   damageMadeByFall: 0
-  currentHealth: 0
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
+    type: 2}
   LevelManagerRef: {fileID: 38483321}
 --- !u!136 &106331410
 CapsuleCollider:
@@ -818,7 +823,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18, type: 2}
+  - {fileID: 2100000, guid: 5a6d3b8b9e6a5b0428f9908ff008e623, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -853,14 +858,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106331408}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.7071079}
   m_LocalPosition: {x: 2, y: 2, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 318541862}
   m_Father: {fileID: 0}
   m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
 --- !u!1001 &128978206
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1830,7 +1835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4562075604489022, guid: 1b8fbee291cdc1046a281cb2b3b51bf7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4562075604489022, guid: 1b8fbee291cdc1046a281cb2b3b51bf7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1897,7 +1902,7 @@ MonoBehaviour:
   tileX: 0
   tileZ: 0
   MovementCost: 1
-  height: 0
+  height: 1
   isEmpty: 0
   isObstacle: 0
   unitOnTile: {fileID: 0}
@@ -3285,7 +3290,7 @@ Transform:
   - {fileID: 743237014}
   - {fileID: 1569054419}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &513347314
 GameObject:
@@ -3637,6 +3642,137 @@ MonoBehaviour:
   TM: {fileID: 0}
   LM: {fileID: 0}
   colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+--- !u!1 &541073223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 541073228}
+  - component: {fileID: 541073227}
+  - component: {fileID: 541073226}
+  - component: {fileID: 541073225}
+  - component: {fileID: 541073224}
+  m_Layer: 0
+  m_Name: Rogue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &541073224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541073223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a31d607529dd8f049bab292066a0a568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  maxHealth: 15
+  currentHealth: 0
+  movementUds: 6
+  baseDamage: 10
+  multiplicatorBackAttack: 1.75
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
+  range: 1
+  myCurrentTile: {fileID: 2087837665}
+  currentFacingDirection: 1
+  timePushAnimation: 1
+  damageMadeByPush: 8
+  damageMadeByFall: 5
+  AvailableToBeAttackedColor: {fileID: 0}
+  hasMoved: 0
+  hasAttacked: 0
+  isMoving: 0
+  timeMovementAnimation: 0.2
+  timeDurationRotation: 0.2
+  currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToAttack: 1
+  selectedMaterial: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
+  LevelManagerRef: {fileID: 38483321}
+--- !u!136 &541073225
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541073223}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &541073226
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541073223}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 3ae8ea0e4ce724b48be7c68ec178c5f4, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &541073227
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541073223}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &541073228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541073223}
+  m_LocalRotation: {x: -0, y: 0.70710576, z: -0, w: 0.7071079}
+  m_LocalPosition: {x: 8, y: 1, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1139571781}
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 90.00001, z: 0}
 --- !u!1001 &544572070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5299,6 +5435,36 @@ MonoBehaviour:
   TM: {fileID: 0}
   LM: {fileID: 0}
   colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+--- !u!1 &783568840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 783568841}
+  m_Layer: 0
+  m_Name: '----------Level------------------------- '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &783568841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783568840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &803706355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6332,16 +6498,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
-  maxHealth: 20
+  maxHealth: 40
+  currentHealth: 0
   movementUds: 1
-  damage: 1
+  baseDamage: 0
+  multiplicatorBackAttack: 0
+  multiplicatorMoreHeight: 0
+  multiplicatorLessHeight: 0
   range: 1
-  myCurrentTile: {fileID: 357035545}
+  myCurrentTile: {fileID: 1972570}
   currentFacingDirection: 0
   timePushAnimation: 1
   damageMadeByPush: 0
   damageMadeByFall: 0
-  currentHealth: 0
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
+    type: 2}
   LevelManagerRef: {fileID: 38483321}
 --- !u!136 &1011855566
 CapsuleCollider:
@@ -6374,7 +6545,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18, type: 2}
+  - {fileID: 2100000, guid: 5a6d3b8b9e6a5b0428f9908ff008e623, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6410,7 +6581,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011855564}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9, y: 1, z: 2}
+  m_LocalPosition: {x: 8, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 690437436}
@@ -6835,6 +7006,98 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105602957}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1139571780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1139571781}
+  - component: {fileID: 1139571784}
+  - component: {fileID: 1139571783}
+  - component: {fileID: 1139571782}
+  m_Layer: 0
+  m_Name: Cylinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1139571781
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139571780}
+  m_LocalRotation: {x: 0.70710576, y: -0, z: -0, w: 0.7071079}
+  m_LocalPosition: {x: 0.126, y: 0, z: 0.475}
+  m_LocalScale: {x: 0.48725, y: 0.48725, z: 0.48725}
+  m_Children: []
+  m_Father: {fileID: 541073228}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
+--- !u!136 &1139571782
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139571780}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5000001
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!23 &1139571783
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139571780}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1139571784
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139571780}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1151877607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7060,16 +7323,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  maxHealth: 20
+  maxHealth: 30
+  currentHealth: 0
   movementUds: 1
-  damage: 1
+  baseDamage: 0
+  multiplicatorBackAttack: 0
+  multiplicatorMoreHeight: 0
+  multiplicatorLessHeight: 0
   range: 1
   myCurrentTile: {fileID: 319290371}
   currentFacingDirection: 0
   timePushAnimation: 1
   damageMadeByPush: 0
   damageMadeByFall: 0
-  currentHealth: 0
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
+    type: 2}
   LevelManagerRef: {fileID: 38483321}
 --- !u!136 &1168245425
 CapsuleCollider:
@@ -7102,7 +7370,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18, type: 2}
+  - {fileID: 2100000, guid: 5a6d3b8b9e6a5b0428f9908ff008e623, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7138,7 +7406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168245423}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 1, z: 2}
+  m_LocalPosition: {x: 2, y: 2, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 281019380}
@@ -7731,7 +7999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1287651867}
   m_Layer: 0
-  m_Name: '----------Level-------------------------'
+  m_Name: '----------Units-------------------------'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8205,7 +8473,7 @@ GameObject:
   - component: {fileID: 1324419054}
   - component: {fileID: 1324419053}
   m_Layer: 0
-  m_Name: Knight (1)
+  m_Name: Mage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8220,30 +8488,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 1324419052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 602191bd3a4581c42bfd9b5a13eb6edf, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a0fa1b64616fab40801c57fbc519227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  maxHealth: 3
+  maxHealth: 15
+  currentHealth: 0
   movementUds: 5
-  damage: 1
-  range: 1
+  baseDamage: 10
+  multiplicatorBackAttack: 1.75
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
+  range: 3
   myCurrentTile: {fileID: 868565689}
   currentFacingDirection: 3
-  timePushAnimation: 1
-  damageMadeByPush: 0
-  damageMadeByFall: 0
-  currentHealth: 0
+  timePushAnimation: 0.2
+  damageMadeByPush: 5
+  damageMadeByFall: 8
+  AvailableToBeAttackedColor: {fileID: 0}
   hasMoved: 0
   hasAttacked: 0
   isMoving: 0
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
   currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToAttack: 1
   selectedMaterial: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
   finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
   LevelManagerRef: {fileID: 38483321}
-  tilesToPush: 1
 --- !u!136 &1324419054
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8310,14 +8582,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1324419052}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.70710784}
   m_LocalPosition: {x: 4, y: 1, z: 4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 663030584}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
 --- !u!1 &1331893623
 GameObject:
   m_ObjectHideFlags: 0
@@ -8352,15 +8624,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6
   maxHealth: 20
+  currentHealth: 0
   movementUds: 1
-  damage: 1
+  baseDamage: 0
+  multiplicatorBackAttack: 0
+  multiplicatorMoreHeight: 0
+  multiplicatorLessHeight: 0
   range: 1
   myCurrentTile: {fileID: 899034981}
   currentFacingDirection: 0
   timePushAnimation: 1
   damageMadeByPush: 0
   damageMadeByFall: 0
-  currentHealth: 0
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
+    type: 2}
   LevelManagerRef: {fileID: 38483321}
 --- !u!136 &1331893625
 CapsuleCollider:
@@ -8393,7 +8670,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18, type: 2}
+  - {fileID: 2100000, guid: 5a6d3b8b9e6a5b0428f9908ff008e623, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11344,25 +11621,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   maxHealth: 20
+  currentHealth: 0
   movementUds: 6
-  damage: 10
+  baseDamage: 10
+  multiplicatorBackAttack: 2
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
   range: 1
   myCurrentTile: {fileID: 1223371154}
   currentFacingDirection: 3
   timePushAnimation: 1
   damageMadeByPush: 5
   damageMadeByFall: 8
-  currentHealth: 0
+  AvailableToBeAttackedColor: {fileID: 0}
   hasMoved: 0
   hasAttacked: 0
   isMoving: 0
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
   currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToAttack: 1
   selectedMaterial: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
   finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
   LevelManagerRef: {fileID: 38483321}
-  tilesToPush: 2
+  tilesToPush: 1
 --- !u!136 &2019445650
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -11429,14 +11711,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2019445648}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.70710784}
   m_LocalPosition: {x: 3, y: 1, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2100057576}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 0}
 --- !u!1001 &2027003467
 PrefabInstance:
   m_ObjectHideFlags: 0
