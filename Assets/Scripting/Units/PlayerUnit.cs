@@ -7,6 +7,8 @@ public class PlayerUnit : UnitBase
 {
     #region VARIABLES
 
+    [Header("STATS ESPECÍFICO")]
+
     //Vida actual de la unidad.
     [HideInInspector]
     public int currentHealth;
@@ -19,21 +21,20 @@ public class PlayerUnit : UnitBase
     [HideInInspector]
     public bool isMoving = false;
 
-    //MOVIMIENTO--------------------------------------------------------
-
-    //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
-    float timeForMovementAnimation = 0.2f;
-
-    //Posición a la que tiene que moverse la unidad actualmente
-    private Vector3 currentTileVectorToMove;
+    [Header("MOVIMIENTO")]
 
     //Camino que tiene que seguir la unidad para moverse
     private List<IndividualTiles> myCurrentPath;
 
-    //Tiempo que tarda en rotar a la unidad.
-    private float timeDurationRotation = 0.2f;
+    //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
+    [SerializeField]
+    private float timeMovementAnimation;
 
-    //ATAQUE------------------------------------------------------------
+    //Tiempo que tarda en rotar a la unidad.
+    [SerializeField]
+    private float timeDurationRotation;
+
+    [Header("ATAQUE")]
 
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
@@ -42,7 +43,7 @@ public class PlayerUnit : UnitBase
     //Variable que guarda el número más pequeño al comparar el rango del personaje con el número de tiles disponibles para atacar.
     int rangeVSTilesInLineLimitant;
 
-    //FEEDBACK------------------------------------------------------------
+    [Header("FEEDBACK")]
 
     //Material inicial y al ser seleccionado
     private Material initMaterial;
@@ -51,7 +52,7 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private Material finishedMaterial;
 
-    //REFERENCIAS---------------------------------------------------------
+    [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
     public GameObject LevelManagerRef;
@@ -112,11 +113,12 @@ public class PlayerUnit : UnitBase
         {
             currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y + 1, myCurrentPath[j].transform.position.z);
 
-            transform.DOMove(currentTileVectorToMove, timeForMovementAnimation);
+            transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
-            yield return new WaitForSeconds(timeForMovementAnimation);
+            yield return new WaitForSeconds(timeMovementAnimation);
         }
 
+        CheckUnitsInRangeToAttack();
         isMoving = false;
     }
     #endregion
@@ -220,7 +222,6 @@ public class PlayerUnit : UnitBase
         }
     }
 
-    
     //Comprueba las unidades (tanto aliadas como enemigas) que están en alcance para ser atacadas.
     public void CheckUnitsInRangeToAttack()
     {

@@ -6,7 +6,7 @@ public class TileManager : MonoBehaviour
 {
     #region VARIABLES
 
-    //CREACIÓN DE MAPA--------------------------------------------
+    [Header("CREACIÓN DE MAPA")]
 
     //Array donde se meten los tiles en el editor
     [SerializeField]
@@ -24,7 +24,7 @@ public class TileManager : MonoBehaviour
     [HideInInspector]
     public IndividualTiles[,] graph;
 
-    //PATHFINDING--------------------------------------------------
+    [Header("PATHFINDING")]
 
     //Variable que se usa para almacenar el resultado del pathfinding y enviarlo.
     float tempCurrentPathCost;
@@ -43,7 +43,7 @@ public class TileManager : MonoBehaviour
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
     List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
-    //REFERENCIAS--------------------------------------------------
+    [Header("REFERENCIAS")]
 
     private LevelManager LM;
 
@@ -154,7 +154,7 @@ public class TileManager : MonoBehaviour
     //Calculo el coste de una casilla
     float CostToEnterTile(int x, int z)
     {
-        return graph[x, z].currentMovementCost;
+        return graph[x, z].MovementCost;
     }
 
     //Doy feedback de que casillas están al alcance del personaje.
@@ -237,11 +237,10 @@ public class TileManager : MonoBehaviour
                 }
             }
 
-            //else
-            //{
-            //    unvisited.Add(node);
-            //}
-
+            else
+            {
+                unvisited.Add(node);
+            }
         }
 
         //Mientras que haya nodos que no hayan sido visitados...
@@ -264,10 +263,10 @@ public class TileManager : MonoBehaviour
                         }
                     }
 
-                    //else
-                    //{
-                    //    currentNode = possibleNode;
-                    //}
+                    else
+                    {
+                        currentNode = possibleNode;
+                    }
                 }
             }
 
@@ -281,17 +280,36 @@ public class TileManager : MonoBehaviour
 
             foreach (IndividualTiles node in currentNode.neighbours)
             {
-                //float alt = dist[u] + u.DistanceTo(v);
-                float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-                if (alt < dist[node])
+                if (!isDiagonalMovement)
                 {
-                    if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                    if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle && (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ))
                     {
-                        dist[node] = alt;
-                        prev[node] = currentNode;
+                        float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+                        if (alt < dist[node])
+                        {
+                            if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                            {
+                                dist[node] = alt;
+                                prev[node] = currentNode;
+                            }
+                        }
                     }
                 }
+
+                else
+                {
+                    float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+                    if (alt < dist[node])
+                    {
+                        if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                        {
+                            dist[node] = alt;
+                            prev[node] = currentNode;
+                        }
+                    }
+                }                
             }
         }
 

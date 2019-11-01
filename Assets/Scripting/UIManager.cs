@@ -7,8 +7,9 @@ public class UIManager : MonoBehaviour
 {
     #region VARIABLES
 
-    //REFERENCIAS------------------------------------------------------
+    [Header("REFERENCIAS")]
 
+    //Level Manager
     private LevelManager LM;
 
     [SerializeField]

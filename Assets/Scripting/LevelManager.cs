@@ -7,16 +7,15 @@ public class LevelManager : MonoBehaviour
 {
     #region VARIABLES
 
-    //INTERACCIÓN CON UNIDADES--------------------------------------------
+    [Header("INTERACCIÓN CON UNIDADES")]
 
     //Personaje actualmente seleccionado.
-    //SERIALEZE ÚNICAMENTE PARA PROBAR
-    [SerializeField]
+    [HideInInspector]
     public PlayerUnit selectedCharacter;
 
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada
-    [SerializeField]
-    List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
+    [HideInInspector]
+    public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
     //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
     float timeForMovementAnimation = 0.2f;
@@ -30,23 +29,24 @@ public class LevelManager : MonoBehaviour
     //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
     private int enemiesNumber;
 
-    //TURNOS Y FASES--------------------------------------------
+    [Header("TURNOS Y FASES")]
+
+    //Cada unidad se encarga desde su script de incluirse en la lista
+    //Lista con todas las unidades del jugador en el tablero
+    [HideInInspector]
+    public List<PlayerUnit> characthersOnTheBoard;
+    [HideInInspector]
+    //Lista con todas las unidades enemigas en el tablero
+    public List<EnemyUnit> enemiesOnTheBoard;
 
     //Enum que indica si es la fase del jugador o del enemigo.
     [HideInInspector]
     public enum LevelState { PlayerPhase, ProcessingPlayerActions, EnemyPhase, ProcessingEnemiesActions};
 
-    //SERIALEZE ÚNICAMENTE PARA PROBAR
-    [SerializeField]
+    [HideInInspector]
     public LevelState currentLevelState { get; private set; }
 
-    //Cada unidad se encarga desde su script de incluirse en la lista
-    //Lista con todas las unidades del jugador en el tablero
-    public List<PlayerUnit> characthersOnTheBoard;
-    //Lista con todas las unidades enemigas en el tablero
-    public List<EnemyUnit> enemiesOnTheBoard;
-
-    //REFERENCIAS--------------------------------------------
+    [Header("REFERENCIAS")]
 
     //Referencia al Tile Manager
     private TileManager TM;

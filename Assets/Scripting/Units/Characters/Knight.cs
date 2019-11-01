@@ -6,7 +6,7 @@ public class Knight : PlayerUnit
 {
     #region VARIABLES
 
-    //STATS EXCLUSIVOS DE LA UNIDAD
+    [Header("STATS DE CLASE")]
 
     [SerializeField]
     int tilesToPush;
@@ -18,22 +18,22 @@ public class Knight : PlayerUnit
     {
         if (currentFacingDirection == FacingDirection.North)
         {
-            unitToAttack.MoveByPush(tilesToPush, myCurrentTile.tilesInLineUp);
+            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush);
         }
 
         else if (currentFacingDirection == FacingDirection.South)
         {
-            unitToAttack.MoveByPush(tilesToPush, myCurrentTile.tilesInLineDown);
+            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush);
         }
 
         else if(currentFacingDirection == FacingDirection.East)
         {
-            unitToAttack.MoveByPush(tilesToPush, myCurrentTile.tilesInLineRight);
+            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush);
         }
 
         else if(currentFacingDirection == FacingDirection.West)
         {
-            unitToAttack.MoveByPush(tilesToPush, myCurrentTile.tilesInLineLeft);
+            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush);
         }
 
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.

@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class UnitBase : MonoBehaviour
 {
     #region VARIABLES
 
-    //STATS--------------------------------------------------------------------
+    [Header("STATS")]
 
     //Variable que se usará para ordenar a las unidades
     [SerializeField]
@@ -28,7 +29,8 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected int range;
 
-    //LOGIC--------------------------------------------------------------------
+
+    [Header("LOGIC")]
 
     //Tile en el que está el personaje actualmente. Se setea desde el editor.
     public IndividualTiles myCurrentTile;
@@ -41,7 +43,24 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public FacingDirection currentFacingDirection;
 
-    //TEXT--------------------------------------------------------------------
+    //Posición a la que tiene que moverse la unidad actualmente
+    protected Vector3 currentTileVectorToMove;
+
+    //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
+    [SerializeField]
+    protected float timePushAnimation;
+
+    [Header("STATS GENÉRICOS")]
+
+    //Daño que hace cada unidad por choque
+    [SerializeField]
+    protected int damageMadeByPush;
+
+    //Daño que hace cada unidad por choque
+    [SerializeField]
+    protected int damageMadeByFall;
+
+    //[Header("TEXT")]
 
     ////Texto que describe a la unidad.
     //[SerializeField]
@@ -66,37 +85,135 @@ public class UnitBase : MonoBehaviour
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
     }
 
-    //Función genérica que sirve para que las unidades se muevan al ser empujadas.
-    public void MoveByPush(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision)
+    //Función genérica que sirve para calcular a que tile debe ser empujada una unidad
+    public void CalculatePushPosition(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush)
     {
-        //Comprobar si tiles vacios
-        //Comprobar si tiles con obstáculo
-        //Comprobar tiles con unidad
-        //Comprobar si es borde
-        //Comprobar si choca con tile más alto
+        Debug.Log("Empuje");
 
-        for (int i = 0; i < tilesToCheckForCollision.Count; i++)
+        //Si no hay tiles en la lista me han empujado contra un borde
+        if (tilesToCheckForCollision.Count == 0)
         {
-            if (tilesToCheckForCollision.Count == 0)
+            Debug.Log("borde");
+
+            //Recibo daño 
+            ReceiveDamage(attackersDamageByPush);
+
+            //Hago animación de rebote
+        }
+
+        //Si hay tiles en la lista me empjuan contra tiles que no son bordes 
+        else
+        {
+            for (int i = 1; i <= numberOfTilesMoved; i++)
             {
-                //Es un borde
+                //El tile al que empujo está más alto (pared)
+                if (tilesToCheckForCollision[i].height > myCurrentTile.height)
+                {
+                    Debug.Log("pared");
+                    //Recibo daño 
+                    ReceiveDamage(attackersDamageByPush);
+
+                    //Desplazo a la unidad
+                    MoveToTilePushed(tilesToCheckForCollision[i - 1]);
+
+                    //Animación de rebote??
+
+                    return;
+                }
+
+                //El tile al que empujo está más bajo (caída)
+                else if (tilesToCheckForCollision[i].height < myCurrentTile.height)
+                {
+
+                    Debug.Log("caída");
+                    //if (tilesToCheckForCollision[i].height -myCurrentTile.height < )
+                    //{
+
+                    //}
+
+                    //Compruebo la altura de la que lo tiro 
+                    //Compruebo si hay otra unidad
+                    //Compruebo si es tile vacío y entonces cuenta simplemente cómo choque con pared
+                    //Que pasa si hay un obstáculo en el tile de abajo?
+
+                    return;
+                }
+
+                //Si la altura del tile al que empujo y la mía son iguales compruebo si el tile está vacío, es un obstáculo o tiene una unidad.
+                else
+                {
+                    //Es tile vacío
+                    if (tilesToCheckForCollision[i].isEmpty)
+                    {
+                        Debug.Log("vacío");
+                        //Recibo daño 
+                        ReceiveDamage(attackersDamageByPush);
+
+                        // Desplazo a la unidad
+                        MoveToTilePushed(tilesToCheckForCollision[i - 1]);
+
+                        //Animación de rebote??
+
+                        return;
+                    }
+
+                    //Es tile con obstáculo
+                    else if (tilesToCheckForCollision[i].isObstacle)
+                    {
+                        Debug.Log("obstáculo");
+                        //Recibo daño 
+                        ReceiveDamage(attackersDamageByPush);
+
+                        //Desplazo a la unidad
+                        MoveToTilePushed(tilesToCheckForCollision[i - 1]);
+
+                        //Animación de rebote??
+
+                        return;
+                    }
+
+                    //Es tile con unidad
+                    else if (tilesToCheckForCollision[i].unitOnTile != null)
+                    {
+                        Debug.Log("otra unidad");
+                        //Recibo daño 
+                        ReceiveDamage(attackersDamageByPush);
+
+                        //Hago daño a la otra unidad
+                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush);
+
+                        //Desplazo a la unidad
+                        MoveToTilePushed(tilesToCheckForCollision[i-1]);
+
+                        //Animación de rebote??
+
+                        return;
+                    }
+
+                    Debug.Log(i);
+                }
             }
 
-            //else if (tilesToCheckForCollision[i].)
-            //{
+            //Si sale del for entonces es que todos los tiles que tiene que comprobar son normales y simplemente lo muevo al último tile
 
-            //}
+            Debug.Log("normal");
 
-            //else if ()
-            //{
-
-            //}
-
-            //else if ()
-            //{
-
-            //}
+            //Desplazo a la unidad
+            MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
         }
+    }
+
+    //Función que ejecuta el movimiento del push
+    private void MoveToTilePushed(IndividualTiles newTile)
+    {
+        //Mover al nuevo tile
+        currentTileVectorToMove = new Vector3(newTile.tileX, newTile.height + 1, newTile.tileZ);
+        transform.DOMove(currentTileVectorToMove, timePushAnimation).SetEase(Ease.OutElastic);
+
+        //Aviso a los tiles del cambio de posición
+        myCurrentTile.unitOnTile = null;
+        myCurrentTile = newTile;
+        myCurrentTile.unitOnTile = this;
     }
 
     #endregion

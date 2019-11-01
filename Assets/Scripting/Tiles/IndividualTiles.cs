@@ -6,7 +6,7 @@ public class IndividualTiles : MonoBehaviour
 {
     #region VARIABLES
 
-    //STATS DEL TILE---------------------------------------------------------------------
+    [Header("STATS TILE")]
 
     //Coordenadas del tile
     [HideInInspector]
@@ -14,16 +14,9 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public int tileZ;
 
-    //Coste inicial del tile
-    [SerializeField]
-    private int initialMovementCost;
-
-    //Coste máximo de movimiento para que ningún personaje pueda entrar
-    private int maximumMovementCost = 9999;
-
     //Coste que tiene una casilla.
-    [HideInInspector]
-    public int currentMovementCost;
+    [SerializeField]
+    public int MovementCost;
 
     //Altura del tile
     public int height;
@@ -40,7 +33,7 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public UnitBase unitOnTile;
 
-    //TILES VECINOS---------------------------------------------------------------------
+    [Header("TILES VECINOS")]
 
     //Lista con los 4 vecinos adyacentes. Esto se usa para el pathfinding.
     [HideInInspector]
@@ -56,14 +49,14 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public List<IndividualTiles> tilesInLineLeft;
 
-    //REFERENCIAS---------------------------------------------------------------------
+    [Header("REFERENCIAS")]
 
     [HideInInspector]
     public TileManager TM;
     [HideInInspector]
     public LevelManager LM;
 
-    //MATERIALES. CAMBIAR ESTO POR SHADERS
+    [Header("FEEDBACK")]
     [SerializeField]
     private Material colorTest;
     private Material initialColor;
@@ -71,20 +64,6 @@ public class IndividualTiles : MonoBehaviour
     #endregion
 
     #region INIT
-
-    private void Awake()
-    {
-        //Posible problema con orden de Awakes
-        if (isEmpty || isObstacle || unitOnTile != null)
-        {
-            currentMovementCost = maximumMovementCost;
-        }
-
-        else
-        {
-            currentMovementCost = initialMovementCost;
-        }
-    }
 
     private void Start()
     {
@@ -118,15 +97,4 @@ public class IndividualTiles : MonoBehaviour
 
     #endregion
 
-    //Está función se tiene que llamar cada vez que se rompa un obstáculo y cuándo un enemigo se mueva de unidad
-    public void ChangeMovementCostToMinimum()
-    {
-        currentMovementCost = initialMovementCost;
-    }
-
-    //Esta función se tiene que llamar cada vez que un enemigo entra en un tile.
-    public void ChangeMovementCostToMaximum()
-    {
-        currentMovementCost = maximumMovementCost;
-    }
 }

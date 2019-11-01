@@ -6,11 +6,13 @@ public class EnemyUnit : UnitBase
 {
     #region VARIABLES
 
+    [Header("STATS ESPECÍFICO")]
+
     //Vida actual de la unidad.
     [HideInInspector]
     public int currentHealth;
 
-    //REFERENCIAS-------------------------------------------------------
+    [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
     public GameObject LevelManagerRef;
