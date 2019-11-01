@@ -6,6 +6,8 @@ public class TileManager : MonoBehaviour
 {
     #region VARIABLES
 
+    //CREACIÓN DE MAPA--------------------------------------------
+
     //Array donde se meten los tiles en el editor
     [SerializeField]
     private GameObject[] tilesInScene;
@@ -21,6 +23,8 @@ public class TileManager : MonoBehaviour
     //Array con script de tiles que voy a usar para calcular el pathfinding
     [HideInInspector]
     public IndividualTiles[,] graph;
+
+    //PATHFINDING--------------------------------------------------
 
     //Variable que se usa para almacenar el resultado del pathfinding y enviarlo.
     float tempCurrentPathCost;
@@ -39,8 +43,8 @@ public class TileManager : MonoBehaviour
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
     List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
+    //REFERENCIAS--------------------------------------------------
 
-    //REFERENCIAS
     private LevelManager LM;
 
     #endregion
@@ -67,12 +71,6 @@ public class TileManager : MonoBehaviour
                 k++;
             }
         }
-
-        ////Le paso a cada tile ocupado una referencia de la unidad que lo ocupa.
-        //for (int i = 0; i < units.Count; i++)
-        //{
-        //    TellTileIsOcuppied(units[i]);
-        //}
     }
 
     //Genero el graph con los nodos que voy a usar para calcular el pathfinding.
@@ -156,7 +154,7 @@ public class TileManager : MonoBehaviour
     //Calculo el coste de una casilla
     float CostToEnterTile(int x, int z)
     {
-        return graph[x, z].movementCost;
+        return graph[x, z].currentMovementCost;
     }
 
     //Doy feedback de que casillas están al alcance del personaje.
@@ -174,28 +172,10 @@ public class TileManager : MonoBehaviour
                 CalculatePathForMovementCost(j, i);
                 if (tempCurrentPathCost <= movementUds)
                 {
-                    if (!isDiagonalMovement)
+                    if (graph[j, i].unitOnTile == null)
                     {
-                        if (j == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || i == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
-                        {
-                            //Cambio el color y guardo los tiles en una lista
-                            if (graph[j,i].unitOnTile == null)
-                            {
-                                graph[j, i].ColorSelect();
-                                tilesAvailableForMovement.Add(graph[j, i]);
-                            }
-                            
-                        }
-                    }
-
-                    else
-                    {
-                        //Cambio el color y guardo los tiles en una lista
-                        if (graph[j, i].unitOnTile == null)
-                        {
-                            graph[j, i].ColorSelect();
-                            tilesAvailableForMovement.Add(graph[j, i]);
-                        }
+                        graph[j, i].ColorSelect();
+                        tilesAvailableForMovement.Add(graph[j, i]);
                     }
                 }
                 tempCurrentPathCost = 0;
@@ -205,6 +185,8 @@ public class TileManager : MonoBehaviour
         return tilesAvailableForMovement;
     }
 
+    [SerializeField]
+    public List<IndividualTiles> unvisited;
 
     //Calculo el coste que tiene el personaje por ir a cada casilla.
     public void CalculatePathForMovementCost(int x, int z)
@@ -217,7 +199,9 @@ public class TileManager : MonoBehaviour
         Dictionary<IndividualTiles, IndividualTiles> prev = new Dictionary<IndividualTiles, IndividualTiles>();
 
         //Lista con los nodos que todavía no han sido comprobados al buscar el camino.
-        List<IndividualTiles> unvisited = new List<IndividualTiles>();
+
+        unvisited.Clear();
+        unvisited = new List<IndividualTiles>();
 
         //Punto de origen (Nodo en el que está el personaje).
         IndividualTiles source = graph[selectedCharacter.GetComponent<PlayerUnit>().myCurrentTile.tileX, selectedCharacter.GetComponent<PlayerUnit>().myCurrentTile.tileZ];
@@ -244,7 +228,20 @@ public class TileManager : MonoBehaviour
             }
 
             //Todos los nodos se añaden a la lista de unvisited, incluido el origen.
-            unvisited.Add(node);
+
+            if (!isDiagonalMovement)
+            {
+                if (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
+                {
+                    unvisited.Add(node);
+                }
+            }
+
+            //else
+            //{
+            //    unvisited.Add(node);
+            //}
+
         }
 
         //Mientras que haya nodos que no hayan sido visitados...
@@ -259,7 +256,18 @@ public class TileManager : MonoBehaviour
             {
                 if (currentNode == null || dist[possibleNode] < dist[currentNode])
                 {
-                    currentNode = possibleNode;
+                    if (!isDiagonalMovement)
+                    {
+                        if (possibleNode.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || possibleNode.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
+                        {
+                            currentNode = possibleNode;
+                        }
+                    }
+
+                    //else
+                    //{
+                    //    currentNode = possibleNode;
+                    //}
                 }
             }
 
@@ -284,7 +292,6 @@ public class TileManager : MonoBehaviour
                         prev[node] = currentNode;
                     }
                 }
-
             }
         }
 
@@ -305,7 +312,6 @@ public class TileManager : MonoBehaviour
         {
             currentPath.Add(curr);
             curr = prev[curr];
-
         }
 
         //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.

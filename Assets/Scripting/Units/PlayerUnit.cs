@@ -66,6 +66,8 @@ public class PlayerUnit : UnitBase
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.characthersOnTheBoard.Add(this);
+        //Aviso al tile en el que empiezo que soy su unidad.
+        myCurrentTile.unitOnTile = this;
         initMaterial = GetComponent<MeshRenderer>().material;
     }
 
@@ -73,8 +75,8 @@ public class PlayerUnit : UnitBase
     {
         currentHealth = maxHealth;
 
-        //Aviso al tile en el que empiezo que soy su unidad.
-        myCurrentTile.unitOnTile = this;
+        
+        
     }
 
     #endregion
@@ -117,21 +119,6 @@ public class PlayerUnit : UnitBase
 
         isMoving = false;
     }
-
-    //La unidad ha atacado y por tanto no puede hacer nada más.
-    private void FinishMyActions()
-    {
-        //La unidad ha atacado
-        hasAttacked = true;
-
-        //Aviso al LM que deseleccione la unidad
-        LM.DeSelectUnit();
-
-        //Doy feedback de que esa unidad no puede hacer nada
-        GetComponent<MeshRenderer>().material = finishedMaterial;
-        Debug.Log(finishedMaterial);
-    }
-
     #endregion
 
     #region ATTACK
@@ -146,6 +133,19 @@ public class PlayerUnit : UnitBase
 
         //La unidad ha atacado y por tanto no puede hacer nada más.
         FinishMyActions();
+    }
+
+    //La unidad ha atacado y por tanto no puede hacer nada más.
+    private void FinishMyActions()
+    {
+        //La unidad ha atacado
+        hasAttacked = true;
+
+        //Aviso al LM que deseleccione la unidad
+        LM.DeSelectUnit();
+
+        //Doy feedback de que esa unidad no puede hacer nada
+        GetComponent<MeshRenderer>().material = finishedMaterial;
     }
 
     //Función que muestra el efecto del ataque y que se hace override en cada clase.

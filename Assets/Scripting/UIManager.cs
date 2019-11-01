@@ -5,16 +5,25 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    //REFERENCIAS
+    #region VARIABLES
+
+    //REFERENCIAS------------------------------------------------------
+
     private LevelManager LM;
 
     [SerializeField]
     private Button endTurnButton;
 
+    #endregion
+
+    #region INIT
+
     private void Awake()
     {
         LM = FindObjectOfType<LevelManager>();
     }
+
+    #endregion
 
     #region END_TURN
 
@@ -32,12 +41,15 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region UNDO_MOVE
 
     //Se llama desde el botón de finalizar turno
     public void UndoMove()
     {
         LM.UndoMove();
     }
+
+    #endregion
 
 
 

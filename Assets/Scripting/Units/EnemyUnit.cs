@@ -10,7 +10,8 @@ public class EnemyUnit : UnitBase
     [HideInInspector]
     public int currentHealth;
 
-    //REFERENCIAS
+    //REFERENCIAS-------------------------------------------------------
+
     //Ahora mismo se setea desde el inspector
     public GameObject LevelManagerRef;
     private LevelManager LM;
@@ -24,15 +25,18 @@ public class EnemyUnit : UnitBase
         //Referencia al LM y me incluyo en la lista de enemiogos
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
+        myCurrentTile.unitOnTile = this;
     }
 
     private void Start()
     {
         currentHealth = maxHealth;
-        myCurrentTile.unitOnTile = this;
+        
     }
 
     #endregion
+
+    #region INTERACTION
 
     //Al clickar en una unidad aviso al LM
     private void OnMouseDown()
@@ -40,11 +44,17 @@ public class EnemyUnit : UnitBase
         LM.SelectUnitToAttack(GetComponent<UnitBase>());
     }
 
+    #endregion
+
+    #region ATTACK
+
     public override void ReceiveDamage(int damageReceived)
     {
         currentHealth -= damageReceived;
 
-        Debug.Log("me han hecho daño " + gameObject.name);
-        Debug.Log(currentHealth);
+        Debug.Log("Soy " + gameObject.name + "y me han hecho " + damageReceived + " de daño");
+        Debug.Log("Mi vida actual es " + currentHealth);
     }
+
+    #endregion
 }

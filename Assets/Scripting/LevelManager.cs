@@ -86,34 +86,8 @@ public class LevelManager : MonoBehaviour
 
             });
         }
-
     }
-
-    //Cambia de fase. Si era la fase del player ahora es la del enemigo y viceversa
-    //Se llama desde el UI Manager al pulsar el botón de end turn 
-    public void ChangePhase()
-    {
-        currentLevelState = LevelState.EnemyPhase;
-    }
-
-    private void BeginPlayerPhase()
-    {
-        //Aparece cartel con turno del player
-        //Resetear todas las variables tipo bool y demás de los players
-        //
-    }
-
-    private void BeginEnemyPhase()
-    {
-        //Desaparece botón de end turn
-        UIM.ActivateDeActivateEndButton();
-        //Aparece cartel con turno del enemigo
-        //Me aseguro de que el jugador no puede interactuar con sus pjs
-        //
-        //
-    }
-
-
+   
     #endregion
 
     #region UNIT_INTERACTION
@@ -121,7 +95,6 @@ public class LevelManager : MonoBehaviour
     //Al clickar sobre una unidad del jugador se llama a esta función
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
     {
-
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
         if (currentLevelState == LevelState.ProcessingPlayerActions)
         {
@@ -157,8 +130,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-   
-
     //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
     public void SelectUnitToAttack(UnitBase clickedUnit)
     {
@@ -179,7 +150,6 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
-
 
     public void DeSelectUnit()
     {
@@ -252,6 +222,32 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
+    #region TURN_STATE
+
+    //Cambia de fase. Si era la fase del player ahora es la del enemigo y viceversa
+    //Se llama desde el UI Manager al pulsar el botón de end turn 
+    public void ChangePhase()
+    {
+        currentLevelState = LevelState.EnemyPhase;
+    }
+
+    private void BeginPlayerPhase()
+    {
+        //Aparece cartel con turno del player
+        //Resetear todas las variables tipo bool y demás de los players
+        //
+    }
+
+    private void BeginEnemyPhase()
+    {
+        //Desaparece botón de end turn
+        UIM.ActivateDeActivateEndButton();
+        //Aparece cartel con turno del enemigo
+        //Me aseguro de que el jugador no puede interactuar con sus pjs
+        //
+        //
+    }
+
     private void Update()
     {
         switch (currentLevelState)
@@ -280,6 +276,8 @@ public class LevelManager : MonoBehaviour
             DeSelectUnit();
         }
     }
+
+    #endregion
 
 }
 
