@@ -22,14 +22,6 @@ public class PlayerUnit : UnitBase
     //Camino que tiene que seguir la unidad para moverse
     private List<IndividualTiles> myCurrentPath;
 
-    //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
-    [SerializeField]
-    private float timeMovementAnimation;
-
-    //Tiempo que tarda en rotar a la unidad.
-    [SerializeField]
-    protected float timeDurationRotation;
-
     [Header("FEEDBACK")]
     
     [SerializeField]
@@ -82,7 +74,10 @@ public class PlayerUnit : UnitBase
         myCurrentPath = pathReceived;
 
         StartCoroutine("MovingUnitAnimation");
+
+        myCurrentTile.unitOnTile = null;
         myCurrentTile = tileToMove;
+        myCurrentTile.unitOnTile = this;
        
     }
 
@@ -168,7 +163,7 @@ public class PlayerUnit : UnitBase
     {
         currentHealth -= damageReceived;
 
-        Debug.Log("me han hecho daño");
+        Debug.Log("Soy " + name + "me han hecho daño");
         Debug.Log(gameObject.name);
 
         if (currentHealth <= 0)
@@ -180,9 +175,6 @@ public class PlayerUnit : UnitBase
     public override void Die()
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
-
-        
-
     }
 
     #endregion

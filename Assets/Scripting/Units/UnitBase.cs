@@ -68,6 +68,14 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected float timePushAnimation;
 
+    //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
+    [SerializeField]
+    protected float timeMovementAnimation;
+
+    //Tiempo que tarda en rotar a la unidad.
+    [SerializeField]
+    protected float timeDurationRotation;
+
     [Header("ATAQUE")]
 
     //Variable en la que guardo el daño a realizar
