@@ -51,7 +51,7 @@ public class MouseInputManager : InputManager
         }
 
         //ROTACIÓN
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))//Input click derecho
         {
             mousePositionOnRotateStart = mp.x;
         }
