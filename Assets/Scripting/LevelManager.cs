@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.Events;
 
 public class LevelManager : MonoBehaviour
 {
@@ -39,6 +39,9 @@ public class LevelManager : MonoBehaviour
     //Lista con todas las unidades enemigas en el tablero
     public List<EnemyUnit> enemiesOnTheBoard;
 
+    //Contador que controla a que unidad le toca. Sirve cómo indice para la lista de enemigos.
+    private int counterForEnemiesOrder ;
+
     //Enum que indica si es la fase del jugador o del enemigo.
     [HideInInspector]
     public enum LevelState { PlayerPhase, ProcessingPlayerActions, EnemyPhase, ProcessingEnemiesActions};
@@ -64,6 +67,8 @@ public class LevelManager : MonoBehaviour
         ReOrderUnits();
 
         currentLevelState = LevelState.PlayerPhase;
+
+        counterForEnemiesOrder = 0;
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
@@ -276,11 +281,31 @@ public class LevelManager : MonoBehaviour
     {
         //Desaparece botón de end turn
         UIM.ActivateDeActivateEndButton();
+
         //Aparece cartel con turno del enemigo
         //Me aseguro de que el jugador no puede interactuar con sus pjs
-        //
-        //
+        //Actualizo el número de unidades en el tablero (Lo hago aquí en vez de  al morir la unidad para que no se cambie el orden en medio del turno enemigo)
+
+        counterForEnemiesOrder = 0;
+        enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
     }
+
+    //Cuando el enemigo acaba sus acciones avisa al LM para que la siguiente unidad haga sus acciones.
+    public void NextEnemyInList()
+    {
+        if (counterForEnemiesOrder >= enemiesOnTheBoard.Count-1)
+        {
+            counterForEnemiesOrder = 0;
+            BeginPlayerPhase();
+        }
+
+        else
+        {
+            counterForEnemiesOrder++;
+            enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+        }
+    }
+
 
     private void Update()
     {

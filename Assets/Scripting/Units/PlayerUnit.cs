@@ -30,21 +30,6 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     protected float timeDurationRotation;
 
-    [Header("ATAQUE")]
-
-    //Lista de posibles unidades a las que atacar
-    [SerializeField]
-    public List<UnitBase> currentUnitsAvailableToAttack;
-
-    //Variable que guarda el número más pequeño al comparar el rango del personaje con el número de tiles disponibles para atacar.
-    int rangeVSTilesInLineLimitant;
-
-    //Variable en la que guardo el daño a realizar
-    private float damageWithMultipliersApplied;
-
-    [SerializeField]
-    private float maxHeightDifferenceToAttack;
-
     [Header("FEEDBACK")]
     
     [SerializeField]
@@ -195,6 +180,9 @@ public class PlayerUnit : UnitBase
     public override void Die()
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
+
+        
+
     }
 
     #endregion

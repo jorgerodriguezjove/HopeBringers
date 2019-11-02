@@ -68,6 +68,21 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected float timePushAnimation;
 
+    [Header("ATAQUE")]
+
+    //Variable en la que guardo el daño a realizar
+    protected float damageWithMultipliersApplied;
+
+    [SerializeField]
+    protected float maxHeightDifferenceToAttack;
+
+    //Lista de posibles unidades a las que atacar
+    [HideInInspector]
+    public List<UnitBase> currentUnitsAvailableToAttack;
+
+    //Variable que guarda el número más pequeño al comparar el rango del personaje con el número de tiles disponibles para atacar.
+    protected int rangeVSTilesInLineLimitant;
+
     [Header("STATS GENÉRICOS")]
 
     //Daño que hace cada unidad por choque

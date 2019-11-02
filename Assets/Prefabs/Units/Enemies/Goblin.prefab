@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 7910278680528603828}
   - component: {fileID: 9183852252699126077}
   - component: {fileID: 7923408292826442684}
+  - component: {fileID: 811410698602015732}
   m_Layer: 0
   m_Name: Canvas Hover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5414444457002493996
 RectTransform:
   m_ObjectHideFlags: 0
@@ -99,6 +100,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &811410698602015732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811410698602015731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ef58d89ccb91e4e971473232892084, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageNumber: {fileID: 8274603310880016819}
 --- !u!1 &2529447813469857469
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +149,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 1.69}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.56, y: 1.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7013920693281429164
 CanvasRenderer:
@@ -474,17 +488,19 @@ MonoBehaviour:
   maxHealth: 20
   currentHealth: 0
   movementUds: 1
-  baseDamage: 0
-  multiplicatorBackAttack: 0
-  multiplicatorMoreHeight: 0
-  multiplicatorLessHeight: 0
+  baseDamage: 10
+  multiplicatorBackAttack: 1.75
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
   range: 3
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   timePushAnimation: 1
-  damageMadeByPush: 0
-  damageMadeByFall: 0
+  maxHeightDifferenceToAttack: 1
+  currentUnitsAvailableToAttack: []
+  damageMadeByPush: 8
+  damageMadeByFall: 5
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
     type: 2}
-  LevelManagerRef: {fileID: 0}
   canvasHover: {fileID: 811410698602015731}
+  LevelManagerRef: {fileID: 0}
