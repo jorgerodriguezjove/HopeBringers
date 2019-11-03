@@ -112,6 +112,10 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter = clickedUnit;
                     selectedCharacter.SelectedColor();
                     tilesAvailableForMovement = TM.checkAvailableTilesForMovement(movementUds, clickedUnit);
+                    for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                    {
+                        tilesAvailableForMovement[i].ColorSelect();
+                    }
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
                 }
@@ -193,6 +197,10 @@ public class LevelManager : MonoBehaviour
                 selectedCharacter.hasMoved = false;
 
                 tilesAvailableForMovement = TM.checkAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter);
+                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                {
+                    tilesAvailableForMovement[i].ColorSelect();
+                }
             }
         }
 
@@ -304,6 +312,13 @@ public class LevelManager : MonoBehaviour
             counterForEnemiesOrder++;
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
+    }
+
+    //Función que llaman el gigante y el goblin para determinar la distancia hasta los enmigos
+    public List<UnitBase> CheckEnemyPathfinding(int range, EnemyUnit enemyUnitToCheck)
+    {
+        Debug.Log("LM");
+        return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck);
     }
 
 

@@ -6061,7 +6061,7 @@ MonoBehaviour:
   MovementCost: 1
   height: 0
   isEmpty: 0
-  isObstacle: 0
+  isObstacle: 1
   unitOnTile: {fileID: 0}
   neighbours: []
   tilesInLineUp: []
@@ -10338,7 +10338,8 @@ MonoBehaviour:
   mapSizeX: 10
   mapSizeZ: 10
   currentPath: []
-  isDiagonalMovement: 0
+  isDiagonalMovement: 1
+  currentEnemyPath: []
   unvisited: []
 --- !u!4 &1818466282
 Transform:
@@ -12228,7 +12229,7 @@ PrefabInstance:
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071058
+      value: 0.70711
       objectReference: {fileID: 0}
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
@@ -12238,7 +12239,7 @@ PrefabInstance:
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710784
+      value: -0.7071036
       objectReference: {fileID: 0}
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
@@ -12253,7 +12254,7 @@ PrefabInstance:
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90.00001
+      value: 269.999
       objectReference: {fileID: 0}
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
@@ -12273,7 +12274,7 @@ PrefabInstance:
     - target: {fileID: 461609867690369434, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
       propertyPath: currentFacingDirection
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 461609867690369434, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
@@ -12287,6 +12288,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9180697d7398074a8a3b89bc3f1ceb6, type: 3}
+--- !u!1 &811410698602015731 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 811410698602015731, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6409402853494940786}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6409402853494940786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12297,22 +12304,22 @@ PrefabInstance:
     - target: {fileID: 6409402853590735202, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_Name
-      value: Goblin
+      value: Gigante
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
@@ -12322,7 +12329,7 @@ PrefabInstance:
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710576
+      value: 0.000000014901159
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
@@ -12332,7 +12339,7 @@ PrefabInstance:
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071079
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
@@ -12347,7 +12354,7 @@ PrefabInstance:
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90.00001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
@@ -12364,13 +12371,49 @@ PrefabInstance:
       propertyPath: LevelManagerRef
       value: 
       objectReference: {fileID: 38483321}
-    - target: {fileID: 6409402853590735203, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
-        type: 3}
-      propertyPath: speed
-      value: 10
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6409402853590735203, guid: 9e1d3d0283af2ff4385d754f6c783c8e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9e1d3d0283af2ff4385d754f6c783c8e, type: 3}
+--- !u!1 &6409402853590735202 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6409402853590735202, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6409402853494940786}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6409402853590735203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6409402853590735202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b118e398493d61438596b4d8823cb3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 99
+  maxHealth: 50
+  currentHealth: 0
+  movementUds: 1
+  baseDamage: 20
+  multiplicatorBackAttack: 2
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
+  range: 5
+  myCurrentTile: {fileID: 400986760}
+  currentFacingDirection: 0
+  timePushAnimation: 0.2
+  timeMovementAnimation: 0.2
+  timeDurationRotation: 0.2
+  maxHeightDifferenceToAttack: 1
+  currentUnitsAvailableToAttack: []
+  damageMadeByPush: 8
+  damageMadeByFall: 5
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
+    type: 2}
+  canvasHover: {fileID: 811410698602015731}
+  LevelManagerRef: {fileID: 38483321}
 --- !u!1001 &8699764388137372423
 PrefabInstance:
   m_ObjectHideFlags: 0

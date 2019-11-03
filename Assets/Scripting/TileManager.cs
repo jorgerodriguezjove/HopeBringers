@@ -38,10 +38,24 @@ public class TileManager : MonoBehaviour
     public bool isDiagonalMovement;
 
     //Personaje actualmente seleccionado
-    private PlayerUnit selectedCharacter;
+    private UnitBase selectedCharacter;
 
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
     List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
+
+    [Header("ENEMY_PATHFINDING")]
+
+    ////Enemigo actual que está calculando su pathfinding
+    //private EnemyUnit selectedEnemy;
+
+    //Lista de posibles objetivos del enemigo actual
+    List<UnitBase> charactersAvailableForAttack = new List<UnitBase>();
+
+    //Variable que se usa para almacenar la distancia con el objetivo
+    float tempCurrentObjectiveCost;
+
+    [HideInInspector]
+    public List<IndividualTiles> currentEnemyPath = new List<IndividualTiles>();
 
     [Header("REFERENCIAS")]
 
@@ -167,7 +181,7 @@ public class TileManager : MonoBehaviour
     }
 
     //Doy feedback de que casillas están al alcance del personaje.
-    public List<IndividualTiles> checkAvailableTilesForMovement(int movementUds, PlayerUnit selectedUnit)
+    public List<IndividualTiles> checkAvailableTilesForMovement(int movementUds, UnitBase selectedUnit)
     {
         selectedCharacter = selectedUnit;
         tilesAvailableForMovement.Clear();
@@ -177,13 +191,11 @@ public class TileManager : MonoBehaviour
         {
             for (int j = 0; j < mapSizeX; j++)
             {
-                
                 CalculatePathForMovementCost(j, i);
                 if (tempCurrentPathCost <= movementUds)
                 {
                     if (graph[j, i].unitOnTile == null)
                     {
-                        graph[j, i].ColorSelect();
                         tilesAvailableForMovement.Add(graph[j, i]);
                     }
                 }
@@ -213,7 +225,7 @@ public class TileManager : MonoBehaviour
         unvisited = new List<IndividualTiles>();
 
         //Punto de origen (Nodo en el que está el personaje).
-        IndividualTiles source = graph[selectedCharacter.GetComponent<PlayerUnit>().myCurrentTile.tileX, selectedCharacter.GetComponent<PlayerUnit>().myCurrentTile.tileZ];
+        IndividualTiles source = graph[selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX, selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ];
 
         //Casilla objetivo a la que queremos llegar.
         IndividualTiles target = graph[x, z];
@@ -238,17 +250,17 @@ public class TileManager : MonoBehaviour
 
             //Todos los nodos se añaden a la lista de unvisited, incluido el origen.
 
-            if (!isDiagonalMovement)
+            if (isDiagonalMovement || selectedCharacter.GetComponent<EnemyUnit>())
+            {
+                unvisited.Add(node);
+            }
+
+            else
             {
                 if (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
                 {
                     unvisited.Add(node);
                 }
-            }
-
-            else
-            {
-                unvisited.Add(node);
             }
         }
 
@@ -264,17 +276,17 @@ public class TileManager : MonoBehaviour
             {
                 if (currentNode == null || dist[possibleNode] < dist[currentNode])
                 {
-                    if (!isDiagonalMovement)
+                    if (isDiagonalMovement || selectedCharacter.GetComponent<EnemyUnit>())
+                    {
+                        currentNode = possibleNode;
+                    }
+
+                    else
                     {
                         if (possibleNode.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || possibleNode.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
                         {
                             currentNode = possibleNode;
                         }
-                    }
-
-                    else
-                    {
-                        currentNode = possibleNode;
                     }
                 }
             }
@@ -289,24 +301,7 @@ public class TileManager : MonoBehaviour
 
             foreach (IndividualTiles node in currentNode.neighbours)
             {
-                if (!isDiagonalMovement)
-                {
-                    if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle && (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ))
-                    {
-                        float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-                        if (alt < dist[node])
-                        {
-                            if (Mathf.Abs(node.height - currentNode.height) <= 1)
-                            {
-                                dist[node] = alt;
-                                prev[node] = currentNode;
-                            }
-                        }
-                    }
-                }
-
-                else
+                if (selectedCharacter.GetComponent<EnemyUnit>())
                 {
                     float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
 
@@ -318,7 +313,27 @@ public class TileManager : MonoBehaviour
                             prev[node] = currentNode;
                         }
                     }
-                }                
+                }
+
+                else if (isDiagonalMovement)
+                {
+                    if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle)
+                    {
+                        if (isDiagonalMovement || (!isDiagonalMovement && (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)))
+                        {
+                            float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+                            if (alt < dist[node])
+                            {
+                                if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                                {
+                                    dist[node] = alt;
+                                    prev[node] = currentNode;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -332,11 +347,12 @@ public class TileManager : MonoBehaviour
 
         IndividualTiles curr = target;
 
-
         //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
         //Esta ruta está al reves, va desde el objetivo hasta el origen.
         while (curr != null)
         {
+            Debug.Log(curr.unitOnTile);
+
             currentPath.Add(curr);
             curr = prev[curr];
         }
@@ -354,6 +370,193 @@ public class TileManager : MonoBehaviour
             }
         }
     }
+
+    #endregion
+
+    #region ENEMY_PATHFINDING
+    //Estas funciones son bastante parecidas a las del pathfinding normal salvo que devuelven personajes a los que pueden atacar en vez de tiles.
+    //El gigante llama a esta función pero no a las anteriores.
+    //Sin embargo el goblin llama a esta por el objetivo y a las anteriores por el path
+
+    //Doy feedback de que casillas están al alcance del personaje.
+    public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
+    {
+        Debug.Log("TM");
+        //Reuno en una lista todos los tiles a los que puedo acceder
+        checkAvailableTilesForMovement(range, currentEnemy);
+
+        Debug.Log(tilesAvailableForMovement.Count);
+
+        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+        {
+            Debug.Log(tilesAvailableForMovement[i].name);
+
+            if (tilesAvailableForMovement[i].unitOnTile != null && tilesAvailableForMovement[i].unitOnTile.GetComponent<PlayerUnit>())
+            {
+                Debug.Log(tilesAvailableForMovement[i].unitOnTile.name);
+
+                
+                //ESTÁ PRACTICAMENTE HECHO, EL PROBLEMA ES QUE NO AÑADE A LA LISTA LOS TILES CON UNIDADES
+
+
+
+                CalculatePathForMovementCost(tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileX, tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileZ);
+
+                Debug.Log(tempCurrentObjectiveCost);
+
+                //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
+                if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost < tempCurrentPathCost)
+                {
+                    //Me guardo la distancia para checkear
+                    tempCurrentObjectiveCost = tempCurrentPathCost;
+                    //Limpio la lista de objetivos y añado
+                    charactersAvailableForAttack.Clear();
+                    charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
+                }
+
+                //Resetear tempcurrentPathCost a 0
+                tempCurrentPathCost = 0;
+            }
+        }
+
+        return charactersAvailableForAttack;
+    }
+
+    ////Calculo el coste que tiene el personaje por ir a cada casilla.
+    //public void CalculateDistanceForObjectives(int x, int z)
+    //{
+    //    currentEnemyPath.Clear();
+
+    //    //Diccionario con distancia a nodos
+    //    Dictionary<IndividualTiles, float> dist = new Dictionary<IndividualTiles, float>();
+    //    //Diccionario con nodos que forman el camino para llegar al objetivo.
+    //    Dictionary<IndividualTiles, IndividualTiles> prev = new Dictionary<IndividualTiles, IndividualTiles>();
+
+    //    //Lista con los nodos que todavía no han sido comprobados al buscar el camino.
+
+    //    unvisited.Clear();
+    //    unvisited = new List<IndividualTiles>();
+
+    //    //Punto de origen (Nodo en el que está el personaje).
+    //    IndividualTiles source = graph[selectedEnemy.GetComponent<EnemyUnit>().myCurrentTile.tileX, selectedEnemy.GetComponent<EnemyUnit>().myCurrentTile.tileZ];
+
+    //    //Casilla objetivo a la que queremos llegar.
+    //    IndividualTiles target = graph[x, z];
+
+    //    //La distancia que hay desde el origen hasta el origen es 0. Por lo que en el diccionario, el nodo que coincida con el origen, su float valdrá 0.
+    //    dist[source] = 0;
+    //    //No hay ningún nodo antes que el origen por lo que el valor de source en el diccionario es null.
+    //    prev[source] = null;
+
+
+    //    //Inicializamos para que pueda llegar hasta alcance infinito ya que no se la distancia hasta el objetivo. Al ponerlos todos en infinitos menos el source, me aseguro que empieza desde ahí.
+    //    //En principio no llegará nunca hasta el infinito porque encontrará antes el objetivo y entonces se cortará el proceso.
+    //    //También sirve para contemplar las casillas a las que no se puede llegar (es cómo si tuviesen valor infinito).
+    //    foreach (IndividualTiles node in graph)
+    //    {
+    //        //Si el nodo no ha sido quitado de los nodos sin visitar
+    //        if (node != source)
+    //        {
+    //            dist[node] = Mathf.Infinity;
+    //            prev[node] = null;
+    //        }
+
+    //        //Todos los nodos se añaden a la lista de unvisited, incluido el origen.
+    //        unvisited.Add(node);
+    //    }
+
+    //    //Mientras que haya nodos que no hayan sido visitados...
+    //    while (unvisited.Count > 0)
+    //    {
+    //        //currentNode se corresponde con el nodo no visitado con la distancia más corta
+    //        //La primera vez va a ser source ya que es el único nodo que no tiene valor infinito
+    //        //Después de eso sólo podrá coger una de las casillas vecinas y así irá repitiendo el ciclo.
+    //        IndividualTiles currentNode = null;
+
+    //        foreach (IndividualTiles possibleNode in unvisited)
+    //        {
+    //            if (currentNode == null || dist[possibleNode] < dist[currentNode])
+    //            {
+    //                currentNode = possibleNode;
+    //            }
+    //        }
+
+    //        //Si el nodo coincide con el objetivo, terminamos la busqueda.
+    //        if (currentNode == target)
+    //        {
+    //            break;
+    //        }
+
+    //        unvisited.Remove(currentNode);
+
+    //        foreach (IndividualTiles node in currentNode.neighbours)
+    //        {
+    //            //Si es un gigante le dan igual los obstáculos
+    //            if (selectedEnemy.GetComponent<EnGiant>())
+    //            {
+    //                float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+    //                if (alt < dist[node])
+    //                {
+    //                    if (Mathf.Abs(node.height - currentNode.height) <= 1)
+    //                    {
+    //                        dist[node] = alt;
+    //                        prev[node] = currentNode;
+    //                    }
+    //                }
+    //            }
+
+    //            //Si es un goblin si que esquiva los obstáculos
+    //            else
+    //            {
+    //                if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle && (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ))
+    //                {
+    //                    float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+    //                    if (alt < dist[node])
+    //                    {
+    //                        if (Mathf.Abs(node.height - currentNode.height) <= 1)
+    //                        {
+    //                            dist[node] = alt;
+    //                            prev[node] = currentNode;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+
+    //    if (prev[target] == null)
+    //    {
+    //        //Si llega aquí significa que no hay ninguna ruta disponible desde el origen hasta el objetivo.
+    //        tempCurrentPathCost = Mathf.Infinity;
+    //    }
+
+    //    //Si llega hasta aquí si que hay un camino hasta el objetivo.
+
+    //    IndividualTiles curr = target;
+
+    //    //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
+    //    //Esta ruta está al reves, va desde el objetivo hasta el origen.
+    //    while (curr != null)
+    //    {
+    //        currentEnemyPath.Add(curr);
+    //        curr = prev[curr];
+    //    }
+
+    //    //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
+    //    currentEnemyPath.Reverse();
+
+    //    //Calcular coste del path
+    //    for (int i = 0; i < currentEnemyPath.Count; i++)
+    //    {
+    //        //Sumo el coste de todas las casillas que forman el path excepto la primera (ya que es la casilla sobre la que se encuentra la unidad).
+    //        if (i != 0)
+    //        {
+    //            tempCurrentPathCost += CostToEnterTile(currentEnemyPath[i].tileX, currentEnemyPath[i].tileZ);
+    //        }
+    //    }
+    //}
 
 
 

@@ -17,13 +17,12 @@ public class EnemyUnit : UnitBase
     //Distancia en tiles con el enemigo más lejano
     protected int furthestAvailableUnitDistance;
 
-
     [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
     [SerializeField]
     public GameObject LevelManagerRef;
-    private LevelManager LM;
+    protected LevelManager LM;
 
     #endregion
 
@@ -331,6 +330,16 @@ public class EnemyUnit : UnitBase
             }
         }
     }
+
+    /// <summary>
+    /// Adaptando la función de pathfinding del Tile Manager usamos eso para al igual que hicimos con el charger guardar los enemigos con la menor distancia
+    /// (En esta funcion la distancia equivale al coste que va sumando en la función para calcular el path)</summary>
+    ///  Una vez guardados los enemigos determinamos las reglas para eligr al que atacamos
+    ///  Una vez elegido calculamos a donde tiene que moverse de forma manual (para poder hacer que se choque con los bloques (movimiento tonto))
+    ///  En el caso del goblin es igual salvo que este ultimo paso no se hace de forma mnaual si no que usamos una función parecida a la que llama el levelmanager para
+    ///  pedir el path del movimiento del jugador.
+    /// <summary>
+
 
     #endregion
 }
