@@ -76,6 +76,10 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected float timeDurationRotation;
 
+    //Modelo de la unidad
+    [SerializeField]
+    protected GameObject unitModel;
+
     [Header("ATAQUE")]
 
     //Variable en la que guardo el daño a realizar
@@ -108,8 +112,9 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     private Material AvailableToBeAttackedColor;
 
+    //Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
     [SerializeField]
-    private GameObject canvasHover;
+    private GameObject canvasUnit;
 
     //[Header("TEXT")]
 
@@ -130,7 +135,7 @@ public class UnitBase : MonoBehaviour
     #region COMMON_FUNCTIONS
 
     //Función para recibir daño
-    public virtual void ReceiveDamage(int damageReceived)
+    public virtual void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         //Cada unidad se resta vida con esta función.
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
@@ -154,7 +159,7 @@ public class UnitBase : MonoBehaviour
             Debug.Log("borde");
 
             //Recibo daño 
-            ReceiveDamage(attackersDamageByPush);
+            ReceiveDamage(attackersDamageByPush, null);
 
             //Hago animación de rebote??
         }
@@ -169,7 +174,7 @@ public class UnitBase : MonoBehaviour
                 {
                     Debug.Log("pared");
                     //Recibo daño 
-                    ReceiveDamage(attackersDamageByPush);
+                    ReceiveDamage(attackersDamageByPush, null);
 
                     //Desplazo a la unidad
                     MoveToTilePushed(tilesToCheckForCollision[i - 1]);
@@ -189,8 +194,8 @@ public class UnitBase : MonoBehaviour
                     //Compruebo si hay otra unidad
                     if (tilesToCheckForCollision[i].unitOnTile != null)
                     {
-                        ReceiveDamage(attackersDamageByFall);
-                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush);
+                        ReceiveDamage(attackersDamageByFall, null);
+                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
 
                         if (tilesToCheckForCollision[i].unitOnTile.currentHealth > currentHealth)
                         {
@@ -207,7 +212,7 @@ public class UnitBase : MonoBehaviour
 
                     else
                     {
-                        ReceiveDamage(attackersDamageByFall);
+                        ReceiveDamage(attackersDamageByFall, null);
                     }
 
                     //Que pasa si hay un obstáculo en el tile de abajo?
@@ -225,7 +230,7 @@ public class UnitBase : MonoBehaviour
                     {
                         Debug.Log("vacío");
                         //Recibo daño 
-                        ReceiveDamage(attackersDamageByPush);
+                        ReceiveDamage(attackersDamageByPush, null);
 
                         // Desplazo a la unidad
                         MoveToTilePushed(tilesToCheckForCollision[i - 1]);
@@ -240,10 +245,10 @@ public class UnitBase : MonoBehaviour
                     {
                         Debug.Log("otra unidad");
                         //Recibo daño 
-                        ReceiveDamage(attackersDamageByPush);
+                        ReceiveDamage(attackersDamageByPush, null);
 
                         //Hago daño a la otra unidad
-                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush);
+                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
 
                         //Desplazo a la unidad
                         MoveToTilePushed(tilesToCheckForCollision[i-1]);
@@ -297,13 +302,13 @@ public class UnitBase : MonoBehaviour
 
     public void EnableCanvasHover(int damageReceived)
     {
-        canvasHover.SetActive(true);
-        canvasHover.GetComponent<CanvasHover>().damageNumber.SetText(damageReceived.ToString());
+        canvasUnit.SetActive(true);
+        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText(damageReceived.ToString());
     }
 
     public void DisableCanvasHover()
     {
-        canvasHover.SetActive(false);
+        canvasUnit.SetActive(false);
     }
 
 

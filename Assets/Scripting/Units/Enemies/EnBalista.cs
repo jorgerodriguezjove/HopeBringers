@@ -17,10 +17,6 @@ public class EnBalista : EnemyUnit
     private bool isRightTileOccupied;
     private bool isLeftTileOccupied;
 
-    //Bool que comprueba si la balista se ha movido
-    private bool hasMoved = false;
-
-
     public override void SearchingObjectivesToAttack()
     {
         if (isAttackPrepared)
@@ -105,7 +101,7 @@ public class EnBalista : EnemyUnit
                 }
             }
 
-            if (!isMovingToHisRight)
+            else if (!isMovingToHisRight)
             {
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
@@ -176,7 +172,7 @@ public class EnBalista : EnemyUnit
                 }
             }
 
-            if (!isMovingToHisRight)
+            else if (!isMovingToHisRight)
             {
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
@@ -247,7 +243,7 @@ public class EnBalista : EnemyUnit
                 }
             }
 
-            if (!isMovingToHisRight)
+            else if (!isMovingToHisRight)
             {
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
@@ -318,7 +314,7 @@ public class EnBalista : EnemyUnit
                 }
             }
 
-            if (!isMovingToHisRight)
+            else if (!isMovingToHisRight)
             {
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
@@ -374,7 +370,7 @@ public class EnBalista : EnemyUnit
                 {
                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineUp[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                        myCurrentTile.tilesInLineUp[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
                     }
                 }
             }
@@ -385,7 +381,7 @@ public class EnBalista : EnemyUnit
                 {
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineDown[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                        myCurrentTile.tilesInLineDown[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
                     }
                 }
             }
@@ -396,7 +392,7 @@ public class EnBalista : EnemyUnit
                 {
                     if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineRight[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                        myCurrentTile.tilesInLineRight[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
                     }
                 }
             }
@@ -407,7 +403,7 @@ public class EnBalista : EnemyUnit
                 {
                     if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineLeft[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                        myCurrentTile.tilesInLineLeft[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
                     }
                 }
             }

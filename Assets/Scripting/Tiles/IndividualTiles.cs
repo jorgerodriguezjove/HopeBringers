@@ -39,6 +39,11 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public List<IndividualTiles> neighbours;
 
+    //Número tiles vecinos ocupados por una unidad.
+    //Acordarse de ocultar en editor y acordarse de actualizar este valor cada vez que se mueva una unidad.
+    [SerializeField]
+    public int neighboursOcuppied;
+
     //Los tiles que están en línea (cómo si fuese movimiento de torre) con este tile en función de en que dirección se encuentran.
     [HideInInspector]
     public List<IndividualTiles> tilesInLineUp;
@@ -68,6 +73,8 @@ public class IndividualTiles : MonoBehaviour
     private void Start()
     {
         initialColor = GetComponent<MeshRenderer>().material;
+
+        UpdateNeighboursOccupied();
     }
 
     #endregion
@@ -80,6 +87,18 @@ public class IndividualTiles : MonoBehaviour
     }
 
     #endregion
+
+    public void UpdateNeighboursOccupied()
+    {
+        for (int i = 0; i < neighbours.Count; i++)
+        {
+            if (neighbours[i].unitOnTile != null)
+            {
+                neighboursOcuppied++;
+            }
+        }
+    }
+
 
     #region COLORS
 

@@ -20,6 +20,7 @@ public class EnCharger : EnemyUnit
             currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
             {
                 return (a.currentHealth).CompareTo(b.currentHealth);
+                
             });
         }
       
@@ -59,7 +60,7 @@ public class EnCharger : EnemyUnit
                 currentFacingDirection = FacingDirection.North;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
             }
             //Abajo
             else
@@ -78,7 +79,7 @@ public class EnCharger : EnemyUnit
                 currentFacingDirection = FacingDirection.South;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
             }
         }
         //Izquierda o derecha
@@ -102,7 +103,7 @@ public class EnCharger : EnemyUnit
                 currentFacingDirection = FacingDirection.East;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
             }
             //Izquierda
             else
@@ -121,7 +122,7 @@ public class EnCharger : EnemyUnit
                 currentFacingDirection = FacingDirection.West;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
             }
         }
 

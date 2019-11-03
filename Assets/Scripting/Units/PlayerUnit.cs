@@ -10,12 +10,12 @@ public class PlayerUnit : UnitBase
     [Header("STATS ESPECÍFICO")]
 
     //Bools que indican si el personaje se ha movido y si ha atacado.
-    [HideInInspector]
+    [SerializeField]
     public bool hasMoved = false;
-    [HideInInspector]
+    [SerializeField]
     public bool hasAttacked = false;
-    [HideInInspector]
-    public bool isMoving = false;
+    [SerializeField]
+    public bool isMovingorRotating = false;
 
     [Header("MOVIMIENTO")]
 
@@ -28,6 +28,9 @@ public class PlayerUnit : UnitBase
     private Material selectedMaterial;
     [SerializeField]
     private Material finishedMaterial;
+
+    [SerializeField]
+    private Canvas canvasWithRotationArrows;
 
     [Header("REFERENCIAS")]
 
@@ -46,12 +49,39 @@ public class PlayerUnit : UnitBase
         LM.characthersOnTheBoard.Add(this);
         //Aviso al tile en el que empiezo que soy su unidad.
         myCurrentTile.unitOnTile = this;
-        initMaterial = GetComponent<MeshRenderer>().material;
+
+        initMaterial = unitModel.GetComponent<MeshRenderer>().material;
     }
 
     private void Start()
     {
         currentHealth = maxHealth;
+    }
+
+    #endregion
+
+    #region TURN_STATE
+
+    //Reseteo las variables
+    public void ResetUnitState()
+    {
+        hasMoved = false;
+        hasAttacked = false;
+        isMovingorRotating = false;
+        unitModel.GetComponent<MeshRenderer>().material = initMaterial;
+    }
+
+    //La unidad ha atacado y por tanto no puede hacer nada más.
+    private void FinishMyActions()
+    {
+        //La unidad ha atacado
+        hasAttacked = true;
+
+        //Aviso al LM que deseleccione la unidad
+        LM.DeSelectUnit();
+
+        //Doy feedback de que esa unidad no puede hacer nada
+        unitModel.GetComponent<MeshRenderer>().material = finishedMaterial;
     }
 
     #endregion
@@ -63,6 +93,10 @@ public class PlayerUnit : UnitBase
     {
         LM.SelectUnit(movementUds, this);
     }
+
+    #endregion
+
+    #region MOVEMENT_&_ROTATION
 
     //El LevelManager avisa a la unidad de que debe moverse.
     public void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
@@ -83,21 +117,83 @@ public class PlayerUnit : UnitBase
 
     IEnumerator MovingUnitAnimation()
     {
-        isMoving = true;
+        isMovingorRotating = true;
 
         //Animación de movimiento
         for (int j = 1; j < myCurrentPath.Count; j++)
         {
+            //Calcula el vector al que se tiene que mover.
             currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y + 1, myCurrentPath[j].transform.position.z);
-
+          
+            //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
 
+            //Espera entre casillas
             yield return new WaitForSeconds(timeMovementAnimation);
         }
 
-        CheckUnitsInRangeToAttack();
-        isMoving = false;
+        //Esto es solo para la prueba de movimiento para ver cual elegimos.
+        if (!LM.TM.isDiagonalMovement)
+        {
+            //Movimiento con torre sin giro
+            if (!LM.TM.isChooseRotationIfTower)
+            {
+                CheckUnitsInRangeToAttack();
+                LM.UnitHasFinishedMovementAndRotation();
+                isMovingorRotating = false;
+            }
+
+            //Movimiento con torre con giro
+            else
+            {
+                //Hacer que aparezcan los botones
+                canvasWithRotationArrows.gameObject.SetActive(true);
+            }
+        }
+
+        //Movimiento en diagonal
+        else
+        {
+            //Hacer que aparezcan los botones
+            canvasWithRotationArrows.gameObject.SetActive(true);
+        }
     }
+
+    public void RotateUnitFromButton(FacingDirection newDirection)
+    {
+        //Arriba o abajo
+        if (newDirection == FacingDirection.North)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.North;
+        }
+
+        else if (newDirection == FacingDirection.South)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.South;
+        }
+
+        else if (newDirection == FacingDirection.East)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.East;
+        }
+
+        else if (newDirection == FacingDirection.West)
+        {
+            unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.West;
+        }
+
+        canvasWithRotationArrows.gameObject.SetActive(false);
+        CheckUnitsInRangeToAttack();
+        isMovingorRotating = false;
+
+        LM.UnitHasFinishedMovementAndRotation();
+    }
+
     #endregion
 
     #region ATTACK_&_HEALTH
@@ -132,7 +228,7 @@ public class PlayerUnit : UnitBase
     protected void DoDamage(UnitBase unitToDealDamage)
     {
         //Una vez aplicados los multiplicadores efectuo el daño.
-        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied));
+        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
     }
 
     //Función de ataque que se hace override en cada clase
@@ -146,20 +242,7 @@ public class PlayerUnit : UnitBase
         FinishMyActions();
     }
 
-    //La unidad ha atacado y por tanto no puede hacer nada más.
-    private void FinishMyActions()
-    {
-        //La unidad ha atacado
-        hasAttacked = true;
-
-        //Aviso al LM que deseleccione la unidad
-        LM.DeSelectUnit();
-
-        //Doy feedback de que esa unidad no puede hacer nada
-        GetComponent<MeshRenderer>().material = finishedMaterial;
-    }
-
-    public override void ReceiveDamage(int damageReceived)
+    public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         currentHealth -= damageReceived;
 
@@ -194,12 +277,12 @@ public class PlayerUnit : UnitBase
 
     public void SelectedColor()
     {
-        GetComponent<MeshRenderer>().material = selectedMaterial;
+        unitModel.GetComponent<MeshRenderer>().material = selectedMaterial;
     }
 
     public void InitialColor()
     {
-        GetComponent<MeshRenderer>().material = initMaterial;
+        unitModel.GetComponent<MeshRenderer>().material = initMaterial;
     }
 
     #endregion
@@ -218,13 +301,13 @@ public class PlayerUnit : UnitBase
             //Arriba
             if (tileToCheck.tileZ > myCurrentTile.tileZ)
             {
-                transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.North;
             }
             //Abajo
             else
             {
-                transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.South;
             }
         }
@@ -234,13 +317,13 @@ public class PlayerUnit : UnitBase
             //Derecha
             if (tileToCheck.tileX > myCurrentTile.tileX)
             {
-                transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.East;
             }
             //Izquierda
             else
             {
-                transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.West;
             }
         }

@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 6409402853590735200}
   - component: {fileID: 6409402853590735203}
   m_Layer: 0
-  m_Name: Goblin
+  m_Name: Gigante
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -481,28 +481,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 6409402853590735202}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e29c32c1e2f1259498b0f1c1857c4519, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b118e398493d61438596b4d8823cb3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  maxHealth: 20
+  speed: 99
+  maxHealth: 50
   currentHealth: 0
   movementUds: 1
-  baseDamage: 10
-  multiplicatorBackAttack: 1.75
+  baseDamage: 20
+  multiplicatorBackAttack: 2
   multiplicatorMoreHeight: 1.5
   multiplicatorLessHeight: 0.5
-  range: 3
+  range: 5
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
-  timePushAnimation: 1
-  timeMovementAnimation: 0
-  timeDurationRotation: 0
+  timePushAnimation: 0.2
+  timeMovementAnimation: 0.2
+  timeDurationRotation: 0.2
   maxHeightDifferenceToAttack: 1
   currentUnitsAvailableToAttack: []
   damageMadeByPush: 8
   damageMadeByFall: 5
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
     type: 2}
-  canvasHover: {fileID: 811410698602015731}
+  canvasUnit: {fileID: 811410698602015731}
   LevelManagerRef: {fileID: 0}

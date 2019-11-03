@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour
 {
@@ -49,6 +50,17 @@ public class UIManager : MonoBehaviour
     {
         LM.UndoMove();
     }
+
+    #endregion
+
+    #region ROTATION_ARROWS
+
+    [SerializeField]
+    public void RotatePlayerInNewDirection()
+    {
+        LM.selectedCharacter.RotateUnitFromButton(EventSystem.current.currentSelectedGameObject.GetComponent<RotateButton>().newDirection);
+    }
+
 
     #endregion
 

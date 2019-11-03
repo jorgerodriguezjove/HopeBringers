@@ -17,6 +17,9 @@ public class EnemyUnit : UnitBase
     //Distancia en tiles con el enemigo más lejano
     protected int furthestAvailableUnitDistance;
 
+    //Bool que comprueba si la balista se ha movido
+    protected bool hasMoved = false;
+
     [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
@@ -51,6 +54,8 @@ public class EnemyUnit : UnitBase
 
     private void Update()
     {
+        //Debug.Log(myCurrentEnemyState);
+
         switch (myCurrentEnemyState)
         {
             case (enemyState.Waiting):
@@ -123,7 +128,7 @@ public class EnemyUnit : UnitBase
 
     #region DAMAGE
 
-    public override void ReceiveDamage(int damageReceived)
+    public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         currentHealth -= damageReceived;
 

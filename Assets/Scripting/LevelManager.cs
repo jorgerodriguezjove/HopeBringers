@@ -31,6 +31,9 @@ public class LevelManager : MonoBehaviour
 
     [Header("TURNOS Y FASES")]
 
+    //Int que lleva la cuenta del turno actual
+    private int currentTurn = 0;
+
     //Cada unidad se encarga desde su script de incluirse en la lista
     //Lista con todas las unidades del jugador en el tablero
     [HideInInspector]
@@ -52,7 +55,8 @@ public class LevelManager : MonoBehaviour
     [Header("REFERENCIAS")]
 
     //Referencia al Tile Manager
-    private TileManager TM;
+    [HideInInspector]
+    public TileManager TM;
     private UIManager UIM;
 
     #endregion
@@ -161,7 +165,7 @@ public class LevelManager : MonoBehaviour
 
     public void DeSelectUnit()
     {
-        if (selectedCharacter != null && !selectedCharacter.isMoving)
+        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
@@ -185,7 +189,7 @@ public class LevelManager : MonoBehaviour
     {
         //ESTO HAY QUE CAMBIARLO PARA QUE GUARDE TANTO LA UNIDAD CÓMO EL TILE EN EL QUE ESTABA (QUIZÁS USAR UN DICCIONARIO)
 
-        if (selectedCharacter != null && !selectedCharacter.isMoving)
+        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
             //Si el personaje ya se ha movido lo vuelvo a poner donde estaba.
             if (selectedCharacter.hasMoved)
@@ -235,8 +239,16 @@ public class LevelManager : MonoBehaviour
                 //Aviso a la unidad de que se tiene que mover
                 selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
 
+                //Desactivo el botón de end turn para que no le de mientras tiene que elegir rotación
+                UIM.ActivateDeActivateEndButton();
             }
         }
+    }
+
+    //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
+    public void UnitHasFinishedMovementAndRotation()
+    {
+        UIM.ActivateDeActivateEndButton();
     }
 
     //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.
@@ -280,9 +292,28 @@ public class LevelManager : MonoBehaviour
 
     private void BeginPlayerPhase()
     {
-        //Aparece cartel con turno del player
-        //Resetear todas las variables tipo bool y demás de los players
-        //
+        if (currentTurn > 0)
+        {
+            //Aparece cartel con turno del player
+
+            //Resetear todas las variables tipo bool y demás de los players
+            for (int i = 0; i < characthersOnTheBoard.Count; i++)
+            {
+                characthersOnTheBoard[i].ResetUnitState();
+            }
+
+            //Reaparecer el botón de endbutton
+            UIM.ActivateDeActivateEndButton();
+
+            currentTurn++;
+            selectedCharacter = null;
+            currentLevelState = LevelState.ProcessingPlayerActions;
+        }
+
+        else
+        {
+            currentTurn = 1;
+        }
     }
 
     private void BeginEnemyPhase()
@@ -304,7 +335,7 @@ public class LevelManager : MonoBehaviour
         if (counterForEnemiesOrder >= enemiesOnTheBoard.Count-1)
         {
             counterForEnemiesOrder = 0;
-            BeginPlayerPhase();
+            currentLevelState = LevelState.PlayerPhase;
         }
 
         else
@@ -317,7 +348,6 @@ public class LevelManager : MonoBehaviour
     //Función que llaman el gigante y el goblin para determinar la distancia hasta los enmigos
     public List<UnitBase> CheckEnemyPathfinding(int range, EnemyUnit enemyUnitToCheck)
     {
-        Debug.Log("LM");
         return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck);
     }
 
