@@ -13,6 +13,8 @@ public class EnCharger : EnemyUnit
         //Busca enemigos en sus lineas
         CheckCharactersInLine();
 
+        Debug.Log(currentUnitsAvailableToAttack.Count);
+
         //Si coincide que hay varios personajes a la misma distancia, me quedo con el que tiene menos vida
         if (currentUnitsAvailableToAttack.Count > 1)
         {
@@ -47,39 +49,45 @@ public class EnCharger : EnemyUnit
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
             {
                 //Muevo al charger
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].height +1 , myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileZ);
-                transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+                if (furthestAvailableUnitDistance > 0)
+                {
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].height + 1, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileZ);
+                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
-                //Actualizo las variables de los tiles
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile = myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance];
-                myCurrentTile.unitOnTile = this;
+                    //Actualizo las variables de los tiles
+                    myCurrentTile.unitOnTile = null;
+                    myCurrentTile = myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance];
+                    myCurrentTile.unitOnTile = this;
+                }
 
                 //Roto al charger
                 transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.North;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                DoDamage(currentUnitsAvailableToAttack[0]);
             }
             //Abajo
             else
             {
-                //Muevo al charger
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].height + 1, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileZ);
-                transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+                if (furthestAvailableUnitDistance > 0)
+                {
+                    //Muevo al charger
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].height + 1, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileZ);
+                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
-                //Actualizo las variables de los tiles
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile = myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance];
-                myCurrentTile.unitOnTile = this;
+                    //Actualizo las variables de los tiles
+                    myCurrentTile.unitOnTile = null;
+                    myCurrentTile = myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance];
+                    myCurrentTile.unitOnTile = this;
+                }
 
                 //Roto al charger
                 transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.South;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                DoDamage(currentUnitsAvailableToAttack[0]);
             }
         }
         //Izquierda o derecha
@@ -88,41 +96,46 @@ public class EnCharger : EnemyUnit
             //Derecha
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > myCurrentTile.tileX)
             {
-                //Muevo al charger
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].height + 1, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileZ);
-                transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+                if (furthestAvailableUnitDistance > 0)
+                {
+                    //Muevo al charger
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].height + 1, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileZ);
+                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
-                //Actualizo las variables de los tiles
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile = myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance];
-                myCurrentTile.unitOnTile = this;
-
+                    //Actualizo las variables de los tiles
+                    myCurrentTile.unitOnTile = null;
+                    myCurrentTile = myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance];
+                    myCurrentTile.unitOnTile = this;
+                }
 
                 //Roto al charger
                 transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.East;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                DoDamage(currentUnitsAvailableToAttack[0]);
             }
             //Izquierda
             else
             {
-                //Muevo al charger
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].height + 1, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileZ);
-                transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+                if (furthestAvailableUnitDistance > 0)
+                {
+                    //Muevo al charger
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].height + 1, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileZ);
+                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
-                //Actualizo las variables de los tiles
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile = myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance];
-                myCurrentTile.unitOnTile = this;
-
+                    //Actualizo las variables de los tiles
+                    myCurrentTile.unitOnTile = null;
+                    myCurrentTile = myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance];
+                    myCurrentTile.unitOnTile = this;
+                }
+                  
                 //Roto al charger
                 transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.West;
 
                 //Hago daño a la unidad
-                currentUnitsAvailableToAttack[0].ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                DoDamage(currentUnitsAvailableToAttack[0]);
             }
         }
 

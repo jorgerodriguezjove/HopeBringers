@@ -93,7 +93,6 @@ public class EnemyUnit : UnitBase
 
     public virtual void Attack()
     {
-        
     }
 
     public virtual void FinishMyActions()

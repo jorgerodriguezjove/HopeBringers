@@ -15,6 +15,7 @@ public class Mage : PlayerUnit
     {
         //Hago daño
         CalculateDamage(unitToAttack);
+        DoDamage(unitToAttack);
 
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);

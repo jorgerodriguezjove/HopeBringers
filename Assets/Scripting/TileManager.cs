@@ -77,19 +77,12 @@ public class TileManager : MonoBehaviour
     //Ordeno el array tilesInScene con los 100 tiles en un array 2D 10x10
     void SaveTilePosition()
     {
-        if (mapSizeX >= mapSizeZ)
-        {
-            tilesCoord = new GameObject[mapSizeX, mapSizeZ];
-        }
+        tilesCoord = new GameObject[mapSizeX, mapSizeZ];
 
-        else
-        {
-            tilesCoord = new GameObject[mapSizeZ, mapSizeX];
-        }
-        
         int k = 0;
         for (int i = 0; i < mapSizeZ; i++)
         {
+            
             for (int j = 0; j < mapSizeX; j++)
             {
                 tilesCoord[j, i] = tilesInScene[k];

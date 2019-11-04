@@ -132,7 +132,41 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
-    #region COMMON_FUNCTIONS
+    #region DAMAGE_&_DIE
+
+    //Calcula PERO NO aplico el daño a la unidad elegida
+    protected void CalculateDamage(UnitBase unitToDealDamage)
+    {
+        //Reseteo la variable de daño a realizar
+        damageWithMultipliersApplied = baseDamage;
+
+        //Si estoy en desventaja de altura hago menos daño
+        if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
+        {
+            damageWithMultipliersApplied *= multiplicatorLessHeight;
+        }
+
+        //Si estoy en ventaja de altura hago más daño
+        else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
+        {
+            damageWithMultipliersApplied *= multiplicatorMoreHeight;
+        }
+
+        //Si le ataco por la espalda hago más daño
+        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+        {
+            //Ataque por la espalda
+            damageWithMultipliersApplied *= multiplicatorBackAttack;
+        }
+    }
+
+    //Aplico el daño a la unidad elegida
+    protected void DoDamage(UnitBase unitToDealDamage)
+    {
+        CalculateDamage(unitToDealDamage);
+        //Una vez aplicados los multiplicadores efectuo el daño.
+        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+    }
 
     //Función para recibir daño
     public virtual void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
@@ -146,6 +180,9 @@ public class UnitBase : MonoBehaviour
         //Cada unidad hace lo propio al morir
     }
 
+    #endregion
+
+    #region PUSH
     //Función genérica que sirve para calcular a que tile debe ser empujada una unidad
     //La función pide tatno el daño pro caída como el daño de empujón de la unidad atacante ya que pueden existir mejoras que modifiquen estos valores.
     public void CalculatePushPosition(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
@@ -289,16 +326,18 @@ public class UnitBase : MonoBehaviour
     //Cambiar a color que indica que puede ser atacado
     public void ColorInitial()
     {
-        GetComponent<MeshRenderer>().material = initMaterial;
+        unitModel.GetComponent<MeshRenderer>().material = initMaterial;
     }
 
     //Cambiar a color que indica que puede ser atacado
     public void ColorAvailableToBeAttacked()
     {
-        GetComponent<MeshRenderer>().material = AvailableToBeAttackedColor;
+        unitModel.GetComponent<MeshRenderer>().material = AvailableToBeAttackedColor;
     }
 
     #endregion
+
+    #region UI_HOVER
 
     public void EnableCanvasHover(int damageReceived)
     {
@@ -311,22 +350,6 @@ public class UnitBase : MonoBehaviour
         canvasUnit.SetActive(false);
     }
 
-
-
-    //private void OnMouseEnter()
-    //{
-    //    myCanvasHealthbar.gameObject.SetActive(true);
-    //}
-
-    //private void OnMouseExit()
-    //{
-    //    myCanvasHealthbar.gameObject.SetActive(false);
-    //}
-
-    ////Enseña u oculta el rombo que indica a que personaje le toca (Hace lo contrario de lo actual.)
-    //public void ShowAndHideArrow()
-    //{
-    //    myCanvasArrow.gameObject.SetActive(!myCanvasArrow.gameObject.activeSelf);
-    //}
+    #endregion
 
 }

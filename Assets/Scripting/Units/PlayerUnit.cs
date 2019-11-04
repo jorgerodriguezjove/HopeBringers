@@ -198,39 +198,6 @@ public class PlayerUnit : UnitBase
 
     #region ATTACK_&_HEALTH
 
-    //Calcula PERO NO aplico el daño a la unidad elegida
-    protected void CalculateDamage(UnitBase unitToDealDamage)
-    {
-        //Reseteo la variable de daño a realizar
-        damageWithMultipliersApplied = baseDamage;
-
-        //Si estoy en desventaja de altura hago menos daño
-        if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
-        {
-            damageWithMultipliersApplied *= multiplicatorLessHeight;
-        }
-
-        //Si estoy en ventaja de altura hago más daño
-        else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
-        {
-            damageWithMultipliersApplied *= multiplicatorMoreHeight;
-        }
-        
-        //Si le ataco por la espalda hago más daño
-        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
-        {
-            //Ataque por la espalda
-            damageWithMultipliersApplied *= multiplicatorBackAttack;
-        }
-    }
-
-    //Aplico el daño a la unidad elegida
-    protected void DoDamage(UnitBase unitToDealDamage)
-    {
-        //Una vez aplicados los multiplicadores efectuo el daño.
-        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
-    }
-
     //Función de ataque que se hace override en cada clase
     public virtual void Attack(UnitBase unitToAttack)
     {
@@ -247,7 +214,6 @@ public class PlayerUnit : UnitBase
         currentHealth -= damageReceived;
 
         Debug.Log("Soy " + name + "me han hecho daño");
-        Debug.Log(gameObject.name);
 
         if (currentHealth <= 0)
         {

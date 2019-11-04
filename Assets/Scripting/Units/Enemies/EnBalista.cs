@@ -370,7 +370,7 @@ public class EnBalista : EnemyUnit
                 {
                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineUp[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                        DoDamage(myCurrentTile.tilesInLineUp[i].unitOnTile);
                     }
                 }
             }
@@ -381,7 +381,7 @@ public class EnBalista : EnemyUnit
                 {
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineDown[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                        DoDamage(myCurrentTile.tilesInLineDown[i].unitOnTile);
                     }
                 }
             }
@@ -392,7 +392,7 @@ public class EnBalista : EnemyUnit
                 {
                     if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineRight[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                        DoDamage(myCurrentTile.tilesInLineRight[i].unitOnTile);
                     }
                 }
             }
@@ -403,7 +403,7 @@ public class EnBalista : EnemyUnit
                 {
                     if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                     {
-                        myCurrentTile.tilesInLineLeft[i].unitOnTile.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+                        DoDamage(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                     }
                 }
             }
