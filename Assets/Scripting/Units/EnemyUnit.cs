@@ -37,7 +37,8 @@ public class EnemyUnit : UnitBase
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
         myCurrentTile.unitOnTile = this;
-        initMaterial = GetComponent<MeshRenderer>().material;
+        //HE CAMBIADO ESTO
+        initMaterial = unitModel.GetComponent<MeshRenderer>().material;
 
         myCurrentEnemyState = enemyState.Waiting;
         currentHealth = maxHealth;
