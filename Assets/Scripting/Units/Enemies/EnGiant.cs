@@ -120,6 +120,8 @@ public class EnGiant : EnemyUnit
 
     public override void MoveUnit()
     {
+        myCurrentEnemyState = enemyState.Ended;
+
         //Comprueba la dirección en la que se encuentra el objetivo.
         //Si se encuentra justo en el mismo eje (movimiento torre), el gigante avanza en esa dirección.
         //Si se encuentra un bloqueo se queda en el sitio intentando avanzar contra el bloqueo.
