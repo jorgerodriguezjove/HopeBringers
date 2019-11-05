@@ -6,11 +6,7 @@ public class IndividualTiles : MonoBehaviour
 {
     #region VARIABLES
 
-    //Referencia al Tile Manager
-    [HideInInspector]
-    public TileManager TM;
-    //[HideInInspector]
-    public LevelManager LM;
+    [Header("STATS TILE")]
 
     //Coordenadas del tile
     [HideInInspector]
@@ -18,27 +14,54 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public int tileZ;
 
+    //Coste que tiene una casilla.
+    [SerializeField]
+    public int MovementCost;
+
     //Altura del tile
     public int height;
+
+    //Bool que determina si es un tile vacío
+    [SerializeField]
+    public bool isEmpty;
+
+    //Bool que determina si es un tile con obstáculo
+    [SerializeField]
+    public bool isObstacle;
+
+    //Unidad encima del tile. Cada unidad se encarga de rellenar esta variable en el start ya que en el editor a cada unidad le paso una referencia del tile en el que esta.
+    [HideInInspector]
+    public UnitBase unitOnTile;
+
+    [Header("TILES VECINOS")]
 
     //Lista con los 4 vecinos adyacentes. Esto se usa para el pathfinding.
     [HideInInspector]
     public List<IndividualTiles> neighbours;
 
-    //Coste que tiene una casilla.
-    [SerializeField]    
-    public int movementCost;
-
-    //Variable que determina si una casilla se pueda andar sobre ella.
+    //Número tiles vecinos ocupados por una unidad.
+    //Acordarse de ocultar en editor y acordarse de actualizar este valor cada vez que se mueva una unidad.
     [SerializeField]
-    public bool isWalkable;
+    public int neighboursOcuppied;
 
-    //Unidad encima del tile
+    //Los tiles que están en línea (cómo si fuese movimiento de torre) con este tile en función de en que dirección se encuentran.
     [HideInInspector]
-    public GameObject unitOnTile;
+    public List<IndividualTiles> tilesInLineUp;
+    [HideInInspector]
+    public List<IndividualTiles> tilesInLineDown;
+    [HideInInspector]
+    public List<IndividualTiles> tilesInLineRight;
+    [HideInInspector]
+    public List<IndividualTiles> tilesInLineLeft;
 
-    //MATERIALES. CAMBIAR ESTO POR SHADERS
+    [Header("REFERENCIAS")]
 
+    [HideInInspector]
+    public TileManager TM;
+    [HideInInspector]
+    public LevelManager LM;
+
+    [Header("FEEDBACK")]
     [SerializeField]
     private Material colorTest;
     private Material initialColor;
@@ -50,25 +73,47 @@ public class IndividualTiles : MonoBehaviour
     private void Start()
     {
         initialColor = GetComponent<MeshRenderer>().material;
+
+        UpdateNeighboursOccupied();
     }
 
     #endregion
 
+    #region INTERACTION
 
-    //Cambiar el color del tile
+    private void OnMouseDown()
+    {
+        LM.MoveUnit(this);
+    }
+
+    #endregion
+
+    public void UpdateNeighboursOccupied()
+    {
+        for (int i = 0; i < neighbours.Count; i++)
+        {
+            if (neighbours[i].unitOnTile != null)
+            {
+                neighboursOcuppied++;
+            }
+        }
+    }
+
+
+    #region COLORS
+
+    //Cambiar a color movimiento
     public void ColorSelect()
     {
         GetComponent<MeshRenderer>().material = colorTest;
     }
 
+    //Cambiar a color normal
     public void ColorDeselect()
     {
         GetComponent<MeshRenderer>().material = initialColor;
     }
 
-    private void OnMouseUp()
-    {
-        LM.MoveUnit(this);
-    }
+    #endregion
 
 }

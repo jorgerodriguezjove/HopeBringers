@@ -6,6 +6,8 @@ public class TileManager : MonoBehaviour
 {
     #region VARIABLES
 
+    [Header("CREACIÓN DE MAPA")]
+
     //Array donde se meten los tiles en el editor
     [SerializeField]
     private GameObject[] tilesInScene;
@@ -13,14 +15,16 @@ public class TileManager : MonoBehaviour
     //2D array con las coordenadas de los tiles. (Básicamente convierte el array tilesInScene en un array 2D)
     private GameObject[,] tilesCoord;
 
-    [HideInInspector]
-    public int mapSizeX = 10;
-    [HideInInspector]
-    public int mapSizeZ = 10;
+    [SerializeField]
+    public int mapSizeX;
+    [SerializeField]
+    public int mapSizeZ;
 
     //Array con script de tiles que voy a usar para calcular el pathfinding
     [HideInInspector]
     public IndividualTiles[,] graph;
+
+    [Header("PATHFINDING")]
 
     //Variable que se usa para almacenar el resultado del pathfinding y enviarlo.
     float tempCurrentPathCost;
@@ -31,16 +35,32 @@ public class TileManager : MonoBehaviour
 
     //Si es true se mueve en diagonal, si no se mueve en torre.
     [SerializeField]
-    private bool isDiagonalMovement;
+    public bool isDiagonalMovement;
+    [SerializeField]
+    public bool isChooseRotationIfTower;
 
     //Personaje actualmente seleccionado
-    private PlayerUnit selectedCharacter;
+    private UnitBase selectedCharacter;
 
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
     List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
+    [Header("ENEMY_PATHFINDING")]
 
-    //REFERENCIAS
+    ////Enemigo actual que está calculando su pathfinding
+    //private EnemyUnit selectedEnemy;
+
+    //Lista de posibles objetivos del enemigo actual
+    List<UnitBase> charactersAvailableForAttack = new List<UnitBase>();
+
+    //Variable que se usa para almacenar la distancia con el objetivo
+    float tempCurrentObjectiveCost;
+
+    [HideInInspector]
+    public List<IndividualTiles> currentEnemyPath = new List<IndividualTiles>();
+
+    [Header("REFERENCIAS")]
+
     private LevelManager LM;
 
     #endregion
@@ -57,22 +77,18 @@ public class TileManager : MonoBehaviour
     //Ordeno el array tilesInScene con los 100 tiles en un array 2D 10x10
     void SaveTilePosition()
     {
-        tilesCoord = new GameObject[mapSizeZ, mapSizeX];
+        tilesCoord = new GameObject[mapSizeX, mapSizeZ];
+
         int k = 0;
         for (int i = 0; i < mapSizeZ; i++)
         {
+            
             for (int j = 0; j < mapSizeX; j++)
             {
                 tilesCoord[j, i] = tilesInScene[k];
                 k++;
             }
         }
-
-        ////Le paso a cada tile ocupado una referencia de la unidad que lo ocupa.
-        //for (int i = 0; i < units.Count; i++)
-        //{
-        //    TellTileIsOcuppied(units[i]);
-        //}
     }
 
     //Genero el graph con los nodos que voy a usar para calcular el pathfinding.
@@ -104,27 +120,49 @@ public class TileManager : MonoBehaviour
                 if (j > 0)
                 {
                     graph[j, i].neighbours.Add(graph[j - 1, i]);
+
+                    for (int k = 1; j - k >= 0 ; k++)
+                    {
+                        graph[j, i].tilesInLineLeft.Add(graph[j - k, i]);
+                    }
                 }
 
                 //Casilla vecina de la derecha
                 if (j < mapSizeX - 1)
                 {
                     graph[j, i].neighbours.Add(graph[j + 1, i]);
+
+                    for (int k = 1; k < mapSizeX - j ; k++)
+                    {
+                        graph[j, i].tilesInLineRight.Add(graph[j + k, i]);
+                    }
                 }
 
                 //Casilla vecina de abajo
                 if (i > 0)
                 {
                     graph[j, i].neighbours.Add(graph[j, i - 1]);
+
+                    for (int k = 1; i - k >= 0; k++)
+                    {
+                        graph[j, i].tilesInLineDown.Add(graph[j, i- k]);
+                    }
                 }
 
                 //Casilla vecina de arriba
                 if (i < mapSizeZ - 1)
                 {
                     graph[j, i].neighbours.Add(graph[j, i + 1]);
+
+                    for (int k = 1; k < mapSizeZ - i; k++)
+                    {
+                        graph[j, i].tilesInLineUp.Add(graph[j, i + k]);
+                    }
                 }
             }
         }
+
+      
     }
 
     #endregion
@@ -134,11 +172,11 @@ public class TileManager : MonoBehaviour
     //Calculo el coste de una casilla
     float CostToEnterTile(int x, int z)
     {
-        return graph[x, z].movementCost;
+        return graph[x, z].MovementCost;
     }
 
     //Doy feedback de que casillas están al alcance del personaje.
-    public List<IndividualTiles> checkAvailableTilesForMovement(int movementUds, PlayerUnit selectedUnit)
+    public List<IndividualTiles> checkAvailableTilesForMovement(int movementUds, UnitBase selectedUnit)
     {
         selectedCharacter = selectedUnit;
         tilesAvailableForMovement.Clear();
@@ -148,30 +186,10 @@ public class TileManager : MonoBehaviour
         {
             for (int j = 0; j < mapSizeX; j++)
             {
-                
                 CalculatePathForMovementCost(j, i);
-                Debug.Log(tempCurrentPathCost);
                 if (tempCurrentPathCost <= movementUds)
                 {
-                    if (!isDiagonalMovement)
-                    {
-                        if (j == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || i == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
-                        {
-                            //Cambio el color y guardo los tiles en una lista
-                            graph[j, i].ColorSelect();
-                            tilesAvailableForMovement.Add(graph[j, i]);
-                        }
-                    }
-
-                    else
-                    {
-                        //Cambio el color y guardo los tiles en una lista
-                        graph[j, i].ColorSelect();
-                        tilesAvailableForMovement.Add(graph[j, i]);
-                    }
-                  
-
-                  
+                    tilesAvailableForMovement.Add(graph[j, i]);
                 }
                 tempCurrentPathCost = 0;
             }
@@ -180,6 +198,8 @@ public class TileManager : MonoBehaviour
         return tilesAvailableForMovement;
     }
 
+    [SerializeField]
+    public List<IndividualTiles> unvisited;
 
     //Calculo el coste que tiene el personaje por ir a cada casilla.
     public void CalculatePathForMovementCost(int x, int z)
@@ -192,10 +212,12 @@ public class TileManager : MonoBehaviour
         Dictionary<IndividualTiles, IndividualTiles> prev = new Dictionary<IndividualTiles, IndividualTiles>();
 
         //Lista con los nodos que todavía no han sido comprobados al buscar el camino.
-        List<IndividualTiles> unvisited = new List<IndividualTiles>();
+
+        unvisited.Clear();
+        unvisited = new List<IndividualTiles>();
 
         //Punto de origen (Nodo en el que está el personaje).
-        IndividualTiles source = graph[selectedCharacter.GetComponent<PlayerUnit>().myCurrentTile.tileX, selectedCharacter.GetComponent<PlayerUnit>().myCurrentTile.tileZ];
+        IndividualTiles source = graph[selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX, selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ];
 
         //Casilla objetivo a la que queremos llegar.
         IndividualTiles target = graph[x, z];
@@ -219,7 +241,19 @@ public class TileManager : MonoBehaviour
             }
 
             //Todos los nodos se añaden a la lista de unvisited, incluido el origen.
-            unvisited.Add(node);
+
+            if (isDiagonalMovement || selectedCharacter.GetComponent<EnemyUnit>())
+            {
+                unvisited.Add(node);
+            }
+
+            else
+            {
+                if (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
+                {
+                    unvisited.Add(node);
+                }
+            }
         }
 
         //Mientras que haya nodos que no hayan sido visitados...
@@ -234,7 +268,18 @@ public class TileManager : MonoBehaviour
             {
                 if (currentNode == null || dist[possibleNode] < dist[currentNode])
                 {
-                    currentNode = possibleNode;
+                    if (isDiagonalMovement || selectedCharacter.GetComponent<EnemyUnit>())
+                    {
+                        currentNode = possibleNode;
+                    }
+
+                    else
+                    {
+                        if (possibleNode.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || possibleNode.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)
+                        {
+                            currentNode = possibleNode;
+                        }
+                    }
                 }
             }
 
@@ -248,18 +293,39 @@ public class TileManager : MonoBehaviour
 
             foreach (IndividualTiles node in currentNode.neighbours)
             {
-                //float alt = dist[u] + u.DistanceTo(v);
-                float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-                if (alt < dist[node])
+                if (selectedCharacter.GetComponent<EnemyUnit>())
                 {
-                    if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                    float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+                   
+                    if (alt < dist[node])
                     {
-                        dist[node] = alt;
-                        prev[node] = currentNode;
+                        if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                        {
+                            dist[node] = alt;
+                            prev[node] = currentNode;
+                        }
                     }
                 }
 
+                else 
+                {
+                    if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle)
+                    {
+                        if (isDiagonalMovement || (!isDiagonalMovement && (node.tileX == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX || node.tileZ == selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ)))
+                        {
+                            float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+                            if (alt < dist[node])
+                            {
+                                if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                                {
+                                    dist[node] = alt;
+                                    prev[node] = currentNode;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -273,14 +339,13 @@ public class TileManager : MonoBehaviour
 
         IndividualTiles curr = target;
 
-
         //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
         //Esta ruta está al reves, va desde el objetivo hasta el origen.
         while (curr != null)
         {
+
             currentPath.Add(curr);
             curr = prev[curr];
-
         }
 
         //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
@@ -297,9 +362,45 @@ public class TileManager : MonoBehaviour
         }
     }
 
-
-
     #endregion
 
+    #region ENEMY_PATHFINDING
+    //Estas funciones son bastante parecidas a las del pathfinding normal salvo que devuelven personajes a los que pueden atacar en vez de tiles.
+    //El gigante llama a esta función pero no a las anteriores.
+    //Sin embargo el goblin llama a esta por el objetivo y a las anteriores por el path
 
+    //Doy feedback de que casillas están al alcance del personaje.
+    public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
+    {
+        //Reuno en una lista todos los tiles a los que puedo acceder
+        checkAvailableTilesForMovement(range, currentEnemy);
+
+        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+        {
+            if (tilesAvailableForMovement[i].unitOnTile != null && tilesAvailableForMovement[i].unitOnTile.GetComponent<PlayerUnit>())
+            {
+                CalculatePathForMovementCost(tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileX, tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileZ);
+
+                //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
+                if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
+                {
+                    //Me guardo la distancia para checkear
+                    tempCurrentObjectiveCost = tempCurrentPathCost;
+                    //Limpio la lista de objetivos y añado
+                    if (tempCurrentObjectiveCost > tempCurrentPathCost)
+                    {
+                        charactersAvailableForAttack.Clear();
+                    }
+                    charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
+                }
+
+
+                //Resetear tempcurrentPathCost a 0
+                tempCurrentPathCost = 0;
+            }
+        }
+
+        return charactersAvailableForAttack;
+    }
+    #endregion
 }

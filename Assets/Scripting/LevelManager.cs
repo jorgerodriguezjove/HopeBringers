@@ -1,34 +1,63 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.Events;
 
 public class LevelManager : MonoBehaviour
 {
     #region VARIABLES
 
+    [Header("INTERACCIÓN CON UNIDADES")]
+
     //Personaje actualmente seleccionado.
-    //La dejo en serialize para ver si funciona correctamente.
-    [SerializeField]
+    [HideInInspector]
     public PlayerUnit selectedCharacter;
 
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada
-    [SerializeField]
-    List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
+    [HideInInspector]
+    public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
     //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
     float timeForMovementAnimation = 0.2f;
 
     //Posición a la que tiene que moverse la unidad actualmente
-    Vector3 currentTileVectorToMove;
+    private Vector3 currentTileVectorToMove;
 
     //Tile en el que ha empezado a moverse el personaje seleccionado. Se usa para volver a ponerlo donde estaba.
-    IndividualTiles previousCharacterTile;
+    private IndividualTiles previousCharacterTile;
 
-    //REFERENCIAS
+    //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
+    private int enemiesNumber;
+
+    [Header("TURNOS Y FASES")]
+
+    //Int que lleva la cuenta del turno actual
+    private int currentTurn = 0;
+
+    //Cada unidad se encarga desde su script de incluirse en la lista
+    //Lista con todas las unidades del jugador en el tablero
+    [HideInInspector]
+    public List<PlayerUnit> characthersOnTheBoard;
+    [HideInInspector]
+    //Lista con todas las unidades enemigas en el tablero
+    public List<EnemyUnit> enemiesOnTheBoard;
+
+    //Contador que controla a que unidad le toca. Sirve cómo indice para la lista de enemigos.
+    private int counterForEnemiesOrder ;
+
+    //Enum que indica si es la fase del jugador o del enemigo.
+    [HideInInspector]
+    public enum LevelState { PlayerPhase, ProcessingPlayerActions, EnemyPhase, ProcessingEnemiesActions};
+
+    [HideInInspector]
+    public LevelState currentLevelState { get; private set; }
+
+    [Header("REFERENCIAS")]
 
     //Referencia al Tile Manager
-    private TileManager TM;
+    [HideInInspector]
+    public TileManager TM;
+    private UIManager UIM;
 
     #endregion
 
@@ -37,94 +66,322 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         TM = FindObjectOfType<TileManager>();
+        UIM = FindObjectOfType<UIManager>();
+
+        ReOrderUnits();
+
+        currentLevelState = LevelState.PlayerPhase;
+
+        counterForEnemiesOrder = 0;
     }
 
+    //Ordeno la lista de personajes del jugador y la lista de enemigos
+    private void ReOrderUnits()
+    {
+        if (characthersOnTheBoard.Count > 0)
+        {
+            characthersOnTheBoard.Sort(delegate (PlayerUnit a, PlayerUnit b)
+            {
+                return (b.GetComponent<PlayerUnit>().speed).CompareTo(a.GetComponent<PlayerUnit>().speed);
+
+            });
+        }
+
+        if (enemiesOnTheBoard.Count > 0)
+        {
+            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
+            {
+                return (b.GetComponent<EnemyUnit>().speed).CompareTo(a.GetComponent<EnemyUnit>().speed);
+
+            });
+        }
+    }
+   
     #endregion
 
+    #region UNIT_INTERACTION
+
     //Al clickar sobre una unidad del jugador se llama a esta función
-    public void SelectUnit(int movementUds, PlayerUnit selectedUnit)
+    public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
     {
-        tilesAvailableForMovement.Clear();
-        selectedCharacter = selectedUnit;
-        tilesAvailableForMovement = TM.checkAvailableTilesForMovement(movementUds, selectedUnit);
+        //Si es el turno del player compruebo si puedo hacer algo con la unidad.
+        if (currentLevelState == LevelState.ProcessingPlayerActions)
+        {
+            //Si no hay unidad seleccionada significa que está seleccionando una unidad
+            if (selectedCharacter == null)
+            {
+                //Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
+                if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
+                {
+                    selectedCharacter = clickedUnit;
+                    selectedCharacter.SelectedColor();
+                    tilesAvailableForMovement = TM.checkAvailableTilesForMovement(movementUds, clickedUnit);
+                    for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                    {
+                        tilesAvailableForMovement[i].ColorSelect();
+                    }
+
+                    selectedCharacter.CheckUnitsInRangeToAttack();
+                }
+
+                //Si se ha movido pero no ha atacado, entonces le doy el feedback de ataque.
+                else if (!clickedUnit.hasAttacked)
+                {
+                    selectedCharacter = clickedUnit;
+                    selectedCharacter.SelectedColor();
+
+                    selectedCharacter.CheckUnitsInRangeToAttack();
+                }
+            }
+
+            //Si ya hay una seleccionada significa que está atacando a la unidad
+            else
+            {
+                SelectUnitToAttack(clickedUnit);
+            }
+        }
     }
 
-    private void Update()
+    //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
+    public void SelectUnitToAttack(UnitBase clickedUnit)
     {
-        if (Input.GetMouseButtonDown(1))
+        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
         {
-            DeSelectUnit();
+            enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+
+            //Compruebo si está en la lista de posibles targets
+            for (int i = 0; i < enemiesNumber; i++)
+            {
+                if (selectedCharacter != null)
+                {
+                    if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
+                    {
+                        selectedCharacter.Attack(clickedUnit);
+                    }
+                }
+            }
         }
     }
 
     public void DeSelectUnit()
     {
-        if (selectedCharacter != null)
+        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
+        {
+            //Desmarco las unidades disponibles para atacar
+            for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
+            {
+                selectedCharacter.currentUnitsAvailableToAttack[i].ColorInitial();
+            }
+
+            //Si no se ha movido lo deselecciono.
+            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            {
+                tilesAvailableForMovement[i].ColorDeselect();
+            }
+
+            tilesAvailableForMovement.Clear();
+            selectedCharacter.InitialColor();
+            selectedCharacter = null;
+        }
+    }
+
+    public void UndoMove()
+    {
+        //ESTO HAY QUE CAMBIARLO PARA QUE GUARDE TANTO LA UNIDAD CÓMO EL TILE EN EL QUE ESTABA (QUIZÁS USAR UN DICCIONARIO)
+
+        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
             //Si el personaje ya se ha movido lo vuelvo a poner donde estaba.
             if (selectedCharacter.hasMoved)
             {
-                selectedCharacter.gameObject.transform.position = new Vector3(previousCharacterTile.transform.position.x, previousCharacterTile.transform.position.y + 1,previousCharacterTile.transform.position.z);
+                selectedCharacter.gameObject.transform.position = new Vector3(previousCharacterTile.transform.position.x, previousCharacterTile.transform.position.y + 1, previousCharacterTile.transform.position.z);
 
                 selectedCharacter.myCurrentTile = previousCharacterTile;
 
                 selectedCharacter.hasMoved = false;
 
-                SelectUnit(selectedCharacter.movementUds, selectedCharacter);
-            }
-
-            //Si no se ha movido lo deselecciono.
-            else 
-            {
-                //Deselecciono
+                tilesAvailableForMovement = TM.checkAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter);
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
-                    tilesAvailableForMovement[i].ColorDeselect();
+                    tilesAvailableForMovement[i].ColorSelect();
                 }
-                tilesAvailableForMovement.Clear();
-                selectedCharacter = null;
             }
+        }
+
+        else if (previousCharacterTile != null)
+        {
+
         }
     }
 
+
+    //Quizás tendría más sentido que el move Unit estuviese en la propia unidad.
     public void MoveUnit(IndividualTiles tileToMove)
     {
         for (int i = 0; i < tilesAvailableForMovement.Count; i++)
         {
             if (tileToMove == tilesAvailableForMovement[i])
             {
+                //Almaceno al tile para poder volver a colocar a la unidad en él.
+                //ESTO HAY QUE CAMBIARLO YA QUE NO ME SIRVE CON ALMACENAR UNA ÚNICA POSICIÓN
                 previousCharacterTile = selectedCharacter.myCurrentTile;
 
+                //Calculo el path de la unidad
                 TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
-                StartCoroutine("MovingUnitAnimation");
-                selectedCharacter.myCurrentTile = tileToMove;
+
+                //Al terminar de moverse se deseleccionan los tiles
+                for (int j = 0; j < tilesAvailableForMovement.Count; j++)
+                {
+                    tilesAvailableForMovement[j].ColorDeselect();
+                }
+                tilesAvailableForMovement.Clear();
+
+                //Aviso a la unidad de que se tiene que mover
+                selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+
+                //Desactivo el botón de end turn para que no le de mientras tiene que elegir rotación
+                UIM.ActivateDeActivateEndButton();
             }
         }
     }
 
-
-    IEnumerator MovingUnitAnimation ()
+    //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
+    public void UnitHasFinishedMovementAndRotation()
     {
-        //Animación de movimiento
-        for (int j = 1; j < TM.currentPath.Count; j++)
-        {
-            currentTileVectorToMove = new Vector3(TM.currentPath[j].transform.position.x, TM.currentPath[j].transform.position.y +1, TM.currentPath[j].transform.position.z);
-
-            selectedCharacter.gameObject.transform.DOMove(currentTileVectorToMove, timeForMovementAnimation);
-            yield return new WaitForSeconds(timeForMovementAnimation);
-        }
-
-        //Al terminar de moverse se deseleccionan los tiles
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-        {
-            tilesAvailableForMovement[i].ColorDeselect();
-        }
-
-        tilesAvailableForMovement.Clear();
-        selectedCharacter.hasMoved = true;
+        UIM.ActivateDeActivateEndButton();
     }
 
-    //Al deseleccionar la unidad acordarse de avisar al TileManager de que ha cambiado
+    //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.
+    public void CheckIfHoverShouldAppear(UnitBase enemyToCheck)
+    {
+        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+        {
+            enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+
+            for (int i = 0; i < enemiesNumber; i++)
+            {
+                if (enemyToCheck == selectedCharacter.currentUnitsAvailableToAttack[i])
+                {
+                    //Muestro hover avisando a Selected Character
+                    selectedCharacter.ShowHover(enemyToCheck);
+
+                    //Cambiar icono del cursor
+                }
+            }
+        }
+    }
+
+    //Hago desaparecer el hover
+    public void HideHover(UnitBase enemyToCheck)
+    {
+        //Ocultar hover
+        enemyToCheck.DisableCanvasHover();
+    }
+
+
+    #endregion
+
+    #region TURN_STATE
+
+    //Cambia de fase. Si era la fase del player ahora es la del enemigo y viceversa
+    //Se llama desde el UI Manager al pulsar el botón de end turn 
+    public void ChangePhase()
+    {
+        currentLevelState = LevelState.EnemyPhase;
+    }
+
+    private void BeginPlayerPhase()
+    {
+        if (currentTurn > 0)
+        {
+            //Aparece cartel con turno del player
+
+            //Resetear todas las variables tipo bool y demás de los players
+            for (int i = 0; i < characthersOnTheBoard.Count; i++)
+            {
+                characthersOnTheBoard[i].ResetUnitState();
+            }
+
+            //Reaparecer el botón de endbutton
+            UIM.ActivateDeActivateEndButton();
+
+            currentTurn++;
+            selectedCharacter = null;
+            currentLevelState = LevelState.ProcessingPlayerActions;
+        }
+
+        else
+        {
+            currentTurn = 1;
+        }
+    }
+
+    private void BeginEnemyPhase()
+    {
+        //Desaparece botón de end turn
+        UIM.ActivateDeActivateEndButton();
+
+        //Aparece cartel con turno del enemigo
+        //Me aseguro de que el jugador no puede interactuar con sus pjs
+        //Actualizo el número de unidades en el tablero (Lo hago aquí en vez de  al morir la unidad para que no se cambie el orden en medio del turno enemigo)
+
+        counterForEnemiesOrder = 0;
+        enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+    }
+
+    //Cuando el enemigo acaba sus acciones avisa al LM para que la siguiente unidad haga sus acciones.
+    public void NextEnemyInList()
+    {
+        if (counterForEnemiesOrder >= enemiesOnTheBoard.Count-1)
+        {
+            counterForEnemiesOrder = 0;
+            currentLevelState = LevelState.PlayerPhase;
+        }
+
+        else
+        {
+            counterForEnemiesOrder++;
+            enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+        }
+    }
+
+    //Función que llaman el gigante y el goblin para determinar la distancia hasta los enmigos
+    public List<UnitBase> CheckEnemyPathfinding(int range, EnemyUnit enemyUnitToCheck)
+    {
+        return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck);
+    }
+
+
+    private void Update()
+    {
+        switch (currentLevelState)
+        {
+            case (LevelState.PlayerPhase):
+                BeginPlayerPhase();
+                currentLevelState = LevelState.ProcessingPlayerActions;
+                break;
+
+            case (LevelState.ProcessingPlayerActions):
+                break;
+
+            case (LevelState.EnemyPhase):
+                BeginEnemyPhase();
+                currentLevelState = LevelState.ProcessingEnemiesActions;
+                break;
+
+            case (LevelState.ProcessingEnemiesActions):
+                break;
+
+        }
+
+        //INPUT
+        if (Input.GetMouseButtonDown(1))
+        {
+            DeSelectUnit();
+        }
+    }
+
+    #endregion
 
 }
 
