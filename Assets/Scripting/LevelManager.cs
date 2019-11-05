@@ -57,7 +57,8 @@ public class LevelManager : MonoBehaviour
     //Referencia al Tile Manager
     [HideInInspector]
     public TileManager TM;
-    private UIManager UIM;
+	[HideInInspector]
+    public UIManager UIM;
 
     #endregion
 
@@ -110,11 +111,17 @@ public class LevelManager : MonoBehaviour
             //Si no hay unidad seleccionada significa que está seleccionando una unidad
             if (selectedCharacter == null)
             {
-                //Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
-                if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
-                {
+				//Desactivo el botón de pasar turno cuando selecciona la unidad
+				UIM.ActivateDeActivateEndButton();
+				 
+				//Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
+				if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
+                {	
                     selectedCharacter = clickedUnit;
-                    selectedCharacter.SelectedColor();
+					selectedCharacter.HealthBarOn_Off(true);
+					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
+					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
+					selectedCharacter.SelectedColor();
                     tilesAvailableForMovement = TM.checkAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
@@ -128,7 +135,10 @@ public class LevelManager : MonoBehaviour
                 else if (!clickedUnit.hasAttacked)
                 {
                     selectedCharacter = clickedUnit;
-                    selectedCharacter.SelectedColor();
+					selectedCharacter.HealthBarOn_Off(true);
+					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
+					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
+					selectedCharacter.SelectedColor();
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
                 }
@@ -167,6 +177,8 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
+			selectedCharacter.HealthBarOn_Off(false);
+			UIM.ShowCharacterInfo("");
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
             {
@@ -178,7 +190,8 @@ public class LevelManager : MonoBehaviour
             {
                 tilesAvailableForMovement[i].ColorDeselect();
             }
-
+			//Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
+			UIM.ActivateDeActivateEndButton();
             tilesAvailableForMovement.Clear();
             selectedCharacter.InitialColor();
             selectedCharacter = null;
@@ -239,8 +252,6 @@ public class LevelManager : MonoBehaviour
                 //Aviso a la unidad de que se tiene que mover
                 selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
 
-                //Desactivo el botón de end turn para que no le de mientras tiene que elegir rotación
-                UIM.ActivateDeActivateEndButton();
             }
         }
     }
@@ -248,7 +259,7 @@ public class LevelManager : MonoBehaviour
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
     public void UnitHasFinishedMovementAndRotation()
     {
-        UIM.ActivateDeActivateEndButton();
+        //UIM.ActivateDeActivateEndButton();
     }
 
     //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.

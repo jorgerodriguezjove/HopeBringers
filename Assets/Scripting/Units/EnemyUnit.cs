@@ -20,7 +20,8 @@ public class EnemyUnit : UnitBase
     //Bool que comprueba si la balista se ha movido
     protected bool hasMoved = false;
 
-    [Header("REFERENCIAS")]
+
+	[Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
     [SerializeField]
@@ -33,8 +34,8 @@ public class EnemyUnit : UnitBase
 
     private void Awake()
     {
-        //Referencia al LM y me incluyo en la lista de enemiogos
-        LM = LevelManagerRef.GetComponent<LevelManager>();
+		//Referencia al LM y me incluyo en la lista de enemiogos
+		LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
         myCurrentTile.unitOnTile = this;
         initMaterial = unitModel.GetComponent<MeshRenderer>().material;
@@ -115,12 +116,17 @@ public class EnemyUnit : UnitBase
     {
         //Llamo a LevelManager para activar hover
         LM.CheckIfHoverShouldAppear(this);
+		LM.UIM.ShowTooltip(unitInfo);
+		HealthBarOn_Off(true);
+		gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
     }
 
     private void OnMouseExit()
     {
         //Llamo a LevelManager para desactivar hover
         LM.HideHover(this);
+		HealthBarOn_Off(false);
+		LM.UIM.ShowTooltip("");
     }
 
     #endregion

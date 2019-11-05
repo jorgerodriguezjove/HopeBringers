@@ -32,11 +32,15 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private Canvas canvasWithRotationArrows;
 
+	
+
     [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
     public GameObject LevelManagerRef;
     private LevelManager LM;
+	public GameObject UIManagerRef;
+	private UIManager UIM;
 
     #endregion
 
@@ -47,6 +51,8 @@ public class PlayerUnit : UnitBase
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.characthersOnTheBoard.Add(this);
+		//Referencia al UIM 
+		UIM = UIManagerRef.GetComponent<UIManager>();
         //Aviso al tile en el que empiezo que soy su unidad.
         myCurrentTile.unitOnTile = this;
 
@@ -67,6 +73,8 @@ public class PlayerUnit : UnitBase
     {
         hasMoved = false;
         hasAttacked = false;
+		//Refresco de los tokens para resetearlos en pantalla
+		UIM.RefreshTokens();
         isMovingorRotating = false;
         unitModel.GetComponent<MeshRenderer>().material = initMaterial;
     }
@@ -76,9 +84,11 @@ public class PlayerUnit : UnitBase
     {
         //La unidad ha atacado
         hasAttacked = true;
-
-        //Aviso al LM que deseleccione la unidad
-        LM.DeSelectUnit();
+		hasMoved = true;
+		//Refresco de los tokens de ataque
+		UIM.RefreshTokens();
+		//Aviso al LM que deseleccione la unidad
+		LM.DeSelectUnit();
 
         //Doy feedback de que esa unidad no puede hacer nada
         unitModel.GetComponent<MeshRenderer>().material = finishedMaterial;
@@ -103,8 +113,9 @@ public class PlayerUnit : UnitBase
     {
         //Compruebo la dirección en la que se mueve para girar a la unidad
         CheckTileDirection(tileToMove);
-
         hasMoved = true;
+		//Refresco los tokens para reflejar el movimiento
+		UIM.RefreshTokens();
         myCurrentPath = pathReceived;
 
         StartCoroutine("MovingUnitAnimation");
@@ -207,11 +218,14 @@ public class PlayerUnit : UnitBase
 
         //La unidad ha atacado y por tanto no puede hacer nada más.
         FinishMyActions();
+		
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         currentHealth -= damageReceived;
+		//Cuando me hacen daño refresco la información en la interfaz
+		UIM.RefreshHealth();
 
         Debug.Log("Soy " + name + "me han hecho daño");
 
@@ -251,15 +265,17 @@ public class PlayerUnit : UnitBase
         unitModel.GetComponent<MeshRenderer>().material = initMaterial;
     }
 
-    #endregion
+	
 
-    #region CHECKS
+	#endregion
 
-    //En caso de querer generalizar la comprobación de en que dirección está un tile en comparación a mi posición, lo que se puede hacer es que la función no sea un void, si no que 
-    //devuelva un valor de un enum como el de la rotación del personaje, de tal forma que los 4 ifs solo se ponen una vez y siempre devuelven una dirección
+	#region CHECKS
 
-    //De momento esta función simplemente sirve para girar al personaje.
-    public void CheckTileDirection(IndividualTiles tileToCheck)
+	//En caso de querer generalizar la comprobación de en que dirección está un tile en comparación a mi posición, lo que se puede hacer es que la función no sea un void, si no que 
+	//devuelva un valor de un enum como el de la rotación del personaje, de tal forma que los 4 ifs solo se ponen una vez y siempre devuelven una dirección
+
+	//De momento esta función simplemente sirve para girar al personaje.
+	public void CheckTileDirection(IndividualTiles tileToCheck)
     {
         //Arriba o abajo
         if (tileToCheck.tileX == myCurrentTile.tileX)
