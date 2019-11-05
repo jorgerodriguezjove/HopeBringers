@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,24 +14,59 @@ public class UIManager : MonoBehaviour
     //Level Manager
     private LevelManager LM;
 
+
+	[Header("HUD")]
+
     [SerializeField]
     private Button endTurnButton;
 
-    #endregion
+	[SerializeField]
+	private GameObject optionsScreen;
 
-    #region INIT
+	[SerializeField]
+	private GameObject optionsButton;
 
-    private void Awake()
+	[SerializeField]
+	private List<TextMeshProUGUI> healthValues;
+
+	[SerializeField]
+	private List<Slider> healthBars;
+
+	[SerializeField]
+	private List<GameObject> attackTokens;
+
+	[SerializeField]
+	private List<GameObject> movementTokens;
+
+	[SerializeField]
+	private TextMeshProUGUI tooltipText;
+
+	[SerializeField]
+	private TextMeshProUGUI characterInfoText;
+	#endregion
+
+	#region INIT
+
+	private void Awake()
     {
         LM = FindObjectOfType<LevelManager>();
     }
+	private void Start()
+	{
+		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+		{
+			healthValues[i].text = LM.characthersOnTheBoard[i].currentHealth + "/" + LM.characthersOnTheBoard[i].maxHealth;
+			healthBars[i].maxValue = LM.characthersOnTheBoard[i].maxHealth;
+			healthBars[i].value = LM.characthersOnTheBoard[i].currentHealth;
+		}
+	}
 
-    #endregion
+	#endregion
 
-    #region END_TURN
+	#region END_TURN
 
-    //Se llama desde el botón de finalizar turno
-    public void EndTurn()
+	//Se llama desde el botón de finalizar turno
+	public void EndTurn()
     {
         LM.ChangePhase();
     }
@@ -62,7 +98,66 @@ public class UIManager : MonoBehaviour
     }
 
 
-    #endregion
+	#endregion
+
+	#region RETRATOS
+	//Refresca la información de las 4 barras de vida en pantalla
+	public void RefreshHealth()
+	{
+		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+		{
+			healthValues[i].text = LM.characthersOnTheBoard[i].currentHealth + "/" + LM.characthersOnTheBoard[i].maxHealth;
+			healthBars[i].maxValue = LM.characthersOnTheBoard[i].maxHealth;
+			healthBars[i].value = LM.characthersOnTheBoard[i].currentHealth;
+		}
+	}
+	//Refresco la información de todos los tokens para activar y desactivar los que correspondan
+	public void RefreshTokens()
+	{
+		for (int i = 0; i < attackTokens.Count; i++)
+		{
+			attackTokens[i].SetActive(!LM.characthersOnTheBoard[i].hasAttacked);
+		}
+		for (int i = 0; i < movementTokens.Count; i++)
+		{
+			movementTokens[i].SetActive(!LM.characthersOnTheBoard[i].hasMoved);
+		}
+	}
+	#endregion
+
+	#region CHARACTER_INFO
+
+	public void ShowCharacterInfo(string textToPrint)
+	{
+		characterInfoText.text = textToPrint;
+	}
+
+
+	#endregion
+
+	#region TOOLTIP
+
+	public void ShowTooltip(string textToPrint)
+	{
+		tooltipText.text = textToPrint;
+	}
+
+	#endregion
+
+	#region ENEMY_INFO
+
+
+
+	#endregion
+
+	#region OPTIONS
+	//Abre/cierra el panel de opciones y Desactiva/Activa el botón de opciones, respectivamente
+	public void Activate_DeactivateOptions(bool isActivated)
+	{
+		optionsScreen.SetActive(isActivated);
+		optionsButton.SetActive(!isActivated);
+	}
+	#endregion
 
 
 

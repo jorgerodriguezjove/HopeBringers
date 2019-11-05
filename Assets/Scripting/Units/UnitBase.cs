@@ -112,30 +112,37 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     private Material AvailableToBeAttackedColor;
 
-    //Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
-    [SerializeField]
+	[SerializeField]
+	private GameObject healthBar;
+
+	[SerializeField]
+	[@TextAreaAttribute(15, 20)]
+	public string unitInfo;
+
+	//Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
+	[SerializeField]
     private GameObject canvasUnit;
 
-    //[Header("TEXT")]
+	[Header("TEXT")]
 
-    ////Texto que describe a la unidad.
-    //[SerializeField]
-    //public string characterDescription;
+	//Texto que describe a la unidad.
+	[SerializeField]
+	public string characterDescription;
 
-    ////Icono que aparece en la lista de turnos.
-    //[SerializeField]
-    //public Sprite unitIcon;
+	//Icono que aparece en la lista de turnos.
+	[SerializeField]
+	public Sprite unitIcon;
 
-    ////Canvas que muestra la vida de la unidad
-    //[SerializeField]
-    //protected Canvas myCanvasHealthbar;
+	//Canvas que muestra la vida de la unidad
+	[SerializeField]
+	protected Canvas myCanvasHealthbar;
 
-    #endregion
+	#endregion
 
-    #region DAMAGE_&_DIE
+	#region DAMAGE_&_DIE
 
-    //Calcula PERO NO aplico el daño a la unidad elegida
-    protected void CalculateDamage(UnitBase unitToDealDamage)
+	//Calcula PERO NO aplico el daño a la unidad elegida
+	protected void CalculateDamage(UnitBase unitToDealDamage)
     {
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;
@@ -350,6 +357,11 @@ public class UnitBase : MonoBehaviour
         canvasUnit.SetActive(false);
     }
 
-    #endregion
+	public void HealthBarOn_Off(bool isOn)
+	{
+		healthBar.SetActive(isOn);
+	}
+
+	#endregion
 
 }
