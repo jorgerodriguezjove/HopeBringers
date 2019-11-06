@@ -42,6 +42,12 @@ public class TileManager : MonoBehaviour
     //Personaje actualmente seleccionado
     private UnitBase selectedCharacter;
 
+    //Tiles que se puede mover el personaje seleccionado
+    private int mxMovementUdsSelectedCharacter;
+
+    //Almaceno el tile wue estoy comprobando aora mismo para no acceder todo el rato desde el selected character
+    private IndividualTiles currentTileCheckingForMovement;
+
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
     List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
@@ -161,8 +167,6 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
-
-      
     }
 
     #endregion
@@ -180,28 +184,99 @@ public class TileManager : MonoBehaviour
     {
         selectedCharacter = selectedUnit;
         tilesAvailableForMovement.Clear();
-        tempCurrentPathCost = 0;
 
-        for (int i = 0; i < mapSizeZ; i++)
-        {
-            for (int j = 0; j < mapSizeX; j++)
-            {
-                CalculatePathForMovementCost(j, i);
-                if (tempCurrentPathCost <= movementUds)
-                {
-                    tilesAvailableForMovement.Add(graph[j, i]);
-                }
-                tempCurrentPathCost = 0;
-            }
-        }
+        OptimizedCheckAvailableTilesForMovement();
+
+        //CÓDIGO DESOPTIMIZADO
+
+        //tempCurrentPathCost = 0;
+
+        //for (int i = 0; i < mapSizeZ; i++)
+        //{
+        //    for (int j = 0; j < mapSizeX; j++)
+        //    {
+        //        CalculatePathForMovementCost(j, i);
+        //        if (tempCurrentPathCost <= movementUds)
+        //        {
+        //            tilesAvailableForMovement.Add(graph[j, i]);
+        //        }
+        //        tempCurrentPathCost = 0;
+        //    }
+        //}
 
         return tilesAvailableForMovement;
     }
 
+    //Cambiar selectedCharacter.movementUds por una variable
+    //En la función  de CalculatePathForMovementCost ver si quito lo del tempCurrentPathCost
+
+    private void OptimizedCheckAvailableTilesForMovement()
+    {
+        mxMovementUdsSelectedCharacter = selectedCharacter.movementUds;
+
+        //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
+        for (int i = -mxMovementUdsSelectedCharacter; i < (mxMovementUdsSelectedCharacter * 2) + 1; i++)
+        {
+            //Al restar a losMovementUds el i actual obtengo los tiles que hay por encima de la posición del personaje en dicha columna
+            //Este número me sirve para calcular la posición en z de los tiles
+            int tilesInVertical = mxMovementUdsSelectedCharacter - Mathf.Abs(i);
+
+            //Esto significa que es el extremo del rombo y sólo hay 1 tile en vertical
+            if (tilesInVertical == 0)
+            {
+                //Compruebo si existe un tile con esas coordenadas
+                if (selectedCharacter.myCurrentTile.tileX + i < mapSizeX && selectedCharacter.myCurrentTile.tileX + i >= 0 &&
+                    selectedCharacter.myCurrentTile.tileZ < mapSizeZ && selectedCharacter.myCurrentTile.tileZ >= 0)
+                {
+                    //Almaceno el tile en una variable
+                    currentTileCheckingForMovement = graph[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
+
+                    //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
+                    if (currentTileCheckingForMovement.unitOnTile == null && !currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
+                    {
+                        //Compruebo si existe un camino hasta el tile
+                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                        if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                        {
+                            tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                        }
+                        tempCurrentPathCost = 0;
+                    }
+                }
+            }
+            else
+            {
+                for (int j = tilesInVertical; j >= -tilesInVertical; j--)
+                {
+                    //Compruebo si existe un tile con esas coordenadas
+                    if (selectedCharacter.myCurrentTile.tileX + i < mapSizeX && selectedCharacter.myCurrentTile.tileX + i >= 0 &&
+                        selectedCharacter.myCurrentTile.tileZ + j < mapSizeZ && selectedCharacter.myCurrentTile.tileZ + j >= 0)
+                    {
+                        //Almaceno el tile en una variable
+                        currentTileCheckingForMovement = graph[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ + j];
+
+                        //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
+                        if (currentTileCheckingForMovement.unitOnTile == null && !currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
+                        {
+                            //Compruebo si existe un camino hasta el tile
+                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                            if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                            {
+                                tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                            }
+                            tempCurrentPathCost = 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     [SerializeField]
     public List<IndividualTiles> unvisited;
 
-    //Calculo el coste que tiene el personaje por ir a cada casilla.
+    //Calculo el path para ir hasta una casilla seleccionada desde la posición actual del personaje.
     public void CalculatePathForMovementCost(int x, int z)
     {
         currentPath.Clear();
@@ -217,7 +292,7 @@ public class TileManager : MonoBehaviour
         unvisited = new List<IndividualTiles>();
 
         //Punto de origen (Nodo en el que está el personaje).
-        IndividualTiles source = graph[selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileX, selectedCharacter.GetComponent<UnitBase>().myCurrentTile.tileZ];
+        IndividualTiles source = graph[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
 
         //Casilla objetivo a la que queremos llegar.
         IndividualTiles target = graph[x, z];
