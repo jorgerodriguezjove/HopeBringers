@@ -70,6 +70,7 @@ public class LevelManager : MonoBehaviour
         UIM = FindObjectOfType<UIManager>();
 
         ReOrderUnits();
+        UIM.SetEnemyOrder();
 
         currentLevelState = LevelState.PlayerPhase;
 
@@ -96,8 +97,10 @@ public class LevelManager : MonoBehaviour
 
             });
         }
+        
     }
    
+
     #endregion
 
     #region UNIT_INTERACTION

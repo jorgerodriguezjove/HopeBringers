@@ -43,6 +43,8 @@ public class UIManager : MonoBehaviour
 
 	[SerializeField]
 	private TextMeshProUGUI characterInfoText;
+
+
 	#endregion
 
 	#region INIT
@@ -142,17 +144,32 @@ public class UIManager : MonoBehaviour
 		tooltipText.text = textToPrint;
 	}
 
-	#endregion
+    #endregion
 
-	#region ENEMY_INFO
+    #region ENEMY_INFO
+    public void SetEnemyOrder()
+    {
+        for (int i = 0; i < LM.enemiesOnTheBoard.Count; i++)
+        {
+            LM.enemiesOnTheBoard[i].orderToShow = i + 1;
+            LM.enemiesOnTheBoard[i].thisUnitOrder.GetComponent <TextMeshPro>().text = "" + LM.enemiesOnTheBoard[i].orderToShow;
+            LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
+        }
+    }
+    public void ShowEnemyOrder(bool show_hide)
+    {
+        for (int i = 0; i < LM.enemiesOnTheBoard.Count; i++)
+        {
+            LM.enemiesOnTheBoard[i].thisUnitOrder.SetActive(show_hide);
+            LM.enemiesOnTheBoard[i].HealthBarOn_Off(show_hide);
+        }
+    }
+    
+    #endregion
 
-
-
-	#endregion
-
-	#region OPTIONS
-	//Abre/cierra el panel de opciones y Desactiva/Activa el botón de opciones, respectivamente
-	public void Activate_DeactivateOptions(bool isActivated)
+    #region OPTIONS
+    //Abre/cierra el panel de opciones y Desactiva/Activa el botón de opciones, respectivamente
+    public void Activate_DeactivateOptions(bool isActivated)
 	{
 		optionsScreen.SetActive(isActivated);
 		optionsButton.SetActive(!isActivated);

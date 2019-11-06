@@ -21,12 +21,20 @@ public class EnemyUnit : UnitBase
     protected bool hasMoved = false;
 
 
-	[Header("REFERENCIAS")]
+    [HideInInspector]
+    public int orderToShow;
+
+    [SerializeField]
+    public GameObject thisUnitOrder;
+
+
+    [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
     [SerializeField]
     public GameObject LevelManagerRef;
     protected LevelManager LM;
+
 
     #endregion
 
