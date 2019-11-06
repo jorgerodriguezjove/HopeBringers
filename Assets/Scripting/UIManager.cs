@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -42,7 +43,16 @@ public class UIManager : MonoBehaviour
 	private TextMeshProUGUI tooltipText;
 
 	[SerializeField]
+	private GameObject characterInfo;
+	[SerializeField]
 	private TextMeshProUGUI characterInfoText;
+	[SerializeField]
+	private float animationDuration;
+
+	private Vector3 characterInfoOriginalPosition;
+
+	[SerializeField]
+	private List<GameObject> playerPortraits;
 
 
 	#endregion
@@ -55,9 +65,11 @@ public class UIManager : MonoBehaviour
     }
 	private void Start()
 	{
+		characterInfoOriginalPosition = characterInfo.transform.position;
 		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
 		{
 			healthValues[i].text = LM.characthersOnTheBoard[i].currentHealth + "/" + LM.characthersOnTheBoard[i].maxHealth;
+			playerPortraits[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
 			healthBars[i].maxValue = LM.characthersOnTheBoard[i].maxHealth;
 			healthBars[i].value = LM.characthersOnTheBoard[i].currentHealth;
 		}
@@ -125,16 +137,28 @@ public class UIManager : MonoBehaviour
 			movementTokens[i].SetActive(!LM.characthersOnTheBoard[i].hasMoved);
 		}
 	}
+
+	public void PortraitCharacterSelect(PlayerUnit characterToSelect)
+	{
+		LM.SelectUnit(characterToSelect.movementUds, characterToSelect);
+	}
+
 	#endregion
 
 	#region CHARACTER_INFO
 
 	public void ShowCharacterInfo(string textToPrint)
 	{
+		characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
 		characterInfoText.text = textToPrint;
 	}
 
-
+	public void HideCharacterInfo(string textToPrint)
+	{
+		characterInfo.transform.DOMove(characterInfoOriginalPosition, animationDuration);
+		characterInfoText.text = textToPrint;
+	}
+ 
 	#endregion
 
 	#region TOOLTIP

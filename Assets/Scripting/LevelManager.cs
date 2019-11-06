@@ -181,7 +181,7 @@ public class LevelManager : MonoBehaviour
         if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
 			selectedCharacter.HealthBarOn_Off(false);
-			UIM.ShowCharacterInfo("");
+			UIM.HideCharacterInfo("");
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
             {
