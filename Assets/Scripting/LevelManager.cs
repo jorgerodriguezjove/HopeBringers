@@ -23,9 +23,6 @@ public class LevelManager : MonoBehaviour
     //Posición a la que tiene que moverse la unidad actualmente
     private Vector3 currentTileVectorToMove;
 
-    //Tile en el que ha empezado a moverse el personaje seleccionado. Se usa para volver a ponerlo donde estaba.
-    private IndividualTiles previousCharacterTile;
-
     //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
     private int enemiesNumber;
 
@@ -201,47 +198,45 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void UndoMove()
-    {
-        //ESTO HAY QUE CAMBIARLO PARA QUE GUARDE TANTO LA UNIDAD CÓMO EL TILE EN EL QUE ESTABA (QUIZÁS USAR UN DICCIONARIO)
+    //public void UndoMove()
+    //{
+    //    //ESTO HAY QUE CAMBIARLO PARA QUE GUARDE TANTO LA UNIDAD CÓMO EL TILE EN EL QUE ESTABA (QUIZÁS USAR UN DICCIONARIO)
 
-        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
-        {
-            //Si el personaje ya se ha movido lo vuelvo a poner donde estaba.
-            if (selectedCharacter.hasMoved)
-            {
-                selectedCharacter.gameObject.transform.position = new Vector3(previousCharacterTile.transform.position.x, previousCharacterTile.transform.position.y + 1, previousCharacterTile.transform.position.z);
+    //    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
+    //    {
+    //        //Si el personaje ya se ha movido lo vuelvo a poner donde estaba.
+    //        if (selectedCharacter.hasMoved)
+    //        {
+    //            selectedCharacter.gameObject.transform.position = new Vector3(previousCharacterTile.transform.position.x, previousCharacterTile.transform.position.y + 1, previousCharacterTile.transform.position.z);
 
-                selectedCharacter.myCurrentTile = previousCharacterTile;
+    //            selectedCharacter.myCurrentTile = previousCharacterTile;
 
-                selectedCharacter.hasMoved = false;
+    //            selectedCharacter.hasMoved = false;
 
-                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter);
-                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-                {
-                    tilesAvailableForMovement[i].ColorSelect();
-                }
-            }
-        }
+    //            tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter);
+    //            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+    //            {
+    //                tilesAvailableForMovement[i].ColorSelect();
+    //            }
+    //        }
+    //    }
 
-        else if (previousCharacterTile != null)
-        {
+    //    else if (previousCharacterTile != null)
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
 
     //Quizás tendría más sentido que el move Unit estuviese en la propia unidad.
+
+
     public void MoveUnit(IndividualTiles tileToMove)
     {
         for (int i = 0; i < tilesAvailableForMovement.Count; i++)
         {
             if (tileToMove == tilesAvailableForMovement[i])
             {
-                //Almaceno al tile para poder volver a colocar a la unidad en él.
-                //ESTO HAY QUE CAMBIARLO YA QUE NO ME SIRVE CON ALMACENAR UNA ÚNICA POSICIÓN
-                previousCharacterTile = selectedCharacter.myCurrentTile;
-
                 //Calculo el path de la unidad
                 TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
 

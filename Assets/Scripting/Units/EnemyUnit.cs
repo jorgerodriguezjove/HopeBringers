@@ -12,6 +12,7 @@ public class EnemyUnit : UnitBase
     protected enum enemyState {Waiting, Searching, Moving, Attacking, Ended}
 
     //Estado actual del enemigo
+    [SerializeField]
     protected enemyState myCurrentEnemyState;
 
     //Distancia en tiles con el enemigo más lejano
@@ -106,6 +107,7 @@ public class EnemyUnit : UnitBase
 
     public virtual void FinishMyActions()
     {
+        hasMoved = false;
         LM.NextEnemyInList();
         myCurrentEnemyState = enemyState.Waiting;
     }

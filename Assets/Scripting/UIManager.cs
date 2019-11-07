@@ -95,11 +95,11 @@ public class UIManager : MonoBehaviour
 
     #region UNDO_MOVE
 
-    //Se llama desde el botón de finalizar turno
-    public void UndoMove()
-    {
-        LM.UndoMove();
-    }
+    ////Se llama desde el botón de finalizar turno
+    //public void UndoMove()
+    //{
+    //    LM.UndoMove();
+    //}
 
     #endregion
 

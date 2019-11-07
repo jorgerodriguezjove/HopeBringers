@@ -81,9 +81,6 @@ public class TileManager : MonoBehaviour
     //Variable que se usa para almacenar la distancia con el objetivo
     float tempCurrentObjectiveCost;
 
-    [HideInInspector]
-    public List<IndividualTiles> currentEnemyPath = new List<IndividualTiles>();
-
     [Header("REFERENCIAS")]
 
     private LevelManager LM;
@@ -223,15 +220,18 @@ public class TileManager : MonoBehaviour
                     currentTileCheckingForMovement = graph[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
 
                     //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
-                    if (currentTileCheckingForMovement.unitOnTile == null && !currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
+                    if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
                     {
-                        //Compruebo si existe un camino hasta el tile
-                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
-                        if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                        if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
                         {
-                            tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                            //Compruebo si existe un camino hasta el tile
+                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                            if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                            {
+                                tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                            }
+                            tempCurrentPathCost = 0;
                         }
-                        tempCurrentPathCost = 0;
                     }
                 }
             }
@@ -247,15 +247,18 @@ public class TileManager : MonoBehaviour
                         currentTileCheckingForMovement = graph[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ + j];
 
                         //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
-                        if (currentTileCheckingForMovement.unitOnTile == null && !currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
+                        if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
                         {
-                            //Compruebo si existe un camino hasta el tile
-                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
-                            if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                            if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
                             {
-                                tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                                //Compruebo si existe un camino hasta el tile
+                                CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                                if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                                {
+                                    tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                                }
+                                tempCurrentPathCost = 0;
                             }
-                            tempCurrentPathCost = 0;
                         }
                     }
                 }
@@ -325,9 +328,6 @@ public class TileManager : MonoBehaviour
                     if (isDiagonalMovement || selectedCharacter.GetComponent<EnemyUnit>())
                     {
                         currentNode = possibleNode;
-                        Debug.Log(dist[possibleNode]);
-                        Debug.Log(dist[currentNode]);
-                        Debug.Log("---");
                     }
 
                     else
@@ -350,7 +350,7 @@ public class TileManager : MonoBehaviour
 
             foreach (IndividualTiles node in currentNode.neighbours)
             {
-                if (selectedCharacter.GetComponent<EnemyUnit>())
+                if (selectedCharacter.GetComponent<EnGiant>())
                 {
                     float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
                    
@@ -360,6 +360,23 @@ public class TileManager : MonoBehaviour
                         {
                             dist[node] = alt;
                             prev[node] = currentNode;
+                        }
+                    }
+                }
+
+                else if (selectedCharacter.GetComponent<EnGoblin>())
+                {
+                    if (!node.isEmpty && !node.isObstacle)
+                    {
+                        float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+                        if (alt < dist[node])
+                        {
+                            if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                            {
+                                dist[node] = alt;
+                                prev[node] = currentNode;
+                            }
                         }
                     }
                 }
