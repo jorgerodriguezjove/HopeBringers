@@ -125,7 +125,7 @@ public class LevelManager : MonoBehaviour
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
 					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
 					selectedCharacter.SelectedColor();
-                    tilesAvailableForMovement = TM.checkAvailableTilesForMovement(movementUds, clickedUnit);
+                    tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
                         tilesAvailableForMovement[i].ColorSelect();
@@ -216,7 +216,7 @@ public class LevelManager : MonoBehaviour
 
                 selectedCharacter.hasMoved = false;
 
-                tilesAvailableForMovement = TM.checkAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter);
+                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter);
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
                     tilesAvailableForMovement[i].ColorSelect();

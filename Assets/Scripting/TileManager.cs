@@ -24,6 +24,25 @@ public class TileManager : MonoBehaviour
     [HideInInspector]
     public IndividualTiles[,] graph;
 
+    [Header("FUNCIÓN CREAR PATH")]
+
+    //Diccionario con distancia a nodos
+    Dictionary<IndividualTiles, float> dist = new Dictionary<IndividualTiles, float>();
+    //Diccionario con nodos que forman el camino para llegar al objetivo.
+    Dictionary<IndividualTiles, IndividualTiles> prev = new Dictionary<IndividualTiles, IndividualTiles>();
+    //Lista con los nodos que todavía no han sido comprobados al buscar el camino.
+    [SerializeField]
+    public List<IndividualTiles> unvisited = new List<IndividualTiles>();
+
+    //Punto de origen (Nodo en el que está el personaje).
+    IndividualTiles source;
+
+    //Casilla objetivo a la que queremos llegar.
+    IndividualTiles target;
+
+    //Current tile que se está comprobando para hacer el path (antes de invertir el path).
+    IndividualTiles curr;
+
     [Header("PATHFINDING")]
 
     //Variable que se usa para almacenar el resultado del pathfinding y enviarlo.
@@ -179,39 +198,11 @@ public class TileManager : MonoBehaviour
         return graph[x, z].MovementCost;
     }
 
-    //Doy feedback de que casillas están al alcance del personaje.
-    public List<IndividualTiles> checkAvailableTilesForMovement(int movementUds, UnitBase selectedUnit)
+    //Calculo tiles a los que se puede mover una unidad o en los que puede un enemigo buscar objetivos
+    public List<IndividualTiles> OptimizedCheckAvailableTilesForMovement(int movementUds, UnitBase selectedUnit)
     {
         selectedCharacter = selectedUnit;
         tilesAvailableForMovement.Clear();
-
-        OptimizedCheckAvailableTilesForMovement();
-
-        //CÓDIGO DESOPTIMIZADO
-
-        //tempCurrentPathCost = 0;
-
-        //for (int i = 0; i < mapSizeZ; i++)
-        //{
-        //    for (int j = 0; j < mapSizeX; j++)
-        //    {
-        //        CalculatePathForMovementCost(j, i);
-        //        if (tempCurrentPathCost <= movementUds)
-        //        {
-        //            tilesAvailableForMovement.Add(graph[j, i]);
-        //        }
-        //        tempCurrentPathCost = 0;
-        //    }
-        //}
-
-        return tilesAvailableForMovement;
-    }
-
-    //Cambiar selectedCharacter.movementUds por una variable
-    //En la función  de CalculatePathForMovementCost ver si quito lo del tempCurrentPathCost
-
-    private void OptimizedCheckAvailableTilesForMovement()
-    {
         mxMovementUdsSelectedCharacter = selectedCharacter.movementUds;
 
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
@@ -270,38 +261,26 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
+
+        return tilesAvailableForMovement;
+
     }
 
-
-    [SerializeField]
-    public List<IndividualTiles> unvisited;
 
     //Calculo el path para ir hasta una casilla seleccionada desde la posición actual del personaje.
     public void CalculatePathForMovementCost(int x, int z)
     {
         currentPath.Clear();
-
-        //Diccionario con distancia a nodos
-        Dictionary<IndividualTiles, float> dist = new Dictionary<IndividualTiles, float>();
-        //Diccionario con nodos que forman el camino para llegar al objetivo.
-        Dictionary<IndividualTiles, IndividualTiles> prev = new Dictionary<IndividualTiles, IndividualTiles>();
-
-        //Lista con los nodos que todavía no han sido comprobados al buscar el camino.
-
         unvisited.Clear();
-        unvisited = new List<IndividualTiles>();
 
-        //Punto de origen (Nodo en el que está el personaje).
-        IndividualTiles source = graph[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
-
-        //Casilla objetivo a la que queremos llegar.
-        IndividualTiles target = graph[x, z];
+        //Origen y target
+        source = graph[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
+        target = graph[x, z];
 
         //La distancia que hay desde el origen hasta el origen es 0. Por lo que en el diccionario, el nodo que coincida con el origen, su float valdrá 0.
         dist[source] = 0;
         //No hay ningún nodo antes que el origen por lo que el valor de source en el diccionario es null.
         prev[source] = null;
-
 
         //Inicializamos para que pueda llegar hasta alcance infinito ya que no se la distancia hasta el objetivo. Al ponerlos todos en infinitos menos el source, me aseguro que empieza desde ahí.
         //En principio no llegará nunca hasta el infinito porque encontrará antes el objetivo y entonces se cortará el proceso.
@@ -346,6 +325,9 @@ public class TileManager : MonoBehaviour
                     if (isDiagonalMovement || selectedCharacter.GetComponent<EnemyUnit>())
                     {
                         currentNode = possibleNode;
+                        Debug.Log(dist[possibleNode]);
+                        Debug.Log(dist[currentNode]);
+                        Debug.Log("---");
                     }
 
                     else
@@ -411,14 +393,12 @@ public class TileManager : MonoBehaviour
         }
 
         //Si llega hasta aquí si que hay un camino hasta el objetivo.
-
-        IndividualTiles curr = target;
+        curr = target;
 
         //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
         //Esta ruta está al reves, va desde el objetivo hasta el origen.
         while (curr != null)
         {
-
             currentPath.Add(curr);
             curr = prev[curr];
         }
@@ -448,7 +428,7 @@ public class TileManager : MonoBehaviour
     public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
     {
         //Reuno en una lista todos los tiles a los que puedo acceder
-        checkAvailableTilesForMovement(range, currentEnemy);
+        OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
 
         for (int i = 0; i < tilesAvailableForMovement.Count; i++)
         {
