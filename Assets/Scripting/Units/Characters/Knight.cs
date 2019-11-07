@@ -57,16 +57,10 @@ public class Knight : PlayerUnit
 
         else
         {
-            currentHealth -= damageReceived;
-
-            Debug.Log("Soy " + name + " me han hecho daño");
-            Debug.Log(gameObject.name);
+			base.ReceiveDamage(damageReceived, unitAttacker);
         }
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+       
     }
 
 

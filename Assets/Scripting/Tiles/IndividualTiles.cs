@@ -61,16 +61,21 @@ public class IndividualTiles : MonoBehaviour
     [HideInInspector]
     public LevelManager LM;
 
+
     [Header("FEEDBACK")]
     [SerializeField]
     private Material colorTest;
     private Material initialColor;
+	[SerializeField]
+	[@TextAreaAttribute(15, 20)]
+	private string tileInfo;
+	
 
-    #endregion
+	#endregion
 
-    #region INIT
+	#region INIT
 
-    private void Start()
+	private void Start()
     {
         initialColor = GetComponent<MeshRenderer>().material;
 
@@ -86,9 +91,26 @@ public class IndividualTiles : MonoBehaviour
         LM.MoveUnit(this);
     }
 
-    #endregion
+	void OnMouseEnter()
+	{
+		if(isEmpty)
+		{
+			LM.UIM.ShowTooltip("");
+		}
+		else if (!unitOnTile)
+		{
+			LM.UIM.ShowTooltip(tileInfo);
+		}
+		
+	}
+	void OnMouseExit()
+	{
+		LM.UIM.ShowTooltip("");
+	}
 
-    public void UpdateNeighboursOccupied()
+	#endregion
+
+	public void UpdateNeighboursOccupied()
     {
         for (int i = 0; i < neighbours.Count; i++)
         {
