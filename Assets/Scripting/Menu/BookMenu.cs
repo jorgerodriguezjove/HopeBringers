@@ -11,6 +11,9 @@ public class BookMenu : MonoBehaviour
     public PlayableDirector DollyCameraClose;
     public Animator anim;
     bool isOpen;
+
+    public GameObject canvasLevels;
+
     // Start
     void Start()
     {
@@ -23,10 +26,12 @@ public class BookMenu : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetBool("isOpen?", true);
+            canvasLevels.SetActive(true);
         }
         if (Input.GetMouseButtonDown(1))
         {
-            anim.SetBool("isOpen?", false);          
+            anim.SetBool("isOpen?", false);
+            canvasLevels.SetActive(false);
         }
     }
     void changeCamera()
@@ -34,10 +39,12 @@ public class BookMenu : MonoBehaviour
         if(isOpen)
         {
             DollyCameraOpen.Play();
+            
         }
         if(!isOpen)
         {
             DollyCameraClose.Play();
+            
         }
     }
 }
