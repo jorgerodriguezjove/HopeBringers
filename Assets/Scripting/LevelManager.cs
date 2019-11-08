@@ -74,11 +74,11 @@ public class LevelManager : MonoBehaviour
         ReOrderUnits();
         UIM.SetEnemyOrder();
 
-        currentLevelState = LevelState.PlayerPhase;
+        currentLevelState = LevelState.Initializing;
 
         counterForEnemiesOrder = 0;
 
-       // StartFallAnimation();
+        StartFallAnimation();
 
     }
 
