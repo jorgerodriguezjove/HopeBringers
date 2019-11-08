@@ -10,7 +10,7 @@ public class TileManager : MonoBehaviour
 
     //Array donde se meten los tiles en el editor
     [SerializeField]
-    private GameObject[] tilesInScene;
+    public GameObject[] tilesInScene;
 
     //2D array con las coordenadas de los tiles. (Básicamente convierte el array tilesInScene en un array 2D)
     private GameObject[,] tilesCoord;
@@ -96,6 +96,7 @@ public class TileManager : MonoBehaviour
         GeneratePathFindingGraph();
     }
 
+ 
     //Ordeno el array tilesInScene con los 100 tiles en un array 2D 10x10
     void SaveTilePosition()
     {

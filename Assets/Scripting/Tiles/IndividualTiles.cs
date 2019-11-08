@@ -1,10 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class IndividualTiles : MonoBehaviour
 {
     #region VARIABLES
+
+    [Header("INIT")]
+
+    [HideInInspector]
+    public Vector3 initialPosition;
 
     [Header("STATS TILE")]
 
@@ -69,13 +75,26 @@ public class IndividualTiles : MonoBehaviour
 	[SerializeField]
 	[@TextAreaAttribute(15, 20)]
 	private string tileInfo;
-	
 
-	#endregion
 
-	#region INIT
+    #endregion
 
-	private void Start()
+    #region INIT
+
+    //Guardo la posición inicial y elevo el tile para que haga el efecto de caída.
+    private void Awake()
+    {
+        initialPosition = this.transform.position;
+
+        this.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
+    }
+
+    public void FallAnimation()
+    {
+        transform.DOMove(initialPosition, 1).SetEase(Ease.OutBounce);
+    }
+
+    private void Start()
     {
         initialColor = GetComponent<MeshRenderer>().material;
 

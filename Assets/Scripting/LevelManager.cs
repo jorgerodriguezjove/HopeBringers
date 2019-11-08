@@ -1,11 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using DG.Tweening;
 
 public class LevelManager : MonoBehaviour
 {
     #region VARIABLES
+
+    [Header("ANIMACIÓN INICIAL")]
+
+    private GameObject[] tilesInScene;
+
+    WaitForSeconds waitFallingTiles = new WaitForSeconds(0.05f);
 
     [Header("INTERACCIÓN CON UNIDADES")]
 
@@ -44,7 +50,7 @@ public class LevelManager : MonoBehaviour
 
     //Enum que indica si es la fase del jugador o del enemigo.
     [HideInInspector]
-    public enum LevelState { PlayerPhase, ProcessingPlayerActions, EnemyPhase, ProcessingEnemiesActions};
+    public enum LevelState { Initializing ,PlayerPhase, ProcessingPlayerActions, EnemyPhase, ProcessingEnemiesActions};
 
     [HideInInspector]
     public LevelState currentLevelState { get; private set; }
@@ -69,9 +75,45 @@ public class LevelManager : MonoBehaviour
         ReOrderUnits();
         UIM.SetEnemyOrder();
 
-        currentLevelState = LevelState.PlayerPhase;
+        currentLevelState = LevelState.Initializing;
 
         counterForEnemiesOrder = 0;
+
+        StartFallAnimation();
+
+    }
+
+    //Función que se llama para que caigan los tiles y los personajes
+    private void StartFallAnimation()
+    {
+        //Accedo a la lista de tiles del TM. En principio como esto va en el Start no debería haber problema.
+        //Aumento su posición en Y y después reproduzco la animación de cada Tile
+
+        tilesInScene = new GameObject[TM.tilesInScene.Length];
+        tilesInScene = TM.tilesInScene;
+
+        Debug.Log(tilesInScene[0]);
+
+        StartCoroutine("FallingAnimation");
+    }
+
+    IEnumerator FallingAnimation()
+    {
+        //Caen los tiles
+        for (int i = 0; i < tilesInScene.Length; i++)
+        {
+            tilesInScene[i].GetComponent<IndividualTiles>().FallAnimation();
+            yield return waitFallingTiles;
+        }
+
+        currentLevelState = LevelState.PlayerPhase;
+
+        ////Se hace lo mismo con las figuras
+        //for (int i = 0; i < fakeFigurasList.Count; i++)
+        //{
+        //    fakeFigurasList[i].SetActive(true);
+        //    yield return waitFallingTiles;
+        //}
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
