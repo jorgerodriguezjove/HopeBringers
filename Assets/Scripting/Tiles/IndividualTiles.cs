@@ -86,7 +86,7 @@ public class IndividualTiles : MonoBehaviour
     {
         initialPosition = gameObject.transform.position;
 
-        gameObject.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
+        //gameObject.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
     }
 
     
@@ -115,19 +115,25 @@ public class IndividualTiles : MonoBehaviour
 
 	void OnMouseEnter()
 	{
-		if(isEmpty)
+		if (LM.tilesAvailableForMovement.Contains(this))
+		{
+			Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
+		}
+		if (isEmpty)
 		{
 			LM.UIM.ShowTooltip("");
 		}
 		else if (!unitOnTile)
 		{
 			LM.UIM.ShowTooltip(tileInfo);
+
 		}
 		
 	}
 	void OnMouseExit()
 	{
 		LM.UIM.ShowTooltip("");
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 	}
 
 	#endregion

@@ -54,6 +54,9 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	private List<GameObject> playerPortraits;
 
+	[SerializeField]
+	public Texture2D attackCursor, movementCursor;
+
 
 	#endregion
 
