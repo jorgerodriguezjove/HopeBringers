@@ -86,7 +86,7 @@ public class IndividualTiles : MonoBehaviour
     {
         initialPosition = gameObject.transform.position;
 
-        gameObject.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
+        //gameObject.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
     }
 
     
