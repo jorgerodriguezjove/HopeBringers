@@ -56,7 +56,7 @@ public class PlayerUnit : UnitBase
         //Aviso al tile en el que empiezo que soy su unidad.
         myCurrentTile.unitOnTile = this;
 
-       // initMaterial = unitModel.GetComponent<MeshRenderer>().material;
+        initMaterial = unitModel.GetComponent<MeshRenderer>().material;
     }
 
     private void Start()
@@ -91,7 +91,7 @@ public class PlayerUnit : UnitBase
 		LM.DeSelectUnit();
 
         //Doy feedback de que esa unidad no puede hacer nada
-        //unitModel.GetComponent<MeshRenderer>().material = finishedMaterial;
+        unitModel.GetComponent<MeshRenderer>().material = finishedMaterial;
     }
 
     #endregion
@@ -134,11 +134,11 @@ public class PlayerUnit : UnitBase
         for (int j = 1; j < myCurrentPath.Count; j++)
         {
             //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
+            currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y + 1, myCurrentPath[j].transform.position.z);
           
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-            unitModel.transform.DOLookAt(new Vector3 (currentTileVectorToMove.x, unitModel.transform.position.y ,currentTileVectorToMove.z), timeDurationRotation);
+            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
 
             //Espera entre casillas
             yield return new WaitForSeconds(timeMovementAnimation);
@@ -257,12 +257,12 @@ public class PlayerUnit : UnitBase
 
     public void SelectedColor()
     {
-        //unitModel.GetComponent<MeshRenderer>().material = selectedMaterial;
+        unitModel.GetComponent<MeshRenderer>().material = selectedMaterial;
     }
 
     public void InitialColor()
     {
-       // unitModel.GetComponent<MeshRenderer>().material = initMaterial;
+        unitModel.GetComponent<MeshRenderer>().material = initMaterial;
     }
 
 	
