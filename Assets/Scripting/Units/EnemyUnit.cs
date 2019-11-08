@@ -129,6 +129,10 @@ public class EnemyUnit : UnitBase
 		LM.UIM.ShowTooltip(unitInfo);
 		HealthBarOn_Off(true);
 		gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+		if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this))
+		{
+			Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+		}
     }
 
     private void OnMouseExit()
@@ -137,7 +141,8 @@ public class EnemyUnit : UnitBase
         LM.HideHover(this);
 		HealthBarOn_Off(false);
 		LM.UIM.ShowTooltip("");
-    }
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+	}
 
     #endregion
 
