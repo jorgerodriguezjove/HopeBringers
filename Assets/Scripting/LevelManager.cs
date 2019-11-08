@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class LevelManager : MonoBehaviour
 {
@@ -89,7 +88,7 @@ public class LevelManager : MonoBehaviour
         //Accedo a la lista de tiles del TM. En principio como esto va en el Start no debería haber problema.
         //Aumento su posición en Y y después reproduzco la animación de cada Tile
 
-        tilesInScene = new GameObject[TM.tilesInScene.Length];
+        // tilesInScene = new GameObject[TM.tilesInScene.Length];
         tilesInScene = TM.tilesInScene;
 
         Debug.Log(tilesInScene[0]);

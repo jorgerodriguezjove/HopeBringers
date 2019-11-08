@@ -84,14 +84,17 @@ public class IndividualTiles : MonoBehaviour
     //Guardo la posición inicial y elevo el tile para que haga el efecto de caída.
     private void Awake()
     {
-        initialPosition = this.transform.position;
+        initialPosition = gameObject.transform.position;
 
-        this.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
+        gameObject.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
     }
+
+    
 
     public void FallAnimation()
     {
-        transform.DOMove(initialPosition, 1).SetEase(Ease.OutBounce);
+        gameObject.transform.DOMove(initialPosition, 0.1f).SetEase(Ease.OutBounce);
+       
     }
 
     private void Start()
