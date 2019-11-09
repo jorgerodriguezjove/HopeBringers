@@ -99,6 +99,19 @@ public class UnitBase : MonoBehaviour
     //Variable que guarda el número más pequeño al comparar el rango del personaje con el número de tiles disponibles para atacar.
     protected int rangeVSTilesInLineLimitant;
 
+    [Header("PARTICLES")]
+
+    [SerializeField]
+    protected GameObject movementParticle;
+    [SerializeField]
+    protected GameObject deathParticle;
+    [SerializeField]
+    protected GameObject attackParticle;
+    [SerializeField]
+    protected GameObject criticAttackParticle;
+    [SerializeField]
+    protected GameObject collisionParticle;
+    
     [Header("STATS GENÉRICOS")]
 
     //Daño que hace cada unidad por choque

@@ -55,6 +55,8 @@ public class EnBalista : EnemyUnit
 
     public override void MoveUnit()
     {
+        movementParticle.SetActive(true);
+
         //En función de a donde este mirando su derecha o su izquierda cambia
         if (currentFacingDirection == FacingDirection.North)
         {
@@ -339,6 +341,8 @@ public class EnBalista : EnemyUnit
                 }
             }
         }
+
+        movementParticle.SetActive(false);
 
         myCurrentEnemyState = enemyState.Searching;
     }

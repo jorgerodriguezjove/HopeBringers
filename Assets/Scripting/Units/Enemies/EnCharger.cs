@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class EnCharger : EnemyUnit
 {
+
     public override void SearchingObjectivesToAttack()
     {
         //Aggro de unidades hacer cuando tengamos la pasiva del caballero
@@ -40,6 +41,8 @@ public class EnCharger : EnemyUnit
 
     public override void Attack()
     {
+        movementParticle.SetActive(true);
+
         //Arriba o abajo
         if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == myCurrentTile.tileX)
         {
@@ -136,6 +139,8 @@ public class EnCharger : EnemyUnit
                 DoDamage(currentUnitsAvailableToAttack[0]);
             }
         }
+
+        movementParticle.SetActive(false);
 
         myCurrentEnemyState = enemyState.Ended;
     }

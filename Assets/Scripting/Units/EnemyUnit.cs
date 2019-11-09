@@ -54,6 +54,8 @@ public class EnemyUnit : UnitBase
 
         myCurrentEnemyState = enemyState.Waiting;
         currentHealth = maxHealth;
+
+        movementParticle.SetActive(false);
     }
 
     #endregion

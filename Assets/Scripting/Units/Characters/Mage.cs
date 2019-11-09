@@ -6,7 +6,10 @@ public class Mage : PlayerUnit
 {
     #region VARIABLES
 
-    //[Header("STATS DE CLASE")]
+    [Header("SPECIAL VARIABLES FOR CHARACTER")]
+
+    [SerializeField]
+    protected GameObject ChargingParticle;
 
     #endregion
 

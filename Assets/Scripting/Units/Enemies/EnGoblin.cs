@@ -133,6 +133,8 @@ public class EnGoblin : EnemyUnit
 
     public override void MoveUnit()
     {
+        movementParticle.SetActive(true);
+
         //CAMBIAR ESTO 
         LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
         pathToObjective = LM.TM.currentPath;
@@ -142,6 +144,8 @@ public class EnGoblin : EnemyUnit
 
         myCurrentEnemyState = enemyState.Waiting;
         StartCoroutine("MovingUnitAnimation");
+
+        movementParticle.SetActive(false);
 
         myCurrentTile.unitOnTile = null;
         myCurrentTile = pathToObjective[pathToObjective.Count-2];

@@ -148,6 +148,8 @@ public class EnGiant : EnemyUnit
 
     public override void MoveUnit()
     {
+        movementParticle.SetActive(true);
+
         //Arriba o abajo
         if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
         {
@@ -334,8 +336,10 @@ public class EnGiant : EnemyUnit
         //Sin embargo si el objetivo se encuentra en diágonal (por ejemplo arriba a la derecha)
         //El gigante tiene que decidir una de las dos (DISEÑO REGLAS DE PATHFINDING)
         //Una vez decidida avanza en esta dirección hasta que no pueda más y si sigue estando en diagonal, avanza en la que había descartado antes.
-        
+
         //Buscar de nuevo si puedo pegarle
+
+        movementParticle.SetActive(false);
 
         myCurrentEnemyState = enemyState.Searching;
     }

@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -159,7 +160,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1675149 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -184,6 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -199,7 +202,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &22521067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,6 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -301,7 +306,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &38483321 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5809797896216913895, guid: 0aa1f913d04c21748a29637181344fa8,
@@ -332,6 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -347,7 +354,38 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
+--- !u!1 &43009677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 467547340}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 43009678}
+  m_Layer: 0
+  m_Name: Rogue (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &43009678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 467547340}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43009677}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &43142437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -621,6 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -636,7 +675,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &62635854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -786,6 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -801,7 +842,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &102578895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -950,6 +992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -965,7 +1008,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &110887419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1115,6 +1159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1130,7 +1175,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &119104037 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -1155,6 +1201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1170,7 +1217,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &125213213 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -1195,6 +1243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1210,7 +1259,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &125953171
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1298,6 +1348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1313,7 +1364,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &130941923 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -1338,6 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1353,7 +1406,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &131184995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1502,6 +1556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1517,7 +1572,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &136181809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1568,7 +1624,7 @@ PrefabInstance:
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
@@ -1767,7 +1823,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4839676818009626, guid: ab589f7d080094e4bb96a61dc55fdba1, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4839676818009626, guid: ab589f7d080094e4bb96a61dc55fdba1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1875,6 +1931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1890,7 +1947,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &174366196 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -1915,6 +1973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -1930,7 +1989,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &174654129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2451,6 +2511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -2466,7 +2527,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &206060972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2508,7 +2570,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4062019639454976, guid: 58e39ded56e8b1a47b7035be3cad890a, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4062019639454976, guid: 58e39ded56e8b1a47b7035be3cad890a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2563,7 +2625,7 @@ Transform:
   - {fileID: 374038808}
   - {fileID: 874959024}
   - {fileID: 2140887429}
-  - {fileID: 1926289723}
+  - {fileID: 4341451255958888}
   m_Father: {fileID: 1871458378}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2591,6 +2653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -2606,7 +2669,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &217601656
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2879,6 +2943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -2894,7 +2959,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &225411035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2981,6 +3047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -2996,7 +3063,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &240153206
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3083,6 +3151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -3098,7 +3167,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &247908808 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -3123,6 +3193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -3138,7 +3209,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &255550224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3180,7 +3252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4084015980324546, guid: 34e2d9d37cbcb2b4da41afb7a6922a6c, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4084015980324546, guid: 34e2d9d37cbcb2b4da41afb7a6922a6c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3412,6 +3484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -3427,7 +3500,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &271734419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3638,6 +3712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -3653,7 +3728,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &302166331 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -3678,6 +3754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -3693,7 +3770,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &305260104
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3780,6 +3858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -3795,7 +3874,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &311046335 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -3820,6 +3900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -3835,7 +3916,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &335069457
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4047,6 +4129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4062,7 +4145,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &347758612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4150,6 +4234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4165,7 +4250,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &351588180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4187,7 +4273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.3339996
+      value: 17.47
       objectReference: {fileID: 0}
     - target: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75, type: 3}
       propertyPath: m_LocalRotation.x
@@ -4390,6 +4476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4405,7 +4492,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &375300641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4461,7 +4549,7 @@ PrefabInstance:
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
@@ -4572,69 +4660,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e11820def211aac499d1bcf50c3e3f8a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b8fbee291cdc1046a281cb2b3b51bf7, type: 3}
---- !u!1001 &380523787
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1545825183}
-    m_Modifications:
-    - target: {fileID: 1776954259925760, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_Name
-      value: "SurfaceImpactStone/ CHOQUE A\xD1ADIDOS (COMPARAR)"
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -28.7533
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -7.344989
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.3849363
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e, type: 3}
---- !u!4 &380523788 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4455956304119052, guid: 2030e0eb33dfc224b9bcbe4ee0fa1a1e,
-    type: 3}
-  m_PrefabInstance: {fileID: 380523787}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &385832935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4722,6 +4747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4737,7 +4763,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &406340958 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -4762,6 +4789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4777,7 +4805,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &411075519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -4802,6 +4831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4817,7 +4847,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &414330943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4905,6 +4936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4920,7 +4952,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &421488111 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -4945,6 +4978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -4960,7 +4994,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &421689111 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -4985,6 +5020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5000,7 +5036,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &422464519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5042,7 +5079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4740221714784302, guid: 0d074ad7d2a820447a194360b89660ab, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4740221714784302, guid: 0d074ad7d2a820447a194360b89660ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5150,6 +5187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5165,7 +5203,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &431690404 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -5190,6 +5229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5205,7 +5245,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &442060796 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -5230,6 +5271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5245,7 +5287,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &445090996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5332,6 +5375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5347,7 +5391,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &450023315 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -5372,6 +5417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5387,7 +5433,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &453156072 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -5412,6 +5459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5427,7 +5475,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &467547340
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5621,6 +5670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -5636,7 +5686,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &490530088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6101,6 +6152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -6116,7 +6168,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &539355680 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -6141,6 +6194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -6156,7 +6210,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &542641437 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -6181,6 +6236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -6196,7 +6252,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &547039134 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -6221,6 +6278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -6236,7 +6294,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &554547669
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6292,7 +6351,7 @@ PrefabInstance:
     - target: {fileID: 8699764388541127647, guid: 780a021e981a564479c6494d0d2df322,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8699764388541127647, guid: 780a021e981a564479c6494d0d2df322,
         type: 3}
@@ -6605,6 +6664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -6620,7 +6680,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &576247413 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -6645,6 +6706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -6660,7 +6722,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &583504907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6702,7 +6765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4778778235288058, guid: 0881e11939d5d5146b3ecf60ee20b65e, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4778778235288058, guid: 0881e11939d5d5146b3ecf60ee20b65e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6748,6 +6811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -6763,70 +6827,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
---- !u!1001 &599345332
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 858837635}
-    m_Modifications:
-    - target: {fileID: 1153689192050712, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_Name
-      value: LightningExplosionBlue/MAGO(Puede que mejor)-------
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.3899994
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2b881798883cca7428d49471d484e5c9, type: 3}
---- !u!4 &599345333 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4029364532367530, guid: 2b881798883cca7428d49471d484e5c9,
-    type: 3}
-  m_PrefabInstance: {fileID: 599345332}
-  m_PrefabAsset: {fileID: 0}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &610963712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6868,7 +6870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4367932644850542, guid: 2cf07f47d48b32c41bbfa08c86426e38, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4367932644850542, guid: 2cf07f47d48b32c41bbfa08c86426e38, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7303,6 +7305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -7318,7 +7321,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &646830302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -7343,6 +7347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -7358,7 +7363,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &654723720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7445,6 +7451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -7460,7 +7467,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &658025009 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -7485,6 +7493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -7500,7 +7509,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &659886400
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7587,6 +7597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -7602,7 +7613,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &676877350 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -7627,6 +7639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -7642,7 +7655,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &678680001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8165,6 +8179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8180,7 +8195,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &713444893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8330,6 +8346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8345,7 +8362,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &727374395 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -8370,6 +8388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8385,7 +8404,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &734423403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8534,6 +8554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8549,7 +8570,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &736916451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8636,6 +8658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8651,7 +8674,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &739103592 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -8676,6 +8700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8691,7 +8716,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &750576501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8778,6 +8804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8793,7 +8820,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &758189096
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8881,6 +8909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -8896,7 +8925,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &764347525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9137,6 +9167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9152,7 +9183,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &797265967 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -9177,6 +9209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9192,7 +9225,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &799357291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9279,6 +9313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9294,7 +9329,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &803721455 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -9319,6 +9355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9334,7 +9371,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &815896817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9422,6 +9460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9437,7 +9476,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &823669001 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -9462,6 +9502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9477,7 +9518,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &824253053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9750,6 +9792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9765,7 +9808,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &837109371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9914,6 +9958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -9929,7 +9974,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &840532562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10264,6 +10310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -10279,7 +10326,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &852540146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10373,7 +10421,7 @@ Transform:
   - {fileID: 910141357}
   - {fileID: 758189097}
   - {fileID: 704913497}
-  - {fileID: 599345333}
+  - {fileID: 4029365078071326}
   - {fileID: 2070944244}
   - {fileID: 490530089}
   m_Father: {fileID: 1871458378}
@@ -10528,6 +10576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -10543,7 +10592,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &874959023
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10631,6 +10681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -10646,7 +10697,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &907414482 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -10671,6 +10723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -10686,7 +10739,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &910141356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10836,6 +10890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -10851,7 +10906,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &914761312 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -10876,6 +10932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -10891,7 +10948,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &922619157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -10916,6 +10974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -10931,7 +10990,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &932496848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11018,6 +11078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11033,7 +11094,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &938651016 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -11058,6 +11120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11073,7 +11136,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &946227390 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -11098,6 +11162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11113,7 +11178,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &950707048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11332,6 +11398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11347,7 +11414,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &974483818 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -11372,6 +11440,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11387,7 +11456,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &978476435
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11429,7 +11499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4507666630539288, guid: 9d389d160290a5148a39bd81010b005d, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4507666630539288, guid: 9d389d160290a5148a39bd81010b005d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11475,6 +11545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11490,7 +11561,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &981255127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11532,7 +11604,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4948638204692556, guid: 0750c6e74aaf98c44a8ea49c64b27e99, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4948638204692556, guid: 0750c6e74aaf98c44a8ea49c64b27e99, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11771,7 +11843,7 @@ RectTransform:
   - {fileID: 1743917640}
   - {fileID: 952487735}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11802,6 +11874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11817,7 +11890,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1000273377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11904,6 +11978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11919,7 +11994,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1013574884 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -11944,6 +12020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -11959,7 +12036,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1015013766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12001,7 +12079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4503945406049820, guid: dbada9b00d4f0394c87e2738108b402b, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4503945406049820, guid: dbada9b00d4f0394c87e2738108b402b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -12047,6 +12125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12062,7 +12141,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1046132461 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12087,6 +12167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12102,7 +12183,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1051352459 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12127,6 +12209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12142,7 +12225,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1052711517 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12167,6 +12251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12182,7 +12267,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1056879730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12269,6 +12355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12284,7 +12371,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1058160430 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12309,6 +12397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12324,7 +12413,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1070054599 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12349,6 +12439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12364,7 +12455,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1070485777 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12389,6 +12481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12404,7 +12497,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1082153376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12467,6 +12561,36 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e11820def211aac499d1bcf50c3e3f8a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b8fbee291cdc1046a281cb2b3b51bf7, type: 3}
+--- !u!1 &1089821688
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 619457908}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1089821689}
+  m_Layer: 0
+  m_Name: Knight (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1089821689
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 619457908}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089821688}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1090735449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12615,6 +12739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12630,7 +12755,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1093864164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12819,6 +12945,36 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1094278581}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1104311462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2031948863}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1104311463}
+  m_Layer: 0
+  m_Name: Berserker (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1104311463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 2031948863}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104311462}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1108708175 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12843,6 +12999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12858,7 +13015,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1114052803 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12883,6 +13041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12898,7 +13057,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1117861035 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -12923,6 +13083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -12938,7 +13099,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1122441304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13253,6 +13415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13268,7 +13431,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1137921666 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -13293,6 +13457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13308,7 +13473,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1144865662
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13395,6 +13561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13410,7 +13577,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1166144725 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -13435,6 +13603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13450,7 +13619,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1168092956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -13475,6 +13645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13490,7 +13661,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1173629453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13639,6 +13811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13654,7 +13827,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1181366051 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -13679,6 +13853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13694,7 +13869,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1191325555 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -13719,6 +13895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13734,7 +13911,38 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
+--- !u!1 &1199878126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 621077554}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1199878127}
+  m_Layer: 0
+  m_Name: Mage (Missing Prefab)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1199878127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 621077554}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199878126}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1205086556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13821,6 +14029,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13836,7 +14045,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1212016301
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13923,6 +14133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -13938,7 +14149,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1219547977
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14149,6 +14361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -14164,7 +14377,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1244561845 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -14189,6 +14403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -14204,7 +14419,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1250357587
 GameObject:
   m_ObjectHideFlags: 0
@@ -14232,7 +14448,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2005763249}
+  - {fileID: 4276890913242038}
   - {fileID: 715178556}
   - {fileID: 1877440945}
   - {fileID: 52254866}
@@ -14387,6 +14603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -14402,7 +14619,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1273691577
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14617,7 +14835,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1306381997
 PrefabInstance:
@@ -14705,6 +14923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -14720,7 +14939,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1307419506
 GameObject:
   m_ObjectHideFlags: 0
@@ -14836,6 +15056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -14851,7 +15072,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1310489385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14938,6 +15160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -14953,7 +15176,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1323713347
 GameObject:
   m_ObjectHideFlags: 0
@@ -15197,6 +15421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15212,7 +15437,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1338190572 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -15237,6 +15463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15252,7 +15479,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1344872015 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -15277,6 +15505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15292,7 +15521,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1347395302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15503,6 +15733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15518,7 +15749,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1358242697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15605,6 +15837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15620,7 +15853,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1366580685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15769,6 +16003,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15784,7 +16019,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1371615683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15871,6 +16107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15886,7 +16123,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1380308541 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -15911,6 +16149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15926,7 +16165,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1385233892 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -15951,6 +16191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -15966,7 +16207,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1386202575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16116,6 +16358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -16131,7 +16374,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1395907161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16173,7 +16417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4787418785028990, guid: eeb92f10136c3174d8c830dc83ece4a7, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4787418785028990, guid: eeb92f10136c3174d8c830dc83ece4a7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -16530,6 +16774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -16545,7 +16790,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1471138337
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16633,6 +16879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -16648,7 +16895,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1476164803 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -16673,6 +16921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -16688,7 +16937,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1486201233 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -16713,6 +16963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -16728,7 +16979,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1489842528 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -16753,6 +17005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -16768,7 +17021,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1490071920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16855,6 +17109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -16870,7 +17125,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1496819190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17024,7 +17280,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1502513552
 PrefabInstance:
@@ -17113,6 +17369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -17128,7 +17385,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1513479462 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -17153,6 +17411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -17168,7 +17427,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1515672187
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17255,6 +17515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -17270,7 +17531,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1521073699 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -17295,6 +17557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -17310,7 +17573,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1522503159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17459,6 +17723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -17474,70 +17739,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
---- !u!1001 &1526022052
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1545825183}
-    m_Modifications:
-    - target: {fileID: 1901929722620332, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_Name
-      value: RocketMuzzleYellow/CHOQUE------------
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -17.717705
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -9.34
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.3579597
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_RootOrder
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0faae5f747e99fa42b2001ac7ae6a0ba, type: 3}
---- !u!4 &1526022053 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4281290156805410, guid: 0faae5f747e99fa42b2001ac7ae6a0ba,
-    type: 3}
-  m_PrefabInstance: {fileID: 1526022052}
-  m_PrefabAsset: {fileID: 0}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1526823575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17579,7 +17782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4733873736996298, guid: c990de991a9e10245b04d95ec88912e5, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4733873736996298, guid: c990de991a9e10245b04d95ec88912e5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -17878,7 +18081,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 380523788}
   - {fileID: 978476436}
   - {fileID: 1015013767}
   - {fileID: 1395907162}
@@ -17894,7 +18096,6 @@ Transform:
   - {fileID: 1526823576}
   - {fileID: 583504908}
   - {fileID: 981255128}
-  - {fileID: 1526022053}
   - {fileID: 1674450885}
   m_Father: {fileID: 1871458378}
   m_RootOrder: 3
@@ -17923,6 +18124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -17938,7 +18140,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1551738057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18026,6 +18229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18041,7 +18245,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1558700535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18129,6 +18334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18144,7 +18350,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1566036451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18356,6 +18563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18371,7 +18579,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1595391740
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18459,6 +18668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18474,7 +18684,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1602063795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -18499,6 +18710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18514,7 +18726,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1607712083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18725,6 +18938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18740,7 +18954,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1647778178 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -18765,6 +18980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18780,7 +18996,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1654614579 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -18805,6 +19022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18820,7 +19038,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1655893541 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -18845,6 +19064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18860,7 +19080,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1661477157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -18885,6 +19106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -18900,7 +19122,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1667800733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18987,6 +19210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -19002,7 +19226,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1669101058 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -19027,6 +19252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -19042,7 +19268,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1669504128
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19208,7 +19435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4259340669405964, guid: 429ff48304d4db946bd190220bdd0ffd, type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4259340669405964, guid: 429ff48304d4db946bd190220bdd0ffd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -19254,6 +19481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -19269,7 +19497,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1691176009 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -19294,6 +19523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -19309,7 +19539,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1695114924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19396,6 +19627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -19411,7 +19643,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1701964812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19743,7 +19976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4312292349663568, guid: 5fda0d58e11b9c645ba05883733c1b01, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.8530006
+      value: 12.863001
       objectReference: {fileID: 0}
     - target: {fileID: 4312292349663568, guid: 5fda0d58e11b9c645ba05883733c1b01, type: 3}
       propertyPath: m_LocalRotation.x
@@ -19933,6 +20166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -19948,7 +20182,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1738411893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20035,6 +20270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20050,7 +20286,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1743917639
 GameObject:
   m_ObjectHideFlags: 0
@@ -20254,6 +20491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20269,7 +20507,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1768991111 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -20294,6 +20533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20309,7 +20549,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1769378464 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -20334,6 +20575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20349,7 +20591,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1771824104 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -20374,6 +20617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20389,7 +20633,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1773335707 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -20414,6 +20659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20429,7 +20675,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1776192518
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20578,6 +20825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20593,7 +20841,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1790770845
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20742,6 +20991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20757,7 +21007,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1814302912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20907,6 +21158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -20922,7 +21174,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1820055862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21009,6 +21262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -21024,7 +21278,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1832618994 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -21049,6 +21304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -21064,7 +21320,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1849132583
 GameObject:
   m_ObjectHideFlags: 0
@@ -21246,6 +21503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -21261,7 +21519,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1866202978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21365,7 +21624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4242338612980072, guid: 5ec029bdafe3ea54eb952e237d9de550, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4242338612980072, guid: 5ec029bdafe3ea54eb952e237d9de550, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -21510,6 +21769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -21525,7 +21785,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1879449551
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21674,6 +21935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -21689,7 +21951,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1900902688 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -21714,6 +21977,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -21729,7 +21993,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1903178480
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21909,7 +22174,7 @@ PrefabInstance:
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9141236476622256711, guid: b9180697d7398074a8a3b89bc3f1ceb6,
         type: 3}
@@ -21982,6 +22247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -21997,7 +22263,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &1912755510 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -22022,6 +22289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -22037,7 +22305,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1913683779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22174,69 +22443,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e11820def211aac499d1bcf50c3e3f8a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b8fbee291cdc1046a281cb2b3b51bf7, type: 3}
---- !u!1001 &1926289722
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 206667353}
-    m_Modifications:
-    - target: {fileID: 1448971607870028, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_Name
-      value: GlowZoneBlue
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -35.884705
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -4.723014
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3.7928505
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d01a7b49ea71d0a47bb667a590616946, type: 3}
---- !u!4 &1926289723 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4341449868645458, guid: d01a7b49ea71d0a47bb667a590616946,
-    type: 3}
-  m_PrefabInstance: {fileID: 1926289722}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1930427080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22278,7 +22484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4887910282672334, guid: 2a58234d913d5e54987590bf27cf5324, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4887910282672334, guid: 2a58234d913d5e54987590bf27cf5324, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -22634,6 +22840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -22649,7 +22856,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1961180495
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22799,6 +23007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -22814,7 +23023,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &1979565437
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22901,6 +23111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -22916,7 +23127,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &2000841983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23020,7 +23232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4581115348621078, guid: 1ab21f1ce561cfe46bb8e0c9aa39284c, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4581115348621078, guid: 1ab21f1ce561cfe46bb8e0c9aa39284c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23041,69 +23253,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4581115348621078, guid: 1ab21f1ce561cfe46bb8e0c9aa39284c,
     type: 3}
   m_PrefabInstance: {fileID: 2005463045}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &2005763248
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1250357588}
-    m_Modifications:
-    - target: {fileID: 1456060657882760, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_Name
-      value: DeathNormal/MUERTE(MIRAR VARIANTES)----------
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.5600004
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.849001
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.6465814
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.762845
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -80.569
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7e6767444726b234c868079dec6d7ae0, type: 3}
---- !u!4 &2005763249 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4276890654080774, guid: 7e6767444726b234c868079dec6d7ae0,
-    type: 3}
-  m_PrefabInstance: {fileID: 2005763248}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2012288823 stripped
 GameObject:
@@ -23129,6 +23278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -23144,7 +23294,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &2014008401 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -23169,6 +23320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -23184,7 +23336,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &2019609863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23235,7 +23388,7 @@ PrefabInstance:
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6409402853590735207, guid: 9e1d3d0283af2ff4385d754f6c783c8e,
         type: 3}
@@ -23718,7 +23871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4841085324538612, guid: e3b94352301f8eb4b975db3b6aa39719, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4841085324538612, guid: e3b94352301f8eb4b975db3b6aa39719, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -24411,6 +24564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -24426,7 +24580,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &2091789048 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -24451,6 +24606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -24466,7 +24622,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &2093292757
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24553,6 +24710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -24568,7 +24726,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &2100652042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24841,6 +25000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -24856,7 +25016,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1 &2132002523 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1219471545100730, guid: 1b8fbee291cdc1046a281cb2b3b51bf7,
@@ -24881,6 +25042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
   tileX: 0
   tileZ: 0
   MovementCost: 1
@@ -24896,7 +25058,8 @@ MonoBehaviour:
   tilesInLineLeft: []
   TM: {fileID: 0}
   LM: {fileID: 0}
-  colorTest: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  availableForMovementColor: {fileID: 0}
+  tileInfo: 
 --- !u!1001 &2140887428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25034,6 +25197,93 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e11820def211aac499d1bcf50c3e3f8a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b8fbee291cdc1046a281cb2b3b51bf7, type: 3}
+--- !u!4 &4029365078071326 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+    type: 3}
+  m_PrefabInstance: {fileID: 3354501685588598060}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4276890913242038 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+    type: 3}
+  m_PrefabInstance: {fileID: 7264872964072803441}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4341451255958888 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 8063041786556716509}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3354501685588598060
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 858837635}
+    m_Modifications:
+    - target: {fileID: 3353366173247169920, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_Name
+      value: LightningExplosionBlue/MAGO(Puede que mejor)-------
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.3899994
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3351739345795220786, guid: a2a4ac8f31ca2c74c931383da1f75c07,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a2a4ac8f31ca2c74c931383da1f75c07, type: 3}
 --- !u!1001 &5809797896246727326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26668,3 +26918,210 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+--- !u!1001 &7264872964072803441
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1250357588}
+    m_Modifications:
+    - target: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_Name
+      value: DeathNormal/MUERTE(MIRAR VARIANTES)----------
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.5600004
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.849001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6465814
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.762845
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -80.569
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268021135378642887, guid: 5df7672c7c74523469da8b03d25c4f20,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5df7672c7c74523469da8b03d25c4f20, type: 3}
+--- !u!1001 &7976897748502792383
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_Name
+      value: MuzzleFlashBulletYellow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.595
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.469
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.00000090897083
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.00000093877316
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6918594716829959479, guid: 481b97b3d250a024da3fd77f82a38dfd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 481b97b3d250a024da3fd77f82a38dfd, type: 3}
+--- !u!1001 &8063041786556716509
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 206667353}
+    m_Modifications:
+    - target: {fileID: 8061592988846048939, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_Name
+      value: GlowZoneBlue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -35.884705
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.723014
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.7928505
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064470623968286901, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4a2b675ed56e21e48ae33c1b7b8295e9, type: 3}

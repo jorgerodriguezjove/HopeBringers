@@ -57,6 +57,8 @@ public class PlayerUnit : UnitBase
         myAnimator = GetComponent<Animator>();
 
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
+
+        movementParticle.SetActive(false);
     }
 
     private void Start()
@@ -128,6 +130,9 @@ public class PlayerUnit : UnitBase
 
     IEnumerator MovingUnitAnimation()
     {
+        //Activo el trail de particulas de movimiento
+        movementParticle.SetActive(true);
+
         isMovingorRotating = true;
 
         //Animación de movimiento
@@ -147,7 +152,8 @@ public class PlayerUnit : UnitBase
             yield return new WaitForSeconds(timeMovementAnimation);
         }
 
-        Debug.Log("Out of the loop");
+        //Desactivo el trail de partículas de movimiento
+        movementParticle.SetActive(false);
 
         //Esto es solo para la prueba de movimiento para ver cual elegimos.
         if (!LM.TM.isDiagonalMovement)
