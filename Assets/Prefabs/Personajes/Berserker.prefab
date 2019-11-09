@@ -469,6 +469,7 @@ GameObject:
   - component: {fileID: 4151604024619605610}
   - component: {fileID: 6633025974820430853}
   - component: {fileID: 1111117924882710588}
+  - component: {fileID: 1610800354654958008}
   m_Layer: 0
   m_Name: Berserker
   m_TagString: Untagged
@@ -547,6 +548,54 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1610800354654958008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151604024619605608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4b92515a3862bc40be59a5685cd2606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 7
+  maxHealth: 30
+  currentHealth: 0
+  movementUds: 6
+  baseDamage: 10
+  multiplicatorBackAttack: 2
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
+  range: 1
+  myCurrentTile: {fileID: 0}
+  currentFacingDirection: 0
+  timePushAnimation: 0.2
+  timeMovementAnimation: 0.2
+  timeDurationRotation: 0.2
+  unitModel: {fileID: 17705911511334476, guid: 60752b49917998a43b8650532b1998a2, type: 3}
+  unitMaterialModel: {fileID: 8183121626778123672}
+  maxHeightDifferenceToAttack: 1
+  currentUnitsAvailableToAttack: []
+  damageMadeByPush: 8
+  damageMadeByFall: 5
+  healthBar: {fileID: 8291781782071899866, guid: 60752b49917998a43b8650532b1998a2,
+    type: 3}
+  unitInfo: Soy maricon y me enfado
+  AvailableToBeAttackedColor: {fileID: 0}
+  canvasUnit: {fileID: 0}
+  characterDescription: 
+  unitIcon: {fileID: 0}
+  myCanvasHealthbar: {fileID: 0}
+  hasMoved: 0
+  hasAttacked: 0
+  isMovingorRotating: 0
+  selectedMaterial: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
+  canvasWithRotationArrows: {fileID: 1551791865549785014}
+  LevelManagerRef: {fileID: 0}
+  UIManagerRef: {fileID: 0}
 --- !u!1 &4252254210549919596
 GameObject:
   m_ObjectHideFlags: 0
@@ -1363,89 +1412,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
-  m_WarningMessage: '
-
-    Transform ''Finger_03'' has been deleted
-
-    Transform ''Finger_02'' has been deleted
-
-    Transform ''Finger_01'' has been deleted
-
-    Transform ''IndexFinger_03'' has been deleted
-
-    Transform ''IndexFinger_02'' has been deleted
-
-    Transform ''IndexFinger_01'' has been deleted
-
-    Transform ''Thumb_03'' has been deleted
-
-    Transform ''Thumb_02'' has been deleted
-
-    Transform ''Thumb_01'' has been deleted
-
-    Transform ''Hand_L'' has been deleted
-
-    Transform ''Elbow_L'' has been deleted
-
-    Transform ''Shoulder_L'' has been deleted
-
-    Transform ''Clavicle_L'' has been deleted
-
-    Transform ''Finger_03 1'' has been deleted
-
-    Transform ''Finger_02 1'' has been deleted
-
-    Transform ''Finger_01 1'' has been deleted
-
-    Transform ''IndexFinger_03 1'' has been deleted
-
-    Transform ''IndexFinger_02 1'' has been deleted
-
-    Transform ''IndexFinger_01 1'' has been deleted
-
-    Transform ''Thumb_03 1'' has been deleted
-
-    Transform ''Thumb_02 1'' has been deleted
-
-    Transform ''Thumb_01 1'' has been deleted
-
-    Transform ''Hand_R'' has been deleted
-
-    Transform ''Elbow_R'' has been deleted
-
-    Transform ''Shoulder_R'' has been deleted
-
-    Transform ''Clavicle_R'' has been deleted
-
-    Transform ''Head'' has been deleted
-
-    Transform ''Neck'' has been deleted
-
-    Transform ''Spine_03'' has been deleted
-
-    Transform ''Spine_02'' has been deleted
-
-    Transform ''Spine_01'' has been deleted
-
-    Transform ''Ball_L'' has been deleted
-
-    Transform ''Ankle_L'' has been deleted
-
-    Transform ''LowerLeg_L'' has been deleted
-
-    Transform ''UpperLeg_L'' has been deleted
-
-    Transform ''Ball_R'' has been deleted
-
-    Transform ''Ankle_R'' has been deleted
-
-    Transform ''LowerLeg_R'' has been deleted
-
-    Transform ''UpperLeg_R'' has been deleted
-
-    Transform ''Hips'' has been deleted
-
-    Transform ''Root'' has been deleted'
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -3790,46 +3757,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1995812540027419705}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_Name
-      value: PeanasPrueba
-      objectReference: {fileID: 0}
-    - target: {fileID: -4282773189472145888, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2341580078844879043, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -5819824089242204040, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8958288811544592685, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -1538924730050149809, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6390103730037235984, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -635723343173954451, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3899,6 +3826,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_Name
+      value: PeanasPrueba
+      objectReference: {fileID: 0}
+    - target: {fileID: -4282773189472145888, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2341580078844879043, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5819824089242204040, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8958288811544592685, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1538924730050149809, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6390103730037235984, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -635723343173954451, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5353201909904096835, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}

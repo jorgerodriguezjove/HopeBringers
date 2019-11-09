@@ -536,8 +536,9 @@ GameObject:
   - component: {fileID: 1309017473829565756}
   - component: {fileID: 8627445886453485395}
   - component: {fileID: 2656172102970731370}
+  - component: {fileID: 3696733763687805787}
   m_Layer: 0
-  m_Name: "P\xEDcaro"
+  m_Name: Rogue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -614,6 +615,54 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3696733763687805787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309017473829565758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a31d607529dd8f049bab292066a0a568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  maxHealth: 10
+  currentHealth: 0
+  movementUds: 6
+  baseDamage: 10
+  multiplicatorBackAttack: 1.75
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
+  range: 1
+  myCurrentTile: {fileID: 0}
+  currentFacingDirection: 0
+  timePushAnimation: 1
+  timeMovementAnimation: 0.2
+  timeDurationRotation: 0.2
+  unitModel: {fileID: 5439533404574807104, guid: befc36c9291a3e54f80b8b2a1152a249,
+    type: 3}
+  unitMaterialModel: {fileID: 3246384063879712890}
+  maxHeightDifferenceToAttack: 1
+  currentUnitsAvailableToAttack: []
+  damageMadeByPush: 8
+  damageMadeByFall: 5
+  healthBar: {fileID: 1786568957, guid: befc36c9291a3e54f80b8b2a1152a249, type: 3}
+  unitInfo: Soy maricon y chupo pollas
+  AvailableToBeAttackedColor: {fileID: 0}
+  canvasUnit: {fileID: 0}
+  characterDescription: 
+  unitIcon: {fileID: 0}
+  myCanvasHealthbar: {fileID: 0}
+  hasMoved: 0
+  hasAttacked: 0
+  isMovingorRotating: 0
+  selectedMaterial: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
+  finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
+  canvasWithRotationArrows: {fileID: 4485294764996226272}
+  LevelManagerRef: {fileID: 0}
+  UIManagerRef: {fileID: 0}
 --- !u!1 &3246384063879678970
 GameObject:
   m_ObjectHideFlags: 0
@@ -3864,46 +3913,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3460287644740736879}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_Name
-      value: PeanasPrueba
-      objectReference: {fileID: 0}
-    - target: {fileID: -4282773189472145888, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2341580078844879043, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -5819824089242204040, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8958288811544592685, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -1538924730050149809, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6390103730037235984, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -635723343173954451, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3973,6 +3982,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_Name
+      value: PeanasPrueba
+      objectReference: {fileID: 0}
+    - target: {fileID: -4282773189472145888, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2341580078844879043, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5819824089242204040, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8958288811544592685, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1538924730050149809, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6390103730037235984, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -635723343173954451, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5353201909904096835, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}

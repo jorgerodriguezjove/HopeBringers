@@ -111,6 +111,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public void RotatePlayerInNewDirection()
     {
+        Debug.Log("rotate");
         LM.selectedCharacter.RotateUnitFromButton(EventSystem.current.currentSelectedGameObject.GetComponent<RotateButton>().newDirection);
     }
 

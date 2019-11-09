@@ -70,7 +70,7 @@ public class IndividualTiles : MonoBehaviour
 
     [Header("FEEDBACK")]
     [SerializeField]
-    private Material colorTest;
+    private Material availableForMovementColor;
     private Material initialColor;
 	[SerializeField]
 	[@TextAreaAttribute(15, 20)]
@@ -155,7 +155,7 @@ public class IndividualTiles : MonoBehaviour
     //Cambiar a color movimiento
     public void ColorSelect()
     {
-        GetComponent<MeshRenderer>().material = colorTest;
+        GetComponent<MeshRenderer>().material = availableForMovementColor;
     }
 
     //Cambiar a color normal

@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 33851704920570478}
   - component: {fileID: 23007987366238138}
   - component: {fileID: 65910483985868152}
+  - component: {fileID: 101788953}
   m_Layer: 0
   m_Name: Grass 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4562075604489022
 Transform:
@@ -58,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e11820def211aac499d1bcf50c3e3f8a, type: 2}
+  - {fileID: 2100000, guid: fd4b28dd067f2b7469ae52c9a41a8360, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,7 +88,38 @@ BoxCollider:
   m_GameObject: {fileID: 1219471545100730}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1.0000001, z: 1.0000001}
   m_Center: {x: 0, y: -0.49999997, z: -0.000000059604645}
+--- !u!114 &101788953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219471545100730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3aa783340f624248856b774d839ab15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialPosition: {x: 0, y: 0, z: 0}
+  tileX: 0
+  tileZ: 0
+  MovementCost: 1
+  height: 0
+  isEmpty: 1
+  isObstacle: 0
+  unitOnTile: {fileID: 0}
+  neighbours: []
+  neighboursOcuppied: 0
+  tilesInLineUp: []
+  tilesInLineDown: []
+  tilesInLineRight: []
+  tilesInLineLeft: []
+  TM: {fileID: 0}
+  LM: {fileID: 0}
+  availableForMovementColor: {fileID: 2100000, guid: 4d42938bbdd19bd44875b85d31b1b384,
+    type: 2}
+  tileInfo: 

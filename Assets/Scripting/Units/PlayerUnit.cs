@@ -32,8 +32,6 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private Canvas canvasWithRotationArrows;
 
-	
-
     [Header("REFERENCIAS")]
 
     //Ahora mismo se setea desde el inspector
@@ -56,7 +54,7 @@ public class PlayerUnit : UnitBase
         //Aviso al tile en el que empiezo que soy su unidad.
         myCurrentTile.unitOnTile = this;
 
-        initMaterial = unitModel.GetComponent<MeshRenderer>().material;
+        initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
     }
 
     private void Start()
@@ -76,7 +74,7 @@ public class PlayerUnit : UnitBase
 		//Refresco de los tokens para resetearlos en pantalla
 		UIM.RefreshTokens();
         isMovingorRotating = false;
-        unitModel.GetComponent<MeshRenderer>().material = initMaterial;
+        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
     }
 
     //La unidad ha atacado y por tanto no puede hacer nada más.
@@ -91,7 +89,7 @@ public class PlayerUnit : UnitBase
 		LM.DeSelectUnit();
 
         //Doy feedback de que esa unidad no puede hacer nada
-        unitModel.GetComponent<MeshRenderer>().material = finishedMaterial;
+        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
     }
 
     #endregion
@@ -136,15 +134,18 @@ public class PlayerUnit : UnitBase
             SoundManager.Instance.PlaySound(AppSounds.MOVEMENT);
 
             //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y + 1, myCurrentPath[j].transform.position.z);
-          
-            //Muevo y roto a la unidad
-            transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
+            currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
 
+            Debug.Log(currentTileVectorToMove);
+            //Muevo y roto a la unidad
+            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
+            transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+            
             //Espera entre casillas
             yield return new WaitForSeconds(timeMovementAnimation);
         }
+
+        Debug.Log("Out of the loop");
 
         //Esto es solo para la prueba de movimiento para ver cual elegimos.
         if (!LM.TM.isDiagonalMovement)
@@ -168,6 +169,7 @@ public class PlayerUnit : UnitBase
         //Movimiento en diagonal
         else
         {
+            Debug.Log("Choose Arrow");
             //Hacer que aparezcan los botones
             canvasWithRotationArrows.gameObject.SetActive(true);
         }
@@ -175,6 +177,7 @@ public class PlayerUnit : UnitBase
 
     public void RotateUnitFromButton(FacingDirection newDirection)
     {
+
         //Arriba o abajo
         if (newDirection == FacingDirection.North)
         {
@@ -259,12 +262,12 @@ public class PlayerUnit : UnitBase
 
     public void SelectedColor()
     {
-        unitModel.GetComponent<MeshRenderer>().material = selectedMaterial;
+        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = selectedMaterial;
     }
 
     public void InitialColor()
     {
-        unitModel.GetComponent<MeshRenderer>().material = initMaterial;
+        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
     }
 
 	

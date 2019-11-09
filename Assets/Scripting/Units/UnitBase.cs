@@ -80,6 +80,10 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected GameObject unitModel;
 
+    //Modelo de la unidad dónde se guarda el material
+    [SerializeField]
+    protected GameObject unitMaterialModel;
+
     [Header("ATAQUE")]
 
     //Variable en la que guardo el daño a realizar
@@ -109,8 +113,6 @@ public class UnitBase : MonoBehaviour
 
     //Material inicial y al ser seleccionado
     protected Material initMaterial;
-    [SerializeField]
-    private Material AvailableToBeAttackedColor;
 
 	[SerializeField]
 	private GameObject healthBar;
@@ -119,8 +121,11 @@ public class UnitBase : MonoBehaviour
 	[@TextAreaAttribute(15, 20)]
 	public string unitInfo;
 
-	//Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
-	[SerializeField]
+    [SerializeField]
+    private Material AvailableToBeAttackedColor;
+
+    //Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
+    [SerializeField]
     private GameObject canvasUnit;
 
 	[Header("TEXT")]
@@ -333,13 +338,13 @@ public class UnitBase : MonoBehaviour
     //Cambiar a color que indica que puede ser atacado
     public void ColorInitial()
     {
-        unitModel.GetComponent<MeshRenderer>().material = initMaterial;
+        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
     }
 
     //Cambiar a color que indica que puede ser atacado
     public void ColorAvailableToBeAttacked()
     {
-        unitModel.GetComponent<MeshRenderer>().material = AvailableToBeAttackedColor;
+        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
     }
 
     #endregion
