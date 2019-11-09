@@ -62,6 +62,9 @@ public class LevelManager : MonoBehaviour
 	[HideInInspector]
     public UIManager UIM;
 
+    [SerializeField]
+    AudioClip testSount;
+
     #endregion
 
     #region INIT
@@ -74,11 +77,11 @@ public class LevelManager : MonoBehaviour
         ReOrderUnits();
         UIM.SetEnemyOrder();
 
-        currentLevelState = LevelState.Initializing;
+        currentLevelState = LevelState.PlayerPhase;
 
         counterForEnemiesOrder = 0;
 
-        StartFallAnimation();
+        //StartFallAnimation();
 
     }
 
