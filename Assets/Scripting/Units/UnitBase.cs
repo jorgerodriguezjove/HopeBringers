@@ -109,6 +109,11 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected int damageMadeByFall;
 
+    [Header("ANIMATIONS")]
+
+    //Animator
+    protected Animator myAnimator;
+
     [Header("FEEDBACK")]
 
     //Material inicial y al ser seleccionado
@@ -322,7 +327,7 @@ public class UnitBase : MonoBehaviour
     private void MoveToTilePushed(IndividualTiles newTile)
     {
         //Mover al nuevo tile
-        currentTileVectorToMove = new Vector3(newTile.tileX, newTile.height + 1, newTile.tileZ);
+        currentTileVectorToMove = new Vector3(newTile.tileX, newTile.height, newTile.tileZ);
         transform.DOMove(currentTileVectorToMove, timePushAnimation);
 
         //Aviso a los tiles del cambio de posición

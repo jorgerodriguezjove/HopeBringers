@@ -53,6 +53,8 @@ public class PlayerUnit : UnitBase
 		UIM = UIManagerRef.GetComponent<UIManager>();
         //Aviso al tile en el que empiezo que soy su unidad.
         myCurrentTile.unitOnTile = this;
+        //Inicializo componente animator
+        myAnimator = GetComponent<Animator>();
 
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
     }
@@ -217,7 +219,7 @@ public class PlayerUnit : UnitBase
     //Función de ataque que se hace override en cada clase
     public virtual void Attack(UnitBase unitToAttack)
     {
-        //El daño no lo pongo aquí porque tiene que ser lo primero que se calcule.
+        //El daño y la animación no lo pongo aquí porque tiene que ser lo primero que se calcule.
 
         //Cada unidad se encargará de aplicar su efecto.
 
@@ -228,6 +230,9 @@ public class PlayerUnit : UnitBase
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
+        //Animación de ataque
+        myAnimator.SetTrigger("Damage");
+
         currentHealth -= damageReceived;
 		//Cuando me hacen daño refresco la información en la interfaz
 		UIM.RefreshHealth();
@@ -243,6 +248,9 @@ public class PlayerUnit : UnitBase
     public override void Die()
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
+
+        //Animación de ataque
+        myAnimator.SetTrigger("Death");
     }
 
     #endregion

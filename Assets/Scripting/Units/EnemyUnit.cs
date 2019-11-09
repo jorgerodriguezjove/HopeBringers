@@ -49,6 +49,9 @@ public class EnemyUnit : UnitBase
         myCurrentTile.unitOnTile = this;
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
+        //Inicializo componente animator
+        myAnimator = GetComponent<Animator>();
+
         myCurrentEnemyState = enemyState.Waiting;
         currentHealth = maxHealth;
     }
