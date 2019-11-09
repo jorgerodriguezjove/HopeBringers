@@ -133,6 +133,8 @@ public class PlayerUnit : UnitBase
         //Animación de movimiento
         for (int j = 1; j < myCurrentPath.Count; j++)
         {
+            SoundManager.Instance.PlaySound(AppSounds.MOVEMENT);
+
             //Calcula el vector al que se tiene que mover.
             currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y + 1, myCurrentPath[j].transform.position.z);
           

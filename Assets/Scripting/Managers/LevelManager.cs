@@ -173,6 +173,8 @@ public class LevelManager : MonoBehaviour
                     }
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
+
+                    SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
                 }
 
                 //Si se ha movido pero no ha atacado, entonces le doy el feedback de ataque.

@@ -34,7 +34,13 @@ public class AppPlayerPrefKeys
 //Nombres de los sonidos en la carpeta de resources.
 public class AppSounds
 {
-    public static readonly string OPENDOOR_SFX = "OPENDOOR_SFX";
+    public static readonly string MOVEMENT = "Gen_Move_1";
+    public static readonly string EN_DEATH = "En_Death";
+    public static readonly string COLLISION = "Gen_Collision";
+    public static readonly string KNIGHT_ATTACK = "Knight_Attack";
+    public static readonly string MAGE_ATTACK = "Mage_Attack";
+    public static readonly string PLAYER_SELECTION = "Player_Selection";
+    public static readonly string ROGUE_ATTACK = "Rogue_Attack";
 
 }
 

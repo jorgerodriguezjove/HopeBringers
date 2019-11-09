@@ -86,6 +86,8 @@ public class Rogue : PlayerUnit
         CalculateDamage(unitToAttack);
         DoDamage(unitToAttack);
 
+        SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
+
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }

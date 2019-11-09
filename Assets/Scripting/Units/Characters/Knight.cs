@@ -40,6 +40,9 @@ public class Knight : PlayerUnit
             unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
         }
 
+        SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
+
+
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }

@@ -306,7 +306,7 @@ public class UnitBase : MonoBehaviour
 
             //Si sale del for entonces es que todos los tiles que tiene que comprobar son normales y simplemente lo muevo al último tile
 
-            Debug.Log("normal");
+            SoundManager.Instance.PlaySound(AppSounds.COLLISION);
 
             //Desplazo a la unidad
             MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);

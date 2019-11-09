@@ -164,6 +164,8 @@ public class EnemyUnit : UnitBase
     public override void Die()
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
+
+        SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
     }
 
     #endregion
