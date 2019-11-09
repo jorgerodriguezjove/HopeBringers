@@ -156,7 +156,7 @@ public class EnGiant : EnemyUnit
             {
                 if (!myCurrentTile.tilesInLineUp[0].isEmpty && !myCurrentTile.tilesInLineUp[0].isObstacle && myCurrentTile.tilesInLineUp[0].unitOnTile == null)
                 {
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height + 1, myCurrentTile.tilesInLineUp[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                     MovementLogic(myCurrentTile.tilesInLineUp);
                     RotateLogic(FacingDirection.North);
                 }
@@ -170,7 +170,7 @@ public class EnGiant : EnemyUnit
             {
                 if (!myCurrentTile.tilesInLineDown[0].isEmpty && !myCurrentTile.tilesInLineDown[0].isObstacle && myCurrentTile.tilesInLineDown[0].unitOnTile == null)
                 {
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height + 1, myCurrentTile.tilesInLineDown[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
                     MovementLogic(myCurrentTile.tilesInLineDown);
                     RotateLogic(FacingDirection.South);
                 }
@@ -189,7 +189,7 @@ public class EnGiant : EnemyUnit
             {
                 if (!myCurrentTile.tilesInLineRight[0].isEmpty && !myCurrentTile.tilesInLineRight[0].isObstacle && myCurrentTile.tilesInLineRight[0].unitOnTile == null)
                 {
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height + 1, myCurrentTile.tilesInLineRight[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
                     MovementLogic(myCurrentTile.tilesInLineRight);
                     RotateLogic(FacingDirection.East);
                 }
@@ -204,7 +204,7 @@ public class EnGiant : EnemyUnit
             {
                 if (!myCurrentTile.tilesInLineLeft[0].isEmpty && !myCurrentTile.tilesInLineLeft[0].isObstacle && myCurrentTile.tilesInLineLeft[0].unitOnTile == null)
                 {
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height + 1, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
                     MovementLogic(myCurrentTile.tilesInLineLeft);
                     RotateLogic(FacingDirection.West);
                 }
@@ -228,7 +228,7 @@ public class EnGiant : EnemyUnit
                     //Si el tile de arriba esta libre me muevo a él
                     if (!myCurrentTile.tilesInLineUp[0].isEmpty && !myCurrentTile.tilesInLineUp[0].isObstacle && myCurrentTile.tilesInLineUp[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height + 1, myCurrentTile.tilesInLineUp[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineUp);
                         RotateLogic(FacingDirection.North);
                     }
@@ -236,7 +236,7 @@ public class EnGiant : EnemyUnit
                     //Si no compruebo el de la derecha para intentar moverme a él.
                     else if (!myCurrentTile.tilesInLineRight[0].isEmpty && !myCurrentTile.tilesInLineRight[0].isObstacle && myCurrentTile.tilesInLineRight[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height + 1, myCurrentTile.tilesInLineRight[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineRight);
                         RotateLogic(FacingDirection.East);
                     }
@@ -253,7 +253,7 @@ public class EnGiant : EnemyUnit
                     //Si el tile de abajo esta libre me muevo a él
                     if (!myCurrentTile.tilesInLineDown[0].isEmpty && !myCurrentTile.tilesInLineDown[0].isObstacle && myCurrentTile.tilesInLineDown[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height + 1, myCurrentTile.tilesInLineDown[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineDown);
                         RotateLogic(FacingDirection.South);
                     }
@@ -261,7 +261,7 @@ public class EnGiant : EnemyUnit
                     //Si el tile de arriba esta libre me muevo a él
                     else if (!myCurrentTile.tilesInLineRight[0].isEmpty && !myCurrentTile.tilesInLineRight[0].isObstacle && myCurrentTile.tilesInLineRight[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height + 1, myCurrentTile.tilesInLineRight[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineRight);
                         RotateLogic(FacingDirection.East);
                     }
@@ -280,7 +280,7 @@ public class EnGiant : EnemyUnit
                     //Si el tile de arriba esta libre me muevo a él
                     if (!myCurrentTile.tilesInLineUp[0].isEmpty && !myCurrentTile.tilesInLineUp[0].isObstacle && myCurrentTile.tilesInLineUp[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height + 1, myCurrentTile.tilesInLineUp[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineUp);
                         RotateLogic(FacingDirection.North);
                     }
@@ -288,7 +288,7 @@ public class EnGiant : EnemyUnit
                     //Si el tile de arriba esta libre me muevo a él
                     else if (!myCurrentTile.tilesInLineLeft[0].isEmpty && !myCurrentTile.tilesInLineLeft[0].isObstacle && myCurrentTile.tilesInLineLeft[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height + 1, myCurrentTile.tilesInLineLeft[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineLeft);
                         RotateLogic(FacingDirection.West);
                     }
@@ -305,7 +305,7 @@ public class EnGiant : EnemyUnit
                     //Si el tile de abajo esta libre me muevo a él
                     if (!myCurrentTile.tilesInLineDown[0].isEmpty && !myCurrentTile.tilesInLineDown[0].isObstacle && myCurrentTile.tilesInLineDown[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height + 1, myCurrentTile.tilesInLineDown[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineDown);
                         RotateLogic(FacingDirection.South);
                     }
@@ -313,7 +313,7 @@ public class EnGiant : EnemyUnit
                     //Si el tile de arriba esta libre me muevo a él
                     else if (!myCurrentTile.tilesInLineLeft[0].isEmpty && !myCurrentTile.tilesInLineLeft[0].isObstacle && myCurrentTile.tilesInLineLeft[0].unitOnTile == null)
                     {
-                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height + 1, myCurrentTile.tilesInLineLeft[0].tileZ);
+                        currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
                         MovementLogic(myCurrentTile.tilesInLineLeft);
                         RotateLogic(FacingDirection.West);
                     }

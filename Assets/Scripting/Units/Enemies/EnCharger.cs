@@ -13,8 +13,6 @@ public class EnCharger : EnemyUnit
         //Busca enemigos en sus lineas
         CheckCharactersInLine();
 
-        Debug.Log(currentUnitsAvailableToAttack.Count);
-
         //Si coincide que hay varios personajes a la misma distancia, me quedo con el que tiene menos vida
         if (currentUnitsAvailableToAttack.Count > 1)
         {

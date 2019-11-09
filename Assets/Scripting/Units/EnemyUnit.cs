@@ -158,6 +158,8 @@ public class EnemyUnit : UnitBase
         Debug.Log("Soy " + gameObject.name + "y me han hecho " + damageReceived + " de daño");
         Debug.Log("Mi vida actual es " + currentHealth);
 
+        myAnimator.SetTrigger("Damage");
+
         if (currentHealth <= 0)
         {
             Die();
@@ -167,6 +169,8 @@ public class EnemyUnit : UnitBase
     public override void Die()
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
+
+        myAnimator.SetTrigger("Death");
 
         SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
     }

@@ -724,6 +724,7 @@ GameObject:
   - component: {fileID: 6409402853590735200}
   - component: {fileID: 4600532876474966410}
   - component: {fileID: 2814326850417192975}
+  - component: {fileID: 7362059669673444790}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -742,7 +743,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2416836723656210479}
+  - {fileID: 6797571530741522444}
   - {fileID: 5414444457002493996}
   - {fileID: 379265539317536464}
   - {fileID: 1190873531}
@@ -797,15 +798,16 @@ MonoBehaviour:
   timePushAnimation: 0.2
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
-  unitModel: {fileID: 2422745071681847173}
+  unitModel: {fileID: 8751282822399317446}
+  unitMaterialModel: {fileID: 2420689641354982513}
   maxHeightDifferenceToAttack: 1
   currentUnitsAvailableToAttack: []
   damageMadeByPush: 8
   damageMadeByFall: 5
-  AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
-    type: 2}
   healthBar: {fileID: 4278311233811319296}
   unitInfo: Busca a un enemigo y le ataca.
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
+    type: 2}
   canvasUnit: {fileID: 811410698602015731}
   characterDescription: 
   unitIcon: {fileID: 0}
@@ -827,6 +829,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 6237804981742002209}
+--- !u!95 &7362059669673444790
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6409402853590735202}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 045d516655f5d414dbbb4765caab1b6a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7423551907849468270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,16 +1025,47 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!1 &8751282822399317446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6797571530741522444}
+  m_Layer: 0
+  m_Name: Model
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6797571530741522444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8751282822399317446}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2416836723656210479}
+  m_Father: {fileID: 6409402853590735207}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2421750790912035945
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6409402853590735207}
+    m_TransformParent: {fileID: 6797571530741522444}
     m_Modifications:
     - target: {fileID: 1293356793197548, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_Name
-      value: Model
+      value: ModelCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 4958464907473990, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1073,9 +1125,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
---- !u!1 &2422745071681847173 stripped
+--- !u!1 &2420689641354982513 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 1293356793197548, guid: 0d42bc61d684259409d481c6f5dd5d5c,
+  m_CorrespondingSourceObject: {fileID: 1070804649064472, guid: 0d42bc61d684259409d481c6f5dd5d5c,
     type: 3}
   m_PrefabInstance: {fileID: 2421750790912035945}
   m_PrefabAsset: {fileID: 0}
