@@ -257,6 +257,8 @@ public class PlayerUnit : UnitBase
 
         //Animación de ataque
         myAnimator.SetTrigger("Death");
+
+        Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
     }
 
     #endregion

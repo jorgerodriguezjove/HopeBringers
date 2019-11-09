@@ -175,6 +175,8 @@ public class EnemyUnit : UnitBase
         myAnimator.SetTrigger("Death");
 
         SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
+
+        Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
     }
 
     #endregion

@@ -83,7 +83,6 @@ public class Rogue : PlayerUnit
         }
                
         //Hago daño
-        CalculateDamage(unitToAttack);
         DoDamage(unitToAttack);
 
         SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);

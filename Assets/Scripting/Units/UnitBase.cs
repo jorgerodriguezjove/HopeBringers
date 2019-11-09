@@ -110,7 +110,7 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected GameObject criticAttackParticle;
     [SerializeField]
-    protected GameObject collisionParticle;
+    protected GameObject collisionParticlePref;
     
     [Header("STATS GENÉRICOS")]
 
@@ -191,11 +191,23 @@ public class UnitBase : MonoBehaviour
     }
 
     //Aplico el daño a la unidad elegida
-    protected void DoDamage(UnitBase unitToDealDamage)
+    protected virtual void DoDamage(UnitBase unitToDealDamage)
     {
         CalculateDamage(unitToDealDamage);
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+
+        //Si ataco por la espalda instancio la partícula de ataque crítico
+        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+        {
+            Instantiate(criticAttackParticle, unitModel.transform.position, unitModel.transform.rotation);
+        }
+
+        //Si no, instancio la partícula normal
+        else
+        {
+            Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+        }
     }
 
     //Función para recibir daño
@@ -313,6 +325,11 @@ public class UnitBase : MonoBehaviour
                         Debug.Log("otra unidad");
                         //Recibo daño 
                         ReceiveDamage(attackersDamageByPush, null);
+
+
+                        Vector3 test = new Vector3((this.transform.position.x + tilesToCheckForCollision[i].unitOnTile.transform.position.x) / 2, this.transform.position.y, (this.transform.position.z + tilesToCheckForCollision[i].unitOnTile.transform.position.z) / 2);
+
+                        Instantiate(collisionParticlePref,test,collisionParticlePref.transform.rotation);
 
                         //Hago daño a la otra unidad
                         tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);

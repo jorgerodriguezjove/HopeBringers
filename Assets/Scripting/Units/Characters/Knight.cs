@@ -20,7 +20,6 @@ public class Knight : PlayerUnit
         myAnimator.SetTrigger("Attack");
 
         //Hago daño
-        CalculateDamage(unitToAttack);
         DoDamage(unitToAttack);
 
         if (currentFacingDirection == FacingDirection.North)
