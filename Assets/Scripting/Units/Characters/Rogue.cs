@@ -78,7 +78,6 @@ public class Rogue : PlayerUnit
 
         if (myCurrentTile.tilesInLineRight.Count > 1)
         {
-            Debug.Log("aa");
             if (range <= myCurrentTile.tilesInLineRight.Count)
             {
                 rangeVSTilesInLineLimitant = range;

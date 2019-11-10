@@ -29,7 +29,7 @@ public class EnemyUnit : UnitBase
     public GameObject thisUnitOrder;
 
     [HideInInspector]
-    public  List<UnitBase> currentUnitsAvailableToAttack;
+    public List<UnitBase> currentUnitsAvailableToAttack;
 
     [Header("REFERENCIAS")]
 

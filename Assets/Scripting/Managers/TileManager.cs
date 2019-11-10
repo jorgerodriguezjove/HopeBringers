@@ -202,6 +202,7 @@ public class TileManager : MonoBehaviour
         selectedCharacter = selectedUnit;
         tilesAvailableForMovement.Clear();
         mxMovementUdsSelectedCharacter = selectedCharacter.movementUds;
+        Debug.Log(selectedUnit);
 
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
         for (int i = -mxMovementUdsSelectedCharacter; i < (mxMovementUdsSelectedCharacter * 2) + 1; i++)
@@ -445,6 +446,8 @@ public class TileManager : MonoBehaviour
     //Doy feedback de que casillas están al alcance del personaje.
     public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
     {
+
+        Debug.Log(currentEnemy);
         //Reuno en una lista todos los tiles a los que puedo acceder
         OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
 
