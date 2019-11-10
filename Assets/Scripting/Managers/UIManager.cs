@@ -85,6 +85,7 @@ public class UIManager : MonoBehaviour
 	//Se llama desde el botón de finalizar turno
 	public void EndTurn()
     {
+		endTurnButton.transform.DOFlip();
         LM.ChangePhase();
     }
 
