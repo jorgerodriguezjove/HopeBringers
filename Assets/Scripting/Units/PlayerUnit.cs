@@ -292,7 +292,19 @@ public class PlayerUnit : UnitBase
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
     }
 
-	
+	private void OnMouseEnter()
+	{
+		if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+		{
+			Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+		}
+	}
+
+	private void OnMouseExit()
+	{
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+	}
+
 
 	#endregion
 
