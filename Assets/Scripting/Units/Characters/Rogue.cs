@@ -16,8 +16,6 @@ public class Rogue : PlayerUnit
         currentUnitsAvailableToAttack.Clear();
 
         //Arriba
-
-      
         if (myCurrentTile.tilesInLineUp.Count > 1)
         {
             if (range <= myCurrentTile.tilesInLineUp.Count)
@@ -36,7 +34,8 @@ public class Rogue : PlayerUnit
                     myCurrentTile.tilesInLineUp[i + 1].unitOnTile == null &&
                    !myCurrentTile.tilesInLineUp[i + 1].isEmpty &&
                    !myCurrentTile.tilesInLineUp[i + 1].isObstacle) &&
-                   Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                   Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                   Mathf.Abs(myCurrentTile.tilesInLineUp[i+1].height - myCurrentTile.tilesInLineUp[i].height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
@@ -65,7 +64,8 @@ public class Rogue : PlayerUnit
                     myCurrentTile.tilesInLineDown[i + 1].unitOnTile == null &&
                    !myCurrentTile.tilesInLineDown[i + 1].isEmpty            && 
                    !myCurrentTile.tilesInLineDown[i + 1].isObstacle)        &&
-                    Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                    Mathf.Abs(myCurrentTile.tilesInLineDown[i + 1].height - myCurrentTile.tilesInLineDown[i].height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
@@ -96,7 +96,8 @@ public class Rogue : PlayerUnit
                     myCurrentTile.tilesInLineRight[i + 1].unitOnTile == null    &&
                    !myCurrentTile.tilesInLineRight[i + 1].isEmpty               &&
                    !myCurrentTile.tilesInLineRight[i + 1].isObstacle)           &&
-                    Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                    Mathf.Abs(myCurrentTile.tilesInLineRight[i + 1].height - myCurrentTile.tilesInLineRight[i].height) <= maxHeightDifferenceToAttack)
                 {
                     Debug.Log("derecha");
                     //Almaceno la primera unidad en la lista de posibles unidades
@@ -128,7 +129,8 @@ public class Rogue : PlayerUnit
                     myCurrentTile.tilesInLineLeft[i + 1].unitOnTile == null &&
                    !myCurrentTile.tilesInLineLeft[i + 1].isEmpty &&
                    !myCurrentTile.tilesInLineLeft[i + 1].isObstacle) &&
-                    Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                    Mathf.Abs(myCurrentTile.tilesInLineLeft[i + 1].height - myCurrentTile.tilesInLineLeft[i].height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);

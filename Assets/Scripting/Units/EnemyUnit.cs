@@ -195,188 +195,193 @@ public class EnemyUnit : UnitBase
     //Esta función es el equivalente al chequeo de objetivos del jugador. Es distinta y en principio no se puede reutilizar la misma debido a estas diferencias.
     protected void CheckCharactersInLine()
     {
-        currentUnitsAvailableToAttack.Clear();
-
-        if (currentFacingDirection == FacingDirection.North || GetComponent<EnCharger>())
+        if (!isDead)
         {
-            if (range <= myCurrentTile.tilesInLineUp.Count)
-            {
-                rangeVSTilesInLineLimitant = range;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
-            }
+            currentUnitsAvailableToAttack.Clear();
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (currentFacingDirection == FacingDirection.North || GetComponent<EnCharger>())
             {
-                //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                if (myCurrentTile.tilesInLineUp[i].isObstacle)
+                if (range <= myCurrentTile.tilesInLineUp.Count)
                 {
-                    break;
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
                 }
 
-                //Sólo el charger para si encuentra un tile empty o con unidad
-                else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineUp[i].isEmpty || (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<EnemyUnit>())))
-                {
-                    break;
-                }
-
-                //Independientemente de que sea charger o balista este código sirve para ambos
-                else if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
-                {
-                    //Almaceno la primera unidad en la lista de posibles unidades.
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                    furthestAvailableUnitDistance = i;
-                    
-                    break;
-                }
-            }
-        }
-
-        if (currentFacingDirection == FacingDirection.East || GetComponent<EnCharger>())
-        {
-            if (range <= myCurrentTile.tilesInLineRight.Count)
-            {
-                rangeVSTilesInLineLimitant = range;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
-            }
-
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
-            {
-                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                    if (myCurrentTile.tilesInLineRight[i].isObstacle)
+                    if (myCurrentTile.tilesInLineUp[i].isObstacle)
                     {
                         break;
                     }
 
                     //Sólo el charger para si encuentra un tile empty o con unidad
-                    else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineRight[i].isEmpty || (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<EnemyUnit>())))
+                    else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineUp[i].isEmpty || (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<EnemyUnit>())))
                     {
                         break;
                     }
 
                     //Independientemente de que sea charger o balista este código sirve para ambos
-
-                    //Si la distancia es mayor que la distancia con el enemigo ya guardado, me deshago de la unidad anterior y almaceno esta cómo objetivo.
-                    else if (currentUnitsAvailableToAttack.Count == 0 || furthestAvailableUnitDistance < i)
+                    else if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                     {
-                        currentUnitsAvailableToAttack.Clear();
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        //Almaceno la primera unidad en la lista de posibles unidades.
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
                         furthestAvailableUnitDistance = i;
-                    }
 
-                    //Si tienen la misma distancia almaceno a las dos
-                    else if (furthestAvailableUnitDistance == i)
-                    {
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        break;
                     }
-
-                    break;
                 }
             }
-        }
 
-        if (currentFacingDirection == FacingDirection.South || GetComponent<EnCharger>())
-        {
-            if (range <= myCurrentTile.tilesInLineDown.Count)
+            if (currentFacingDirection == FacingDirection.East || GetComponent<EnCharger>())
             {
-                rangeVSTilesInLineLimitant = range;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
-            }
-
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
-            {
-                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                if (range <= myCurrentTile.tilesInLineRight.Count)
                 {
-                    //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                    if (myCurrentTile.tilesInLineDown[i].isObstacle)
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+                }
+
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                     {
+                        //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
+                        if (myCurrentTile.tilesInLineRight[i].isObstacle)
+                        {
+                            break;
+                        }
+
+                        //Sólo el charger para si encuentra un tile empty o con unidad
+                        else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineRight[i].isEmpty || (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<EnemyUnit>())))
+                        {
+                            break;
+                        }
+
+                        //Independientemente de que sea charger o balista este código sirve para ambos
+
+                        //Si la distancia es mayor que la distancia con el enemigo ya guardado, me deshago de la unidad anterior y almaceno esta cómo objetivo.
+                        else if (currentUnitsAvailableToAttack.Count == 0 || furthestAvailableUnitDistance < i)
+                        {
+                            currentUnitsAvailableToAttack.Clear();
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                            furthestAvailableUnitDistance = i;
+                        }
+
+                        //Si tienen la misma distancia almaceno a las dos
+                        else if (furthestAvailableUnitDistance == i)
+                        {
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        }
+
                         break;
                     }
-
-                    //Sólo el charger para si encuentra un tile empty o con unidad
-                    else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineDown[i].isEmpty || (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<EnemyUnit>())))
-                    {
-                        break;
-                    }
-
-                    //Independientemente de que sea charger o balista este código sirve para ambos
-
-                    //Si la distancia es mayor que la distancia con el enemigo ya guardado, me deshago de la unidad anterior y almaceno esta cómo objetivo.
-                    if (currentUnitsAvailableToAttack.Count == 0 || furthestAvailableUnitDistance < i )
-                    {
-                        currentUnitsAvailableToAttack.Clear();
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                        furthestAvailableUnitDistance = i;
-                    }
-
-                    //Si tienen la misma distancia almaceno a las dos
-                    else if (furthestAvailableUnitDistance == i)
-                    {
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                    }
-                    
-                    break;
                 }
             }
-        }
 
-        if (currentFacingDirection == FacingDirection.West || GetComponent<EnCharger>())
-        {
-            if (range <= myCurrentTile.tilesInLineLeft.Count)
+            if (currentFacingDirection == FacingDirection.South || GetComponent<EnCharger>())
             {
-                rangeVSTilesInLineLimitant = range;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
-            }
-
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
-            {
-                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                if (range <= myCurrentTile.tilesInLineDown.Count)
                 {
-                    //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                    if (myCurrentTile.tilesInLineLeft[i].isObstacle)
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+                }
+
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                     {
+                        //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
+                        if (myCurrentTile.tilesInLineDown[i].isObstacle)
+                        {
+                            break;
+                        }
+
+                        //Sólo el charger para si encuentra un tile empty o con unidad
+                        else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineDown[i].isEmpty || (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<EnemyUnit>())))
+                        {
+                            break;
+                        }
+
+                        //Independientemente de que sea charger o balista este código sirve para ambos
+
+                        //Si la distancia es mayor que la distancia con el enemigo ya guardado, me deshago de la unidad anterior y almaceno esta cómo objetivo.
+                        if (currentUnitsAvailableToAttack.Count == 0 || furthestAvailableUnitDistance < i)
+                        {
+                            currentUnitsAvailableToAttack.Clear();
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                            furthestAvailableUnitDistance = i;
+                        }
+
+                        //Si tienen la misma distancia almaceno a las dos
+                        else if (furthestAvailableUnitDistance == i)
+                        {
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                        }
+
                         break;
                     }
+                }
+            }
 
-                    //Sólo el charger para si encuentra un tile empty o con unidad
-                    else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineLeft[i].isEmpty || (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<EnemyUnit>())))
+            if (currentFacingDirection == FacingDirection.West || GetComponent<EnCharger>())
+            {
+                if (range <= myCurrentTile.tilesInLineLeft.Count)
+                {
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+                }
+
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                     {
+                        //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
+                        if (myCurrentTile.tilesInLineLeft[i].isObstacle)
+                        {
+                            break;
+                        }
+
+                        //Sólo el charger para si encuentra un tile empty o con unidad
+                        else if (GetComponent<EnCharger>() && (myCurrentTile.tilesInLineLeft[i].isEmpty || (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<EnemyUnit>())))
+                        {
+                            break;
+                        }
+
+                        //Independientemente de que sea charger o balista este código sirve para ambos
+
+                        //Si la distancia es mayor que la distancia con el enemigo ya guardado, me deshago de la unidad anterior y almaceno esta cómo objetivo.
+                        if (currentUnitsAvailableToAttack.Count == 0 || furthestAvailableUnitDistance < i)
+                        {
+                            currentUnitsAvailableToAttack.Clear();
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                            furthestAvailableUnitDistance = i;
+                        }
+
+                        //Si tienen la misma distancia almaceno a las dos
+                        else if (furthestAvailableUnitDistance == i)
+                        {
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                        }
                         break;
                     }
-
-                    //Independientemente de que sea charger o balista este código sirve para ambos
-
-                    //Si la distancia es mayor que la distancia con el enemigo ya guardado, me deshago de la unidad anterior y almaceno esta cómo objetivo.
-                    if (currentUnitsAvailableToAttack.Count == 0 || furthestAvailableUnitDistance < i)
-                    {
-                        currentUnitsAvailableToAttack.Clear();
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                        furthestAvailableUnitDistance = i;
-                    }
-
-                    //Si tienen la misma distancia almaceno a las dos
-                    else if (furthestAvailableUnitDistance == i)
-                    {
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                    }
-                    break;
                 }
             }
         }
     }
+
+        
 
     /// <summary>
     /// Adaptando la función de pathfinding del Tile Manager usamos eso para al igual que hicimos con el charger guardar los enemigos con la menor distancia

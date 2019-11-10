@@ -19,6 +19,11 @@ public class EnGoblin : EnemyUnit
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
 
+        Debug.Log(gameObject.name);
+        Debug.Log(currentUnitsAvailableToAttack.Count);
+        Debug.Log("-----");
+
+
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)
         {

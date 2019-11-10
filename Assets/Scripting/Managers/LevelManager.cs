@@ -135,6 +135,7 @@ public class LevelManager : MonoBehaviour
             {
                 if(enemiesOnTheBoard[i].GetComponent<EnemyUnit>().isDead)
                 {
+                    Debug.Log(enemiesOnTheBoard[i].name);
                     Destroy(enemiesOnTheBoard[i].gameObject);
                     enemiesOnTheBoard.Remove(enemiesOnTheBoard[i]);
                     i--;
