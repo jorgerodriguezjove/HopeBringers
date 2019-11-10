@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private Button endTurnButton;
+	[SerializeField]
+	private Button waitingButton;
 
 	[SerializeField]
 	private GameObject optionsScreen;
@@ -48,6 +50,8 @@ public class UIManager : MonoBehaviour
 	private TextMeshProUGUI characterInfoText;
 	[SerializeField]
 	private float animationDuration;
+	[SerializeField]
+	private float durationEndTurnRotation;
 
 	private Vector3 characterInfoOriginalPosition;
 
@@ -89,7 +93,7 @@ public class UIManager : MonoBehaviour
 	//Se llama desde el botón de finalizar turno
 	public void EndTurn()
     {
-		endTurnButton.transform.DOFlip();
+		RotateButtonEndPhase();
         LM.ChangePhase();
     }
 
@@ -99,21 +103,48 @@ public class UIManager : MonoBehaviour
         endTurnButton.interactable = !endTurnButton.interactable;
     }
 
-    #endregion
+	public void RotateButtonEndPhase()
+	{
+		endTurnButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
+		StartCoroutine("ButtonAnimationWaitEnd");	
+	}
 
-    #region UNDO_MOVE
+	public void RotateButtonStartPhase()
+	{
+		waitingButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
+		StartCoroutine("ButtonAnimationWaitStart");	
+	}
 
-    ////Se llama desde el botón de finalizar turno
-    //public void UndoMove()
-    //{
-    //    LM.UndoMove();
-    //}
+	IEnumerator ButtonAnimationWaitEnd()
+	{
+		yield return new WaitForSeconds(durationEndTurnRotation);
+		endTurnButton.gameObject.SetActive(false);
+		endTurnButton.transform.DORotate(new Vector3(0, 0, 0), durationEndTurnRotation);
+		waitingButton.gameObject.SetActive(true);
+	}
+	IEnumerator ButtonAnimationWaitStart()
+	{
+		yield return new WaitForSeconds(durationEndTurnRotation);
+		waitingButton.gameObject.SetActive(false);
+		waitingButton.transform.DORotate(new Vector3(0, 0, 0), durationEndTurnRotation);
+		endTurnButton.gameObject.SetActive(true);
+	}
 
-    #endregion
+	#endregion
 
-    #region ROTATION_ARROWS
+	#region UNDO_MOVE
 
-    [SerializeField]
+	////Se llama desde el botón de finalizar turno
+	//public void UndoMove()
+	//{
+	//    LM.UndoMove();
+	//}
+
+	#endregion
+
+	#region ROTATION_ARROWS
+
+	[SerializeField]
     public void RotatePlayerInNewDirection(UnitBase.FacingDirection newDirection)
     {
         Debug.Log("rotate");
