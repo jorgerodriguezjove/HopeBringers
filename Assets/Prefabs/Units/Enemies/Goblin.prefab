@@ -785,11 +785,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fea6cd8d9d8b747a00e7ca61fc7f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 99
-  maxHealth: 50
+  speed: 10
+  maxHealth: 10
   currentHealth: 0
-  movementUds: 4
-  baseDamage: 20
+  movementUds: 3
+  baseDamage: 2
   multiplicatorBackAttack: 2
   multiplicatorMoreHeight: 1.5
   multiplicatorLessHeight: 0.5
@@ -802,7 +802,8 @@ MonoBehaviour:
   unitModel: {fileID: 8751282822399317446}
   unitMaterialModel: {fileID: 2420689641354982513}
   maxHeightDifferenceToAttack: 1
-  currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToMove: 1
+  isDead: 0
   movementParticle: {fileID: 1565866913062292773}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
@@ -810,21 +811,19 @@ MonoBehaviour:
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
     type: 3}
-  collisionParticle: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
+  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
-  damageMadeByPush: 8
+  damageMadeByPush: 5
   damageMadeByFall: 5
   healthBar: {fileID: 4278311233811319296}
-  unitInfo: Busca a un enemigo y le ataca.
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
     type: 2}
   canvasUnit: {fileID: 811410698602015731}
-  characterDescription: 
-  unitIcon: {fileID: 0}
-  myCanvasHealthbar: {fileID: 0}
+  unitInfo: Busca a un enemigo y le ataca.
   myCurrentEnemyState: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 1190873530}
+  currentUnitsAvailableToAttack: []
   LevelManagerRef: {fileID: 0}
 --- !u!114 &2814326850417192975
 MonoBehaviour:
@@ -935,7 +934,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 2249148765729279941}
   m_HandleRect: {fileID: 0}

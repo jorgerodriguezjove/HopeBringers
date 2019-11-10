@@ -2754,8 +2754,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 2170307563319743806}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3003,7 +3003,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.5}
   m_SizeDelta: {x: 909, y: 425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5737905876088385803
@@ -3185,8 +3185,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 9057949678571384333}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3371,7 +3371,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7184725032218192085}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5.99}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 203004412686668773}
@@ -3426,7 +3426,7 @@ Animator:
   m_GameObject: {fileID: 7184725032218192085}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 045d516655f5d414dbbb4765caab1b6a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3447,12 +3447,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a0fa1b64616fab40801c57fbc519227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 0
   maxHealth: 20
   currentHealth: 0
   movementUds: 5
-  baseDamage: 10
-  multiplicatorBackAttack: 1.75
+  baseDamage: 7
+  multiplicatorBackAttack: 2
   multiplicatorMoreHeight: 1.5
   multiplicatorLessHeight: 0.5
   range: 3
@@ -3461,11 +3461,11 @@ MonoBehaviour:
   timePushAnimation: 0.2
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
-  unitModel: {fileID: 2014976872580380786, guid: 7bebf477154312944b3f1d1882ab279f,
-    type: 3}
+  unitModel: {fileID: 9101451302427103071}
   unitMaterialModel: {fileID: 185056105901573451}
   maxHeightDifferenceToAttack: 1
-  currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToMove: 1
+  isDead: 0
   movementParticle: {fileID: 206210087116555565}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
@@ -3473,27 +3473,25 @@ MonoBehaviour:
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
     type: 3}
-  collisionParticle: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
+  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   damageMadeByPush: 5
-  damageMadeByFall: 8
-  healthBar: {fileID: 685206799763527545, guid: 7bebf477154312944b3f1d1882ab279f,
-    type: 3}
-  unitInfo: Soy maricon y tiro rayitos
+  damageMadeByFall: 5
+  healthBar: {fileID: 7001753990623713745}
   AvailableToBeAttackedColor: {fileID: 0}
   canvasUnit: {fileID: 0}
-  characterDescription: 
-  unitIcon: {fileID: 0}
-  myCanvasHealthbar: {fileID: 0}
+  unitInfo: Mago
   hasMoved: 0
   hasAttacked: 0
   isMovingorRotating: 0
+  currentUnitsAvailableToAttack: []
   selectedMaterial: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
   finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
   canvasWithRotationArrows: {fileID: 5737905876088385803}
   LevelManagerRef: {fileID: 0}
   UIManagerRef: {fileID: 0}
-  ChargingParticle: {fileID: 0}
+  chargingParticle: {fileID: 8061592988846048939, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
+    type: 3}
 --- !u!1 &8482559691643106695
 GameObject:
   m_ObjectHideFlags: 0
@@ -3613,8 +3611,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 4859476204424845336}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3758,8 +3756,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 1523153314772964463}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3972,11 +3970,6 @@ PrefabInstance:
     - target: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 198590372774830662, guid: eac7894746a985341a280e45d7abac75,
-        type: 3}
-      propertyPath: moveWithTransform
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eac7894746a985341a280e45d7abac75, type: 3}

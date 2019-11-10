@@ -109,10 +109,10 @@ public class UIManager : MonoBehaviour
     #region ROTATION_ARROWS
 
     [SerializeField]
-    public void RotatePlayerInNewDirection()
+    public void RotatePlayerInNewDirection(UnitBase.FacingDirection newDirection)
     {
         Debug.Log("rotate");
-        LM.selectedCharacter.RotateUnitFromButton(EventSystem.current.currentSelectedGameObject.GetComponent<RotateButton>().newDirection);
+        LM.selectedCharacter.RotateUnitFromButton(newDirection);
     }
 
 
@@ -184,6 +184,7 @@ public class UIManager : MonoBehaviour
             LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
         }
     }
+
     public void ShowEnemyOrder(bool show_hide)
     {
         for (int i = 0; i < LM.enemiesOnTheBoard.Count; i++)

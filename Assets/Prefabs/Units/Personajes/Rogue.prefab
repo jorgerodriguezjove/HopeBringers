@@ -119,8 +119,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 3670300591939110387}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -264,8 +264,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 7258825081673697668}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -552,7 +552,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1309017473829565758}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.984}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5938047568029355261}
@@ -607,7 +607,7 @@ Animator:
   m_GameObject: {fileID: 1309017473829565758}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 045d516655f5d414dbbb4765caab1b6a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -628,12 +628,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31d607529dd8f049bab292066a0a568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  maxHealth: 10
+  speed: 0
+  maxHealth: 15
   currentHealth: 0
   movementUds: 6
-  baseDamage: 10
-  multiplicatorBackAttack: 1.75
+  baseDamage: 13
+  multiplicatorBackAttack: 2
   multiplicatorMoreHeight: 1.5
   multiplicatorLessHeight: 0.5
   range: 1
@@ -642,11 +642,11 @@ MonoBehaviour:
   timePushAnimation: 1
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
-  unitModel: {fileID: 5439533404574807104, guid: befc36c9291a3e54f80b8b2a1152a249,
-    type: 3}
+  unitModel: {fileID: 1139706000496136884}
   unitMaterialModel: {fileID: 3246384063879712890}
   maxHeightDifferenceToAttack: 1
-  currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToMove: 1
+  isDead: 0
   movementParticle: {fileID: 5937296020737808949}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
@@ -654,20 +654,19 @@ MonoBehaviour:
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
     type: 3}
-  collisionParticle: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
+  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
-  damageMadeByPush: 8
+  damageMadeByPush: 5
   damageMadeByFall: 5
-  healthBar: {fileID: 1786568957, guid: befc36c9291a3e54f80b8b2a1152a249, type: 3}
-  unitInfo: Soy maricon y chupo pollas
-  AvailableToBeAttackedColor: {fileID: 0}
+  healthBar: {fileID: 1203849805463798842}
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 27b4f5791fea1154088e8d147a6e63e8,
+    type: 2}
   canvasUnit: {fileID: 0}
-  characterDescription: 
-  unitIcon: {fileID: 0}
-  myCanvasHealthbar: {fileID: 0}
+  unitInfo: "P\xEDcaro"
   hasMoved: 0
   hasAttacked: 0
   isMovingorRotating: 0
+  currentUnitsAvailableToAttack: []
   selectedMaterial: {fileID: 2100000, guid: ca121d21d5319fc44b032473297ccdce, type: 2}
   finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
   canvasWithRotationArrows: {fileID: 4485294764996226272}
@@ -3379,7 +3378,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.5}
   m_SizeDelta: {x: 909, y: 425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4485294764996226272
@@ -3561,8 +3560,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 876961749604463590}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3890,8 +3889,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RotatePlayerInNewDirection
+      - m_Target: {fileID: 8034894626754087125}
+        m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4110,11 +4109,6 @@ PrefabInstance:
     - target: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 198590372774830662, guid: eac7894746a985341a280e45d7abac75,
-        type: 3}
-      propertyPath: moveWithTransform
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eac7894746a985341a280e45d7abac75, type: 3}

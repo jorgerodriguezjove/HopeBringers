@@ -12,7 +12,7 @@ public class EnGiant : EnemyUnit
     public override void SearchingObjectivesToAttack()
     {
         //Determinamos el enemigo más cercano.
-        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, this);
+        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
 
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)

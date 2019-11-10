@@ -755,6 +755,7 @@ GameObject:
   - component: {fileID: 6409402853590735200}
   - component: {fileID: 6409402853590735203}
   - component: {fileID: 2814326850417192975}
+  - component: {fileID: 7563684347061137305}
   m_Layer: 0
   m_Name: Gigante
   m_TagString: Untagged
@@ -815,11 +816,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b118e398493d61438596b4d8823cb3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 99
-  maxHealth: 50
+  speed: 3
+  maxHealth: 30
   currentHealth: 0
   movementUds: 1
-  baseDamage: 20
+  baseDamage: 7
   multiplicatorBackAttack: 2
   multiplicatorMoreHeight: 1.5
   multiplicatorLessHeight: 0.5
@@ -832,7 +833,8 @@ MonoBehaviour:
   unitModel: {fileID: 3818421881985988117}
   unitMaterialModel: {fileID: 7078063224788289771}
   maxHeightDifferenceToAttack: 1
-  currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToMove: 1
+  isDead: 0
   movementParticle: {fileID: 9056626328700121276}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
@@ -840,21 +842,19 @@ MonoBehaviour:
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
     type: 3}
-  collisionParticle: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
+  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
-  damageMadeByPush: 8
+  damageMadeByPush: 5
   damageMadeByFall: 5
   healthBar: {fileID: 4278311233811319296}
-  unitInfo: Ataco en area
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
     type: 2}
   canvasUnit: {fileID: 811410698602015731}
-  characterDescription: 
-  unitIcon: {fileID: 0}
-  myCanvasHealthbar: {fileID: 0}
+  unitInfo: Ataco en area
   myCurrentEnemyState: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 1190873530}
+  currentUnitsAvailableToAttack: []
   LevelManagerRef: {fileID: 0}
 --- !u!114 &2814326850417192975
 MonoBehaviour:
@@ -869,6 +869,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 6237804981742002209}
+--- !u!95 &7563684347061137305
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6409402853590735202}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 045d516655f5d414dbbb4765caab1b6a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7423551907849468270
 GameObject:
   m_ObjectHideFlags: 0

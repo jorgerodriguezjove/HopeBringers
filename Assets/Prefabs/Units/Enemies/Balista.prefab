@@ -647,6 +647,7 @@ GameObject:
   - component: {fileID: 9141236476622256714}
   - component: {fileID: 461609867690369434}
   - component: {fileID: 7971535968995598525}
+  - component: {fileID: 8984964606919559384}
   m_Layer: 0
   m_Name: Balista
   m_TagString: Untagged
@@ -707,11 +708,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2de2c391d89964bbdb8f701d619a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 1
   maxHealth: 20
   currentHealth: 0
   movementUds: 1
-  baseDamage: 5
+  baseDamage: 15
   multiplicatorBackAttack: 2
   multiplicatorMoreHeight: 1.5
   multiplicatorLessHeight: 0.5
@@ -724,7 +725,8 @@ MonoBehaviour:
   unitModel: {fileID: 267636537148215698}
   unitMaterialModel: {fileID: 6015505468078920396}
   maxHeightDifferenceToAttack: 1
-  currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToMove: 1
+  isDead: 0
   movementParticle: {fileID: 8076952081098728831}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
@@ -732,21 +734,19 @@ MonoBehaviour:
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
     type: 3}
-  collisionParticle: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
+  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
-  damageMadeByPush: 8
+  damageMadeByPush: 5
   damageMadeByFall: 5
   healthBar: {fileID: 3663877062953040313}
-  unitInfo: Disparo
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
     type: 2}
   canvasUnit: {fileID: 9141236477566366306}
-  characterDescription: 
-  unitIcon: {fileID: 0}
-  myCanvasHealthbar: {fileID: 0}
+  unitInfo: "Cargo el ataque y en el turno siguiente disparo a toda la l\xEDnea"
   myCurrentEnemyState: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 954751877}
+  currentUnitsAvailableToAttack: []
   LevelManagerRef: {fileID: 0}
   isAttackPrepared: 0
   isMovingToHisRight: 1
@@ -763,6 +763,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 344470648277668797}
+--- !u!95 &8984964606919559384
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9141236476622256716}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 045d516655f5d414dbbb4765caab1b6a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &9141236477566366306
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,15 +1349,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eac7894746a985341a280e45d7abac75, type: 3}
---- !u!1 &8076952081098728831 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1062157001075556, guid: eac7894746a985341a280e45d7abac75,
-    type: 3}
-  m_PrefabInstance: {fileID: 8076325332380241435}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8077967431807808439 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75,
+    type: 3}
+  m_PrefabInstance: {fileID: 8076325332380241435}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8076952081098728831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1062157001075556, guid: eac7894746a985341a280e45d7abac75,
     type: 3}
   m_PrefabInstance: {fileID: 8076325332380241435}
   m_PrefabAsset: {fileID: 0}

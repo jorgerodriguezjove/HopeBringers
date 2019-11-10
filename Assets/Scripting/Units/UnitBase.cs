@@ -89,12 +89,17 @@ public class UnitBase : MonoBehaviour
     //Variable en la que guardo el daño a realizar
     protected float damageWithMultipliersApplied;
 
+    //Máxima diferencia de altura para atacar
     [SerializeField]
     protected float maxHeightDifferenceToAttack;
 
-    //Lista de posibles unidades a las que atacar
+    //Máxima diferencia de altura para moverse
+    [SerializeField]
+    public float maxHeightDifferenceToMove;
+
+    //Bool que comprueba si el enemigo ha muerto para quitarlo de la lista de enemigos al final del turno.
     [HideInInspector]
-    public List<UnitBase> currentUnitsAvailableToAttack;
+    public bool isDead = false;
 
     //Variable que guarda el número más pequeño al comparar el rango del personaje con el número de tiles disponibles para atacar.
     protected int rangeVSTilesInLineLimitant;
@@ -129,18 +134,14 @@ public class UnitBase : MonoBehaviour
 
     [Header("FEEDBACK")]
 
-    //Material inicial y al ser seleccionado
-    protected Material initMaterial;
-
-	[SerializeField]
-	private GameObject healthBar;
-
-	[SerializeField]
-	[@TextAreaAttribute(15, 20)]
-	public string unitInfo;
+    [SerializeField]
+    private GameObject healthBar;
 
     [SerializeField]
     private Material AvailableToBeAttackedColor;
+
+    //Material inicial y al ser seleccionado
+    protected Material initMaterial;
 
     //Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
     [SerializeField]
@@ -148,24 +149,31 @@ public class UnitBase : MonoBehaviour
 
 	[Header("TEXT")]
 
-	//Texto que describe a la unidad.
-	[SerializeField]
-	public string characterDescription;
+    [SerializeField]
+    [@TextAreaAttribute(15, 20)]
+    public string unitInfo;
 
-	//Icono que aparece en la lista de turnos.
-	[SerializeField]
-	public Sprite unitIcon;
+    //¿SE PUEDE BORRAR?
+    //Texto que describe a la unidad.
+    //[SerializeField]
+    //public string characterDescription;
 
-	//Canvas que muestra la vida de la unidad
-	[SerializeField]
-	protected Canvas myCanvasHealthbar;
+    //LO COMENTO PORQUE AHORA MISMO NO ESTÁ EN USO
+    //Icono que aparece en la lista de turnos.
+    //[SerializeField]
+    //public Sprite unitIcon;
 
-	#endregion
+    //¿SE PUEDE BORRAR?
+    //Canvas que muestra la vida de la unidad
+    //[SerializeField]
+    //protected Canvas myCanvasHealthbar;
 
-	#region DAMAGE_&_DIE
+    #endregion
 
-	//Calcula PERO NO aplico el daño a la unidad elegida
-	protected void CalculateDamage(UnitBase unitToDealDamage)
+    #region DAMAGE_&_DIE
+
+    //Calcula PERO NO aplico el daño a la unidad elegida
+    protected void CalculateDamage(UnitBase unitToDealDamage)
     {
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;
@@ -233,124 +241,128 @@ public class UnitBase : MonoBehaviour
 
         //Si no hay tiles en la lista me han empujado contra un borde
         //Tiene que ser menor o igual que 1 en vez de 0 porque para empujar a una unidad contra el borde, la unidad que empuja siempre va a necesitar 1 tile para atacar (que es donde está la unidad a la que voy a atacar)
-        if (tilesToCheckForCollision.Count <= 1)
+
+        if (!isDead)
         {
-            Debug.Log("borde");
-
-            //Recibo daño 
-            ReceiveDamage(attackersDamageByPush, null);
-
-            //Hago animación de rebote??
-        }
-
-        //Si hay tiles en la lista me empjuan contra tiles que no son bordes 
-        else
-        {
-            for (int i = 1; i <= numberOfTilesMoved; i++)
+            if (tilesToCheckForCollision.Count <= 1)
             {
-                //El tile al que empujo está más alto (pared)
-                if (tilesToCheckForCollision[i].height > myCurrentTile.height)
+                Debug.Log("borde");
+
+                //Recibo daño 
+                ReceiveDamage(attackersDamageByPush, null);
+
+                //Hago animación de rebote??
+            }
+
+            //Si hay tiles en la lista me empjuan contra tiles que no son bordes 
+            else
+            {
+                for (int i = 1; i <= numberOfTilesMoved; i++)
                 {
-                    Debug.Log("pared");
-                    //Recibo daño 
-                    ReceiveDamage(attackersDamageByPush, null);
-
-                    //Desplazo a la unidad
-                    MoveToTilePushed(tilesToCheckForCollision[i - 1]);
-
-                    //Animación de rebote??
-
-                    return;
-                }
-
-                //El tile al que empujo está más bajo (caída)
-                else if (Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
-                {
-                    Debug.Log("caída");
-
-                    //Compruebo la altura de la que lo tiro??
-
-                    //Compruebo si hay otra unidad
-                    if (tilesToCheckForCollision[i].unitOnTile != null)
+                    //El tile al que empujo está más alto (pared)
+                    if (tilesToCheckForCollision[i].height > myCurrentTile.height)
                     {
-                        ReceiveDamage(attackersDamageByFall, null);
-                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
+                        Debug.Log("pared");
+                        //Recibo daño 
+                        ReceiveDamage(attackersDamageByPush, null);
 
-                        if (tilesToCheckForCollision[i].unitOnTile.currentHealth > currentHealth)
+                        //Desplazo a la unidad
+                        MoveToTilePushed(tilesToCheckForCollision[i - 1]);
+
+
+                        return;
+                    }
+
+                    //El tile al que empujo está más bajo (caída)
+                    else if (Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
+                    {
+                        Debug.Log("caída");
+
+                        //Compruebo la altura de la que lo tiro??
+
+                        //Compruebo si hay otra unidad
+                        if (tilesToCheckForCollision[i].unitOnTile != null)
                         {
-                            //Muere la unidad que cae
-                            Die();
+                            ReceiveDamage(attackersDamageByFall, null);
+                            tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
+
+                            if (tilesToCheckForCollision[i].unitOnTile.currentHealth > currentHealth)
+                            {
+                                //Muere la unidad que cae
+                                Die();
+                            }
+
+                            else
+                            {
+                                //Muere la unidad de abajo
+                                tilesToCheckForCollision[i].unitOnTile.Die();
+                            }
                         }
 
                         else
                         {
-                            //Muere la unidad de abajo
-                            tilesToCheckForCollision[i].unitOnTile.Die();
+                            ReceiveDamage(attackersDamageByFall, null);
                         }
+
+                        //Que pasa si hay un obstáculo en el tile de abajo?
+
+                        MoveToTilePushed(tilesToCheckForCollision[i]);
+
+                        return;
                     }
 
+                    //Si la altura del tile al que empujo y la mía son iguales compruebo si el tile está vacío, es un obstáculo o tiene una unidad.
                     else
                     {
-                        ReceiveDamage(attackersDamageByFall, null);
-                    }
+                        //Es tile vacío u obstáculo
+                        if (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle)
+                        {
+                            Debug.Log("vacío");
+                            //Recibo daño 
+                            ReceiveDamage(attackersDamageByPush, null);
 
-                    //Que pasa si hay un obstáculo en el tile de abajo?
+                            // Desplazo a la unidad
+                            MoveToTilePushed(tilesToCheckForCollision[i - 1]);
 
-                    MoveToTilePushed(tilesToCheckForCollision[i]);
+                            //Animación de rebote??
 
-                    return;
-                }
+                            return;
+                        }
 
-                //Si la altura del tile al que empujo y la mía son iguales compruebo si el tile está vacío, es un obstáculo o tiene una unidad.
-                else
-                {
-                    //Es tile vacío u obstáculo
-                    if (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle)
-                    {
-                        Debug.Log("vacío");
-                        //Recibo daño 
-                        ReceiveDamage(attackersDamageByPush, null);
-
-                        // Desplazo a la unidad
-                        MoveToTilePushed(tilesToCheckForCollision[i - 1]);
-
-                        //Animación de rebote??
-
-                        return;
-                    }
-
-                    //Es tile con unidad
-                    else if (tilesToCheckForCollision[i].unitOnTile != null)
-                    {
-                        Debug.Log("otra unidad");
-                        //Recibo daño 
-                        ReceiveDamage(attackersDamageByPush, null);
+                        //Es tile con unidad
+                        else if (tilesToCheckForCollision[i].unitOnTile != null)
+                        {
+                            Debug.Log("otra unidad");
+                            //Recibo daño 
+                            ReceiveDamage(attackersDamageByPush, null);
 
 
-                        Vector3 test = new Vector3((this.transform.position.x + tilesToCheckForCollision[i].unitOnTile.transform.position.x) / 2, this.transform.position.y, (this.transform.position.z + tilesToCheckForCollision[i].unitOnTile.transform.position.z) / 2);
+                            Vector3 test = new Vector3((this.transform.position.x + tilesToCheckForCollision[i].unitOnTile.transform.position.x) / 2, this.transform.position.y, (this.transform.position.z + tilesToCheckForCollision[i].unitOnTile.transform.position.z) / 2);
 
-                        Instantiate(collisionParticlePref,test,collisionParticlePref.transform.rotation);
+                            Instantiate(collisionParticlePref, test, collisionParticlePref.transform.rotation);
 
-                        //Hago daño a la otra unidad
-                        tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
+                            //Hago daño a la otra unidad
+                            tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
 
-                        //Desplazo a la unidad
-                        MoveToTilePushed(tilesToCheckForCollision[i-1]);
+                            //Desplazo a la unidad
+                            MoveToTilePushed(tilesToCheckForCollision[i - 1]);
 
-                        //Animación de rebote??
+                            //Animación de rebote??
 
-                        return;
+                            return;
+                        }
                     }
                 }
+
+                //Si sale del for entonces es que todos los tiles que tiene que comprobar son normales y simplemente lo muevo al último tile
+
+                SoundManager.Instance.PlaySound(AppSounds.COLLISION);
+
+                //Desplazo a la unidad
+                MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
             }
-
-            //Si sale del for entonces es que todos los tiles que tiene que comprobar son normales y simplemente lo muevo al último tile
-
-            SoundManager.Instance.PlaySound(AppSounds.COLLISION);
-
-            //Desplazo a la unidad
-            MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
         }
+       
     }
 
     //Función que ejecuta el movimiento del push
@@ -360,10 +372,14 @@ public class UnitBase : MonoBehaviour
         currentTileVectorToMove = new Vector3(newTile.tileX, newTile.height, newTile.tileZ);
         transform.DOMove(currentTileVectorToMove, timePushAnimation);
 
-        //Aviso a los tiles del cambio de posición
-        myCurrentTile.unitOnTile = null;
-        myCurrentTile = newTile;
-        myCurrentTile.unitOnTile = this;
+        //Si no ha muerto tras el choque, actualizo la info
+        if (!isDead)
+        {
+            //Aviso a los tiles del cambio de posición
+            myCurrentTile.unitOnTile = null;
+            myCurrentTile = newTile;
+            myCurrentTile.unitOnTile = this;
+        }  
     }
 
     #endregion

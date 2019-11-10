@@ -7,7 +7,7 @@ public class PlayerUnit : UnitBase
 {
     #region VARIABLES
 
-    [Header("STATS ESPECÍFICO")]
+    [Header("STATS PLAYER")]
 
     //Bools que indican si el personaje se ha movido y si ha atacado.
     [SerializeField]
@@ -16,6 +16,10 @@ public class PlayerUnit : UnitBase
     public bool hasAttacked = false;
     [SerializeField]
     public bool isMovingorRotating = false;
+
+    //Lista de posibles unidades a las que atacar
+    [HideInInspector]
+    public List<UnitBase> currentUnitsAvailableToAttack;
 
     [Header("MOVIMIENTO")]
 
@@ -143,7 +147,6 @@ public class PlayerUnit : UnitBase
             //Calcula el vector al que se tiene que mover.
             currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
 
-            Debug.Log(currentTileVectorToMove);
             //Muevo y roto a la unidad
             unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
@@ -177,7 +180,6 @@ public class PlayerUnit : UnitBase
         //Movimiento en diagonal
         else
         {
-            Debug.Log("Choose Arrow");
             //Hacer que aparezcan los botones
             canvasWithRotationArrows.gameObject.SetActive(true);
         }
@@ -333,11 +335,12 @@ public class PlayerUnit : UnitBase
     }
 
     //Comprueba las unidades (tanto aliadas como enemigas) que están en alcance para ser atacadas.
-    public void CheckUnitsInRangeToAttack()
+    //Es virtual porque la comprobación del pícaro es diferente (tiene que tener en cuenta el tile en el que va a acabar tras el salto).
+    public virtual void CheckUnitsInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
 
-        if (currentFacingDirection == FacingDirection.North || GetComponent<Rogue>())
+        if (currentFacingDirection == FacingDirection.North)
         {
             if (range <= myCurrentTile.tilesInLineUp.Count)
             {
@@ -359,7 +362,7 @@ public class PlayerUnit : UnitBase
             }
         }
 
-        if (currentFacingDirection == FacingDirection.South || GetComponent<Rogue>())
+        if (currentFacingDirection == FacingDirection.South)
         {
             if (range <= myCurrentTile.tilesInLineDown.Count)
             {
@@ -381,7 +384,7 @@ public class PlayerUnit : UnitBase
             }
         }
 
-        if (currentFacingDirection == FacingDirection.East || GetComponent<Rogue>())
+        if (currentFacingDirection == FacingDirection.East)
         {
             if (range <= myCurrentTile.tilesInLineRight.Count)
             {
@@ -403,7 +406,7 @@ public class PlayerUnit : UnitBase
             }
         }
 
-        if (currentFacingDirection == FacingDirection.West || GetComponent<Rogue>())
+        if (currentFacingDirection == FacingDirection.West)
         {
             if (range <= myCurrentTile.tilesInLineLeft.Count)
             {

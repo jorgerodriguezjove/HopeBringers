@@ -6,14 +6,14 @@ public class EnemyUnit : UnitBase
 {
     #region VARIABLES
 
-    //[Header("STATE MACHINE")]
-
-    //Posibles estados del enemigo
-    protected enum enemyState {Waiting, Searching, Moving, Attacking, Ended}
+    [Header("STATE MACHINE")]
 
     //Estado actual del enemigo
     [SerializeField]
     protected enemyState myCurrentEnemyState;
+
+    //Posibles estados del enemigo
+    protected enum enemyState {Waiting, Searching, Moving, Attacking, Ended}
 
     //Distancia en tiles con el enemigo más lejano
     protected int furthestAvailableUnitDistance;
@@ -21,13 +21,15 @@ public class EnemyUnit : UnitBase
     //Bool que comprueba si la balista se ha movido
     protected bool hasMoved = false;
 
-
+    //Orden en la lista de enemigos. Según su velocidad cambiará el orden en el que actúa.
     [HideInInspector]
     public int orderToShow;
 
     [SerializeField]
     public GameObject thisUnitOrder;
 
+    [HideInInspector]
+    public  List<UnitBase> currentUnitsAvailableToAttack;
 
     [Header("REFERENCIAS")]
 
@@ -35,7 +37,6 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     public GameObject LevelManagerRef;
     protected LevelManager LM;
-
 
     #endregion
 
@@ -96,7 +97,7 @@ public class EnemyUnit : UnitBase
 
     public virtual void SearchingObjectivesToAttack()
     {
-        
+        //Cada enemigo busca enemigos a su manera
     }
 
 
@@ -108,13 +109,16 @@ public class EnemyUnit : UnitBase
 
     public virtual void Attack()
     {
+        //Cada enemigo realiza su propio ataque
     }
 
+    //Para acabar el turno de la unnidad
     public virtual void FinishMyActions()
     {
         hasMoved = false;
-        LM.NextEnemyInList();
+        currentUnitsAvailableToAttack.Clear();
         myCurrentEnemyState = enemyState.Waiting;
+        LM.NextEnemyInList();
     }
 
     #endregion
@@ -134,7 +138,7 @@ public class EnemyUnit : UnitBase
 		LM.UIM.ShowTooltip(unitInfo);
 		HealthBarOn_Off(true);
 		gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-		if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this))
+		if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
 		{
 			Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
 		}
@@ -172,18 +176,23 @@ public class EnemyUnit : UnitBase
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
 
+        //Animación, sonido y partículas de muerte
         myAnimator.SetTrigger("Death");
-
         SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
-
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
+
+        //Cambios en la lógica para indicar que ha muerto
+        myCurrentTile.unitOnTile = null;
+        myCurrentTile = null;
+        Destroy(unitModel);
+        isDead = true;
     }
 
     #endregion
 
     #region CHECKS
 
-    //Esta función es exactamente igual que la del player con la excepción de que solo tiene en cuenta a personajes del jugador e ignora enemigos.
+    //Esta función es el equivalente al chequeo de objetivos del jugador. Es distinta y en principio no se puede reutilizar la misma debido a estas diferencias.
     protected void CheckCharactersInLine()
     {
         currentUnitsAvailableToAttack.Clear();

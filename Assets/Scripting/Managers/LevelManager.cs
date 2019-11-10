@@ -62,9 +62,6 @@ public class LevelManager : MonoBehaviour
 	[HideInInspector]
     public UIManager UIM;
 
-    [SerializeField]
-    AudioClip testSount;
-
     #endregion
 
     #region INIT
@@ -74,9 +71,10 @@ public class LevelManager : MonoBehaviour
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
 
-        ReOrderUnits();
-        UIM.SetEnemyOrder();
+        //Reordeno las unidades y también llamo al UIManager para que actualice el orden
+        UpdateUnitsOrder();
 
+        //Comienza el nivel con el turno del jugador
         currentLevelState = LevelState.PlayerPhase;
 
         counterForEnemiesOrder = 0;
@@ -119,7 +117,8 @@ public class LevelManager : MonoBehaviour
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
-    private void ReOrderUnits()
+    //Cuando muere un enemigo, también se llama aquí
+    private void UpdateUnitsOrder()
     {
         if (characthersOnTheBoard.Count > 0)
         {
@@ -132,15 +131,25 @@ public class LevelManager : MonoBehaviour
 
         if (enemiesOnTheBoard.Count > 0)
         {
+            for (int i = 0; i < enemiesOnTheBoard.Count-1; i++)
+            {
+                if(enemiesOnTheBoard[i].GetComponent<EnemyUnit>().isDead)
+                {
+                    Destroy(enemiesOnTheBoard[i].gameObject);
+                    enemiesOnTheBoard.Remove(enemiesOnTheBoard[i]);
+                    i--;
+                }
+            }
+
             enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
             {
                 return (b.GetComponent<EnemyUnit>().speed).CompareTo(a.GetComponent<EnemyUnit>().speed);
 
             });
         }
-        
+
+        UIM.SetEnemyOrder();
     }
-   
 
     #endregion
 
@@ -208,7 +217,7 @@ public class LevelManager : MonoBehaviour
             //Compruebo si está en la lista de posibles targets
             for (int i = 0; i < enemiesNumber; i++)
             {
-                if (selectedCharacter != null)
+                if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
                 {
                     if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
                     {
@@ -347,6 +356,8 @@ public class LevelManager : MonoBehaviour
 
     private void BeginPlayerPhase()
     {
+        UpdateUnitsOrder();
+
         if (currentTurn > 0)
         {
             //Aparece cartel con turno del player
@@ -369,10 +380,14 @@ public class LevelManager : MonoBehaviour
         {
             currentTurn = 1;
         }
+
+        
     }
 
     private void BeginEnemyPhase()
     {
+        UpdateUnitsOrder();
+
         //Desaparece botón de end turn
         UIM.ActivateDeActivateEndButton();
 
@@ -401,9 +416,9 @@ public class LevelManager : MonoBehaviour
     }
 
     //Función que llaman el gigante y el goblin para determinar la distancia hasta los enmigos
-    public List<UnitBase> CheckEnemyPathfinding(int range, EnemyUnit enemyUnitToCheck)
+    public List<UnitBase> CheckEnemyPathfinding(int range, GameObject enemyUnitToCheck)
     {
-        return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck);
+        return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck.GetComponent<EnemyUnit>());
     }
 
 

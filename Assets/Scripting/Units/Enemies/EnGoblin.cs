@@ -14,8 +14,10 @@ public class EnGoblin : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
+        currentUnitsAvailableToAttack.Clear();
+
         //Determinamos el enemigo más cercano.
-        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, this);
+        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
 
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)
@@ -109,7 +111,6 @@ public class EnGoblin : EnemyUnit
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
 
-                Debug.Log("aa");
                 //Animación de ataque
                 myAnimator.SetTrigger("Attack");
 
@@ -143,13 +144,13 @@ public class EnGoblin : EnemyUnit
         CheckTileDirection(pathToObjective[0]);
 
         myCurrentEnemyState = enemyState.Waiting;
-        StartCoroutine("MovingUnitAnimation");
-
         movementParticle.SetActive(false);
 
         myCurrentTile.unitOnTile = null;
         myCurrentTile = pathToObjective[pathToObjective.Count-2];
         myCurrentTile.unitOnTile = this;
+
+        StartCoroutine("MovingUnitAnimation");
     }
 
     IEnumerator MovingUnitAnimation()

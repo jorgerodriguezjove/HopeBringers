@@ -357,7 +357,7 @@ public class TileManager : MonoBehaviour
                    
                     if (alt < dist[node])
                     {
-                        if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                        if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
                         {
                             dist[node] = alt;
                             prev[node] = currentNode;
@@ -373,7 +373,7 @@ public class TileManager : MonoBehaviour
 
                         if (alt < dist[node])
                         {
-                            if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                            if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
                             {
                                 dist[node] = alt;
                                 prev[node] = currentNode;
@@ -392,7 +392,7 @@ public class TileManager : MonoBehaviour
 
                             if (alt < dist[node])
                             {
-                                if (Mathf.Abs(node.height - currentNode.height) <= 1)
+                                if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
                                 {
                                     dist[node] = alt;
                                     prev[node] = currentNode;

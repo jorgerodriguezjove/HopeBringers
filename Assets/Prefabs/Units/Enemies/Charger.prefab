@@ -707,24 +707,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af35ed7e1e6bc94dbc6148bcb8e0d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  maxHealth: 1
+  speed: 2
+  maxHealth: 30
   currentHealth: 0
   movementUds: 2
-  baseDamage: 1
-  multiplicatorBackAttack: 1
-  multiplicatorMoreHeight: 1
-  multiplicatorLessHeight: 1
+  baseDamage: 10
+  multiplicatorBackAttack: 2
+  multiplicatorMoreHeight: 1.5
+  multiplicatorLessHeight: 0.5
   range: 99
   myCurrentTile: {fileID: 0}
-  currentFacingDirection: 2
+  currentFacingDirection: 0
   timePushAnimation: 0.2
   timeMovementAnimation: 0
   timeDurationRotation: 0
   unitModel: {fileID: 2248538823831439129}
   unitMaterialModel: {fileID: 1257653076374177098}
   maxHeightDifferenceToAttack: 1
-  currentUnitsAvailableToAttack: []
+  maxHeightDifferenceToMove: 1
+  isDead: 0
   movementParticle: {fileID: 6679577583857436927}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
@@ -732,21 +733,19 @@ MonoBehaviour:
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
     type: 3}
-  collisionParticle: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
+  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
-  damageMadeByPush: 8
+  damageMadeByPush: 5
   damageMadeByFall: 5
   healthBar: {fileID: 34387568444498166}
-  unitInfo: Embisto
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 9b7d8a852f9ae00429386ed489a87d18,
     type: 2}
   canvasUnit: {fileID: 8699764388687533050}
-  characterDescription: 
-  unitIcon: {fileID: 0}
-  myCanvasHealthbar: {fileID: 0}
+  unitInfo: "Embisto si tengo objetivos en mi propia l\xEDnea"
   myCurrentEnemyState: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 219784646}
+  currentUnitsAvailableToAttack: []
   LevelManagerRef: {fileID: 0}
 --- !u!114 &5407212886593100264
 MonoBehaviour:
@@ -1106,11 +1105,11 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4155741821396558, guid: 3c9c85e47d53d1f4aaa97330d98c0680, type: 3}
-      propertyPath: m_LocalScale.z
+      propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4155741821396558, guid: 3c9c85e47d53d1f4aaa97330d98c0680, type: 3}
-      propertyPath: m_LocalScale.y
+      propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1158,11 +1157,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -4225912429722444957, guid: dc00342af2d46e64099fd8092644a09c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1538924730050149809, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
@@ -1256,13 +1250,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5353201909904096835, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
+      propertyPath: m_LocalPosition.y
+      value: -0.238
       objectReference: {fileID: 0}
     - target: {fileID: 5353201909904096835, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.238
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc00342af2d46e64099fd8092644a09c, type: 3}
@@ -1320,11 +1314,6 @@ PrefabInstance:
     - target: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 198590372774830662, guid: eac7894746a985341a280e45d7abac75,
-        type: 3}
-      propertyPath: moveWithTransform
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eac7894746a985341a280e45d7abac75, type: 3}
