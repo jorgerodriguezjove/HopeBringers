@@ -30,6 +30,16 @@ public class Portraits : MonoBehaviour
 		UIM.PortraitCharacterSelect(assignedPlayer);
 	}
 
+	public void Highlight()
+	{
+		UIM.HighlightCharacter(assignedPlayer);
+	}
+
+	public void Unhighlight()
+	{
+		UIM.UnHighlightCharacter(assignedPlayer);
+	}
+
 	#endregion
 
 }

@@ -148,6 +148,15 @@ public class UIManager : MonoBehaviour
 		LM.SelectUnit(characterToSelect.movementUds, characterToSelect);
 	}
 
+	public void HighlightCharacter(PlayerUnit characterToHighlight)
+	{
+		characterToHighlight.SelectedColor();
+	}
+	public void UnHighlightCharacter(PlayerUnit characterToUnhighlight)
+	{
+		characterToUnhighlight.InitialColor();
+	}
+
 	#endregion
 
 	#region CHARACTER_INFO
