@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class PlayerUnit : UnitBase
 {
@@ -35,6 +36,9 @@ public class PlayerUnit : UnitBase
 
     [SerializeField]
     private Canvas canvasWithRotationArrows;
+
+	[SerializeField]
+	public Sprite portrait;
 
     [Header("REFERENCIAS")]
 

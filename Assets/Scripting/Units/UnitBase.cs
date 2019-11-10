@@ -18,8 +18,7 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int maxHealth;
 
-    //Vida actual de la unidad.
-    [HideInInspector]
+	[HideInInspector]
     public int currentHealth;
 
     //Uds movimiento máximas de la unidad.

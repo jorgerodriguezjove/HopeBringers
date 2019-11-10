@@ -52,7 +52,9 @@ public class UIManager : MonoBehaviour
 	private Vector3 characterInfoOriginalPosition;
 
 	[SerializeField]
-	private List<GameObject> playerPortraits;
+	private List<GameObject> panelesPJ;
+	[SerializeField]
+	private List<Image> characterPortraits;
 
 	[SerializeField]
 	public Texture2D attackCursor, movementCursor;
@@ -71,10 +73,12 @@ public class UIManager : MonoBehaviour
 		characterInfoOriginalPosition = characterInfo.transform.position;
 		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
 		{
-			healthValues[i].text = LM.characthersOnTheBoard[i].currentHealth + "/" + LM.characthersOnTheBoard[i].maxHealth;
-			playerPortraits[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
+			characterPortraits[i].sprite = LM.characthersOnTheBoard[i].portrait;
 			healthBars[i].maxValue = LM.characthersOnTheBoard[i].maxHealth;
-			healthBars[i].value = LM.characthersOnTheBoard[i].currentHealth;
+			healthBars[i].value = LM.characthersOnTheBoard[i].maxHealth;
+			healthValues[i].text = LM.characthersOnTheBoard[i].maxHealth + "/" + LM.characthersOnTheBoard[i].maxHealth;
+			panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
+
 		}
 	}
 
