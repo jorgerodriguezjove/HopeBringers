@@ -303,8 +303,10 @@ public class LevelManager : MonoBehaviour
                 tilesAvailableForMovement.Clear();
 
                 //Aviso a la unidad de que se tiene que mover
-                selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
-
+                if (selectedCharacter != null)
+                {
+                    selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+                }
             }
         }
     }
