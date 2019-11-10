@@ -363,10 +363,10 @@ public class LevelManager : MonoBehaviour
 
         if (currentTurn > 0)
         {
-            //Aparece cartel con turno del player
-
-            //Resetear todas las variables tipo bool y demás de los players
-            for (int i = 0; i < characthersOnTheBoard.Count; i++)
+			//Aparece cartel con turno del player
+			UIM.RotateButtonStartPhase();
+			//Resetear todas las variables tipo bool y demás de los players
+			for (int i = 0; i < characthersOnTheBoard.Count; i++)
             {
                 characthersOnTheBoard[i].ResetUnitState();
             }
