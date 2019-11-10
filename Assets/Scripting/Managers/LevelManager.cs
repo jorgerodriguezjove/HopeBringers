@@ -383,8 +383,6 @@ public class LevelManager : MonoBehaviour
         {
             currentTurn = 1;
         }
-
-        
     }
 
     private void BeginEnemyPhase()

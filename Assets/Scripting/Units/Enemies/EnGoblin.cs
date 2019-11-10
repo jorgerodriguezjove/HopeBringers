@@ -14,12 +14,14 @@ public class EnGoblin : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
+        if (hasAttacked)
+        {
+            myCurrentEnemyState = enemyState.Ended;
+            return;
+        }
+
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
-
-        Debug.Log(gameObject.name);
-        Debug.Log(currentUnitsAvailableToAttack.Count);
-        Debug.Log("-----");
 
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)
@@ -75,6 +77,7 @@ public class EnGoblin : EnemyUnit
     {
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
+         
             //Si mi objetivo es adyacente a mi le ataco
             if (myCurrentTile.neighbours[i].unitOnTile != null && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0])
             {
@@ -93,6 +96,7 @@ public class EnGoblin : EnemyUnit
                     }
 
                     //Atacar al enemigo
+                    Debug.Log("misma x");
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
                 //Izquierda o derecha
@@ -110,27 +114,27 @@ public class EnGoblin : EnemyUnit
                     }
 
                     //Atacar al enemigo
+                    Debug.Log("misma z");
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
 
                 //Animación de ataque
                 myAnimator.SetTrigger("Attack");
 
+                hasAttacked = true;
                 myCurrentEnemyState = enemyState.Ended;
                 break;
             }
+        }
 
-            else
-            {
-                if (!hasMoved)
-                {
-                    myCurrentEnemyState = enemyState.Moving;
-                }
-                else
-                {
-                    myCurrentEnemyState = enemyState.Ended;
-                }
-            }
+        if (!hasMoved)
+        {
+            myCurrentEnemyState = enemyState.Moving;
+        }
+
+        else
+        {
+            myCurrentEnemyState = enemyState.Ended;
         }
     }
 
@@ -149,8 +153,10 @@ public class EnGoblin : EnemyUnit
         movementParticle.SetActive(false);
 
         myCurrentTile.unitOnTile = null;
-        myCurrentTile = pathToObjective[pathToObjective.Count-2];
-        myCurrentTile.unitOnTile = this;
+        pathToObjective[pathToObjective.Count - 2].unitOnTile = this;
+        myCurrentTile.UpdateNeighboursOccupied();
+        myCurrentTile = pathToObjective[pathToObjective.Count - 2];
+        myCurrentTile.UpdateNeighboursOccupied();
 
         StartCoroutine("MovingUnitAnimation");
     }

@@ -61,9 +61,6 @@ public class TileManager : MonoBehaviour
     //Personaje actualmente seleccionado
     private UnitBase selectedCharacter;
 
-    //Tiles que se puede mover el personaje seleccionado
-    private int mxMovementUdsSelectedCharacter;
-
     //Almaceno el tile wue estoy comprobando aora mismo para no acceder todo el rato desde el selected character
     private IndividualTiles currentTileCheckingForMovement;
 
@@ -201,15 +198,13 @@ public class TileManager : MonoBehaviour
     {
         selectedCharacter = selectedUnit;
         tilesAvailableForMovement.Clear();
-        mxMovementUdsSelectedCharacter = selectedCharacter.movementUds;
-        Debug.Log(selectedUnit);
-
+        
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
-        for (int i = -mxMovementUdsSelectedCharacter; i < (mxMovementUdsSelectedCharacter * 2) + 1; i++)
+        for (int i = -movementUds; i < (movementUds * 2) + 1; i++)
         {
             //Al restar a losMovementUds el i actual obtengo los tiles que hay por encima de la posición del personaje en dicha columna
             //Este número me sirve para calcular la posición en z de los tiles
-            int tilesInVertical = mxMovementUdsSelectedCharacter - Mathf.Abs(i);
+            int tilesInVertical = movementUds - Mathf.Abs(i);
 
             //Esto significa que es el extremo del rombo y sólo hay 1 tile en vertical
             if (tilesInVertical == 0)
@@ -228,7 +223,7 @@ public class TileManager : MonoBehaviour
                         {
                             //Compruebo si existe un camino hasta el tile
                             CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
-                            if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                            if (tempCurrentPathCost <= movementUds)
                             {
                                 tilesAvailableForMovement.Add(currentTileCheckingForMovement);
                             }
@@ -255,7 +250,7 @@ public class TileManager : MonoBehaviour
                             {
                                 //Compruebo si existe un camino hasta el tile
                                 CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
-                                if (tempCurrentPathCost <= mxMovementUdsSelectedCharacter)
+                                if (tempCurrentPathCost <= movementUds)
                                 {
                                     tilesAvailableForMovement.Add(currentTileCheckingForMovement);
                                 }
@@ -268,7 +263,6 @@ public class TileManager : MonoBehaviour
         }
 
         return tilesAvailableForMovement;
-
     }
 
 
@@ -446,8 +440,8 @@ public class TileManager : MonoBehaviour
     //Doy feedback de que casillas están al alcance del personaje.
     public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
     {
+        charactersAvailableForAttack.Clear();
 
-        Debug.Log(currentEnemy);
         //Reuno en una lista todos los tiles a los que puedo acceder
         OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
 
@@ -460,18 +454,19 @@ public class TileManager : MonoBehaviour
                 //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
                 if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
                 {
-                    //Me guardo la distancia para checkear
-                    tempCurrentObjectiveCost = tempCurrentPathCost;
-                    //Limpio la lista de objetivos y añado
                     if (tempCurrentObjectiveCost > tempCurrentPathCost)
                     {
+                        //Limpio la lista de objetivos y añado
                         charactersAvailableForAttack.Clear();
                     }
+                    //Me guardo la distancia para checkear
+                    tempCurrentObjectiveCost = tempCurrentPathCost;
+
                     charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
                 }
 
-
                 //Resetear tempcurrentPathCost a 0
+                tempCurrentObjectiveCost = 0;
                 tempCurrentPathCost = 0;
             }
         }

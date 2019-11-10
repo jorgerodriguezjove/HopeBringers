@@ -114,6 +114,19 @@ public class PlayerUnit : UnitBase
         LM.SelectUnit(movementUds, this);
     }
 
+    private void OnMouseEnter()
+    {
+        if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+        {
+            Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+        }
+    }
+
+    private void OnMouseExit()
+    {
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
     #endregion
 
     #region MOVEMENT_&_ROTATION
@@ -130,10 +143,14 @@ public class PlayerUnit : UnitBase
 
         StartCoroutine("MovingUnitAnimation");
 
-        myCurrentTile.unitOnTile = null;
-        myCurrentTile = tileToMove;
-        myCurrentTile.unitOnTile = this;
        
+        myCurrentTile.unitOnTile = null;
+        tileToMove.unitOnTile = this;
+        myCurrentTile.UpdateNeighboursOccupied();
+        myCurrentTile = tileToMove;
+        myCurrentTile.UpdateNeighboursOccupied();
+
+
     }
 
     IEnumerator MovingUnitAnimation()
@@ -249,7 +266,7 @@ public class PlayerUnit : UnitBase
 		//Cuando me hacen daño refresco la información en la interfaz
 		UIM.RefreshHealth();
 
-        Debug.Log("Soy " + name + "me han hecho daño");
+        Debug.Log("Soy " + name + " me han hecho daño");
 
         if (currentHealth <= 0)
         {

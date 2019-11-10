@@ -371,9 +371,17 @@ public class EnBalista : EnemyUnit
         transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
         //Actualizo las variables de los tiles
+
         myCurrentTile.unitOnTile = null;
+
+        ListWithNewTile[0].unitOnTile = this;
+
+        myCurrentTile.UpdateNeighboursOccupied();
+
         myCurrentTile = ListWithNewTile[0];
-        myCurrentTile.unitOnTile = this;
+
+        myCurrentTile.UpdateNeighboursOccupied();
+
 
         //Aviso de que se ha movido
         hasMoved = true;

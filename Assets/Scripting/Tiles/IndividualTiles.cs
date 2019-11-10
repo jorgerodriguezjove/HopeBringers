@@ -36,7 +36,7 @@ public class IndividualTiles : MonoBehaviour
     public bool isObstacle;
 
     //Unidad encima del tile. Cada unidad se encarga de rellenar esta variable en el start ya que en el editor a cada unidad le paso una referencia del tile en el que esta.
-    [HideInInspector]
+    [SerializeField]
     public UnitBase unitOnTile;
 
     [Header("TILES VECINOS")]
@@ -140,6 +140,8 @@ public class IndividualTiles : MonoBehaviour
 
 	public void UpdateNeighboursOccupied()
     {
+        neighboursOcuppied = 0;
+
         for (int i = 0; i < neighbours.Count; i++)
         {
             if (neighbours[i].unitOnTile != null)

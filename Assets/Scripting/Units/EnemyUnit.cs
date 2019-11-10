@@ -21,6 +21,8 @@ public class EnemyUnit : UnitBase
     //Bool que comprueba si la balista se ha movido
     protected bool hasMoved = false;
 
+    protected bool hasAttacked = false;
+
     //Orden en la lista de enemigos. Según su velocidad cambiará el orden en el que actúa.
     [HideInInspector]
     public int orderToShow;
@@ -48,6 +50,7 @@ public class EnemyUnit : UnitBase
 		LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
         myCurrentTile.unitOnTile = this;
+        myCurrentTile.UpdateNeighboursOccupied();
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         //Inicializo componente animator
@@ -93,6 +96,12 @@ public class EnemyUnit : UnitBase
                 FinishMyActions();
                 break;
         }
+
+
+        //if (currentUnitsAvailableToAttack.Count == 0)
+        //{
+        //    Debug.Log("EMPTY");
+        //}
     }
 
     public virtual void SearchingObjectivesToAttack()
@@ -116,7 +125,8 @@ public class EnemyUnit : UnitBase
     public virtual void FinishMyActions()
     {
         hasMoved = false;
-        currentUnitsAvailableToAttack.Clear();
+        hasAttacked = false;
+        //currentUnitsAvailableToAttack.Clear();
         myCurrentEnemyState = enemyState.Waiting;
         LM.NextEnemyInList();
     }
@@ -182,7 +192,15 @@ public class EnemyUnit : UnitBase
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
 
         //Cambios en la lógica para indicar que ha muerto
+
         myCurrentTile.unitOnTile = null;
+
+        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        {
+            myCurrentTile.neighbours[i].UpdateNeighboursOccupied();
+        }
+
+        myCurrentTile.UpdateNeighboursOccupied();
         myCurrentTile = null;
         Destroy(unitModel);
         isDead = true;

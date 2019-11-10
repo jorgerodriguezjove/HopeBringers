@@ -375,9 +375,12 @@ public class UnitBase : MonoBehaviour
         if (!isDead)
         {
             //Aviso a los tiles del cambio de posición
+            
             myCurrentTile.unitOnTile = null;
+            newTile.unitOnTile = this;
+            myCurrentTile.UpdateNeighboursOccupied();
             myCurrentTile = newTile;
-            myCurrentTile.unitOnTile = this;
+            myCurrentTile.UpdateNeighboursOccupied();
         }  
     }
 
@@ -417,6 +420,6 @@ public class UnitBase : MonoBehaviour
 		healthBar.SetActive(isOn);
 	}
 
-	#endregion
+    #endregion
 
 }

@@ -11,6 +11,12 @@ public class EnGiant : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
+        if (hasAttacked)
+        {
+            myCurrentEnemyState = enemyState.Ended;
+            return;
+        }
+
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
 
@@ -128,21 +134,22 @@ public class EnGiant : EnemyUnit
                     }
                 }
 
+                hasAttacked = true;
+                myAnimator.SetTrigger("Attack");
                 myCurrentEnemyState = enemyState.Ended;
                 break;
             }
 
-            else
-            {
-               if (!hasMoved)
-               {
-                    myCurrentEnemyState = enemyState.Moving;
-               }
-               else
-               {
-                    myCurrentEnemyState = enemyState.Ended;
-               }
-            }
+
+        }
+
+        if (!hasMoved)
+        {
+            myCurrentEnemyState = enemyState.Moving;
+        }
+        else
+        {
+            myCurrentEnemyState = enemyState.Ended;
         }
     }
 
@@ -349,11 +356,18 @@ public class EnGiant : EnemyUnit
     {
         //Muevo al gigante
         transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-        
+
         //Actualizo las variables de los tiles
+
         myCurrentTile.unitOnTile = null;
+        ListWithNewTile[0].unitOnTile = this;
+        myCurrentTile.UpdateNeighboursOccupied();
         myCurrentTile = ListWithNewTile[0];
-        myCurrentTile.unitOnTile = this;
+        myCurrentTile.UpdateNeighboursOccupied();
+
+
+
+
 
         //Aviso de que se ha movido
         hasMoved = true;
