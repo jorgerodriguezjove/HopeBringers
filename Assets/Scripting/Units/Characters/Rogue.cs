@@ -89,7 +89,6 @@ public class Rogue : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                Debug.Log(i);
                 if (myCurrentTile.tilesInLineRight[i].unitOnTile != null        &&
                    (myCurrentTile.tilesInLineRight[i + 1] != null               &&
                     myCurrentTile.tilesInLineRight[i + 1].unitOnTile == null    &&
@@ -98,15 +97,12 @@ public class Rogue : PlayerUnit
                     Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
                     Mathf.Abs(myCurrentTile.tilesInLineRight[i + 1].height - myCurrentTile.tilesInLineRight[i].height) <= maxHeightDifferenceToAttack)
                 {
-                    Debug.Log("derecha");
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
                     break;
                 }
             }
         }
-
-            
 
         //Izquierda
 
@@ -144,8 +140,6 @@ public class Rogue : PlayerUnit
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
         }
     }
-
-
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)

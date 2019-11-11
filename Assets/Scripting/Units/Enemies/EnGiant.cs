@@ -136,21 +136,27 @@ public class EnGiant : EnemyUnit
 
                 hasAttacked = true;
                 myAnimator.SetTrigger("Attack");
-                myCurrentEnemyState = enemyState.Ended;
+                //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo
+                myCurrentEnemyState = enemyState.Waiting;
                 break;
             }
-
-
         }
 
-        if (!hasMoved)
+        if (!hasMoved && !hasAttacked)
         {
             myCurrentEnemyState = enemyState.Moving;
         }
         else
         {
-            myCurrentEnemyState = enemyState.Ended;
+            //Espero 1 sec y cambio de estado a ended
+            StartCoroutine("AttackWait");
         }
+    }
+
+    IEnumerator AttackWait()
+    {
+        yield return new WaitForSeconds(timeWaitAfterAttack);
+        myCurrentEnemyState = enemyState.Ended;
     }
 
     public override void MoveUnit()
@@ -348,7 +354,10 @@ public class EnGiant : EnemyUnit
 
         movementParticle.SetActive(false);
 
-        myCurrentEnemyState = enemyState.Searching;
+        //Espero después de moverme para que no vaya demasiado rápido
+        myCurrentEnemyState = enemyState.Waiting;
+        StartCoroutine("MovementWait");
+        
     }
 
     //Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
@@ -365,12 +374,14 @@ public class EnGiant : EnemyUnit
         myCurrentTile = ListWithNewTile[0];
         myCurrentTile.UpdateNeighboursOccupied();
 
-
-
-
-
         //Aviso de que se ha movido
         hasMoved = true;
+    }
+
+    IEnumerator MovementWait()
+    {
+        yield return new WaitForSeconds(timeWaitAfterMovement);
+        myCurrentEnemyState = enemyState.Searching;
     }
 
     private void RotateLogic(FacingDirection newDirection)

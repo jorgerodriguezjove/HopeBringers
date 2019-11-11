@@ -77,7 +77,6 @@ public class EnGoblin : EnemyUnit
     {
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
-         
             //Si mi objetivo es adyacente a mi le ataco
             if (myCurrentTile.neighbours[i].unitOnTile != null && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0])
             {
@@ -96,7 +95,6 @@ public class EnGoblin : EnemyUnit
                     }
 
                     //Atacar al enemigo
-                    Debug.Log("misma x");
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
                 //Izquierda o derecha
@@ -114,28 +112,37 @@ public class EnGoblin : EnemyUnit
                     }
 
                     //Atacar al enemigo
-                    Debug.Log("misma z");
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
 
+
+
                 //Animación de ataque
                 myAnimator.SetTrigger("Attack");
-
                 hasAttacked = true;
-                myCurrentEnemyState = enemyState.Ended;
+
+                //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo.
+                myCurrentEnemyState = enemyState.Waiting;
                 break;
             }
         }
 
-        if (!hasMoved)
+        if (!hasMoved && !hasAttacked)
         {
             myCurrentEnemyState = enemyState.Moving;
         }
 
         else
         {
-            myCurrentEnemyState = enemyState.Ended;
+            //Espero 1 sec y cambio de estado a ended
+            StartCoroutine("AttackWait");
         }
+    }
+
+    IEnumerator AttackWait()
+    {
+        yield return new WaitForSeconds(timeWaitAfterAttack);
+        myCurrentEnemyState = enemyState.Ended;
     }
 
     public override void MoveUnit()
@@ -178,8 +185,9 @@ public class EnGoblin : EnemyUnit
             yield return new WaitForSeconds(timeMovementAnimation);
         }
 
+        //Espero después de moverme para que no vaya demasiado rápido
+        yield return new WaitForSeconds(timeWaitAfterMovement);
         hasMoved = true;
-
         myCurrentEnemyState = enemyState.Searching;
 
     }

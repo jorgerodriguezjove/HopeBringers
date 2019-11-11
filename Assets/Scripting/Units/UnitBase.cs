@@ -63,6 +63,16 @@ public class UnitBase : MonoBehaviour
     //Posición a la que tiene que moverse la unidad actualmente
     protected Vector3 currentTileVectorToMove;
 
+    //Modelo de la unidad
+    [SerializeField]
+    protected GameObject unitModel;
+
+    //Modelo de la unidad dónde se guarda el material
+    [SerializeField]
+    protected GameObject unitMaterialModel;
+
+    [Header("ANIMATION TIME")]
+
     //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
     [SerializeField]
     protected float timePushAnimation;
@@ -75,13 +85,13 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected float timeDurationRotation;
 
-    //Modelo de la unidad
+    //Tiempo a esperar tras moverse
     [SerializeField]
-    protected GameObject unitModel;
+    protected float timeWaitAfterMovement;
 
-    //Modelo de la unidad dónde se guarda el material
+    //Tiempo a esperar tras atacar
     [SerializeField]
-    protected GameObject unitMaterialModel;
+    protected float timeWaitAfterAttack;
 
     [Header("ATAQUE")]
 

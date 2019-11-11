@@ -360,7 +360,9 @@ public class EnBalista : EnemyUnit
 
             movementParticle.SetActive(false);
 
-            myCurrentEnemyState = enemyState.Searching;
+            //Espero después de moverme para que no vaya demasiado rápido
+            myCurrentEnemyState = enemyState.Waiting;
+            StartCoroutine("MovementWait");
         }
     }
 
@@ -387,6 +389,11 @@ public class EnBalista : EnemyUnit
         hasMoved = true;
     }
 
+    IEnumerator MovementWait()
+    {
+        yield return new WaitForSeconds(timeWaitAfterMovement);
+        myCurrentEnemyState = enemyState.Searching;
+    }
 
     public override void Attack()
     {
@@ -440,7 +447,10 @@ public class EnBalista : EnemyUnit
                 }
 
                 isAttackPrepared = false;
-                myCurrentEnemyState = enemyState.Searching;
+                myCurrentEnemyState = enemyState.Waiting;
+
+                //Espero 1 sec
+                StartCoroutine("AttackWait");
             }
 
             else
@@ -448,11 +458,18 @@ public class EnBalista : EnemyUnit
                 //Prepara ataque
                 isAttackPrepared = true;
 
-                //Colorear los tiles visualmente
+                //Espero 1 sec
+                StartCoroutine("AttackWait");
 
-                myCurrentEnemyState = enemyState.Ended;
+                //Colorear los tiles visualmente
             }
         }
+    }
+
+    IEnumerator AttackWait()
+    {
+        yield return new WaitForSeconds(timeWaitAfterAttack);
+        myCurrentEnemyState = enemyState.Ended;
     }
 
     public override void FinishMyActions()

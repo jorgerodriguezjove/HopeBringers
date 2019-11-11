@@ -126,7 +126,6 @@ public class EnemyUnit : UnitBase
     {
         hasMoved = false;
         hasAttacked = false;
-        //currentUnitsAvailableToAttack.Clear();
         myCurrentEnemyState = enemyState.Waiting;
         LM.NextEnemyInList();
     }

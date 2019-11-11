@@ -252,9 +252,15 @@ public class PlayerUnit : UnitBase
 
         //Cada unidad se encargará de aplicar su efecto.
 
-        //La unidad ha atacado y por tanto no puede hacer nada más.
-        FinishMyActions();
+        //La unidad ha atacado y por tanto no puede hacer nada más. Así que espero a que acabe la animación y finalizo su turno.
+        StartCoroutine("AttackWait");
 		
+    }
+
+    IEnumerator AttackWait()
+    {
+        yield return new WaitForSeconds(timeWaitAfterAttack);
+        FinishMyActions();
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
