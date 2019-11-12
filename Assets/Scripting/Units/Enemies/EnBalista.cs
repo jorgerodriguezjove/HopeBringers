@@ -35,9 +35,6 @@ public class EnBalista : EnemyUnit
                 //Si encuentra enemigos ataca
                 if (currentUnitsAvailableToAttack.Count > 0)
                 {
-                    //Resto uno para mover a la unidad al tile anterior al que está ocupado por el personaje.
-                    furthestAvailableUnitDistance -= 1;
-
                     myCurrentEnemyState = enemyState.Attacking;
                 }
 
@@ -56,7 +53,7 @@ public class EnBalista : EnemyUnit
         }
         else
         {
-            myCurrentEnemyState = enemyState.Ended;
+            myCurrentEnemyState = enemyState.Waiting;
         }
     }
 
@@ -68,8 +65,11 @@ public class EnBalista : EnemyUnit
             //En función de a donde este mirando su derecha o su izquierda cambia
             if (currentFacingDirection == FacingDirection.North)
             {
-                //Compruebo si los tiles de los lados están ocupados
-                if (myCurrentTile.tilesInLineRight.Count <= 0 || myCurrentTile.tilesInLineRight[0].isObstacle || myCurrentTile.tilesInLineRight[0].isEmpty || myCurrentTile.tilesInLineRight[0].unitOnTile != null ||
+                //Compruebo si los tiles de la derecha están ocupados
+                if (myCurrentTile.tilesInLineRight.Count <= 0               ||
+                    myCurrentTile.tilesInLineRight[0].isObstacle            ||
+                    myCurrentTile.tilesInLineRight[0].isEmpty               ||
+                    myCurrentTile.tilesInLineRight[0].unitOnTile != null    ||
                     Mathf.Abs(myCurrentTile.tilesInLineRight[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
                 {
                     isRightTileOccupied = true;
@@ -79,7 +79,11 @@ public class EnBalista : EnemyUnit
                     isRightTileOccupied = false;
                 }
 
-                if (myCurrentTile.tilesInLineLeft.Count <= 0 || myCurrentTile.tilesInLineLeft[0].isObstacle || myCurrentTile.tilesInLineLeft[0].isEmpty || myCurrentTile.tilesInLineLeft[0].unitOnTile != null ||
+                //Compruebo si los tiles de la izquierda están ocupados
+                if (myCurrentTile.tilesInLineLeft.Count <= 0            ||
+                    myCurrentTile.tilesInLineLeft[0].isObstacle         ||
+                    myCurrentTile.tilesInLineLeft[0].isEmpty            ||
+                    myCurrentTile.tilesInLineLeft[0].unitOnTile != null ||
                     Mathf.Abs(myCurrentTile.tilesInLineLeft[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
                 {
                     isLeftTileOccupied = true;
@@ -89,6 +93,7 @@ public class EnBalista : EnemyUnit
                     isLeftTileOccupied = false;
                 }
 
+                //Me muevo en función de mi dirección de movimiento actual y los tiles ocupados
                 if (isMovingToHisRight)
                 {
                     if (isRightTileOccupied && !isLeftTileOccupied)
@@ -438,7 +443,7 @@ public class EnBalista : EnemyUnit
                 }
 
                 isAttackPrepared = false;
-                
+                myCurrentEnemyState = enemyState.Ended;
 
 
                 //Espero 1 sec
@@ -478,5 +483,126 @@ public class EnBalista : EnemyUnit
         CalculateDamage(unitToDealDamage);
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+    }
+
+
+    protected override void CheckCharactersInLine()
+    {
+        if (!isDead)
+        {
+            currentUnitsAvailableToAttack.Clear();
+
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                if (range <= myCurrentTile.tilesInLineUp.Count)
+                {
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
+                }
+
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    //Si hay un obstáculo paro de comprobar
+                    if (myCurrentTile.tilesInLineUp[i].isObstacle)
+                    {
+                        break;
+                    }
+
+                    //Independientemente de que sea charger o balista este código sirve para ambos
+                    else if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades.
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    }
+                }
+            }
+
+            if (currentFacingDirection == FacingDirection.East)
+            {
+                if (range <= myCurrentTile.tilesInLineRight.Count)
+                {
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+                }
+
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
+                    if (myCurrentTile.tilesInLineRight[i].isObstacle)
+                    {
+                        break;
+                    }
+
+                    //Independientemente de que sea charger o balista este código sirve para ambos
+                    else if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades.
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                    }
+                }
+            }
+
+            if (currentFacingDirection == FacingDirection.South)
+            {
+                if (range <= myCurrentTile.tilesInLineDown.Count)
+                {
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+                }
+
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    
+                    if (myCurrentTile.tilesInLineDown[i].isObstacle)
+                    {
+                        break;
+                    }
+
+                    //Independientemente de que sea charger o balista este código sirve para ambos
+                    else if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades.
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                    }
+                }
+            }
+
+            if (currentFacingDirection == FacingDirection.West)
+            {
+                if (range <= myCurrentTile.tilesInLineLeft.Count)
+                {
+                    rangeVSTilesInLineLimitant = range;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+                }
+
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
+                    if (myCurrentTile.tilesInLineLeft[i].isObstacle)
+                    {
+                        break;
+                    }
+
+                    //Independientemente de que sea charger o balista este código sirve para ambos
+                    else if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades.
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                    }
+                }
+            }
+        }
     }
 }
