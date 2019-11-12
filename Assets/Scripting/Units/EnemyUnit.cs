@@ -195,7 +195,7 @@ public class EnemyUnit : UnitBase
         }
 
         myCurrentTile.UpdateNeighboursOccupied();
-        myCurrentTile = null;
+        //myCurrentTile = null;
         Destroy(unitModel);
         isDead = true;
     }

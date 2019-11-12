@@ -359,10 +359,11 @@ public class EnBalista : EnemyUnit
             }
 
             movementParticle.SetActive(false);
+            myCurrentEnemyState = enemyState.Searching;
 
             //Espero después de moverme para que no vaya demasiado rápido
-            myCurrentEnemyState = enemyState.Waiting;
-            StartCoroutine("MovementWait");
+            //myCurrentEnemyState = enemyState.Waiting;
+            //StartCoroutine("MovementWait");
         }
     }
 
@@ -389,11 +390,11 @@ public class EnBalista : EnemyUnit
         hasMoved = true;
     }
 
-    IEnumerator MovementWait()
-    {
-        yield return new WaitForSeconds(timeWaitAfterMovement);
-        myCurrentEnemyState = enemyState.Searching;
-    }
+    //IEnumerator MovementWait()
+    //{
+    //    yield return new WaitForSeconds(timeWaitAfterMovement);
+    //    myCurrentEnemyState = enemyState.Searching;
+    //}
 
     public override void Attack()
     {
@@ -447,30 +448,32 @@ public class EnBalista : EnemyUnit
                 }
 
                 isAttackPrepared = false;
-                myCurrentEnemyState = enemyState.Waiting;
+                
+
 
                 //Espero 1 sec
-                StartCoroutine("AttackWait");
+                //myCurrentEnemyState = enemyState.Waiting;
+                //StartCoroutine("AttackWait");
             }
 
             else
             {
                 //Prepara ataque
                 isAttackPrepared = true;
-
+                myCurrentEnemyState = enemyState.Ended;
+                
                 //Espero 1 sec
-                StartCoroutine("AttackWait");
-
+                //StartCoroutine("AttackWait");
                 //Colorear los tiles visualmente
             }
         }
     }
 
-    IEnumerator AttackWait()
-    {
-        yield return new WaitForSeconds(timeWaitAfterAttack);
-        myCurrentEnemyState = enemyState.Ended;
-    }
+    //IEnumerator AttackWait()
+    //{
+    //    yield return new WaitForSeconds(timeWaitAfterAttack);
+    //    myCurrentEnemyState = enemyState.Ended;
+    //}
 
     public override void FinishMyActions()
     {

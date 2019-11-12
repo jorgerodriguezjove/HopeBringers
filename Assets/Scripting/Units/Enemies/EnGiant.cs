@@ -137,7 +137,7 @@ public class EnGiant : EnemyUnit
                 hasAttacked = true;
                 myAnimator.SetTrigger("Attack");
                 //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo
-                myCurrentEnemyState = enemyState.Waiting;
+                //myCurrentEnemyState = enemyState.Waiting;
                 break;
             }
         }
@@ -148,16 +148,17 @@ public class EnGiant : EnemyUnit
         }
         else
         {
+            myCurrentEnemyState = enemyState.Ended;
             //Espero 1 sec y cambio de estado a ended
-            StartCoroutine("AttackWait");
+            //StartCoroutine("AttackWait");
         }
     }
 
-    IEnumerator AttackWait()
-    {
-        yield return new WaitForSeconds(timeWaitAfterAttack);
-        myCurrentEnemyState = enemyState.Ended;
-    }
+    //IEnumerator AttackWait()
+    //{
+    //    yield return new WaitForSeconds(timeWaitAfterAttack);
+    //    myCurrentEnemyState = enemyState.Ended;
+    //}
 
     public override void MoveUnit()
     {
@@ -353,11 +354,11 @@ public class EnGiant : EnemyUnit
         //Buscar de nuevo si puedo pegarle
 
         movementParticle.SetActive(false);
-
+        myCurrentEnemyState = enemyState.Searching;
         //Espero después de moverme para que no vaya demasiado rápido
-        myCurrentEnemyState = enemyState.Waiting;
-        StartCoroutine("MovementWait");
-        
+        //myCurrentEnemyState = enemyState.Waiting;
+        //StartCoroutine("MovementWait");
+
     }
 
     //Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
@@ -378,11 +379,11 @@ public class EnGiant : EnemyUnit
         hasMoved = true;
     }
 
-    IEnumerator MovementWait()
-    {
-        yield return new WaitForSeconds(timeWaitAfterMovement);
-        myCurrentEnemyState = enemyState.Searching;
-    }
+    //IEnumerator MovementWait()
+    //{
+    //    yield return new WaitForSeconds(timeWaitAfterMovement);
+    //    myCurrentEnemyState = enemyState.Searching;
+    //}
 
     private void RotateLogic(FacingDirection newDirection)
     {

@@ -401,13 +401,21 @@ public class UnitBase : MonoBehaviour
     //Cambiar a color que indica que puede ser atacado
     public void ColorInitial()
     {
-        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+        if (!isDead)
+        {
+            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+        }
+        
     }
 
     //Cambiar a color que indica que puede ser atacado
     public void ColorAvailableToBeAttacked()
     {
-        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
+        if (!isDead)
+        {
+            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
+        }
+        
     }
 
     #endregion

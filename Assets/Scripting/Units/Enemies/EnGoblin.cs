@@ -122,7 +122,7 @@ public class EnGoblin : EnemyUnit
                 hasAttacked = true;
 
                 //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo.
-                myCurrentEnemyState = enemyState.Waiting;
+                //myCurrentEnemyState = enemyState.Waiting;
                 break;
             }
         }
@@ -134,16 +134,18 @@ public class EnGoblin : EnemyUnit
 
         else
         {
+            myCurrentEnemyState = enemyState.Ended;
+
             //Espero 1 sec y cambio de estado a ended
-            StartCoroutine("AttackWait");
+            //StartCoroutine("AttackWait");
         }
     }
 
-    IEnumerator AttackWait()
-    {
-        yield return new WaitForSeconds(timeWaitAfterAttack);
-        myCurrentEnemyState = enemyState.Ended;
-    }
+    //IEnumerator AttackWait()
+    //{
+    //    yield return new WaitForSeconds(timeWaitAfterAttack);
+    //    myCurrentEnemyState = enemyState.Ended;
+    //}
 
     public override void MoveUnit()
     {
