@@ -37,8 +37,11 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private Canvas canvasWithRotationArrows;
 
-	[SerializeField]
-	public Sprite portrait;
+    [HideInInspector]
+    public GameObject myPanelPortrait;
+    [SerializeField]
+	public Sprite portraitImage;
+
 
     [Header("REFERENCIAS")]
 
@@ -61,16 +64,15 @@ public class PlayerUnit : UnitBase
 		UIM = UIManagerRef.GetComponent<UIManager>();
         //Aviso al tile en el que empiezo que soy su unidad.
         myCurrentTile.unitOnTile = this;
+        myCurrentTile.WarnInmediateNeighbours();
+
         //Inicializo componente animator
         myAnimator = GetComponent<Animator>();
 
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         movementParticle.SetActive(false);
-    }
 
-    private void Start()
-    {
         currentHealth = maxHealth;
     }
 
@@ -142,15 +144,7 @@ public class PlayerUnit : UnitBase
         myCurrentPath = pathReceived;
 
         StartCoroutine("MovingUnitAnimation");
-
-       
-        myCurrentTile.unitOnTile = null;
-        tileToMove.unitOnTile = this;
-        myCurrentTile.UpdateNeighboursOccupied();
-        myCurrentTile = tileToMove;
-        myCurrentTile.UpdateNeighboursOccupied();
-
-
+        UpdateInformationAfterMovement(tileToMove);
     }
 
     IEnumerator MovingUnitAnimation()
@@ -288,6 +282,15 @@ public class PlayerUnit : UnitBase
         myAnimator.SetTrigger("Death");
 
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
+
+        myCurrentTile.unitOnTile = null;
+        myCurrentTile.WarnInmediateNeighbours();
+
+        LM.characthersOnTheBoard.Remove(this);
+        myPanelPortrait.SetActive(false);
+        UIM.panelesPJ.Remove(myPanelPortrait);
+        Destroy(gameObject);
+        
     }
 
     #endregion

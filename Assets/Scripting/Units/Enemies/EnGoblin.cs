@@ -161,11 +161,8 @@ public class EnGoblin : EnemyUnit
         myCurrentEnemyState = enemyState.Waiting;
         movementParticle.SetActive(false);
 
-        myCurrentTile.unitOnTile = null;
-        pathToObjective[pathToObjective.Count - 2].unitOnTile = this;
-        myCurrentTile.UpdateNeighboursOccupied();
-        myCurrentTile = pathToObjective[pathToObjective.Count - 2];
-        myCurrentTile.UpdateNeighboursOccupied();
+        //Actualizo info de los tiles
+        UpdateInformationAfterMovement(pathToObjective[pathToObjective.Count - 2]);
 
         StartCoroutine("MovingUnitAnimation");
     }

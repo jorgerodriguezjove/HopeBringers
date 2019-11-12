@@ -137,7 +137,7 @@ public class IndividualTiles : MonoBehaviour
 	}
 
 	#endregion
-
+    //Esta función comprueba las casillas vecinas en busca de unidades para saber cuantas unidades rodean al tile.
 	public void UpdateNeighboursOccupied()
     {
         neighboursOcuppied = 0;
@@ -148,6 +148,16 @@ public class IndividualTiles : MonoBehaviour
             {
                 neighboursOcuppied++;
             }
+        }
+    }
+
+    //Esta función se usa cuando una unidad muere o se mueve para avisar a los vecinos de que actualicen sus tiles. 
+    //Con esto hay que tener cuidado ya que puede entrar en un bucle en el que todos los tiles comprueben los vecinos constantemente.
+    public void WarnInmediateNeighbours()
+    {
+        for (int i = 0; i < neighbours.Count; i++)
+        {
+            neighbours[i].UpdateNeighboursOccupied();
         }
     }
 

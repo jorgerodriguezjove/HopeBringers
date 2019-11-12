@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class Portraits : MonoBehaviour
 {
@@ -11,21 +13,48 @@ public class Portraits : MonoBehaviour
 	[HideInInspector]
 	private UIManager UIM;
 
-	#endregion
 
-	#region INIT
+    //AÑADIDO
+    //Barra de vida y valor de la barra del personaje
+    [SerializeField]
+    public TextMeshProUGUI healthValue;
+    [SerializeField]
+    public Slider healthBar;
 
-	private void Awake()
+    //Los tokens son listas por si en el futuro hay personajes que necesitan más tokens. (De ser así habría que hacer más cambios)
+    [SerializeField]
+    public List<GameObject> attackTokens;
+    [SerializeField]
+    public List<GameObject> movementTokens;
+
+    //Gameobject Image dónde va el sprite del personaje
+    [SerializeField]
+    public Image characterPortrait;
+
+    #endregion
+
+    #region INIT
+
+    private void Awake()
 	{
 		UIM = FindObjectOfType<UIManager>();
+        //Se desactiva para que el UImanager active únicamente los necesarios en función del número de personajes.
+        gameObject.SetActive(false);
 	}
 
-	#endregion
+    private void Start()
+    {
+        RefreshHealth();
+        RefreshSprites();
+        RefreshTokens();
+    }
+
+    #endregion
 
 
-	#region INTERACTION
+    #region INTERACTION
 
-	public void AssignClickerPlayer()
+    public void AssignClickerPlayer()
 	{
 		UIM.PortraitCharacterSelect(assignedPlayer);
 	}
@@ -40,6 +69,34 @@ public class Portraits : MonoBehaviour
 		UIM.UnHighlightCharacter(assignedPlayer);
 	}
 
-	#endregion
+    #endregion
+
+    #region REFRESH
+
+    public void RefreshHealth()
+    {
+        healthBar.maxValue = assignedPlayer.maxHealth;
+        healthBar.value = assignedPlayer.currentHealth;
+        healthValue.text = assignedPlayer.currentHealth + "/" + assignedPlayer.maxHealth;
+    }
+
+    public void RefreshTokens()
+    {
+        for (int i = 0; i < attackTokens.Count; i++)
+        {
+            attackTokens[i].SetActive(!assignedPlayer.hasAttacked);
+        }
+        for (int i = 0; i < movementTokens.Count; i++)
+        {
+            movementTokens[i].SetActive(!assignedPlayer.hasMoved);
+        }
+    }
+
+    public void RefreshSprites()
+    {
+        characterPortrait.sprite = assignedPlayer.portraitImage;
+    }
+
+    #endregion
 
 }

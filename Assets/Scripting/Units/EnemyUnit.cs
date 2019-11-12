@@ -50,7 +50,7 @@ public class EnemyUnit : UnitBase
 		LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
         myCurrentTile.unitOnTile = this;
-        myCurrentTile.UpdateNeighboursOccupied();
+        myCurrentTile.WarnInmediateNeighbours();
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         //Inicializo componente animator
@@ -188,14 +188,8 @@ public class EnemyUnit : UnitBase
         //Cambios en la lógica para indicar que ha muerto
 
         myCurrentTile.unitOnTile = null;
-
-        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
-        {
-            myCurrentTile.neighbours[i].UpdateNeighboursOccupied();
-        }
-
-        myCurrentTile.UpdateNeighboursOccupied();
-        //myCurrentTile = null;
+        myCurrentTile.WarnInmediateNeighbours();
+        
         Destroy(unitModel);
         isDead = true;
     }

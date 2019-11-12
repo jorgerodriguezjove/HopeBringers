@@ -157,13 +157,7 @@ public class Rogue : PlayerUnit
                 NewRotationAfterJump(unitToAttack.myCurrentTile);
 
                 //Actualizo los tiles
-                
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile.tilesInLineUp[1].unitOnTile = this;
-                myCurrentTile.UpdateNeighboursOccupied();
-                myCurrentTile = myCurrentTile.tilesInLineUp[1];
-                myCurrentTile.UpdateNeighboursOccupied();
-
+                UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[1]);
             }
             //Abajo
             else
@@ -176,14 +170,7 @@ public class Rogue : PlayerUnit
                 NewRotationAfterJump(unitToAttack.myCurrentTile);
 
                 //Actualizo los tiles
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile.tilesInLineDown[1].unitOnTile = this;
-                myCurrentTile.UpdateNeighboursOccupied();
-                myCurrentTile = myCurrentTile.tilesInLineDown[1];
-                myCurrentTile.UpdateNeighboursOccupied();
-
-
-
+                UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[1]);
             }
         }
         //Izquierda o derecha
@@ -200,11 +187,7 @@ public class Rogue : PlayerUnit
                 NewRotationAfterJump(unitToAttack.myCurrentTile);
 
                 //Actualizo los tiles
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile.tilesInLineRight[1].unitOnTile = this;
-                myCurrentTile.UpdateNeighboursOccupied();
-                myCurrentTile = myCurrentTile.tilesInLineRight[1];
-                myCurrentTile.UpdateNeighboursOccupied();
+                UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[1]);
             }
             //Izquierda
             else
@@ -217,11 +200,7 @@ public class Rogue : PlayerUnit
                 NewRotationAfterJump(unitToAttack.myCurrentTile);
 
                 //Actualizo los tiles
-                myCurrentTile.unitOnTile = null;
-                myCurrentTile.tilesInLineLeft[1].unitOnTile = this;
-                myCurrentTile.UpdateNeighboursOccupied();
-                myCurrentTile = myCurrentTile.tilesInLineLeft[1];
-                myCurrentTile.UpdateNeighboursOccupied();
+                UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[1]);
             }
         }
                

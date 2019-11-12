@@ -238,7 +238,10 @@ public class LevelManager : MonoBehaviour
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
             {
-                selectedCharacter.currentUnitsAvailableToAttack[i].ColorInitial();
+                if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
+                {
+                    selectedCharacter.currentUnitsAvailableToAttack[i].ColorInitial();
+                }
             }
 
             //Si no se ha movido lo deselecciono.

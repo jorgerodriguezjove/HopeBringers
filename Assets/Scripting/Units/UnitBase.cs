@@ -179,6 +179,16 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
+    //Esta función la usan todos los personajes al moverse para reajustar la información del tile actual y del nuevo al que se van a mover.
+    public void UpdateInformationAfterMovement(IndividualTiles newTile)
+    {
+        myCurrentTile.unitOnTile = null;
+        newTile.unitOnTile = this;
+        myCurrentTile.WarnInmediateNeighbours();
+        myCurrentTile = newTile;
+        myCurrentTile.WarnInmediateNeighbours();
+    }
+
     #region DAMAGE_&_DIE
 
     //Calcula PERO NO aplico el daño a la unidad elegida
@@ -385,16 +395,12 @@ public class UnitBase : MonoBehaviour
         if (!isDead)
         {
             //Aviso a los tiles del cambio de posición
-            
-            myCurrentTile.unitOnTile = null;
-            newTile.unitOnTile = this;
-            myCurrentTile.UpdateNeighboursOccupied();
-            myCurrentTile = newTile;
-            myCurrentTile.UpdateNeighboursOccupied();
+            UpdateInformationAfterMovement(newTile);
         }  
     }
 
     #endregion
+
 
     #region COLORS
 

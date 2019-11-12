@@ -29,17 +29,9 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	private GameObject optionsButton;
 
-	[SerializeField]
-	private List<TextMeshProUGUI> healthValues;
+    //AQUI
+   
 
-	[SerializeField]
-	private List<Slider> healthBars;
-
-	[SerializeField]
-	private List<GameObject> attackTokens;
-
-	[SerializeField]
-	private List<GameObject> movementTokens;
 
 	[SerializeField]
 	private TextMeshProUGUI tooltipText;
@@ -56,9 +48,8 @@ public class UIManager : MonoBehaviour
 	private Vector3 characterInfoOriginalPosition;
 
 	[SerializeField]
-	private List<GameObject> panelesPJ;
-	[SerializeField]
-	private List<Image> characterPortraits;
+	public List<GameObject> panelesPJ;
+	
 
 	[SerializeField]
 	public Texture2D attackCursor, movementCursor;
@@ -75,15 +66,19 @@ public class UIManager : MonoBehaviour
 	private void Start()
 	{
 		characterInfoOriginalPosition = characterInfo.transform.position;
+
 		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
 		{
-			characterPortraits[i].sprite = LM.characthersOnTheBoard[i].portrait;
-			healthBars[i].maxValue = LM.characthersOnTheBoard[i].maxHealth;
-			healthBars[i].value = LM.characthersOnTheBoard[i].maxHealth;
-			healthValues[i].text = LM.characthersOnTheBoard[i].maxHealth + "/" + LM.characthersOnTheBoard[i].maxHealth;
-			panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
+            //Activamos los retratos necesarios y les asignamos su jugador
+            panelesPJ[i].SetActive(true);
+            panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
+            LM.characthersOnTheBoard[i].myPanelPortrait = panelesPJ[i];
+            //Hacer que el player sepa cuál es su retrato?
 
-		}
+            //Actualizamos las barras de vida
+            panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
+            panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
+        }
 	}
 
 	#endregion
@@ -154,27 +149,21 @@ public class UIManager : MonoBehaviour
 	#endregion
 
 	#region RETRATOS
-	//Refresca la información de las 4 barras de vida en pantalla
+	//Avisa a los retratos activos de que refresquen las barras de vida
 	public void RefreshHealth()
 	{
 		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
 		{
-			healthValues[i].text = LM.characthersOnTheBoard[i].currentHealth + "/" + LM.characthersOnTheBoard[i].maxHealth;
-			healthBars[i].maxValue = LM.characthersOnTheBoard[i].maxHealth;
-			healthBars[i].value = LM.characthersOnTheBoard[i].currentHealth;
+            panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
 		}
 	}
-	//Refresco la información de todos los tokens para activar y desactivar los que correspondan
-	public void RefreshTokens()
+    //Avisa a los retratos activos de que refresquen los tokens
+    public void RefreshTokens()
 	{
-		for (int i = 0; i < attackTokens.Count; i++)
-		{
-			attackTokens[i].SetActive(!LM.characthersOnTheBoard[i].hasAttacked);
-		}
-		for (int i = 0; i < movementTokens.Count; i++)
-		{
-			movementTokens[i].SetActive(!LM.characthersOnTheBoard[i].hasMoved);
-		}
+        for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+        {
+            panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
+        }
 	}
 
 	public void PortraitCharacterSelect(PlayerUnit characterToSelect)
@@ -190,7 +179,6 @@ public class UIManager : MonoBehaviour
 	{
 		characterToUnhighlight.InitialColor();
 	}
-
 	#endregion
 
 	#region CHARACTER_INFO

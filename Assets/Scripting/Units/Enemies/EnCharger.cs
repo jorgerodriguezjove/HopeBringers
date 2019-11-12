@@ -56,13 +56,7 @@ public class EnCharger : EnemyUnit
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles
-                    
-                    myCurrentTile.unitOnTile = null;
-                    myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].unitOnTile = this;
-                    myCurrentTile.UpdateNeighboursOccupied();
-                    myCurrentTile = myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance];
-                    myCurrentTile.UpdateNeighboursOccupied();
-
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance]);
                 }
 
                 //Roto al charger
@@ -82,11 +76,7 @@ public class EnCharger : EnemyUnit
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles
-                    myCurrentTile.unitOnTile = null;
-                    myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].unitOnTile = this;
-                    myCurrentTile.UpdateNeighboursOccupied();
-                    myCurrentTile = myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance];
-                    myCurrentTile.UpdateNeighboursOccupied();
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance]);
                 }
 
                 //Roto al charger
@@ -110,11 +100,7 @@ public class EnCharger : EnemyUnit
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles
-                    myCurrentTile.unitOnTile = null;
-                    myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].unitOnTile = this;
-                    myCurrentTile.UpdateNeighboursOccupied();
-                    myCurrentTile = myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance];
-                    myCurrentTile.UpdateNeighboursOccupied();
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance]);
                 }
 
                 //Roto al charger
@@ -134,11 +120,7 @@ public class EnCharger : EnemyUnit
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles
-                    myCurrentTile.unitOnTile = null;
-                    myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].unitOnTile = this;
-                    myCurrentTile.UpdateNeighboursOccupied();
-                    myCurrentTile = myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance];
-                    myCurrentTile.UpdateNeighboursOccupied();
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance]);
                 }
                   
                 //Roto al charger
