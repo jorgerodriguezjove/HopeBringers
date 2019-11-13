@@ -31,6 +31,11 @@ public class Portraits : MonoBehaviour
     [SerializeField]
     public Image characterPortrait;
 
+	[SerializeField]
+	public Material highlightMaterial;
+	[HideInInspector]
+	public Material nonHighlightMaterial;
+
     #endregion
 
     #region INIT
@@ -40,6 +45,7 @@ public class Portraits : MonoBehaviour
 		UIM = FindObjectOfType<UIManager>();
         //Se desactiva para que el UImanager active únicamente los necesarios en función del número de personajes.
         gameObject.SetActive(false);
+		nonHighlightMaterial = GetComponent<Image>().material;
 	}
 
     private void Start()
@@ -67,6 +73,15 @@ public class Portraits : MonoBehaviour
 	public void Unhighlight()
 	{
 		UIM.UnHighlightCharacter(assignedPlayer);
+	}
+
+	public void HighlightPortrait()
+	{
+		GetComponent<Image>().material = highlightMaterial;
+	}
+	public void UnHighlightPortrait()
+	{
+		GetComponent<Image>().material = nonHighlightMaterial;
 	}
 
     #endregion

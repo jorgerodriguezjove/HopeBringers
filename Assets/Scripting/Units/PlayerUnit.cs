@@ -122,12 +122,14 @@ public class PlayerUnit : UnitBase
         {
             Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
         }
+		myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
     }
 
     private void OnMouseExit()
     {
 		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-    }
+		myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+	}
 
     #endregion
 
