@@ -26,12 +26,12 @@ public class BookMenu : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             anim.SetBool("isOpen?", true);
-            canvasLevels.SetActive(true);
+         
         }
         if (Input.GetMouseButtonDown(1))
         {
             anim.SetBool("isOpen?", false);
-            canvasLevels.SetActive(false);
+           
         }
     }
     void changeCamera()
@@ -46,5 +46,17 @@ public class BookMenu : MonoBehaviour
             DollyCameraClose.Play();
             
         }
+    }
+
+    public void ShowButtons()
+    {
+
+        canvasLevels.SetActive(true);
+    }
+
+    public void HideButtons()
+    {
+
+        canvasLevels.SetActive(false);
     }
 }
