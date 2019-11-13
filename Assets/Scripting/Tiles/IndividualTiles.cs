@@ -71,10 +71,16 @@ public class IndividualTiles : MonoBehaviour
     [Header("FEEDBACK")]
     [SerializeField]
     private Material availableForMovementColor;
+    [SerializeField]
+    private Material attackColor;
     private Material initialColor;
-	[SerializeField]
-	[@TextAreaAttribute(15, 20)]
-	private string tileInfo;
+
+    //Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
+    private bool isUnderAttack;
+
+    [SerializeField]
+    [@TextAreaAttribute(15, 20)]
+    private string tileInfo;
 
 
     #endregion
@@ -89,12 +95,12 @@ public class IndividualTiles : MonoBehaviour
         //gameObject.transform.position = new Vector3(initialPosition.x, initialPosition.y + 20, initialPosition.z);
     }
 
-    
+
 
     public void FallAnimation()
     {
         gameObject.transform.DOMove(initialPosition, 0.1f).SetEase(Ease.OutBounce);
-       
+
     }
 
     private void Start()
@@ -113,32 +119,32 @@ public class IndividualTiles : MonoBehaviour
         LM.MoveUnit(this);
     }
 
-	void OnMouseEnter()
-	{
-		if (LM.tilesAvailableForMovement.Contains(this))
-		{
-			Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
-		}
-		if (isEmpty)
-		{
-			LM.UIM.ShowTooltip("");
-		}
-		else if (!unitOnTile)
-		{
-			LM.UIM.ShowTooltip(tileInfo);
+    void OnMouseEnter()
+    {
+        if (LM.tilesAvailableForMovement.Contains(this))
+        {
+            Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
+        }
+        if (isEmpty)
+        {
+            LM.UIM.ShowTooltip("");
+        }
+        else if (!unitOnTile)
+        {
+            LM.UIM.ShowTooltip(tileInfo);
 
-		}
-		
-	}
-	void OnMouseExit()
-	{
-		LM.UIM.ShowTooltip("");
-		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-	}
+        }
 
-	#endregion
+    }
+    void OnMouseExit()
+    {
+        LM.UIM.ShowTooltip("");
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
+    #endregion
     //Esta función comprueba las casillas vecinas en busca de unidades para saber cuantas unidades rodean al tile.
-	public void UpdateNeighboursOccupied()
+    public void UpdateNeighboursOccupied()
     {
         neighboursOcuppied = 0;
 
@@ -173,7 +179,28 @@ public class IndividualTiles : MonoBehaviour
     //Cambiar a color normal
     public void ColorDeselect()
     {
+        if (isUnderAttack)
+        {
+            GetComponent<MeshRenderer>().material = attackColor;
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().material = initialColor;
+        }
+    }
+
+    //Cambiar el color a ataque
+    public void ColorAttack()
+    {
+        GetComponent<MeshRenderer>().material = attackColor;
+        isUnderAttack = true;
+    }
+
+    //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile
+    public void ColorDesAttack()
+    {
         GetComponent<MeshRenderer>().material = initialColor;
+        isUnderAttack = false;
     }
 
     #endregion

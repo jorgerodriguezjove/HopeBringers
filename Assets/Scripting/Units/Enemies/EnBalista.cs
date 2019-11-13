@@ -406,6 +406,9 @@ public class EnBalista : EnemyUnit
                         {
                             DoDamage(myCurrentTile.tilesInLineUp[i].unitOnTile);
                         }
+
+                        //Quito el feedback de ataque de los tiles
+                        myCurrentTile.tilesInLineUp[i].ColorDesAttack();
                     }
                 }
 
@@ -417,7 +420,10 @@ public class EnBalista : EnemyUnit
                         {
                             DoDamage(myCurrentTile.tilesInLineDown[i].unitOnTile);
                         }
+
+                        myCurrentTile.tilesInLineDown[i].ColorDesAttack();
                     }
+                    
                 }
 
                 else if (currentFacingDirection == FacingDirection.East)
@@ -428,6 +434,8 @@ public class EnBalista : EnemyUnit
                         {
                             DoDamage(myCurrentTile.tilesInLineRight[i].unitOnTile);
                         }
+
+                        myCurrentTile.tilesInLineRight[i].ColorDesAttack();
                     }
                 }
 
@@ -439,6 +447,8 @@ public class EnBalista : EnemyUnit
                         {
                             DoDamage(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                         }
+
+                        myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
                     }
                 }
 
@@ -451,10 +461,13 @@ public class EnBalista : EnemyUnit
                 //StartCoroutine("AttackWait");
             }
 
+            //Si el ataque no esta preparado pinto los tiles a los que voy a atacar
             else
             {
-                //Prepara ataque
-                isAttackPrepared = true;
+                FeedbackTilesToAttack(true);
+
+                 //Prepara ataque
+                 isAttackPrepared = true;
                 myCurrentEnemyState = enemyState.Ended;
                 
                 //Espero 1 sec
@@ -485,6 +498,70 @@ public class EnBalista : EnemyUnit
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
     }
 
+
+    //Función que pinta o despinta los tiles a los que está atcando la ballesta
+    public void FeedbackTilesToAttack(bool shouldColorTiles)
+    {
+        if (currentFacingDirection == FacingDirection.North)
+        {
+            for (int i = 0; i < myCurrentTile.tilesInLineUp.Count; i++)
+            {
+                if (shouldColorTiles)
+                {
+                    myCurrentTile.tilesInLineUp[i].ColorAttack();
+                }
+                else
+                {
+                    myCurrentTile.tilesInLineUp[i].ColorDesAttack();
+                }  
+            }
+        }
+
+        else if (currentFacingDirection == FacingDirection.South)
+        {
+            for (int i = 0; i < myCurrentTile.tilesInLineDown.Count; i++)
+            {
+                if (shouldColorTiles)
+                {
+                    myCurrentTile.tilesInLineDown[i].ColorAttack();
+                }
+                else
+                {
+                    myCurrentTile.tilesInLineDown[i].ColorDesAttack();
+                }
+            }
+        }
+
+        else if (currentFacingDirection == FacingDirection.East)
+        {
+            for (int i = 0; i < myCurrentTile.tilesInLineRight.Count; i++)
+            {
+                if (shouldColorTiles)
+                {
+                    myCurrentTile.tilesInLineRight[i].ColorAttack();
+                }
+                else
+                {
+                    myCurrentTile.tilesInLineRight[i].ColorDesAttack();
+                }
+            }
+        }
+
+        else if (currentFacingDirection == FacingDirection.West)
+        {
+            for (int i = 0; i < myCurrentTile.tilesInLineLeft.Count; i++)
+            {
+                if (shouldColorTiles)
+                {
+                    myCurrentTile.tilesInLineLeft[i].ColorAttack();
+                }
+                else
+                {
+                    myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
+                }
+            }
+        }
+    }
 
     protected override void CheckCharactersInLine()
     {
@@ -604,5 +681,12 @@ public class EnBalista : EnemyUnit
                 }
             }
         }
+    }
+
+    protected override void MoveToTilePushed(IndividualTiles newTile)
+    {
+        FeedbackTilesToAttack(false);
+        base.MoveToTilePushed(newTile);
+        FeedbackTilesToAttack(true);
     }
 }

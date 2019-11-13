@@ -385,7 +385,8 @@ public class UnitBase : MonoBehaviour
     }
 
     //Función que ejecuta el movimiento del push
-    private void MoveToTilePushed(IndividualTiles newTile)
+    //Es virtual para que la balista pueda despintar y pintar los nuevos tiles
+    protected virtual void MoveToTilePushed(IndividualTiles newTile)
     {
         //Mover al nuevo tile
         currentTileVectorToMove = new Vector3(newTile.tileX, newTile.height, newTile.tileZ);
