@@ -362,18 +362,23 @@ public class TileManager : MonoBehaviour
 
                 else if (selectedCharacter.GetComponent<EnGoblin>())
                 {
-                    if (!node.isEmpty && !node.isObstacle)
+                    //Si el nodo no está vacío o un obstáculo puedo seguir comprobando el path
+                    if (!node.isEmpty && !node.isObstacle )
                     {
-                        float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-                        if (alt < dist[node])
+                        //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
+                        if ((node != target && node.unitOnTile == null) || node == target)
                         {
-                            if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
+                            float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+                            if (alt < dist[node])
                             {
-                                dist[node] = alt;
-                                prev[node] = currentNode;
+                                if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
+                                {
+                                    dist[node] = alt;
+                                    prev[node] = currentNode;
+                                }
                             }
-                        }
+                        }  
                     }
                 }
 
@@ -441,6 +446,7 @@ public class TileManager : MonoBehaviour
     public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
     {
         charactersAvailableForAttack.Clear();
+        tempCurrentObjectiveCost = 0;
 
         //Reuno en una lista todos los tiles a los que puedo acceder
         OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
@@ -466,10 +472,11 @@ public class TileManager : MonoBehaviour
                 }
 
                 //Resetear tempcurrentPathCost a 0
-                tempCurrentObjectiveCost = 0;
                 tempCurrentPathCost = 0;
             }
         }
+        //Reset
+        
 
         return charactersAvailableForAttack;
     }

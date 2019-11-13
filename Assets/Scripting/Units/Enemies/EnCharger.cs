@@ -8,6 +8,13 @@ public class EnCharger : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
+        if (isDead || hasAttacked)
+        {
+            Debug.Log("dead");
+            myCurrentEnemyState = enemyState.Ended;
+            return;
+        }
+
         //Aggro de unidades hacer cuando tengamos la pasiva del caballero
         //
 

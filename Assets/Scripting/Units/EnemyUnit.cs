@@ -107,6 +107,7 @@ public class EnemyUnit : UnitBase
     public virtual void SearchingObjectivesToAttack()
     {
         //Cada enemigo busca enemigos a su manera
+      
     }
 
 
@@ -192,6 +193,10 @@ public class EnemyUnit : UnitBase
         
         Destroy(unitModel);
         isDead = true;
+
+        //No uso FinishMyActions porque no me interesa que pase turno, sólo que  se quede en waiting por si acaso se muere en su turno.
+        myCurrentEnemyState = enemyState.Waiting;
+
     }
 
     #endregion

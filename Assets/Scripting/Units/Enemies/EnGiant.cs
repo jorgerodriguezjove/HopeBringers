@@ -11,8 +11,9 @@ public class EnGiant : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
-        if (hasAttacked)
+        if (isDead || hasAttacked)
         {
+            Debug.Log("dead");
             myCurrentEnemyState = enemyState.Ended;
             return;
         }
