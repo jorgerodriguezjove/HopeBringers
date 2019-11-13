@@ -57,7 +57,7 @@ public class EnCharger : EnemyUnit
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
             {
                 //Muevo al charger
-                if (furthestAvailableUnitDistance > 0)
+                if (furthestAvailableUnitDistance >= 0)
                 {
                     currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileZ);
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
@@ -76,7 +76,7 @@ public class EnCharger : EnemyUnit
             //Abajo
             else
             {
-                if (furthestAvailableUnitDistance > 0)
+                if (furthestAvailableUnitDistance >= 0)
                 {
                     //Muevo al charger
                     currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileZ);
@@ -100,7 +100,7 @@ public class EnCharger : EnemyUnit
             //Derecha
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > myCurrentTile.tileX)
             {
-                if (furthestAvailableUnitDistance > 0)
+                if (furthestAvailableUnitDistance >= 0)
                 {
                     //Muevo al charger
                     currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileZ);
@@ -120,7 +120,7 @@ public class EnCharger : EnemyUnit
             //Izquierda
             else
             {
-                if (furthestAvailableUnitDistance > 0)
+                if (furthestAvailableUnitDistance >= 0)
                 {
                     //Muevo al charger
                     currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileZ);
@@ -172,16 +172,14 @@ public class EnCharger : EnemyUnit
                 //Paro de comprobar si hay un obstáculo, un tile vacío o una unidad enemiga.
                 if (myCurrentTile.tilesInLineUp[i].isObstacle   ||
                     myCurrentTile.tilesInLineUp[i].isEmpty      ||
-                    (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<EnemyUnit>()))
+                    (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<EnemyUnit>()) ||
+                    (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToMove))
                 {
                     break;
                 }
 
-                //AQUI FALTA QUE POR CADA TILE COMPRUEBE LA DIFERENCIA DE ALTURA PARA ARREGLAR EL PROBLEMA DEL CHARGER CON LOS AGUJEROS 
-                //Otra opción es que una vez haya encontrado al enemigo que vea si existe un path hasta él aunque esto quizás cuándo ya esté optimizado
-
                 //Si por el contrario encuentro una unidad del jugador a mi altura, la añado a la lista de objetivos (en el resto de direcciones antes compruebo si es la unidad más lejana)
-                else if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>() && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                else if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades.
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
@@ -206,7 +204,8 @@ public class EnCharger : EnemyUnit
             {
                 if (myCurrentTile.tilesInLineRight[i].isObstacle ||
                     myCurrentTile.tilesInLineRight[i].isEmpty ||
-                    (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<EnemyUnit>()))
+                    (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<EnemyUnit>()) ||
+                    (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToMove))
                 {
                     break;
                 }
@@ -246,7 +245,8 @@ public class EnCharger : EnemyUnit
             {
                 if (myCurrentTile.tilesInLineDown[i].isObstacle ||
                     myCurrentTile.tilesInLineDown[i].isEmpty ||
-                    (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<EnemyUnit>()))
+                    (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<EnemyUnit>()) ||
+                    (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToMove))
                 {
                     break;
                 }
@@ -286,7 +286,8 @@ public class EnCharger : EnemyUnit
             {
                 if (myCurrentTile.tilesInLineLeft[i].isObstacle ||
                    myCurrentTile.tilesInLineLeft[i].isEmpty ||
-                   (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<EnemyUnit>()))
+                   (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<EnemyUnit>()) ||
+                   (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToMove))
                 {
                     break;
                 }
