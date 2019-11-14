@@ -165,12 +165,13 @@ public class LevelManager : MonoBehaviour
             //Si no hay unidad seleccionada significa que está seleccionando una unidad
             if (selectedCharacter == null)
             {
-				//Desactivo el botón de pasar turno cuando selecciona la unidad
-				UIM.ActivateDeActivateEndButton();
-				 
 				//Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
 				if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
-                {	
+                {
+                    //Desactivo el botón de pasar turno cuando selecciona la unidad
+                    //Está función no se puede llamar fuera del if para que afecte a ambos casos porque entonces también se cambia al pulsar en una unidad que ya ha atacado.
+                    UIM.ActivateDeActivateEndButton();
+
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
@@ -191,6 +192,9 @@ public class LevelManager : MonoBehaviour
                 //Si se ha movido pero no ha atacado, entonces le doy el feedback de ataque.
                 else if (!clickedUnit.hasAttacked)
                 {
+                    //Desactivo el botón de pasar turno cuando selecciona la unidad
+                    UIM.ActivateDeActivateEndButton();
+
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
@@ -201,8 +205,8 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-            //Si ya hay una seleccionada significa que está atacando a la unidad
-            else
+            //Si ya hay una seleccionada compruebo si puedo atacar a la unidad
+            else 
             {
                 SelectUnitToAttack(clickedUnit);
             }
@@ -212,20 +216,33 @@ public class LevelManager : MonoBehaviour
     //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
     public void SelectUnitToAttack(UnitBase clickedUnit)
     {
-        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+        if (!selectedCharacter.isMovingorRotating)
         {
-            enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
-
-            //Compruebo si está en la lista de posibles targets
-            for (int i = 0; i < enemiesNumber; i++)
+            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {
-                if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
+                enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+
+                //Compruebo si está en la lista de posibles targets
+                for (int i = 0; i < enemiesNumber; i++)
                 {
-                    if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
+                    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
                     {
-                        selectedCharacter.Attack(clickedUnit);
+                        if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
+                        {
+                            selectedCharacter.Attack(clickedUnit);
+                            return;
+                        }
                     }
                 }
+            }
+
+            //Si llega hasta aqui significa que la unidad seleccionada no formaba parte de las unidades a las que puede atacar.
+            //Compruebo si es un player y de ser así lo selecciono
+
+            if (clickedUnit.GetComponent<PlayerUnit>())
+            {
+                DeSelectUnit();
+                SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
             }
         }
     }

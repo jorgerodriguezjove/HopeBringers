@@ -72,11 +72,16 @@ public class IndividualTiles : MonoBehaviour
     [SerializeField]
     private Material availableForMovementColor;
     [SerializeField]
+    private Material currentTileHoverMovementColor;
+    [SerializeField]
     private Material attackColor;
     private Material initialColor;
 
     //Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
     private bool isUnderAttack;
+
+    //Bool que sirve para saber si el tile estaba con feedback de movimiento antes para volver a ponerse
+    private bool isMovementTile;
 
     [SerializeField]
     [@TextAreaAttribute(15, 20)]
@@ -123,7 +128,11 @@ public class IndividualTiles : MonoBehaviour
     {
         if (LM.tilesAvailableForMovement.Contains(this))
         {
+            //Cambio el cursor
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
+
+            //Cambio el color del tile
+            ColorCurrentTileHover();
         }
         if (isEmpty)
         {
@@ -132,7 +141,6 @@ public class IndividualTiles : MonoBehaviour
         else if (!unitOnTile)
         {
             LM.UIM.ShowTooltip(tileInfo);
-
         }
 
     }
@@ -140,9 +148,17 @@ public class IndividualTiles : MonoBehaviour
     {
         LM.UIM.ShowTooltip("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+        if (isMovementTile)
+        {
+            ColorSelect();
+        }
     }
 
     #endregion
+
+    #region NEIGHBOURS
+
     //Esta función comprueba las casillas vecinas en busca de unidades para saber cuantas unidades rodean al tile.
     public void UpdateNeighboursOccupied()
     {
@@ -167,6 +183,7 @@ public class IndividualTiles : MonoBehaviour
         }
     }
 
+    #endregion
 
     #region COLORS
 
@@ -174,6 +191,12 @@ public class IndividualTiles : MonoBehaviour
     public void ColorSelect()
     {
         GetComponent<MeshRenderer>().material = availableForMovementColor;
+        isMovementTile = true;
+    }
+
+    private void ColorCurrentTileHover()
+    {
+        GetComponent<MeshRenderer>().material = currentTileHoverMovementColor;
     }
 
     //Cambiar a color normal
@@ -186,6 +209,7 @@ public class IndividualTiles : MonoBehaviour
         else
         {
             GetComponent<MeshRenderer>().material = initialColor;
+            isMovementTile = false;
         }
     }
 
