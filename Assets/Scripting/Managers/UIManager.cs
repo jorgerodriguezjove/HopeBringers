@@ -30,11 +30,11 @@ public class UIManager : MonoBehaviour
 	private GameObject optionsButton;
 
     //AQUI
-   
-
-
 	[SerializeField]
 	private TextMeshProUGUI tooltipText;
+	[SerializeField]
+	private TextMeshProUGUI tooltipAccionesText;
+
 
 	[SerializeField]
 	private GameObject characterInfo;
@@ -79,6 +79,8 @@ public class UIManager : MonoBehaviour
             panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
         }
+
+		tooltipAccionesText.text = "Selecciona una unidad";
 	}
 
 	#endregion

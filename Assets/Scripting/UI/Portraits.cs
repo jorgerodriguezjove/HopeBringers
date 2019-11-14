@@ -13,10 +13,9 @@ public class Portraits : MonoBehaviour
 	[HideInInspector]
 	private UIManager UIM;
 
-
-    //AÑADIDO
-    //Barra de vida y valor de la barra del personaje
-    [SerializeField]
+	//AÑADIDO
+	//Barra de vida y valor de la barra del personaje
+	[SerializeField]
     public TextMeshProUGUI healthValue;
     [SerializeField]
     public Slider healthBar;
@@ -27,14 +26,14 @@ public class Portraits : MonoBehaviour
     [SerializeField]
     public List<GameObject> movementTokens;
 
-    //Gameobject Image dónde va el sprite del personaje
-    [SerializeField]
-    public Image characterPortrait;
-
 	[SerializeField]
-	public Material highlightMaterial;
+	private Sprite selectedImage;
 	[HideInInspector]
-	public Material nonHighlightMaterial;
+	private Sprite initImage;
+
+	//Gameobject Image dónde va el sprite del personaje
+	[SerializeField]
+    public Image characterPortrait;
 
     #endregion
 
@@ -45,7 +44,7 @@ public class Portraits : MonoBehaviour
 		UIM = FindObjectOfType<UIManager>();
         //Se desactiva para que el UImanager active únicamente los necesarios en función del número de personajes.
         gameObject.SetActive(false);
-		nonHighlightMaterial = GetComponent<Image>().material;
+		initImage = GetComponent<Image>().sprite;
 	}
 
     private void Start()
@@ -76,11 +75,11 @@ public class Portraits : MonoBehaviour
 
 	public void HighlightPortrait()
 	{
-		GetComponent<Image>().material = highlightMaterial;
+		GetComponent<Image>().sprite = selectedImage;
 	}
 	public void UnHighlightPortrait()
 	{
-		GetComponent<Image>().material = nonHighlightMaterial;
+		GetComponent<Image>().sprite = initImage;
 	}
 
     #endregion
