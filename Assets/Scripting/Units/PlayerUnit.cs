@@ -42,6 +42,8 @@ public class PlayerUnit : UnitBase
     public GameObject myPanelPortrait;
     [SerializeField]
 	public Sprite portraitImage;
+	[SerializeField]
+	public Sprite tooltipImage;
 
 
     [Header("REFERENCIAS")]
@@ -193,6 +195,8 @@ public class PlayerUnit : UnitBase
             {
                 //Hacer que aparezcan los botones
                 canvasWithRotationArrows.gameObject.SetActive(true);
+				UIM.TooltipRotate();
+
             }
         }
 
@@ -201,6 +205,7 @@ public class PlayerUnit : UnitBase
         {
             //Hacer que aparezcan los botones
             canvasWithRotationArrows.gameObject.SetActive(true);
+			UIM.TooltipRotate();
         }
     }
 
@@ -469,13 +474,16 @@ public class PlayerUnit : UnitBase
                     break;
                 }
             }
-        }
+			
+		}
 
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
         }
+
+		
     }
 
     #endregion

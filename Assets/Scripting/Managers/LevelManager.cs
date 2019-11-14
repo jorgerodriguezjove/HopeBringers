@@ -171,6 +171,8 @@ public class LevelManager : MonoBehaviour
                     //Desactivo el botón de pasar turno cuando selecciona la unidad
                     //Está función no se puede llamar fuera del if para que afecte a ambos casos porque entonces también se cambia al pulsar en una unidad que ya ha atacado.
                     UIM.ActivateDeActivateEndButton();
+					UIM.TooltipMove();
+					
 
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
@@ -185,8 +187,13 @@ public class LevelManager : MonoBehaviour
                     }
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
+					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+					{
+						UIM.TooltipMoveorAttack();
+					}
 
-                    SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
+
+					SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
                 }
 
                 //Si se ha movido pero no ha atacado, entonces le doy el feedback de ataque.
@@ -202,8 +209,18 @@ public class LevelManager : MonoBehaviour
 					selectedCharacter.SelectedColor();
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
-                }
-            }
+
+					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+					{
+						UIM.TooltipAttack();
+					}
+					else
+					{
+						UIM.TooltipNoAttackable();
+					}
+
+				}
+			}
 
             //Si ya hay una seleccionada compruebo si puedo atacar a la unidad
             else 
@@ -254,6 +271,7 @@ public class LevelManager : MonoBehaviour
         {
 			selectedCharacter.HealthBarOn_Off(false);
 			UIM.HideCharacterInfo("");
+			UIM.TooltipDefault();
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
             {
@@ -351,8 +369,16 @@ public class LevelManager : MonoBehaviour
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
     public void UnitHasFinishedMovementAndRotation()
     {
-        //UIM.ActivateDeActivateEndButton();
-    }
+		//UIM.ActivateDeActivateEndButton();+
+		if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+		{
+			UIM.TooltipAttack();
+		}
+		else
+		{
+			UIM.TooltipNoAttackable();
+		}
+	}
 
     //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.
     public void CheckIfHoverShouldAppear(UnitBase enemyToCheck)

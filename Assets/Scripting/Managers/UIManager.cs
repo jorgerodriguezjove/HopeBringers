@@ -54,6 +54,9 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	public Texture2D attackCursor, movementCursor;
 
+	[SerializeField]
+	public Image tooltipPicture;
+
 
 	#endregion
 
@@ -189,12 +192,14 @@ public class UIManager : MonoBehaviour
 	{
 		characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
 		characterInfoText.text = textToPrint;
+		tooltipPicture.sprite = LM.selectedCharacter.tooltipImage;
 	}
 
 	public void HideCharacterInfo(string textToPrint)
 	{
 		characterInfo.transform.DOMove(characterInfoOriginalPosition, animationDuration);
 		characterInfoText.text = textToPrint;
+		tooltipPicture.sprite = null;
 	}
  
 	#endregion
@@ -227,12 +232,40 @@ public class UIManager : MonoBehaviour
             LM.enemiesOnTheBoard[i].HealthBarOn_Off(show_hide);
         }
     }
-    
-    #endregion
 
-    #region OPTIONS
-    //Abre/cierra el panel de opciones y Desactiva/Activa el botón de opciones, respectivamente
-    public void Activate_DeactivateOptions(bool isActivated)
+	#endregion
+
+	#region TOOLTIP ACCTIONS
+
+	public void TooltipMove()
+	{
+		tooltipAccionesText.text = "Mueve la unidad";
+	}
+	public void TooltipAttack()
+	{
+		tooltipAccionesText.text = "Ataca a una unidad";
+	}
+	public void TooltipNoAttackable()
+	{
+		tooltipAccionesText.text = "Esta unidad no tiene ningún enemigo a rango";
+	}
+	public void TooltipRotate()
+	{
+		tooltipAccionesText.text = "Selecciona la rotación de la unidad";
+	}
+	public void TooltipDefault()
+	{
+		tooltipAccionesText.text = "Selecciona una unidad";
+	}
+	public void TooltipMoveorAttack()
+	{
+		tooltipAccionesText.text = "Mueve la unidad o ataca a una unidad";
+	}
+
+	#endregion
+	#region OPTIONS
+	//Abre/cierra el panel de opciones y Desactiva/Activa el botón de opciones, respectivamente
+	public void Activate_DeactivateOptions(bool isActivated)
 	{
 		optionsScreen.SetActive(isActivated);
 		optionsButton.SetActive(!isActivated);
