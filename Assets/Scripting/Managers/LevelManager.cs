@@ -176,6 +176,7 @@ public class LevelManager : MonoBehaviour
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
 					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
 					selectedCharacter.SelectedColor();
+
                     tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
@@ -240,7 +241,7 @@ public class LevelManager : MonoBehaviour
             {
                 if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
                 {
-                    selectedCharacter.currentUnitsAvailableToAttack[i].ColorInitial();
+                    selectedCharacter.currentUnitsAvailableToAttack[i].ResetColor();
                 }
             }
 
@@ -252,7 +253,7 @@ public class LevelManager : MonoBehaviour
 			//Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
 			UIM.ActivateDeActivateEndButton();
             tilesAvailableForMovement.Clear();
-            selectedCharacter.InitialColor();
+            selectedCharacter.ResetColor();
             selectedCharacter = null;
         }
     }
@@ -292,6 +293,20 @@ public class LevelManager : MonoBehaviour
 
     public void MoveUnit(IndividualTiles tileToMove)
     {
+        //Desmarco las unidades que antes estaban disponibles para ser atacadas
+
+        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+        {
+            for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
+            {
+                if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
+                {
+                    selectedCharacter.currentUnitsAvailableToAttack[i].ResetColor();
+                }
+            }
+        }
+        
+
         for (int i = 0; i < tilesAvailableForMovement.Count; i++)
         {
             if (tileToMove == tilesAvailableForMovement[i])
@@ -312,7 +327,7 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
                 }
             }
-        }
+        }   
     }
 
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.

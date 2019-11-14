@@ -405,8 +405,8 @@ public class UnitBase : MonoBehaviour
 
     #region COLORS
 
-    //Cambiar a color que indica que puede ser atacado
-    public void ColorInitial()
+    //Cambiar a color inicial
+    public virtual void ResetColor()
     {
         if (!isDead)
         {

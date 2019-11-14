@@ -185,7 +185,7 @@ public class EnGoblin : EnemyUnit
 
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
+            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
 
             //Espera entre casillas
             yield return new WaitForSeconds(timeMovementAnimation);

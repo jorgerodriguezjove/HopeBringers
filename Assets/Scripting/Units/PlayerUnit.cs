@@ -163,7 +163,7 @@ public class PlayerUnit : UnitBase
             currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
 
             //Muevo y roto a la unidad
-            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
+            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
             
             //Espera entre casillas
@@ -313,9 +313,20 @@ public class PlayerUnit : UnitBase
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = selectedMaterial;
     }
 
-    public void InitialColor()
+    //Override para que el personaje pueda volver a negro si ya ha atacado
+    public override void ResetColor()
     {
-        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+        //Si ha atacado vuelve al color negro
+        if (hasAttacked)
+        {
+            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
+        }
+
+        //Si no vuelve al inicial
+        else
+        {
+            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+        }
     }
 
 	#endregion
@@ -456,6 +467,7 @@ public class PlayerUnit : UnitBase
             }
         }
 
+        //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();

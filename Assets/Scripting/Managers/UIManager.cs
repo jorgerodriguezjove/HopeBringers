@@ -177,7 +177,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void UnHighlightCharacter(PlayerUnit characterToUnhighlight)
 	{
-		characterToUnhighlight.InitialColor();
+		characterToUnhighlight.ResetColor();
 	}
 	#endregion
 
