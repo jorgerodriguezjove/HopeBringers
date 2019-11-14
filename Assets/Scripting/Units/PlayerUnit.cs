@@ -34,7 +34,8 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private Material finishedMaterial;
 
-    [SerializeField]
+
+	[SerializeField]
     private Canvas canvasWithRotationArrows;
 
     [HideInInspector]
@@ -74,7 +75,8 @@ public class PlayerUnit : UnitBase
         movementParticle.SetActive(false);
 
         currentHealth = maxHealth;
-    }
+
+	}
 
     #endregion
 
