@@ -57,7 +57,6 @@ public class Portraits : MonoBehaviour
 
     #endregion
 
-
     #region INTERACTION
 
     public void AssignClickerPlayer()

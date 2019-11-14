@@ -216,7 +216,7 @@ public class LevelManager : MonoBehaviour
     //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
     public void SelectUnitToAttack(UnitBase clickedUnit)
     {
-        if (!selectedCharacter.isMovingorRotating)
+        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {
@@ -225,11 +225,12 @@ public class LevelManager : MonoBehaviour
                 //Compruebo si está en la lista de posibles targets
                 for (int i = 0; i < enemiesNumber; i++)
                 {
-                    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
+                    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating && !selectedCharacter.hasAttacked)
                     {
                         if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
                         {
                             selectedCharacter.Attack(clickedUnit);
+                            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                             return;
                         }
                     }

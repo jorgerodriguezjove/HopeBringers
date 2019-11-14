@@ -143,15 +143,18 @@ public class EnemyUnit : UnitBase
 
     private void OnMouseEnter()
     {
-        //Llamo a LevelManager para activar hover
-        LM.CheckIfHoverShouldAppear(this);
-		LM.UIM.ShowTooltip(unitInfo);
-		HealthBarOn_Off(true);
-		gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-		if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-		{
-			Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-		}
+        if (!isDead)
+        {
+            //Llamo a LevelManager para activar hover
+            LM.CheckIfHoverShouldAppear(this);
+            LM.UIM.ShowTooltip(unitInfo);
+            HealthBarOn_Off(true);
+            gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+            if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+            {
+                Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+            }
+        }
 	}
 
     private void OnMouseExit()
@@ -191,8 +194,12 @@ public class EnemyUnit : UnitBase
         SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
 
-        //Cambios en la lógica para indicar que ha muerto
+        LM.HideHover(this);
+        HealthBarOn_Off(false);
+        LM.UIM.ShowTooltip("");
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
+        //Cambios en la lógica para indicar que ha muerto
         myCurrentTile.unitOnTile = null;
         myCurrentTile.WarnInmediateNeighbours();
         

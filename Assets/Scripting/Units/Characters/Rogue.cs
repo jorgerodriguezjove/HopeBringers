@@ -144,6 +144,9 @@ public class Rogue : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
+        hasAttacked = true;
+        CalculateDamage(unitToAttack);
+
         if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)
         {
             //Arriba
@@ -249,4 +252,83 @@ public class Rogue : PlayerUnit
         }
     }
 
+    //Override al calculo de daño porque tiene que mostrar el daño tras el cambio de posición
+    protected override void CalculateDamage(UnitBase unitToDealDamage)
+    {
+        //Reseteo la variable de daño a realizar
+        damageWithMultipliersApplied = baseDamage;
+
+        if (unitToDealDamage.myCurrentTile.tileX == myCurrentTile.tileX)
+        {
+            //Arriba
+            if (unitToDealDamage.myCurrentTile.tileZ > myCurrentTile.tileZ)
+            {
+                CalculteDamageLogic(unitToDealDamage, myCurrentTile.tilesInLineUp[1], FacingDirection.South );
+            }
+            //Abajo
+            else
+            {
+                CalculteDamageLogic(unitToDealDamage, myCurrentTile.tilesInLineDown[1], FacingDirection.North);
+
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+            //Derecha
+            if (unitToDealDamage.myCurrentTile.tileX > myCurrentTile.tileX)
+            {
+                CalculteDamageLogic(unitToDealDamage, myCurrentTile.tilesInLineRight[1], FacingDirection.West);
+            }
+            //Izquierda
+            else
+            {
+                CalculteDamageLogic(unitToDealDamage, myCurrentTile.tilesInLineLeft[1], FacingDirection.East);
+
+            }
+        }
+
+    }
+
+    //Función que se encarga de realizar el calculod e daño como tal. Simplemente es para no repetir el mismo código todo el rato
+    private void CalculteDamageLogic(UnitBase unitToDealDamage, IndividualTiles tileLineToCheck, FacingDirection directionForBackAttack)
+    {
+        //Si estoy en desventaja de altura hago menos daño
+        if (unitToDealDamage.myCurrentTile.height > tileLineToCheck.height)
+        {
+            damageWithMultipliersApplied *= multiplicatorLessHeight;
+        }
+
+        //Si estoy en ventaja de altura hago más daño
+        else if (unitToDealDamage.myCurrentTile.height < tileLineToCheck.height)
+        {
+            damageWithMultipliersApplied *= multiplicatorMoreHeight;
+        }
+
+        //Si le ataco por la espalda hago más daño
+        if (unitToDealDamage.currentFacingDirection == directionForBackAttack)
+        {
+            //Ataque por la espalda
+            damageWithMultipliersApplied *= multiplicatorBackAttack;
+        }
+    }
+
+    //La función es exactamente igual que la original salvo que no calcula el daño, ya que el rogue lo calcula antes de saltar
+    protected override void DoDamage(UnitBase unitToDealDamage)
+    {
+        //Una vez aplicados los multiplicadores efectuo el daño.
+        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+
+        //Si ataco por la espalda instancio la partícula de ataque crítico
+        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+        {
+            Instantiate(criticAttackParticle, unitModel.transform.position, unitModel.transform.rotation);
+        }
+
+        //Si no, instancio la partícula normal
+        else
+        {
+            Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+        }
+    }
 }

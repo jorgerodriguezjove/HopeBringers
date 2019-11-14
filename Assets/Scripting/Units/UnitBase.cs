@@ -192,7 +192,7 @@ public class UnitBase : MonoBehaviour
     #region DAMAGE_&_DIE
 
     //Calcula PERO NO aplico el daño a la unidad elegida
-    protected void CalculateDamage(UnitBase unitToDealDamage)
+    protected virtual void CalculateDamage(UnitBase unitToDealDamage)
     {
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;

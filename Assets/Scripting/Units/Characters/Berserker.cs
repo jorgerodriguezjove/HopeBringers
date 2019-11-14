@@ -13,6 +13,8 @@ public class Berserker : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
+        hasAttacked = true;
+
         //Animación de ataque
         myAnimator.SetTrigger("Attack");
 
