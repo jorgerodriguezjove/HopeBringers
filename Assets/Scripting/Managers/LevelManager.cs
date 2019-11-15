@@ -79,8 +79,6 @@ public class LevelManager : MonoBehaviour
         
         //Reordeno las unidades y también llamo al UIManager para que actualice el orden
         UpdateUnitsOrder();
-        Debug.Log(enemiesNumber);
-        Debug.Log(counterForEnemiesOrder);
 
         //Comienza el nivel con el turno del jugador
         currentLevelState = LevelState.PlayerPhase;
@@ -99,8 +97,6 @@ public class LevelManager : MonoBehaviour
 
         // tilesInScene = new GameObject[TM.tilesInScene.Length];
         tilesInScene = TM.tilesInScene;
-
-        Debug.Log(tilesInScene[0]);
 
         StartCoroutine("FallingAnimation");
     }
@@ -184,7 +180,6 @@ public class LevelManager : MonoBehaviour
                     UIM.ActivateDeActivateEndButton();
 					UIM.TooltipMove();
 					
-
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
@@ -230,7 +225,8 @@ public class LevelManager : MonoBehaviour
 						UIM.TooltipNoAttackable();
 					}
 
-				}
+                    SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
+                }
 			}
 
             //Si ya hay una seleccionada compruebo si puedo atacar a la unidad
@@ -336,20 +332,8 @@ public class LevelManager : MonoBehaviour
 
     public void MoveUnit(IndividualTiles tileToMove)
     {
-        //Desmarco las unidades que antes estaban disponibles para ser atacadas
         if (selectedCharacter != null && !selectedCharacter.hasAttacked)
         {
-            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
-            {
-                for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
-                {
-                    if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
-                    {
-                        selectedCharacter.currentUnitsAvailableToAttack[i].ResetColor();
-                    }
-                }
-            }
-
             for (int i = 0; i < tilesAvailableForMovement.Count; i++)
             {
                 if (tileToMove == tilesAvailableForMovement[i])
@@ -368,6 +352,18 @@ public class LevelManager : MonoBehaviour
                     if (selectedCharacter != null)
                     {
                         selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+
+                        //Desmarco las unidades que antes estaban disponibles para ser atacadas
+                        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+                        {
+                            for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
+                            {
+                                if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
+                                {
+                                    selectedCharacter.currentUnitsAvailableToAttack[j].ResetColor();
+                                }
+                            }
+                        }
                     }
                 }
             }

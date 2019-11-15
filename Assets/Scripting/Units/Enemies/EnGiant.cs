@@ -7,6 +7,7 @@ public class EnGiant : EnemyUnit
 {
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
     private UnitBase myCurentObjective;
+    [SerializeField]
     private IndividualTiles myCurrentObjectiveTile;
 
     public override void SearchingObjectivesToAttack()
@@ -55,7 +56,6 @@ public class EnGiant : EnemyUnit
             //Si sigue habiendo varios enemigos los ordeno segun la vida
             if (currentUnitsAvailableToAttack.Count > 1)
             {
-                
                 //Ordeno la lista de posibles objetivos de menor a mayor vida actual
                 currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
                 {
