@@ -124,9 +124,10 @@ public class IndividualTiles : MonoBehaviour
         LM.MoveUnit(this);
     }
 
+    //Hover enter
     void OnMouseEnter()
     {
-        if (LM.tilesAvailableForMovement.Contains(this))
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this))
         {
             //Cambio el cursor
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
@@ -144,6 +145,8 @@ public class IndividualTiles : MonoBehaviour
         }
 
     }
+
+    //Hover exit
     void OnMouseExit()
     {
         LM.UIM.ShowTooltip("");

@@ -421,6 +421,8 @@ public class LevelManager : MonoBehaviour
 
     private void BeginPlayerPhase()
     {
+        //Me aseguro que no quedan tiles en la lista de tiles para moverse.
+        tilesAvailableForMovement.Clear();
         UpdateUnitsOrder();
 
         if (currentTurn > 0)

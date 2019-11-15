@@ -17,6 +17,10 @@ public class EnBalista : EnemyUnit
     private bool isRightTileOccupied;
     private bool isLeftTileOccupied;
 
+    //Guardo una lista para almacenar los tiles que van a ser atacados.
+    //Esto en el futuro vendrá bien cuándo tengamos problemas porque el rango de 2 balistas se cruzan y al morir una se borran los tiles comunes de la otra.
+    private List<IndividualTiles> tilesToPaint = new List<IndividualTiles>();
+
     public override void SearchingObjectivesToAttack()
     {
         if (!isDead)
@@ -467,7 +471,7 @@ public class EnBalista : EnemyUnit
                 FeedbackTilesToAttack(true);
 
                  //Prepara ataque
-                 isAttackPrepared = true;
+                isAttackPrepared = true;
                 myCurrentEnemyState = enemyState.Ended;
                 
                 //Espero 1 sec
