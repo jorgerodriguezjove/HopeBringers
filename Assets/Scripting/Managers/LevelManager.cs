@@ -323,47 +323,44 @@ public class LevelManager : MonoBehaviour
     //    }
     //}
 
-
-    //Quizás tendría más sentido que el move Unit estuviese en la propia unidad.
-
-
     public void MoveUnit(IndividualTiles tileToMove)
     {
         //Desmarco las unidades que antes estaban disponibles para ser atacadas
-
-        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+        if (selectedCharacter != null && !selectedCharacter.hasAttacked)
         {
-            for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
+            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {
-                if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
+                for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
                 {
-                    selectedCharacter.currentUnitsAvailableToAttack[i].ResetColor();
+                    if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
+                    {
+                        selectedCharacter.currentUnitsAvailableToAttack[i].ResetColor();
+                    }
+                }
+            }
+
+            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            {
+                if (tileToMove == tilesAvailableForMovement[i])
+                {
+                    //Calculo el path de la unidad
+                    TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
+
+                    //Al terminar de moverse se deseleccionan los tiles
+                    for (int j = 0; j < tilesAvailableForMovement.Count; j++)
+                    {
+                        tilesAvailableForMovement[j].ColorDeselect();
+                    }
+                    tilesAvailableForMovement.Clear();
+
+                    //Aviso a la unidad de que se tiene que mover
+                    if (selectedCharacter != null)
+                    {
+                        selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+                    }
                 }
             }
         }
-        
-
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-        {
-            if (tileToMove == tilesAvailableForMovement[i])
-            {
-                //Calculo el path de la unidad
-                TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
-
-                //Al terminar de moverse se deseleccionan los tiles
-                for (int j = 0; j < tilesAvailableForMovement.Count; j++)
-                {
-                    tilesAvailableForMovement[j].ColorDeselect();
-                }
-                tilesAvailableForMovement.Clear();
-
-                //Aviso a la unidad de que se tiene que mover
-                if (selectedCharacter != null)
-                {
-                    selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
-                }
-            }
-        }   
     }
 
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.

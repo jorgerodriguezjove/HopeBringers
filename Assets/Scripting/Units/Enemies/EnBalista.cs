@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class EnBalista : EnemyUnit
 {
+    #region VARIBLES
     //Bool que indica si la balista ha preparado el ataque para atacar en el siguiente turno.
     [SerializeField]
     private bool isAttackPrepared = false;
@@ -17,9 +18,7 @@ public class EnBalista : EnemyUnit
     private bool isRightTileOccupied;
     private bool isLeftTileOccupied;
 
-    //Guardo una lista para almacenar los tiles que van a ser atacados.
-    //Esto en el futuro vendrá bien cuándo tengamos problemas porque el rango de 2 balistas se cruzan y al morir una se borran los tiles comunes de la otra.
-    private List<IndividualTiles> tilesToPaint = new List<IndividualTiles>();
+    #endregion 
 
     public override void SearchingObjectivesToAttack()
     {
@@ -692,5 +691,11 @@ public class EnBalista : EnemyUnit
         FeedbackTilesToAttack(false);
         base.MoveToTilePushed(newTile);
         FeedbackTilesToAttack(true);
+    }
+
+    public override void Die()
+    {
+        FeedbackTilesToAttack(false);
+        base.Die();
     }
 }

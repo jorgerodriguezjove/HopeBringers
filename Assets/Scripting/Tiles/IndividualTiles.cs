@@ -156,6 +156,11 @@ public class IndividualTiles : MonoBehaviour
         {
             ColorSelect();
         }
+
+        else if (isUnderAttack)
+        {
+            ColorAttack();
+        }
     }
 
     #endregion
@@ -207,13 +212,15 @@ public class IndividualTiles : MonoBehaviour
     {
         if (isUnderAttack)
         {
-            GetComponent<MeshRenderer>().material = attackColor;
+            GetComponent<MeshRenderer>().material = attackColor;   
         }
         else
         {
             GetComponent<MeshRenderer>().material = initialColor;
-            isMovementTile = false;
         }
+
+        isMovementTile = false;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     //Cambiar el color a ataque
