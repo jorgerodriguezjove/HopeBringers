@@ -373,6 +373,10 @@ public class EnBalista : EnemyUnit
             //myCurrentEnemyState = enemyState.Waiting;
             //StartCoroutine("MovementWait");
         }
+        else
+        {
+            myCurrentEnemyState = enemyState.Waiting;
+        }
     }
 
     //Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
@@ -477,6 +481,11 @@ public class EnBalista : EnemyUnit
                 //StartCoroutine("AttackWait");
                 //Colorear los tiles visualmente
             }
+        }
+
+        else
+        {
+            myCurrentEnemyState = enemyState.Waiting;
         }
     }
 
@@ -690,7 +699,11 @@ public class EnBalista : EnemyUnit
     {
         FeedbackTilesToAttack(false);
         base.MoveToTilePushed(newTile);
-        FeedbackTilesToAttack(true);
+
+        if (isAttackPrepared)
+        {
+            FeedbackTilesToAttack(true);
+        }
     }
 
     public override void Die()

@@ -40,8 +40,9 @@ public class LevelManager : MonoBehaviour
     //Lista con todas las unidades del jugador en el tablero
     [HideInInspector]
     public List<PlayerUnit> characthersOnTheBoard;
-    [HideInInspector]
+    
     //Lista con todas las unidades enemigas en el tablero
+    [SerializeField]
     public List<EnemyUnit> enemiesOnTheBoard;
 
     //Contador que controla a que unidad le toca. Sirve cómo indice para la lista de enemigos.
@@ -62,6 +63,10 @@ public class LevelManager : MonoBehaviour
 	[HideInInspector]
     public UIManager UIM;
 
+    //Referencia momentanea para el playtesting
+    [SerializeField]
+    private GameObject victoryPanel;
+
     #endregion
 
     #region INIT
@@ -71,8 +76,11 @@ public class LevelManager : MonoBehaviour
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
 
+        
         //Reordeno las unidades y también llamo al UIManager para que actualice el orden
         UpdateUnitsOrder();
+        Debug.Log(enemiesNumber);
+        Debug.Log(counterForEnemiesOrder);
 
         //Comienza el nivel con el turno del jugador
         currentLevelState = LevelState.PlayerPhase;
@@ -131,13 +139,14 @@ public class LevelManager : MonoBehaviour
 
         if (enemiesOnTheBoard.Count > 0)
         {
-            for (int i = 0; i < enemiesOnTheBoard.Count-1; i++)
+            for (int i = 0; i < enemiesOnTheBoard.Count; i++)
             {
-                if(enemiesOnTheBoard[i].GetComponent<EnemyUnit>().isDead)
+                if (enemiesOnTheBoard[i].GetComponent<EnemyUnit>().isDead)
                 {
                     EnemyUnit deadEnemy = enemiesOnTheBoard[i];
                     enemiesOnTheBoard.Remove(deadEnemy);
                     Destroy(deadEnemy.gameObject);
+                    counterForEnemiesOrder--;
                     i--;
                 }
             }
@@ -148,6 +157,8 @@ public class LevelManager : MonoBehaviour
 
             });
         }
+
+       
 
         UIM.SetEnemyOrder();
     }
@@ -450,15 +461,25 @@ public class LevelManager : MonoBehaviour
     {
         UpdateUnitsOrder();
 
-        //Desaparece botón de end turn
-        UIM.ActivateDeActivateEndButton();
+        if (enemiesOnTheBoard.Count > 0)
+        {
+            //Desaparece botón de end turn
+            UIM.ActivateDeActivateEndButton();
 
-        //Aparece cartel con turno del enemigo
-        //Me aseguro de que el jugador no puede interactuar con sus pjs
-        //Actualizo el número de unidades en el tablero (Lo hago aquí en vez de  al morir la unidad para que no se cambie el orden en medio del turno enemigo)
+            //Aparece cartel con turno del enemigo
+            //Me aseguro de que el jugador no puede interactuar con sus pjs
+            //Actualizo el número de unidades en el tablero (Lo hago aquí en vez de  al morir la unidad para que no se cambie el orden en medio del turno enemigo)
 
-        counterForEnemiesOrder = 0;
-        enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+            counterForEnemiesOrder = 0;
+            enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+        }
+
+        else
+        {
+            Debug.Log("Victory");
+            victoryPanel.SetActive(true);
+        }
+       
     }
 
     //Cuando el enemigo acaba sus acciones avisa al LM para que la siguiente unidad haga sus acciones.

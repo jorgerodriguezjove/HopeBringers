@@ -16,19 +16,16 @@ public class EnGoblin : EnemyUnit
     {
         if (isDead || hasAttacked)
         {
-            Debug.Log("dead");
             myCurrentEnemyState = enemyState.Ended;
             return;
         }
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
 
-        Debug.Log(gameObject.name);
         if (currentUnitsAvailableToAttack.Count != 0)
         {
             Debug.Log(currentUnitsAvailableToAttack[0]);
         }
-        Debug.Log("------");
 
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)
