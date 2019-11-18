@@ -6,6 +6,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
 {
     //Ajustar volumen del sonido y de la música.
     #region AJUSTAR_VOLUMEN
+
     private float myMusicVolume;
 
     public float MusicVolume

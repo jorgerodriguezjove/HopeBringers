@@ -10,12 +10,6 @@ public class UIManager : MonoBehaviour
 {
     #region VARIABLES
 
-    [Header("REFERENCIAS")]
-
-    //Level Manager
-    private LevelManager LM;
-
-
 	[Header("HUD")]
 
     [SerializeField]
@@ -29,40 +23,50 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	private GameObject optionsButton;
 
-    //AQUI
+    //Texto de cuadro inferior derecha (tiles)
 	[SerializeField]
 	private TextMeshProUGUI tooltipText;
+
+    //Texto de cartel superior con las acciones
 	[SerializeField]
 	private TextMeshProUGUI tooltipAccionesText;
 
-
+    //Cuadro inferior izquierda. Referencia para animaciones
 	[SerializeField]
 	private GameObject characterInfo;
+    //Texto cuadro inferior izquierda
 	[SerializeField]
 	private TextMeshProUGUI characterInfoText;
+    //Duración de la animación
 	[SerializeField]
 	private float animationDuration;
 	[SerializeField]
 	private float durationEndTurnRotation;
-
+    //Posición original del cuadro para la animación.
 	private Vector3 characterInfoOriginalPosition;
 
+    //Lista que guarda los paneles en la parte superior izquierda con la info de los players
 	[SerializeField]
 	public List<GameObject> panelesPJ;
 	
-
+    //Cursores
 	[SerializeField]
 	public Texture2D attackCursor, movementCursor;
 
+    //Imágen de cada player explicando sus acciones
 	[SerializeField]
-	public Image tooltipPicture;
+	public Image playersImageExplanation;
 
+    [Header("REFERENCIAS")]
 
-	#endregion
+    //Level Manager
+    private LevelManager LM;
 
-	#region INIT
+    #endregion
 
-	private void Awake()
+    #region INIT
+
+    private void Awake()
     {
         LM = FindObjectOfType<LevelManager>();
     }
@@ -192,14 +196,14 @@ public class UIManager : MonoBehaviour
 	{
 		characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
 		characterInfoText.text = textToPrint;
-		tooltipPicture.sprite = LM.selectedCharacter.tooltipImage;
+		playersImageExplanation.sprite = LM.selectedCharacter.tooltipImage;
 	}
 
 	public void HideCharacterInfo(string textToPrint)
 	{
 		characterInfo.transform.DOMove(characterInfoOriginalPosition, animationDuration);
 		characterInfoText.text = textToPrint;
-		tooltipPicture.sprite = null;
+		playersImageExplanation.sprite = null;
 	}
  
 	#endregion
@@ -263,6 +267,7 @@ public class UIManager : MonoBehaviour
 	}
 
 	#endregion
+
 	#region OPTIONS
 	//Abre/cierra el panel de opciones y Desactiva/Activa el botón de opciones, respectivamente
 	public void Activate_DeactivateOptions(bool isActivated)
