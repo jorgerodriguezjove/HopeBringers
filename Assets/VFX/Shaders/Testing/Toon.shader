@@ -22,8 +22,9 @@
 	{
 		Pass
 		{
-			// Setup our pass to use Forward rendering, and only receive
-			// data on the main directional light and ambient light.
+			// Setear el filtro de luces para usar Forward rendering)
+			// y recibir solamente informacion del main directional light y del ambiente.
+			//COMENTADO POR EL USO DE LWRP en vez del Forward rendering !!!!!CAMBIAR AL FINAL DEL PROYECTO SI ES POSIBLE!!!!!
 			/*Tags
 			{
 				"LightMode" = "ForwardBase"
