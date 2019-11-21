@@ -76,7 +76,8 @@ public class LevelManager : MonoBehaviour
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
 
-        
+        //Crea a los jugadores seleccionados para el nivel.
+        InitializeCharacters();
         //Reordeno las unidades y también llamo al UIManager para que actualice el orden
         UpdateUnitsOrder();
 
@@ -118,6 +119,13 @@ public class LevelManager : MonoBehaviour
         //    fakeFigurasList[i].SetActive(true);
         //    yield return waitFallingTiles;
         //}
+    }
+
+    //Crea a los personajes del jugador correspondientes
+    private void InitializeCharacters()
+    {
+        //HACER FOR PARA QUE SIRVA CON VARIAS UNIDADES
+        Instantiate(GameManager.Instance.unitsForCurrentLevel[0]);
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
