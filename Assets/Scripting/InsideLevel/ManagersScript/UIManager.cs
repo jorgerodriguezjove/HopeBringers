@@ -53,16 +53,19 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	public Texture2D attackCursor, movementCursor;
 
-    //Imágen de cada player explicando sus acciones
+    //Imagen de cada player explicando sus acciones
 	[SerializeField]
 	public Image playersImageExplanation;
 
+	[SerializeField]
+	public Image imageCharacterInfo;
   
 
     [Header("REFERENCIAS")]
 
     //Level Manager
-    private LevelManager LM;
+	[HideInInspector]
+    public LevelManager LM;
 
     #endregion
 
@@ -198,6 +201,21 @@ public class UIManager : MonoBehaviour
 
     #region CHARACTER_INFO
 
+	public void ShowCharacterImage(UnitBase characterImage)
+	{
+		if(characterImage.characterImage != null)
+		{
+			imageCharacterInfo.gameObject.SetActive(true);
+			imageCharacterInfo.sprite = characterImage.characterImage;
+		}
+	}
+
+	public void HideCharacterImage()
+	{
+		imageCharacterInfo.gameObject.SetActive(false);
+		imageCharacterInfo.sprite = null;
+	}
+
     public void ShowCharacterInfo(string textToPrint, UnitBase unitTooltipImage)
     {
         characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
@@ -241,7 +259,7 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < LM.enemiesOnTheBoard.Count; i++)
         {
-            LM.enemiesOnTheBoard[i].thisUnitOrder.SetActive(show_hide);
+            //LM.enemiesOnTheBoard[i].thisUnitOrder.SetActive(show_hide);
             LM.enemiesOnTheBoard[i].HealthBarOn_Off(show_hide);
         }
     }

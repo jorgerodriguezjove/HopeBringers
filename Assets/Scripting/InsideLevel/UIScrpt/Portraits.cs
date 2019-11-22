@@ -75,14 +75,14 @@ public class Portraits : MonoBehaviour
 	public void Highlight()
 	{
 		UIM.HighlightCharacter(assignedPlayer);
-
+		UIM.LM.ShowUnitHover(assignedPlayer.movementUds, assignedPlayer);
         selectedPanel.SetActive(true);
     }
 
 	public void Unhighlight()
 	{
 		UIM.UnHighlightCharacter(assignedPlayer);
-
+		UIM.LM.HideUnitHover(assignedPlayer);
         if (isClicked == false)
         {
             selectedPanel.SetActive(false);
@@ -106,6 +106,11 @@ public class Portraits : MonoBehaviour
         selectedPanel.SetActive(false);
         
     }
+
+	public void ShowCharacterImageFromPortrait()
+	{
+		UIM.ShowCharacterImage(assignedPlayer);
+	}
 
     #endregion
 

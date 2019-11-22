@@ -156,6 +156,9 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     private GameObject canvasUnit;
 
+	[SerializeField]
+	public Sprite characterImage;
+
     [SerializeField]
     public Sprite tooltipImage;
 
