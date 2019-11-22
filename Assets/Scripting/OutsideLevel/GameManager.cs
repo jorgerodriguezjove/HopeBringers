@@ -10,6 +10,11 @@ public class GameManager : PersistentSingleton<GameManager>
     [HideInInspector]
     public List<PlayerUnit> unitsForCurrentLevel = new List<PlayerUnit>();
 
+    //Experiencia actual. 
+    ///El serialized y el igual a 100 es para testear.
+    [SerializeField]
+    public int CurrentExp = 100;
+
     #endregion
 
     #region INIT

@@ -58,10 +58,7 @@ public class LevelNode : MonoBehaviour
         //Avisar al TM de que se ha pulsado un nivel
         if (!isBlocked)
         {
-            TM.MoveToCharacterSelectionForLevel(GetComponent<LevelNode>());
+            TM.MoveToCharacterSelectionTable(GetComponent<LevelNode>());
         }
     }
-
-
-
 }

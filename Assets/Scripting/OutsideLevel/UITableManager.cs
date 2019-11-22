@@ -8,7 +8,7 @@ public class UITableManager : MonoBehaviour
 {
     #region VARIABLES
 
-    [Header("UI Referencias")]
+    [Header("UI REFERENCIAS")]
 
     //Referencia al texto de título
     [SerializeField]
@@ -22,8 +22,22 @@ public class UITableManager : MonoBehaviour
     [SerializeField]
     private GameObject panelForUnitColocation;
 
+    //Referencia al objeto dónde aparece el árbol de habilidades del personaje.
+    [SerializeField]
+    private GameObject rightPageProgresionBook;
 
+    [Header("PROGRESION")]
 
+    //Referencia al árbol de habilidades actualmente en pantalla.
+    private GameObject currentSkillTreeObj;
+
+    //Referencias de las listas de ids del personaje y la lista de upgrades del skill tree.
+    private List<int> ids;
+    private List<UpgradeNode> ups;
+
+    [Header("REFERENCIAS")]
+    [SerializeField]
+    private TableManager TM;
     #endregion
 
     #region INIT
@@ -32,7 +46,7 @@ public class UITableManager : MonoBehaviour
 
     #region CHARACTER_SELECTION
 
-    public void SetBookInfo(LevelNode levelClicked)
+    public void SetLevelBookInfo(LevelNode levelClicked)
     {
         //Setear textos del nivel
         titleTextRef.SetText(levelClicked.LevelTitle);
@@ -41,7 +55,44 @@ public class UITableManager : MonoBehaviour
         //Crear número adecuado de huecos para personaje
     }
 
+    public void SetCharacterUpgradeBookInfo(CharacterData unitClicked)
+    {
+        if (currentSkillTreeObj != null)
+        {
+            Destroy(currentSkillTreeObj);
+        }
+
+        //Instancio árbol de habilidades
+        currentSkillTreeObj = Instantiate(unitClicked.skillTreePrefab,rightPageProgresionBook.transform);
+
+        ups = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
+        ids = unitClicked.idSkillsBought;
+
+        for (int i = 0; i < ups.Count; i++)
+        {
+            ups[i].GetComponent<UpgradeNode>().TM = TM;
+
+            for (int j = 0; j < ids.Count; j++)
+            {
+                if (ups[i].idUpgrade == ids[j])
+                {
+                    ups[i].UpgradeBought();
+                    break;
+                }
+            }
+        }
+    }
+
+    public void ResetCharacterUpbradeBookInfo()
+    {
+        if (currentSkillTreeObj != null)
+        {
+            Destroy(currentSkillTreeObj);
+        }
+    }
+
 
 
     #endregion
+
 }
