@@ -139,6 +139,25 @@ public class UIManager : MonoBehaviour
 		endTurnButton.gameObject.SetActive(true);
 	}
 
+	public void ActivateEndTurnHover()
+	{
+		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+		{
+			if(LM.characthersOnTheBoard[i].hasAttacked == false)
+			{
+				LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
+			}
+		}
+	}
+
+	public void DeactivateEndTurnHover()
+	{
+		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+		{
+			LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(false);
+		}
+	}
+
 	#endregion
 
 	#region UNDO_MOVE

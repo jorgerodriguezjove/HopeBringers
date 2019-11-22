@@ -150,13 +150,14 @@ public class EnemyUnit : UnitBase
                 LM.DeSelectUnit();
                 LM.ShowEnemyHover(movementUds, this);
                 LM.selectedEnemy = this;
-                //Llamo a LevelManager para activar hover
-                LM.CheckIfHoverShouldAppear(this);
+				//Llamo a LevelManager para activar hover
+				
+				LM.CheckIfHoverShouldAppear(this);
 				LM.UIM.ShowCharacterImage(this);
                 //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);              
                 HealthBarOn_Off(true);
                 gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-              
+				
             }
 
         }
@@ -169,28 +170,39 @@ public class EnemyUnit : UnitBase
         {
             if (!isDead)
             {
-                LM.ShowEnemyHover(movementUds, this);
-                //Llamo a LevelManager para activar hover
-                LM.CheckIfHoverShouldAppear(this);
+                LM.ShowEnemyHover(movementUds, this);			
+				//Llamo a LevelManager para activar hover				
 				LM.UIM.ShowCharacterImage(this);
 				//LM.UIM.ShowCharacterInfo(unitInfo, this); 
 				HealthBarOn_Off(true);
                 gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-                if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-                {
-                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                }
+                
             }
         }
-    }
+		else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+		{
+			if (!isDead)
+			{
+				Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+				Debug.Log("1. Jojo maricon y mario supermaricon");
+				LM.CheckIfHoverShouldAppear(this);
+				HealthBarOn_Off(true); 
+				
+			}	
+		}
+	}
 
     private void OnMouseExit()
     {
         if (LM.selectedEnemy == null) 
 {
             LM.HideEnemyHover(this);
-            //Llamo a LevelManager para desactivar hover
-            LM.HideHover(this);
+			//Llamo a LevelManager para desactivar hover
+			if(LM.selectedCharacter != null)
+			{
+				LM.selectedCharacter.HideDamageIcons();
+			}		
+			LM.HideHover(this);
             HealthBarOn_Off(false);
 			LM.UIM.HideCharacterImage();
             //LM.UIM.HideCharacterInfo("");

@@ -183,7 +183,7 @@ public class LevelManager : MonoBehaviour
                     //Está función no se puede llamar fuera del if para que afecte a ambos casos porque entonces también se cambia al pulsar en una unidad que ya ha atacado.
                     UIM.ActivateDeActivateEndButton();
 					UIM.TooltipMove();
-					DeselectEnemy();
+
                  
                     selectedCharacter = clickedUnit;
 
@@ -221,7 +221,7 @@ public class LevelManager : MonoBehaviour
 					selectedCharacter.SelectedColor();
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
-
+					
 					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipAttack();
@@ -274,8 +274,10 @@ public class LevelManager : MonoBehaviour
             {
                 DeSelectUnit();
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
-            }
-        }
+				UIM.ShowCharacterImage(clickedUnit);
+
+			}
+		}
     }
 
     public void DeSelectUnit()
@@ -304,7 +306,8 @@ public class LevelManager : MonoBehaviour
 			UIM.ActivateDeActivateEndButton();
 			UIM.HideCharacterImage();
 			UIM.HideCharacterInfo("");
-            tilesAvailableForMovement.Clear();
+			selectedCharacter.HideDamageIcons();
+			tilesAvailableForMovement.Clear();
             selectedCharacter.ResetColor();
             selectedCharacter.myCurrentTile.ColorDeselect();
             selectedCharacter = null;
@@ -411,8 +414,9 @@ public class LevelManager : MonoBehaviour
             {
                 if (enemyToCheck == selectedCharacter.currentUnitsAvailableToAttack[i])
                 {
-                    //Muestro hover avisando a Selected Character
-                    selectedCharacter.ShowHover(enemyToCheck);
+					Debug.Log("2. Jojo maricon y mario supermaricon");
+					//Muestro hover avisando a Selected Character
+					selectedCharacter.ShowHover(enemyToCheck);
 
                     //Cambiar icono del cursor
                 }
@@ -430,7 +434,7 @@ public class LevelManager : MonoBehaviour
     //Muestra el rango de movimiento de una unidad aliada al hacer hover en ella.
     public void ShowUnitHover(int movementUds, PlayerUnit hoverUnit)
     {
-        if (selectedCharacter == null)
+		if (selectedCharacter == null)
         {
             hoverUnit.HealthBarOn_Off(true);
             hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();

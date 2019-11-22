@@ -47,7 +47,7 @@ public class PlayerUnit : UnitBase
 
     //Flecha que indica al jugador si la unidad aún pueda realizar acciones.
     [SerializeField]
-    private Canvas CanvasArrowIndicator;
+    private GameObject arrowIndicator;
 
 
 
@@ -55,6 +55,11 @@ public class PlayerUnit : UnitBase
     public GameObject myPanelPortrait;
     [SerializeField]
 	public Sprite portraitImage;
+
+	[SerializeField]
+	public GameObject actionAvaliablePanel;
+	[SerializeField]
+	public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
 	
 
     [Header("REFERENCIAS")]
@@ -111,7 +116,7 @@ public class PlayerUnit : UnitBase
     //La unidad ha atacado y por tanto no puede hacer nada más.
     private void FinishMyActions()
     {
-        CanvasArrowIndicator.gameObject.SetActive(false);
+        arrowIndicator.SetActive(false);
         //La unidad ha atacado
         hasAttacked = true;
 		hasMoved = true;
@@ -140,9 +145,11 @@ public class PlayerUnit : UnitBase
         {
             Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
         }
+		if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+		{
+			myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+		}
 
-
-		myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
         SelectedColor();
         LM.ShowUnitHover(movementUds, this);
     }
@@ -343,6 +350,8 @@ public class PlayerUnit : UnitBase
         
     }
 
+	
+
     #endregion
 
     #region FEEDBACK
@@ -351,11 +360,9 @@ public class PlayerUnit : UnitBase
     public virtual void ShowHover(UnitBase enemyToAttack)
     {
         //Cada unidad muestra su efecto
-
         CalculateDamage(enemyToAttack);
-
-        //Mostrar el daño es común a todos
-        enemyToAttack.EnableCanvasHover(Mathf.RoundToInt(damageWithMultipliersApplied));
+		//Mostrar el daño es común a todos
+		//enemyToAttack.EnableCanvasHover(Mathf.RoundToInt(damageWithMultipliersApplied));
     }
 
     public void SelectedColor()
@@ -378,6 +385,41 @@ public class PlayerUnit : UnitBase
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
         }
     }
+
+	protected override void CalculateDamage(UnitBase unitToDealDamage)
+	{
+		//Reseteo la variable de daño a realizar
+		damageWithMultipliersApplied = baseDamage;
+
+		//Si estoy en desventaja de altura hago menos daño
+		if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
+		{
+			damageWithMultipliersApplied *= multiplicatorLessHeight;
+			downToUpDamageIcon.SetActive(true);
+		}
+
+		//Si estoy en ventaja de altura hago más daño
+		else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
+		{
+			damageWithMultipliersApplied *= multiplicatorMoreHeight;
+			upToDownDamageIcon.SetActive(true);
+		}
+
+		//Si le ataco por la espalda hago más daño
+		if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+		{
+			//Ataque por la espalda
+			damageWithMultipliersApplied *= multiplicatorBackAttack;
+			backStabIcon.SetActive(true);
+		}
+	}
+
+	public void HideDamageIcons()
+	{
+		downToUpDamageIcon.SetActive(false);
+		upToDownDamageIcon.SetActive(false);
+		backStabIcon.SetActive(false);
+	}
 
 	#endregion
 

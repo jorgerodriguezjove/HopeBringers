@@ -438,6 +438,7 @@ public class UnitBase : MonoBehaviour
 
     public void EnableCanvasHover(int damageReceived)
     {
+
         canvasUnit.SetActive(true);
         canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText(damageReceived.ToString());
     }
