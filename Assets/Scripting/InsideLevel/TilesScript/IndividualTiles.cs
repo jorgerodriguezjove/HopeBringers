@@ -202,7 +202,7 @@ public class IndividualTiles : MonoBehaviour
         isMovementTile = true;
     }
 
-    private void ColorCurrentTileHover()
+    public void ColorCurrentTileHover()
     {
         GetComponent<MeshRenderer>().material = currentTileHoverMovementColor;
     }

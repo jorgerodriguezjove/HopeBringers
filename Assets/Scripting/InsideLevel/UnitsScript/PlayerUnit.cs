@@ -18,6 +18,12 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     public bool isMovingorRotating = false;
 
+    [SerializeField]
+    private GameObject movementTokenInGame;
+
+    [SerializeField]
+    private GameObject attackTokenInGame;
+
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
@@ -31,6 +37,7 @@ public class PlayerUnit : UnitBase
     
     [SerializeField]
     private Material selectedMaterial;
+
     [SerializeField]
     private Material finishedMaterial;
 
@@ -38,13 +45,17 @@ public class PlayerUnit : UnitBase
 	[SerializeField]
     private Canvas canvasWithRotationArrows;
 
+    //Flecha que indica al jugador si la unidad aún pueda realizar acciones.
+    [SerializeField]
+    private Canvas CanvasArrowIndicator;
+
+
+
     [HideInInspector]
     public GameObject myPanelPortrait;
     [SerializeField]
 	public Sprite portraitImage;
-	[SerializeField]
-	public Sprite tooltipImage;
-
+	
 
     [Header("REFERENCIAS")]
 
@@ -88,9 +99,11 @@ public class PlayerUnit : UnitBase
     public void ResetUnitState()
     {
         hasMoved = false;
+        movementTokenInGame.SetActive(true);
         hasAttacked = false;
-		//Refresco de los tokens para resetearlos en pantalla
-		UIM.RefreshTokens();
+        attackTokenInGame.SetActive(true);
+        //Refresco de los tokens para resetearlos en pantalla
+        UIM.RefreshTokens();
         isMovingorRotating = false;
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
     }
@@ -98,6 +111,7 @@ public class PlayerUnit : UnitBase
     //La unidad ha atacado y por tanto no puede hacer nada más.
     private void FinishMyActions()
     {
+        CanvasArrowIndicator.gameObject.SetActive(false);
         //La unidad ha atacado
         hasAttacked = true;
 		hasMoved = true;
@@ -126,14 +140,38 @@ public class PlayerUnit : UnitBase
         {
             Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
         }
+
+
 		myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+        SelectedColor();
+        LM.ShowUnitHover(movementUds, this);
     }
 
     private void OnMouseExit()
     {
-		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-		myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
-	}
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+        if (LM.selectedCharacter == null)
+        {
+            LM.HideUnitHover(this);
+            myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+            ResetColor();
+
+        }
+       else if(LM.selectedCharacter == this)
+        {
+            return;
+        }
+        else if ( LM.selectedCharacter != this.gameObject)
+        {
+            LM.HideUnitHover(this);
+            myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+            ResetColor();
+        }
+
+
+
+    }
 
     #endregion
 
@@ -145,8 +183,9 @@ public class PlayerUnit : UnitBase
         //Compruebo la dirección en la que se mueve para girar a la unidad
         CheckTileDirection(tileToMove);
         hasMoved = true;
-		//Refresco los tokens para reflejar el movimiento
-		UIM.RefreshTokens();
+        movementTokenInGame.SetActive(false);
+        //Refresco los tokens para reflejar el movimiento
+        UIM.RefreshTokens();
         myCurrentPath = pathReceived;
 
         StartCoroutine("MovingUnitAnimation");
@@ -251,6 +290,8 @@ public class PlayerUnit : UnitBase
     //Función de ataque que se hace override en cada clase
     public virtual void Attack(UnitBase unitToAttack)
     {
+        attackTokenInGame.SetActive(false);
+
         //El daño y la animación no lo pongo aquí porque tiene que ser lo primero que se calcule.
 
         //Cada unidad se encargará de aplicar su efecto.

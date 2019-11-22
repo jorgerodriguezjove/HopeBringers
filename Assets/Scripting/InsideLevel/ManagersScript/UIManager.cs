@@ -57,6 +57,8 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	public Image playersImageExplanation;
 
+  
+
     [Header("REFERENCIAS")]
 
     //Level Manager
@@ -186,20 +188,27 @@ public class UIManager : MonoBehaviour
 	}
 	public void UnHighlightCharacter(PlayerUnit characterToUnhighlight)
 	{
-		characterToUnhighlight.ResetColor();
+        if (LM.selectedCharacter == null)
+        {
+        
+            characterToUnhighlight.ResetColor();
+        }
 	}
-	#endregion
+    #endregion
 
-	#region CHARACTER_INFO
+    #region CHARACTER_INFO
 
-	public void ShowCharacterInfo(string textToPrint)
-	{
-		characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
-		characterInfoText.text = textToPrint;
-		playersImageExplanation.sprite = LM.selectedCharacter.tooltipImage;
-	}
+    public void ShowCharacterInfo(string textToPrint, UnitBase unitTooltipImage)
+    {
+        characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
+        characterInfoText.text = textToPrint;
+        if (unitTooltipImage.tooltipImage !=null)
+        {
+            playersImageExplanation.sprite = unitTooltipImage.tooltipImage;
+        }
+    }
 
-	public void HideCharacterInfo(string textToPrint)
+    public void HideCharacterInfo(string textToPrint)
 	{
 		characterInfo.transform.DOMove(characterInfoOriginalPosition, animationDuration);
 		characterInfoText.text = textToPrint;

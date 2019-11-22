@@ -26,14 +26,22 @@ public class Portraits : MonoBehaviour
     [SerializeField]
     public List<GameObject> movementTokens;
 
-	[SerializeField]
+	[HideInInspector]
 	private Sprite selectedImage;
 	[HideInInspector]
 	private Sprite initImage;
+    //Con este panel es más fácil cambiar el color que se quiere desde el editor, en vez de estar haciendo un nuevo sprite cada vez.
+    [SerializeField]
+    public GameObject selectedPanel;
 
 	//Gameobject Image dónde va el sprite del personaje
 	[SerializeField]
     public Image characterPortrait;
+
+
+    //Bool que indica a los retratos si están clickados
+    public bool isClicked;
+
 
     #endregion
 
@@ -61,26 +69,43 @@ public class Portraits : MonoBehaviour
     public void AssignClickerPlayer()
 	{
 		UIM.PortraitCharacterSelect(assignedPlayer);
+         isClicked = true;
 	}
 
 	public void Highlight()
 	{
 		UIM.HighlightCharacter(assignedPlayer);
-	}
+
+        selectedPanel.SetActive(true);
+    }
 
 	public void Unhighlight()
 	{
 		UIM.UnHighlightCharacter(assignedPlayer);
-	}
+
+        if (isClicked == false)
+        {
+            selectedPanel.SetActive(false);
+
+        }
+
+        
+    }
 
 	public void HighlightPortrait()
 	{
-		GetComponent<Image>().sprite = selectedImage;
-	}
+        //GetComponent<Image>().sprite = selectedImage;
+
+        selectedPanel.SetActive(true);
+    }
 	public void UnHighlightPortrait()
 	{
-		GetComponent<Image>().sprite = initImage;
-	}
+        //GetComponent<Image>().sprite = initImage;
+
+        
+        selectedPanel.SetActive(false);
+        
+    }
 
     #endregion
 

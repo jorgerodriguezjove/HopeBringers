@@ -138,34 +138,63 @@ public class EnemyUnit : UnitBase
     //Al clickar en una unidad aviso al LM
     private void OnMouseDown()
     {
-        LM.SelectUnitToAttack(GetComponent<UnitBase>());
+        if (LM.selectedCharacter != null)
+        {
+
+            LM.SelectUnitToAttack(GetComponent<UnitBase>());
+        }
+        else
+        {
+            if (!isDead)
+            {
+                LM.DeSelectUnit();
+                LM.ShowEnemyHover(movementUds,  this);
+                LM.selectedEnemy = this;
+                //Llamo a LevelManager para activar hover
+                LM.CheckIfHoverShouldAppear(this);
+                LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+               
+                HealthBarOn_Off(true);
+                gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+              
+            }
+
+        }
+        
     }
 
     private void OnMouseEnter()
     {
-        if (!isDead)
+        if (LM.selectedEnemy == null && LM.selectedCharacter == null)
         {
-            //Llamo a LevelManager para activar hover
-            LM.CheckIfHoverShouldAppear(this);
-            LM.UIM.ShowTooltip(unitInfo);
-            HealthBarOn_Off(true);
-            gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-            if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+            if (!isDead)
             {
-                Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                LM.ShowEnemyHover(movementUds, this);
+                //Llamo a LevelManager para activar hover
+                LM.CheckIfHoverShouldAppear(this);
+                LM.UIM.ShowCharacterInfo(unitInfo, this); 
+                HealthBarOn_Off(true);
+                gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+                {
+                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                }
             }
         }
-	}
+    }
 
     private void OnMouseExit()
     {
-        //Llamo a LevelManager para desactivar hover
-        LM.HideHover(this);
-		HealthBarOn_Off(false);
-		LM.UIM.ShowTooltip("");
-		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-	}
-
+        if (LM.selectedEnemy == null) 
+{
+            LM.HideEnemyHover(this);
+            //Llamo a LevelManager para desactivar hover
+            LM.HideHover(this);
+            HealthBarOn_Off(false);
+            LM.UIM.HideCharacterInfo("");
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        }
+    }
     #endregion
 
     #region DAMAGE

@@ -156,7 +156,11 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     private GameObject canvasUnit;
 
-	[Header("TEXT")]
+    [SerializeField]
+    public Sprite tooltipImage;
+
+
+    [Header("TEXT")]
 
     [SerializeField]
     [@TextAreaAttribute(15, 20)]
