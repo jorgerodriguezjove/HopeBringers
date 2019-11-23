@@ -33,6 +33,13 @@ public class LevelManager : MonoBehaviour
 
     [Header("TURNOS Y FASES")]
 
+    //Lista con unidades que no han sido colocadas en escena todavía
+    List<GameObject> unitsWithoutPosition = new List<GameObject>();
+
+    //Lista con los tiles disponibles para colocar personajes. Me sirve para limpiar el color de los tiles al terminar.
+    [HideInInspector]
+    public List<IndividualTiles> tilesForCharacterPlacement = new List<IndividualTiles>();
+
     //Int que lleva la cuenta del turno actual
     private int currentTurn = 0;
 
@@ -71,6 +78,19 @@ public class LevelManager : MonoBehaviour
 
     #region INIT
 
+    //Crea a los personajes del jugador correspondientes
+    private void InitializeCharacters()
+    { 
+        for (int i = 0; i < GameManager.Instance.unitsForCurrentLevel.Count; i++)
+        {
+            GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
+            unitInstantiated.SetActive(false);
+            unitsWithoutPosition.Add(unitInstantiated);
+        }   
+    }
+
+
+
     private void Start()
     {
         TM = FindObjectOfType<TileManager>();
@@ -82,11 +102,10 @@ public class LevelManager : MonoBehaviour
         UpdateUnitsOrder();
 
         //Comienza el nivel con el turno del jugador
-        currentLevelState = LevelState.PlayerPhase;
+        //currentLevelState = LevelState.PlayerPhase;
 
         counterForEnemiesOrder = 0;
 
-        //StartFallAnimation();
 
     }
 
@@ -119,13 +138,6 @@ public class LevelManager : MonoBehaviour
         //    fakeFigurasList[i].SetActive(true);
         //    yield return waitFallingTiles;
         //}
-    }
-
-    //Crea a los personajes del jugador correspondientes
-    private void InitializeCharacters()
-    {
-        //HACER FOR PARA QUE SIRVA CON VARIAS UNIDADES
-        Instantiate(GameManager.Instance.unitsForCurrentLevel[0]);
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
@@ -174,6 +186,14 @@ public class LevelManager : MonoBehaviour
     //Al clickar sobre una unidad del jugador se llama a esta función
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
     {
+        //Si es el comienzo del nivel y estoy recolocando las unidades
+        if (currentLevelState == LevelState.Initializing)
+        {
+            //Quitar personaje del tablero y añadirlo a la lista de nuevo
+            clickedUnit.gameObject.SetActive(false);
+            unitsWithoutPosition.Add(clickedUnit.gameObject);
+        }
+
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
         if (currentLevelState == LevelState.ProcessingPlayerActions)
         {
@@ -338,37 +358,72 @@ public class LevelManager : MonoBehaviour
     //    }
     //}
 
-    public void MoveUnit(IndividualTiles tileToMove)
+    //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
+    public void TileClicked(IndividualTiles tileToMove)
     {
-        if (selectedCharacter != null && !selectedCharacter.hasAttacked)
+        //Si es el comienzo del nivel
+        if (currentLevelState == LevelState.Initializing)
         {
-            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            //Si hay unidades por colocar todavía
+            if (unitsWithoutPosition.Count > 0)
             {
-                if (tileToMove == tilesAvailableForMovement[i])
+                //Si el tile clickado está disponible para colocar unidades.
+                if (tileToMove.isAvailableForCharacterColocation && tileToMove.unitOnTile == null)
                 {
-                    //Calculo el path de la unidad
-                    TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
+                    //Colocar a la unidad
+                    unitsWithoutPosition[0].gameObject.SetActive(true);
+                    unitsWithoutPosition[0].gameObject.transform.position = tileToMove.transform.position;
+                    unitsWithoutPosition[0].GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
+                    unitsWithoutPosition.RemoveAt(0);
 
-                    //Al terminar de moverse se deseleccionan los tiles
-                    for (int j = 0; j < tilesAvailableForMovement.Count; j++)
+                    //PROVISIONAL PARA VER SI FUNCIONA. NO LO CAMBIO PARA NO TOCAR EL UIMANAGER
+                    if (unitsWithoutPosition.Count <= 0)
                     {
-                        tilesAvailableForMovement[j].ColorDeselect();
-                    }
-                    tilesAvailableForMovement.Clear();
-
-                    //Aviso a la unidad de que se tiene que mover
-                    if (selectedCharacter != null)
-                    {
-                        selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
-
-                        //Desmarco las unidades que antes estaban disponibles para ser atacadas
-                        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+                        for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
                         {
-                            for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
+                            tilesForCharacterPlacement[i].ColorDeselect();
+                        }
+
+                        currentLevelState = LevelState.PlayerPhase;
+                    }
+                }
+            }
+
+        }
+
+        else
+        {
+            //Movimiento de la unidad
+            if (selectedCharacter != null && !selectedCharacter.hasAttacked)
+            {
+                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                {
+                    if (tileToMove == tilesAvailableForMovement[i])
+                    {
+                        //Calculo el path de la unidad
+                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
+
+                        //Al terminar de moverse se deseleccionan los tiles
+                        for (int j = 0; j < tilesAvailableForMovement.Count; j++)
+                        {
+                            tilesAvailableForMovement[j].ColorDeselect();
+                        }
+                        tilesAvailableForMovement.Clear();
+
+                        //Aviso a la unidad de que se tiene que mover
+                        if (selectedCharacter != null)
+                        {
+                            selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+
+                            //Desmarco las unidades que antes estaban disponibles para ser atacadas
+                            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
                             {
-                                if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
+                                for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
                                 {
-                                    selectedCharacter.currentUnitsAvailableToAttack[j].ResetColor();
+                                    if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
+                                    {
+                                        selectedCharacter.currentUnitsAvailableToAttack[j].ResetColor();
+                                    }
                                 }
                             }
                         }

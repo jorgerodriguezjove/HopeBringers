@@ -1380,7 +1380,7 @@ GameObject:
   - component: {fileID: 580405410}
   - component: {fileID: 580405409}
   - component: {fileID: 580405408}
-  - component: {fileID: 580405412}
+  - component: {fileID: 580405413}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -1461,7 +1461,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &580405412
+--- !u!114 &580405413
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1470,13 +1470,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 580405407}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2243593171f41040a9971d9f4147c43, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e35604ddfe979d439a8033d7c2289e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7, type: 3}
   skillTreePrefab: {fileID: 464644233919144631, guid: 20b301d29a52f1d44b72bb5ad541ea72,
     type: 3}
-  TM: {fileID: 1043925063}
+  powerLevel: 0
+  idSkillsBought: 
+  initialized: 0
 --- !u!1 &622662035
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,7 +2461,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1180221212}
   - component: {fileID: 1180221211}
-  - component: {fileID: 1180221210}
   m_Layer: 0
   m_Name: Selection Camera
   m_TagString: MainCamera
@@ -2467,14 +2468,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!81 &1180221210
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1180221209}
-  m_Enabled: 1
 --- !u!20 &1180221211
 Camera:
   m_ObjectHideFlags: 0
@@ -2734,13 +2727,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1267438786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2243593171f41040a9971d9f4147c43, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b7b978bb951cb045bf0b32ea22a22ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340, type: 3}
   skillTreePrefab: {fileID: 3056711859053838039, guid: 79b49564e06ca8644a0b88ab0b8e9692,
     type: 3}
-  TM: {fileID: 1043925063}
+  powerLevel: 0
+  idSkillsBought: 
+  initialized: 0
 --- !u!1 &1290599190
 GameObject:
   m_ObjectHideFlags: 0
@@ -3701,7 +3696,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1676574988}
   - component: {fileID: 1676574987}
-  - component: {fileID: 1676574986}
   m_Layer: 0
   m_Name: Progresion Camera
   m_TagString: MainCamera
@@ -3709,14 +3703,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!81 &1676574986
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676574985}
-  m_Enabled: 1
 --- !u!20 &1676574987
 Camera:
   m_ObjectHideFlags: 0
