@@ -19,6 +19,9 @@ public class TableManager : MonoBehaviour
     //Referencia al personaje que esta siendo mejorado actualemente
     private CharacterData currentCharacterUpgrading;
 
+    //Objeto que se mueve entre los niveles e indica el nivel actual.
+    private GameObject levelIndicator;
+
     [Header("Referencias")]
     [SerializeField]
     private UITableManager UIMM;
@@ -37,7 +40,7 @@ public class TableManager : MonoBehaviour
     #region CAMERA_MOVEMENT
 
     //Al seleccionar un nivel se setea todo para que aparezca la parte de selección de unidades
-    public void MoveToCharacterSelectionTable(LevelNode levelClicked)
+    public void OnLevelClicked(LevelNode levelClicked)
     {
         mapCamera.SetActive(false);
         selectCamera.SetActive(true);

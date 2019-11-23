@@ -8,8 +8,12 @@ public class LevelNode : MonoBehaviour
 
     [Header("Level Logic")]
     //Número de unidades que requiere el nivel
+    [Range(1,4)]
     [SerializeField]
     public int maxNumberOfUnits;
+
+    [SerializeField]
+    public int idLevel;
 
     ///BUSCAR FORMA MEJOR DE PASAR EL NIVEL QUE CON STRINGS. 
     //Escena asociada al nivel
@@ -18,7 +22,7 @@ public class LevelNode : MonoBehaviour
 
     //Bool que indica si el nivel ha sido desbloqueado
     [SerializeField]
-    public bool isBlocked;
+    public bool isUnlocked;
 
     [Header("Relationed levels")]
 
@@ -42,6 +46,16 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public string descriptionText;
 
+    [Header("Materiales")]
+
+    //Materiales para indicar el estado del nivel. Verde = completado. Rojo = Desbloqueado pero sin completar. Negro = Bloqueado
+    [SerializeField]
+    Material unlockedLevel;
+    [SerializeField]
+    Material completedLevel;
+    [SerializeField]
+    Material blockedLevel;
+
     [Header("Referencias")]
     [SerializeField]
     private TableManager TM;
@@ -56,9 +70,33 @@ public class LevelNode : MonoBehaviour
     private void OnMouseDown()
     {
         //Avisar al TM de que se ha pulsado un nivel
-        if (!isBlocked)
+        if (isUnlocked)
         {
-            TM.MoveToCharacterSelectionTable(GetComponent<LevelNode>());
+            TM.OnLevelClicked(GetComponent<LevelNode>());
+            GameManager.Instance.currentLevelNode = idLevel;
         }
     }
+
+    #region FEEDBACK
+
+    //Función que desbloquea este nivel
+    public void UnlockThisLevel()
+    {
+        isUnlocked = true;
+        GetComponent<MeshRenderer>().material = unlockedLevel;
+    }
+
+    //Aviso a los niveles conectados que tienen que desbloquearse.
+    public void UnlockConnectedLevels()
+    {
+        GetComponent<MeshRenderer>().material = completedLevel;
+
+        for (int i = 0; i <unlockableLevels.Count ; i++)
+        {
+            unlockableLevels[i].UnlockThisLevel();
+        }
+    }
+
+
+    #endregion
 }

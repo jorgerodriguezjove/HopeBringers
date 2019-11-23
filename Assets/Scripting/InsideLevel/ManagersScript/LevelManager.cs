@@ -537,6 +537,8 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("Victory");
             victoryPanel.SetActive(true);
+
+            GameManager.Instance.VictoryAchieved();
         }
        
     }
