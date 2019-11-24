@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -17169,6 +17169,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rogue
       objectReference: {fileID: 0}
+    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
+        type: 3}
+      propertyPath: myCurrentTile
+      value: 
+      objectReference: {fileID: 1094602534}
+    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
+        type: 3}
+      propertyPath: LevelManagerRef
+      value: 
+      objectReference: {fileID: 38483321}
+    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
+        type: 3}
+      propertyPath: UIManagerRef
+      value: 
+      objectReference: {fileID: 5809797896246727327}
+    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
+        type: 3}
+      propertyPath: baseDamage
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1309017473829565755, guid: dcc6032a5e09ac946949e5ed8ce82340,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17223,26 +17243,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
-        type: 3}
-      propertyPath: myCurrentTile
-      value: 
-      objectReference: {fileID: 1094602534}
-    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
-        type: 3}
-      propertyPath: LevelManagerRef
-      value: 
-      objectReference: {fileID: 38483321}
-    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
-        type: 3}
-      propertyPath: UIManagerRef
-      value: 
-      objectReference: {fileID: 5809797896246727327}
-    - target: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340,
-        type: 3}
-      propertyPath: baseDamage
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcc6032a5e09ac946949e5ed8ce82340, type: 3}
@@ -19219,6 +19219,27 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
+        type: 3}
+      propertyPath: myCurrentTile
+      value: 
+      objectReference: {fileID: 1262702}
+    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
+        type: 3}
+      propertyPath: LevelManagerRef
+      value: 
+      objectReference: {fileID: 38483321}
+    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
+        type: 3}
+      propertyPath: UIManagerRef
+      value: 
+      objectReference: {fileID: 5809797896246727327}
+    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
+        type: 3}
+      propertyPath: unitInfo
+      value: "El caballero ataca y empuja a una unidad a la que mire a una casilla
+        de distancia. Si le atacan desde la direcci\xF3n a la que mira no recibe da\xF1o"
+      objectReference: {fileID: 0}
     - target: {fileID: 6503368808916271184, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19273,27 +19294,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
-        type: 3}
-      propertyPath: myCurrentTile
-      value: 
-      objectReference: {fileID: 1262702}
-    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
-        type: 3}
-      propertyPath: LevelManagerRef
-      value: 
-      objectReference: {fileID: 38483321}
-    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
-        type: 3}
-      propertyPath: UIManagerRef
-      value: 
-      objectReference: {fileID: 5809797896246727327}
-    - target: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
-        type: 3}
-      propertyPath: unitInfo
-      value: "El caballero ataca y empuja a una unidad a la que mire a una casilla
-        de distancia. Si le atacan desde la direcci\xF3n a la que mira no recibe da\xF1o"
       objectReference: {fileID: 0}
     - target: {fileID: 5381118708526632226, guid: eb9afffb689128f4a867cdfcaf0fdbd7,
         type: 3}
@@ -28377,6 +28377,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5809797896246727346, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
