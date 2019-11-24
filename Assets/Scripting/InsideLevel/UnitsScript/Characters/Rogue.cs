@@ -297,20 +297,23 @@ public class Rogue : PlayerUnit
         if (unitToDealDamage.myCurrentTile.height > tileLineToCheck.height)
         {
             damageWithMultipliersApplied *= multiplicatorLessHeight;
-        }
+			downToUpDamageIcon.SetActive(true);
+		}
 
         //Si estoy en ventaja de altura hago más daño
         else if (unitToDealDamage.myCurrentTile.height < tileLineToCheck.height)
         {
             damageWithMultipliersApplied *= multiplicatorMoreHeight;
-        }
+			upToDownDamageIcon.SetActive(true);
+		}
 
         //Si le ataco por la espalda hago más daño
         if (unitToDealDamage.currentFacingDirection == directionForBackAttack)
         {
             //Ataque por la espalda
             damageWithMultipliersApplied *= multiplicatorBackAttack;
-        }
+			backStabIcon.SetActive(true);
+		}
     }
 
     //La función es exactamente igual que la original salvo que no calcula el daño, ya que el rogue lo calcula antes de saltar
