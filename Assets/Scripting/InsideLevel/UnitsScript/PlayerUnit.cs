@@ -64,10 +64,7 @@ public class PlayerUnit : UnitBase
 
     [Header("REFERENCIAS")]
 
-    //Ahora mismo se setea desde el inspector
-    public GameObject LevelManagerRef;
     private LevelManager LM;
-	public GameObject UIManagerRef;
 	private UIManager UIM;
 
     #endregion
@@ -77,13 +74,16 @@ public class PlayerUnit : UnitBase
     private void Awake()
     {
         //Referencia al LM y me incluyo en la lista de personajes del jugador
-        LM = LevelManagerRef.GetComponent<LevelManager>();
+        LM = FindObjectOfType<LevelManager>();
         LM.characthersOnTheBoard.Add(this);
 		//Referencia al UIM 
-		UIM = UIManagerRef.GetComponent<UIManager>();
+		UIM = FindObjectOfType<UIManager>();
         //Aviso al tile en el que empiezo que soy su unidad.
-        myCurrentTile.unitOnTile = this;
-        myCurrentTile.WarnInmediateNeighbours();
+
+
+       ///SETEAR EL TILE AL COLOCAR A LA UNIDAD EN UNO DE LOS TILES DISPONIBLES PARA COLOCARLAS
+       // myCurrentTile.unitOnTile = this;
+       // myCurrentTile.WarnInmediateNeighbours();
 
         //Inicializo componente animator
         myAnimator = GetComponent<Animator>();
@@ -95,6 +95,8 @@ public class PlayerUnit : UnitBase
         currentHealth = maxHealth;
 
 	}
+
+
 
     #endregion
 

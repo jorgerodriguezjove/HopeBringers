@@ -189,9 +189,19 @@ public class UnitBase : MonoBehaviour
     //Esta función la usan todos los personajes al moverse para reajustar la información del tile actual y del nuevo al que se van a mover.
     public void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
-        myCurrentTile.unitOnTile = null;
+        //Este if está porque la funicón también se usa al colocar las unidades al principio del nivel y ahí no hay tile
+        if (myCurrentTile != null)
+        {
+            myCurrentTile.unitOnTile = null;
+        }
         newTile.unitOnTile = this;
-        myCurrentTile.WarnInmediateNeighbours();
+
+        //A pesar de que es el mismo if que antes, no pueden ir juntos porque tiene que ir en este orden concreto.
+        if (myCurrentTile != null)
+        {
+            myCurrentTile.WarnInmediateNeighbours();
+        }
+            
         myCurrentTile = newTile;
         myCurrentTile.WarnInmediateNeighbours();
     }

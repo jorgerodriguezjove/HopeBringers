@@ -18,10 +18,6 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public PlayerUnit selectedCharacter;
 
-    //Enemigo actualmente seleccionado.
-    [HideInInspector]
-    public EnemyUnit selectedEnemy;
-
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada
     [HideInInspector]
     public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
@@ -36,6 +32,17 @@ public class LevelManager : MonoBehaviour
     private int enemiesNumber;
 
     [Header("TURNOS Y FASES")]
+
+    //Bool que sirve para que se pueda probar un nivel sin necesidad de haber elegido personajes antes
+    [SerializeField]
+    bool FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa;
+
+    //Lista con unidades que no han sido colocadas en escena todavía
+    List<GameObject> unitsWithoutPosition = new List<GameObject>();
+
+    //Lista con los tiles disponibles para colocar personajes. Me sirve para limpiar el color de los tiles al terminar.
+    [HideInInspector]
+    public List<IndividualTiles> tilesForCharacterPlacement = new List<IndividualTiles>();
 
     //Int que lleva la cuenta del turno actual
     private int currentTurn = 0;
@@ -75,21 +82,42 @@ public class LevelManager : MonoBehaviour
 
     #region INIT
 
+    //Crea a los personajes del jugador correspondientes
+    private void InitializeCharacters()
+    { 
+        for (int i = 0; i < GameManager.Instance.unitsForCurrentLevel.Count; i++)
+        {
+            GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
+            unitInstantiated.SetActive(false);
+            unitsWithoutPosition.Add(unitInstantiated);
+        }   
+    }
+
+
+
     private void Start()
     {
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
 
+        //Crea a los jugadores seleccionados para el nivel.
+        if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+        {
+            currentLevelState = LevelState.PlayerPhase;
+        }
+        else
+        {
+            InitializeCharacters();
+        }
         
         //Reordeno las unidades y también llamo al UIManager para que actualice el orden
         UpdateUnitsOrder();
 
         //Comienza el nivel con el turno del jugador
-        currentLevelState = LevelState.PlayerPhase;
+        //currentLevelState = LevelState.PlayerPhase;
 
         counterForEnemiesOrder = 0;
 
-        //StartFallAnimation();
 
     }
 
@@ -170,6 +198,14 @@ public class LevelManager : MonoBehaviour
     //Al clickar sobre una unidad del jugador se llama a esta función
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
     {
+        //Si es el comienzo del nivel y estoy recolocando las unidades
+        if (currentLevelState == LevelState.Initializing)
+        {
+            //Quitar personaje del tablero y añadirlo a la lista de nuevo
+            clickedUnit.gameObject.SetActive(false);
+            unitsWithoutPosition.Add(clickedUnit.gameObject);
+        }
+
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
         if (currentLevelState == LevelState.ProcessingPlayerActions)
         {
@@ -183,13 +219,11 @@ public class LevelManager : MonoBehaviour
                     //Está función no se puede llamar fuera del if para que afecte a ambos casos porque entonces también se cambia al pulsar en una unidad que ya ha atacado.
                     UIM.ActivateDeActivateEndButton();
 					UIM.TooltipMove();
-
-                 
+					
                     selectedCharacter = clickedUnit;
-
-                    selectedCharacter.myCurrentTile.ColorCurrentTileHover();
-                    selectedCharacter.HealthBarOn_Off(true);
+					selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
+					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
 					selectedCharacter.SelectedColor();
 
                     tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
@@ -217,11 +251,11 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
-					UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);
+					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
 					selectedCharacter.SelectedColor();
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
-					
+
 					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipAttack();
@@ -274,10 +308,8 @@ public class LevelManager : MonoBehaviour
             {
                 DeSelectUnit();
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
-				UIM.ShowCharacterImage(clickedUnit);
-
-			}
-		}
+            }
+        }
     }
 
     public void DeSelectUnit()
@@ -285,8 +317,7 @@ public class LevelManager : MonoBehaviour
         if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
 			selectedCharacter.HealthBarOn_Off(false);
-            selectedCharacter.myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
-            selectedCharacter.myPanelPortrait.GetComponent<Portraits>().isClicked = false;
+			UIM.HideCharacterInfo("");
 			UIM.TooltipDefault();
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
@@ -304,19 +335,9 @@ public class LevelManager : MonoBehaviour
             }
 			//Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
 			UIM.ActivateDeActivateEndButton();
-			UIM.HideCharacterImage();
-			UIM.HideCharacterInfo("");
-			selectedCharacter.HideDamageIcons();
-			tilesAvailableForMovement.Clear();
+            tilesAvailableForMovement.Clear();
             selectedCharacter.ResetColor();
-            selectedCharacter.myCurrentTile.ColorDeselect();
             selectedCharacter = null;
-        }
-
-
-        if(selectedEnemy != null)
-        {
-			DeselectEnemy();
         }
     }
 
@@ -349,37 +370,72 @@ public class LevelManager : MonoBehaviour
     //    }
     //}
 
-    public void MoveUnit(IndividualTiles tileToMove)
+    //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
+    public void TileClicked(IndividualTiles tileToMove)
     {
-        if (selectedCharacter != null && !selectedCharacter.hasAttacked)
+        //Si es el comienzo del nivel
+        if (currentLevelState == LevelState.Initializing)
         {
-            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            //Si hay unidades por colocar todavía
+            if (unitsWithoutPosition.Count > 0)
             {
-                if (tileToMove == tilesAvailableForMovement[i])
+                //Si el tile clickado está disponible para colocar unidades.
+                if (tileToMove.isAvailableForCharacterColocation && tileToMove.unitOnTile == null)
                 {
-                    //Calculo el path de la unidad
-                    TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
-                    selectedCharacter.myCurrentTile.ColorDeselect();
-                    //Al terminar de moverse se deseleccionan los tiles
-                    for (int j = 0; j < tilesAvailableForMovement.Count; j++)
-                    {
-                        tilesAvailableForMovement[j].ColorDeselect();
-                    }
-                    tilesAvailableForMovement.Clear();
+                    //Colocar a la unidad
+                    unitsWithoutPosition[0].gameObject.SetActive(true);
+                    unitsWithoutPosition[0].gameObject.transform.position = tileToMove.transform.position;
+                    unitsWithoutPosition[0].GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
+                    unitsWithoutPosition.RemoveAt(0);
 
-                    //Aviso a la unidad de que se tiene que mover
-                    if (selectedCharacter != null)
+                    //PROVISIONAL PARA VER SI FUNCIONA. NO LO CAMBIO PARA NO TOCAR EL UIMANAGER
+                    if (unitsWithoutPosition.Count <= 0)
                     {
-                        selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
-
-                        //Desmarco las unidades que antes estaban disponibles para ser atacadas
-                        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+                        for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
                         {
-                            for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
+                            tilesForCharacterPlacement[i].ColorDeselect();
+                        }
+
+                        currentLevelState = LevelState.PlayerPhase;
+                    }
+                }
+            }
+
+        }
+
+        else
+        {
+            //Movimiento de la unidad
+            if (selectedCharacter != null && !selectedCharacter.hasAttacked)
+            {
+                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                {
+                    if (tileToMove == tilesAvailableForMovement[i])
+                    {
+                        //Calculo el path de la unidad
+                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
+
+                        //Al terminar de moverse se deseleccionan los tiles
+                        for (int j = 0; j < tilesAvailableForMovement.Count; j++)
+                        {
+                            tilesAvailableForMovement[j].ColorDeselect();
+                        }
+                        tilesAvailableForMovement.Clear();
+
+                        //Aviso a la unidad de que se tiene que mover
+                        if (selectedCharacter != null)
+                        {
+                            selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+
+                            //Desmarco las unidades que antes estaban disponibles para ser atacadas
+                            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
                             {
-                                if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
+                                for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
                                 {
-                                    selectedCharacter.currentUnitsAvailableToAttack[j].ResetColor();
+                                    if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
+                                    {
+                                        selectedCharacter.currentUnitsAvailableToAttack[j].ResetColor();
+                                    }
                                 }
                             }
                         }
@@ -414,9 +470,8 @@ public class LevelManager : MonoBehaviour
             {
                 if (enemyToCheck == selectedCharacter.currentUnitsAvailableToAttack[i])
                 {
-					Debug.Log("2. Jojo maricon y mario supermaricon");
-					//Muestro hover avisando a Selected Character
-					selectedCharacter.ShowHover(enemyToCheck);
+                    //Muestro hover avisando a Selected Character
+                    selectedCharacter.ShowHover(enemyToCheck);
 
                     //Cambiar icono del cursor
                 }
@@ -431,92 +486,6 @@ public class LevelManager : MonoBehaviour
         enemyToCheck.DisableCanvasHover();
     }
 
-    //Muestra el rango de movimiento de una unidad aliada al hacer hover en ella.
-    public void ShowUnitHover(int movementUds, PlayerUnit hoverUnit)
-    {
-		if (selectedCharacter == null)
-        {
-            hoverUnit.HealthBarOn_Off(true);
-            hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
-            hoverUnit.myCurrentTile.ColorCurrentTileHover();
-			UIM.ShowCharacterImage(hoverUnit);
-
-            if (hoverUnit.hasMoved == false)
-            {
-                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
-                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-                {
-                    tilesAvailableForMovement[i].ColorSelect();
-                }
-            }
-        }
-    }
-
-    //Esconde el rango de movimiento de una unidad aliada al quitarel ratón de ella. !!Cuidado con función de arriba que se llama parecido (HideHover)!!
-    public void HideUnitHover(PlayerUnit hoverUnit)
-    {
-        if (selectedCharacter == null)
-        {
-            hoverUnit.HealthBarOn_Off(false);
-            UIM.HideCharacterImage();
-            UIM.TooltipDefault();
-            hoverUnit.myCurrentTile.ColorDeselect();
-
-            if (hoverUnit.hasMoved == false)
-            {
-                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-                {
-                    tilesAvailableForMovement[i].ColorDeselect();
-                }
-                tilesAvailableForMovement.Clear();
-            }
-        }
-    }
-
-	public void ShowUnitInfo()
-	{
-		if (selectedCharacter != null)
-		{
-			UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);			
-		}	
-		else if(selectedEnemy != null)
-		{
-			UIM.ShowCharacterInfo(selectedEnemy.unitInfo, selectedEnemy);
-		}
-	}
-
-	public void HideUnitInfo()
-	{
-		UIM.HideCharacterInfo("");
-	}
-   
-    public void ShowEnemyHover(int movementUds, EnemyUnit hoverUnit)
-    {
-        tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-        {
-            tilesAvailableForMovement[i].ColorSelect();
-        }
-    }
-
-    public void HideEnemyHover(EnemyUnit hoverUnit)
-    {
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-        {
-            tilesAvailableForMovement[i].ColorDeselect();
-        }
-        tilesAvailableForMovement.Clear();
-    }
-
-	public void DeselectEnemy()
-	{
-		selectedEnemy.HealthBarOn_Off(false);
-		HideEnemyHover(selectedEnemy);
-		UIM.HideCharacterImage();
-		UIM.HideCharacterInfo("");
-		UIM.TooltipDefault();
-		selectedEnemy = null;
-	}
 
     #endregion
 
@@ -580,6 +549,8 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("Victory");
             victoryPanel.SetActive(true);
+
+            GameManager.Instance.VictoryAchieved();
         }
        
     }

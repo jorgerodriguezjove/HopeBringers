@@ -35,6 +35,10 @@ public class IndividualTiles : MonoBehaviour
     [SerializeField]
     public bool isObstacle;
 
+    //Bool que determina si es un tile que puede usarse para colocar personajes al comienzo.
+    [SerializeField]
+    public bool isAvailableForCharacterColocation;
+
     //Unidad encima del tile. Cada unidad se encarga de rellenar esta variable en el start ya que en el editor a cada unidad le paso una referencia del tile en el que esta.
     [SerializeField]
     public UnitBase unitOnTile;
@@ -101,7 +105,6 @@ public class IndividualTiles : MonoBehaviour
     }
 
 
-
     public void FallAnimation()
     {
         gameObject.transform.DOMove(initialPosition, 0.1f).SetEase(Ease.OutBounce);
@@ -113,6 +116,13 @@ public class IndividualTiles : MonoBehaviour
         initialColor = GetComponent<MeshRenderer>().material;
 
         UpdateNeighboursOccupied();
+
+        if (LM.currentLevelState == LevelManager.LevelState.Initializing && isAvailableForCharacterColocation)
+        {
+            //Cambio el color del tile
+            LM.tilesForCharacterPlacement.Add(GetComponent<IndividualTiles>());
+            ColorCurrentTileHover();
+        }
     }
 
     #endregion
@@ -121,12 +131,17 @@ public class IndividualTiles : MonoBehaviour
 
     private void OnMouseDown()
     {
-        LM.MoveUnit(this);
+        LM.TileClicked(this);
     }
 
     //Hover enter
     void OnMouseEnter()
     {
+        if (LM.currentLevelState == LevelManager.LevelState.Initializing && isAvailableForCharacterColocation)
+        {
+           //HACER QUE SE PINTE EL TILE Y APAREZCA LA UNIDAD QUE SE VA A COLOCAR
+        }
+
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this))
         {
             //Cambio el cursor
