@@ -33,6 +33,10 @@ public class LevelManager : MonoBehaviour
 
     [Header("TURNOS Y FASES")]
 
+    //Bool que sirve para que se pueda probar un nivel sin necesidad de haber elegido personajes antes
+    [SerializeField]
+    bool FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa;
+
     //Lista con unidades que no han sido colocadas en escena todavía
     List<GameObject> unitsWithoutPosition = new List<GameObject>();
 
@@ -97,7 +101,15 @@ public class LevelManager : MonoBehaviour
         UIM = FindObjectOfType<UIManager>();
 
         //Crea a los jugadores seleccionados para el nivel.
-        InitializeCharacters();
+        if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+        {
+            currentLevelState = LevelState.PlayerPhase;
+        }
+        else
+        {
+            InitializeCharacters();
+        }
+        
         //Reordeno las unidades y también llamo al UIManager para que actualice el orden
         UpdateUnitsOrder();
 
