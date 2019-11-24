@@ -231,10 +231,10 @@ public class LevelManager : MonoBehaviour
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
 
-                    //This
-                    UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);
+					//This
+					//UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); Legacy Code
 
-                    tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
+					tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
                         tilesAvailableForMovement[i].ColorSelect();
@@ -258,7 +258,7 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
-					UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);
+					/*UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);*/ /*Legacy Code*/
 					selectedCharacter.SelectedColor();
 
                     selectedCharacter.CheckUnitsInRangeToAttack();

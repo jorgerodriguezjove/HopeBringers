@@ -152,8 +152,12 @@ public class PlayerUnit : UnitBase
 			myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
 		}
 
-        SelectedColor();
-        LM.ShowUnitHover(movementUds, this);
+		if (!hasAttacked)
+		{
+			SelectedColor();
+			LM.ShowUnitHover(movementUds, this);
+		}
+        
     }
 
     private void OnMouseExit()

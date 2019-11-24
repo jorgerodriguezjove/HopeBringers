@@ -90,6 +90,8 @@ public class IndividualTiles : MonoBehaviour
     [SerializeField]
     [@TextAreaAttribute(15, 20)]
     private string tileInfo;
+	[SerializeField]
+	private Sprite tileImage;
 
 
     #endregion
@@ -152,11 +154,11 @@ public class IndividualTiles : MonoBehaviour
         }
         if (isEmpty)
         {
-            LM.UIM.ShowTooltip("");
+			LM.UIM.HideTileInfo();
         }
         else if (!unitOnTile)
         {
-            LM.UIM.ShowTooltip(tileInfo);
+            LM.UIM.ShowTileInfo(tileInfo, tileImage);
         }
 
     }
@@ -164,7 +166,7 @@ public class IndividualTiles : MonoBehaviour
     //Hover exit
     void OnMouseExit()
     {
-        LM.UIM.ShowTooltip("");
+		LM.UIM.HideTileInfo();
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         if (isMovementTile)

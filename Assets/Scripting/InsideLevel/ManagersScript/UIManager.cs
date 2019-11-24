@@ -26,6 +26,8 @@ public class UIManager : MonoBehaviour
     //Texto de cuadro inferior derecha (tiles)
 	[SerializeField]
 	private TextMeshProUGUI tooltipText;
+	[SerializeField]
+	private Image tooltipImage;
 
     //Texto de cartel superior con las acciones
 	[SerializeField]
@@ -256,9 +258,18 @@ public class UIManager : MonoBehaviour
 
 	#region TOOLTIP
 
-	public void ShowTooltip(string textToPrint)
+	public void ShowTileInfo(string textToPrint, Sprite tileImageToShow)
 	{
 		tooltipText.text = textToPrint;
+		tooltipImage.gameObject.SetActive(true);
+		tooltipImage.sprite = tileImageToShow;
+	}
+
+	public void HideTileInfo()
+	{
+		tooltipText.text = "";
+		tooltipImage.gameObject.SetActive(false);
+		tooltipImage.sprite = null;
 	}
 
     #endregion

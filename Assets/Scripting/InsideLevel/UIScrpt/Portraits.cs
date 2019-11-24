@@ -109,7 +109,11 @@ public class Portraits : MonoBehaviour
 
 	public void ShowCharacterImageFromPortrait()
 	{
-		UIM.ShowCharacterImage(assignedPlayer);
+		if (UIM.LM.selectedCharacter == null)
+		{
+			UIM.ShowCharacterImage(assignedPlayer);
+		}
+		
 	}
 
     #endregion
