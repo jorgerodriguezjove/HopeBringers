@@ -18,6 +18,10 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public PlayerUnit selectedCharacter;
 
+    //Enemigo actualmente seleccionado.
+    [HideInInspector]
+    public EnemyUnit selectedEnemy;
+
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada
     [HideInInspector]
     public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
@@ -221,10 +225,14 @@ public class LevelManager : MonoBehaviour
 					UIM.TooltipMove();
 					
                     selectedCharacter = clickedUnit;
-					selectedCharacter.HealthBarOn_Off(true);
+
+                    selectedCharacter.myCurrentTile.ColorCurrentTileHover();
+                    selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
-					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
-					selectedCharacter.SelectedColor();
+                    selectedCharacter.SelectedColor();
+
+                    //This
+                    UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);
 
                     tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
@@ -238,7 +246,6 @@ public class LevelManager : MonoBehaviour
 						UIM.TooltipMoveorAttack();
 					}
 
-
 					SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
                 }
 
@@ -251,7 +258,7 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
-					UIM.ShowCharacterInfo(selectedCharacter.unitInfo);
+					UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);
 					selectedCharacter.SelectedColor();
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
@@ -308,6 +315,7 @@ public class LevelManager : MonoBehaviour
             {
                 DeSelectUnit();
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
+                UIM.ShowCharacterImage(clickedUnit);
             }
         }
     }
@@ -317,8 +325,10 @@ public class LevelManager : MonoBehaviour
         if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
         {
 			selectedCharacter.HealthBarOn_Off(false);
-			UIM.HideCharacterInfo("");
-			UIM.TooltipDefault();
+            selectedCharacter.myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+            selectedCharacter.myPanelPortrait.GetComponent<Portraits>().isClicked = false;
+            UIM.TooltipDefault();
+
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
             {
@@ -333,10 +343,15 @@ public class LevelManager : MonoBehaviour
             {
                 tilesAvailableForMovement[i].ColorDeselect();
             }
-			//Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
-			UIM.ActivateDeActivateEndButton();
+
+            //Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
+            UIM.ActivateDeActivateEndButton();
+            UIM.HideCharacterImage();
+            UIM.HideCharacterInfo("");
+            selectedCharacter.HideDamageIcons();
             tilesAvailableForMovement.Clear();
             selectedCharacter.ResetColor();
+            selectedCharacter.myCurrentTile.ColorDeselect();
             selectedCharacter = null;
         }
     }
@@ -414,6 +429,7 @@ public class LevelManager : MonoBehaviour
                     {
                         //Calculo el path de la unidad
                         TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
+                        selectedCharacter.myCurrentTile.ColorDeselect();
 
                         //Al terminar de moverse se deseleccionan los tiles
                         for (int j = 0; j < tilesAvailableForMovement.Count; j++)
@@ -485,6 +501,94 @@ public class LevelManager : MonoBehaviour
         //Ocultar hover
         enemyToCheck.DisableCanvasHover();
     }
+
+    //Muestra el rango de movimiento de una unidad aliada al hacer hover en ella.
+    public void ShowUnitHover(int movementUds, PlayerUnit hoverUnit)
+    {
+        if (selectedCharacter == null)
+        {
+            hoverUnit.HealthBarOn_Off(true);
+            hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
+            hoverUnit.myCurrentTile.ColorCurrentTileHover();
+            UIM.ShowCharacterImage(hoverUnit);
+
+            if (hoverUnit.hasMoved == false)
+            {
+                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
+                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                {
+                    tilesAvailableForMovement[i].ColorSelect();
+                }
+            }
+        }
+    }
+
+    //Esconde el rango de movimiento de una unidad aliada al quitarel ratón de ella. !!Cuidado con función de arriba que se llama parecido (HideHover)!!
+    public void HideUnitHover(PlayerUnit hoverUnit)
+    {
+        if (selectedCharacter == null)
+        {
+            hoverUnit.HealthBarOn_Off(false);
+            UIM.HideCharacterImage();
+            UIM.TooltipDefault();
+            hoverUnit.myCurrentTile.ColorDeselect();
+
+            if (hoverUnit.hasMoved == false)
+            {
+                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                {
+                    tilesAvailableForMovement[i].ColorDeselect();
+                }
+                tilesAvailableForMovement.Clear();
+            }
+        }
+    }
+
+    public void ShowUnitInfo()
+    {
+        if (selectedCharacter != null)
+        {
+            UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);
+        }
+        else if (selectedEnemy != null)
+        {
+            UIM.ShowCharacterInfo(selectedEnemy.unitInfo, selectedEnemy);
+        }
+    }
+
+    public void HideUnitInfo()
+    {
+        UIM.HideCharacterInfo("");
+    }
+
+    public void ShowEnemyHover(int movementUds, EnemyUnit hoverUnit)
+    {
+        tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
+        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+        {
+            tilesAvailableForMovement[i].ColorSelect();
+        }
+    }
+
+    public void HideEnemyHover(EnemyUnit hoverUnit)
+    {
+        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+        {
+            tilesAvailableForMovement[i].ColorDeselect();
+        }
+        tilesAvailableForMovement.Clear();
+    }
+
+    public void DeselectEnemy()
+    {
+        selectedEnemy.HealthBarOn_Off(false);
+        HideEnemyHover(selectedEnemy);
+        UIM.HideCharacterImage();
+        UIM.HideCharacterInfo("");
+        UIM.TooltipDefault();
+        selectedEnemy = null;
+    }
+
 
 
     #endregion
