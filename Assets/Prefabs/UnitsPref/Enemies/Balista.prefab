@@ -744,8 +744,13 @@ MonoBehaviour:
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 583a45d4f0ef66f4195dab1c70bc6479,
     type: 2}
   canvasUnit: {fileID: 9141236477566366306}
+  characterImage: {fileID: 0}
+  tooltipImage: {fileID: 0}
   unitInfo: "Si detecto a alguien en l\xEDnea recta, cargo mi ataque. Al turno siguiente
     lanzo un ataque devastador que golpea toda esa l\xEDnea"
+  timeWaitingMovement: 0.5
+  timeWaitingAttacking: 0.5
+  timeWaitingEnded: 0.5
   myCurrentEnemyState: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 954751877}
@@ -1279,15 +1284,6 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4969301902738168, guid: eda5ef8bfa1b36842be7b6d0ddc57616, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 95800870551334286, guid: eda5ef8bfa1b36842be7b6d0ddc57616,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 171608acdfd3a3f4d8bd11df54b9e6c1, type: 2}
     - target: {fileID: 1210921243502592253, guid: eda5ef8bfa1b36842be7b6d0ddc57616,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -1338,6 +1334,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -4.8970003
       objectReference: {fileID: 0}
+    - target: {fileID: 4969301902738168, guid: eda5ef8bfa1b36842be7b6d0ddc57616, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 95800870551334286, guid: eda5ef8bfa1b36842be7b6d0ddc57616,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 171608acdfd3a3f4d8bd11df54b9e6c1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eda5ef8bfa1b36842be7b6d0ddc57616, type: 3}
 --- !u!1 &6015505468078920396 stripped

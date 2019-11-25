@@ -821,8 +821,13 @@ MonoBehaviour:
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 583a45d4f0ef66f4195dab1c70bc6479,
     type: 2}
   canvasUnit: {fileID: 811410698602015731}
+  characterImage: {fileID: 0}
+  tooltipImage: {fileID: 0}
   unitInfo: "Busco a un enemigo, me acerco y le ataco. Priorizo al m\xE1s rodeado
     de enemigos"
+  timeWaitingMovement: 0.5
+  timeWaitingAttacking: 0.5
+  timeWaitingEnded: 0.5
   myCurrentEnemyState: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 1190873530}
@@ -1208,11 +1213,6 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 13
       objectReference: {fileID: 0}
-    - target: {fileID: 95824196730489130, guid: 0d42bc61d684259409d481c6f5dd5d5c,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: ad0ddddcb55b3d240be90dd41f0a5b0e, type: 2}
     - target: {fileID: 1819418088985839981, guid: 0d42bc61d684259409d481c6f5dd5d5c,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -1278,6 +1278,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 46.382004
       objectReference: {fileID: 0}
+    - target: {fileID: 95824196730489130, guid: 0d42bc61d684259409d481c6f5dd5d5c,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ad0ddddcb55b3d240be90dd41f0a5b0e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
 --- !u!1 &2420689641354982513 stripped

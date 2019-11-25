@@ -8,6 +8,13 @@ public class EnemyUnit : UnitBase
 
     [Header("STATE MACHINE")]
 
+    [SerializeField]
+    private float timeWaitingMovement;
+    [SerializeField]
+    private float timeWaitingAttacking;
+    [SerializeField]
+    private float timeWaitingEnded;
+
     //Estado actual del enemigo
     [SerializeField]
     protected enemyState myCurrentEnemyState;
@@ -32,6 +39,9 @@ public class EnemyUnit : UnitBase
 
     [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
+
+    //Bool que sirve para que la corrutina solo se llame una vez (por tema de que el state machine esta en el update y si no lo haría varias veces)
+    bool corroutineDone;
 
     [Header("REFERENCIAS")]
 
@@ -82,18 +92,28 @@ public class EnemyUnit : UnitBase
 
             case (enemyState.Searching):
                 SearchingObjectivesToAttack();
+
                 break;
 
             case (enemyState.Moving):
-                MoveUnit();
+                if (!corroutineDone)
+                {
+                    StartCoroutine("WaitBeforeNextState");
+                }
                 break;
 
             case (enemyState.Attacking):
-                Attack();
+                if (!corroutineDone)
+                {
+                    StartCoroutine("WaitBeforeNextState");
+                }
                 break;
 
             case (enemyState.Ended):
-                FinishMyActions();
+                if (!corroutineDone)
+                {
+                    StartCoroutine("WaitBeforeNextState");
+                }
                 break;
         }
 
@@ -104,10 +124,34 @@ public class EnemyUnit : UnitBase
         //}
     }
 
+    IEnumerator WaitBeforeNextState()
+    {
+        corroutineDone = true;
+
+        if (myCurrentEnemyState == enemyState.Moving)
+        {
+            yield return new WaitForSeconds(timeWaitingMovement);
+            MoveUnit();
+        }
+
+        else if (myCurrentEnemyState == enemyState.Attacking)
+        {
+            yield return new WaitForSeconds(timeWaitingAttacking);
+            Attack();
+        }
+
+        else if (myCurrentEnemyState == enemyState.Ended)
+        {
+            yield return new WaitForSeconds(timeWaitingEnded);
+            FinishMyActions();
+        }
+
+        corroutineDone = false;
+    }
+
     public virtual void SearchingObjectivesToAttack()
     {
         //Cada enemigo busca enemigos a su manera
-      
     }
 
 
