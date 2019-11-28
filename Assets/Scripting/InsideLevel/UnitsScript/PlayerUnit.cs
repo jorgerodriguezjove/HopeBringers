@@ -18,6 +18,11 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     public bool isMovingorRotating = false;
 
+    //Bool para saber si puedo hacer hover a las unidades 
+    public bool canHover;
+
+
+
     [SerializeField]
     private GameObject movementTokenInGame;
 
@@ -43,7 +48,7 @@ public class PlayerUnit : UnitBase
 
 
 	[SerializeField]
-    private Canvas canvasWithRotationArrows;
+    public Canvas canvasWithRotationArrows;
 
     //Flecha que indica al jugador si la unidad aún pueda realizar acciones.
     [SerializeField]
@@ -105,6 +110,7 @@ public class PlayerUnit : UnitBase
     //Reseteo las variables
     public void ResetUnitState()
     {
+        arrowIndicator.SetActive(true);
         hasMoved = false;
         movementTokenInGame.SetActive(true);
         hasAttacked = false;
@@ -126,7 +132,7 @@ public class PlayerUnit : UnitBase
 		UIM.RefreshTokens();
 		//Aviso al LM que deseleccione la unidad
 		LM.DeSelectUnit();
-
+        UIM.ActivateDeActivateEndButton();
         //Doy feedback de que esa unidad no puede hacer nada
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
     }
@@ -143,20 +149,21 @@ public class PlayerUnit : UnitBase
 
     private void OnMouseEnter()
     {
-        if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-        {
-            Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-        }
-		if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-		{
-			myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
-		}
+       
+            if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+            {
+                Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+            }
+            if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+            {
+                myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+            }
 
-		if (!hasAttacked)
-		{
-			SelectedColor();
-			LM.ShowUnitHover(movementUds, this);
-		}
+            if (!hasAttacked)
+            {
+                SelectedColor();
+                LM.ShowUnitHover(movementUds, this);
+            }
         
     }
 
@@ -193,17 +200,28 @@ public class PlayerUnit : UnitBase
     //El LevelManager avisa a la unidad de que debe moverse.
     public void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
     {
-        //Compruebo la dirección en la que se mueve para girar a la unidad
-        CheckTileDirection(tileToMove);
-        hasMoved = true;
-        movementTokenInGame.SetActive(false);
-        //Refresco los tokens para reflejar el movimiento
-        UIM.RefreshTokens();
-        myCurrentPath = pathReceived;
+           
 
-        StartCoroutine("MovingUnitAnimation");
+
+            //Compruebo la dirección en la que se mueve para girar a la unidad
+         //   CheckTileDirection(tileToMove);
+            hasMoved = true;
+            movementTokenInGame.SetActive(false);
+            //Refresco los tokens para reflejar el movimiento
+            UIM.RefreshTokens();
+            myCurrentPath = pathReceived;
+
+
+
+
+            StartCoroutine("MovingUnitAnimation");
+
+       
+
         UpdateInformationAfterMovement(tileToMove);
     }
+
+   
 
     IEnumerator MovingUnitAnimation()
     {
@@ -246,8 +264,8 @@ public class PlayerUnit : UnitBase
             else
             {
                 //Hacer que aparezcan los botones
-                canvasWithRotationArrows.gameObject.SetActive(true);
-				UIM.TooltipRotate();
+              //  canvasWithRotationArrows.gameObject.SetActive(true);
+				//UIM.TooltipRotate();
 
             }
         }
@@ -256,19 +274,44 @@ public class PlayerUnit : UnitBase
         else
         {
             //Hacer que aparezcan los botones
-            canvasWithRotationArrows.gameObject.SetActive(true);
-			UIM.TooltipRotate();
+           // canvasWithRotationArrows.gameObject.SetActive(true);
+			//UIM.TooltipRotate();
+        }
+
+        //Arriba o abajo
+        if (currentFacingDirection == FacingDirection.North)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+
+
+        }
+
+        else if (currentFacingDirection == FacingDirection.South)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+        }
+
+        else if (currentFacingDirection == FacingDirection.East)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+        }
+
+        else if (currentFacingDirection == FacingDirection.West)
+        {
+            unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+
         }
     }
 
     public void RotateUnitFromButton(FacingDirection newDirection)
     {
-
+        
         //Arriba o abajo
         if (newDirection == FacingDirection.North)
         {
             unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
             currentFacingDirection = FacingDirection.North;
+           
         }
 
         else if (newDirection == FacingDirection.South)
@@ -290,8 +333,11 @@ public class PlayerUnit : UnitBase
         }
 
         canvasWithRotationArrows.gameObject.SetActive(false);
+        MoveToTile(LM.tileToMoveAfterRotate, LM.TM.currentPath);
+
         CheckUnitsInRangeToAttack();
         isMovingorRotating = false;
+     
 
         LM.UnitHasFinishedMovementAndRotation();
     }
@@ -311,7 +357,10 @@ public class PlayerUnit : UnitBase
 
         //La unidad ha atacado y por tanto no puede hacer nada más. Así que espero a que acabe la animación y finalizo su turno.
         StartCoroutine("AttackWait");
-		
+
+        
+
+
     }
 
     IEnumerator AttackWait()

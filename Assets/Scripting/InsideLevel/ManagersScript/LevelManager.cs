@@ -32,6 +32,14 @@ public class LevelManager : MonoBehaviour
     //Posición a la que tiene que moverse la unidad actualmente
     private Vector3 currentTileVectorToMove;
 
+
+
+    //Tile al que se va a mover tras rotar
+    public IndividualTiles tileToMoveAfterRotate;
+
+
+
+
     //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
     private int enemiesNumber;
 
@@ -441,7 +449,15 @@ public class LevelManager : MonoBehaviour
                         //Aviso a la unidad de que se tiene que mover
                         if (selectedCharacter != null)
                         {
-                            selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+                            tileToMoveAfterRotate = tileToMove;
+                            //Hacer que aparezcan los botones de rotación
+                            selectedCharacter.isMovingorRotating = true;
+                            selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(true);
+                            selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = tileToMove.transform.position;
+
+                           
+                                //selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+                            
 
                             //Desmarco las unidades que antes estaban disponibles para ser atacadas
                             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
@@ -523,7 +539,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    //Esconde el rango de movimiento de una unidad aliada al quitarel ratón de ella. !!Cuidado con función de arriba que se llama parecido (HideHover)!!
+    //Esconde el rango de movimiento de una unidad aliada al quitar el ratón de ella. !!Cuidado con función de arriba que se llama parecido (HideHover)!!
     public void HideUnitHover(PlayerUnit hoverUnit)
     {
         if (selectedCharacter == null)
@@ -563,20 +579,26 @@ public class LevelManager : MonoBehaviour
 
     public void ShowEnemyHover(int movementUds, EnemyUnit hoverUnit)
     {
-        tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+        if (selectedCharacter = null)
         {
-            tilesAvailableForMovement[i].ColorSelect();
+            tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
+            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            {
+                tilesAvailableForMovement[i].ColorSelect();
+            }
         }
     }
 
     public void HideEnemyHover(EnemyUnit hoverUnit)
     {
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+        if (selectedCharacter = null)
         {
-            tilesAvailableForMovement[i].ColorDeselect();
+            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            {
+                tilesAvailableForMovement[i].ColorDeselect();
+            }
+            tilesAvailableForMovement.Clear();
         }
-        tilesAvailableForMovement.Clear();
     }
 
     public void DeselectEnemy()

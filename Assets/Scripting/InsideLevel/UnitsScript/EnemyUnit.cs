@@ -50,7 +50,14 @@ public class EnemyUnit : UnitBase
     public GameObject LevelManagerRef;
     protected LevelManager LM;
 
+
+    [Header("FEEDBACK")]
+    //Flecha que indica que enemigo está realizando su acción.
+    [SerializeField]
+    private GameObject arrowEnemyIndicator;
+
     #endregion
+
 
     #region INIT
 
@@ -91,6 +98,7 @@ public class EnemyUnit : UnitBase
                 break;
 
             case (enemyState.Searching):
+                arrowEnemyIndicator.SetActive(true);
                 SearchingObjectivesToAttack();
 
                 break;
@@ -112,7 +120,9 @@ public class EnemyUnit : UnitBase
             case (enemyState.Ended):
                 if (!corroutineDone)
                 {
+                    
                     StartCoroutine("WaitBeforeNextState");
+                   
                 }
                 break;
         }
@@ -143,6 +153,7 @@ public class EnemyUnit : UnitBase
         else if (myCurrentEnemyState == enemyState.Ended)
         {
             yield return new WaitForSeconds(timeWaitingEnded);
+            arrowEnemyIndicator.SetActive(false);
             FinishMyActions();
         }
 
