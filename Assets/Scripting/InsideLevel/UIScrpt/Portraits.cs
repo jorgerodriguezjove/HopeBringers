@@ -69,7 +69,7 @@ public class Portraits : MonoBehaviour
     public void AssignClickerPlayer()
 	{
 		UIM.PortraitCharacterSelect(assignedPlayer);
-         isClicked = true;
+        isClicked = true;
 	}
 
 	public void Highlight()
@@ -86,7 +86,6 @@ public class Portraits : MonoBehaviour
         if (isClicked == false)
         {
             selectedPanel.SetActive(false);
-
         }
 
         

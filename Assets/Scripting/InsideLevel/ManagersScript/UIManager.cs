@@ -50,6 +50,15 @@ public class UIManager : MonoBehaviour
     //Lista que guarda los paneles en la parte superior izquierda con la info de los players
 	[SerializeField]
 	public List<GameObject> panelesPJ;
+	//Padre de los paneles de los enemigos
+	[SerializeField]
+	public GameObject padrePanelesEnemigos;
+	//Prefab de los paneles enemigos para instanciarlo
+	[SerializeField]
+	public GameObject panelesEnemigosPrefab;
+	//Lista que guarda los paneles enemigos para la lista de orden de enemigos
+	[HideInInspector]
+	public List<GameObject> panelesEnemigos;
 	
     //Cursores
 	[SerializeField]
@@ -205,6 +214,10 @@ public class UIManager : MonoBehaviour
 	{
 		LM.SelectUnit(characterToSelect.movementUds, characterToSelect);
 	}
+	public void PortraitEnemySelect(EnemyUnit enemyToSelect)
+	{
+		LM.selectedEnemy = enemyToSelect;
+	}
 
 	public void HighlightCharacter(PlayerUnit characterToHighlight)
 	{
@@ -277,11 +290,22 @@ public class UIManager : MonoBehaviour
     #region ENEMY_INFO
     public void SetEnemyOrder()
     {
+		for (int i = 0; i < panelesEnemigos.Count; i++)
+		{
+			Destroy(panelesEnemigos[i].gameObject);
+		}
+
+		panelesEnemigos.Clear();
+
         for (int i = 0; i < LM.enemiesOnTheBoard.Count; i++)
         {
-            LM.enemiesOnTheBoard[i].orderToShow = i + 1;
-            LM.enemiesOnTheBoard[i].thisUnitOrder.GetComponent <TextMeshPro>().text = "" + LM.enemiesOnTheBoard[i].orderToShow;
-            LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
+			GameObject enemyPanel = Instantiate(panelesEnemigosPrefab, padrePanelesEnemigos.transform, false);
+			panelesEnemigos.Add(enemyPanel);
+			panelesEnemigos[i].GetComponent<EnemyPortraits>().assignedEnemy = LM.enemiesOnTheBoard[i];
+			panelesEnemigos[i].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;		
+            //LM.enemiesOnTheBoard[i].orderToShow = i + 1;
+            //LM.enemiesOnTheBoard[i].thisUnitOrder.GetComponent <TextMeshPro>().text = "" + LM.enemiesOnTheBoard[i].orderToShow;
+            //LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
         }
     }
 

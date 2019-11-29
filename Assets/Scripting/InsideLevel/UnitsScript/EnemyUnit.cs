@@ -195,7 +195,6 @@ public class EnemyUnit : UnitBase
     {
         if (LM.selectedCharacter != null)
         {
-
             LM.SelectUnitToAttack(GetComponent<UnitBase>());
         }
         else
@@ -209,8 +208,8 @@ public class EnemyUnit : UnitBase
 				
 				LM.CheckIfHoverShouldAppear(this);
 				LM.UIM.ShowCharacterImage(this);
-                //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);              
-                HealthBarOn_Off(true);
+				//LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+				HealthBarOn_Off(true);
                 gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 				
             }

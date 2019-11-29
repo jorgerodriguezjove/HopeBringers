@@ -198,10 +198,10 @@ public class LevelManager : MonoBehaviour
             });
         }
 
-       
 
-        UIM.SetEnemyOrder();
-    }
+
+		UIM.SetEnemyOrder();
+	}
 
     #endregion
 
