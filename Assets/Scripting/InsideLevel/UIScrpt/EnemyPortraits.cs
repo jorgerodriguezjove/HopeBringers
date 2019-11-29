@@ -33,18 +33,29 @@ public class EnemyPortraits : MonoBehaviour
 
 	public void ShowEnemyPortraitFromPanel()
 	{
-		if(UIM.LM.selectedCharacter == null)
+		if(UIM.LM.selectedCharacter == null && UIM.LM.selectedEnemy == null)
 		{
 			UIM.ShowCharacterImage(assignedEnemy);
+			UIM.LM.ShowEnemyHover(assignedEnemy.movementUds, assignedEnemy);
 		}	
 	}
 
 	public void HideEnemyPortraitFromPanel()
 	{
-		UIM.HideCharacterImage();
-	}
+		if(UIM.LM.selectedEnemy == null)
+		{
+			UIM.HideCharacterImage();
+			UIM.LM.HideEnemyHover(assignedEnemy);
+			UIM.LM.HideEnemyHover(assignedEnemy);
+		}
 
+	}
 	
+	public void SelectEnemyFromPanel()
+	{
+		UIM.ShowCharacterImage(assignedEnemy);
+		UIM.LM.selectedEnemy = assignedEnemy;
+	}
 
 	#endregion
 }

@@ -579,7 +579,7 @@ public class LevelManager : MonoBehaviour
 
     public void ShowEnemyHover(int movementUds, EnemyUnit hoverUnit)
     {
-        if (selectedCharacter = null)
+        if (selectedCharacter == null)
         {
             tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
             for (int i = 0; i < tilesAvailableForMovement.Count; i++)
@@ -591,7 +591,7 @@ public class LevelManager : MonoBehaviour
 
     public void HideEnemyHover(EnemyUnit hoverUnit)
     {
-        if (selectedCharacter = null)
+        if (selectedCharacter == null)
         {
             for (int i = 0; i < tilesAvailableForMovement.Count; i++)
             {
