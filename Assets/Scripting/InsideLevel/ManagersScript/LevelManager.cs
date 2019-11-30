@@ -136,37 +136,6 @@ public class LevelManager : MonoBehaviour
 
     }
 
-    //Función que se llama para que caigan los tiles y los personajes
-    private void StartFallAnimation()
-    {
-        //Accedo a la lista de tiles del TM. En principio como esto va en el Start no debería haber problema.
-        //Aumento su posición en Y y después reproduzco la animación de cada Tile
-
-        // tilesInScene = new GameObject[TM.tilesInScene.Length];
-        tilesInScene = TM.tilesInScene;
-
-        StartCoroutine("FallingAnimation");
-    }
-
-    IEnumerator FallingAnimation()
-    {
-        //Caen los tiles
-        for (int i = 0; i < tilesInScene.Length; i++)
-        {
-            tilesInScene[i].GetComponent<IndividualTiles>().FallAnimation();
-            yield return waitFallingTiles;
-        }
-
-        currentLevelState = LevelState.PlayerPhase;
-
-        ////Se hace lo mismo con las figuras
-        //for (int i = 0; i < fakeFigurasList.Count; i++)
-        //{
-        //    fakeFigurasList[i].SetActive(true);
-        //    yield return waitFallingTiles;
-        //}
-    }
-
     //Ordeno la lista de personajes del jugador y la lista de enemigos
     //Cuando muere un enemigo, también se llama aquí
     private void UpdateUnitsOrder()

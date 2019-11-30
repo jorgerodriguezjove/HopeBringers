@@ -255,34 +255,34 @@ public class PlayerUnit : UnitBase
         movementParticle.SetActive(false);
         isMovingorRotating = false;
 
-        //Esto es solo para la prueba de movimiento para ver cual elegimos.
-        if (!LM.TM.isDiagonalMovement)
-        {
-            //Movimiento con torre sin giro
-            if (!LM.TM.isChooseRotationIfTower)
-            {
-                CheckUnitsInRangeToAttack();
-                LM.UnitHasFinishedMovementAndRotation();
-                isMovingorRotating = false;
-            }
+   //     //Esto es solo para la prueba de movimiento para ver cual elegimos.
+   //     if (!LM.TM.isDiagonalMovement)
+   //     {
+   //         //Movimiento con torre sin giro
+   //         if (!LM.TM.isChooseRotationIfTower)
+   //         {
+   //             CheckUnitsInRangeToAttack();
+   //             LM.UnitHasFinishedMovementAndRotation();
+   //             isMovingorRotating = false;
+   //         }
 
-            //Movimiento con torre con giro
-            else
-            {
-                //Hacer que aparezcan los botones
-              //  canvasWithRotationArrows.gameObject.SetActive(true);
-				//UIM.TooltipRotate();
+   //         //Movimiento con torre con giro
+   //         else
+   //         {
+   //             //Hacer que aparezcan los botones
+   //           //  canvasWithRotationArrows.gameObject.SetActive(true);
+			//	//UIM.TooltipRotate();
 
-            }
-        }
+   //         }
+   //     }
 
-        //Movimiento en diagonal
-        else
-        {
-            //Hacer que aparezcan los botones
-           // canvasWithRotationArrows.gameObject.SetActive(true);
-			//UIM.TooltipRotate();
-        }
+   //     //Movimiento en diagonal
+   //     else
+   //     {
+   //         //Hacer que aparezcan los botones
+   //         // canvasWithRotationArrows.gameObject.SetActive(true);
+			////UIM.TooltipRotate();
+   //     }
 
         //Arriba o abajo
         if (currentFacingDirection == FacingDirection.North)
