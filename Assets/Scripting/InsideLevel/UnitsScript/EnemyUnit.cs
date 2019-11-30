@@ -63,8 +63,8 @@ public class EnemyUnit : UnitBase
 
     private void Awake()
     {
-		//Referencia al LM y me incluyo en la lista de enemiogos
-		LM = LevelManagerRef.GetComponent<LevelManager>();
+        //Referencia al LM y me incluyo en la lista de enemiogos
+        LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
         myCurrentTile.unitOnTile = this;
         myCurrentTile.WarnInmediateNeighbours();

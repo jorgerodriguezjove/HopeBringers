@@ -322,7 +322,7 @@ public class IndividualTiles : MonoBehaviour
 
     [SerializeField]
     [@TextAreaAttribute(15, 20)]
-    private string tileInfo = "ENCONTRAR FORMA DE SETEAR EN EDITOR";
+    private string tileInfo = "Falta poder setearlo desde el editor";
     [SerializeField]
     private Sprite tileImage;
 

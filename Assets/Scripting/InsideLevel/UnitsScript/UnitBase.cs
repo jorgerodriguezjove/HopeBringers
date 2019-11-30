@@ -419,7 +419,6 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
-
     #region COLORS
 
     //Cambiar a color inicial
@@ -462,6 +461,31 @@ public class UnitBase : MonoBehaviour
 	{
 		healthBar.SetActive(isOn);
 	}
+
+    #endregion
+
+    #region DETECT_TILE
+
+    RaycastHit hit;
+
+    [SerializeField]
+    LayerMask unWalkable;
+
+    protected void FindAndSetFirstTile()
+    {
+        if (Physics.Raycast(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), out hit, unWalkable))
+        {
+
+            myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();
+
+            Debug.DrawRay(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 2f);
+
+            Debug.Log(hit.collider.name);
+        }
+
+    }
+
+
 
     #endregion
 

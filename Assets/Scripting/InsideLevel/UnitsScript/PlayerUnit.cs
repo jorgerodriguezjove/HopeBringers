@@ -101,6 +101,11 @@ public class PlayerUnit : UnitBase
 
 	}
 
+    private void Start()
+    {
+        FindAndSetFirstTile();
+        Debug.Log("S");
+    }
 
 
     #endregion
@@ -205,28 +210,18 @@ public class PlayerUnit : UnitBase
     //El LevelManager avisa a la unidad de que debe moverse.
     public void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
     {
-           
+        //Compruebo la dirección en la que se mueve para girar a la unidad
+        //   CheckTileDirection(tileToMove);
+        hasMoved = true;
+        movementTokenInGame.SetActive(false);
+        //Refresco los tokens para reflejar el movimiento
+        UIM.RefreshTokens();
+        myCurrentPath = pathReceived;
 
-
-            //Compruebo la dirección en la que se mueve para girar a la unidad
-         //   CheckTileDirection(tileToMove);
-            hasMoved = true;
-            movementTokenInGame.SetActive(false);
-            //Refresco los tokens para reflejar el movimiento
-            UIM.RefreshTokens();
-            myCurrentPath = pathReceived;
-
-
-
-
-            StartCoroutine("MovingUnitAnimation");
-
-       
+        StartCoroutine("MovingUnitAnimation");
 
         UpdateInformationAfterMovement(tileToMove);
     }
-
-   
 
     IEnumerator MovingUnitAnimation()
     {
@@ -631,5 +626,4 @@ public class PlayerUnit : UnitBase
     }
 
     #endregion
-
 }
