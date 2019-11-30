@@ -12,7 +12,7 @@ public class EnBalista : EnemyUnit
 
     //Bool que indica si la balista se está moviendo hacia la izquierda o hacia la derecha.
     [SerializeField]
-    private bool isMovingToHisRight;
+    public bool isMovingToHisRight;
 
     //Bools  que indican si los tiles laterales de la balista están disponibles para moverse o no.
     private bool isRightTileOccupied;

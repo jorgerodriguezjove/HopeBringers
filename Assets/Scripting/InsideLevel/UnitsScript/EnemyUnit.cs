@@ -197,21 +197,50 @@ public class EnemyUnit : UnitBase
         {
             LM.SelectUnitToAttack(GetComponent<UnitBase>());
         }
+        
         else
         {
             if (!isDead)
             {
-                LM.DeSelectUnit();
-                LM.ShowEnemyHover(movementUds, this);
-                LM.selectedEnemy = this;
-				//Llamo a LevelManager para activar hover
-				
-				LM.CheckIfHoverShouldAppear(this);
-				LM.UIM.ShowCharacterImage(this);
-				//LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
-				HealthBarOn_Off(true);
-                gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-				
+                if (LM.selectedEnemy != null) {
+
+                    LM.HideEnemyHover(LM.selectedEnemy);
+                    //Llamo a LevelManager para desactivar hover
+                    if (LM.selectedCharacter != null)
+                    {
+                        LM.selectedCharacter.HideDamageIcons();
+                    }
+                    LM.HideHover(LM.selectedEnemy);
+                    LM.selectedEnemy.HealthBarOn_Off(false);
+                    LM.UIM.HideCharacterImage();
+                    //LM.UIM.HideCharacterInfo("");
+                    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                    LM.tilesAvailableForMovement.Clear();
+
+                    LM.DeSelectUnit();
+                    LM.ShowEnemyHover(movementUds, this);
+                    LM.selectedEnemy = this;
+                    //Llamo a LevelManager para activar hover
+
+                    LM.CheckIfHoverShouldAppear(this);
+                    LM.UIM.ShowCharacterImage(this);
+                    //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+                    HealthBarOn_Off(true);
+                    gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                }
+                 else
+                {
+                    LM.DeSelectUnit();
+                    LM.ShowEnemyHover(movementUds, this);
+                    LM.selectedEnemy = this;
+                    //Llamo a LevelManager para activar hover
+
+                    LM.CheckIfHoverShouldAppear(this);
+                    LM.UIM.ShowCharacterImage(this);
+                    //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+                    HealthBarOn_Off(true);
+                    gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                }
             }
 
         }
@@ -220,36 +249,41 @@ public class EnemyUnit : UnitBase
 
     private void OnMouseEnter()
     {
-        if (LM.selectedEnemy == null && LM.selectedCharacter == null)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-            if (!isDead)
+            if (LM.selectedEnemy == null && LM.selectedCharacter == null)
             {
-                LM.ShowEnemyHover(movementUds, this);			
-				//Llamo a LevelManager para activar hover				
-				LM.UIM.ShowCharacterImage(this);
-				//LM.UIM.ShowCharacterInfo(unitInfo, this); 
-				HealthBarOn_Off(true);
-                gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-                
+                if (!isDead)
+                {
+                    
+                    LM.ShowEnemyHover(movementUds, this);
+                    //Llamo a LevelManager para activar hover				
+                    LM.UIM.ShowCharacterImage(this);
+                    //LM.UIM.ShowCharacterInfo(unitInfo, this); 
+                    HealthBarOn_Off(true);
+                    gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+
+                }
+            }
+            else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+            {
+                if (!isDead)
+                {
+                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                    Debug.Log("1. Jojo maricon y mario supermaricon");
+                    LM.CheckIfHoverShouldAppear(this);
+                    HealthBarOn_Off(true);
+
+                }
             }
         }
-		else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-		{
-			if (!isDead)
-			{
-				Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-				Debug.Log("1. Jojo maricon y mario supermaricon");
-				LM.CheckIfHoverShouldAppear(this);
-				HealthBarOn_Off(true); 
-				
-			}	
-		}
 	}
 
     private void OnMouseExit()
     {
         if (LM.selectedEnemy == null) 
 {
+            
             LM.HideEnemyHover(this);
 			//Llamo a LevelManager para desactivar hover
 			if(LM.selectedCharacter != null)

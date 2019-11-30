@@ -149,22 +149,27 @@ public class PlayerUnit : UnitBase
 
     private void OnMouseEnter()
     {
-       
-            if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions) 
+        {
+            if (LM.selectedEnemy == null)
             {
-                Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-            }
-            if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-            {
-                myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
-            }
+                if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+                {
+                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                }
+                if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+                {
+                    myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+                }
 
-            if (!hasAttacked)
-            {
-                SelectedColor();
-                LM.ShowUnitHover(movementUds, this);
+                if (!hasAttacked)
+                {
+                    myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+                    SelectedColor();
+                    LM.ShowUnitHover(movementUds, this);
+                }
             }
-        
+        }
     }
 
     private void OnMouseExit()
@@ -228,7 +233,7 @@ public class PlayerUnit : UnitBase
         //Activo el trail de particulas de movimiento
         movementParticle.SetActive(true);
 
-        isMovingorRotating = true;
+        //isMovingorRotating = true;
 
         //Animación de movimiento
         for (int j = 1; j < myCurrentPath.Count; j++)
@@ -248,6 +253,7 @@ public class PlayerUnit : UnitBase
 
         //Desactivo el trail de partículas de movimiento
         movementParticle.SetActive(false);
+        isMovingorRotating = false;
 
         //Esto es solo para la prueba de movimiento para ver cual elegimos.
         if (!LM.TM.isDiagonalMovement)
@@ -336,7 +342,7 @@ public class PlayerUnit : UnitBase
         MoveToTile(LM.tileToMoveAfterRotate, LM.TM.currentPath);
 
         CheckUnitsInRangeToAttack();
-        isMovingorRotating = false;
+        isMovingorRotating = true;
      
 
         LM.UnitHasFinishedMovementAndRotation();

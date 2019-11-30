@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public EnemyUnit selectedEnemy;
 
-    //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada
+    //Tiles que actualmente están disponibles para el movimiento de la unidad seleccionada
     [HideInInspector]
     public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
@@ -38,6 +38,9 @@ public class LevelManager : MonoBehaviour
     public IndividualTiles tileToMoveAfterRotate;
 
 
+    //Tiles que los enemigos pueden moverse, que se muestran al hacer hover o clickar en los enemigos
+    [HideInInspector]
+    public List<IndividualTiles> tilesAvailableForMovementEnemies = new List<IndividualTiles>();
 
 
     //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
@@ -227,6 +230,12 @@ public class LevelManager : MonoBehaviour
 				//Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
 				if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
                 {
+                    if (selectedEnemy != null)
+                    {
+                        DeselectEnemy();
+                    }
+
+
                     //Desactivo el botón de pasar turno cuando selecciona la unidad
                     //Está función no se puede llamar fuera del if para que afecte a ambos casos porque entonces también se cambia al pulsar en una unidad que ya ha atacado.
                     UIM.ActivateDeActivateEndButton();
@@ -239,10 +248,11 @@ public class LevelManager : MonoBehaviour
 					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
 
-					//This
-					//UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); Legacy Code
+                    //This
+                    //UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); Legacy Code
 
-					tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
+                   
+                    tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
                         tilesAvailableForMovement[i].ColorSelect();
@@ -260,6 +270,11 @@ public class LevelManager : MonoBehaviour
                 //Si se ha movido pero no ha atacado, entonces le doy el feedback de ataque.
                 else if (!clickedUnit.hasAttacked)
                 {
+                    if (selectedEnemy != null)
+                    {
+                        DeselectEnemy();
+                    }
+
                     //Desactivo el botón de pasar turno cuando selecciona la unidad
                     UIM.ActivateDeActivateEndButton();
 
@@ -271,7 +286,10 @@ public class LevelManager : MonoBehaviour
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
 
-					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+                    
+
+
+                    if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipAttack();
 					}
@@ -285,8 +303,12 @@ public class LevelManager : MonoBehaviour
 			}
 
             //Si ya hay una seleccionada compruebo si puedo atacar a la unidad
-            else 
+            else
             {
+                if (selectedEnemy != null)
+                {
+                    DeselectEnemy();
+                }
                 SelectUnitToAttack(clickedUnit);
             }
         }
@@ -361,6 +383,15 @@ public class LevelManager : MonoBehaviour
             selectedCharacter.ResetColor();
             selectedCharacter.myCurrentTile.ColorDeselect();
             selectedCharacter = null;
+        }
+        else if(selectedEnemy !=null)
+        {
+
+            DeselectEnemy();
+
+          
+           
+
         }
     }
 
@@ -581,11 +612,28 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
-            tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
-            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            
+            if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
-                tilesAvailableForMovement[i].ColorSelect();
+                tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    tilesAvailableForMovementEnemies[i].ColorSelect();
+                }
             }
+            else if (hoverUnit.GetComponent<EnBalista>())
+            {
+               if (hoverUnit.GetComponent<EnBalista>().isMovingToHisRight)
+                {
+                    
+                }
+                else
+                {
+
+
+                }
+            }
+
         }
     }
 
@@ -593,22 +641,44 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
-            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+            if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
-                tilesAvailableForMovement[i].ColorDeselect();
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    tilesAvailableForMovementEnemies[i].ColorDeselect();
+                }
+                tilesAvailableForMovementEnemies.Clear();
             }
-            tilesAvailableForMovement.Clear();
+            else if (hoverUnit.GetComponent<EnBalista>())
+            {
+                if (hoverUnit.GetComponent<EnBalista>().isMovingToHisRight)
+                {
+
+                }
+                else
+                {
+
+
+                }
+            }
+          
         }
+
+       
+
     }
 
     public void DeselectEnemy()
     {
-        selectedEnemy.HealthBarOn_Off(false);
-        HideEnemyHover(selectedEnemy);
-        UIM.HideCharacterImage();
-        UIM.HideCharacterInfo("");
-        UIM.TooltipDefault();
-        selectedEnemy = null;
+        if (selectedEnemy != null)
+        {
+            selectedEnemy.HealthBarOn_Off(false);
+            HideEnemyHover(selectedEnemy);
+            UIM.HideCharacterImage();
+            UIM.HideCharacterInfo("");
+            UIM.TooltipDefault();
+            selectedEnemy = null;
+        }
     }
 
 
