@@ -13,9 +13,7 @@ public class UIManager : MonoBehaviour
 	[Header("HUD")]
 
     [SerializeField]
-    private Button endTurnButton;
-	[SerializeField]
-	private Button waitingButton;
+    private GameObject endTurnButton;
 
 	[SerializeField]
 	private GameObject optionsScreen;
@@ -113,6 +111,7 @@ public class UIManager : MonoBehaviour
 	//Se llama desde el botón de finalizar turno
 	public void EndTurn()
     {
+		Debug.Log("Soy EndTurn");
 		RotateButtonEndPhase();
         LM.ChangePhase();
     }
@@ -120,19 +119,21 @@ public class UIManager : MonoBehaviour
     //Función que activa o desactiva el botón de pasar turno en función de si es la fase del player o del enemigo
     public void ActivateDeActivateEndButton()
     {
-        endTurnButton.interactable = !endTurnButton.interactable;
+        endTurnButton.GetComponent<BoxCollider>().enabled = !endTurnButton.GetComponent<BoxCollider>().enabled;
     }
 
 	public void RotateButtonEndPhase()
 	{
-		endTurnButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
-		StartCoroutine("ButtonAnimationWaitEnd");	
+		//endTurnButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
+		//StartCoroutine("ButtonAnimationWaitEnd");
+		endTurnButton.GetComponent<Animator>().Play("EndTurnFlip");
 	}
 
 	public void RotateButtonStartPhase()
 	{
-		waitingButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
-		StartCoroutine("ButtonAnimationWaitStart");	
+		//waitingButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
+		//StartCoroutine("ButtonAnimationWaitStart");
+		endTurnButton.GetComponent<Animator>().Play("ResetEndTurnFlip");
 	}
 
 	IEnumerator ButtonAnimationWaitEnd()
@@ -140,13 +141,13 @@ public class UIManager : MonoBehaviour
 		yield return new WaitForSeconds(durationEndTurnRotation);
 		endTurnButton.gameObject.SetActive(false);
 		endTurnButton.transform.DORotate(new Vector3(0, 0, 0), durationEndTurnRotation);
-		waitingButton.gameObject.SetActive(true);
+		//waitingButton.gameObject.SetActive(true);
 	}
 	IEnumerator ButtonAnimationWaitStart()
 	{
 		yield return new WaitForSeconds(durationEndTurnRotation);
-		waitingButton.gameObject.SetActive(false);
-		waitingButton.transform.DORotate(new Vector3(0, 0, 0), durationEndTurnRotation);
+		//waitingButton.gameObject.SetActive(false);
+		//waitingButton.transform.DORotate(new Vector3(0, 0, 0), durationEndTurnRotation);
 		endTurnButton.gameObject.SetActive(true);
 	}
 

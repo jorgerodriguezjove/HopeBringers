@@ -130,12 +130,28 @@ public class Portraits : MonoBehaviour
     {
         for (int i = 0; i < attackTokens.Count; i++)
         {
-            attackTokens[i].SetActive(!assignedPlayer.hasAttacked);
+            //attackTokens[i].SetActive(!assignedPlayer.hasAttacked);
+			if (!assignedPlayer.hasAttacked)
+			{
+				attackTokens[i].GetComponent<Animator>().Play("TokenReset");
+			}
+			else
+			{
+				attackTokens[i].GetComponent<Animator>().Play("TokenFlip");
+			}
         }
         for (int i = 0; i < movementTokens.Count; i++)
         {
-            movementTokens[i].SetActive(!assignedPlayer.hasMoved);
-        }
+            //movementTokens[i].SetActive(!assignedPlayer.hasMoved);
+			if (!assignedPlayer.hasMoved)
+			{
+				movementTokens[i].GetComponent<Animator>().Play("TokenReset");
+			}
+			else
+			{
+				movementTokens[i].GetComponent<Animator>().Play("TokenFlip");
+			}
+		}
     }
 
     public void RefreshSprites()
