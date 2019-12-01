@@ -59,7 +59,7 @@ public class EnCharger : EnemyUnit
                 //Muevo al charger
                 if (furthestAvailableUnitDistance >= 0)
                 {
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileZ);
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].transform.position;//   new Vector3(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileZ);
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles
@@ -79,7 +79,7 @@ public class EnCharger : EnemyUnit
                 if (furthestAvailableUnitDistance >= 0)
                 {
                     //Muevo al charger
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileZ);
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].transform.position;  new Vector3(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileZ);
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles
@@ -103,7 +103,7 @@ public class EnCharger : EnemyUnit
                 if (furthestAvailableUnitDistance >= 0)
                 {
                     //Muevo al charger
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileZ);
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].transform.position;  new Vector3(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileZ);
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles
@@ -123,7 +123,7 @@ public class EnCharger : EnemyUnit
                 if (furthestAvailableUnitDistance >= 0)
                 {
                     //Muevo al charger
-                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileZ);
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].transform.position; new Vector3(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileZ);
                     transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
                     //Actualizo las variables de los tiles

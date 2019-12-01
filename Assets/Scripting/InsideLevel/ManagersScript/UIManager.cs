@@ -299,13 +299,19 @@ public class UIManager : MonoBehaviour
 
         for (int i = 0; i < LM.enemiesOnTheBoard.Count; i++)
         {
-			GameObject enemyPanel = Instantiate(panelesEnemigosPrefab, padrePanelesEnemigos.transform, false);
-			panelesEnemigos.Add(enemyPanel);
-			panelesEnemigos[i].GetComponent<EnemyPortraits>().assignedEnemy = LM.enemiesOnTheBoard[i];
-			panelesEnemigos[i].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;		
-            //LM.enemiesOnTheBoard[i].orderToShow = i + 1;
-            //LM.enemiesOnTheBoard[i].thisUnitOrder.GetComponent <TextMeshPro>().text = "" + LM.enemiesOnTheBoard[i].orderToShow;
-            //LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
+            if (!LM.enemiesOnTheBoard[i].isDead)
+            {
+                GameObject enemyPanel = Instantiate(panelesEnemigosPrefab, padrePanelesEnemigos.transform, false);
+                panelesEnemigos.Add(enemyPanel);
+
+                //IMPORTANTE. El contador de paneles enemigos no puede ser i ya que puede ser que haya un enemigo muerto y por tanto i sea demasiado grande.
+                panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().assignedEnemy = LM.enemiesOnTheBoard[i];
+                panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;
+
+                //LM.enemiesOnTheBoard[i].orderToShow = i + 1;
+                //LM.enemiesOnTheBoard[i].thisUnitOrder.GetComponent <TextMeshPro>().text = "" + LM.enemiesOnTheBoard[i].orderToShow;
+                //LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
+            }
         }
     }
 

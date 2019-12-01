@@ -404,6 +404,7 @@ public class UnitBase : MonoBehaviour
 
                 //Desplazo a la unidad
                 MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
+                Debug.Log(tilesToCheckForCollision[0]);
             }
         }
        
@@ -414,7 +415,11 @@ public class UnitBase : MonoBehaviour
     protected virtual void MoveToTilePushed(IndividualTiles newTile)
     {
         //Mover al nuevo tile
-        currentTileVectorToMove = new Vector3(newTile.tileX, newTile.height, newTile.tileZ);
+        Debug.Log(newTile);
+
+        currentTileVectorToMove = newTile.transform.position;
+
+        Debug.Log(currentTileVectorToMove);
         transform.DOMove(currentTileVectorToMove, timePushAnimation);
 
         //Si no ha muerto tras el choque, actualizo la info
@@ -478,18 +483,12 @@ public class UnitBase : MonoBehaviour
 
     protected void FindAndSetFirstTile()
     {
-        Debug.Log(gameObject.name);
         Debug.DrawRay(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
 
-        Debug.Log(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z));
         if (Physics.Raycast(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), out hit))
         {
-
-            myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();
-
-            
+            myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();            
             myCurrentTile.unitOnTile = GetComponent<UnitBase>();
-            Debug.Log(gameObject.name);
         }
 
     }

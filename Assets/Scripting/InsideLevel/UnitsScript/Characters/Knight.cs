@@ -32,6 +32,7 @@ public class Knight : PlayerUnit
         else if (currentFacingDirection == FacingDirection.South)
         {
             unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+            Debug.Log(myCurrentTile.tilesInLineDown[0]);
         }
 
         else if(currentFacingDirection == FacingDirection.East)

@@ -268,7 +268,6 @@ public class EnemyUnit : UnitBase
                 if (!isDead)
                 {
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                    Debug.Log("1. Jojo maricon y mario supermaricon");
                     LM.CheckIfHoverShouldAppear(this);
                     HealthBarOn_Off(true);
 
@@ -333,7 +332,13 @@ public class EnemyUnit : UnitBase
         myCurrentTile.WarnInmediateNeighbours();
         
         Destroy(unitModel);
+
+        
         isDead = true;
+        LM.UIM.SetEnemyOrder();
+        //Tiene que ir despues del bool de isdead = true
+
+
 
         //No uso FinishMyActions porque no me interesa que pase turno, sólo que  se quede en waiting por si acaso se muere en su turno.
         myCurrentEnemyState = enemyState.Waiting;

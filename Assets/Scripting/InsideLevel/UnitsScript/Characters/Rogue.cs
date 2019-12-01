@@ -153,7 +153,7 @@ public class Rogue : PlayerUnit
             if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
             {
                 //Muevo al pícaro
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
+                currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                 //Cambio la rotación
@@ -166,7 +166,7 @@ public class Rogue : PlayerUnit
             else
             {
                 //Muevo al pícaro
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
+                currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                 //Cambio la rotación
@@ -183,7 +183,7 @@ public class Rogue : PlayerUnit
             if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
             {
                 //Muevo al pícaro
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
+                currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                 //Cambio la rotación
@@ -196,7 +196,7 @@ public class Rogue : PlayerUnit
             else
             {
                 //Muevo al pícaro
-                currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
+                currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                 //Cambio la rotación

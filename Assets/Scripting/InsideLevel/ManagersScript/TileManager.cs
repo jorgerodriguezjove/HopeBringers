@@ -102,7 +102,7 @@ public class TileManager : MonoBehaviour
         //Inicializo el array y la posición en la que se inicia a comprobar el grid
         gridObject = new GameObject[gridSizeX, gridSizeY, gridSizeZ];
         grid3DNode = new IndividualTiles[gridSizeX, gridSizeY, gridSizeZ];
-        Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.up * gridWorldSize.y / 2 - Vector3.forward * gridWorldSize.z / 2;
+        Vector3 worldBottomLeft = transform.position;
 
         //Creo y guardo los tiles
         for (int y = 0; y < gridSizeY; y++)
@@ -281,21 +281,21 @@ public class TileManager : MonoBehaviour
 
     #endregion
 
-    public IndividualTiles NodeFromWorldPoint(Vector3 worldPosition)
-    {
-        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-        float percentZ = (worldPosition.z + gridWorldSize.z / 2) / gridWorldSize.z;
-        float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
+    //public IndividualTiles NodeFromWorldPoint(Vector3 worldPosition)
+    //{
+    //    float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+    //    float percentZ = (worldPosition.z + gridWorldSize.z / 2) / gridWorldSize.z;
+    //    float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
 
-        percentX = Mathf.Clamp01(percentX);
-        percentZ = Mathf.Clamp01(percentZ);
-        percentY = Mathf.Clamp01(percentY);
+    //    percentX = Mathf.Clamp01(percentX);
+    //    percentZ = Mathf.Clamp01(percentZ);
+    //    percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int z = Mathf.RoundToInt((gridSizeZ - 1) * percentZ);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        return grid2DNode[x, z];
-    }
+    //    int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
+    //    int z = Mathf.RoundToInt((gridSizeZ - 1) * percentZ);
+    //    int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+    //    return grid2DNode[x, z];
+    //}
 
     #region PATHFINDING
 
@@ -410,11 +410,8 @@ public class TileManager : MonoBehaviour
                 }
             }
 
-
             openList.Remove(currentNode);
             closedHasSet.Add(currentNode);
-
-        
 
             //Si el nodo coincide con el objetivo, terminamos la busqueda.
             if (currentNode == target)
@@ -456,7 +453,6 @@ public class TileManager : MonoBehaviour
                 return;
             }
 
-
             foreach (IndividualTiles neighbour in grid2DNode[currentNode.tileX, currentNode.tileZ].neighbours)
             {
                 //Goblin
@@ -464,12 +460,16 @@ public class TileManager : MonoBehaviour
                 {
                     if (neighbour.isEmpty && neighbour.isObstacle)
                     {
-                        //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
-                        if (neighbour != target && neighbour.unitOnTile != null)
-                        {
-                            continue;
-                        }
+                        continue;
+
                     }
+
+                    //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
+                    else if (neighbour != target && neighbour.unitOnTile != null || neighbour.unitOnTile != null && neighbour.unitOnTile.GetComponent<EnemyUnit>())
+                    {
+                        continue;
+                    }                 
+
                 }
 
                 //Player
@@ -559,150 +559,9 @@ public class TileManager : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y, gridWorldSize.z));
+        Gizmos.DrawWireCube(new Vector3 (transform.position.x + gridWorldSize.x/2, transform.position.y + gridWorldSize.y / 2, transform.position.z + gridWorldSize.z / 2), new Vector3(gridWorldSize.x, gridWorldSize.y, gridWorldSize.z));
     }
 
 
-   
-    //public void CalculatePathForMovementCost(int x, int z)
-    //{
-    //    currentPath.Clear();
-    //    unvisited.Clear();
-
-    //    //Origen y target
-    //    source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
-    //    target = grid2DNode[x, z];
-
-    //    //La distancia que hay desde el origen hasta el origen es 0. Por lo que en el diccionario, el nodo que coincida con el origen, su float valdrá 0.
-    //    dist[source] = 0;
-    //    //No hay ningún nodo antes que el origen por lo que el valor de source en el diccionario es null.
-    //    prev[source] = null;
-
-    //    //Inicializamos para que pueda llegar hasta alcance infinito ya que no se la distancia hasta el objetivo. Al ponerlos todos en infinitos menos el source, me aseguro que empieza desde ahí.
-    //    //En principio no llegará nunca hasta el infinito porque encontrará antes el objetivo y entonces se cortará el proceso.
-    //    //También sirve para contemplar las casillas a las que no se puede llegar (es cómo si tuviesen valor infinito).
-    //    foreach (IndividualTiles node in grid2DNode)
-    //    {
-    //        //Si el nodo no ha sido quitado de los nodos sin visitar
-    //        if (node != source)
-    //        {
-    //            dist[node] = Mathf.Infinity;
-    //            prev[node] = null;
-    //        }
-
-    //        //Todos los nodos se añaden a la lista de unvisited, incluido el origen.
-    //        unvisited.Add(node);
-    //    }
-
-    //    //Mientras que haya nodos que no hayan sido visitados...
-    //    while (unvisited.Count > 0)
-    //    {
-    //        //currentNode se corresponde con el nodo no visitado con la distancia más corta
-    //        //La primera vez va a ser source ya que es el único nodo que no tiene valor infinito
-    //        //Después de eso sólo podrá coger una de las casillas vecinas y así irá repitiendo el ciclo.
-    //        IndividualTiles currentNode = null;
-
-    //        foreach (IndividualTiles possibleNode in unvisited)
-    //        {
-    //            if (currentNode == null || dist[possibleNode] < dist[currentNode])
-    //            {
-    //                currentNode = possibleNode;
-    //            }
-    //        }
-
-    //        //Si el nodo coincide con el objetivo, terminamos la busqueda.
-    //        if (currentNode == target)
-    //        {
-    //            break;
-    //        }
-
-    //        unvisited.Remove(currentNode);
-
-    //        foreach (IndividualTiles node in currentNode.neighbours)
-    //        {
-    //            if (selectedCharacter.GetComponent<EnGiant>())
-    //            {
-    //                float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-    //                if (alt < dist[node])
-    //                {
-    //                    if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
-    //                    {
-    //                        dist[node] = alt;
-    //                        prev[node] = currentNode;
-    //                    }
-    //                }
-    //            }
-
-    //            else if (selectedCharacter.GetComponent<EnGoblin>())
-    //            {
-    //                //Si el nodo no está vacío o un obstáculo puedo seguir comprobando el path
-    //                if (!node.isEmpty && !node.isObstacle)
-    //                {
-    //                    //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
-    //                    if ((node != target && node.unitOnTile == null) || node == target)
-    //                    {
-    //                        float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-    //                        if (alt < dist[node])
-    //                        {
-    //                            if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
-    //                            {
-    //                                dist[node] = alt;
-    //                                prev[node] = currentNode;
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
-
-    //            else
-    //            {
-    //                if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle)
-    //                {
-    //                    float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-    //                    if (alt < dist[node])
-    //                    {
-    //                        if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
-    //                        {
-    //                            dist[node] = alt;
-    //                            prev[node] = currentNode;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    if (prev[target] == null)
-    //    {
-    //        //Si llega aquí significa que no hay ninguna ruta disponible desde el origen hasta el objetivo.
-    //        tempCurrentPathCost = Mathf.Infinity;
-    //    }
-
-    //    //Si llega hasta aquí si que hay un camino hasta el objetivo.
-    //    curr = target;
-
-    //    //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
-    //    //Esta ruta está al reves, va desde el objetivo hasta el origen.
-    //    while (curr != null)
-    //    {
-    //        currentPath.Add(curr);
-    //        curr = prev[curr];
-    //    }
-
-    //    //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
-    //    currentPath.Reverse();
-
-    //    //Calcular coste del path
-    //    for (int i = 0; i < currentPath.Count; i++)
-    //    {
-    //        //Sumo el coste de todas las casillas que forman el path excepto la primera (ya que es la casilla sobre la que se encuentra la unidad).
-    //        if (i != 0)
-    //        {
-    //            tempCurrentPathCost += CostToEnterTile(currentPath[i].tileX, currentPath[i].tileZ);
-    //        }
-    //    }
-    //}
+ 
 }

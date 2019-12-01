@@ -178,7 +178,7 @@ public class EnGoblin : EnemyUnit
         for (int j = 1; j < pathToObjective.Count-1; j++)
         {
             //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);
+            currentTileVectorToMove = pathToObjective[j].transform.position;  //new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);
 
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
