@@ -66,8 +66,6 @@ public class EnemyUnit : UnitBase
         //Referencia al LM y me incluyo en la lista de enemiogos
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
-        myCurrentTile.unitOnTile = this;
-        myCurrentTile.WarnInmediateNeighbours();
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         //Inicializo componente animator

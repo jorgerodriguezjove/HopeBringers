@@ -186,6 +186,14 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
+    private void Start()
+    {
+        FindAndSetFirstTile();
+        myCurrentTile.unitOnTile = this;
+        myCurrentTile.WarnInmediateNeighbours();
+    }
+
+
     //Esta función la usan todos los personajes al moverse para reajustar la información del tile actual y del nuevo al que se van a mover.
     public void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
@@ -468,19 +476,20 @@ public class UnitBase : MonoBehaviour
 
     RaycastHit hit;
 
-    [SerializeField]
-    LayerMask unWalkable;
-
     protected void FindAndSetFirstTile()
     {
-        if (Physics.Raycast(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), out hit, unWalkable))
+        Debug.Log(gameObject.name);
+        Debug.DrawRay(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
+
+        Debug.Log(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z));
+        if (Physics.Raycast(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), out hit))
         {
 
             myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();
 
-            Debug.DrawRay(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 2f);
-
-            Debug.Log(hit.collider.name);
+            
+            myCurrentTile.unitOnTile = GetComponent<UnitBase>();
+            Debug.Log(gameObject.name);
         }
 
     }

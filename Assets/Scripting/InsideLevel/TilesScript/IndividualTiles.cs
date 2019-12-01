@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class IndividualTiles : MonoBehaviour
+public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 {
     #region VARIABLES
     [Header("LÓGICA")]
@@ -73,6 +73,20 @@ public class IndividualTiles : MonoBehaviour
     //Referencia al Level Manager, se setea en el constructor
     [HideInInspector]
     public LevelManager LM;
+
+    [Header("Optimization test")]
+
+    //Distancia hasta el source
+    public int gCost;
+    //Distancia hasta el target
+    public int hCost;
+    //Suma de ambas distancias
+    private int fCost;
+
+    //Esto era antes el diccioanrio de prev de tileManger. Ahora el propio tile almacena el tile anterior del path.
+    public IndividualTiles parent;
+
+    int heapIndex;
 
     ////Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
     //private bool isUnderAttack;
@@ -253,6 +267,34 @@ public class IndividualTiles : MonoBehaviour
     {
         GetComponent<MeshRenderer>().material = initialColor;
         isUnderAttack = false;
+    }
+
+    #endregion
+
+    #region OPTIMIZATION
+
+    public int CalculateFCost
+    {
+        get { return gCost + hCost; }
+    }
+
+    //Al ser T un elemento genérico no se si va a poder compararse asi que uso una interfaz para asegurarme de que tiene un index.
+    public int HeapIndex
+    {
+        get { return heapIndex; }
+        set { heapIndex = value; }
+    }
+
+    public int CompareTo(IndividualTiles tileToCompare)
+    {
+        int compare = fCost.CompareTo(tileToCompare.fCost);
+        if (compare == 0)
+        {
+            compare = hCost.CompareTo(tileToCompare.hCost);
+
+        }
+
+        return -compare;
     }
 
     #endregion

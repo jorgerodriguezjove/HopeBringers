@@ -101,13 +101,6 @@ public class PlayerUnit : UnitBase
 
 	}
 
-    private void Start()
-    {
-        FindAndSetFirstTile();
-        Debug.Log("S");
-    }
-
-
     #endregion
 
     #region TURN_STATE

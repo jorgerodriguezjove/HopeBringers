@@ -198,9 +198,6 @@ public class TileManager : MonoBehaviour
         SetTilesNeighbours();
     }
 
-
-    ////int prevY;
-
     //NO ESTÁ PENSADO PARA QUE HAYA TILES ENCIMA DE OTROS A DIFERENTES ALTURAS.
     void SetTilesNeighbours()
     {
@@ -300,8 +297,6 @@ public class TileManager : MonoBehaviour
         return grid2DNode[x, z];
     }
 
-
-
     #region PATHFINDING
 
     //Calculo el coste de una casilla
@@ -309,6 +304,12 @@ public class TileManager : MonoBehaviour
     {
         return grid2DNode[x, z].movementCost;
     }
+
+
+    List<IndividualTiles> openList = new List<IndividualTiles>();
+    HashSet<IndividualTiles> closedHasSet = new HashSet<IndividualTiles>();
+
+
 
     //Calculo tiles a los que se puede mover una unidad o en los que puede un enemigo buscar objetivos
     public List<IndividualTiles> OptimizedCheckAvailableTilesForMovement(int movementUds, UnitBase selectedUnit)
@@ -385,145 +386,126 @@ public class TileManager : MonoBehaviour
 
     public void CalculatePathForMovementCost(int x, int z)
     {
-        currentPath.Clear();
-        unvisited.Clear();
+        openList.Clear();
+        closedHasSet.Clear();
 
         //Origen y target
+        
         source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
         target = grid2DNode[x, z];
 
-        //La distancia que hay desde el origen hasta el origen es 0. Por lo que en el diccionario, el nodo que coincida con el origen, su float valdrá 0.
-        dist[source] = 0;
-        //No hay ningún nodo antes que el origen por lo que el valor de source en el diccionario es null.
-        prev[source] = null;
-
-        //Inicializamos para que pueda llegar hasta alcance infinito ya que no se la distancia hasta el objetivo. Al ponerlos todos en infinitos menos el source, me aseguro que empieza desde ahí.
-        //En principio no llegará nunca hasta el infinito porque encontrará antes el objetivo y entonces se cortará el proceso.
-        //También sirve para contemplar las casillas a las que no se puede llegar (es cómo si tuviesen valor infinito).
-        foreach (IndividualTiles node in grid2DNode)
-        {
-            //Si el nodo no ha sido quitado de los nodos sin visitar
-            if (node != source)
-            {
-                dist[node] = Mathf.Infinity;
-                prev[node] = null;
-            }
-
-            //Todos los nodos se añaden a la lista de unvisited, incluido el origen.
-            unvisited.Add(node);
-        }
+        openList.Add(source);
 
         //Mientras que haya nodos que no hayan sido visitados...
-        while (unvisited.Count > 0)
+        while (openList.Count > 0)
         {
-            //currentNode se corresponde con el nodo no visitado con la distancia más corta
-            //La primera vez va a ser source ya que es el único nodo que no tiene valor infinito
-            //Después de eso sólo podrá coger una de las casillas vecinas y así irá repitiendo el ciclo.
-            IndividualTiles currentNode = null;
+            IndividualTiles currentNode = openList[0];
 
-            foreach (IndividualTiles possibleNode in unvisited)
+            for (int i = 0; i < openList.Count; i++)
             {
-                if (currentNode == null || dist[possibleNode] < dist[currentNode])
+                if (openList[i].CalculateFCost < currentNode.CalculateFCost ||
+                    openList[i].CalculateFCost == currentNode.CalculateFCost && openList[i].hCost < currentNode.hCost)
                 {
-                    currentNode = possibleNode;
+                    currentNode = openList[i];
                 }
             }
+
+
+            openList.Remove(currentNode);
+            closedHasSet.Add(currentNode);
+
+        
 
             //Si el nodo coincide con el objetivo, terminamos la busqueda.
             if (currentNode == target)
             {
-                break;
-            }
+                currentPath.Clear();
+                //Si llega hasta aquí si que hay un camino hasta el objetivo.
+                curr = target;
 
-            unvisited.Remove(currentNode);
-
-            foreach (IndividualTiles node in currentNode.neighbours)
-            {
-                if (selectedCharacter.GetComponent<EnGiant>())
+                //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
+                //Esta ruta está al reves, va desde el objetivo hasta el origen.
+                while (curr != null)
                 {
-                    float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+                    currentPath.Add(curr);
+                    curr = curr.parent;
+                }
 
-                    if (alt < dist[node])
+                //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
+                currentPath.Reverse();
+
+                //Calcular coste del path
+                for (int i = 0; i < currentPath.Count; i++)
+                {
+                    //Sumo el coste de todas las casillas que forman el path excepto la primera (ya que es la casilla sobre la que se encuentra la unidad).
+                    if (i != 0)
                     {
-                        if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
-                        {
-                            dist[node] = alt;
-                            prev[node] = currentNode;
-                        }
+                        tempCurrentPathCost += CostToEnterTile(currentPath[i].tileX, currentPath[i].tileZ);
                     }
                 }
 
-                else if (selectedCharacter.GetComponent<EnGoblin>())
+                for (int i = 0; i < gridSizeX; i++)
                 {
-                    //Si el nodo no está vacío o un obstáculo puedo seguir comprobando el path
-                    if (!node.isEmpty && !node.isObstacle)
+                    for (int j = 0; j < gridSizeZ; j++)
+                    {
+                        grid2DNode[j,i].parent = null;
+                    }
+                    
+                }
+
+                return;
+            }
+
+
+            foreach (IndividualTiles neighbour in grid2DNode[currentNode.tileX, currentNode.tileZ].neighbours)
+            {
+                //Goblin
+                if (selectedCharacter.GetComponent<EnGoblin>())
+                {
+                    if (neighbour.isEmpty && neighbour.isObstacle)
                     {
                         //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
-                        if ((node != target && node.unitOnTile == null) || node == target)
+                        if (neighbour != target && neighbour.unitOnTile != null)
                         {
-                            float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
-
-                            if (alt < dist[node])
-                            {
-                                if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
-                                {
-                                    dist[node] = alt;
-                                    prev[node] = currentNode;
-                                }
-                            }
+                            continue;
                         }
                     }
                 }
 
-                else
+                //Player
+                if ((selectedCharacter.GetComponent<PlayerUnit>() && (neighbour.isEmpty || neighbour.isObstacle || neighbour.unitOnTile != null)) || closedHasSet.Contains(neighbour))
                 {
-                    if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle)
-                    {
-                        float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+                    continue;
+                }
 
-                        if (alt < dist[node])
-                        {
-                            if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
-                            {
-                                dist[node] = alt;
-                                prev[node] = currentNode;
-                            }
-                        }
+                //El gigante se tiene en cuenta al no ponerle condiciones de tile vacio o tile obstaculo
+
+                int newMovemntCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+
+                if (newMovemntCostToNeighbour < neighbour.gCost || !openList.Contains(neighbour))
+                {
+                    neighbour.gCost = newMovemntCostToNeighbour;
+                    neighbour.hCost = GetDistance(neighbour, target);
+
+                    neighbour.parent = currentNode;
+
+                    if (!openList.Contains(neighbour))
+                    {
+                        openList.Add(neighbour);
                     }
                 }
-            }
-        }
-
-        if (prev[target] == null)
-        {
-            //Si llega aquí significa que no hay ninguna ruta disponible desde el origen hasta el objetivo.
-            tempCurrentPathCost = Mathf.Infinity;
-        }
-
-        //Si llega hasta aquí si que hay un camino hasta el objetivo.
-        curr = target;
-
-        //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
-        //Esta ruta está al reves, va desde el objetivo hasta el origen.
-        while (curr != null)
-        {
-            currentPath.Add(curr);
-            curr = prev[curr];
-        }
-
-        //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
-        currentPath.Reverse();
-
-        //Calcular coste del path
-        for (int i = 0; i < currentPath.Count; i++)
-        {
-            //Sumo el coste de todas las casillas que forman el path excepto la primera (ya que es la casilla sobre la que se encuentra la unidad).
-            if (i != 0)
-            {
-                tempCurrentPathCost += CostToEnterTile(currentPath[i].tileX, currentPath[i].tileZ);
+                
             }
         }
     }
+
+
+
+    int GetDistance(IndividualTiles nodeA, IndividualTiles nodeB)
+    {
+       return(Mathf.Abs(nodeA.tileX - nodeB.tileX) + Mathf.Abs(nodeA.tileZ - nodeB.tileZ));
+    }
+
 
     #endregion
 
@@ -579,4 +561,148 @@ public class TileManager : MonoBehaviour
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, gridWorldSize.y, gridWorldSize.z));
     }
+
+
+   
+    //public void CalculatePathForMovementCost(int x, int z)
+    //{
+    //    currentPath.Clear();
+    //    unvisited.Clear();
+
+    //    //Origen y target
+    //    source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
+    //    target = grid2DNode[x, z];
+
+    //    //La distancia que hay desde el origen hasta el origen es 0. Por lo que en el diccionario, el nodo que coincida con el origen, su float valdrá 0.
+    //    dist[source] = 0;
+    //    //No hay ningún nodo antes que el origen por lo que el valor de source en el diccionario es null.
+    //    prev[source] = null;
+
+    //    //Inicializamos para que pueda llegar hasta alcance infinito ya que no se la distancia hasta el objetivo. Al ponerlos todos en infinitos menos el source, me aseguro que empieza desde ahí.
+    //    //En principio no llegará nunca hasta el infinito porque encontrará antes el objetivo y entonces se cortará el proceso.
+    //    //También sirve para contemplar las casillas a las que no se puede llegar (es cómo si tuviesen valor infinito).
+    //    foreach (IndividualTiles node in grid2DNode)
+    //    {
+    //        //Si el nodo no ha sido quitado de los nodos sin visitar
+    //        if (node != source)
+    //        {
+    //            dist[node] = Mathf.Infinity;
+    //            prev[node] = null;
+    //        }
+
+    //        //Todos los nodos se añaden a la lista de unvisited, incluido el origen.
+    //        unvisited.Add(node);
+    //    }
+
+    //    //Mientras que haya nodos que no hayan sido visitados...
+    //    while (unvisited.Count > 0)
+    //    {
+    //        //currentNode se corresponde con el nodo no visitado con la distancia más corta
+    //        //La primera vez va a ser source ya que es el único nodo que no tiene valor infinito
+    //        //Después de eso sólo podrá coger una de las casillas vecinas y así irá repitiendo el ciclo.
+    //        IndividualTiles currentNode = null;
+
+    //        foreach (IndividualTiles possibleNode in unvisited)
+    //        {
+    //            if (currentNode == null || dist[possibleNode] < dist[currentNode])
+    //            {
+    //                currentNode = possibleNode;
+    //            }
+    //        }
+
+    //        //Si el nodo coincide con el objetivo, terminamos la busqueda.
+    //        if (currentNode == target)
+    //        {
+    //            break;
+    //        }
+
+    //        unvisited.Remove(currentNode);
+
+    //        foreach (IndividualTiles node in currentNode.neighbours)
+    //        {
+    //            if (selectedCharacter.GetComponent<EnGiant>())
+    //            {
+    //                float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+    //                if (alt < dist[node])
+    //                {
+    //                    if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
+    //                    {
+    //                        dist[node] = alt;
+    //                        prev[node] = currentNode;
+    //                    }
+    //                }
+    //            }
+
+    //            else if (selectedCharacter.GetComponent<EnGoblin>())
+    //            {
+    //                //Si el nodo no está vacío o un obstáculo puedo seguir comprobando el path
+    //                if (!node.isEmpty && !node.isObstacle)
+    //                {
+    //                    //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
+    //                    if ((node != target && node.unitOnTile == null) || node == target)
+    //                    {
+    //                        float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+    //                        if (alt < dist[node])
+    //                        {
+    //                            if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
+    //                            {
+    //                                dist[node] = alt;
+    //                                prev[node] = currentNode;
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+
+    //            else
+    //            {
+    //                if (node.unitOnTile == null && !node.isEmpty && !node.isObstacle)
+    //                {
+    //                    float alt = dist[currentNode] + CostToEnterTile(node.tileX, node.tileZ);
+
+    //                    if (alt < dist[node])
+    //                    {
+    //                        if (Mathf.Abs(node.height - currentNode.height) <= selectedCharacter.maxHeightDifferenceToMove)
+    //                        {
+    //                            dist[node] = alt;
+    //                            prev[node] = currentNode;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+
+    //    if (prev[target] == null)
+    //    {
+    //        //Si llega aquí significa que no hay ninguna ruta disponible desde el origen hasta el objetivo.
+    //        tempCurrentPathCost = Mathf.Infinity;
+    //    }
+
+    //    //Si llega hasta aquí si que hay un camino hasta el objetivo.
+    //    curr = target;
+
+    //    //Recorre la cadena de Prev y la añade a la lista que guarda el camino.
+    //    //Esta ruta está al reves, va desde el objetivo hasta el origen.
+    //    while (curr != null)
+    //    {
+    //        currentPath.Add(curr);
+    //        curr = prev[curr];
+    //    }
+
+    //    //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
+    //    currentPath.Reverse();
+
+    //    //Calcular coste del path
+    //    for (int i = 0; i < currentPath.Count; i++)
+    //    {
+    //        //Sumo el coste de todas las casillas que forman el path excepto la primera (ya que es la casilla sobre la que se encuentra la unidad).
+    //        if (i != 0)
+    //        {
+    //            tempCurrentPathCost += CostToEnterTile(currentPath[i].tileX, currentPath[i].tileZ);
+    //        }
+    //    }
+    //}
 }
