@@ -229,7 +229,7 @@ public class PlayerUnit : UnitBase
             SoundManager.Instance.PlaySound(AppSounds.MOVEMENT);
 
             //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
+            currentTileVectorToMove = myCurrentPath[j].transform.position; // new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
 
             //Muevo y roto a la unidad
             unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);

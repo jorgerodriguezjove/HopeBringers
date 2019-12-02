@@ -10,6 +10,7 @@ public class EnGoblin : EnemyUnit
     private IndividualTiles myCurrentObjectiveTile;
 
     //Path de tiles a seguir hasta el objetivo
+    [SerializeField]
     private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
     public override void SearchingObjectivesToAttack()
@@ -21,11 +22,6 @@ public class EnGoblin : EnemyUnit
         }
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
-
-        if (currentUnitsAvailableToAttack.Count != 0)
-        {
-            Debug.Log(currentUnitsAvailableToAttack[0]);
-        }
 
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)

@@ -390,9 +390,11 @@ public class TileManager : MonoBehaviour
         closedHasSet.Clear();
 
         //Origen y target
-        
+        Debug.Log(selectedCharacter);
         source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
         target = grid2DNode[x, z];
+
+        Debug.Log(source);
 
         openList.Add(source);
 
