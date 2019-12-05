@@ -201,6 +201,7 @@ public class TileManager : MonoBehaviour
     //NO ESTÁ PENSADO PARA QUE HAYA TILES ENCIMA DE OTROS A DIFERENTES ALTURAS.
     void SetTilesNeighbours()
     {
+        Debug.Log(gridSizeZ);
         for (int z = 0; z < gridSizeZ; z++)
         {
             for (int x = 0; x < gridSizeX; x++)
@@ -213,7 +214,9 @@ public class TileManager : MonoBehaviour
                     {
                         if (k == 1)
                         {
+                            Debug.Log("new tile" + x + "-" + z);
                             grid2DNode[x, z].neighbours.Add(grid2DNode[x - 1, z]);
+                            Debug.Log("post" + x + "-" + z);
                         }
 
                         grid2DNode[x, z].tilesInLineLeft.Add(grid2DNode[x - k, z]);
@@ -335,7 +338,7 @@ public class TileManager : MonoBehaviour
                     currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
 
                     //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
-                    if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
+                    if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
                     {
                         if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
                         {
@@ -363,7 +366,7 @@ public class TileManager : MonoBehaviour
                         currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ + j];
 
                         //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
-                        if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
+                        if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
                         {
                             if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
                             {
@@ -390,11 +393,8 @@ public class TileManager : MonoBehaviour
         closedHasSet.Clear();
 
         //Origen y target
-        Debug.Log(selectedCharacter);
         source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
         target = grid2DNode[x, z];
-
-        Debug.Log(source);
 
         openList.Add(source);
 
@@ -460,7 +460,7 @@ public class TileManager : MonoBehaviour
                 //Goblin
                 if (selectedCharacter.GetComponent<EnGoblin>())
                 {
-                    if (neighbour.isEmpty && neighbour.isObstacle)
+                    if (neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - selectedCharacter.myCurrentTile.height) > selectedCharacter.maxHeightDifferenceToMove)
                     {
                         continue;
 
@@ -475,7 +475,7 @@ public class TileManager : MonoBehaviour
                 }
 
                 //Player
-                if ((selectedCharacter.GetComponent<PlayerUnit>() && (neighbour.isEmpty || neighbour.isObstacle || neighbour.unitOnTile != null)) || closedHasSet.Contains(neighbour))
+                if ((selectedCharacter.GetComponent<PlayerUnit>() && (neighbour.isEmpty || neighbour.isObstacle || neighbour.unitOnTile != null)) || Mathf.Abs(neighbour.height - selectedCharacter.myCurrentTile.height) > selectedCharacter.maxHeightDifferenceToMove || closedHasSet.Contains(neighbour))
                 {
                     continue;
                 }
@@ -496,7 +496,6 @@ public class TileManager : MonoBehaviour
                         openList.Add(neighbour);
                     }
                 }
-                
             }
         }
     }

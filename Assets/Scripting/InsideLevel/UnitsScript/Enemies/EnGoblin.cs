@@ -155,11 +155,18 @@ public class EnGoblin : EnemyUnit
         LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
         pathToObjective = LM.TM.currentPath;
 
+
+        if (pathToObjective.Count - 2 > movementUds)
+        {
+            Debug.Log(pathToObjective.Count);
+        }
+
+
         //Compruebo la dirección en la que se mueve para girar a la unidad
         CheckTileDirection(pathToObjective[0]);
 
         myCurrentEnemyState = enemyState.Waiting;
-        movementParticle.SetActive(false);
+        
 
         //Actualizo info de los tiles
         UpdateInformationAfterMovement(pathToObjective[pathToObjective.Count - 2]);
@@ -188,6 +195,8 @@ public class EnGoblin : EnemyUnit
         yield return new WaitForSeconds(timeWaitAfterMovement);
         hasMoved = true;
         myCurrentEnemyState = enemyState.Searching;
+
+        movementParticle.SetActive(false);
 
     }
 

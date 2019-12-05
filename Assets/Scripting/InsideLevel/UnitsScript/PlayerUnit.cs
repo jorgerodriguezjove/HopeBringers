@@ -522,9 +522,9 @@ public class PlayerUnit : UnitBase
 
         if (currentFacingDirection == FacingDirection.North)
         {
-            if (range <= myCurrentTile.tilesInLineUp.Count)
+            if (attackRange <= myCurrentTile.tilesInLineUp.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
            else
             {
@@ -544,9 +544,9 @@ public class PlayerUnit : UnitBase
 
         if (currentFacingDirection == FacingDirection.South)
         {
-            if (range <= myCurrentTile.tilesInLineDown.Count)
+            if (attackRange <= myCurrentTile.tilesInLineDown.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
             else
             {
@@ -566,9 +566,9 @@ public class PlayerUnit : UnitBase
 
         if (currentFacingDirection == FacingDirection.East)
         {
-            if (range <= myCurrentTile.tilesInLineRight.Count)
+            if (attackRange <= myCurrentTile.tilesInLineRight.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
             else
             {
@@ -588,9 +588,9 @@ public class PlayerUnit : UnitBase
 
         if (currentFacingDirection == FacingDirection.West)
         {
-            if (range <= myCurrentTile.tilesInLineLeft.Count)
+            if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
             else
             {

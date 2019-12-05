@@ -46,7 +46,7 @@ public class EnemyPortraits : MonoBehaviour
             if (UIM.LM.selectedCharacter == null && UIM.LM.selectedEnemy == null)
             {
                 UIM.ShowCharacterImage(assignedEnemy);
-                UIM.LM.ShowEnemyHover(assignedEnemy.movementUds, assignedEnemy);
+                UIM.LM.ShowEnemyHover(assignedEnemy.range, assignedEnemy);
             }
         }
 	}

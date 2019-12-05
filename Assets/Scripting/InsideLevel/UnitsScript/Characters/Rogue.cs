@@ -18,9 +18,9 @@ public class Rogue : PlayerUnit
         //Arriba
         if (myCurrentTile.tilesInLineUp.Count > 1)
         {
-            if (range <= myCurrentTile.tilesInLineUp.Count)
+            if (attackRange <= myCurrentTile.tilesInLineUp.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
             else
             {
@@ -48,9 +48,9 @@ public class Rogue : PlayerUnit
 
         if (myCurrentTile.tilesInLineDown.Count > 1)
         {
-            if (range <= myCurrentTile.tilesInLineDown.Count)
+            if (attackRange <= myCurrentTile.tilesInLineDown.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
             else
             {
@@ -78,9 +78,9 @@ public class Rogue : PlayerUnit
 
         if (myCurrentTile.tilesInLineRight.Count > 1)
         {
-            if (range <= myCurrentTile.tilesInLineRight.Count)
+            if (attackRange <= myCurrentTile.tilesInLineRight.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
             else
             {
@@ -108,9 +108,9 @@ public class Rogue : PlayerUnit
 
         if (myCurrentTile.tilesInLineLeft.Count > 1)
         {
-            if (range <= myCurrentTile.tilesInLineLeft.Count)
+            if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = attackRange;
             }
             else
             {

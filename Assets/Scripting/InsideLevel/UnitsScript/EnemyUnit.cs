@@ -8,6 +8,10 @@ public class EnemyUnit : UnitBase
 
     [Header("STATE MACHINE")]
 
+    //Rango de acción del enemigo
+    [SerializeField]
+    public int range;
+
     [SerializeField]
     private float timeWaitingMovement;
     [SerializeField]
@@ -225,7 +229,7 @@ public class EnemyUnit : UnitBase
                         LM.tilesAvailableForMovement.Clear();
 
                         LM.DeSelectUnit();
-                        LM.ShowEnemyHover(movementUds, this);
+                        LM.ShowEnemyHover(range, this);
                         LM.selectedEnemy = this;
                         //Llamo a LevelManager para activar hover
 
@@ -238,7 +242,7 @@ public class EnemyUnit : UnitBase
                     else
                     {
                         LM.DeSelectUnit();
-                        LM.ShowEnemyHover(movementUds, this);
+                        LM.ShowEnemyHover(range, this);
                         LM.selectedEnemy = this;
                         //Llamo a LevelManager para activar hover
 
@@ -264,7 +268,7 @@ public class EnemyUnit : UnitBase
                 if (!isDead)
                 {
                     
-                    LM.ShowEnemyHover(movementUds, this);
+                    LM.ShowEnemyHover(range, this);
                     //Llamo a LevelManager para activar hover				
                     LM.UIM.ShowCharacterImage(this);
                     //LM.UIM.ShowCharacterInfo(unitInfo, this); 

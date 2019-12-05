@@ -14,12 +14,14 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public bool isAvailableForCharacterColocation;
 
+    [HideInInspector]
     public int movementCost = 1;
 
     //Posición real en la escena del tile
+    [HideInInspector]
     public Vector3 worldPosition;
     //Posiciones de coordenada dentro del Grid
-    [HideInInspector]
+    [SerializeField]
     public int tileX, height, tileZ;
 
     [HideInInspector]

@@ -25,6 +25,9 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int movementUds;
 
+    [SerializeField]
+    protected int attackRange;
+
     [Header("DAMAGE")]
 
     //Daño de la unidad
@@ -42,10 +45,6 @@ public class UnitBase : MonoBehaviour
     //Daño cuándo ataca por la espalda
     [SerializeField]
     protected float multiplicatorLessHeight;
-
-    //Rango del ataque (en general será 1 a no ser que ataquen a distancia).
-    [SerializeField]
-    protected int range;
 
     [Header("LOGIC")]
 
