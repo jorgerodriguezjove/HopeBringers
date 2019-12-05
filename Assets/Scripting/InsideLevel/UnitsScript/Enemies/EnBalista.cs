@@ -583,9 +583,9 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.North)
             {
-                if (range <= myCurrentTile.tilesInLineUp.Count)
+                if (initialRangeOfAction <= myCurrentTile.tilesInLineUp.Count)
                 {
-                    rangeVSTilesInLineLimitant = range;
+                    rangeVSTilesInLineLimitant = initialRangeOfAction;
                 }
                 else
                 {
@@ -611,9 +611,9 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.East)
             {
-                if (range <= myCurrentTile.tilesInLineRight.Count)
+                if (initialRangeOfAction <= myCurrentTile.tilesInLineRight.Count)
                 {
-                    rangeVSTilesInLineLimitant = range;
+                    rangeVSTilesInLineLimitant = initialRangeOfAction;
                 }
                 else
                 {
@@ -639,9 +639,9 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.South)
             {
-                if (range <= myCurrentTile.tilesInLineDown.Count)
+                if (initialRangeOfAction <= myCurrentTile.tilesInLineDown.Count)
                 {
-                    rangeVSTilesInLineLimitant = range;
+                    rangeVSTilesInLineLimitant = initialRangeOfAction;
                 }
                 else
                 {
@@ -667,9 +667,9 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.West)
             {
-                if (range <= myCurrentTile.tilesInLineLeft.Count)
+                if (initialRangeOfAction <= myCurrentTile.tilesInLineLeft.Count)
                 {
-                    rangeVSTilesInLineLimitant = range;
+                    rangeVSTilesInLineLimitant = initialRangeOfAction;
                 }
                 else
                 {

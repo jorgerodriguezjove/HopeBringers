@@ -414,11 +414,8 @@ public class UnitBase : MonoBehaviour
     protected virtual void MoveToTilePushed(IndividualTiles newTile)
     {
         //Mover al nuevo tile
-        Debug.Log(newTile);
-
         currentTileVectorToMove = newTile.transform.position;
 
-        Debug.Log(currentTileVectorToMove);
         transform.DOMove(currentTileVectorToMove, timePushAnimation);
 
         //Si no ha muerto tras el choque, actualizo la info

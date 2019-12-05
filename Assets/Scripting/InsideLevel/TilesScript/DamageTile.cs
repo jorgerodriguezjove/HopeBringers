@@ -12,35 +12,30 @@ public class DamageTile : MonoBehaviour
     [SerializeField]
     private int damageToDo;
 
-
     [Header("REFERENCIAS")]
-
     private LevelManager LM;
 
 
     #endregion
 
-    #region Init
+    #region INIT
     private void Awake()
     {
         LM = FindObjectOfType<LevelManager>();
     }
     #endregion
 
-
-
     void OnTriggerStay(Collider unitToDoDamage)
     {
-        
-
-
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingEnemiesActions && !damageDone)
         {
-           
-            unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
-            damageDone = true;
-            
-
+            //Por si acaso pilla el tile en vez de a la unidad
+            if (unitToDoDamage.GetComponent<UnitBase>())
+            {
+                unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
+                damageDone = true;
+                Debug.Log("DAMAGE DONE");
+            }
         }
     }
 
@@ -48,12 +43,7 @@ public class DamageTile : MonoBehaviour
     {
         if (LM.currentLevelState == LevelManager.LevelState.PlayerPhase)
         {
-           
                 damageDone = false;
-            
-
-
         }
-
     }
 }

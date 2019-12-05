@@ -10,7 +10,7 @@ public class EnemyUnit : UnitBase
 
     //Rango de acción del enemigo
     [SerializeField]
-    public int range;
+    public int initialRangeOfAction;
 
     [SerializeField]
     private float timeWaitingMovement;
@@ -25,6 +25,12 @@ public class EnemyUnit : UnitBase
 
     //Posibles estados del enemigo
     protected enum enemyState {Waiting, Searching, Moving, Attacking, Ended}
+
+    //Posibles estados del enemigo
+    protected enum myTierLevel { LevelBase1, Level2 }
+
+    [SerializeField]
+    protected myTierLevel MyTierLevel;
 
     //Distancia en tiles con el enemigo más lejano
     protected int furthestAvailableUnitDistance;
@@ -45,7 +51,10 @@ public class EnemyUnit : UnitBase
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Bool que sirve para que la corrutina solo se llame una vez (por tema de que el state machine esta en el update y si no lo haría varias veces)
-    bool corroutineDone;
+    private bool corroutineDone;
+
+    //Bool que indica si el enemigo ha sido despertado o si solo tiene que comprobar su rango inicial.
+    protected bool haveIBeenAlerted;
 
     [Header("REFERENCIAS")]
 
@@ -229,7 +238,7 @@ public class EnemyUnit : UnitBase
                         LM.tilesAvailableForMovement.Clear();
 
                         LM.DeSelectUnit();
-                        LM.ShowEnemyHover(range, this);
+                        LM.ShowEnemyHover(initialRangeOfAction, this);
                         LM.selectedEnemy = this;
                         //Llamo a LevelManager para activar hover
 
@@ -242,7 +251,7 @@ public class EnemyUnit : UnitBase
                     else
                     {
                         LM.DeSelectUnit();
-                        LM.ShowEnemyHover(range, this);
+                        LM.ShowEnemyHover(initialRangeOfAction, this);
                         LM.selectedEnemy = this;
                         //Llamo a LevelManager para activar hover
 
@@ -268,7 +277,7 @@ public class EnemyUnit : UnitBase
                 if (!isDead)
                 {
                     
-                    LM.ShowEnemyHover(range, this);
+                    LM.ShowEnemyHover(initialRangeOfAction, this);
                     //Llamo a LevelManager para activar hover				
                     LM.UIM.ShowCharacterImage(this);
                     //LM.UIM.ShowCharacterInfo(unitInfo, this); 

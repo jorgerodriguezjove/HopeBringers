@@ -201,7 +201,6 @@ public class TileManager : MonoBehaviour
     //NO ESTÁ PENSADO PARA QUE HAYA TILES ENCIMA DE OTROS A DIFERENTES ALTURAS.
     void SetTilesNeighbours()
     {
-        Debug.Log(gridSizeZ);
         for (int z = 0; z < gridSizeZ; z++)
         {
             for (int x = 0; x < gridSizeX; x++)
@@ -214,9 +213,7 @@ public class TileManager : MonoBehaviour
                     {
                         if (k == 1)
                         {
-                            Debug.Log("new tile" + x + "-" + z);
                             grid2DNode[x, z].neighbours.Add(grid2DNode[x - 1, z]);
-                            Debug.Log("post" + x + "-" + z);
                         }
 
                         grid2DNode[x, z].tilesInLineLeft.Add(grid2DNode[x - k, z]);

@@ -21,8 +21,6 @@ public class PlayerUnit : UnitBase
     //Bool para saber si puedo hacer hover a las unidades 
     public bool canHover;
 
-
-
     [SerializeField]
     private GameObject movementTokenInGame;
 

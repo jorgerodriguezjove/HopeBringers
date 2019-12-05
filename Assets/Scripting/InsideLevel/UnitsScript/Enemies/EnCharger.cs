@@ -5,6 +5,13 @@ using DG.Tweening;
 
 public class EnCharger : EnemyUnit
 {
+    //Referencia al tile de daño que instancia en tier 2
+    [SerializeField]
+    public GameObject tileDamageRef;
+
+    //Path de tiles a seguir hasta el objetivo
+    [SerializeField]
+    private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
     public override void SearchingObjectivesToAttack()
     {
@@ -49,6 +56,7 @@ public class EnCharger : EnemyUnit
     public override void Attack()
     {
         movementParticle.SetActive(true);
+        pathToObjective.Clear();
 
         //Arriba o abajo
         if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == myCurrentTile.tileX)
@@ -56,42 +64,30 @@ public class EnCharger : EnemyUnit
             //Arriba
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
             {
-                //Muevo al charger
-                if (furthestAvailableUnitDistance >= 0)
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
-                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].transform.position;//   new Vector3(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance].tileZ);
-                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-
-                    //Actualizo las variables de los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[furthestAvailableUnitDistance]);
+                    pathToObjective.Add(myCurrentTile.tilesInLineUp[i]);
                 }
 
                 //Roto al charger
                 transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.North;
 
-                //Hago daño a la unidad
-                DoDamage(currentUnitsAvailableToAttack[0]);
+                StartCoroutine("MovingUnitAnimation");
             }
             //Abajo
             else
             {
-                if (furthestAvailableUnitDistance >= 0)
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
-                    //Muevo al charger
-                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].transform.position; // new Vector3(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance].tileZ);
-                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-
-                    //Actualizo las variables de los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[furthestAvailableUnitDistance]);
+                    pathToObjective.Add(myCurrentTile.tilesInLineDown[i]);
                 }
 
                 //Roto al charger
                 transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.South;
 
-                //Hago daño a la unidad
-                DoDamage(currentUnitsAvailableToAttack[0]);
+                StartCoroutine("MovingUnitAnimation");
             }
         }
         //Izquierda o derecha
@@ -100,49 +96,77 @@ public class EnCharger : EnemyUnit
             //Derecha
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > myCurrentTile.tileX)
             {
-                if (furthestAvailableUnitDistance >= 0)
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
-                    //Muevo al charger
-                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].transform.position;//  new Vector3(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance].tileZ);
-                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-
-                    //Actualizo las variables de los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[furthestAvailableUnitDistance]);
+                    pathToObjective.Add(myCurrentTile.tilesInLineRight[i]);
                 }
 
                 //Roto al charger
                 transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.East;
 
-                //Hago daño a la unidad
-                DoDamage(currentUnitsAvailableToAttack[0]);
+                StartCoroutine("MovingUnitAnimation");
             }
             //Izquierda
             else
             {
-                if (furthestAvailableUnitDistance >= 0)
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
-                    //Muevo al charger
-                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileX, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].height, myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance].tileZ);
-                    transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-
-                    //Actualizo las variables de los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[furthestAvailableUnitDistance]);
+                    pathToObjective.Add(myCurrentTile.tilesInLineLeft[i]);
                 }
-                  
+
                 //Roto al charger
                 transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.West;
 
-                //Hago daño a la unidad
-                DoDamage(currentUnitsAvailableToAttack[0]);
+                StartCoroutine("MovingUnitAnimation");
+
+            }
+        }
+    }
+
+
+    IEnumerator MovingUnitAnimation()
+    {
+        myCurrentEnemyState = enemyState.Waiting;
+
+        //Animación de movimiento
+        for (int j = 0; j < pathToObjective.Count; j++)
+        {
+            //Calcula el vector al que se tiene que mover.
+            currentTileVectorToMove = pathToObjective[j].transform.position;  
+
+            //Muevo y roto a la unidad
+            transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+
+            //Espera entre casillas
+            yield return new WaitForSeconds(timeMovementAnimation);
+
+            //Si es tier 2 instancia fuego
+            if (MyTierLevel == myTierLevel.Level2)
+            {
+                if (j > 0)
+                {
+                    Instantiate(tileDamageRef, pathToObjective[j - 1].transform.position, tileDamageRef.transform.rotation);
+                }
             }
         }
 
-        movementParticle.SetActive(false);
+        //Espero después de moverme para que no vaya demasiado rápido
+        yield return new WaitForSeconds(timeWaitAfterMovement);
 
+        //Actualizo toda la información al terminar de moverme
+        hasMoved = true;
+        movementParticle.SetActive(false);
+        UpdateInformationAfterMovement(pathToObjective[furthestAvailableUnitDistance]);
+
+        //Hago daño a la unidad
+        DoDamage(currentUnitsAvailableToAttack[0]);
         myCurrentEnemyState = enemyState.Ended;
     }
+
+
+
 
     public override void FinishMyActions()
     {
@@ -151,6 +175,7 @@ public class EnCharger : EnemyUnit
 
     protected override void CheckCharactersInLine()
     {
+        Debug.Log("Check");
         if (!isDead)
         {
             currentUnitsAvailableToAttack.Clear();
@@ -158,9 +183,9 @@ public class EnCharger : EnemyUnit
             //Busco objetivos en los tiles de arriba
 
             //Seteo número de tiles a comprobar en función del rango y del número de tiles disponibles
-            if (range <= myCurrentTile.tilesInLineUp.Count)
+            if (initialRangeOfAction <= myCurrentTile.tilesInLineUp.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = initialRangeOfAction;
             }
             else
             {
@@ -191,9 +216,9 @@ public class EnCharger : EnemyUnit
             }
 
             //Tiles derecha
-            if (range <= myCurrentTile.tilesInLineRight.Count)
+            if (initialRangeOfAction <= myCurrentTile.tilesInLineRight.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = initialRangeOfAction;
             }
             else
             {
@@ -232,9 +257,9 @@ public class EnCharger : EnemyUnit
             }
 
             //Tiles abajo
-            if (range <= myCurrentTile.tilesInLineDown.Count)
+            if (initialRangeOfAction <= myCurrentTile.tilesInLineDown.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = initialRangeOfAction;
             }
             else
             {
@@ -273,9 +298,9 @@ public class EnCharger : EnemyUnit
             }
 
             //Tiles abajo
-            if (range <= myCurrentTile.tilesInLineLeft.Count)
+            if (initialRangeOfAction <= myCurrentTile.tilesInLineLeft.Count)
             {
-                rangeVSTilesInLineLimitant = range;
+                rangeVSTilesInLineLimitant = initialRangeOfAction;
             }
             else
             {

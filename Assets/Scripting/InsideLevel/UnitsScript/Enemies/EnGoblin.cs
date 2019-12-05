@@ -21,7 +21,7 @@ public class EnGoblin : EnemyUnit
             return;
         }
         //Determinamos el enemigo más cercano.
-        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(range, gameObject);
+        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(initialRangeOfAction, gameObject);
 
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)
@@ -75,6 +75,10 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
+        //Lo primero que hago es poner es activar mi estado de activado.
+        haveIBeenAlerted = true;
+        initialRangeOfAction = 1000;
+
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
@@ -155,12 +159,16 @@ public class EnGoblin : EnemyUnit
         LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
         pathToObjective = LM.TM.currentPath;
 
-
+        //Compruebo si el path es demasiado largo como para que lo recorra entero.
+        //De ser asi reduzco el path para que solo se mueva hasta el tile que llegue con sus unidades de movimiento.
         if (pathToObjective.Count - 2 > movementUds)
         {
-            Debug.Log(pathToObjective.Count);
+            for (int i = movementUds; i < pathToObjective.Count-1; i++)
+            {
+                pathToObjective.RemoveAt(i);
+                i--;
+            }
         }
-
 
         //Compruebo la dirección en la que se mueve para girar a la unidad
         CheckTileDirection(pathToObjective[0]);

@@ -54,13 +54,16 @@ public class Knight : PlayerUnit
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
-        if (currentFacingDirection == FacingDirection.North && unitAttacker.currentFacingDirection == FacingDirection.South
-            || currentFacingDirection == FacingDirection.East && unitAttacker.currentFacingDirection == FacingDirection.West
-            || currentFacingDirection == FacingDirection.South && unitAttacker.currentFacingDirection == FacingDirection.North
-            || currentFacingDirection == FacingDirection.West && unitAttacker.currentFacingDirection == FacingDirection.East)
+        if (unitAttacker != null)
         {
-            //No recibe daño
-            Debug.Log("bloqueado el ataque");
+            if (currentFacingDirection == FacingDirection.North && unitAttacker.currentFacingDirection == FacingDirection.South
+          || currentFacingDirection == FacingDirection.East && unitAttacker.currentFacingDirection == FacingDirection.West
+          || currentFacingDirection == FacingDirection.South && unitAttacker.currentFacingDirection == FacingDirection.North
+          || currentFacingDirection == FacingDirection.West && unitAttacker.currentFacingDirection == FacingDirection.East)
+            {
+                //No recibe daño
+                Debug.Log("bloqueado el ataque");
+            }
         }
 
         else
