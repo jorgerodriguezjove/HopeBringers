@@ -12,10 +12,13 @@ public class Portraits : MonoBehaviour
 	public PlayerUnit assignedPlayer;
 	[HideInInspector]
 	private UIManager UIM;
+    //Añadido para hacer comprobaciones de turnos
+    [HideInInspector]
+    private LevelManager LM;
 
-	//AÑADIDO
-	//Barra de vida y valor de la barra del personaje
-	[SerializeField]
+    //AÑADIDO
+    //Barra de vida y valor de la barra del personaje
+    [SerializeField]
     public TextMeshProUGUI healthValue;
     [SerializeField]
     public Slider healthBar;
@@ -50,6 +53,8 @@ public class Portraits : MonoBehaviour
     private void Awake()
 	{
 		UIM = FindObjectOfType<UIManager>();
+        //Añadido para hacer comprobaciones de turnos
+        LM = FindObjectOfType<LevelManager>();
         //Se desactiva para que el UImanager active únicamente los necesarios en función del número de personajes.
         gameObject.SetActive(false);
 		initImage = GetComponent<Image>().sprite;
@@ -68,41 +73,53 @@ public class Portraits : MonoBehaviour
 
     public void AssignClickerPlayer()
 	{
-		UIM.PortraitCharacterSelect(assignedPlayer);
-        isClicked = true;
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            UIM.PortraitCharacterSelect(assignedPlayer);
+            isClicked = true;
+        }
 	}
 
 	public void Highlight()
 	{
-		UIM.HighlightCharacter(assignedPlayer);
-		UIM.LM.ShowUnitHover(assignedPlayer.movementUds, assignedPlayer);
-        selectedPanel.SetActive(true);
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            UIM.HighlightCharacter(assignedPlayer);
+            UIM.LM.ShowUnitHover(assignedPlayer.movementUds, assignedPlayer);
+            selectedPanel.SetActive(true);
+        }
     }
 
 	public void Unhighlight()
 	{
-		UIM.UnHighlightCharacter(assignedPlayer);
-		UIM.LM.HideUnitHover(assignedPlayer);
-        if (isClicked == false)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-            selectedPanel.SetActive(false);
-        }
+            UIM.UnHighlightCharacter(assignedPlayer);
+            UIM.LM.HideUnitHover(assignedPlayer);
+            if (isClicked == false)
+            {
+                selectedPanel.SetActive(false);
+            }
 
-        
+        }
     }
 
 	public void HighlightPortrait()
 	{
         //GetComponent<Image>().sprite = selectedImage;
-
-        selectedPanel.SetActive(true);
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            selectedPanel.SetActive(true);
+        }
     }
 	public void UnHighlightPortrait()
 	{
         //GetComponent<Image>().sprite = initImage;
 
-        
-        selectedPanel.SetActive(false);
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            selectedPanel.SetActive(false);
+        }
         
     }
 

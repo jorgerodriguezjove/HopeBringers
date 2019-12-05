@@ -45,7 +45,7 @@ public class EnemyUnit : UnitBase
 
     [Header("REFERENCIAS")]
 
-    //Ahora mismo se setea desde el inspector
+    //Ahora mismo se setea desde el inspector (Ya está cambiado)
     [SerializeField]
     public GameObject LevelManagerRef;
     protected LevelManager LM;
@@ -63,6 +63,9 @@ public class EnemyUnit : UnitBase
 
     private void Awake()
     {
+        //Le digo al enemigo cual es el LevelManager del nivel actual
+        LevelManagerRef = FindObjectOfType<LevelManager>().gameObject;
+
         //Referencia al LM y me incluyo en la lista de enemiogos
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
@@ -75,8 +78,11 @@ public class EnemyUnit : UnitBase
         currentHealth = maxHealth;
 
         movementParticle.SetActive(false);
+
+        
     }
 
+   
     #endregion
 
     #region ENEMY_STATE
@@ -200,44 +206,48 @@ public class EnemyUnit : UnitBase
         {
             if (!isDead)
             {
-                if (LM.selectedEnemy != null) {
-
-                    LM.HideEnemyHover(LM.selectedEnemy);
-                    //Llamo a LevelManager para desactivar hover
-                    if (LM.selectedCharacter != null)
-                    {
-                        LM.selectedCharacter.HideDamageIcons();
-                    }
-                    LM.HideHover(LM.selectedEnemy);
-                    LM.selectedEnemy.HealthBarOn_Off(false);
-                    LM.UIM.HideCharacterImage();
-                    //LM.UIM.HideCharacterInfo("");
-                    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-                    LM.tilesAvailableForMovement.Clear();
-
-                    LM.DeSelectUnit();
-                    LM.ShowEnemyHover(movementUds, this);
-                    LM.selectedEnemy = this;
-                    //Llamo a LevelManager para activar hover
-
-                    LM.CheckIfHoverShouldAppear(this);
-                    LM.UIM.ShowCharacterImage(this);
-                    //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
-                    HealthBarOn_Off(true);
-                    gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-                }
-                 else
+                if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                 {
-                    LM.DeSelectUnit();
-                    LM.ShowEnemyHover(movementUds, this);
-                    LM.selectedEnemy = this;
-                    //Llamo a LevelManager para activar hover
+                    if (LM.selectedEnemy != null)
+                    {
 
-                    LM.CheckIfHoverShouldAppear(this);
-                    LM.UIM.ShowCharacterImage(this);
-                    //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
-                    HealthBarOn_Off(true);
-                    gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                        LM.HideEnemyHover(LM.selectedEnemy);
+                        //Llamo a LevelManager para desactivar hover
+                        if (LM.selectedCharacter != null)
+                        {
+                            LM.selectedCharacter.HideDamageIcons();
+                        }
+                        LM.HideHover(LM.selectedEnemy);
+                        LM.selectedEnemy.HealthBarOn_Off(false);
+                        LM.UIM.HideCharacterImage();
+                        //LM.UIM.HideCharacterInfo("");
+                        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                        LM.tilesAvailableForMovement.Clear();
+
+                        LM.DeSelectUnit();
+                        LM.ShowEnemyHover(movementUds, this);
+                        LM.selectedEnemy = this;
+                        //Llamo a LevelManager para activar hover
+
+                        LM.CheckIfHoverShouldAppear(this);
+                        LM.UIM.ShowCharacterImage(this);
+                        //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+                        HealthBarOn_Off(true);
+                        gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                    }
+                    else
+                    {
+                        LM.DeSelectUnit();
+                        LM.ShowEnemyHover(movementUds, this);
+                        LM.selectedEnemy = this;
+                        //Llamo a LevelManager para activar hover
+
+                        LM.CheckIfHoverShouldAppear(this);
+                        LM.UIM.ShowCharacterImage(this);
+                        //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+                        HealthBarOn_Off(true);
+                        gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                    }
                 }
             }
 
@@ -278,20 +288,23 @@ public class EnemyUnit : UnitBase
 
     private void OnMouseExit()
     {
-        if (LM.selectedEnemy == null) 
-{
-            
-            LM.HideEnemyHover(this);
-			//Llamo a LevelManager para desactivar hover
-			if(LM.selectedCharacter != null)
-			{
-				LM.selectedCharacter.HideDamageIcons();
-			}		
-			LM.HideHover(this);
-            HealthBarOn_Off(false);
-			LM.UIM.HideCharacterImage();
-            //LM.UIM.HideCharacterInfo("");
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            if (LM.selectedEnemy == null)
+            {
+
+                LM.HideEnemyHover(this);
+                //Llamo a LevelManager para desactivar hover
+                if (LM.selectedCharacter != null)
+                {
+                    LM.selectedCharacter.HideDamageIcons();
+                }
+                LM.HideHover(this);
+                HealthBarOn_Off(false);
+                LM.UIM.HideCharacterImage();
+                //LM.UIM.HideCharacterInfo("");
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            }
         }
     }
     #endregion

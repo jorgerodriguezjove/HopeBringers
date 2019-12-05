@@ -14,14 +14,21 @@ public class EnemyPortraits : MonoBehaviour
 	[HideInInspector]
 	public UIManager UIM;
 
+    //Añadido para hacer comprobaciones de turnos
+    [HideInInspector]
+    private LevelManager LM;
 
-	#endregion
 
-	#region INIT
-	private void Awake()
+    #endregion
+
+    #region INIT
+    private void Awake()
 	{
 		UIM = FindObjectOfType<UIManager>();
-	}
+
+        //Añadido para hacer comprobaciones de turnos
+        LM = FindObjectOfType<LevelManager>();
+    }
 	private void Start()
 	{
 		GetComponent<Image>().sprite = enemyPortraitSprite;
@@ -33,28 +40,38 @@ public class EnemyPortraits : MonoBehaviour
 
 	public void ShowEnemyPortraitFromPanel()
 	{
-		if(UIM.LM.selectedCharacter == null && UIM.LM.selectedEnemy == null)
-		{
-			UIM.ShowCharacterImage(assignedEnemy);
-			UIM.LM.ShowEnemyHover(assignedEnemy.movementUds, assignedEnemy);
-		}	
+
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            if (UIM.LM.selectedCharacter == null && UIM.LM.selectedEnemy == null)
+            {
+                UIM.ShowCharacterImage(assignedEnemy);
+                UIM.LM.ShowEnemyHover(assignedEnemy.movementUds, assignedEnemy);
+            }
+        }
 	}
 
 	public void HideEnemyPortraitFromPanel()
-	{
-		if(UIM.LM.selectedEnemy == null)
-		{
-			UIM.HideCharacterImage();
-			UIM.LM.HideEnemyHover(assignedEnemy);
-			UIM.LM.HideEnemyHover(assignedEnemy);
-		}
+    {
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            if (UIM.LM.selectedEnemy == null)
+            {
+                UIM.HideCharacterImage();
+                UIM.LM.HideEnemyHover(assignedEnemy);
+                UIM.LM.HideEnemyHover(assignedEnemy);
+            }
+        }
 
 	}
 	
 	public void SelectEnemyFromPanel()
 	{
-		UIM.ShowCharacterImage(assignedEnemy);
-		UIM.LM.selectedEnemy = assignedEnemy;
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            UIM.ShowCharacterImage(assignedEnemy);
+            UIM.LM.selectedEnemy = assignedEnemy;
+        }
 	}
 
 	#endregion

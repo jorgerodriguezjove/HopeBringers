@@ -104,22 +104,45 @@ public class UIManager : MonoBehaviour
 		tooltipAccionesText.text = "Selecciona una unidad";
 	}
 
-	#endregion
+    #endregion
 
-	#region END_TURN
+    #region END_TURN
 
-	//Se llama desde el botón de finalizar turno
-	public void EndTurn()
+    //Se llama desde el botón de finalizar turno
+    public void EndTurn()
     {
-		Debug.Log("Soy EndTurn");
-		RotateButtonEndPhase();
-        LM.ChangePhase();
+        //He cambiado esta parte para que el end turn también borre los tiles pintados
+        if (LM.selectedCharacter == null)
+        {
+            Debug.Log("Soy EndTurn");
+            RotateButtonEndPhase();
+            LM.ChangePhase();
+            if (LM.selectedEnemy != null)
+            {
+                LM.DeselectEnemy();
+            }
+        }
+        else if ( !LM.selectedCharacter.isMovingorRotating)
+        {
+            Debug.Log("Soy EndTurn");
+            RotateButtonEndPhase();
+            LM.ChangePhase();
+
+            if (LM.selectedEnemy != null)
+            {
+                LM.DeselectEnemy();
+            }
+
+            LM.DeSelectUnit();
+        }
+        
     }
 
     //Función que activa o desactiva el botón de pasar turno en función de si es la fase del player o del enemigo
     public void ActivateDeActivateEndButton()
     {
-        endTurnButton.GetComponent<BoxCollider>().enabled = !endTurnButton.GetComponent<BoxCollider>().enabled;
+        //endTurnButton.GetComponent<BoxCollider>().enabled = !endTurnButton.GetComponent<BoxCollider>().enabled;
+        endTurnButton.GetComponent<BoxCollider>().enabled=true;
     }
 
 	public void RotateButtonEndPhase()
