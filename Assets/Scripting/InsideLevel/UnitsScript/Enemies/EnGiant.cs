@@ -7,7 +7,6 @@ public class EnGiant : EnemyUnit
 {
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
     private UnitBase myCurentObjective;
-    [SerializeField]
     private IndividualTiles myCurrentObjectiveTile;
 
     public override void SearchingObjectivesToAttack()

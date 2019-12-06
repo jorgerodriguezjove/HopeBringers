@@ -68,7 +68,26 @@ public class UIManager : MonoBehaviour
 
 	[SerializeField]
 	public Image imageCharacterInfo;
-  
+
+    [Header("SCROLL")]
+    //Bools que indican si se estan pulsando los botones
+    private bool isScrollButtonDownBeingPressed;
+    private bool isScrollButtonUpBeingPressed;
+
+    //Velocidad de scroll
+    [SerializeField]
+    private float scrollSpeed;
+    //Separación entre retratos de personajes (el 69 no va en coña, de verdad que está bien separado así)
+    [SerializeField]
+    private int enemyPortraitSeparation;
+
+    //Posición inicial a la que vuelve la barra cuando se acaba el turno enemigo
+    private Vector3 initialScrollPosition;
+
+    //Topes que no puede superar la barra
+    [SerializeField]
+    private GameObject topScrollUp, topScrollDown;
+
 
     [Header("REFERENCIAS")]
 
@@ -88,13 +107,15 @@ public class UIManager : MonoBehaviour
 	{
 		characterInfoOriginalPosition = characterInfo.transform.position;
 
-		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+        //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
+        initialScrollPosition = padrePanelesEnemigos.transform.position;
+
+        for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
 		{
             //Activamos los retratos necesarios y les asignamos su jugador
             panelesPJ[i].SetActive(true);
             panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
             LM.characthersOnTheBoard[i].myPanelPortrait = panelesPJ[i];
-            //Hacer que el player sepa cuál es su retrato?
 
             //Actualizamos las barras de vida
             panelesPJ[i].GetComponent<Portraits>().InitializeHealth();
@@ -246,6 +267,7 @@ public class UIManager : MonoBehaviour
 	{
 		characterToHighlight.SelectedColor();
 	}
+
 	public void UnHighlightCharacter(PlayerUnit characterToUnhighlight)
 	{
         if (LM.selectedCharacter == null)
@@ -326,22 +348,16 @@ public class UIManager : MonoBehaviour
             if (!LM.enemiesOnTheBoard[i].isDead)
             {
                 GameObject enemyPanel = Instantiate(panelesEnemigosPrefab, padrePanelesEnemigos.transform, false);
-                enemyPanel.transform.position = new Vector3(enemyPanel.transform.position.x, enemyPanel.transform.position.y - i*69 , enemyPanel.transform.position.z);
+                enemyPanel.transform.position = new Vector3(enemyPanel.transform.position.x, enemyPanel.transform.position.y - i* enemyPortraitSeparation, enemyPanel.transform.position.z);
                 panelesEnemigos.Add(enemyPanel);
 
                 //IMPORTANTE. El contador de paneles enemigos no puede ser i ya que puede ser que haya un enemigo muerto y por tanto i sea demasiado grande.
                 panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().assignedEnemy = LM.enemiesOnTheBoard[i];
                 panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;
 
-                //LM.enemiesOnTheBoard[i].orderToShow = i + 1;
-                //LM.enemiesOnTheBoard[i].thisUnitOrder.GetComponent <TextMeshPro>().text = "" + LM.enemiesOnTheBoard[i].orderToShow;
-                //LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
+                LM.enemiesOnTheBoard[i].GetComponent<EnemyUnit>().myPortrait = panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>();
             }
         }
-
-        Debug.Log("Nice");
-        //padrePanelesEnemigos.GetComponent<RectTransform>().offsetMax = new Vector2(padrePanelesEnemigos.GetComponent<RectTransform>().offsetMax.x, 0);
-        //padrePanelesEnemigos.GetComponent<RectTransform>().offsetMin = new Vector2(padrePanelesEnemigos.GetComponent<RectTransform>().offsetMin.x, -Mathf.Abs(-100 * (panelesEnemigos.Count-1)));
     }
 
     public void ShowEnemyOrder(bool show_hide)
@@ -353,11 +369,76 @@ public class UIManager : MonoBehaviour
         }
     }
 
-	#endregion
+    //Scrolear la barra de lista hacia arriba
+    public void ScrollUp()
+    {
+        isScrollButtonUpBeingPressed = true;
+    }
 
-	#region TOOLTIP ACCTIONS
+    //Scrolear la barra de lista hacia abajo
+    public void ScrollDown()
+    {
+        isScrollButtonDownBeingPressed = true;
+    }
 
-	public void TooltipMove()
+    //Parar de scrollear la barra al soltar el botón
+    public void StopScroll()
+    {
+        isScrollButtonDownBeingPressed = false;
+        isScrollButtonUpBeingPressed = false;
+    }
+
+    //Función que hace subir a la lista cada vez que se pasa de turno enemigo
+    public void ScrollUpOnce()
+    {
+        if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y)
+        {
+            padrePanelesEnemigos.transform.position = new Vector3(padrePanelesEnemigos.transform.position.x, padrePanelesEnemigos.transform.position.y + enemyPortraitSeparation, padrePanelesEnemigos.transform.position.z);
+        }
+    }
+
+    //Vuelvo a poner la lista arriba del todo
+    public void ResetScrollPosition()
+    {
+        padrePanelesEnemigos.transform.position = initialScrollPosition;
+    }
+
+    //Función que se 
+    public void MoveScrollToEnemy()
+    {
+        //Comprobar si el retrato enemigo esta entre el tope inferior y superior
+        //Comprobar si esta por encima de ambos topes o por debajo de ambos topes para decidir si subo o bajo la lista
+        //Contar el número de retratos que hay hasta que haya uno dentro del cuadro para saber cuánta distancia tengo que bajar o subir la barra.
+    }
+
+    private void Update()
+    {
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            if (isScrollButtonDownBeingPressed)
+            {
+                if (panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y)
+                {
+                    padrePanelesEnemigos.transform.Translate(Vector3.down * scrollSpeed * Time.deltaTime);
+                }
+            }
+
+            if (isScrollButtonUpBeingPressed)
+            {
+                if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y)
+                {
+                    padrePanelesEnemigos.transform.Translate(Vector3.up * scrollSpeed * Time.deltaTime);
+                }
+            }
+        }
+    }
+
+
+    #endregion
+
+    #region TOOLTIP ACCTIONS
+
+    public void TooltipMove()
 	{
 		tooltipAccionesText.text = "Mueve la unidad";
 	}

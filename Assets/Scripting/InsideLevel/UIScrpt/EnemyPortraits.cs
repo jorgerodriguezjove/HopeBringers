@@ -14,10 +14,13 @@ public class EnemyPortraits : MonoBehaviour
 	[HideInInspector]
 	public UIManager UIM;
 
+    //Refernecia al panel con el highlight
+    [SerializeField]
+    private GameObject highlightPanelRef;
+
     //Añadido para hacer comprobaciones de turnos
     [HideInInspector]
     private LevelManager LM;
-
 
     #endregion
 
@@ -40,16 +43,23 @@ public class EnemyPortraits : MonoBehaviour
 
 	public void ShowEnemyPortraitFromPanel()
 	{
-
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
             if (UIM.LM.selectedCharacter == null && UIM.LM.selectedEnemy == null)
             {
-                UIM.ShowCharacterImage(assignedEnemy);
-                UIM.LM.ShowEnemyHover(assignedEnemy.initialRangeOfAction, assignedEnemy);
+                //Activo highlight de retrato y de personaje
+                assignedEnemy.OnHoverEnterFunctionality();
+
+                HighlightMyself();
             }
         }
 	}
+
+    //Función separada para que la llame el enemigo.
+    public void HighlightMyself()
+    {
+        highlightPanelRef.SetActive(true);
+    }
 
 	public void HideEnemyPortraitFromPanel()
     {
@@ -57,15 +67,19 @@ public class EnemyPortraits : MonoBehaviour
         {
             if (UIM.LM.selectedEnemy == null)
             {
-                UIM.HideCharacterImage();
-                UIM.LM.HideEnemyHover(assignedEnemy);
-                UIM.LM.HideEnemyHover(assignedEnemy);
+                assignedEnemy.OnHoverExitFunctionality();
+                highlightPanelRef.SetActive(false);
             }
         }
-
 	}
-	
-	public void SelectEnemyFromPanel()
+
+    //Función separada para que la llame el enemigo.
+    public void UnHighlightMyself()
+    {
+        highlightPanelRef.SetActive(false);
+    }
+
+    public void SelectEnemyFromPanel()
 	{
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {

@@ -70,7 +70,8 @@ public class LevelManager : MonoBehaviour
     public List<EnemyUnit> enemiesOnTheBoard;
 
     //Contador que controla a que unidad le toca. Sirve cómo indice para la lista de enemigos.
-    private int counterForEnemiesOrder ;
+    [HideInInspector]
+    public int counterForEnemiesOrder;
 
     //Enum que indica si es la fase del jugador o del enemigo.
     [HideInInspector]
@@ -105,8 +106,6 @@ public class LevelManager : MonoBehaviour
             unitsWithoutPosition.Add(unitInstantiated);
         }   
     }
-
-
 
     private void Start()
     {
@@ -663,6 +662,9 @@ public class LevelManager : MonoBehaviour
 
     private void BeginPlayerPhase()
     {
+        //Recoloco la lista de enemigos donde estaba al inicio.
+        UIM.ResetScrollPosition();
+
         //Me aseguro que no quedan tiles en la lista de tiles para moverse.
         tilesAvailableForMovement.Clear();
         UpdateUnitsOrder();
@@ -730,6 +732,11 @@ public class LevelManager : MonoBehaviour
         else
         {
             counterForEnemiesOrder++;
+
+            //Bajo la lista de scroll
+            UIM.ScrollUpOnce();
+
+            //Empieza el turno enemigo
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
     }

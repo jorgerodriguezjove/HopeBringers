@@ -69,6 +69,13 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     private GameObject arrowEnemyIndicator;
 
+    [SerializeField]
+    private Material selectedMaterial;
+
+    //Referencia al retrato en la lista
+    [HideInInspector]
+    public EnemyPortraits myPortrait;
+
     #endregion
 
 
@@ -91,8 +98,6 @@ public class EnemyUnit : UnitBase
         currentHealth = maxHealth;
 
         movementParticle.SetActive(false);
-
-        
     }
 
    
@@ -102,6 +107,7 @@ public class EnemyUnit : UnitBase
 
     public void MyTurnStart()
     {
+        myPortrait.HighlightMyself();
         myCurrentEnemyState = enemyState.Searching;
     }
 
@@ -200,6 +206,7 @@ public class EnemyUnit : UnitBase
         hasMoved = false;
         hasAttacked = false;
         myCurrentEnemyState = enemyState.Waiting;
+        myPortrait.UnHighlightMyself();
         LM.NextEnemyInList();
     }
 
@@ -223,7 +230,6 @@ public class EnemyUnit : UnitBase
                 {
                     if (LM.selectedEnemy != null)
                     {
-
                         LM.HideEnemyHover(LM.selectedEnemy);
                         //Llamo a LevelManager para desactivar hover
                         if (LM.selectedCharacter != null)
@@ -263,9 +269,7 @@ public class EnemyUnit : UnitBase
                     }
                 }
             }
-
         }
-        
     }
 
     private void OnMouseEnter()
@@ -276,14 +280,7 @@ public class EnemyUnit : UnitBase
             {
                 if (!isDead)
                 {
-                    
-                    LM.ShowEnemyHover(initialRangeOfAction, this);
-                    //Llamo a LevelManager para activar hover				
-                    LM.UIM.ShowCharacterImage(this);
-                    //LM.UIM.ShowCharacterInfo(unitInfo, this); 
-                    HealthBarOn_Off(true);
-                    gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-
+                    OnHoverEnterFunctionality();
                 }
             }
             else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
@@ -299,27 +296,64 @@ public class EnemyUnit : UnitBase
         }
 	}
 
+    //Creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
+    public void OnHoverEnterFunctionality()
+    {
+        //Muestro el rango de acción del personaje.
+        LM.ShowEnemyHover(initialRangeOfAction, this);
+
+        //Llamo a LevelManager para activar hover				
+        LM.UIM.ShowCharacterImage(this);
+
+        //LM.UIM.ShowCharacterInfo(unitInfo, this); 
+        HealthBarOn_Off(true);
+        gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+
+        //Cambio el color del personaje
+        SelectedColor();
+
+        myPortrait.HighlightMyself();
+    }
+
+
     private void OnMouseExit()
     {
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
             if (LM.selectedEnemy == null)
             {
-
-                LM.HideEnemyHover(this);
-                //Llamo a LevelManager para desactivar hover
-                if (LM.selectedCharacter != null)
-                {
-                    LM.selectedCharacter.HideDamageIcons();
-                }
-                LM.HideHover(this);
-                HealthBarOn_Off(false);
-                LM.UIM.HideCharacterImage();
-                //LM.UIM.HideCharacterInfo("");
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                OnHoverExitFunctionality();
             }
         }
     }
+
+    //Al igual que con enter creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
+    public void OnHoverExitFunctionality()
+    {
+        LM.HideEnemyHover(this);
+        //Llamo a LevelManager para desactivar hover
+        if (LM.selectedCharacter != null)
+        {
+            LM.selectedCharacter.HideDamageIcons();
+        }
+        LM.HideHover(this);
+        HealthBarOn_Off(false);
+        LM.UIM.HideCharacterImage();
+        //LM.UIM.HideCharacterInfo("");
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+        ResetColor();
+
+
+        myPortrait.UnHighlightMyself();
+
+    }
+
+    public void SelectedColor()
+    {
+        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = selectedMaterial;
+    }
+
     #endregion
 
     #region DAMAGE

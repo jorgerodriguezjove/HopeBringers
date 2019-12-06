@@ -44,7 +44,6 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private Material finishedMaterial;
 
-
 	[SerializeField]
     public Canvas canvasWithRotationArrows;
 
