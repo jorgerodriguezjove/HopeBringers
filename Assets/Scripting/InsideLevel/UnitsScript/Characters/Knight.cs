@@ -64,14 +64,12 @@ public class Knight : PlayerUnit
                 //No recibe daño
                 Debug.Log("bloqueado el ataque");
             }
-        }
 
-        else
-        {
-			base.ReceiveDamage(damageReceived, unitAttacker);
+            else
+            {
+                base.ReceiveDamage(damageReceived, unitAttacker);
+            }
         }
-
-       
     }
 
 

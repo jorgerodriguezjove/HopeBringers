@@ -36,15 +36,15 @@ public class UnitBase : MonoBehaviour
 
     //Daño cuándo ataca por la espalda
     [SerializeField]
-    protected float multiplicatorBackAttack;
+    protected float bonusDamageBackAttack;
 
-    //Daño cuándo ataca por la espalda
+    //Daño cuándo ataca con más altura
     [SerializeField]
-    protected float multiplicatorMoreHeight;
+    protected float bonusDamageMoreHeight;
 
-    //Daño cuándo ataca por la espalda
+    //Daño cuándo ataca con menos altura
     [SerializeField]
-    protected float multiplicatorLessHeight;
+    protected float penalizatorDamageLessHeight;
 
     [Header("LOGIC")]
 
@@ -91,6 +91,10 @@ public class UnitBase : MonoBehaviour
     //Tiempo a esperar tras atacar
     [SerializeField]
     protected float timeWaitAfterAttack;
+
+    //Tiempo que pasa antes de ocultarse la barra de vida después de recibir daño.
+    [SerializeField]
+    float timeToWaitBeforeHidingHealthbar;
 
     [Header("ATAQUE")]
 
@@ -142,8 +146,24 @@ public class UnitBase : MonoBehaviour
 
     [Header("FEEDBACK")]
 
+    //Objeto general con todo lo que aparece en el hover
     [SerializeField]
-    private GameObject healthBar;
+    public GameObject healthBar;
+
+    //Bool que indica si el healthbar puede desaparecer o no
+    private bool shouldLockHealthBar;
+
+    //Referncia al token de vida que se instancia
+    [SerializeField]
+    private GameObject lifeTokenPref;
+
+    //Objeto donde van a aparecer los puntos de vida
+    [SerializeField]
+    public GameObject lifeContainer;
+
+    //Lista con los tokens de vida del jugador
+    [HideInInspector]
+    private List<GameObject> lifeTokensListInSceneHealthBar = new List<GameObject>();
 
     [SerializeField]
     private Material AvailableToBeAttackedColor;
@@ -190,6 +210,8 @@ public class UnitBase : MonoBehaviour
         FindAndSetFirstTile();
         myCurrentTile.unitOnTile = this;
         myCurrentTile.WarnInmediateNeighbours();
+
+        InitializeHealth();
     }
 
 
@@ -224,20 +246,20 @@ public class UnitBase : MonoBehaviour
         //Si estoy en desventaja de altura hago menos daño
         if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
         {
-            damageWithMultipliersApplied *= multiplicatorLessHeight;
+            damageWithMultipliersApplied -= penalizatorDamageLessHeight;
         }
 
         //Si estoy en ventaja de altura hago más daño
         else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
         {
-            damageWithMultipliersApplied *= multiplicatorMoreHeight;
+            damageWithMultipliersApplied += bonusDamageMoreHeight;
         }
 
         //Si le ataco por la espalda hago más daño
         if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
         {
             //Ataque por la espalda
-            damageWithMultipliersApplied *= multiplicatorBackAttack;
+            damageWithMultipliersApplied += bonusDamageBackAttack;
         }
     }
 
@@ -266,6 +288,10 @@ public class UnitBase : MonoBehaviour
     {
         //Cada unidad se resta vida con esta función.
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
+        HealthBarOn_Off(true);
+        shouldLockHealthBar = true;
+        RefreshHealth();
+        StartCoroutine("WaitBeforeHiding");
     }
 
     public virtual void Die()
@@ -456,7 +482,6 @@ public class UnitBase : MonoBehaviour
 
     public void EnableCanvasHover(int damageReceived)
     {
-
         canvasUnit.SetActive(true);
         canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText(damageReceived.ToString());
     }
@@ -466,10 +491,58 @@ public class UnitBase : MonoBehaviour
         canvasUnit.SetActive(false);
     }
 
+    //El segundo bool sirve para hacer que el healthbar no desaparezca si se quita el ratón
 	public void HealthBarOn_Off(bool isOn)
 	{
-		healthBar.SetActive(isOn);
-	}
+        if (shouldLockHealthBar && isOn)
+        {
+            healthBar.SetActive(isOn);
+        }
+        else if (!shouldLockHealthBar)
+        {
+            healthBar.SetActive(isOn);
+        }
+        
+    }
+
+    //Función que instancia los puntos de vida en la barra de vida
+    public void InitializeHealth()
+    {
+        for (int i = 0; i < maxHealth; i++)
+        {
+            GameObject lifeTokInScene = Instantiate(lifeTokenPref, lifeContainer.transform);
+            lifeTokensListInSceneHealthBar.Add(lifeTokInScene);
+        }
+    }
+
+    //Función que se encarga de actualizar la vida del personaje.
+    public void RefreshHealth()
+    {
+        //Recorro la lista de tokens empezando por el final. 
+        //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
+        //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
+        for (int i = lifeTokensListInSceneHealthBar.Count - 1; i + 1 > currentHealth; i--)
+        {
+            if (i >= 0)
+            {
+                if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                {
+                    if (!lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().haveIFlipped)
+                    {
+                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
+                    }
+                }
+            }
+        }
+    }
+
+    IEnumerator WaitBeforeHiding()
+    {
+        yield return new WaitForSeconds(timeToWaitBeforeHidingHealthbar);
+        shouldLockHealthBar = false;
+        HealthBarOn_Off(false);
+    }
+
 
     #endregion
 

@@ -502,7 +502,7 @@ public class EnBalista : EnemyUnit
         base.FinishMyActions();
     }
 
-    //Override especial del mago para que no instancie la partícula de ataque
+    
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
         CalculateDamage(unitToDealDamage);

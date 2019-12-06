@@ -337,6 +337,8 @@ public class EnemyUnit : UnitBase
         {
             Die();
         }
+
+        base.ReceiveDamage(damageReceived, unitAttacker);
     }
 
     public override void Die()

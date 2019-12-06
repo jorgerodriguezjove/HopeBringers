@@ -16,12 +16,23 @@ public class Portraits : MonoBehaviour
     [HideInInspector]
     private LevelManager LM;
 
-    //AÑADIDO
     //Barra de vida y valor de la barra del personaje
     [SerializeField]
     public TextMeshProUGUI healthValue;
     [SerializeField]
     public Slider healthBar;
+
+    //Padre donde se van a instanciar los tokens de vida
+    [SerializeField]
+    private GameObject lifeContainer;
+
+    //Prefab de los tokens de vida
+    [SerializeField]
+    private GameObject lifeTokenPref;
+
+    //Lista con los tokens de vida del jugador
+    [HideInInspector]
+    private List<GameObject> lifeTokensList = new List<GameObject>();
 
     //Los tokens son listas por si en el futuro hay personajes que necesitan más tokens. (De ser así habría que hacer más cambios)
     [SerializeField]
@@ -41,10 +52,8 @@ public class Portraits : MonoBehaviour
 	[SerializeField]
     public Image characterPortrait;
 
-
     //Bool que indica a los retratos si están clickados
     public bool isClicked;
-
 
     #endregion
 
@@ -53,8 +62,10 @@ public class Portraits : MonoBehaviour
     private void Awake()
 	{
 		UIM = FindObjectOfType<UIManager>();
+
         //Añadido para hacer comprobaciones de turnos
         LM = FindObjectOfType<LevelManager>();
+
         //Se desactiva para que el UImanager active únicamente los necesarios en función del número de personajes.
         gameObject.SetActive(false);
 		initImage = GetComponent<Image>().sprite;
@@ -100,7 +111,6 @@ public class Portraits : MonoBehaviour
             {
                 selectedPanel.SetActive(false);
             }
-
         }
     }
 
@@ -120,7 +130,6 @@ public class Portraits : MonoBehaviour
         {
             selectedPanel.SetActive(false);
         }
-        
     }
 
 	public void ShowCharacterImageFromPortrait()
@@ -129,20 +138,49 @@ public class Portraits : MonoBehaviour
 		{
 			UIM.ShowCharacterImage(assignedPlayer);
 		}
-		
 	}
 
     #endregion
 
     #region REFRESH
 
-    public void RefreshHealth()
+    //Función que inicializa la vida de los personajes
+    public void InitializeHealth()
     {
-        healthBar.maxValue = assignedPlayer.maxHealth;
-        healthBar.value = assignedPlayer.currentHealth;
-        healthValue.text = assignedPlayer.currentHealth + "/" + assignedPlayer.maxHealth;
+        for (int i = 0; i < assignedPlayer.maxHealth; i++)
+        {
+            GameObject lifeTok = Instantiate(lifeTokenPref, lifeContainer.transform);
+            lifeTokensList.Add(lifeTok);
+            
+        }
     }
 
+    //Función que se encarga de actualizar la vida del personaje.
+    public void RefreshHealth()
+    {
+        //Recorro la lista de tokens empezando por el final. 
+        //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
+        //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
+        for (int i = lifeTokensList.Count - 1; i+1 > assignedPlayer.currentHealth ; i--)
+        {
+            if (lifeTokensList[i].GetComponent<LifeToken>())
+            {
+                if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
+                {
+                    lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
+                }
+            }
+        }
+
+        //Código antiguo con la barra de vida
+        #region OldCode
+        //healthBar.maxValue = assignedPlayer.maxHealth;
+        //healthBar.value = assignedPlayer.currentHealth;
+        //healthValue.text = assignedPlayer.currentHealth + "/" + assignedPlayer.maxHealth;
+        #endregion
+    }
+
+    //Función que se encarga de actualizar el estado de los tokens de movimiento y ataque.
     public void RefreshTokens()
     {
         for (int i = 0; i < attackTokens.Count; i++)

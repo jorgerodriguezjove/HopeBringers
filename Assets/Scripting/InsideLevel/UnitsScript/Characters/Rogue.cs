@@ -296,14 +296,14 @@ public class Rogue : PlayerUnit
         //Si estoy en desventaja de altura hago menos daño
         if (unitToDealDamage.myCurrentTile.height > tileLineToCheck.height)
         {
-            damageWithMultipliersApplied *= multiplicatorLessHeight;
+            damageWithMultipliersApplied *= penalizatorDamageLessHeight;
 			downToUpDamageIcon.SetActive(true);
 		}
 
         //Si estoy en ventaja de altura hago más daño
         else if (unitToDealDamage.myCurrentTile.height < tileLineToCheck.height)
         {
-            damageWithMultipliersApplied *= multiplicatorMoreHeight;
+            damageWithMultipliersApplied *= bonusDamageMoreHeight;
 			upToDownDamageIcon.SetActive(true);
 		}
 
@@ -311,7 +311,7 @@ public class Rogue : PlayerUnit
         if (unitToDealDamage.currentFacingDirection == directionForBackAttack)
         {
             //Ataque por la espalda
-            damageWithMultipliersApplied *= multiplicatorBackAttack;
+            damageWithMultipliersApplied *= bonusDamageBackAttack;
 			backStabIcon.SetActive(true);
 		}
     }

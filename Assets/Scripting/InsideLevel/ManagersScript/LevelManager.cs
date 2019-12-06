@@ -32,8 +32,6 @@ public class LevelManager : MonoBehaviour
     //Posición a la que tiene que moverse la unidad actualmente
     private Vector3 currentTileVectorToMove;
 
-
-
     //Tile al que se va a mover tras rotar
     public IndividualTiles tileToMoveAfterRotate;
 

@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
 	[HideInInspector]
 	public List<GameObject> panelesEnemigos;
 	
-    //Cursores
+    [Header("CURSORES")]
 	[SerializeField]
 	public Texture2D attackCursor, movementCursor;
 
@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
             //Hacer que el player sepa cuál es su retrato?
 
             //Actualizamos las barras de vida
-            panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
+            panelesPJ[i].GetComponent<Portraits>().InitializeHealth();
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
         }
 
@@ -135,7 +135,6 @@ public class UIManager : MonoBehaviour
 
             LM.DeSelectUnit();
         }
-        
     }
 
     //Función que activa o desactiva el botón de pasar turno en función de si es la fase del player o del enemigo
@@ -312,6 +311,7 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region ENEMY_INFO
+
     public void SetEnemyOrder()
     {
 		for (int i = 0; i < panelesEnemigos.Count; i++)
@@ -326,6 +326,7 @@ public class UIManager : MonoBehaviour
             if (!LM.enemiesOnTheBoard[i].isDead)
             {
                 GameObject enemyPanel = Instantiate(panelesEnemigosPrefab, padrePanelesEnemigos.transform, false);
+                enemyPanel.transform.position = new Vector3(enemyPanel.transform.position.x, enemyPanel.transform.position.y - i*69 , enemyPanel.transform.position.z);
                 panelesEnemigos.Add(enemyPanel);
 
                 //IMPORTANTE. El contador de paneles enemigos no puede ser i ya que puede ser que haya un enemigo muerto y por tanto i sea demasiado grande.
@@ -337,6 +338,10 @@ public class UIManager : MonoBehaviour
                 //LM.enemiesOnTheBoard[i].GetComponent<PlayerHealthBar>().ReloadHealth();
             }
         }
+
+        Debug.Log("Nice");
+        //padrePanelesEnemigos.GetComponent<RectTransform>().offsetMax = new Vector2(padrePanelesEnemigos.GetComponent<RectTransform>().offsetMax.x, 0);
+        //padrePanelesEnemigos.GetComponent<RectTransform>().offsetMin = new Vector2(padrePanelesEnemigos.GetComponent<RectTransform>().offsetMin.x, -Mathf.Abs(-100 * (panelesEnemigos.Count-1)));
     }
 
     public void ShowEnemyOrder(bool show_hide)
