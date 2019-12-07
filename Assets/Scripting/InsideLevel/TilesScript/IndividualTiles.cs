@@ -168,21 +168,21 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             //Cambio el color del tile
             ColorCurrentTileHover();
         }
-        if (isEmpty)
-        {
-            LM.UIM.HideTileInfo();
-        }
-        else if (!unitOnTile)
-        {
-            LM.UIM.ShowTileInfo(tileInfo, tileImage);
-        }
+        //if (isEmpty)
+        //{
+        //    LM.UIM.HideTileInfo();
+        //}
+        //else if (!unitOnTile)
+        //{
+        //    LM.UIM.ShowTileInfo(tileInfo, tileImage);
+        //}
 
     }
 
     //Hover exit
     void OnMouseExit()
     {
-        LM.UIM.HideTileInfo();
+        //LM.UIM.HideTileInfo();
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         if (isMovementTile)

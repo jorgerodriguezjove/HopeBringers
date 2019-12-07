@@ -136,7 +136,7 @@ public class Portraits : MonoBehaviour
 	{
 		if (UIM.LM.selectedCharacter == null)
 		{
-			UIM.ShowCharacterImage(assignedPlayer);
+			UIM.ShowUnitInfo(assignedPlayer.unitInfo, assignedPlayer);
 		}
 	}
 

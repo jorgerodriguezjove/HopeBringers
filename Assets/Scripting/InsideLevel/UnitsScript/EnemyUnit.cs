@@ -246,7 +246,7 @@ public class EnemyUnit : UnitBase
                         }
                         LM.HideHover(LM.selectedEnemy);
                         LM.selectedEnemy.HealthBarOn_Off(false);
-                        LM.UIM.HideCharacterImage();
+                        LM.UIM.HideUnitInfo("");
                         //LM.UIM.HideCharacterInfo("");
                         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                         LM.tilesAvailableForMovement.Clear();
@@ -257,7 +257,7 @@ public class EnemyUnit : UnitBase
                         //Llamo a LevelManager para activar hover
 
                         LM.CheckIfHoverShouldAppear(this);
-                        LM.UIM.ShowCharacterImage(this);
+                        LM.UIM.ShowUnitInfo(this.unitInfo, this);
                         //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
                         HealthBarOn_Off(true);
                         gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
@@ -270,7 +270,7 @@ public class EnemyUnit : UnitBase
                         //Llamo a LevelManager para activar hover
 
                         LM.CheckIfHoverShouldAppear(this);
-                        LM.UIM.ShowCharacterImage(this);
+                        LM.UIM.ShowUnitInfo(this.unitInfo, this);
                         //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
                         HealthBarOn_Off(true);
                         gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
@@ -311,7 +311,7 @@ public class EnemyUnit : UnitBase
         LM.ShowEnemyHover(initialRangeOfAction, this);
 
         //Llamo a LevelManager para activar hover				
-        LM.UIM.ShowCharacterImage(this);
+        LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
         //LM.UIM.ShowCharacterInfo(unitInfo, this); 
         HealthBarOn_Off(true);
@@ -346,7 +346,7 @@ public class EnemyUnit : UnitBase
         }
         LM.HideHover(this);
         HealthBarOn_Off(false);
-        LM.UIM.HideCharacterImage();
+        LM.UIM.HideUnitInfo("");
         //LM.UIM.HideCharacterInfo("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
