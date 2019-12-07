@@ -376,8 +376,6 @@ public class EnemyUnit : UnitBase
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         ResetColor();
-
-
         myPortrait.UnHighlightMyself();
 
     }

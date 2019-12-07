@@ -152,6 +152,9 @@ public class Rogue : PlayerUnit
             //Arriba
             if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
             {
+                //Quito el color del tile
+                myCurrentTile.ColorDeselect();
+
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);
@@ -165,6 +168,9 @@ public class Rogue : PlayerUnit
             //Abajo
             else
             {
+                //Quito el color del tile
+                myCurrentTile.ColorDeselect();
+
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);
@@ -182,6 +188,9 @@ public class Rogue : PlayerUnit
             //Derecha
             if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
             {
+                //Quito el color del tile
+                myCurrentTile.ColorDeselect();
+
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);
@@ -195,6 +204,9 @@ public class Rogue : PlayerUnit
             //Izquierda
             else
             {
+                //Quito el color del tile
+                myCurrentTile.ColorDeselect();
+
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
                 transform.DOJump(currentTileVectorToMove, 1, 1, 1);

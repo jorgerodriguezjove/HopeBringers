@@ -44,6 +44,12 @@ public class LevelManager : MonoBehaviour
     //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
     private int enemiesNumber;
 
+
+    //Tiles que tienen efecto de daño
+    //[HideInInspector]
+    public List<DamageTile> damageTilesInBoard = new List<DamageTile>();
+
+
     [Header("TURNOS Y FASES")]
 
     //Bool que sirve para que se pueda probar un nivel sin necesidad de haber elegido personajes antes
@@ -638,6 +644,8 @@ public class LevelManager : MonoBehaviour
         if (selectedEnemy != null)
         {
             selectedEnemy.HealthBarOn_Off(false);
+            selectedEnemy.ResetColor();
+            selectedEnemy.myPortrait.UnHighlightMyself();
             HideEnemyHover(selectedEnemy);
             UIM.HideUnitInfo("");
             UIM.TooltipDefault();
@@ -663,6 +671,12 @@ public class LevelManager : MonoBehaviour
         //Recoloco la lista de enemigos donde estaba al inicio.
         UIM.ResetScrollPosition();
 
+        //Quito los booleanos de los tiles de daño para que puedan hace daño el próximo turno.
+        for (int i = 0; i < damageTilesInBoard.Count; i++)
+        {
+            damageTilesInBoard[i].damageDone = false;
+        }
+
         //Me aseguro que no quedan tiles en la lista de tiles para moverse.
         tilesAvailableForMovement.Clear();
         UpdateUnitsOrder();
@@ -675,6 +689,11 @@ public class LevelManager : MonoBehaviour
 			for (int i = 0; i < characthersOnTheBoard.Count; i++)
             {
                 characthersOnTheBoard[i].ResetUnitState();
+
+                if (characthersOnTheBoard[i].GetComponent<Berserker>())
+                {
+                    characthersOnTheBoard[i].GetComponent<Berserker>().RageChecker();
+                }
             }
 
             //Reaparecer el botón de endbutton
@@ -693,10 +712,17 @@ public class LevelManager : MonoBehaviour
 
     private void BeginEnemyPhase()
     {
+        //Compruebro si los tiles de daño tienen que hacer daño. Lo añado aquí porque si no salía un bug al morir una unidad mediante un tile de daño, ya que la ordenaba y luego la intentaba buscar.
+        for (int i = 0; i < damageTilesInBoard.Count; i++)
+        {
+            damageTilesInBoard[i].CheckHasToDoDamage();
+        } 
+
         UpdateUnitsOrder();
 
         if (enemiesOnTheBoard.Count > 0)
         {
+           
             //Desaparece botón de end turn
             UIM.ActivateDeActivateEndButton();
 

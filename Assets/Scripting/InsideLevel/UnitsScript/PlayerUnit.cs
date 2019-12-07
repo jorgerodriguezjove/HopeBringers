@@ -39,7 +39,7 @@ public class PlayerUnit : UnitBase
     [Header("FEEDBACK")]
     
     [SerializeField]
-    private Material selectedMaterial;
+    public Material selectedMaterial;
 
     [SerializeField]
     private Material finishedMaterial;
@@ -67,7 +67,8 @@ public class PlayerUnit : UnitBase
     [Header("REFERENCIAS")]
 
     private LevelManager LM;
-	private UIManager UIM;
+    [HideInInspector]
+    public UIManager UIM;
 
     #endregion
 

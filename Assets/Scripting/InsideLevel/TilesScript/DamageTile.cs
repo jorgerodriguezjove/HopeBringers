@@ -7,7 +7,13 @@ public class DamageTile : MonoBehaviour
     #region VARIABLES
 
     [SerializeField]
-    private bool damageDone;
+    public bool damageDone;
+
+    [SerializeField]
+    private bool hasUnit;
+
+    [SerializeField]
+    private GameObject unitToDoDamage;
 
     [SerializeField]
     private int damageToDo;
@@ -22,28 +28,44 @@ public class DamageTile : MonoBehaviour
     private void Awake()
     {
         LM = FindObjectOfType<LevelManager>();
+        LM.damageTilesInBoard.Add(this);
     }
     #endregion
 
-    void OnTriggerStay(Collider unitToDoDamage)
+    void OnTriggerStay(Collider unitOnTile)
     {
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingEnemiesActions && !damageDone)
-        {
+        
             //Por si acaso pilla el tile en vez de a la unidad
-            if (unitToDoDamage.GetComponent<UnitBase>())
-            {
-                unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
-                damageDone = true;
-                Debug.Log("DAMAGE DONE");
-            }
+        if (unitOnTile.GetComponent<UnitBase>())
+        {
+            unitToDoDamage = unitOnTile.gameObject;
+             hasUnit = true;
+        }
+
+      
+    }
+
+    void OnTriggerExit(Collider unitOnTile)
+    {
+        if (unitOnTile.GetComponent<UnitBase>())
+        {
+            unitToDoDamage = null;
+            hasUnit = false;
         }
     }
 
-    void Update()
+
+
+        public void CheckHasToDoDamage()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.PlayerPhase)
-        {
-                damageDone = false;
+        if(hasUnit && !damageDone){
+            unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
+            
+            damageDone = true;
+            Debug.Log("DAMAGE DONE");
+            
         }
+        
+
     }
 }
