@@ -9,6 +9,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     public bool isObstacle;
     public bool isEmpty;
+    public bool noTilesInThisColumn;
 
     //PROBLEMA CON NUEVO SISTEMA DE TILES
     [SerializeField]
@@ -106,11 +107,12 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     #region INIT
 
     //Constructor
-    public void SetVariables(bool _isObstacle, bool _empty, Vector3 _worldPos, int xPos, int yPos, int zPos, GameObject tilePref, LevelManager LMRef)
+    public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn ,Vector3 _worldPos, int xPos, int yPos, int zPos, GameObject tilePref, LevelManager LMRef)
     {
         //Inicializo las variables que le pasa Grid
         isObstacle = _isObstacle;
         isEmpty = _empty;
+        noTilesInThisColumn = _noTilesInThisColumn;
         worldPosition = _worldPos;
 
         //Coordenadas del tile
@@ -123,11 +125,11 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
         gameObject.name = string.Join("_", tileX.ToString(), tileZ.ToString(), height.ToString());
 
-        if (isEmpty || isObstacle)
+        if (isEmpty || isObstacle || noTilesInThisColumn)
         {
             GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<BoxCollider>().enabled = false;
         }
-
 
         initialColor = GetComponent<MeshRenderer>().material;
 
@@ -139,8 +141,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             LM.tilesForCharacterPlacement.Add(GetComponent<IndividualTiles>());
             ColorCurrentTileHover();
         }
-
-
     }
 
     #endregion
@@ -296,6 +296,14 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         }
 
         return -compare;
+    }
+
+    public void ClearPathfindingVariables()
+    {
+        gCost = 0;
+        hCost = 0;
+        fCost = 0;
+        parent = null;
     }
 
     #endregion

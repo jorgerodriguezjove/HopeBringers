@@ -7,7 +7,13 @@ public class TileManager : MonoBehaviour
 {
     #region VARIABLES
 
-    public LayerMask unwalkableMask;
+    [SerializeField]
+    private LayerMask obstacleMask;
+
+    [SerializeField]
+    private LayerMask noTileHereMask;
+
+
     //Tamaño del área dónde va a haber tiles
     public Vector3 gridWorldSize;
     //Radio de los tiles
@@ -125,29 +131,65 @@ public class TileManager : MonoBehaviour
                     Vector3 worldPoint = worldBottomLeft + Vector3.up * (y * nodeDiameter + nodeRadius) + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (z * nodeDiameter + nodeRadius);
                     bool isObstacle = false;
                     bool empty = false;
+                    bool noTileInThisColumn = false;
+
+                    //Si es la primera fila (el suelo vamos) únicamente compruebo obstáculos
                     if (y == 0)
                     {
-                        isObstacle = (Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                    }
-
-                    else
-                    {
-                        if (Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask))
+                        if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
                         {
                             empty = false;
                             isObstacle = true;
+                            noTileInThisColumn = false;
                         }
 
+                        else if (Physics.CheckSphere(worldPoint, nodeRadius, noTileHereMask))
+                        {
+                            empty = false;
+                            isObstacle = true;
+                            noTileInThisColumn = true;
+                        }
+                    }
+
+                    //Si ya hay altura
+                    else
+                    {
+                        //Compruebo si hay obstáculos
+                        if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
+                        {
+                            empty = false;
+                            isObstacle = true;
+                            noTileInThisColumn = false;
+                        }
+
+                        else if (Physics.CheckSphere(worldPoint, nodeRadius, noTileHereMask))
+                        {
+                            empty = false;
+                            isObstacle = true;
+                            noTileInThisColumn = true;
+                        }
+
+                        else if (grid3DNode[x, y - 1, z].noTilesInThisColumn)
+                        {
+                            empty = true;
+                            isObstacle = false;
+                            noTileInThisColumn = false;
+                        }
+
+                        //Si no compruebo si en el tile de abajo hay un obstáculo
                         else if (grid3DNode[x, y - 1, z].isObstacle && !grid3DNode[x, y - 1, z].isEmpty)
                         {
                             empty = false;
                             isObstacle = false;
+                            noTileInThisColumn = false;
                         }
 
+                        //Si no se da ningúno de los dos casos entonces es un tile vacío
                         else
                         {
                             empty = true;
                             isObstacle = false;
+                            noTileInThisColumn = false;
                         }
                     }
 
@@ -155,12 +197,9 @@ public class TileManager : MonoBehaviour
 
                     gridObject[x, y, z].AddComponent<IndividualTiles>();
 
-                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, worldPoint, x, y, z, tilePref, LM);
+                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn ,worldPoint, x, y, z, tilePref, LM);
 
                     grid3DNode[x, y, z] = gridObject[x, y, z].GetComponent<IndividualTiles>();
-
-
-
                 }
             }
         }
@@ -181,12 +220,18 @@ public class TileManager : MonoBehaviour
             {
                 for (int y = 0; y < gridSizeY; y++)
                 {
-                    if (!grid3DNode[x, y, z].isEmpty && !grid3DNode[x, y, z].isObstacle)
+                    //Añado al grid2D únicamente los tiles por los que se puede mover unidades
+                    if (!grid3DNode[x, y, z].isEmpty && !grid3DNode[x, y, z].isObstacle && !grid3DNode[x, y, z].noTilesInThisColumn)
                     {
                         grid2DNode[x, z] = grid3DNode[x, y, z];
                         break;
                     }
 
+                    if (y == gridSizeY-1)
+                    {
+                        grid2DNode[x, z] = grid3DNode[x, y, z];
+                        break;
+                    }
                 }
             }
         }
@@ -197,11 +242,10 @@ public class TileManager : MonoBehaviour
             {
                 for (int y = 0; y < gridSizeY; y++)
                 {
-                    if (grid3DNode[x, y, z].isEmpty || grid3DNode[x, y, z].isObstacle)
+                    if (grid3DNode[x, y, z].isEmpty || (grid3DNode[x, y, z].isObstacle && !grid3DNode[x, y, z].noTilesInThisColumn))
                     {
                         Destroy(gridObject[x, y, z].gameObject);
                     }
-
                 }
             }
         }
@@ -398,6 +442,9 @@ public class TileManager : MonoBehaviour
         source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
         target = grid2DNode[x, z];
 
+        //Debug.Log("SOURCE " + source.name);
+        //Debug.Log("TARGET " + target.name);
+
         openList.Add(source);
 
         //Mientras que haya nodos que no hayan sido visitados...
@@ -417,6 +464,8 @@ public class TileManager : MonoBehaviour
             openList.Remove(currentNode);
             closedHasSet.Add(currentNode);
 
+            #region LAST_PART
+
             //Si el nodo coincide con el objetivo, terminamos la busqueda.
             if (currentNode == target)
             {
@@ -428,8 +477,24 @@ public class TileManager : MonoBehaviour
                 //Esta ruta está al reves, va desde el objetivo hasta el origen.
                 while (curr != null)
                 {
-                    currentPath.Add(curr);
-                    curr = curr.parent;
+                    if (!currentPath.Contains(curr))
+                    {
+                        currentPath.Add(curr);
+                        curr = curr.parent;
+                    }
+
+                    else
+                    {
+                        Debug.LogError("ERROR DE LOOP. TILES REPETIDOS EN EL CURRENTPATH");
+
+                        for (int i = 0; i < currentPath.Count; i++)
+                        {
+                            Debug.Log(currentPath[i].name);
+                        }
+
+                        Debug.Log(curr.name);
+                        break;
+                    }
                 }
 
                 //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
@@ -449,13 +514,14 @@ public class TileManager : MonoBehaviour
                 {
                     for (int j = 0; j < gridSizeZ; j++)
                     {
-                        grid2DNode[j,i].parent = null;
+                        grid2DNode[j, i].ClearPathfindingVariables();
                     }
-                    
                 }
 
                 return;
             }
+
+            #endregion
 
             foreach (IndividualTiles neighbour in grid2DNode[currentNode.tileX, currentNode.tileZ].neighbours)
             {
@@ -532,18 +598,22 @@ public class TileManager : MonoBehaviour
 
                 //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
                 if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
-                {
-                    if (tempCurrentObjectiveCost > tempCurrentPathCost)
+                {                    
+                    //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
+                    if (tempCurrentPathCost != 0)
                     {
-                        //Limpio la lista de objetivos y añado
-                        charactersAvailableForAttack.Clear();
+                        if (tempCurrentObjectiveCost > tempCurrentPathCost)
+                        {
+                            //Limpio la lista de objetivos y añado
+                            charactersAvailableForAttack.Clear();
+                        }
+
+                        //Me guardo la distancia para checkear
+                        tempCurrentObjectiveCost = tempCurrentPathCost;
+
+                        charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
                     }
-                    //Me guardo la distancia para checkear
-                    tempCurrentObjectiveCost = tempCurrentPathCost;
-
-                    charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
                 }
-
                 //Resetear tempcurrentPathCost a 0
                 tempCurrentPathCost = 0;
             }

@@ -76,7 +76,11 @@ public class EnemyPortraits : MonoBehaviour
     //Función separada para que la llame el enemigo.
     public void UnHighlightMyself()
     {
-        highlightPanelRef.SetActive(false);
+        if (highlightPanelRef != null)
+        {
+            highlightPanelRef.SetActive(false);
+        }
+       
     }
 
     public void SelectEnemyFromPanel()

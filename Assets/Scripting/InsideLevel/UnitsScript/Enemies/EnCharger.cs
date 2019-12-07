@@ -186,7 +186,6 @@ public class EnCharger : EnemyUnit
 
     protected override void CheckCharactersInLine()
     {
-        Debug.Log("Check");
         if (!isDead)
         {
             currentUnitsAvailableToAttack.Clear();
@@ -194,9 +193,9 @@ public class EnCharger : EnemyUnit
             //Busco objetivos en los tiles de arriba
 
             //Seteo número de tiles a comprobar en función del rango y del número de tiles disponibles
-            if (initialRangeOfAction <= myCurrentTile.tilesInLineUp.Count)
+            if (rangeOfAction <= myCurrentTile.tilesInLineUp.Count)
             {
-                rangeVSTilesInLineLimitant = initialRangeOfAction;
+                rangeVSTilesInLineLimitant = rangeOfAction;
             }
             else
             {
@@ -227,9 +226,9 @@ public class EnCharger : EnemyUnit
             }
 
             //Tiles derecha
-            if (initialRangeOfAction <= myCurrentTile.tilesInLineRight.Count)
+            if (rangeOfAction <= myCurrentTile.tilesInLineRight.Count)
             {
-                rangeVSTilesInLineLimitant = initialRangeOfAction;
+                rangeVSTilesInLineLimitant = rangeOfAction;
             }
             else
             {
@@ -268,9 +267,9 @@ public class EnCharger : EnemyUnit
             }
 
             //Tiles abajo
-            if (initialRangeOfAction <= myCurrentTile.tilesInLineDown.Count)
+            if (rangeOfAction <= myCurrentTile.tilesInLineDown.Count)
             {
-                rangeVSTilesInLineLimitant = initialRangeOfAction;
+                rangeVSTilesInLineLimitant = rangeOfAction;
             }
             else
             {
@@ -309,9 +308,9 @@ public class EnCharger : EnemyUnit
             }
 
             //Tiles abajo
-            if (initialRangeOfAction <= myCurrentTile.tilesInLineLeft.Count)
+            if (rangeOfAction <= myCurrentTile.tilesInLineLeft.Count)
             {
-                rangeVSTilesInLineLimitant = initialRangeOfAction;
+                rangeVSTilesInLineLimitant = rangeOfAction;
             }
             else
             {

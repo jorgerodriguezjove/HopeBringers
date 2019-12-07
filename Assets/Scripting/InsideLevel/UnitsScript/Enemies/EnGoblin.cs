@@ -24,8 +24,9 @@ public class EnGoblin : EnemyUnit
             myCurrentEnemyState = enemyState.Ended;
             return;
         }
+
         //Determinamos el enemigo más cercano.
-        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(initialRangeOfAction, gameObject);
+        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(rangeOfAction, gameObject);
 
         //Si no hay enemigos termina su turno
         if (currentUnitsAvailableToAttack.Count == 0)
@@ -84,7 +85,7 @@ public class EnGoblin : EnemyUnit
             if (!haveIBeenAlerted)
             {
                 //Le pido al TileManager los enemigos dentro de mi rango
-                enemiesInRange = LM.TM.GetAllEnemiesInRange(initialRangeOfAction, GetComponent<UnitBase>());
+                enemiesInRange = LM.TM.GetAllEnemiesInRange(rangeOfAction, GetComponent<UnitBase>());
 
                 //Alerto a los enemigos a mi alcance
                 for (int i = 0; i < enemiesInRange.Count; i++)

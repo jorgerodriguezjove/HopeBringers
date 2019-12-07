@@ -10,7 +10,7 @@ public class EnemyUnit : UnitBase
 
     //Rango de acción del enemigo
     [SerializeField]
-    public int initialRangeOfAction;
+    public int rangeOfAction;
 
     [SerializeField]
     private float timeWaitingMovement;
@@ -204,8 +204,7 @@ public class EnemyUnit : UnitBase
     public void AlertEnemy()
     {
         haveIBeenAlerted = true;
-        initialRangeOfAction = 1000;
-        Debug.Log("Soy el enemigo " + name + " y he sido alertado");
+        rangeOfAction = 1000;
     }
 
 
@@ -256,7 +255,7 @@ public class EnemyUnit : UnitBase
 
                         if (!haveIBeenAlerted)
                         {
-                            LM.ShowEnemyHover(initialRangeOfAction, this);
+                            LM.ShowEnemyHover(rangeOfAction, this);
                         }
                         else
                         {
@@ -278,7 +277,7 @@ public class EnemyUnit : UnitBase
 
                         if (!haveIBeenAlerted)
                         {
-                            LM.ShowEnemyHover(initialRangeOfAction, this);
+                            LM.ShowEnemyHover(rangeOfAction, this);
                         }
                         else
                         {
@@ -329,7 +328,7 @@ public class EnemyUnit : UnitBase
         //Muestro el rango de acción del personaje.
         if (!haveIBeenAlerted)
         {
-            LM.ShowEnemyHover(initialRangeOfAction, this);
+            LM.ShowEnemyHover(rangeOfAction, this);
         }
         else
         {
