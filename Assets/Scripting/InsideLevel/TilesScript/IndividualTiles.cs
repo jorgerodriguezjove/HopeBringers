@@ -75,7 +75,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [HideInInspector]
     public LevelManager LM;
 
-    [Header("Optimization test")]
+    [Header("OPTIMIZATION")]
 
     //Distancia hasta el source
     public int gCost;

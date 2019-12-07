@@ -66,6 +66,11 @@ public class TileManager : MonoBehaviour
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
     List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
+    //Lista de tiles sin visitar
+    List<IndividualTiles> openList = new List<IndividualTiles>();
+    //HasSet de tiles visitados. (En el HashSet no puede haber elementos repetidos aunque no puedes acceder directametne a un elemento con [])
+    HashSet<IndividualTiles> closedHasSet = new HashSet<IndividualTiles>();
+
     [Header("ENEMY_PATHFINDING")]
 
     ////Enemigo actual que está calculando su pathfinding
@@ -76,6 +81,9 @@ public class TileManager : MonoBehaviour
 
     //Variable que se usa para almacenar la distancia con el objetivo
     float tempCurrentObjectiveCost;
+
+    //Es el equivalente a currentTileCheckingForMovement para buscar enemigos en rango para el goblin
+    private IndividualTiles currentTileCheckingForEnemy;
 
     [Header("REFERENCIAS")]
     [SerializeField]
@@ -305,12 +313,6 @@ public class TileManager : MonoBehaviour
         return grid2DNode[x, z].movementCost;
     }
 
-
-    List<IndividualTiles> openList = new List<IndividualTiles>();
-    HashSet<IndividualTiles> closedHasSet = new HashSet<IndividualTiles>();
-
-
-
     //Calculo tiles a los que se puede mover una unidad o en los que puede un enemigo buscar objetivos
     public List<IndividualTiles> OptimizedCheckAvailableTilesForMovement(int movementUds, UnitBase selectedUnit)
     {
@@ -497,13 +499,10 @@ public class TileManager : MonoBehaviour
         }
     }
 
-
-
     int GetDistance(IndividualTiles nodeA, IndividualTiles nodeB)
     {
        return(Mathf.Abs(nodeA.tileX - nodeB.tileX) + Mathf.Abs(nodeA.tileZ - nodeB.tileZ));
     }
-
 
     #endregion
 
@@ -553,6 +552,79 @@ public class TileManager : MonoBehaviour
     }
     #endregion
 
+    ////Función que sirve para encontrar a todos los enemigos en rango y que el goblin pueda alertarlos
+    //public List<EnemyUnit> GetAllEnemiesInRange(int rangeToCheck, UnitBase selectedUnit)
+    //{
+    //    //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
+    //    for (int i = -rangeToCheck; i < (rangeToCheck * 2) + 1; i++)
+    //    {
+    //        //Al restar a losMovementUds el i actual obtengo los tiles que hay por encima de la posición del personaje en dicha columna
+    //        //Este número me sirve para calcular la posición en z de los tiles
+    //        int tilesInZ = rangeToCheck - Mathf.Abs(i);
+
+    //        //Esto significa que es el extremo del rombo y sólo hay 1 tile en vertical
+    //        if (tilesInZ == 0)
+    //        {
+    //            //Compruebo si existe un tile con esas coordenadas
+    //            if (selectedCharacter.myCurrentTile.tileX + i < gridSizeX && selectedCharacter.myCurrentTile.tileX + i >= 0 &&
+    //                selectedCharacter.myCurrentTile.tileZ < gridSizeZ && selectedCharacter.myCurrentTile.tileZ >= 0)
+    //            {
+
+
+
+
+
+    //                currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
+
+    //                //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
+    //                if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
+    //                {
+    //                    if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
+    //                    {
+    //                        //Compruebo si existe un camino hasta el tile
+    //                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+    //                        if (tempCurrentPathCost <= rangeToCheck)
+    //                        {
+    //                            tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+    //                        }
+    //                        tempCurrentPathCost = 0;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        else
+    //        {
+    //            for (int j = tilesInZ; j >= -tilesInZ; j--)
+    //            {
+    //                //Compruebo si existe un tile con esas coordenadas
+    //                if (selectedCharacter.myCurrentTile.tileX + i < gridSizeX && selectedCharacter.myCurrentTile.tileX + i >= 0 &&
+    //                    selectedCharacter.myCurrentTile.tileZ + j < gridSizeZ && selectedCharacter.myCurrentTile.tileZ + j >= 0)
+    //                {
+
+    //                    //Almaceno el tile en una variable
+    //                    currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ + j];
+
+    //                    //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
+    //                    if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
+    //                    {
+    //                        if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
+    //                        {
+    //                            //Compruebo si existe un camino hasta el tile
+    //                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+    //                            if (tempCurrentPathCost <= rangeToCheck)
+    //                            {
+    //                                tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+    //                            }
+    //                            tempCurrentPathCost = 0;
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+
+    //    return ;
+    //}
 
 
     void OnDrawGizmos()

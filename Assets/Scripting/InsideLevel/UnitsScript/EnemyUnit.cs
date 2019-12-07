@@ -27,10 +27,10 @@ public class EnemyUnit : UnitBase
     protected enum enemyState {Waiting, Searching, Moving, Attacking, Ended}
 
     //Posibles estados del enemigo
-    protected enum myTierLevel { LevelBase1, Level2 }
+    protected enum TierLevel { LevelBase1, Level2 }
 
     [SerializeField]
-    protected myTierLevel MyTierLevel;
+    protected TierLevel myTierLevel;
 
     //Distancia en tiles con el enemigo más lejano
     protected int furthestAvailableUnitDistance;
@@ -54,6 +54,7 @@ public class EnemyUnit : UnitBase
     private bool corroutineDone;
 
     //Bool que indica si el enemigo ha sido despertado o si solo tiene que comprobar su rango inicial.
+    [SerializeField]
     protected bool haveIBeenAlerted;
 
     [Header("REFERENCIAS")]
@@ -252,7 +253,16 @@ public class EnemyUnit : UnitBase
                         LM.tilesAvailableForMovement.Clear();
 
                         LM.DeSelectUnit();
-                        LM.ShowEnemyHover(initialRangeOfAction, this);
+
+                        if (!haveIBeenAlerted)
+                        {
+                            LM.ShowEnemyHover(initialRangeOfAction, this);
+                        }
+                        else
+                        {
+                            LM.ShowEnemyHover(movementUds, this);
+                        }
+                       
                         LM.selectedEnemy = this;
                         //Llamo a LevelManager para activar hover
 
@@ -265,7 +275,16 @@ public class EnemyUnit : UnitBase
                     else
                     {
                         LM.DeSelectUnit();
-                        LM.ShowEnemyHover(initialRangeOfAction, this);
+
+                        if (!haveIBeenAlerted)
+                        {
+                            LM.ShowEnemyHover(initialRangeOfAction, this);
+                        }
+                        else
+                        {
+                            LM.ShowEnemyHover(movementUds, this);
+                        }
+
                         LM.selectedEnemy = this;
                         //Llamo a LevelManager para activar hover
 
@@ -308,7 +327,14 @@ public class EnemyUnit : UnitBase
     public void OnHoverEnterFunctionality()
     {
         //Muestro el rango de acción del personaje.
-        LM.ShowEnemyHover(initialRangeOfAction, this);
+        if (!haveIBeenAlerted)
+        {
+            LM.ShowEnemyHover(initialRangeOfAction, this);
+        }
+        else
+        {
+            LM.ShowEnemyHover(movementUds, this);
+        }
 
         //Llamo a LevelManager para activar hover				
         LM.UIM.ShowCharacterImage(this);

@@ -139,7 +139,7 @@ public class EnCharger : EnemyUnit
         for (int j = 0; j < pathToObjective.Count; j++)
         {
             //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = pathToObjective[j].transform.position;  
+            currentTileVectorToMove = pathToObjective[j].transform.position;
 
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
@@ -148,7 +148,7 @@ public class EnCharger : EnemyUnit
             yield return new WaitForSeconds(timeMovementAnimation);
 
             //Si es tier 2 instancia fuego
-            if (MyTierLevel == myTierLevel.Level2)
+            if (myTierLevel == TierLevel.Level2)
             {
                 if (j > 0)
                 {
@@ -165,7 +165,11 @@ public class EnCharger : EnemyUnit
         movementParticle.SetActive(false);
 
         Debug.Log(furthestAvailableUnitDistance);
-        UpdateInformationAfterMovement(pathToObjective[furthestAvailableUnitDistance]);
+
+        if (furthestAvailableUnitDistance >= 0)
+        {
+            UpdateInformationAfterMovement(pathToObjective[furthestAvailableUnitDistance]);
+        }
 
         //Hago daño a la unidad
         DoDamage(currentUnitsAvailableToAttack[0]);

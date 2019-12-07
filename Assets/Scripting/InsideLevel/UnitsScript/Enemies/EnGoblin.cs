@@ -10,8 +10,12 @@ public class EnGoblin : EnemyUnit
     private IndividualTiles myCurrentObjectiveTile;
 
     //Path de tiles a seguir hasta el objetivo
-    [SerializeField]
+    [HideInInspector]
     private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
+
+    //Lista que guarda los enmeigos a los que el goblin puede alertar en tier 2
+    [HideInInspector]
+    private List<EnemyUnit> enemiesInRange = new List<EnemyUnit>();
 
     public override void SearchingObjectivesToAttack()
     {
@@ -79,6 +83,14 @@ public class EnGoblin : EnemyUnit
         if (!haveIBeenAlerted)
         {
             AlertEnemy();
+        }
+
+        if (myTierLevel == TierLevel.Level2)
+        {
+            if (!haveIBeenAlerted)
+            {
+                //Si es la primera vez que veo un enemigo pego un grito
+            }
         }
         
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
