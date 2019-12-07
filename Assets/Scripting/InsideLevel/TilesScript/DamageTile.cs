@@ -12,7 +12,15 @@ public class DamageTile : MonoBehaviour
     [SerializeField]
     private int damageToDo;
 
-    [Header("REFERENCIAS")]
+	[SerializeField]
+	[@TextAreaAttribute(15, 20)]
+	private string tileInfo;
+
+	[SerializeField]
+	private Sprite tileImage;
+
+
+	[Header("REFERENCIAS")]
     private LevelManager LM;
 
 
@@ -46,4 +54,18 @@ public class DamageTile : MonoBehaviour
                 damageDone = false;
         }
     }
+
+	#region INTERACTION
+
+	private void OnMouseEnter()
+	{
+		LM.UIM.ShowTileInfo(tileInfo, tileImage);
+	}
+
+	private void OnMouseExit()
+	{
+		LM.UIM.HideTileInfo();
+	}
+
+	#endregion
 }

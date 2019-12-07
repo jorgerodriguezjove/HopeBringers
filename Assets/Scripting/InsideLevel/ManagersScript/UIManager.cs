@@ -278,22 +278,22 @@ public class UIManager : MonoBehaviour
 	}
     #endregion
 
-    #region CHARACTER_INFO
+    #region UNITS_INFO
+	//Deprecated
+	//public void ShowCharacterImage(UnitBase characterImage)
+	//{
+	//	if(characterImage.characterImage != null)
+	//	{
+	//		imageCharacterInfo.gameObject.SetActive(true);
+	//		imageCharacterInfo.sprite = characterImage.characterImage;
+	//	}
+	//}
 
-	public void ShowCharacterImage(UnitBase characterImage)
-	{
-		if(characterImage.characterImage != null)
-		{
-			imageCharacterInfo.gameObject.SetActive(true);
-			imageCharacterInfo.sprite = characterImage.characterImage;
-		}
-	}
-
-	public void HideCharacterImage()
-	{
-		imageCharacterInfo.gameObject.SetActive(false);
-		imageCharacterInfo.sprite = null;
-	}
+	//public void HideCharacterImage()
+	//{
+	//	imageCharacterInfo.gameObject.SetActive(false);
+	//	imageCharacterInfo.sprite = null;
+	//}
 
     public void ShowUnitInfo(string textToPrint, UnitBase unitTooltipImage)
     {
@@ -313,23 +313,29 @@ public class UIManager : MonoBehaviour
 		explanationImage.gameObject.SetActive(false);
 		explanationImage.sprite = null;
 	}
- 
+
 	#endregion
 
-	#region TOOLTIP
+	#region TILE_INFO
 
 	public void ShowTileInfo(string textToPrint, Sprite tileImageToShow)
 	{
-		characterInfoText.text = textToPrint;
-		explanationImage.gameObject.SetActive(true);
-		explanationImage.sprite = tileImageToShow;
+		if(LM.selectedCharacter == null && LM.selectedEnemy == null)
+		{
+			characterInfoText.text = textToPrint;
+			explanationImage.gameObject.SetActive(true);
+			explanationImage.sprite = tileImageToShow;
+		}	
 	}
 
 	public void HideTileInfo()
 	{
-		characterInfoText.text = "";
-		explanationImage.gameObject.SetActive(false);
-		explanationImage.sprite = null;
+		if(LM.selectedCharacter == null && LM.selectedEnemy == null)
+		{
+			characterInfoText.text = "";
+			explanationImage.gameObject.SetActive(false);
+			explanationImage.sprite = null;
+		}
 	}
 
     #endregion

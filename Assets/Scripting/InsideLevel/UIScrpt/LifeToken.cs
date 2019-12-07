@@ -16,7 +16,7 @@ public class LifeToken : MonoBehaviour
     {
         haveIFlipped = true;
         //CAMBIAR ESTO POR UN TRIGGER EN VEZ DE LLAMAR AL PLAY
-        GetComponent<Animator>().Play("TokenFlip");
+        GetComponent<Animator>().Play("LifeTokenFLip");
     }
 
 }

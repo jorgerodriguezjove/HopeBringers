@@ -336,11 +336,11 @@ public class EnemyUnit : UnitBase
             LM.ShowEnemyHover(movementUds, this);
         }
 
-        //Llamo a LevelManager para activar hover				
-        LM.UIM.ShowUnitInfo(this.unitInfo, this);
+		//Llamo a LevelManager para activar hover				
+		LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
-        //LM.UIM.ShowCharacterInfo(unitInfo, this); 
-        HealthBarOn_Off(true);
+		//LM.UIM.ShowCharacterInfo(unitInfo, this); 
+		HealthBarOn_Off(true);
         gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
         //Cambio el color del personaje
@@ -369,12 +369,16 @@ public class EnemyUnit : UnitBase
         if (LM.selectedCharacter != null)
         {
             LM.selectedCharacter.HideDamageIcons();
-        }
+		}
         LM.HideHover(this);
         HealthBarOn_Off(false);
-        LM.UIM.HideUnitInfo("");
-        //LM.UIM.HideCharacterInfo("");
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+		//LM.UIM.HideCharacterInfo("");
+		if (LM.selectedCharacter == null)
+		{
+			LM.UIM.HideUnitInfo("");
+		}
+
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         ResetColor();
 
