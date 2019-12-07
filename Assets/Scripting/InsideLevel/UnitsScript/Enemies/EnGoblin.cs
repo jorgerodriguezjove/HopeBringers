@@ -79,20 +79,33 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
+        if (myTierLevel == TierLevel.Level2)
+        {
+            if (!haveIBeenAlerted)
+            {
+                //Le pido al TileManager los enemigos dentro de mi rango
+                enemiesInRange = LM.TM.GetAllEnemiesInRange(initialRangeOfAction, GetComponent<UnitBase>());
+
+                //Alerto a los enemigos a mi alcance
+                for (int i = 0; i < enemiesInRange.Count; i++)
+                {
+                    enemiesInRange[i].AlertEnemy();
+                }
+
+                //Me alerto a mi mismo
+                AlertEnemy();
+                return;
+            }
+        }
+
+
         //Si no he sido alertado, activo mi estado de alerta.
         if (!haveIBeenAlerted)
         {
             AlertEnemy();
         }
-
-        if (myTierLevel == TierLevel.Level2)
-        {
-            if (!haveIBeenAlerted)
-            {
-                //Si es la primera vez que veo un enemigo pego un grito
-            }
-        }
         
+
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco

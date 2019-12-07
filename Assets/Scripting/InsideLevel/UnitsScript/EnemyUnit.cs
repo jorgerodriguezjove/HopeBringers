@@ -54,8 +54,7 @@ public class EnemyUnit : UnitBase
     private bool corroutineDone;
 
     //Bool que indica si el enemigo ha sido despertado o si solo tiene que comprobar su rango inicial.
-    [SerializeField]
-    protected bool haveIBeenAlerted;
+    protected bool haveIBeenAlerted = false;
 
     [Header("REFERENCIAS")]
 
@@ -206,6 +205,7 @@ public class EnemyUnit : UnitBase
     {
         haveIBeenAlerted = true;
         initialRangeOfAction = 1000;
+        Debug.Log("Soy el enemigo " + name + " y he sido alertado");
     }
 
 
