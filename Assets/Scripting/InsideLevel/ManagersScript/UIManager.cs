@@ -22,10 +22,10 @@ public class UIManager : MonoBehaviour
 	private GameObject optionsButton;
 
     //Texto de cuadro inferior derecha (tiles)
-	[SerializeField]
-	private TextMeshProUGUI tooltipText;
-	[SerializeField]
-	private Image tooltipImage;
+	//[SerializeField]
+	//private TextMeshProUGUI tooltipText;
+	//[SerializeField]
+	//private Image tooltipImage;
 
     //Texto de cartel superior con las acciones
 	[SerializeField]
@@ -64,7 +64,7 @@ public class UIManager : MonoBehaviour
 
     //Imagen de cada player explicando sus acciones
 	[SerializeField]
-	public Image playersImageExplanation;
+	public Image explanationImage;
 
 	[SerializeField]
 	public Image imageCharacterInfo;
@@ -295,21 +295,23 @@ public class UIManager : MonoBehaviour
 		imageCharacterInfo.sprite = null;
 	}
 
-    public void ShowCharacterInfo(string textToPrint, UnitBase unitTooltipImage)
+    public void ShowUnitInfo(string textToPrint, UnitBase unitTooltipImage)
     {
-        characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
+        //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
         characterInfoText.text = textToPrint;
         if (unitTooltipImage.tooltipImage !=null)
         {
-            playersImageExplanation.sprite = unitTooltipImage.tooltipImage;
+			explanationImage.gameObject.SetActive(true);
+            explanationImage.sprite = unitTooltipImage.tooltipImage;
         }
     }
 
-    public void HideCharacterInfo(string textToPrint)
+    public void HideUnitInfo(string textToPrint)
 	{
-		characterInfo.transform.DOMove(characterInfoOriginalPosition, animationDuration);
+		//characterInfo.transform.DOMove(characterInfoOriginalPosition, animationDuration);
 		characterInfoText.text = textToPrint;
-		playersImageExplanation.sprite = null;
+		explanationImage.gameObject.SetActive(false);
+		explanationImage.sprite = null;
 	}
  
 	#endregion
@@ -318,16 +320,16 @@ public class UIManager : MonoBehaviour
 
 	public void ShowTileInfo(string textToPrint, Sprite tileImageToShow)
 	{
-		tooltipText.text = textToPrint;
-		tooltipImage.gameObject.SetActive(true);
-		tooltipImage.sprite = tileImageToShow;
+		characterInfoText.text = textToPrint;
+		explanationImage.gameObject.SetActive(true);
+		explanationImage.sprite = tileImageToShow;
 	}
 
 	public void HideTileInfo()
 	{
-		tooltipText.text = "";
-		tooltipImage.gameObject.SetActive(false);
-		tooltipImage.sprite = null;
+		characterInfoText.text = "";
+		explanationImage.gameObject.SetActive(false);
+		explanationImage.sprite = null;
 	}
 
     #endregion

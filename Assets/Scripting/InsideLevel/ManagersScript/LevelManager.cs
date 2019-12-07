@@ -311,7 +311,7 @@ public class LevelManager : MonoBehaviour
             {
                 DeSelectUnit();
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
-                UIM.ShowCharacterImage(clickedUnit);
+                UIM.ShowUnitInfo(clickedUnit.unitInfo, clickedUnit);
             }
         }
     }
@@ -342,8 +342,7 @@ public class LevelManager : MonoBehaviour
 
             //Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
             UIM.ActivateDeActivateEndButton();
-            UIM.HideCharacterImage();
-            UIM.HideCharacterInfo("");
+            UIM.HideUnitInfo("");
             selectedCharacter.HideDamageIcons();
             tilesAvailableForMovement.Clear();
             selectedCharacter.ResetColor();
@@ -523,7 +522,7 @@ public class LevelManager : MonoBehaviour
             hoverUnit.HealthBarOn_Off(true);
             hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
-            UIM.ShowCharacterImage(hoverUnit);
+            UIM.ShowUnitInfo(hoverUnit.unitInfo, hoverUnit);
 
             if (hoverUnit.hasMoved == false)
             {
@@ -542,7 +541,7 @@ public class LevelManager : MonoBehaviour
         if (selectedCharacter == null)
         {
             hoverUnit.HealthBarOn_Off(false);
-            UIM.HideCharacterImage();
+            UIM.HideUnitInfo("");
             UIM.TooltipDefault();
             hoverUnit.myCurrentTile.ColorDeselect();
 
@@ -561,17 +560,17 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter != null)
         {
-            UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);
+            UIM.ShowUnitInfo(selectedCharacter.unitInfo, selectedCharacter);
         }
         else if (selectedEnemy != null)
         {
-            UIM.ShowCharacterInfo(selectedEnemy.unitInfo, selectedEnemy);
+            UIM.ShowUnitInfo(selectedEnemy.unitInfo, selectedEnemy);
         }
     }
 
     public void HideUnitInfo()
     {
-        UIM.HideCharacterInfo("");
+        UIM.HideUnitInfo("");
     }
 
     public void ShowEnemyHover(int movementUds, EnemyUnit hoverUnit)
@@ -640,8 +639,7 @@ public class LevelManager : MonoBehaviour
         {
             selectedEnemy.HealthBarOn_Off(false);
             HideEnemyHover(selectedEnemy);
-            UIM.HideCharacterImage();
-            UIM.HideCharacterInfo("");
+            UIM.HideUnitInfo("");
             UIM.TooltipDefault();
             selectedEnemy = null;
         }

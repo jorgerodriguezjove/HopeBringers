@@ -83,7 +83,7 @@ public class EnemyPortraits : MonoBehaviour
 	{
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-            UIM.ShowCharacterImage(assignedEnemy);
+            UIM.ShowUnitInfo(assignedEnemy.unitInfo, assignedEnemy);
             UIM.LM.selectedEnemy = assignedEnemy;
         }
 	}
