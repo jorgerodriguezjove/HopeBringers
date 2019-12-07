@@ -400,6 +400,12 @@ public class EnBalista : EnemyUnit
 
     public override void Attack()
     {
+        //Si no he sido alertado, activo mi estado de alerta.
+        if (!haveIBeenAlerted)
+        {
+            AlertEnemy();
+        }
+
         if (!isDead)
         {
             if (isAttackPrepared)

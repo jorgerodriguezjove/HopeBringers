@@ -75,10 +75,12 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
-        //Lo primero que hago es poner es activar mi estado de activado.
-        haveIBeenAlerted = true;
-        initialRangeOfAction = 1000;
-
+        //Si no he sido alertado, activo mi estado de alerta.
+        if (!haveIBeenAlerted)
+        {
+            AlertEnemy();
+        }
+        
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco

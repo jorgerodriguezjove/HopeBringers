@@ -55,6 +55,12 @@ public class EnCharger : EnemyUnit
 
     public override void Attack()
     {
+        //Si no he sido alertado, activo mi estado de alerta.
+        if (!haveIBeenAlerted)
+        {
+            AlertEnemy();
+        }
+
         movementParticle.SetActive(true);
         pathToObjective.Clear();
 
@@ -125,7 +131,6 @@ public class EnCharger : EnemyUnit
         }
     }
 
-
     IEnumerator MovingUnitAnimation()
     {
         myCurrentEnemyState = enemyState.Waiting;
@@ -158,6 +163,8 @@ public class EnCharger : EnemyUnit
         //Actualizo toda la información al terminar de moverme
         hasMoved = true;
         movementParticle.SetActive(false);
+
+        Debug.Log(furthestAvailableUnitDistance);
         UpdateInformationAfterMovement(pathToObjective[furthestAvailableUnitDistance]);
 
         //Hago daño a la unidad

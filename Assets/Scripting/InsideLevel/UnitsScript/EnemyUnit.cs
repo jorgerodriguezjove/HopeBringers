@@ -200,6 +200,14 @@ public class EnemyUnit : UnitBase
         //Cada enemigo realiza su propio ataque
     }
 
+    //Función que se encarga de hacer que el personaje este despierto/alerta
+    public void AlertEnemy()
+    {
+        haveIBeenAlerted = true;
+        initialRangeOfAction = 1000;
+    }
+
+
     //Para acabar el turno de la unnidad
     public virtual void FinishMyActions()
     {

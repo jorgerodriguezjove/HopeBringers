@@ -72,6 +72,12 @@ public class EnGiant : EnemyUnit
 
     public override void Attack()
     {
+        //Si no he sido alertado, activo mi estado de alerta.
+        if (!haveIBeenAlerted)
+        {
+            AlertEnemy();
+        }
+
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
