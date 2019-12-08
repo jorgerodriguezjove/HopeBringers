@@ -386,16 +386,27 @@ public class TileManager : MonoBehaviour
                     //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
                     if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
                     {
-                        if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
+                        //El enemigo no puede excluir los tiles que tienen personajes de jugador porque los necesita para encontrar el número de objetivos.
+                        //Para que no se pinten sus tiles en la propia función de pintar he puesto un if que evita que se pintan.
+                        if (currentTileCheckingForMovement.unitOnTile != null)
                         {
-                            //Compruebo si existe un camino hasta el tile
-                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
-                            if (tempCurrentPathCost <= movementUds)
+                            if (selectedCharacter.GetComponent<EnemyUnit>() && currentTileCheckingForMovement.unitOnTile.GetComponent<EnemyUnit>())
                             {
-                                tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                                continue;
                             }
-                            tempCurrentPathCost = 0;
+
+                            else if (selectedCharacter.GetComponent<PlayerUnit>())
+                            {
+                                continue;
+                            }
                         }
+                        
+                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                        if (tempCurrentPathCost <= movementUds)
+                        {
+                            tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                        }
+                        tempCurrentPathCost = 0;
                     }
                 }
             }
@@ -414,16 +425,28 @@ public class TileManager : MonoBehaviour
                         //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
                         if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
                         {
-                            if (selectedCharacter.GetComponent<EnemyUnit>() || (selectedCharacter.GetComponent<PlayerUnit>() && currentTileCheckingForMovement.unitOnTile == null))
+                            //El enemigo no puede excluir los tiles que tienen personajes de jugador porque los necesita para encontrar el número de objetivos.
+                            //Para que no se pinten sus tiles en la propia función de pintar he puesto un if que evita que se pintan.
+                            if (currentTileCheckingForMovement.unitOnTile != null)
                             {
-                                //Compruebo si existe un camino hasta el tile
-                                CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
-                                if (tempCurrentPathCost <= movementUds)
+                                if (selectedCharacter.GetComponent<EnemyUnit>() && currentTileCheckingForMovement.unitOnTile.GetComponent<EnemyUnit>())
                                 {
-                                    tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                                    continue;
                                 }
-                                tempCurrentPathCost = 0;
+
+                                else if (selectedCharacter.GetComponent<PlayerUnit>())
+                                {
+                                    continue;
+                                }
                             }
+
+                            //Compruebo si existe un camino hasta el tile
+                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                            if (tempCurrentPathCost <= movementUds)
+                            {
+                                tilesAvailableForMovement.Add(currentTileCheckingForMovement);
+                            }
+                            tempCurrentPathCost = 0;
                         }
                     }
                 }
@@ -530,6 +553,11 @@ public class TileManager : MonoBehaviour
                 {
                     if (neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - selectedCharacter.myCurrentTile.height) > selectedCharacter.maxHeightDifferenceToMove)
                     {
+                        //if (neighbour.unitOnTile != null)
+                        //{
+                        //    Debug.Log( "First" + neighbour.unitOnTile.name);
+                        //}
+                        
                         continue;
 
                     }
@@ -537,9 +565,12 @@ public class TileManager : MonoBehaviour
                     //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
                     else if (neighbour != target && neighbour.unitOnTile != null || neighbour.unitOnTile != null && neighbour.unitOnTile.GetComponent<EnemyUnit>())
                     {
+                        //if (neighbour.unitOnTile != null)
+                        //{
+                        //    Debug.Log("Second" + neighbour.unitOnTile.name);
+                        //}
                         continue;
                     }                 
-
                 }
 
                 //Player
@@ -566,6 +597,11 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
+
+        tilesAvailableForMovement.Clear();
+        Debug.Log("No hay tiles a los que me pueda mover");
+        return;
+        
     }
 
     int GetDistance(IndividualTiles nodeA, IndividualTiles nodeB)

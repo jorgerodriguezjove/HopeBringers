@@ -231,8 +231,18 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar a color movimiento
     public void ColorSelect()
     {
-        GetComponent<MeshRenderer>().material = availableForMovementColor;
-        isMovementTile = true;
+        //Con este if evito que se pinten los tiles de los personajes con el pathfinding del goblin
+        if (unitOnTile == null)
+        {
+            GetComponent<MeshRenderer>().material = availableForMovementColor;
+            isMovementTile = true;
+        }
+
+        else
+        {
+            Debug.Log("Soy tile " + name + "y me han dicho que me pinte aunque tengo una unidad");
+        }
+        
     }
 
     public void ColorCurrentTileHover()

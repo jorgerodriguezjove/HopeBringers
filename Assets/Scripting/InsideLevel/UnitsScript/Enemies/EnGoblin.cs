@@ -179,23 +179,29 @@ public class EnGoblin : EnemyUnit
     //    myCurrentEnemyState = enemyState.Ended;
     //}
 
+    int limitantNumberOfTilesToMove;
+
     public override void MoveUnit()
     {
+        limitantNumberOfTilesToMove = 0;
+
         movementParticle.SetActive(true);
 
         //CAMBIAR ESTO 
         LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
         pathToObjective = LM.TM.currentPath;
 
-        //Compruebo si el path es demasiado largo como para que lo recorra entero.
-        //De ser asi reduzco el path para que solo se mueva hasta el tile que llegue con sus unidades de movimiento.
-        if (pathToObjective.Count - 2 > movementUds)
+        //Como el path guarda el tile en el que esta el enemigo yel tile en el que esta el personaje del jugador resto 2.
+        //Si esta resta se pasa del número de unidades que me puedo mover entonces solo voy a recorrer el número de tiles máximo que puedo llegar.
+        if (pathToObjective.Count-2 > movementUds)
         {
-            for (int i = movementUds; i < pathToObjective.Count-1; i++)
-            {
-                pathToObjective.RemoveAt(i);
-                i--;
-            }
+            limitantNumberOfTilesToMove = movementUds;
+        }
+
+        //Si esta resta por el contrario es menor o igual a movementUds significa que me voy mover el máximo o menos tiles.
+        else
+        {
+            limitantNumberOfTilesToMove = pathToObjective.Count-2;
         }
 
         //Compruebo la dirección en la que se mueve para girar a la unidad
@@ -203,9 +209,8 @@ public class EnGoblin : EnemyUnit
 
         myCurrentEnemyState = enemyState.Waiting;
         
-
         //Actualizo info de los tiles
-        UpdateInformationAfterMovement(pathToObjective[pathToObjective.Count - 2]);
+        UpdateInformationAfterMovement(pathToObjective[limitantNumberOfTilesToMove]);
 
         StartCoroutine("MovingUnitAnimation");
     }
@@ -214,7 +219,7 @@ public class EnGoblin : EnemyUnit
     {
         //Animación de movimiento
         //Es -1 ya que no me interesa que se mueva hasta el tile en el que está la otra unidad
-        for (int j = 1; j < pathToObjective.Count-1; j++)
+        for (int j = 1; j <= limitantNumberOfTilesToMove; j++)
         {
             //Calcula el vector al que se tiene que mover.
             currentTileVectorToMove = pathToObjective[j].transform.position;  //new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);

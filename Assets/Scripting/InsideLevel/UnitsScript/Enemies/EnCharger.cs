@@ -164,8 +164,6 @@ public class EnCharger : EnemyUnit
         hasMoved = true;
         movementParticle.SetActive(false);
 
-        Debug.Log(furthestAvailableUnitDistance);
-
         if (furthestAvailableUnitDistance >= 0)
         {
             UpdateInformationAfterMovement(pathToObjective[furthestAvailableUnitDistance]);

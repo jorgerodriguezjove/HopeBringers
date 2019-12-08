@@ -253,6 +253,8 @@ public class EnemyUnit : UnitBase
 
                         LM.DeSelectUnit();
 
+
+
                         if (!haveIBeenAlerted)
                         {
                             LM.ShowEnemyHover(rangeOfAction, this);
@@ -270,6 +272,9 @@ public class EnemyUnit : UnitBase
                         //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
                         HealthBarOn_Off(true);
                         gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+
+                        //Cambio el color del personaje
+                        SelectedColor();
                     }
                     else
                     {
@@ -292,6 +297,9 @@ public class EnemyUnit : UnitBase
                         //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
                         HealthBarOn_Off(true);
                         gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+
+                        //Cambio el color del personaje
+                        SelectedColor();
                     }
                 }
             }
@@ -316,7 +324,6 @@ public class EnemyUnit : UnitBase
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                     LM.CheckIfHoverShouldAppear(this);
                     HealthBarOn_Off(true);
-
                 }
             }
         }
@@ -342,9 +349,6 @@ public class EnemyUnit : UnitBase
         HealthBarOn_Off(true);
         gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
-        //Cambio el color del personaje
-        SelectedColor();
-
         myPortrait.HighlightMyself();
     }
 
@@ -369,13 +373,13 @@ public class EnemyUnit : UnitBase
         {
             LM.selectedCharacter.HideDamageIcons();
         }
+
         LM.HideHover(this);
         HealthBarOn_Off(false);
         LM.UIM.HideUnitInfo("");
         //LM.UIM.HideCharacterInfo("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
-        ResetColor();
         myPortrait.UnHighlightMyself();
 
     }
