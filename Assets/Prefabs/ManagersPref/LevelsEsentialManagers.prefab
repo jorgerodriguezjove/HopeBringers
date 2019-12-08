@@ -9195,6 +9195,7 @@ MonoBehaviour:
   tilesAvailableForMovement: []
   tileToMoveAfterRotate: {fileID: 0}
   tilesAvailableForMovementEnemies: []
+  damageTilesInBoard: []
   FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa: 1
   tilesForCharacterPlacement: []
   characthersOnTheBoard: []
@@ -9246,12 +9247,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d5a4c23df8fb441b7b8cf55d661c0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleAndNoTileHereMask:
+  obstacleMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
+  noTileHereMask:
+    serializedVersion: 2
+    m_Bits: 0
+  startignTileMask:
+    serializedVersion: 2
+    m_Bits: 0
   gridWorldSize: {x: 10, y: 6, z: 10}
   nodeRadius: 0.5
   tilePref: {fileID: 209880152492372658, guid: 448f7c80a4285584d9920fd5bed9bd67, type: 3}
+  availableForMovementColor: {fileID: 2100000, guid: 4d42938bbdd19bd44875b85d31b1b384,
+    type: 2}
+  currentTileHoverMovementColor: {fileID: 2100000, guid: f621afffb4ec33446aaa4db04f0c5ca2,
+    type: 2}
+  attackColor: {fileID: 2100000, guid: 7d8acad79948f4d499d3ffe792cf5525, type: 2}
   unvisited: []
   currentPath: []
   LM: {fileID: 5809797896216913893}
