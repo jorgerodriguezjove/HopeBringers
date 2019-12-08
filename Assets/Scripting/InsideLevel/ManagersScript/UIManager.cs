@@ -74,8 +74,8 @@ public class UIManager : MonoBehaviour
     private bool isScrollButtonDownBeingPressed;
     private bool isScrollButtonUpBeingPressed;
 
-	//Bool para ver si tiene que aparecer la información del ataque o no
-	private bool shouldAttackInfoBeDisplayed;
+	//Bool para saber si la unidad tiene alguna unidad a rango o no
+	private bool hasCharacterUnitInRange;
 
     //Velocidad de scroll
     [SerializeField]
@@ -201,7 +201,11 @@ public class UIManager : MonoBehaviour
 	{
 		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
 		{
-			if(LM.characthersOnTheBoard[i].hasAttacked == false)
+			if(LM.characthersOnTheBoard[i].hasMoved == false)
+			{
+				LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
+			}
+			else if (LM.characthersOnTheBoard[i].hasAttacked == false && hasCharacterUnitInRange)
 			{
 				LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
 			}
@@ -456,10 +460,12 @@ public class UIManager : MonoBehaviour
 	public void TooltipAttack()
 	{
 		tooltipAccionesText.text = "Ataca a una unidad";
+		hasCharacterUnitInRange = true;
 	}
 	public void TooltipNoAttackable()
 	{
 		tooltipAccionesText.text = "Esta unidad no tiene ningún enemigo a rango";
+		hasCharacterUnitInRange = false;
 	}
 	public void TooltipRotate()
 	{

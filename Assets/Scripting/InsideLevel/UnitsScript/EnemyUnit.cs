@@ -380,7 +380,11 @@ public class EnemyUnit : UnitBase
 		}
 
 		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-		LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
+		if(LM.selectedCharacter != null)
+		{
+			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
+		}
+		
 
 		ResetColor();
 
