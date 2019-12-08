@@ -62,9 +62,17 @@ public class PlayerUnit : UnitBase
 	public GameObject actionAvaliablePanel;
 	[SerializeField]
 	public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
-	
 
-    [Header("REFERENCIAS")]
+	//Para el tooltip de ataque
+	[SerializeField]
+	[@TextAreaAttribute(15, 20)]
+	public string attackInfo;
+
+	[SerializeField]
+	public Sprite attackTooltipImage;
+
+
+	[Header("REFERENCIAS")]
 
     public LevelManager LM;
     [HideInInspector]

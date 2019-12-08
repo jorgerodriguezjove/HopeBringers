@@ -328,6 +328,7 @@ public class EnemyUnit : UnitBase
                 if (!isDead)
                 {
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+					LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
                     LM.CheckIfHoverShouldAppear(this);
                     HealthBarOn_Off(true);
                 }
@@ -348,11 +349,11 @@ public class EnemyUnit : UnitBase
             LM.ShowEnemyHover(movementUds, this);
         }
 
-        //Llamo a LevelManager para activar hover				
-        LM.UIM.ShowUnitInfo(this.unitInfo, this);
+		//Llamo a LevelManager para activar hover				
+		LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
-        //LM.UIM.ShowCharacterInfo(unitInfo, this); 
-        HealthBarOn_Off(true);
+		//LM.UIM.ShowCharacterInfo(unitInfo, this); 
+		HealthBarOn_Off(true);
         gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
         myPortrait.HighlightMyself();
@@ -378,6 +379,7 @@ public class EnemyUnit : UnitBase
         if (LM.selectedCharacter != null)
         {
             LM.selectedCharacter.HideDamageIcons();
+<<<<<<< .merge_file_a10032
         }
 
         LM.HideHover(this);
@@ -385,6 +387,26 @@ public class EnemyUnit : UnitBase
         LM.UIM.HideUnitInfo("");
         //LM.UIM.HideCharacterInfo("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+=======
+		}
+        LM.HideHover(this);
+        HealthBarOn_Off(false);
+		//LM.UIM.HideCharacterInfo("");
+		if (LM.selectedCharacter == null)
+		{
+			LM.UIM.HideUnitInfo("");
+		}
+
+		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+		if(LM.selectedCharacter != null)
+		{
+			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
+		}
+		
+
+		ResetColor();
+
+>>>>>>> .merge_file_a18160
 
         myPortrait.UnHighlightMyself();
 

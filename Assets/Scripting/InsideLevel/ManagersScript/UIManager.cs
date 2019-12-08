@@ -74,6 +74,9 @@ public class UIManager : MonoBehaviour
     private bool isScrollButtonDownBeingPressed;
     private bool isScrollButtonUpBeingPressed;
 
+	//Bool para saber si la unidad tiene alguna unidad a rango o no
+	private bool hasCharacterUnitInRange;
+
     //Velocidad de scroll
     [SerializeField]
     private float scrollSpeed;
@@ -198,7 +201,11 @@ public class UIManager : MonoBehaviour
 	{
 		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
 		{
-			if(LM.characthersOnTheBoard[i].hasAttacked == false)
+			if(LM.characthersOnTheBoard[i].hasMoved == false)
+			{
+				LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
+			}
+			else if (LM.characthersOnTheBoard[i].hasAttacked == false && hasCharacterUnitInRange)
 			{
 				LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
 			}
@@ -278,27 +285,27 @@ public class UIManager : MonoBehaviour
 	}
     #endregion
 
-    #region CHARACTER_INFO
+    #region UNITS_INFO
+	//Deprecated
+	//public void ShowCharacterImage(UnitBase characterImage)
+	//{
+	//	if(characterImage.characterImage != null)
+	//	{
+	//		imageCharacterInfo.gameObject.SetActive(true);
+	//		imageCharacterInfo.sprite = characterImage.characterImage;
+	//	}
+	//}
 
-	public void ShowCharacterImage(UnitBase characterImage)
-	{
-		if(characterImage.characterImage != null)
-		{
-			imageCharacterInfo.gameObject.SetActive(true);
-			imageCharacterInfo.sprite = characterImage.characterImage;
-		}
-	}
+	//public void HideCharacterImage()
+	//{
+	//	imageCharacterInfo.gameObject.SetActive(false);
+	//	imageCharacterInfo.sprite = null;
+	//}
 
-	public void HideCharacterImage()
-	{
-		imageCharacterInfo.gameObject.SetActive(false);
-		imageCharacterInfo.sprite = null;
-	}
-
-    public void ShowUnitInfo(string textToPrint, UnitBase unitTooltipImage)
+    public void ShowUnitInfo(string generalInfoText, UnitBase unitTooltipImage)
     {
         //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
-        characterInfoText.text = textToPrint;
+        characterInfoText.text = generalInfoText;
         if (unitTooltipImage.tooltipImage !=null)
         {
 			explanationImage.gameObject.SetActive(true);
@@ -313,23 +320,29 @@ public class UIManager : MonoBehaviour
 		explanationImage.gameObject.SetActive(false);
 		explanationImage.sprite = null;
 	}
- 
+
 	#endregion
 
-	#region TOOLTIP
+	#region TILE_INFO
 
 	public void ShowTileInfo(string textToPrint, Sprite tileImageToShow)
 	{
-		characterInfoText.text = textToPrint;
-		explanationImage.gameObject.SetActive(true);
-		explanationImage.sprite = tileImageToShow;
+		if(LM.selectedCharacter == null && LM.selectedEnemy == null)
+		{
+			characterInfoText.text = textToPrint;
+			explanationImage.gameObject.SetActive(true);
+			explanationImage.sprite = tileImageToShow;
+		}	
 	}
 
 	public void HideTileInfo()
 	{
-		characterInfoText.text = "";
-		explanationImage.gameObject.SetActive(false);
-		explanationImage.sprite = null;
+		if(LM.selectedCharacter == null && LM.selectedEnemy == null)
+		{
+			characterInfoText.text = "";
+			explanationImage.gameObject.SetActive(false);
+			explanationImage.sprite = null;
+		}
 	}
 
     #endregion
@@ -447,10 +460,12 @@ public class UIManager : MonoBehaviour
 	public void TooltipAttack()
 	{
 		tooltipAccionesText.text = "Ataca a una unidad";
+		hasCharacterUnitInRange = true;
 	}
 	public void TooltipNoAttackable()
 	{
 		tooltipAccionesText.text = "Esta unidad no tiene ningún enemigo a rango";
+		hasCharacterUnitInRange = false;
 	}
 	public void TooltipRotate()
 	{

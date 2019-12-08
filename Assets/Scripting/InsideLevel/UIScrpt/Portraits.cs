@@ -68,7 +68,7 @@ public class Portraits : MonoBehaviour
 
         //Se desactiva para que el UImanager active únicamente los necesarios en función del número de personajes.
         gameObject.SetActive(false);
-		initImage = GetComponent<Image>().sprite;
+		//initImage = GetComponent<Image>().sprite;
 	}
 
     private void Start()
@@ -140,12 +140,28 @@ public class Portraits : MonoBehaviour
 		}
 	}
 
-    #endregion
+	public void OnMouseEnter()
+	{
+		Highlight();
+		ShowCharacterImageFromPortrait();
+	}
 
-    #region REFRESH
+	private void OnMouseExit()
+	{
+		Unhighlight();
+	}
 
-    //Función que inicializa la vida de los personajes
-    public void InitializeHealth()
+	private void OnMouseDown()
+	{
+		AssignClickerPlayer();
+	}
+
+	#endregion
+
+	#region REFRESH
+
+	//Función que inicializa la vida de los personajes
+	public void InitializeHealth()
     {
         for (int i = 0; i < assignedPlayer.maxHealth; i++)
         {
