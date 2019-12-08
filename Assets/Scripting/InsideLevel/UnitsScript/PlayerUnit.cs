@@ -138,12 +138,14 @@ public class PlayerUnit : UnitBase
     #region INTERACTION
 
     //Al clickar en una unidad aviso al LM
-    private void OnMouseDown()
+    //Es virtual para el decoy del mago.
+    protected virtual void OnMouseDown()
     {
         LM.SelectUnit(movementUds, this);
     }
 
-    private void OnMouseEnter()
+    //Es virtual para el decoy del mago.
+    protected virtual void OnMouseEnter()
     {
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions) 
         {
@@ -168,7 +170,8 @@ public class PlayerUnit : UnitBase
         }
     }
 
-    private void OnMouseExit()
+    //Es virtual para el decoy del mago.
+    protected virtual void OnMouseExit()
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 

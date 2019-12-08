@@ -207,6 +207,12 @@ public class EnemyUnit : UnitBase
         rangeOfAction = 1000;
     }
 
+    //Función que se encarga de hacer que el personaje este despierto/alerta
+    public virtual void ShowActionPathFinding()
+    {
+        //Cada enemigo realiza su propio path
+    }
+
 
     //Para acabar el turno de la unnidad
     public virtual void FinishMyActions()
