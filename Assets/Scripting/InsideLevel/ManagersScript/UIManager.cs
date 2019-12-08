@@ -103,15 +103,17 @@ public class UIManager : MonoBehaviour
     {
         LM = FindObjectOfType<LevelManager>();
     }
-	private void Start()
-	{
-		characterInfoOriginalPosition = characterInfo.transform.position;
+
+    //Lo pongo en una variable en vez de en el start para que lo pueda llamar el Level Manager
+    public void InitializeUI()
+    {
+        characterInfoOriginalPosition = characterInfo.transform.position;
 
         //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
         initialScrollPosition = padrePanelesEnemigos.transform.position;
 
         for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
-		{
+        {
             //Activamos los retratos necesarios y les asignamos su jugador
             panelesPJ[i].SetActive(true);
             panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
@@ -122,8 +124,8 @@ public class UIManager : MonoBehaviour
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
         }
 
-		tooltipAccionesText.text = "Selecciona una unidad";
-	}
+        tooltipAccionesText.text = "Selecciona una unidad";
+    }
 
     #endregion
 

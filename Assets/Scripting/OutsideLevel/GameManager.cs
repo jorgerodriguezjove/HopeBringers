@@ -85,5 +85,5 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         levelIDsUnlocked.Add(currentLevelNode);
     }
-    
+
 }

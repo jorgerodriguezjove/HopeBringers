@@ -13,6 +13,9 @@ public class TileManager : MonoBehaviour
     [SerializeField]
     private LayerMask noTileHereMask;
 
+    [SerializeField]
+    private LayerMask startignTileMask;
+
 
     //Tamaño del área dónde va a haber tiles
     public Vector3 gridWorldSize;
@@ -34,6 +37,14 @@ public class TileManager : MonoBehaviour
     int gridSizeX, gridSizeZ;
 
     int gridSizeY;
+
+    //Colores tiles
+    [SerializeField]
+    private Material availableForMovementColor;
+    [SerializeField]
+    private Material currentTileHoverMovementColor;
+    [SerializeField]
+    private Material attackColor;
 
     [Header("FUNCIÓN CREAR PATH")]
 
@@ -132,11 +143,18 @@ public class TileManager : MonoBehaviour
                     bool isObstacle = false;
                     bool empty = false;
                     bool noTileInThisColumn = false;
+                    bool startingTile = false;
 
                     //Si es la primera fila (el suelo vamos) únicamente compruebo obstáculos
                     if (y == 0)
                     {
-                        if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
+                        //Compruebo si es un tile en el que se puede colocar a un personaje
+                        if (Physics.CheckSphere(worldPoint, nodeRadius, startignTileMask))
+                        {
+                            startingTile = true;
+                        }
+
+                        else if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
                         {
                             empty = false;
                             isObstacle = true;
@@ -154,14 +172,21 @@ public class TileManager : MonoBehaviour
                     //Si ya hay altura
                     else
                     {
+                        //Compruebo si es un tile en el que se puede colocar a un personaje
+                        if (Physics.CheckSphere(worldPoint, nodeRadius, startignTileMask))
+                        {
+                            startingTile = true;
+                        }
+
                         //Compruebo si hay obstáculos
-                        if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
+                        else if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
                         {
                             empty = false;
                             isObstacle = true;
                             noTileInThisColumn = false;
                         }
 
+                        //Compruebo si es un obstáculos que no tiene tiles encima
                         else if (Physics.CheckSphere(worldPoint, nodeRadius, noTileHereMask))
                         {
                             empty = false;
@@ -197,7 +222,7 @@ public class TileManager : MonoBehaviour
 
                     gridObject[x, y, z].AddComponent<IndividualTiles>();
 
-                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn ,worldPoint, x, y, z, tilePref, LM);
+                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn, startingTile, worldPoint, x, y, z, tilePref, LM, availableForMovementColor, currentTileHoverMovementColor, attackColor);
 
                     grid3DNode[x, y, z] = gridObject[x, y, z].GetComponent<IndividualTiles>();
                 }

@@ -7575,6 +7575,7 @@ MonoBehaviour:
   tilesAvailableForMovement: []
   tileToMoveAfterRotate: {fileID: 0}
   tilesAvailableForMovementEnemies: []
+  damageTilesInBoard: []
   FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa: 1
   tilesForCharacterPlacement: []
   characthersOnTheBoard: []
@@ -7626,12 +7627,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75d5a4c23df8fb441b7b8cf55d661c0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleAndNoTileHereMask:
+  obstacleMask:
     serializedVersion: 2
     m_Bits: 512
+  noTileHereMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  startignTileMask:
+    serializedVersion: 2
+    m_Bits: 2048
   gridWorldSize: {x: 10, y: 6, z: 10}
   nodeRadius: 0.5
   tilePref: {fileID: 209880152492372658, guid: 448f7c80a4285584d9920fd5bed9bd67, type: 3}
+  availableForMovementColor: {fileID: 2100000, guid: 4d42938bbdd19bd44875b85d31b1b384,
+    type: 2}
+  currentTileHoverMovementColor: {fileID: 2100000, guid: f621afffb4ec33446aaa4db04f0c5ca2,
+    type: 2}
+  attackColor: {fileID: 2100000, guid: 7d8acad79948f4d499d3ffe792cf5525, type: 2}
   unvisited: []
   currentPath: []
   LM: {fileID: 5809797896216913893}
@@ -16566,11 +16578,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6440256616066330047}
     m_Modifications:
-    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
-        type: 3}
-      propertyPath: m_Name
-      value: 'AttackToken '
-      objectReference: {fileID: 0}
     - target: {fileID: 8136096614560655827, guid: 20a7ec58703b2b64f99aa74a01da77a0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16675,6 +16682,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
+        type: 3}
+      propertyPath: m_Name
+      value: 'AttackToken '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20a7ec58703b2b64f99aa74a01da77a0, type: 3}
@@ -16828,11 +16840,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3035678997670500413}
     m_Modifications:
-    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
-        type: 3}
-      propertyPath: m_Name
-      value: AttackToken
-      objectReference: {fileID: 0}
     - target: {fileID: 8136096614560655827, guid: 20a7ec58703b2b64f99aa74a01da77a0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16937,6 +16944,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
+        type: 3}
+      propertyPath: m_Name
+      value: AttackToken
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20a7ec58703b2b64f99aa74a01da77a0, type: 3}
@@ -17217,11 +17229,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9073517145421800798}
     m_Modifications:
-    - target: {fileID: 7838164483769733363, guid: c04d9498ea4c907418f45e0e3a3f9272,
-        type: 3}
-      propertyPath: m_Name
-      value: InputManager
-      objectReference: {fileID: 0}
     - target: {fileID: 7838164483769733361, guid: c04d9498ea4c907418f45e0e3a3f9272,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17276,6 +17283,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7838164483769733363, guid: c04d9498ea4c907418f45e0e3a3f9272,
+        type: 3}
+      propertyPath: m_Name
+      value: InputManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c04d9498ea4c907418f45e0e3a3f9272, type: 3}
@@ -17584,11 +17596,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6813486786784280646}
     m_Modifications:
-    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
-        type: 3}
-      propertyPath: m_Name
-      value: AttackToken
-      objectReference: {fileID: 0}
     - target: {fileID: 8136096614560655827, guid: 20a7ec58703b2b64f99aa74a01da77a0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17694,6 +17701,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
+        type: 3}
+      propertyPath: m_Name
+      value: AttackToken
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20a7ec58703b2b64f99aa74a01da77a0, type: 3}
 --- !u!1 &7462604856641907951 stripped
@@ -17715,11 +17727,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2900610011414085994}
     m_Modifications:
-    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
-        type: 3}
-      propertyPath: m_Name
-      value: 'AttackToken '
-      objectReference: {fileID: 0}
     - target: {fileID: 8136096614560655827, guid: 20a7ec58703b2b64f99aa74a01da77a0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17824,6 +17831,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 694065688512182050, guid: 20a7ec58703b2b64f99aa74a01da77a0,
+        type: 3}
+      propertyPath: m_Name
+      value: 'AttackToken '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20a7ec58703b2b64f99aa74a01da77a0, type: 3}
