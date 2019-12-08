@@ -379,7 +379,7 @@ public class EnemyUnit : UnitBase
         if (LM.selectedCharacter != null)
         {
             LM.selectedCharacter.HideDamageIcons();
-<<<<<<< .merge_file_a10032
+
         }
 
         LM.HideHover(this);
@@ -387,8 +387,8 @@ public class EnemyUnit : UnitBase
         LM.UIM.HideUnitInfo("");
         //LM.UIM.HideCharacterInfo("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-=======
-		}
+
+		
         LM.HideHover(this);
         HealthBarOn_Off(false);
 		//LM.UIM.HideCharacterInfo("");
@@ -406,7 +406,6 @@ public class EnemyUnit : UnitBase
 
 		ResetColor();
 
->>>>>>> .merge_file_a18160
 
         myPortrait.UnHighlightMyself();
 
