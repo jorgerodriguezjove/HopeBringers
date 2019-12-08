@@ -6,7 +6,7 @@ public class LevelNode : MonoBehaviour
 {
     #region VARIABLES
 
-    [Header("Level Logic")]
+    [Header("LÓGICA")]
     //Número de unidades que requiere el nivel
     [Range(1,4)]
     [SerializeField]
@@ -24,7 +24,7 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public bool isUnlocked;
 
-    [Header("Relationed levels")]
+    [Header("NIVELES RELACIONADOS")]
 
     //Niveles que están conectados a este nivel. En el futuro servirá para el movimiento de la ficha
     [SerializeField]
@@ -34,7 +34,7 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public List<LevelNode> unlockableLevels;
 
-    [Header("Level Info Text")]
+    [Header("LEVEL INFO TEXT")]
 
     //Título del nivel
     [SerializeField]
@@ -46,7 +46,7 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public string descriptionText;
 
-    [Header("Materiales")]
+    [Header("MATERIALES")]
 
     //Materiales para indicar el estado del nivel. Verde = completado. Rojo = Desbloqueado pero sin completar. Negro = Bloqueado
     [SerializeField]
@@ -56,7 +56,7 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     Material blockedLevel;
 
-    [Header("Referencias")]
+    [Header("REFERENCIAS")]
     [SerializeField]
     private TableManager TM;
 

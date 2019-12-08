@@ -22,6 +22,10 @@ public class TableManager : MonoBehaviour
     //Objeto que se mueve entre los niveles e indica el nivel actual.
     private GameObject levelIndicator;
 
+    //Nombre del nivel actual que hay que cargar si el jugador le da a ready
+    [HideInInspector]
+    public string currentClickedSceneName;
+
     [Header("Referencias")]
     [SerializeField]
     private UITableManager UIMM;
@@ -46,6 +50,7 @@ public class TableManager : MonoBehaviour
         selectCamera.SetActive(true);
 
         UIMM.SetLevelBookInfo(levelClicked);
+        currentClickedSceneName = levelClicked.sceneName;
     }
 
     public void BackToLevelSelection()

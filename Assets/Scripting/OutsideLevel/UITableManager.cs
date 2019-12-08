@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UITableManager : MonoBehaviour
 {
     #region VARIABLES
-
+    
     [Header("UI REFERENCIAS")]
 
     //Referencia al texto de título
@@ -89,6 +90,18 @@ public class UITableManager : MonoBehaviour
         {
             Destroy(currentSkillTreeObj);
         }
+    }
+
+
+    //Al pulsar el botón de ready se carga la escena
+    public void SceneToLoad()
+    {
+        SceneManager.LoadScene(TM.currentClickedSceneName, LoadSceneMode.Single);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 
 

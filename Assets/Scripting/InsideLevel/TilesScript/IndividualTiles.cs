@@ -50,12 +50,16 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
 
     [Header("FEEDBACK")]
-    [SerializeField]
-    private Material availableForMovementColor;
-    [SerializeField]
-    private Material currentTileHoverMovementColor;
-    [SerializeField]
-    private Material attackColor;
+
+    //Estas son las variables locales. Los materiales s esetean desde el tile manager
+    [HideInInspector]
+    public Material availableForMovementColor;
+    [HideInInspector]
+    public Material currentTileHoverMovementColor;
+    [HideInInspector]
+    public Material attackColor;
+
+    //Material inicial del tile
     private Material initialColor;
 
     //Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
@@ -107,13 +111,17 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     #region INIT
 
     //Constructor
-    public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn ,Vector3 _worldPos, int xPos, int yPos, int zPos, GameObject tilePref, LevelManager LMRef)
+    public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn, bool _startingTile,
+                             Vector3 _worldPos, int xPos, int yPos, int zPos, 
+                             GameObject tilePref, LevelManager LMRef, 
+                             Material _selectMaterial, Material _currentMaterial, Material _attackMaterial)
     {
         //Inicializo las variables que le pasa Grid
         isObstacle = _isObstacle;
         isEmpty = _empty;
         noTilesInThisColumn = _noTilesInThisColumn;
         worldPosition = _worldPos;
+        isAvailableForCharacterColocation = _startingTile;
 
         //Coordenadas del tile
         tileX = xPos;
@@ -123,16 +131,24 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         //Ref al levelmanager
         LM = LMRef;
 
+        //Nombre en el editor del tile
         gameObject.name = string.Join("_", tileX.ToString(), tileZ.ToString(), height.ToString());
 
+        //Si es empty o un obstáculo le quito el mesh
         if (isEmpty || isObstacle || noTilesInThisColumn)
         {
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<BoxCollider>().enabled = false;
         }
 
+        //Seteo los materiales
         initialColor = GetComponent<MeshRenderer>().material;
 
+        availableForMovementColor = _selectMaterial;
+        currentTileHoverMovementColor = _currentMaterial;
+        attackColor = _attackMaterial;
+
+        //Aviso a los vecinos de la ocupación del tile
         UpdateNeighboursOccupied();
 
         if (LM.currentLevelState == LevelManager.LevelState.Initializing && isAvailableForCharacterColocation)

@@ -110,6 +110,7 @@ public class LevelManager : MonoBehaviour
             GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
             unitInstantiated.SetActive(false);
             unitsWithoutPosition.Add(unitInstantiated);
+            
         }   
     }
 
@@ -121,22 +122,15 @@ public class LevelManager : MonoBehaviour
         //Crea a los jugadores seleccionados para el nivel.
         if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
         {
+            UIM.InitializeUI();
             currentLevelState = LevelState.PlayerPhase;
         }
         else
         {
             InitializeCharacters();
-        }
-        
-        //Reordeno las unidades y también llamo al UIManager para que actualice el orden
-        UpdateUnitsOrder();
+        }        
 
-        //Comienza el nivel con el turno del jugador
-        //currentLevelState = LevelState.PlayerPhase;
-
-        counterForEnemiesOrder = 0;
-
-
+        //La inicialización real ocurren en la función de Tile clicked cuando detecta que se han colocado todas las unidades.
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
@@ -206,7 +200,6 @@ public class LevelManager : MonoBehaviour
                     {
                         DeselectEnemy();
                     }
-
 
                     //Desactivo el botón de pasar turno cuando selecciona la unidad
                     //Está función no se puede llamar fuera del if para que afecte a ambos casos porque entonces también se cambia al pulsar en una unidad que ya ha atacado.
@@ -421,7 +414,8 @@ public class LevelManager : MonoBehaviour
                             tilesForCharacterPlacement[i].ColorDeselect();
                         }
 
-                        currentLevelState = LevelState.PlayerPhase;
+                        //AQUÍ COMIENZA LA PARTIDA COMO TAL
+                        FinishPlacingUnits();
                     }
                 }
             }
@@ -634,9 +628,6 @@ public class LevelManager : MonoBehaviour
             }
           
         }
-
-       
-
     }
 
     public void DeselectEnemy()
@@ -652,8 +643,6 @@ public class LevelManager : MonoBehaviour
             selectedEnemy = null;
         }
     }
-
-
 
     #endregion
 
@@ -763,6 +752,19 @@ public class LevelManager : MonoBehaviour
             //Empieza el turno enemigo
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
+    }
+
+    //Función que se llama cuando se termina de colocar unidades
+    private void FinishPlacingUnits()
+    {
+        currentLevelState = LevelState.PlayerPhase;
+
+        UIM.InitializeUI();
+
+        //Reordeno las unidades y también llamo al UIManager para que actualice el orden
+        UpdateUnitsOrder();
+
+        counterForEnemiesOrder = 0;
     }
 
     //Función que llaman el gigante y el goblin para determinar la distancia hasta los enmigos
