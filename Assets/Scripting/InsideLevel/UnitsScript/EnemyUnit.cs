@@ -259,8 +259,6 @@ public class EnemyUnit : UnitBase
 
                         LM.DeSelectUnit();
 
-
-
                         if (!haveIBeenAlerted)
                         {
                             LM.ShowEnemyHover(rangeOfAction, this);

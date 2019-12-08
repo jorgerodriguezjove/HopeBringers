@@ -53,6 +53,7 @@ public class Knight : PlayerUnit
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
+
         if (unitAttacker != null)
         {
             if (currentFacingDirection == FacingDirection.North && unitAttacker.currentFacingDirection == FacingDirection.South
@@ -68,6 +69,12 @@ public class Knight : PlayerUnit
             {
                 base.ReceiveDamage(damageReceived, unitAttacker);
             }
+        }
+
+        //Si el atacante es null probablemente es un tile de daño o algo por el estilo
+        else
+        {
+            base.ReceiveDamage(damageReceived, unitAttacker);
         }
     }
 

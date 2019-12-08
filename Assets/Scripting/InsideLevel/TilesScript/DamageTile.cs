@@ -39,18 +39,24 @@ public class DamageTile : MonoBehaviour
     }
 	#endregion
 
-	void OnTriggerStay(Collider unitToDoDamage)
+	void OnTriggerStay(Collider unitOnTile)
 	{
-		if (LM.currentLevelState == LevelManager.LevelState.ProcessingEnemiesActions && !damageDone)
-		{
-			//Por si acaso pilla el tile en vez de a la unidad
-			if (unitToDoDamage.GetComponent<UnitBase>())
-			{
-				unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
-				damageDone = true;
-				Debug.Log("DAMAGE DONE");
-			}
-		}
+		//if (LM.currentLevelState == LevelManager.LevelState.ProcessingEnemiesActions && !damageDone)
+		//{
+		//	//Por si acaso pilla el tile en vez de a la unidad
+		//	if (unitToDoDamage.GetComponent<UnitBase>())
+		//	{
+		//		unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
+		//		damageDone = true;
+		//		Debug.Log("DAMAGE DONE");
+		//	}
+		//}
+
+        if (unitOnTile.GetComponent<UnitBase>())
+        {
+            unitToDoDamage = unitOnTile.gameObject;
+            hasUnit = true;
+        }
 	}
 
 	void OnTriggerExit(Collider unitOnTile)
@@ -64,7 +70,9 @@ public class DamageTile : MonoBehaviour
 
     public void CheckHasToDoDamage()
     {
-        if(hasUnit && !damageDone){
+        if(hasUnit && !damageDone)
+        {
+            Debug.Log(unitToDoDamage);
             unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
             
             damageDone = true;
@@ -85,7 +93,6 @@ public class DamageTile : MonoBehaviour
 	}
 
 	
-
 	#region INTERACTION
 
 	private void OnMouseEnter()
