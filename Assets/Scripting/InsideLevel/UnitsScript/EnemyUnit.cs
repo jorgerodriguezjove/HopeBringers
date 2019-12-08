@@ -315,6 +315,7 @@ public class EnemyUnit : UnitBase
                 if (!isDead)
                 {
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+					LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
                     LM.CheckIfHoverShouldAppear(this);
                     HealthBarOn_Off(true);
 
@@ -379,8 +380,9 @@ public class EnemyUnit : UnitBase
 		}
 
 		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+		LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
 
-        ResetColor();
+		ResetColor();
 
 
         myPortrait.UnHighlightMyself();

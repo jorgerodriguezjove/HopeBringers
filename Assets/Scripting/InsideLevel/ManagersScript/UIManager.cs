@@ -74,6 +74,9 @@ public class UIManager : MonoBehaviour
     private bool isScrollButtonDownBeingPressed;
     private bool isScrollButtonUpBeingPressed;
 
+	//Bool para ver si tiene que aparecer la información del ataque o no
+	private bool shouldAttackInfoBeDisplayed;
+
     //Velocidad de scroll
     [SerializeField]
     private float scrollSpeed;
@@ -295,10 +298,10 @@ public class UIManager : MonoBehaviour
 	//	imageCharacterInfo.sprite = null;
 	//}
 
-    public void ShowUnitInfo(string textToPrint, UnitBase unitTooltipImage)
+    public void ShowUnitInfo(string generalInfoText, UnitBase unitTooltipImage)
     {
         //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
-        characterInfoText.text = textToPrint;
+        characterInfoText.text = generalInfoText;
         if (unitTooltipImage.tooltipImage !=null)
         {
 			explanationImage.gameObject.SetActive(true);
