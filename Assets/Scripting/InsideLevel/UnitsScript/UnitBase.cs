@@ -461,7 +461,7 @@ public class UnitBase : MonoBehaviour
     {
         if (!isDead)
         {
-            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+                unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;  
         }
         
     }

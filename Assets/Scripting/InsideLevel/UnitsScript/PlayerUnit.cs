@@ -22,7 +22,7 @@ public class PlayerUnit : UnitBase
     public bool canHover;
 
     [SerializeField]
-    private GameObject movementTokenInGame;
+    protected GameObject movementTokenInGame;
 
     [SerializeField]
     private GameObject attackTokenInGame;
@@ -34,7 +34,7 @@ public class PlayerUnit : UnitBase
     [Header("MOVIMIENTO")]
 
     //Camino que tiene que seguir la unidad para moverse
-    private List<IndividualTiles> myCurrentPath;
+    protected List<IndividualTiles> myCurrentPath;
 
     [Header("FEEDBACK")]
     
@@ -66,7 +66,7 @@ public class PlayerUnit : UnitBase
 
     [Header("REFERENCIAS")]
 
-    private LevelManager LM;
+    public LevelManager LM;
     [HideInInspector]
     public UIManager UIM;
 
@@ -176,18 +176,23 @@ public class PlayerUnit : UnitBase
         {
             LM.HideUnitHover(this);
             myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+           
             ResetColor();
+           
+
 
         }
-       else if(LM.selectedCharacter == this)
+        else if (LM.selectedCharacter == this)
         {
             return;
         }
-        else if ( LM.selectedCharacter != this.gameObject)
+        else if (LM.selectedCharacter != this.gameObject)
         {
             LM.HideUnitHover(this);
             myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+
             ResetColor();
+           
         }
 
 
@@ -199,7 +204,7 @@ public class PlayerUnit : UnitBase
     #region MOVEMENT_&_ROTATION
 
     //El LevelManager avisa a la unidad de que debe moverse.
-    public void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
+    public virtual void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
     {
         //Compruebo la dirección en la que se mueve para girar a la unidad
         //   CheckTileDirection(tileToMove);

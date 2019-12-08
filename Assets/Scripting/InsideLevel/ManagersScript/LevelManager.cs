@@ -68,7 +68,7 @@ public class LevelManager : MonoBehaviour
 
     //Cada unidad se encarga desde su script de incluirse en la lista
     //Lista con todas las unidades del jugador en el tablero
-    [HideInInspector]
+    //[HideInInspector]
     public List<PlayerUnit> characthersOnTheBoard;
     
     //Lista con todas las unidades enemigas en el tablero

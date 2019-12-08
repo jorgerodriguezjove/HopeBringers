@@ -185,27 +185,35 @@ public class Portraits : MonoBehaviour
     {
         for (int i = 0; i < attackTokens.Count; i++)
         {
-            //attackTokens[i].SetActive(!assignedPlayer.hasAttacked);
-			if (!assignedPlayer.hasAttacked)
-			{
-				attackTokens[i].GetComponent<Animator>().Play("TokenReset");
-			}
-			else
-			{
-				attackTokens[i].GetComponent<Animator>().Play("TokenFlip");
-			}
+            //Añado este if para que compruebe si es un decoy o no.
+            if (!assignedPlayer.GetComponent<MageDecoy>())
+            {
+                //attackTokens[i].SetActive(!assignedPlayer.hasAttacked);
+                if (!assignedPlayer.hasAttacked)
+                {
+                    attackTokens[i].GetComponent<Animator>().Play("TokenReset");
+                }
+                else
+                {
+                    attackTokens[i].GetComponent<Animator>().Play("TokenFlip");
+                }
+            }
         }
         for (int i = 0; i < movementTokens.Count; i++)
         {
-            //movementTokens[i].SetActive(!assignedPlayer.hasMoved);
-			if (!assignedPlayer.hasMoved)
-			{
-				movementTokens[i].GetComponent<Animator>().Play("TokenReset");
-			}
-			else
-			{
-				movementTokens[i].GetComponent<Animator>().Play("TokenFlip");
-			}
+            //Añado este if para que compruebe si es un decoy o no.
+            if (!assignedPlayer.GetComponent<MageDecoy>())
+            {
+                //movementTokens[i].SetActive(!assignedPlayer.hasMoved);
+                if (!assignedPlayer.hasMoved)
+                {
+                    movementTokens[i].GetComponent<Animator>().Play("TokenReset");
+                }
+                else
+                {
+                    movementTokens[i].GetComponent<Animator>().Play("TokenFlip");
+                }
+            }
 		}
     }
 
