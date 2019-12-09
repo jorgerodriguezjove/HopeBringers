@@ -76,6 +76,11 @@ public class EnemyUnit : UnitBase
     [HideInInspector]
     public EnemyPortraits myPortrait;
 
+    //Referencia al LineRenderer hijo para indicar el movimiento del enemigo
+    [SerializeField]
+    protected LineRenderer myLineRenderer;
+
+
     #endregion
 
 
@@ -98,6 +103,8 @@ public class EnemyUnit : UnitBase
         currentHealth = maxHealth;
 
         movementParticle.SetActive(false);
+
+      
     }
 
    
@@ -213,6 +220,11 @@ public class EnemyUnit : UnitBase
         //Cada enemigo realiza su propio path
     }
 
+    //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
+    public virtual void SearchingObjectivesToAttackShowActionPathFinding()
+    {
+        //Cada enemigo realiza su propioa búsqueda
+    }
 
     //Para acabar el turno de la unnidad
     public virtual void FinishMyActions()
@@ -259,12 +271,18 @@ public class EnemyUnit : UnitBase
 
                         LM.DeSelectUnit();
 
+
+                        //Muestro la acción que va a realizar el enemigo 
+                        ShowActionPathFinding();
+
                         if (!haveIBeenAlerted)
                         {
                             LM.ShowEnemyHover(rangeOfAction, this);
                         }
                         else
                         {
+                           
+
                             LM.ShowEnemyHover(movementUds, this);
                         }
                        
@@ -282,6 +300,9 @@ public class EnemyUnit : UnitBase
                     }
                     else
                     {
+                        //Muestro la acción que va a realizar el enemigo 
+                        ShowActionPathFinding();
+
                         LM.DeSelectUnit();
 
                         if (!haveIBeenAlerted)
@@ -290,6 +311,7 @@ public class EnemyUnit : UnitBase
                         }
                         else
                         {
+                           
                             LM.ShowEnemyHover(movementUds, this);
                         }
 
@@ -337,6 +359,9 @@ public class EnemyUnit : UnitBase
     //Creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
     public void OnHoverEnterFunctionality()
     {
+        //Muestro la acción que va a realizar el enemigo 
+        ShowActionPathFinding();
+
         //Muestro el rango de acción del personaje.
         if (!haveIBeenAlerted)
         {
@@ -344,6 +369,8 @@ public class EnemyUnit : UnitBase
         }
         else
         {
+            
+
             LM.ShowEnemyHover(movementUds, this);
         }
 
