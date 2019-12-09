@@ -6,27 +6,22 @@ public class Berserker : PlayerUnit
 {
     #region VARIABLES
 
+    [Header("STATS DE CLASE")]
     //Indica si el berserker está en Rage
-    public bool isInRage;
+    private bool isInRage;
 
     //Indica si el berserker está en Rage
-    public int rageDamageMulti;
+    [SerializeField]
+    private int rageDamagePlus;
 
     //Al llegar a 0, el rage se quita
-    public int turnsToTurnRageOff;
-    public int fturnsToTurnRageOff =  3;
-
+    private int turnsLeftToRageOff;
+    [SerializeField]
+    private int maxNumberOfTurnsInRage;
 
     [SerializeField]
-    public Material rageMaterial;
-
-    
+    public Material rageMaterial;    
     private Material finitMaterial;
-
-
-
-
-    //[Header("STATS DE CLASE")]
 
     #endregion
 
@@ -52,8 +47,12 @@ public class Berserker : PlayerUnit
            
             CalculateDamage(unitToDealDamage);
 
+            Debug.Log(damageWithMultipliersApplied);
+
             //Añado el daño de rage.
-            damageWithMultipliersApplied *= rageDamageMulti;
+            damageWithMultipliersApplied += rageDamagePlus;
+
+            Debug.Log(damageWithMultipliersApplied);
 
             //Una vez aplicados los multiplicadores efectuo el daño.
             unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
@@ -84,7 +83,12 @@ public class Berserker : PlayerUnit
     {
         if (!isInRage)
         {
+            //Activo el rage
             isInRage = true;
+
+            //La primera vez que entra en rage inicializo los turnos que puede estar en rage.
+            turnsLeftToRageOff = maxNumberOfTurnsInRage;
+
             //Cambiar material
             RageColor();
 
@@ -98,12 +102,12 @@ public class Berserker : PlayerUnit
     {
         if (isInRage)
         {
-            turnsToTurnRageOff--;
+            turnsLeftToRageOff--;
 
-            if (turnsToTurnRageOff <= 0)
+            if (turnsLeftToRageOff <= 0)
             {
                 isInRage = false;
-                turnsToTurnRageOff = fturnsToTurnRageOff;
+                turnsLeftToRageOff = maxNumberOfTurnsInRage;
                 RageColor();
             }
         }
