@@ -316,15 +316,23 @@ public class EnGoblin : EnemyUnit
 
         if (currentUnitsAvailableToAttack.Count > 0)
         {
+            myLineRenderer.positionCount = 0;
+
+           
+
             //Cada enemigo realiza su propio path
             LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
 
-            //Mirar porque no va esto
-            myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
+            //Coge
+            myLineRenderer.positionCount += LM.TM.currentPath.Count;
+
+            //myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
 
             for (int i = 0; i < LM.TM.currentPath.Count; i++)
             {
-                myLineRenderer.SetPosition(i, LM.TM.currentPath[i].transform.position);
+                Vector3 pointPosition = new Vector3(LM.TM.currentPath[i].transform.position.x, LM.TM.currentPath[i].transform.position.y + 0.5f, LM.TM.currentPath[i].transform.position.z);
+
+                myLineRenderer.SetPosition(i, pointPosition);
 
             }
             //pathToObjective = LM.TM.currentPath;
@@ -334,21 +342,13 @@ public class EnGoblin : EnemyUnit
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
     {
-        
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(rangeOfAction, gameObject);
 
-        //Si no hay enemigos termina su turno
-        if (currentUnitsAvailableToAttack.Count == 0)
-        {
-            
-        }
-
-        else if (currentUnitsAvailableToAttack.Count == 1)
+        if (currentUnitsAvailableToAttack.Count == 1)
         {
             myCurentObjective = currentUnitsAvailableToAttack[0];
             myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
-           
         }
 
         //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
@@ -383,8 +383,6 @@ public class EnGoblin : EnemyUnit
 
             myCurentObjective = currentUnitsAvailableToAttack[0];
             myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
-
-           
         }
     }
 

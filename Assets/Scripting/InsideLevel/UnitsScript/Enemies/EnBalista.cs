@@ -60,333 +60,46 @@ public class EnBalista : EnemyUnit
         }
     }
 
+    //Esta función se encarga de mover a la unidad
     public override void MoveUnit()
     {
         if (!isDead)
         {
             movementParticle.SetActive(true);
-            //En función de a donde este mirando su derecha o su izquierda cambia
-            if (currentFacingDirection == FacingDirection.North)
+
+            IndividualTiles tileToMove = GetTileToMove();
+
+            //Si recibe null es porque ambos tiles laterales están ocupados
+            if (tileToMove == null)
             {
-                //Compruebo si los tiles de la derecha están ocupados
-                if (myCurrentTile.tilesInLineRight.Count <= 0               ||
-                    myCurrentTile.tilesInLineRight[0].isObstacle            ||
-                    myCurrentTile.tilesInLineRight[0].isEmpty               ||
-                    myCurrentTile.tilesInLineRight[0].unitOnTile != null    ||
-                    Mathf.Abs(myCurrentTile.tilesInLineRight[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isRightTileOccupied = true;
-                }
-                else
-                {
-                    isRightTileOccupied = false;
-                }
-
-                //Compruebo si los tiles de la izquierda están ocupados
-                if (myCurrentTile.tilesInLineLeft.Count <= 0            ||
-                    myCurrentTile.tilesInLineLeft[0].isObstacle         ||
-                    myCurrentTile.tilesInLineLeft[0].isEmpty            ||
-                    myCurrentTile.tilesInLineLeft[0].unitOnTile != null ||
-                    Mathf.Abs(myCurrentTile.tilesInLineLeft[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isLeftTileOccupied = true;
-                }
-                else
-                {
-                    isLeftTileOccupied = false;
-                }
-
-                //Me muevo en función de mi dirección de movimiento actual y los tiles ocupados
-                if (isMovingToHisRight)
-                {
-                    if (isRightTileOccupied && !isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
-                        isMovingToHisRight = false;
-                        MovementLogic(myCurrentTile.tilesInLineLeft);
-                    }
-
-                    else if (!isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineRight);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
-
-                else if (!isMovingToHisRight)
-                {
-                    if (isLeftTileOccupied && !isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
-                        isMovingToHisRight = true;
-                        MovementLogic(myCurrentTile.tilesInLineRight);
-
-                    }
-
-                    else if (!isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineLeft);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
+                hasMoved = true;
             }
 
-            else if (currentFacingDirection == FacingDirection.South)
+            else
             {
-                //Compruebo si los tiles de los lados están ocupados
-                if (myCurrentTile.tilesInLineLeft.Count <= 0 || myCurrentTile.tilesInLineLeft[0].isObstacle || myCurrentTile.tilesInLineLeft[0].isEmpty || myCurrentTile.tilesInLineLeft[0].unitOnTile != null ||
-                    Mathf.Abs(myCurrentTile.tilesInLineLeft[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isRightTileOccupied = true;
-                }
-                else
-                {
-                    isRightTileOccupied = false;
-                }
-
-                if (myCurrentTile.tilesInLineRight.Count <= 0 || myCurrentTile.tilesInLineRight[0].isObstacle || myCurrentTile.tilesInLineRight[0].isEmpty || myCurrentTile.tilesInLineRight[0].unitOnTile != null ||
-                    Mathf.Abs(myCurrentTile.tilesInLineRight[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isLeftTileOccupied = true;
-                }
-                else
-                {
-                    isLeftTileOccupied = false;
-                }
-
-                if (isMovingToHisRight)
-                {
-                    if (isRightTileOccupied && !isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
-                        isMovingToHisRight = false;
-                        MovementLogic(myCurrentTile.tilesInLineRight);
-                    }
-
-                    else if (!isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineLeft);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
-
-                else if (!isMovingToHisRight)
-                {
-                    if (isLeftTileOccupied && !isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
-                        isMovingToHisRight = true;
-                        MovementLogic(myCurrentTile.tilesInLineLeft);
-
-                    }
-
-                    else if (!isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineRight);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
+                MovementLogic(tileToMove);
             }
-
-            else if (currentFacingDirection == FacingDirection.East)
-            {
-                //Compruebo si los tiles de los lados están ocupados
-                if (myCurrentTile.tilesInLineDown.Count <= 0 || myCurrentTile.tilesInLineDown[0].isObstacle || myCurrentTile.tilesInLineDown[0].isEmpty || myCurrentTile.tilesInLineDown[0].unitOnTile != null ||
-                    Mathf.Abs(myCurrentTile.tilesInLineDown[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isRightTileOccupied = true;
-                }
-                else
-                {
-                    isRightTileOccupied = false;
-                }
-
-                if (myCurrentTile.tilesInLineUp.Count <= 0 || myCurrentTile.tilesInLineUp[0].isObstacle || myCurrentTile.tilesInLineUp[0].isEmpty || myCurrentTile.tilesInLineUp[0].unitOnTile != null ||
-                    Mathf.Abs(myCurrentTile.tilesInLineUp[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isLeftTileOccupied = true;
-                }
-                else
-                {
-                    isLeftTileOccupied = false;
-                }
-
-                if (isMovingToHisRight)
-                {
-                    if (isRightTileOccupied && !isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
-                        isMovingToHisRight = false;
-                        MovementLogic(myCurrentTile.tilesInLineUp);
-                    }
-
-                    else if (!isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; // new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineDown);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
-
-                else if (!isMovingToHisRight)
-                {
-                    if (isLeftTileOccupied && !isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //  new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
-                        isMovingToHisRight = true;
-                        MovementLogic(myCurrentTile.tilesInLineDown);
-
-                    }
-
-                    else if (!isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineUp);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
-            }
-
-            else if (currentFacingDirection == FacingDirection.West)
-            {
-                //Compruebo si los tiles de los lados están ocupados
-                if (myCurrentTile.tilesInLineUp.Count <= 0 || myCurrentTile.tilesInLineUp[0].isObstacle || myCurrentTile.tilesInLineUp[0].isEmpty || myCurrentTile.tilesInLineUp[0].unitOnTile != null ||
-                    Mathf.Abs(myCurrentTile.tilesInLineUp[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isRightTileOccupied = true;
-                }
-                else
-                {
-                    isRightTileOccupied = false;
-                }
-
-                if (myCurrentTile.tilesInLineDown.Count <= 0 || myCurrentTile.tilesInLineDown[0].isObstacle || myCurrentTile.tilesInLineDown[0].isEmpty || myCurrentTile.tilesInLineDown[0].unitOnTile != null ||
-                    Mathf.Abs(myCurrentTile.tilesInLineDown[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
-                {
-                    isLeftTileOccupied = true;
-                }
-                else
-                {
-                    isLeftTileOccupied = false;
-                }
-
-                if (isMovingToHisRight)
-                {
-                    if (isRightTileOccupied && !isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
-                        isMovingToHisRight = false;
-                        MovementLogic(myCurrentTile.tilesInLineDown);
-                    }
-
-                    else if (!isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineUp);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
-
-                else if (!isMovingToHisRight)
-                {
-                    if (isLeftTileOccupied && !isRightTileOccupied)
-                    {
-                        //Muevo a la derecha
-                        currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
-                        isMovingToHisRight = true;
-                        MovementLogic(myCurrentTile.tilesInLineUp);
-
-                    }
-
-                    else if (!isLeftTileOccupied)
-                    {
-                        //Muevo a la izquierda
-                        currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineDown);
-                    }
-
-                    //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
-                    else
-                    {
-                        hasMoved = true;
-                    }
-                }
-            }
-
+            
             movementParticle.SetActive(false);
             myCurrentEnemyState = enemyState.Searching;
-
-            //Espero después de moverme para que no vaya demasiado rápido
-            //myCurrentEnemyState = enemyState.Waiting;
-            //StartCoroutine("MovementWait");
         }
+
         else
         {
             myCurrentEnemyState = enemyState.Waiting;
         }
     }
 
+  
+
     //Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
-    private void MovementLogic(List<IndividualTiles> ListWithNewTile)
+    private void MovementLogic(IndividualTiles tileToMove)
     {
         //Muevo a la balista
         transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
         //Actualizo las variables de los tiles
-        UpdateInformationAfterMovement(ListWithNewTile[0]);
+        UpdateInformationAfterMovement(tileToMove);
 
         //Aviso de que se ha movido
         hasMoved = true;
@@ -699,6 +412,318 @@ public class EnBalista : EnemyUnit
                 }
             }
         }
+    }
+
+    //Esta función calcula el tile al que se tiene que mover. Sirve tanto para moverse como para mostrar la acción de la balista
+    public IndividualTiles GetTileToMove()
+    {
+        //En función de a donde este mirando su derecha o su izquierda cambia
+        if (currentFacingDirection == FacingDirection.North)
+        {
+            //Compruebo si los tiles de la derecha están ocupados
+            if (myCurrentTile.tilesInLineRight.Count <= 0 ||
+                myCurrentTile.tilesInLineRight[0].isObstacle ||
+                myCurrentTile.tilesInLineRight[0].isEmpty ||
+                myCurrentTile.tilesInLineRight[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineRight[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isRightTileOccupied = true;
+            }
+            else
+            {
+                isRightTileOccupied = false;
+            }
+
+            //Compruebo si los tiles de la izquierda están ocupados
+            if (myCurrentTile.tilesInLineLeft.Count <= 0 ||
+                myCurrentTile.tilesInLineLeft[0].isObstacle ||
+                myCurrentTile.tilesInLineLeft[0].isEmpty ||
+                myCurrentTile.tilesInLineLeft[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineLeft[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isLeftTileOccupied = true;
+            }
+            else
+            {
+                isLeftTileOccupied = false;
+            }
+
+            //Me muevo en función de mi dirección de movimiento actual y los tiles ocupados
+            if (isMovingToHisRight)
+            {
+                if (isRightTileOccupied && !isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    isMovingToHisRight = false;
+
+                    return (myCurrentTile.tilesInLineLeft[0]);
+                }
+
+                else if (!isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    return (myCurrentTile.tilesInLineRight[0]);
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+
+            else if (!isMovingToHisRight)
+            {
+                if (isLeftTileOccupied && !isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    isMovingToHisRight = true;
+
+                    return (myCurrentTile.tilesInLineRight[0]);
+                }
+
+                else if (!isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    return (myCurrentTile.tilesInLineLeft[0]);
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+        }
+
+        else if (currentFacingDirection == FacingDirection.South)
+        {
+            //Compruebo si los tiles de los lados están ocupados
+            if (myCurrentTile.tilesInLineLeft.Count <= 0 || myCurrentTile.tilesInLineLeft[0].isObstacle || myCurrentTile.tilesInLineLeft[0].isEmpty || myCurrentTile.tilesInLineLeft[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineLeft[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isRightTileOccupied = true;
+            }
+            else
+            {
+                isRightTileOccupied = false;
+            }
+
+            if (myCurrentTile.tilesInLineRight.Count <= 0 || myCurrentTile.tilesInLineRight[0].isObstacle || myCurrentTile.tilesInLineRight[0].isEmpty || myCurrentTile.tilesInLineRight[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineRight[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isLeftTileOccupied = true;
+            }
+            else
+            {
+                isLeftTileOccupied = false;
+            }
+
+            if (isMovingToHisRight)
+            {
+                if (isRightTileOccupied && !isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    isMovingToHisRight = false;
+                    return (myCurrentTile.tilesInLineRight[0]);
+                }
+
+                else if (!isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    return (myCurrentTile.tilesInLineLeft[0]);
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+
+            else if (!isMovingToHisRight)
+            {
+                if (isLeftTileOccupied && !isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    isMovingToHisRight = true;
+                    return (myCurrentTile.tilesInLineLeft[0]);
+
+                }
+
+                else if (!isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    return (myCurrentTile.tilesInLineRight[0]);
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+        }
+
+        else if (currentFacingDirection == FacingDirection.East)
+        {
+            //Compruebo si los tiles de los lados están ocupados
+            if (myCurrentTile.tilesInLineDown.Count <= 0 || myCurrentTile.tilesInLineDown[0].isObstacle || myCurrentTile.tilesInLineDown[0].isEmpty || myCurrentTile.tilesInLineDown[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineDown[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isRightTileOccupied = true;
+            }
+            else
+            {
+                isRightTileOccupied = false;
+            }
+
+            if (myCurrentTile.tilesInLineUp.Count <= 0 || myCurrentTile.tilesInLineUp[0].isObstacle || myCurrentTile.tilesInLineUp[0].isEmpty || myCurrentTile.tilesInLineUp[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineUp[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isLeftTileOccupied = true;
+            }
+            else
+            {
+                isLeftTileOccupied = false;
+            }
+
+            if (isMovingToHisRight)
+            {
+                if (isRightTileOccupied && !isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    isMovingToHisRight = false;
+
+                    return (myCurrentTile.tilesInLineUp[0]);
+                }
+
+                else if (!isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; // new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+
+                    return (myCurrentTile.tilesInLineDown[0]);
+
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+
+            else if (!isMovingToHisRight)
+            {
+                if (isLeftTileOccupied && !isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //  new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+                    isMovingToHisRight = true;
+                    return (myCurrentTile.tilesInLineDown[0]);
+
+                }
+
+                else if (!isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    return (myCurrentTile.tilesInLineUp[0]);
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+        }
+
+        else if (currentFacingDirection == FacingDirection.West)
+        {
+            //Compruebo si los tiles de los lados están ocupados
+            if (myCurrentTile.tilesInLineUp.Count <= 0 || myCurrentTile.tilesInLineUp[0].isObstacle || myCurrentTile.tilesInLineUp[0].isEmpty || myCurrentTile.tilesInLineUp[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineUp[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isRightTileOccupied = true;
+            }
+            else
+            {
+                isRightTileOccupied = false;
+            }
+
+            if (myCurrentTile.tilesInLineDown.Count <= 0 || myCurrentTile.tilesInLineDown[0].isObstacle || myCurrentTile.tilesInLineDown[0].isEmpty || myCurrentTile.tilesInLineDown[0].unitOnTile != null ||
+                Mathf.Abs(myCurrentTile.tilesInLineDown[0].height - myCurrentTile.height) > maxHeightDifferenceToMove)
+            {
+                isLeftTileOccupied = true;
+            }
+            else
+            {
+                isLeftTileOccupied = false;
+            }
+
+            if (isMovingToHisRight)
+            {
+                if (isRightTileOccupied && !isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+                    isMovingToHisRight = false;
+                    return (myCurrentTile.tilesInLineDown[0]);
+                }
+
+                else if (!isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    return (myCurrentTile.tilesInLineUp[0]);
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+
+            else if (!isMovingToHisRight)
+            {
+                if (isLeftTileOccupied && !isRightTileOccupied)
+                {
+                    //Muevo a la derecha
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    isMovingToHisRight = true;
+                    return (myCurrentTile.tilesInLineUp[0]);
+
+                }
+
+                else if (!isLeftTileOccupied)
+                {
+                    //Muevo a la izquierda
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+                    return (myCurrentTile.tilesInLineDown[0]);
+                }
+
+                //Si ambos lados están bloqueados no se mueve, pero a nivel de lógica cuenta cómo si lo hubiese hecho.
+                else
+                {
+                    return (null);
+                }
+            }
+        }
+
+        //En principio no va a llegar nunca hasta aqui
+        return null;
     }
 
     protected override void MoveToTilePushed(IndividualTiles newTile)

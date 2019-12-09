@@ -83,7 +83,6 @@ public class EnemyUnit : UnitBase
 
     #endregion
 
-
     #region INIT
 
     private void Awake()
@@ -214,7 +213,7 @@ public class EnemyUnit : UnitBase
         rangeOfAction = 1000;
     }
 
-    //Función que se encarga de hacer que el personaje este despierto/alerta
+    //Función que se encarga de pintar el line renderer y el tile de ataque
     public virtual void ShowActionPathFinding()
     {
         //Cada enemigo realiza su propio path
@@ -383,7 +382,6 @@ public class EnemyUnit : UnitBase
 
         myPortrait.HighlightMyself();
     }
-
 
     private void OnMouseExit()
     {
