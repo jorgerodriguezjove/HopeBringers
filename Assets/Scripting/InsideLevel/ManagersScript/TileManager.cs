@@ -81,7 +81,8 @@ public class TileManager : MonoBehaviour
     private IndividualTiles currentTileCheckingForMovement;
 
     //Tiles que actualmente están dispoibles para el movimiento de la unidad seleccionada.
-    List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
+    //La pongo pública para que el enemigo pueda acceder.
+    public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
     //Lista de tiles sin visitar
     List<IndividualTiles> openList = new List<IndividualTiles>();

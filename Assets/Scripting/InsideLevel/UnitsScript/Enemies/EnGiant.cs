@@ -414,4 +414,83 @@ public class EnGiant : EnemyUnit
         }
     }
 
+    //Función que se encarga de hacer que el personaje este despierto/alerta
+    public override void ShowActionPathFinding()
+    {
+        SearchingObjectivesToAttackShowActionPathFinding();
+
+        if (currentUnitsAvailableToAttack.Count > 0)
+        {
+            //Cada enemigo realiza su propio path
+            LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+
+            //Mirar porque no va esto
+            myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
+
+            for (int i = 0; i < LM.TM.currentPath.Count; i++)
+            {
+                myLineRenderer.SetPosition(i, LM.TM.currentPath[i].transform.position);
+
+            }
+            // myCurrentObjectiveTile = LM.TM.currentPath;
+        }
+    }
+
+    //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
+    public override void SearchingObjectivesToAttackShowActionPathFinding()
+    {
+
+        //Determinamos el enemigo más cercano.
+        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(rangeOfAction, gameObject);
+
+        //Si no hay enemigos termina su turno
+        if (currentUnitsAvailableToAttack.Count == 0)
+        {
+
+        }
+
+        else if (currentUnitsAvailableToAttack.Count == 1)
+        {
+            myCurentObjective = currentUnitsAvailableToAttack[0];
+            myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+
+        }
+
+        //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
+        else if (currentUnitsAvailableToAttack.Count > 1)
+        {
+            //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
+            currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+            {
+                return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
+            });
+
+            //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
+            for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
+            {
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                {
+                    currentUnitsAvailableToAttack.RemoveAt(i);
+                }
+            }
+
+            //Si sigue habiendo varios enemigos los ordeno segun la vida
+            if (currentUnitsAvailableToAttack.Count > 1)
+            {
+
+                //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                {
+                    return (a.currentHealth).CompareTo(b.currentHealth);
+
+                });
+            }
+
+            myCurentObjective = currentUnitsAvailableToAttack[0];
+            myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+
+
+        }
+    }
+
 }
