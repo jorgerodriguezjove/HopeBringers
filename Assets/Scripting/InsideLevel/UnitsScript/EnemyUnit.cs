@@ -275,7 +275,7 @@ public class EnemyUnit : UnitBase
                         LM.UIM.ShowUnitInfo(this.unitInfo, this);
                         //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
                         HealthBarOn_Off(true);
-                        gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                        //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
                         //Cambio el color del personaje
                         SelectedColor();
@@ -300,7 +300,7 @@ public class EnemyUnit : UnitBase
                         LM.UIM.ShowUnitInfo(this.unitInfo, this);
                         //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
                         HealthBarOn_Off(true);
-                        gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                        //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
                         //Cambio el color del personaje
                         SelectedColor();
@@ -352,7 +352,7 @@ public class EnemyUnit : UnitBase
 
 		//LM.UIM.ShowCharacterInfo(unitInfo, this); 
 		HealthBarOn_Off(true);
-        gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+        //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
         myPortrait.HighlightMyself();
     }

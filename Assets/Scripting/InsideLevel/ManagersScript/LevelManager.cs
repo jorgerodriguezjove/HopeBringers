@@ -210,7 +210,7 @@ public class LevelManager : MonoBehaviour
 
                     selectedCharacter.myCurrentTile.ColorCurrentTileHover();
                     selectedCharacter.HealthBarOn_Off(true);
-					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
+					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
 
                     //This
@@ -245,7 +245,7 @@ public class LevelManager : MonoBehaviour
 
                     selectedCharacter = clickedUnit;
 					selectedCharacter.HealthBarOn_Off(true);
-					selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
+					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
 					/*UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);*/ /*Legacy Code*/
 					selectedCharacter.SelectedColor();
 
@@ -520,7 +520,7 @@ public class LevelManager : MonoBehaviour
         if (selectedCharacter == null)
         {
             hoverUnit.HealthBarOn_Off(true);
-            hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
+            //hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
             UIM.ShowUnitInfo(hoverUnit.unitInfo, hoverUnit);
 

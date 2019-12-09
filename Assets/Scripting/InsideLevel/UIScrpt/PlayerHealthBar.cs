@@ -15,16 +15,16 @@ public class PlayerHealthBar : MonoBehaviour
 	#region INIT
 	private void Awake()
 	{
-		unit = gameObject.GetComponent<UnitBase>();
-		healthBar.maxValue = unit.maxHealth;
-		healthBar.value = unit.currentHealth;
+		//unit = gameObject.GetComponent<UnitBase>();
+		//healthBar.maxValue = unit.maxHealth;
+		//healthBar.value = unit.currentHealth;
 	}
 	#endregion
 
 	#region HEALTHCONTROL
-	public void ReloadHealth()
-	{
-		healthBar.value = unit.currentHealth;
-	}
+	//public void ReloadHealth()
+	//{
+	//	healthBar.value = unit.currentHealth;
+	//}
 	#endregion
 }
