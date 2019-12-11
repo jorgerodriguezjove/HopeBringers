@@ -45,6 +45,8 @@ public class TileManager : MonoBehaviour
     private Material currentTileHoverMovementColor;
     [SerializeField]
     private Material attackColor;
+    [SerializeField]
+    private Material actionRangeColor;
 
     [Header("FUNCIÓN CREAR PATH")]
 
@@ -116,7 +118,6 @@ public class TileManager : MonoBehaviour
 
     private void Awake()
     {
-
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeZ = Mathf.RoundToInt(gridWorldSize.z / nodeDiameter);
@@ -223,7 +224,7 @@ public class TileManager : MonoBehaviour
 
                     gridObject[x, y, z].AddComponent<IndividualTiles>();
 
-                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn, startingTile, worldPoint, x, y, z, tilePref, LM, availableForMovementColor, currentTileHoverMovementColor, attackColor);
+                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn, startingTile, worldPoint, x, y, z, tilePref, LM, availableForMovementColor, currentTileHoverMovementColor, attackColor, actionRangeColor);
 
                     grid3DNode[x, y, z] = gridObject[x, y, z].GetComponent<IndividualTiles>();
                 }
@@ -410,7 +411,8 @@ public class TileManager : MonoBehaviour
                     currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
 
                     //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
-                    if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
+                    //IMPORTANTE NO COMPROBAR LA ALTURA. ESO SE HACE EN EL PATHFINDING. La altura se tiene que comprobar de un tile respecto a sus vecinos, no tiene sentido comprobar el tile en el que esta el player con el que quiere llegar.
+                    if (currentTileCheckingForMovement != null && !currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
                     {
                         //El enemigo no puede excluir los tiles que tienen personajes de jugador porque los necesita para encontrar el número de objetivos.
                         //Para que no se pinten sus tiles en la propia función de pintar he puesto un if que evita que se pintan.
@@ -428,10 +430,12 @@ public class TileManager : MonoBehaviour
                         }
                         
                         CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+
                         if (tempCurrentPathCost <= movementUds)
                         {
                             tilesAvailableForMovement.Add(currentTileCheckingForMovement);
                         }
+
                         tempCurrentPathCost = 0;
                     }
                 }
@@ -449,7 +453,8 @@ public class TileManager : MonoBehaviour
                         currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ + j];
 
                         //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
-                        if (!currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle && Mathf.Abs(currentTileCheckingForMovement.height - selectedCharacter.myCurrentTile.height) <= selectedCharacter.maxHeightDifferenceToMove)
+                        //IMPORTANTE NO COMPROBAR LA ALTURA. ESO SE HACE EN EL PATHFINDING. La altura se tiene que comprobar de un tile respecto a sus vecinos, no tiene sentido comprobar el tile en el que esta el player con el que quiere llegar.
+                        if (currentTileCheckingForMovement != null && !currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
                         {
                             //El enemigo no puede excluir los tiles que tienen personajes de jugador porque los necesita para encontrar el número de objetivos.
                             //Para que no se pinten sus tiles en la propia función de pintar he puesto un if que evita que se pintan.
@@ -472,13 +477,14 @@ public class TileManager : MonoBehaviour
                             {
                                 tilesAvailableForMovement.Add(currentTileCheckingForMovement);
                             }
+
                             tempCurrentPathCost = 0;
                         }
                     }
                 }
             }
         }
-
+       
         return tilesAvailableForMovement;
     }
 
@@ -563,7 +569,7 @@ public class TileManager : MonoBehaviour
                 {
                     for (int j = 0; j < gridSizeZ; j++)
                     {
-                        grid2DNode[j, i].ClearPathfindingVariables();
+                        grid2DNode[i, j].ClearPathfindingVariables();
                     }
                 }
 
@@ -577,15 +583,14 @@ public class TileManager : MonoBehaviour
                 //Goblin
                 if (selectedCharacter.GetComponent<EnGoblin>())
                 {
-                    if (neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - selectedCharacter.myCurrentTile.height) > selectedCharacter.maxHeightDifferenceToMove)
+                    if (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
                     {
                         //if (neighbour.unitOnTile != null)
                         //{
                         //    Debug.Log( "First" + neighbour.unitOnTile.name);
                         //}
-                        
+                      
                         continue;
-
                     }
 
                     //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
@@ -600,7 +605,7 @@ public class TileManager : MonoBehaviour
                 }
 
                 //Player
-                if ((selectedCharacter.GetComponent<PlayerUnit>() && (neighbour.isEmpty || neighbour.isObstacle || neighbour.unitOnTile != null)) || Mathf.Abs(neighbour.height - selectedCharacter.myCurrentTile.height) > selectedCharacter.maxHeightDifferenceToMove || closedHasSet.Contains(neighbour))
+                if ((selectedCharacter.GetComponent<PlayerUnit>() && (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || neighbour.unitOnTile != null)) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove || closedHasSet.Contains(neighbour))
                 {
                     continue;
                 }
@@ -622,12 +627,19 @@ public class TileManager : MonoBehaviour
                     }
                 }
             }
+
+            //Si llega hasta aqui significa que no hay tiles a los que moverse por lo que el coste es infinito.
+            //NO PONER RETURN, puede darse el caso de que este llegando al ultimo tile de una fila y si estan todos los lados bloqueados menos el tile anterior,
+            //entraria aqui porque el tile anterior no puede revisitarlo, asi que cortariamos el proceso de seguir comprobando el resto de tiles de Open antes de tiempo.
+            if (openList.Count == 0)
+            {
+                Debug.Log("No hay tiles a los que me pueda mover");
+                tempCurrentPathCost = Mathf.Infinity;
+            }
         }
 
-        tilesAvailableForMovement.Clear();
-        Debug.Log("No hay tiles a los que me pueda mover");
-        return;
-        
+       
+
     }
 
     int GetDistance(IndividualTiles nodeA, IndividualTiles nodeB)
@@ -708,7 +720,7 @@ public class TileManager : MonoBehaviour
                 {
                     currentTileCheckingForEnemy = grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ];
 
-                    if (currentTileCheckingForEnemy.unitOnTile != null && currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>())
+                    if (currentTileCheckingForEnemy != null && currentTileCheckingForEnemy.unitOnTile != null && currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>())
                     {
                         if (currentTileCheckingForEnemy.unitOnTile.GetComponent<UnitBase>() != selectedUnit)
                         {
@@ -728,7 +740,7 @@ public class TileManager : MonoBehaviour
                         //Almaceno el tile en una variable
                         currentTileCheckingForEnemy = grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j];
 
-                        if (currentTileCheckingForEnemy.unitOnTile != null && currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>())
+                        if (currentTileCheckingForEnemy != null && currentTileCheckingForEnemy.unitOnTile != null && currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>())
                         {
                             if (currentTileCheckingForEnemy.unitOnTile.GetComponent<UnitBase>() != selectedUnit)
                             {

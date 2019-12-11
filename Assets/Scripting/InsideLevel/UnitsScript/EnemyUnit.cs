@@ -27,10 +27,10 @@ public class EnemyUnit : UnitBase
     protected enum enemyState {Waiting, Searching, Moving, Attacking, Ended}
 
     //Posibles estados del enemigo
-    protected enum TierLevel { LevelBase1, Level2 }
+    public enum TierLevel { LevelBase1, Level2 }
 
     [SerializeField]
-    protected TierLevel myTierLevel;
+    public TierLevel myTierLevel;
 
     //Distancia en tiles con el enemigo más lejano
     protected int furthestAvailableUnitDistance;
@@ -276,13 +276,11 @@ public class EnemyUnit : UnitBase
 
                         if (!haveIBeenAlerted)
                         {
-                            LM.ShowEnemyHover(rangeOfAction, this);
+                            LM.ShowEnemyHover(rangeOfAction, false , this);
                         }
                         else
                         {
-                           
-
-                            LM.ShowEnemyHover(movementUds, this);
+                            LM.ShowEnemyHover(movementUds, false, this);
                         }
                        
                         LM.selectedEnemy = this;
@@ -306,12 +304,12 @@ public class EnemyUnit : UnitBase
 
                         if (!haveIBeenAlerted)
                         {
-                            LM.ShowEnemyHover(rangeOfAction, this);
+                            LM.ShowEnemyHover(rangeOfAction, true, this);
                         }
                         else
                         {
                            
-                            LM.ShowEnemyHover(movementUds, this);
+                            LM.ShowEnemyHover(movementUds, false, this);
                         }
 
                         LM.selectedEnemy = this;
@@ -364,17 +362,38 @@ public class EnemyUnit : UnitBase
         //Muestro el rango de acción del personaje.
         if (!haveIBeenAlerted)
         {
-            LM.ShowEnemyHover(rangeOfAction, this);
+            LM.ShowEnemyHover(rangeOfAction, true ,this);
         }
         else
         {
-            
-
-            LM.ShowEnemyHover(movementUds, this);
+            LM.ShowEnemyHover(movementUds, false ,this);
         }
 
-		//Llamo a LevelManager para activar hover				
-		LM.UIM.ShowUnitInfo(this.unitInfo, this);
+
+        //if (hoverUnit.GetComponent<EnemyUnit>().myTierLevel == EnemyUnit.TierLevel.LevelBase1)
+        //{
+        //    for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+        //    {
+        //        tilesAvailableForMovementEnemies[i].ColorSelect();
+        //    }
+        //}
+
+        //else if (hoverUnit.GetComponent<EnemyUnit>().myTierLevel == EnemyUnit.TierLevel.Level2 && hoverUnit.GetComponent<EnemyUnit>().isAlerted)
+        //{
+        //    for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+        //    {
+        //        tilesAvailableForMovementEnemies[i].ColorActionRange();
+        //    }
+        //}
+
+
+
+
+
+
+
+        //Llamo a LevelManager para activar hover				
+        LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
 		//LM.UIM.ShowCharacterInfo(unitInfo, this); 
 		HealthBarOn_Off(true);

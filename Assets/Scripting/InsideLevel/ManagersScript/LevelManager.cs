@@ -312,6 +312,15 @@ public class LevelManager : MonoBehaviour
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
                 UIM.ShowUnitInfo(clickedUnit.unitInfo, clickedUnit);
             }
+
+            else if (clickedUnit.GetComponent<EnemyUnit>())
+            {
+                DeSelectUnit();
+
+                //PREGUNTAR A MARIO DONDE ESTA LA FUNCIÓN DE SELECCIONAR ENEMIGO
+                //(clickedUnit.movementUds, clickedUnit.GetComponent<EnemyUnit>());
+                //UIM.ShowUnitInfo(clickedUnit.unitInfo, clickedUnit);
+            }
         }
     }
 
@@ -389,6 +398,7 @@ public class LevelManager : MonoBehaviour
     //}
 
     //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
+
     public void TileClicked(IndividualTiles tileToMove)
     {
         //Si es el comienzo del nivel
@@ -573,17 +583,26 @@ public class LevelManager : MonoBehaviour
         UIM.HideUnitInfo("");
     }
 
-    public void ShowEnemyHover(int movementUds, EnemyUnit hoverUnit)
+    //showActionRangeInsteadOfMovement sirve para que se pinte naranaja el rango de acción del enemigo al estar dormido
+    public void ShowEnemyHover(int movementUds, bool showActionRangeInsteadOfMovement ,EnemyUnit hoverUnit)
     {
         if (selectedCharacter == null)
         {
-            
             if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
                 tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
+
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
                 {
-                    tilesAvailableForMovementEnemies[i].ColorSelect();
+                    if (showActionRangeInsteadOfMovement)
+                    {
+                        tilesAvailableForMovementEnemies[i].ColorActionRange();
+                    }
+
+                    else
+                    {
+                        tilesAvailableForMovementEnemies[i].ColorSelect();
+                    }
                 }
             }
             else if (hoverUnit.GetComponent<EnBalista>())

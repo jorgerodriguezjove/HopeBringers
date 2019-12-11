@@ -51,13 +51,15 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     [Header("FEEDBACK")]
 
-    //Estas son las variables locales. Los materiales s esetean desde el tile manager
+    //Estas son las variables locales. LOS MATERIALES SE SETEAN EN EL TILE MANAGER
     [HideInInspector]
     public Material availableForMovementColor;
     [HideInInspector]
     public Material currentTileHoverMovementColor;
     [HideInInspector]
     public Material attackColor;
+    [HideInInspector]
+    public Material actionRangeColor;
 
     //Material inicial del tile
     private Material initialColor;
@@ -114,7 +116,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn, bool _startingTile,
                              Vector3 _worldPos, int xPos, int yPos, int zPos, 
                              GameObject tilePref, LevelManager LMRef, 
-                             Material _selectMaterial, Material _currentMaterial, Material _attackMaterial)
+                             Material _selectMaterial, Material _currentMaterial, Material _attackMaterial, Material _actionRangeMaterial)
     {
         //Inicializo las variables que le pasa Grid
         isObstacle = _isObstacle;
@@ -147,6 +149,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         availableForMovementColor = _selectMaterial;
         currentTileHoverMovementColor = _currentMaterial;
         attackColor = _attackMaterial;
+        actionRangeColor = _actionRangeMaterial;
 
         //Aviso a los vecinos de la ocupación del tile
         UpdateNeighboursOccupied();
@@ -281,6 +284,14 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         isMovementTile = false;
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
+
+    //Cambiar a color de rango de acción dormido
+    public void ColorActionRange()
+    {
+        GetComponent<MeshRenderer>().material = actionRangeColor;
+
+    }
+
 
     //Cambiar el color a ataque
     public void ColorAttack()
