@@ -80,6 +80,12 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     protected LineRenderer myLineRenderer;
 
+    //Referencia al gameobject que actua como hover de los enemigos.
+    [SerializeField]
+    public GameObject shaderHover;
+
+   
+
 
     #endregion
 
@@ -214,7 +220,7 @@ public class EnemyUnit : UnitBase
     }
 
     //Función que se encarga de pintar el line renderer y el tile de ataque
-    public virtual void ShowActionPathFinding()
+    public virtual void ShowActionPathFinding(bool shouldToShow)
     {
         //Cada enemigo realiza su propio path
     }
@@ -271,8 +277,7 @@ public class EnemyUnit : UnitBase
                         LM.DeSelectUnit();
 
 
-                        //Muestro la acción que va a realizar el enemigo 
-                        ShowActionPathFinding();
+                        
 
                         if (!haveIBeenAlerted)
                         {
@@ -297,9 +302,7 @@ public class EnemyUnit : UnitBase
                     }
                     else
                     {
-                        //Muestro la acción que va a realizar el enemigo 
-                        ShowActionPathFinding();
-
+                      
                         LM.DeSelectUnit();
 
                         if (!haveIBeenAlerted)
@@ -356,8 +359,7 @@ public class EnemyUnit : UnitBase
     //Creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
     public void OnHoverEnterFunctionality()
     {
-        //Muestro la acción que va a realizar el enemigo 
-        ShowActionPathFinding();
+        
 
         //Muestro el rango de acción del personaje.
         if (!haveIBeenAlerted)
@@ -516,7 +518,7 @@ public class EnemyUnit : UnitBase
     #region CHECKS
 
     //Esta función es el equivalente al chequeo de objetivos del jugador.Charger y balista usan versiones diferentes por eso el virtual. Es distinta de la del player y en principio no se puede reutilizar la misma debido a estas diferencias.
-    protected virtual void CheckCharactersInLine()
+    public virtual void CheckCharactersInLine()
     {
         
     }

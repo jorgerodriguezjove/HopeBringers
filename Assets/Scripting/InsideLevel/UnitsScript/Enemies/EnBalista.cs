@@ -7,8 +7,9 @@ public class EnBalista : EnemyUnit
 {
     #region VARIBLES
     //Bool que indica si la balista ha preparado el ataque para atacar en el siguiente turno.
+    //Lo he puesto público porque el LevelManager tiene que acceder para hacer el hover.
     [SerializeField]
-    private bool isAttackPrepared = false;
+    public bool isAttackPrepared = false;
 
     //Bool que indica si la balista se está moviendo hacia la izquierda o hacia la derecha.
     [SerializeField]
@@ -294,7 +295,8 @@ public class EnBalista : EnemyUnit
         }
     }
 
-    protected override void CheckCharactersInLine()
+    //Pongo público para acceder a la hora de hacer hover
+    public override void CheckCharactersInLine()
     {
         if (!isDead)
         {
@@ -742,4 +744,12 @@ public class EnBalista : EnemyUnit
         FeedbackTilesToAttack(false);
         base.Die();
     }
+
+    //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
+    //De momento no hace falta usarla.
+    public override void SearchingObjectivesToAttackShowActionPathFinding()
+    {
+                             
+    }
+    
 }

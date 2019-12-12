@@ -590,6 +590,9 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
+                //Muestro la acción que va a realizar el enemigo 
+                hoverUnit.ShowActionPathFinding(true);
+
                 tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
 
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
@@ -606,17 +609,44 @@ public class LevelManager : MonoBehaviour
                 }
             }
             else if (hoverUnit.GetComponent<EnBalista>())
+
             {
-               if (hoverUnit.GetComponent<EnBalista>().isMovingToHisRight)
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+                //Dibuja el ataque que va a preparar si las unidades se quedan ahí
+                if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                 {
-                    
+                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(true);
                 }
-                else
+                //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
+                else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
+                    IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
+                    hoverUnit.shaderHover.SetActive(true);
+                    Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
+                    hoverUnit.shaderHover.transform.position = positionToSpawn;
+                    tileToMove.ColorSelect();
 
-
-                }
+                }               
             }
+
+            else if (hoverUnit.GetComponent<EnCharger>())
+
+            {
+              
+           
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+                
+                //Dibuja el ataque que va a preparar si las unidades se quedan ahí
+                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
+                {
+                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
+                }
+
+                hoverUnit.shaderHover.SetActive(true);
+                hoverUnit.shaderHover.transform.position = hoverUnit.currentTileVectorToMove;
+
+            }
+
 
         }
     }
@@ -627,6 +657,8 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
+                hoverUnit.ShowActionPathFinding(false);
+
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
                 {
                     tilesAvailableForMovementEnemies[i].ColorDeselect();
@@ -635,17 +667,33 @@ public class LevelManager : MonoBehaviour
             }
             else if (hoverUnit.GetComponent<EnBalista>())
             {
-                if (hoverUnit.GetComponent<EnBalista>().isMovingToHisRight)
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+                
+                if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
-
+                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(false);
                 }
-                else
+                
+                else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
-
+                    IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
+                    hoverUnit.shaderHover.SetActive(false);
+                    tileToMove.ColorDeselect();
 
                 }
             }
-          
+            else if (hoverUnit.GetComponent<EnCharger>())
+
+            {
+                hoverUnit.shaderHover.SetActive(false);
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
+                {
+                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
+                }
+
+            }
+
         }
     }
 

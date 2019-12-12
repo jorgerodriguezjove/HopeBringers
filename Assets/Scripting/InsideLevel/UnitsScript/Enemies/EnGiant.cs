@@ -168,6 +168,9 @@ public class EnGiant : EnemyUnit
 
     public override void MoveUnit()
     {
+
+        //ShowActionPathFinding(true);
+
         movementParticle.SetActive(true);
 
         //Arriba o abajo
@@ -361,6 +364,7 @@ public class EnGiant : EnemyUnit
 
         movementParticle.SetActive(false);
         myCurrentEnemyState = enemyState.Searching;
+
         //Espero después de moverme para que no vaya demasiado rápido
         //myCurrentEnemyState = enemyState.Waiting;
         //StartCoroutine("MovementWait");
@@ -378,6 +382,8 @@ public class EnGiant : EnemyUnit
 
         //Aviso de que se ha movido
         hasMoved = true;
+
+        
     }
 
     //IEnumerator MovementWait()
@@ -415,24 +421,58 @@ public class EnGiant : EnemyUnit
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta
-    public override void ShowActionPathFinding()
+    public override void ShowActionPathFinding(bool shouldToShow)
     {
+
+        if (shouldToShow)
+        {
+            myLineRenderer.enabled = true;
+
+        }
+        else
+        {
+            myLineRenderer.enabled = false;
+
+        }
+
         SearchingObjectivesToAttackShowActionPathFinding();
 
         if (currentUnitsAvailableToAttack.Count > 0)
         {
+            myLineRenderer.positionCount = 0;
+
             //Cada enemigo realiza su propio path
             LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
 
-            //Mirar porque no va esto
-            myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
+            //Coge
+            myLineRenderer.positionCount += (LM.TM.currentPath.Count -1) ;
+
+            //myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
 
             for (int i = 0; i < LM.TM.currentPath.Count; i++)
             {
-                myLineRenderer.SetPosition(i, LM.TM.currentPath[i].transform.position);
+                if (i < LM.TM.currentPath.Count-1)
+                {
+                    Vector3 pointPosition = new Vector3(LM.TM.currentPath[i].transform.position.x, LM.TM.currentPath[i].transform.position.y + 0.5f, LM.TM.currentPath[i].transform.position.z);
+
+                    myLineRenderer.SetPosition(i, pointPosition);
+
+                   
+                }
+                else
+                {
+                    if (shouldToShow)
+                    {
+                        LM.TM.currentPath[i].ColorAttack();
+
+                    }
+                    else
+                    {
+                        LM.TM.currentPath[i].ColorDesAttack();
+                    }
+                }
 
             }
-            // myCurrentObjectiveTile = LM.TM.currentPath;
         }
     }
 

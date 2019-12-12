@@ -183,6 +183,9 @@ public class EnGoblin : EnemyUnit
 
     public override void MoveUnit()
     {
+        //Hay que ver como hacer para que se vaya actualizando
+        ShowActionPathFinding(true);
+
         limitantNumberOfTilesToMove = 0;
 
         movementParticle.SetActive(true);
@@ -223,7 +226,7 @@ public class EnGoblin : EnemyUnit
         {
             //Calcula el vector al que se tiene que mover.
             currentTileVectorToMove = pathToObjective[j].transform.position;  //new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);
-
+            
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
             unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
@@ -238,6 +241,8 @@ public class EnGoblin : EnemyUnit
         myCurrentEnemyState = enemyState.Searching;
 
         movementParticle.SetActive(false);
+
+        ShowActionPathFinding(false);
 
     }
 
@@ -310,21 +315,34 @@ public class EnGoblin : EnemyUnit
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta
-    public override void ShowActionPathFinding()
+    public override void ShowActionPathFinding(bool shouldToShow)
     {
+        if (shouldToShow)
+        {
+            myLineRenderer.enabled = true;
+            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+            {
+                shaderHover.SetActive(true);
+            }
+        }
+        else
+        {
+            myLineRenderer.enabled = false;
+            shaderHover.SetActive(false);
+
+        }
+       
         SearchingObjectivesToAttackShowActionPathFinding();
 
         if (currentUnitsAvailableToAttack.Count > 0)
         {
             myLineRenderer.positionCount = 0;
-
-           
-
+            
             //Cada enemigo realiza su propio path
             LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
 
             //Coge
-            myLineRenderer.positionCount += LM.TM.currentPath.Count;
+            myLineRenderer.positionCount += (LM.TM.currentPath.Count - 1);
 
             //myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
 
@@ -332,8 +350,30 @@ public class EnGoblin : EnemyUnit
             {
                 Vector3 pointPosition = new Vector3(LM.TM.currentPath[i].transform.position.x, LM.TM.currentPath[i].transform.position.y + 0.5f, LM.TM.currentPath[i].transform.position.z);
 
-                myLineRenderer.SetPosition(i, pointPosition);
+                if (i < LM.TM.currentPath.Count - 1)
+                {
+                    myLineRenderer.SetPosition(i, pointPosition);
 
+                    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+                    {
+                        shaderHover.transform.position = pointPosition;
+                        Vector3 positionToLook = new Vector3(myCurentObjective.transform.position.x, myCurentObjective.transform.position.y + 0.5f, myCurentObjective.transform.position.z);
+                        shaderHover.transform.DOLookAt(positionToLook, 0);
+                    }
+                }
+
+                else
+                {
+                    if (shouldToShow)
+                    {
+                        LM.TM.currentPath[i].ColorAttack();
+                        
+                    }
+                    else
+                    {
+                        LM.TM.currentPath[i].ColorDesAttack();
+                    }                    
+                }               
             }
             //pathToObjective = LM.TM.currentPath;
         }

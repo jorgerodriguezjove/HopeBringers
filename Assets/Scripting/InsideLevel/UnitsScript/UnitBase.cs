@@ -60,7 +60,8 @@ public class UnitBase : MonoBehaviour
     public FacingDirection currentFacingDirection;
 
     //Posición a la que tiene que moverse la unidad actualmente
-    protected Vector3 currentTileVectorToMove;
+    //La cambio a public para que el LevelManager pueda acceder
+    public Vector3 currentTileVectorToMove;
 
     //Modelo de la unidad
     [SerializeField]

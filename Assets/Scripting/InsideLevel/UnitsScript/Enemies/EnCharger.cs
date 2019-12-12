@@ -174,15 +174,118 @@ public class EnCharger : EnemyUnit
         myCurrentEnemyState = enemyState.Ended;
     }
 
-
-
-
     public override void FinishMyActions()
     {
         base.FinishMyActions();
     }
 
-    protected override void CheckCharactersInLine()
+
+
+    //Función que pinta o despinta los tiles a los que está atcando la ballesta
+    public void FeedbackTilesToAttack(bool shouldColorTiles)
+    {
+        pathToObjective.Clear();
+
+        //Arriba o abajo
+        if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == myCurrentTile.tileX)
+        {
+            //Arriba
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
+            {
+               
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                {
+                    pathToObjective.Add(myCurrentTile.tilesInLineUp[i]);
+                }
+
+                for (int i = 0; i < myCurrentTile.tilesInLineUp.Count; i++)
+                {
+                    if (shouldColorTiles)
+                    {
+                        myCurrentTile.tilesInLineUp[i].ColorAttack();
+                    }
+                    else
+                    {
+                        myCurrentTile.tilesInLineUp[i].ColorDesAttack();
+                    }
+                }
+
+            }
+            //Abajo
+            else
+            {
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                {
+                    pathToObjective.Add(myCurrentTile.tilesInLineDown[i]);
+                }
+
+
+                for (int i = 0; i < myCurrentTile.tilesInLineDown.Count; i++)
+                {
+                    if (shouldColorTiles)
+                    {
+                        myCurrentTile.tilesInLineDown[i].ColorAttack();
+                    }
+                    else
+                    {
+                        myCurrentTile.tilesInLineDown[i].ColorDesAttack();
+                    }
+                }
+
+
+
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+            //Derecha
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > myCurrentTile.tileX)
+            {
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                {
+                    pathToObjective.Add(myCurrentTile.tilesInLineRight[i]);
+                }
+
+                for (int i = 0; i < myCurrentTile.tilesInLineRight.Count; i++)
+                {
+                    if (shouldColorTiles)
+                    {
+                        myCurrentTile.tilesInLineRight[i].ColorAttack();
+                    }
+                    else
+                    {
+                        myCurrentTile.tilesInLineRight[i].ColorDesAttack();
+                    }
+                }
+
+            }
+            //Izquierda
+            else
+            {
+                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                {
+                    pathToObjective.Add(myCurrentTile.tilesInLineLeft[i]);
+                }
+
+                for (int i = 0; i < myCurrentTile.tilesInLineLeft.Count; i++)
+                {
+                    if (shouldColorTiles)
+                    {
+                        myCurrentTile.tilesInLineLeft[i].ColorAttack();
+                    }
+                    else
+                    {
+                        myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
+                    }
+                }
+
+
+            }
+        }
+    }
+
+    public override void CheckCharactersInLine()
     {
         if (!isDead)
         {
@@ -346,5 +449,11 @@ public class EnCharger : EnemyUnit
                 }
             }
         }
+    }
+
+    //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
+    public override void SearchingObjectivesToAttackShowActionPathFinding()
+    {    
+       
     }
 }
