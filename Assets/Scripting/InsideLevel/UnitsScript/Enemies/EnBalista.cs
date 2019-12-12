@@ -19,6 +19,10 @@ public class EnBalista : EnemyUnit
     private bool isRightTileOccupied;
     private bool isLeftTileOccupied;
 
+    //Guarda los tiles que tengo que pintar. No puedo decirle que pinte toda la línea por si en medio de la línea hay obstáculos pero luego hay tiles accesibles
+    [SerializeField]
+    private List<IndividualTiles> tilesToShoot = new List<IndividualTiles>();
+
     #endregion 
 
     public override void SearchingObjectivesToAttack()
@@ -124,59 +128,15 @@ public class EnBalista : EnemyUnit
         {
             if (isAttackPrepared)
             {
-                //Dispara
-                if (currentFacingDirection == FacingDirection.North)
+                for (int i = 0; i < tilesToShoot.Count; i++)
                 {
-                    for (int i = 0; i < myCurrentTile.tilesInLineUp.Count; i++)
+                    if (tilesToShoot[i].unitOnTile != null)
                     {
-                        if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
-                        {
-                            DoDamage(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                        }
-
-                        //Quito el feedback de ataque de los tiles
-                        myCurrentTile.tilesInLineUp[i].ColorDesAttack();
+                        DoDamage(tilesToShoot[i].unitOnTile);
                     }
-                }
 
-                else if (currentFacingDirection == FacingDirection.South)
-                {
-                    for (int i = 0; i < myCurrentTile.tilesInLineDown.Count; i++)
-                    {
-                        if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
-                        {
-                            DoDamage(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                        }
-
-                        myCurrentTile.tilesInLineDown[i].ColorDesAttack();
-                    }
-                    
-                }
-
-                else if (currentFacingDirection == FacingDirection.East)
-                {
-                    for (int i = 0; i < myCurrentTile.tilesInLineRight.Count; i++)
-                    {
-                        if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
-                        {
-                            DoDamage(myCurrentTile.tilesInLineRight[i].unitOnTile);
-                        }
-
-                        myCurrentTile.tilesInLineRight[i].ColorDesAttack();
-                    }
-                }
-
-                else if (currentFacingDirection == FacingDirection.West)
-                {
-                    for (int i = 0; i < myCurrentTile.tilesInLineLeft.Count; i++)
-                    {
-                        if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
-                        {
-                            DoDamage(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                        }
-
-                        myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
-                    }
+                    //Quito el feedback de ataque de los tiles
+                    tilesToShoot[i].ColorDesAttack();
                 }
 
                 isAttackPrepared = false;
@@ -234,63 +194,15 @@ public class EnBalista : EnemyUnit
     //Función que pinta o despinta los tiles a los que está atcando la ballesta
     public void FeedbackTilesToAttack(bool shouldColorTiles)
     {
-        if (currentFacingDirection == FacingDirection.North)
+        for (int i = 0; i < tilesToShoot.Count; i++)
         {
-            for (int i = 0; i < myCurrentTile.tilesInLineUp.Count; i++)
+            if (shouldColorTiles)
             {
-                if (shouldColorTiles)
-                {
-                    myCurrentTile.tilesInLineUp[i].ColorAttack();
-                }
-                else
-                {
-                    myCurrentTile.tilesInLineUp[i].ColorDesAttack();
-                }  
+                tilesToShoot[i].ColorAttack();
             }
-        }
-
-        else if (currentFacingDirection == FacingDirection.South)
-        {
-            for (int i = 0; i < myCurrentTile.tilesInLineDown.Count; i++)
+            else
             {
-                if (shouldColorTiles)
-                {
-                    myCurrentTile.tilesInLineDown[i].ColorAttack();
-                }
-                else
-                {
-                    myCurrentTile.tilesInLineDown[i].ColorDesAttack();
-                }
-            }
-        }
-
-        else if (currentFacingDirection == FacingDirection.East)
-        {
-            for (int i = 0; i < myCurrentTile.tilesInLineRight.Count; i++)
-            {
-                if (shouldColorTiles)
-                {
-                    myCurrentTile.tilesInLineRight[i].ColorAttack();
-                }
-                else
-                {
-                    myCurrentTile.tilesInLineRight[i].ColorDesAttack();
-                }
-            }
-        }
-
-        else if (currentFacingDirection == FacingDirection.West)
-        {
-            for (int i = 0; i < myCurrentTile.tilesInLineLeft.Count; i++)
-            {
-                if (shouldColorTiles)
-                {
-                    myCurrentTile.tilesInLineLeft[i].ColorAttack();
-                }
-                else
-                {
-                    myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
-                }
+                tilesToShoot[i].ColorDesAttack();
             }
         }
     }
@@ -315,17 +227,30 @@ public class EnBalista : EnemyUnit
 
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
+
                     //Si hay un obstáculo paro de comprobar
-                    if (myCurrentTile.tilesInLineUp[i].isObstacle)
+                    if (myCurrentTile.tilesInLineUp[i].isObstacle || myCurrentTile.tilesInLineUp[i] == null)
                     {
                         break;
                     }
 
-                    //Independientemente de que sea charger o balista este código sirve para ambos
-                    else if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
+
+                    //Si el tile no es un obstáculo lo añado a la lista de tiles a los que disparar y compruebo si tiene una unidad.
+                    else if (!myCurrentTile.tilesInLineUp[i].isObstacle)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades.
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                        //Si la diferencia de altura supera la que puede tener el personaje paro de buscar
+                        if (i> 0 && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
+
+                        tilesToShoot.Add(myCurrentTile.tilesInLineUp[i]);
+
+                        if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades.
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                        }
                     }
                 }
             }
@@ -344,16 +269,25 @@ public class EnBalista : EnemyUnit
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                    if (myCurrentTile.tilesInLineRight[i].isObstacle)
+                    if (myCurrentTile.tilesInLineRight[i].isObstacle || myCurrentTile.tilesInLineRight[i] == null)
                     {
                         break;
                     }
 
-                    //Independientemente de que sea charger o balista este código sirve para ambos
-                    else if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
+                    else if (!myCurrentTile.tilesInLineRight[i].isObstacle)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades.
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
+
+                        tilesToShoot.Add(myCurrentTile.tilesInLineRight[i]);
+
+                        if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades.
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        }
                     }
                 }
             }
@@ -372,16 +306,25 @@ public class EnBalista : EnemyUnit
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     
-                    if (myCurrentTile.tilesInLineDown[i].isObstacle)
+                    if (myCurrentTile.tilesInLineDown[i].isObstacle || myCurrentTile.tilesInLineDown[i] == null)
                     {
                         break;
                     }
 
-                    //Independientemente de que sea charger o balista este código sirve para ambos
-                    else if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
+                    else if (!myCurrentTile.tilesInLineDown[i].isObstacle)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades.
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
+
+                        tilesToShoot.Add(myCurrentTile.tilesInLineDown[i]);
+
+                        if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades.
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                        }
                     }
                 }
             }
@@ -400,16 +343,25 @@ public class EnBalista : EnemyUnit
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                    if (myCurrentTile.tilesInLineLeft[i].isObstacle)
+                    if (myCurrentTile.tilesInLineLeft[i].isObstacle || myCurrentTile.tilesInLineLeft[i] == null)
                     {
                         break;
                     }
 
-                    //Independientemente de que sea charger o balista este código sirve para ambos
-                    else if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
+                    else if (!myCurrentTile.tilesInLineLeft[i].isObstacle)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades.
-                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
+
+                        tilesToShoot.Add(myCurrentTile.tilesInLineLeft[i]);
+
+                        if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades.
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                        }
                     }
                 }
             }

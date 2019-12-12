@@ -59,7 +59,6 @@ public class EnGiant : EnemyUnit
                 currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
                 {
                     return (a.currentHealth).CompareTo(b.currentHealth);
-
                 });   
             }
 
@@ -81,6 +80,7 @@ public class EnGiant : EnemyUnit
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
+            Debug.Log(currentUnitsAvailableToAttack[0]);
             if (myCurrentTile.neighbours[i].unitOnTile != null && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0])
             {
                 //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el gigante
@@ -152,6 +152,7 @@ public class EnGiant : EnemyUnit
         {
             myCurrentEnemyState = enemyState.Moving;
         }
+
         else
         {
             myCurrentEnemyState = enemyState.Ended;
@@ -168,9 +169,7 @@ public class EnGiant : EnemyUnit
 
     public override void MoveUnit()
     {
-
         //ShowActionPathFinding(true);
-
         movementParticle.SetActive(true);
 
         //Arriba o abajo
@@ -184,9 +183,14 @@ public class EnGiant : EnemyUnit
                     currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                     MovementLogic(myCurrentTile.tilesInLineUp);
                     RotateLogic(FacingDirection.North);
+
+                    Debug.Log("test");
+
                 }
                 else
                 {
+                    Debug.Log("Correcto");
+                    hasMoved = true;
                     myCurrentEnemyState = enemyState.Ended;
                 }
             }
@@ -202,6 +206,7 @@ public class EnGiant : EnemyUnit
 
                 else
                 {
+                    hasMoved = true;
                     myCurrentEnemyState = enemyState.Ended;
                 }
             }
@@ -221,6 +226,7 @@ public class EnGiant : EnemyUnit
 
                 else
                 {
+                    hasMoved = true;
                     myCurrentEnemyState = enemyState.Ended;
                 }
             }
@@ -236,6 +242,7 @@ public class EnGiant : EnemyUnit
 
                 else
                 {
+                    hasMoved = true;
                     myCurrentEnemyState = enemyState.Ended;
                 }
             }
@@ -382,8 +389,6 @@ public class EnGiant : EnemyUnit
 
         //Aviso de que se ha movido
         hasMoved = true;
-
-        
     }
 
     //IEnumerator MovementWait()

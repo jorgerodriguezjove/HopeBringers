@@ -179,7 +179,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             //HACER QUE SE PINTE EL TILE Y APAREZCA LA UNIDAD QUE SE VA A COLOCAR
         }
 
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this))
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null)
         {
             //Cambio el cursor
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
@@ -187,6 +187,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             //Cambio el color del tile
             ColorCurrentTileHover();
         }
+
         //if (isEmpty)
         //{
         //    LM.UIM.HideTileInfo();

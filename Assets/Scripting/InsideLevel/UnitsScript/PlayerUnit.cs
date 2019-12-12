@@ -185,29 +185,29 @@ public class PlayerUnit : UnitBase
 
         if (LM.selectedCharacter == null)
         {
-            LM.HideUnitHover(this);
+            //Compruebo si no hay un enemigo seleccionado para no quitarle la info.
+            if (LM.selectedEnemy == null)
+            {
+                LM.HideUnitHover(this);
+            }
+            
             myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
            
             ResetColor();
-           
-
-
         }
+
         else if (LM.selectedCharacter == this)
         {
             return;
         }
-        else if (LM.selectedCharacter != this.gameObject)
+
+        else if (LM.selectedCharacter != GetComponent<PlayerUnit>())
         {
             LM.HideUnitHover(this);
             myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
 
-            ResetColor();
-           
+            ResetColor();   
         }
-
-
-
     }
 
     #endregion

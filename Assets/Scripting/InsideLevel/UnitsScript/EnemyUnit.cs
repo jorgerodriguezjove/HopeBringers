@@ -84,8 +84,8 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     public GameObject shaderHover;
 
-   
-
+    [SerializeField]
+    private GameObject sleepParticle;
 
     #endregion
 
@@ -216,6 +216,7 @@ public class EnemyUnit : UnitBase
     public void AlertEnemy()
     {
         haveIBeenAlerted = true;
+        Destroy(sleepParticle);
         rangeOfAction = 1000;
     }
 
@@ -259,7 +260,7 @@ public class EnemyUnit : UnitBase
             {
                 if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                 {
-                    if (LM.selectedEnemy != null)
+                    if (LM.selectedEnemy != null && LM.selectedEnemy != GetComponent<EnemyUnit>())
                     {
                         LM.HideEnemyHover(LM.selectedEnemy);
                         //Llamo a LevelManager para desactivar hover
@@ -273,63 +274,39 @@ public class EnemyUnit : UnitBase
                         //LM.UIM.HideCharacterInfo("");
                         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                         LM.tilesAvailableForMovement.Clear();
-
-                        LM.DeSelectUnit();
-
-
-                        
-
-                        if (!haveIBeenAlerted)
-                        {
-                            LM.ShowEnemyHover(rangeOfAction, false , this);
-                        }
-                        else
-                        {
-                            LM.ShowEnemyHover(movementUds, false, this);
-                        }
-                       
-                        LM.selectedEnemy = this;
-                        //Llamo a LevelManager para activar hover
-
-                        LM.CheckIfHoverShouldAppear(this);
-                        LM.UIM.ShowUnitInfo(this.unitInfo, this);
-                        //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
-                        HealthBarOn_Off(true);
-                        //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-
-                        //Cambio el color del personaje
-                        SelectedColor();
                     }
+
                     else
                     {
-                      
-                        LM.DeSelectUnit();
-
-                        if (!haveIBeenAlerted)
-                        {
-                            LM.ShowEnemyHover(rangeOfAction, true, this);
-                        }
-                        else
-                        {
-                           
-                            LM.ShowEnemyHover(movementUds, false, this);
-                        }
-
-                        LM.selectedEnemy = this;
-                        //Llamo a LevelManager para activar hover
-
-                        LM.CheckIfHoverShouldAppear(this);
-                        LM.UIM.ShowUnitInfo(this.unitInfo, this);
-                        //LM.UIM.ShowCharacterInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
-                        HealthBarOn_Off(true);
-                        //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
-
-                        //Cambio el color del personaje
-                        SelectedColor();
+                        SelectedFunctionality();
                     }
                 }
             }
         }
+    }
+
+
+    //Función que guarda todo lo que ocurre cuando se selecciona un personaje. Esta función sirve para no repetir codigo y además para poder llamarla desde el Level Manager.
+    public void SelectedFunctionality()
+    {
+        LM.DeSelectUnit();
+
+        if (!haveIBeenAlerted)
+        {
+            LM.ShowEnemyHover(rangeOfAction, true, this);
+        }
+        else
+        {
+            LM.ShowEnemyHover(movementUds, false, this);
+        }
+
+        LM.SelectEnemy(unitInfo, GetComponent<EnemyUnit>());
+
+        //Activo la barra de vida
+        HealthBarOn_Off(true);
+
+        //Cambio el color del personaje
+        SelectedColor();
     }
 
     private void OnMouseEnter()
