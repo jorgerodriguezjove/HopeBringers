@@ -142,7 +142,7 @@ public class EnBalista : EnemyUnit
                 isAttackPrepared = false;
                 myCurrentEnemyState = enemyState.Ended;
 
-
+                tilesToShoot.Clear();
                 //Espero 1 sec
                 //myCurrentEnemyState = enemyState.Waiting;
                 //StartCoroutine("AttackWait");
@@ -227,13 +227,11 @@ public class EnBalista : EnemyUnit
 
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-
                     //Si hay un obstáculo paro de comprobar
                     if (myCurrentTile.tilesInLineUp[i].isObstacle || myCurrentTile.tilesInLineUp[i] == null)
                     {
                         break;
                     }
-
 
                     //Si el tile no es un obstáculo lo añado a la lista de tiles a los que disparar y compruebo si tiene una unidad.
                     else if (!myCurrentTile.tilesInLineUp[i].isObstacle)

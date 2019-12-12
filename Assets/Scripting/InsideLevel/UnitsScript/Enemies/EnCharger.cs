@@ -196,13 +196,17 @@ public class EnCharger : EnemyUnit
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
             {
                
+                
+
                 for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
-                    pathToObjective.Add(myCurrentTile.tilesInLineUp[i]);
-                }
+                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                    {
+                        return;
+                    }
 
-                for (int i = 0; i < myCurrentTile.tilesInLineUp.Count; i++)
-                {
+                    pathToObjective.Add(myCurrentTile.tilesInLineUp[i]);
+
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineUp[i].ColorAttack();
@@ -212,19 +216,19 @@ public class EnCharger : EnemyUnit
                         myCurrentTile.tilesInLineUp[i].ColorDesAttack();
                     }
                 }
-
             }
             //Abajo
             else
             {
                 for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                    {
+                        return;
+                    }
+
                     pathToObjective.Add(myCurrentTile.tilesInLineDown[i]);
-                }
 
-
-                for (int i = 0; i < myCurrentTile.tilesInLineDown.Count; i++)
-                {
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineDown[i].ColorAttack();
@@ -234,8 +238,6 @@ public class EnCharger : EnemyUnit
                         myCurrentTile.tilesInLineDown[i].ColorDesAttack();
                     }
                 }
-
-
 
             }
         }
@@ -247,11 +249,13 @@ public class EnCharger : EnemyUnit
             {
                 for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
-                    pathToObjective.Add(myCurrentTile.tilesInLineRight[i]);
-                }
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                    {
+                        return;
+                    }
 
-                for (int i = 0; i < myCurrentTile.tilesInLineRight.Count; i++)
-                {
+                    pathToObjective.Add(myCurrentTile.tilesInLineRight[i]);
+
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineRight[i].ColorAttack();
@@ -261,18 +265,19 @@ public class EnCharger : EnemyUnit
                         myCurrentTile.tilesInLineRight[i].ColorDesAttack();
                     }
                 }
-
             }
             //Izquierda
             else
             {
                 for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                 {
-                    pathToObjective.Add(myCurrentTile.tilesInLineLeft[i]);
-                }
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                    {
+                        return;
+                    }
 
-                for (int i = 0; i < myCurrentTile.tilesInLineLeft.Count; i++)
-                {
+                    pathToObjective.Add(myCurrentTile.tilesInLineLeft[i]);
+
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineLeft[i].ColorAttack();
@@ -282,8 +287,6 @@ public class EnCharger : EnemyUnit
                         myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
                     }
                 }
-
-
             }
         }
     }

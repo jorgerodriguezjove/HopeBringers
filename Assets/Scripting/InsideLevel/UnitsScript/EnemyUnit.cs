@@ -260,26 +260,7 @@ public class EnemyUnit : UnitBase
             {
                 if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                 {
-                    if (LM.selectedEnemy != null && LM.selectedEnemy != GetComponent<EnemyUnit>())
-                    {
-                        LM.HideEnemyHover(LM.selectedEnemy);
-                        //Llamo a LevelManager para desactivar hover
-                        if (LM.selectedCharacter != null)
-                        {
-                            LM.selectedCharacter.HideDamageIcons();
-                        }
-                        LM.HideHover(LM.selectedEnemy);
-                        LM.selectedEnemy.HealthBarOn_Off(false);
-                        LM.UIM.HideUnitInfo("");
-                        //LM.UIM.HideCharacterInfo("");
-                        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-                        LM.tilesAvailableForMovement.Clear();
-                    }
-
-                    else
-                    {
-                        SelectedFunctionality();
-                    }
+                    LM.SelectEnemy(GetComponent<EnemyUnit>().unitInfo, GetComponent<EnemyUnit>());
                 }
             }
         }
@@ -289,24 +270,49 @@ public class EnemyUnit : UnitBase
     //Función que guarda todo lo que ocurre cuando se selecciona un personaje. Esta función sirve para no repetir codigo y además para poder llamarla desde el Level Manager.
     public void SelectedFunctionality()
     {
-        LM.DeSelectUnit();
-
-        if (!haveIBeenAlerted)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-            LM.ShowEnemyHover(rangeOfAction, true, this);
+            if (LM.selectedEnemy != null && LM.selectedEnemy != GetComponent<EnemyUnit>())
+            {
+                LM.HideEnemyHover(LM.selectedEnemy);
+                //Llamo a LevelManager para desactivar hover
+                if (LM.selectedCharacter != null)
+                {
+                    LM.selectedCharacter.HideDamageIcons();
+                }
+                LM.HideHover(LM.selectedEnemy);
+                LM.selectedEnemy.HealthBarOn_Off(false);
+                LM.UIM.HideUnitInfo("");
+                //LM.UIM.HideCharacterInfo("");
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                LM.tilesAvailableForMovement.Clear();
+            }
+
+            else
+            {
+                LM.DeSelectUnit();
+
+                if (!haveIBeenAlerted)
+                {
+                    LM.ShowEnemyHover(rangeOfAction, true, this);
+                }
+                else
+                {
+                    LM.ShowEnemyHover(movementUds, false, this);
+                }
+
+                LM.selectedEnemy = GetComponent<EnemyUnit>();
+
+                LM.CheckIfHoverShouldAppear(GetComponent<EnemyUnit>());
+                LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitInfo, GetComponent<EnemyUnit>());
+
+                //Activo la barra de vida
+                HealthBarOn_Off(true);
+
+                //Cambio el color del personaje
+                SelectedColor();
+            }
         }
-        else
-        {
-            LM.ShowEnemyHover(movementUds, false, this);
-        }
-
-        LM.SelectEnemy(unitInfo, GetComponent<EnemyUnit>());
-
-        //Activo la barra de vida
-        HealthBarOn_Off(true);
-
-        //Cambio el color del personaje
-        SelectedColor();
     }
 
     private void OnMouseEnter()
@@ -336,8 +342,6 @@ public class EnemyUnit : UnitBase
     //Creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
     public void OnHoverEnterFunctionality()
     {
-        
-
         //Muestro el rango de acción del personaje.
         if (!haveIBeenAlerted)
         {
@@ -364,12 +368,6 @@ public class EnemyUnit : UnitBase
         //        tilesAvailableForMovementEnemies[i].ColorActionRange();
         //    }
         //}
-
-
-
-
-
-
 
         //Llamo a LevelManager para activar hover				
         LM.UIM.ShowUnitInfo(this.unitInfo, this);
@@ -400,7 +398,6 @@ public class EnemyUnit : UnitBase
         if (LM.selectedCharacter != null)
         {
             LM.selectedCharacter.HideDamageIcons();
-
         }
 
         LM.HideHover(this);

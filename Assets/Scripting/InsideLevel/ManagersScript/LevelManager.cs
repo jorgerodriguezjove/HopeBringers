@@ -251,9 +251,6 @@ public class LevelManager : MonoBehaviour
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
 
-                    
-
-
                     if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipAttack();
@@ -317,7 +314,6 @@ public class LevelManager : MonoBehaviour
             {
                 DeSelectUnit();
                 SelectEnemy(clickedUnit.unitInfo ,clickedUnit.GetComponent<EnemyUnit>());
-                clickedUnit.GetComponent<EnemyUnit>().SelectedFunctionality();
             }
         }
     }
@@ -396,12 +392,15 @@ public class LevelManager : MonoBehaviour
     //}
 
 
-    public void SelectEnemy(string _unitInfo, EnemyUnit enemySelected)
+    public void SelectEnemy(string _unitInfo, EnemyUnit _enemySelected)
     {
-        selectedEnemy = enemySelected;
+        DeselectEnemy();
 
-        CheckIfHoverShouldAppear(enemySelected);
-        UIM.ShowUnitInfo(_unitInfo, enemySelected);
+        selectedEnemy = _enemySelected;
+        CheckIfHoverShouldAppear(_enemySelected);
+        UIM.ShowUnitInfo(_unitInfo, _enemySelected);
+
+        _enemySelected.SelectedFunctionality();
     }
 
 

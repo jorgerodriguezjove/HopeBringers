@@ -43,7 +43,7 @@ public class EnemyPortraits : MonoBehaviour
 
 	#region INTERACTION
 
-	public void ShowEnemyPortraitFromPanel()
+	public void OnHoverEnterEnemyPortrait()
 	{
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
@@ -63,7 +63,7 @@ public class EnemyPortraits : MonoBehaviour
         highlightPanelRef.SetActive(true);
     }
 
-	public void HideEnemyPortraitFromPanel()
+	public void OnHoverExitEnemyPortrait()
     {
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
@@ -85,12 +85,14 @@ public class EnemyPortraits : MonoBehaviour
        
     }
 
-    public void SelectEnemyFromPanel()
+    public void ClickOnEnemyPortrait()
 	{
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
+            LM.SelectEnemy(assignedEnemy.unitInfo,assignedEnemy);
+
             UIM.ShowUnitInfo(assignedEnemy.unitInfo, assignedEnemy);
-            UIM.LM.selectedEnemy = assignedEnemy;
+            
         }
 	}
 
