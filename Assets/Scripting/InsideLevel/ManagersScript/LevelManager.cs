@@ -316,10 +316,8 @@ public class LevelManager : MonoBehaviour
             else if (clickedUnit.GetComponent<EnemyUnit>())
             {
                 DeSelectUnit();
-
-                //PREGUNTAR A MARIO DONDE ESTA LA FUNCIÓN DE SELECCIONAR ENEMIGO
-                //(clickedUnit.movementUds, clickedUnit.GetComponent<EnemyUnit>());
-                //UIM.ShowUnitInfo(clickedUnit.unitInfo, clickedUnit);
+                SelectEnemy(clickedUnit.unitInfo ,clickedUnit.GetComponent<EnemyUnit>());
+                clickedUnit.GetComponent<EnemyUnit>().SelectedFunctionality();
             }
         }
     }
@@ -397,8 +395,17 @@ public class LevelManager : MonoBehaviour
     //    }
     //}
 
-    //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
 
+    public void SelectEnemy(string _unitInfo, EnemyUnit enemySelected)
+    {
+        selectedEnemy = enemySelected;
+
+        CheckIfHoverShouldAppear(enemySelected);
+        UIM.ShowUnitInfo(_unitInfo, enemySelected);
+    }
+
+
+    //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
     public void TileClicked(IndividualTiles tileToMove)
     {
         //Si es el comienzo del nivel

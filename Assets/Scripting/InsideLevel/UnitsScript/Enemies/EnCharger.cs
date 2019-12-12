@@ -53,6 +53,9 @@ public class EnCharger : EnemyUnit
         }
     }
 
+
+    //HACER COMO EN LA BALISTA Y OPTIMIZAR EL CHECK PARA QUE GUARDE LOS TILES QUE AFECTA EN UNA LISTA EN VEZ DE ESTAR BUSCANDO EN TILES EN LINEA TODO EL RATO.
+    //JORGE RECUERDA MIRAR ESTO----------------------------------------------------------------------------------------------
     public override void Attack()
     {
         //Si no he sido alertado, activo mi estado de alerta.
