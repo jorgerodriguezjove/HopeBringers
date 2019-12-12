@@ -7,6 +7,8 @@ public class EnemyPortraits : MonoBehaviour
 {
 	#region VARIABLES
 
+	[SerializeField]
+	public Image enemyIconChild;
 	[HideInInspector]
 	public Sprite enemyPortraitSprite;
 	[HideInInspector]
@@ -34,7 +36,7 @@ public class EnemyPortraits : MonoBehaviour
     }
 	private void Start()
 	{
-		GetComponent<Image>().sprite = enemyPortraitSprite;
+		enemyIconChild.sprite = enemyPortraitSprite;
 	}
 
 	#endregion
