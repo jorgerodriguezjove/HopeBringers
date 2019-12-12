@@ -9,8 +9,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Characters_Black
   m_Shader: {fileID: 4800000, guid: 6459b2db96a08ca41b0f9b39dc7ad59e, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_SS_ON _ALPHABASECUTOUT_ON _ENVIRONMENTREFLECTIONS_OFF
-    _FLIPBOOKBLENDING_OFF _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: L_F_O_ON L_F_SS_ON N_F_EAL_ON N_F_GLO_ON N_F_HDLS_ON N_F_RL_ON
+    N_F_SL_ON N_F_SS_ON _ALPHABASECUTOUT_ON _ENVIRONMENTREFLECTIONS_OFF _MCIALO_ON
+    _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -131,7 +132,7 @@ Material:
     - _CustomLightDirectionFollowObjectRotation: 0
     - _CustomLightDirectionIntensity: 0
     - _Cutoff: 0.5
-    - _Cutout: 0
+    - _Cutout: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLightIntensity: 0
     - _DistortionBlend: 0.5
@@ -150,25 +151,25 @@ Material:
     - _FlipbookBlending: 0
     - _FlipbookMode: 0
     - _GIFlatShade: 0
-    - _GIShadeThreshold: 0
+    - _GIShadeThreshold: 0.633
     - _GlossColorPower: 10
-    - _GlossIntensity: 1
+    - _GlossIntensity: 0.171
     - _GlossMapScale: 0
     - _GlossSoftness: 0
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.5
+    - _Glossiness: 0.257
     - _GlossyReflections: 0
     - _HighlightColorPower: 1
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
     - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 1
-    - _LightIntensity: -1
-    - _MCIALO: 0
+    - _LightFalloffSoftness: 0.2
+    - _LightIntensity: 0
+    - _MCIALO: 1
     - _MCapIntensity: 1
     - _MVCOL: 0
     - _Metallic: 0
@@ -180,19 +181,19 @@ Material:
     - _N_F_DCS: 0
     - _N_F_EAL: 1
     - _N_F_FR: 0
-    - _N_F_GLO: 0
+    - _N_F_GLO: 1
     - _N_F_GLOT: 0
-    - _N_F_HDLS: 0
+    - _N_F_HDLS: 1
     - _N_F_HPSS: 0
     - _N_F_MC: 0
     - _N_F_NLASOBF: 0
     - _N_F_NM: 0
-    - _N_F_O: 1
+    - _N_F_O: 0
     - _N_F_PT: 0
     - _N_F_R: 0
-    - _N_F_RL: 0
+    - _N_F_RL: 1
     - _N_F_SCT: 0
-    - _N_F_SL: 0
+    - _N_F_SL: 1
     - _N_F_SON: 0
     - _N_F_SS: 1
     - _N_F_ST: 0
@@ -203,30 +204,30 @@ Material:
     - _OcclusionStrength: 1
     - _Oper: 8
     - _OutlineExtrudeMethod: 0
-    - _OutlineWidth: 0.5
+    - _OutlineWidth: 3
     - _OutlineWidthAffectedByViewDistance: 0
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 1
     - _Parallax: 0.02
-    - _PointSpotlightIntensity: 0
+    - _PointSpotlightIntensity: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ReduceShadowSpotDirectionalLight: 0.5
-    - _RefMetallic: 0
+    - _ReduceShadowSpotDirectionalLight: 10
+    - _RefMetallic: 0.391
     - _RefVal: 0
     - _ReflectionIntensity: 0
-    - _ReflectionRoughtness: 0
+    - _ReflectionRoughtness: 1
     - _RimAmount: 0.716
-    - _RimLightColorPower: 10
-    - _RimLightInLight: 1
-    - _RimLightSoftness: 1
-    - _RimLightUnfill: 1.5
+    - _RimLightColorPower: 1
+    - _RimLightInLight: 0
+    - _RimLightSoftness: 0.3
+    - _RimLightUnfill: 4
     - _RimThreshold: 0.1
     - _STIL: 0
     - _Saturation: 1
     - _SelfLitHighContrast: 1
-    - _SelfLitIntensity: 0
+    - _SelfLitIntensity: 0.1
     - _SelfLitPower: 2
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
@@ -274,7 +275,7 @@ Material:
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.2156863, g: 0.2156863, b: 0.2156863, a: 1}
+    - _MainColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
