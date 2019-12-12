@@ -81,10 +81,6 @@ public class Mage : PlayerUnit
         {
             //myDecoys[0].Destroy(gameObject);
             myDecoys.Remove(myDecoys[0]);
-            
-
-            
-
 
             //Instancio el decoy
             Instantiate(mageDecoy, transform.position, transform.rotation);
