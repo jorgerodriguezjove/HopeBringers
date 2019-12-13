@@ -160,22 +160,15 @@ public class EnemyUnit : UnitBase
                 {
                     
                     StartCoroutine("WaitBeforeNextState");
-                   
                 }
                 break;
         }
 
-
         //if (currentUnitsAvailableToAttack.Count == 0)
         //{
         //    Debug.Log("EMPTY");
-        //}
-
-
-    
+        //}    
     }
-
-   
 
     IEnumerator WaitBeforeNextState()
     {
@@ -434,7 +427,6 @@ public class EnemyUnit : UnitBase
 
                 ResetColor();
 
-
                 myPortrait.UnHighlightMyself();
 
             }
@@ -472,7 +464,18 @@ public class EnemyUnit : UnitBase
 			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
 		}
 
-		ResetColor();
+        if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
+        {
+            Debug.Log("rojo");
+            
+        }
+
+        else
+        {
+            Debug.Log("reset");
+            ResetColor();
+        }
+		
 
         myPortrait.UnHighlightMyself();
     }

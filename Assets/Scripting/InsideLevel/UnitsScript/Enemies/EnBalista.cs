@@ -86,6 +86,9 @@ public class EnBalista : EnemyUnit
             }
             
             movementParticle.SetActive(false);
+
+            tilesToShoot.Clear();
+
             myCurrentEnemyState = enemyState.Searching;
         }
 
@@ -190,7 +193,6 @@ public class EnBalista : EnemyUnit
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
     }
 
-
     //Función que pinta o despinta los tiles a los que está atcando la ballesta
     public void FeedbackTilesToAttack(bool shouldColorTiles)
     {
@@ -222,7 +224,6 @@ public class EnBalista : EnemyUnit
             }
         }
     }
-
 
     //Pongo público para acceder a la hora de hacer hover
     public override void CheckCharactersInLine()
@@ -702,6 +703,9 @@ public class EnBalista : EnemyUnit
 
         if (isAttackPrepared)
         {
+            FeedbackTilesToAttack(false);
+            tilesToShoot.Clear();
+            CheckCharactersInLine();
             FeedbackTilesToAttack(true);
         }
     }
