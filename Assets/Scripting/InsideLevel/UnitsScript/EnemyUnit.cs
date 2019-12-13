@@ -267,7 +267,6 @@ public class EnemyUnit : UnitBase
         }
     }
 
-
     //Función que guarda todo lo que ocurre cuando se selecciona un personaje. Esta función sirve para no repetir codigo y además para poder llamarla desde el Level Manager.
     public void SelectedFunctionality()
     {
@@ -473,7 +472,6 @@ public class EnemyUnit : UnitBase
         if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
         {
             Debug.Log("rojo");
-            
         }
 
         else
@@ -531,13 +529,11 @@ public class EnemyUnit : UnitBase
         myCurrentTile.WarnInmediateNeighbours();
         
         Destroy(unitModel);
+        GetComponent<Collider>().enabled = false;
 
-        
         isDead = true;
         LM.UIM.SetEnemyOrder();
         //Tiene que ir despues del bool de isdead = true
-
-
 
         //No uso FinishMyActions porque no me interesa que pase turno, sólo que  se quede en waiting por si acaso se muere en su turno.
         myCurrentEnemyState = enemyState.Waiting;

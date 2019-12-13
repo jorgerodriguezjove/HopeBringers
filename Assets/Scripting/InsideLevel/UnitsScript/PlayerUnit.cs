@@ -418,11 +418,8 @@ public class PlayerUnit : UnitBase
         LM.characthersOnTheBoard.Remove(this);
         myPanelPortrait.SetActive(false);
         UIM.panelesPJ.Remove(myPanelPortrait);
-        Destroy(gameObject);
-        
+        Destroy(gameObject);        
     }
-
-	
 
     #endregion
 
@@ -484,6 +481,10 @@ public class PlayerUnit : UnitBase
 			damageWithMultipliersApplied += bonusDamageBackAttack;
 			backStabIcon.SetActive(true);
 		}
+
+        Debug.Log(baseDamage);
+        Debug.Log(damageWithMultipliersApplied);
+
 	}
 
 	public void HideDamageIcons()
