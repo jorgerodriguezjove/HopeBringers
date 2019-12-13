@@ -639,7 +639,7 @@ public class TileManager : MonoBehaviour
             //entraria aqui porque el tile anterior no puede revisitarlo, asi que cortariamos el proceso de seguir comprobando el resto de tiles de Open antes de tiempo.
             if (openList.Count == 0)
             {
-                Debug.Log("No hay tiles a los que me pueda mover");
+                //Debug.Log("No hay tiles a los que me pueda mover");
                 tempCurrentPathCost = Mathf.Infinity;
             }
         }
