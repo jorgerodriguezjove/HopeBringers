@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2838,7 +2838,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &231307717
 MeshRenderer:
@@ -5067,7 +5067,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &396065600
 MeshRenderer:
@@ -10198,7 +10198,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &796357554
 MeshRenderer:
@@ -13486,7 +13486,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1032862994
 MeshRenderer:
@@ -13642,7 +13642,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1040053837
 MeshRenderer:
@@ -20973,7 +20973,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1584579467
 MeshRenderer:
@@ -21064,7 +21064,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1586094493
 MeshRenderer:
@@ -21581,7 +21581,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1621190372
 MeshRenderer:
@@ -23827,6 +23827,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5322091718230316432, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -137
+      objectReference: {fileID: 0}
     - target: {fileID: 5809797896588658039, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: gridWorldSize.z
@@ -23922,10 +23927,69 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5322091718230316432, guid: 0aa1f913d04c21748a29637181344fa8,
-        type: 3}
+    - target: {fileID: 1431746520, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431746520, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431746520, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -137
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431746520, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 632204816, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 632204816, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 632204816, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 632204816, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1382105462, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1382105462, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1382105462, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1382105462, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245672621, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245672621, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245672621, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245672621, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0aa1f913d04c21748a29637181344fa8, type: 3}
@@ -24306,7 +24370,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1838115403
 MeshRenderer:
@@ -24855,7 +24919,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9, z: 0.9}
+  m_Size: {x: 0.9, y: 0.01, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1890523411
 MeshRenderer:
