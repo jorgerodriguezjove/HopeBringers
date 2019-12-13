@@ -597,31 +597,35 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
-               
-
-                tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
-
                 //Muestro la acción que va a realizar el enemigo 
                 hoverUnit.ShowActionPathFinding(true);
 
-                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-                    {
-                        if (showActionRangeInsteadOfMovement)
-                        {
-                            tilesAvailableForMovementEnemies[i].ColorActionRange();
-                        }
+                //¡¡MUY IMPORTANTE!! TIENE QUE IR DESPUÉS DEL hoverUnit.ShowActionPathFinding
+                if (hoverUnit.haveIBeenAlerted)
+                {
+                    tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
+                }
 
-                        else
-                        {
-                            tilesAvailableForMovementEnemies[i].ColorSelect();
-                        }
+                else
+                {
+                    tilesAvailableForMovementEnemies = TM.CheckAvailableTilesForEnemyAction(movementUds, hoverUnit);
+                }
+
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    if (showActionRangeInsteadOfMovement)
+                    {
+                        tilesAvailableForMovementEnemies[i].ColorActionRange();
                     }
 
-               
-
+                    else
+                    {
+                        tilesAvailableForMovementEnemies[i].ColorSelect();
+                    }
+                }
             }
-            else if (hoverUnit.GetComponent<EnBalista>())
 
+            else if (hoverUnit.GetComponent<EnBalista>())
             {
                 hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
@@ -649,8 +653,6 @@ public class LevelManager : MonoBehaviour
             else if (hoverUnit.GetComponent<EnCharger>())
 
             {
-              
-           
                 hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
                 
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
@@ -665,11 +667,7 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.shaderHover.SetActive(true);
                     hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count-1].transform.position;
                 }
-               
-
             }
-
-
         }
     }
 

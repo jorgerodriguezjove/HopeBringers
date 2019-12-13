@@ -110,6 +110,10 @@ public class TileManager : MonoBehaviour
     //Lista que le paso al goblin con los enemigos en rango
     private List<EnemyUnit> enemiesInRange = new List<EnemyUnit>();
 
+    //Las mismas variables que para el CheckAvailableMovement pero para las acciones enemigas
+    public List<IndividualTiles> tilesAvailableForEnemyAction = new List<IndividualTiles>();
+    private IndividualTiles currentTileCheckingForEnemyAction;
+
     [Header("REFERENCIAS")]
     [SerializeField]
     LevelManager LM;
@@ -755,6 +759,37 @@ public class TileManager : MonoBehaviour
         }
 
         return enemiesInRange;
+    }
+
+
+    //Esta función es una copia de CheckAvailableTiles for Movement solo que no calcula el pathfinding de los tiles, simplemente los pinta.
+    //Esto sirve para que el rango de los enemigos no dependa de pathfinding ya que siempre es el mismo
+    public List<IndividualTiles> CheckAvailableTilesForEnemyAction(int movementUds, EnemyUnit selectedUnit)
+    {
+        tilesAvailableForEnemyAction.Clear();
+
+        //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
+        for (int i = -movementUds; i < (movementUds * 2) + 1; i++)
+        {
+            //Al restar a losMovementUds el i actual obtengo los tiles que hay por encima de la posición del personaje en dicha columna
+            //Este número me sirve para calcular la posición en z de los tiles
+            int tilesInZ = movementUds - Mathf.Abs(i);
+
+            for (int j = tilesInZ; j >= -tilesInZ; j--)
+            {
+
+                //Compruebo si existe un tile con esas coordenadas
+                if (selectedUnit.myCurrentTile.tileX + i < gridSizeX && selectedUnit.myCurrentTile.tileX + i >= 0 &&
+                    selectedUnit.myCurrentTile.tileZ + j < gridSizeZ && selectedUnit.myCurrentTile.tileZ + j >= 0)
+                {
+
+                    tilesAvailableForEnemyAction.Add(grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j]);
+                }
+                
+            }
+        }
+
+        return tilesAvailableForEnemyAction;
     }
 
 

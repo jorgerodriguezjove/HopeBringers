@@ -11,22 +11,17 @@ public class Mage : PlayerUnit
     [SerializeField]
     protected GameObject chargingParticle;
 
+    //Prefab del mage decoy
     [SerializeField]
-    protected GameObject mageDecoy;
-
-
-
+    protected GameObject mageDecoyRefAsset;
 
     //Lista con decoys que tiene este mago.
     [SerializeField]
-    private List<GameObject> myDecoys;
+    private List<GameObject> myDecoys = new List<GameObject>();
 
     //Número máximo de decoys que se pueden instanciar
     [SerializeField]
     private int maxDecoys;
-
-
-
 
     #endregion
 
@@ -70,29 +65,39 @@ public class Mage : PlayerUnit
         UIM.RefreshTokens();
         myCurrentPath = pathReceived;
 
-        if (myDecoys.Count < maxDecoys)
-        {
-           
-            //Instancio el decoy
-            Instantiate(mageDecoy, transform.position, transform.rotation);
-            myDecoys.Add(mageDecoy);
-        }
-        else
-        {
-            //myDecoys[0].Destroy(gameObject);
-            myDecoys.Remove(myDecoys[0]);
-
-            //Instancio el decoy
-            Instantiate(mageDecoy, transform.position, transform.rotation);
-            myDecoys.Add(mageDecoy);
-        }
-        
+        //Compruebo si tengo que instanciar decoy
+        CheckDecoy();
        
         StartCoroutine("MovingUnitAnimation");
 
-        
-
         UpdateInformationAfterMovement(tileToMove);
     }
+
+    public void CheckDecoy()
+    {
+        if (myDecoys.Count < maxDecoys)
+        {
+            //Instancio el decoy
+            InstantiateDecoy();
+        }
+
+        else
+        {
+            //Destruyo al decoy anterior
+            GameObject decoyToDestroy = myDecoys[0];
+            Destroy(decoyToDestroy);
+            myDecoys.Remove(decoyToDestroy);
+
+            //Instancio el decoy
+            InstantiateDecoy();
+        }
+    }
+
+    public void InstantiateDecoy()
+    {
+        GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
+        myDecoys.Add(decoyToInstantiate);
+    }
+
     #endregion
 }

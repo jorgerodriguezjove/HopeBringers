@@ -86,7 +86,7 @@ public class EnGiant : EnemyUnit
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
-            Debug.Log(currentUnitsAvailableToAttack[0]);
+
             if (myCurrentTile.neighbours[i].unitOnTile != null && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0])
             {
                 //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el gigante
@@ -107,12 +107,12 @@ public class EnGiant : EnemyUnit
                     DoDamage(currentUnitsAvailableToAttack[0]);
 
                     //Comprobar si a sus lados hay unidades
-                    if (myCurrentObjectiveTile.tilesInLineRight[0] != null && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                    if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                     {
                         DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                     }
 
-                    if (myCurrentObjectiveTile.tilesInLineLeft[0] != null && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                    if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                     {
                         DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                     }
@@ -135,12 +135,12 @@ public class EnGiant : EnemyUnit
                     DoDamage(currentUnitsAvailableToAttack[0]);
 
                     //Comprobar si a sus lados hay unidades
-                    if (myCurrentObjectiveTile.tilesInLineUp[0] != null && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                    if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                     {
                         DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                     }
 
-                    if (myCurrentObjectiveTile.tilesInLineDown[0] != null && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                    if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                     {
                         DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                     }
@@ -392,25 +392,14 @@ public class EnGiant : EnemyUnit
 
         ShowActionPathFinding(true);
 
-      
-
         StartCoroutine("MovementWait");
 
-      
-            //Actualizo las variables de los tiles
-            UpdateInformationAfterMovement(ListWithNewTile[0]);
+        //Actualizo las variables de los tiles
+        UpdateInformationAfterMovement(ListWithNewTile[0]);
 
-            //Aviso de que se ha movido
-            hasMoved = true;
-
-            
-     
-       
-
-        
+        //Aviso de que se ha movido
+        hasMoved = true;
     }
-
-
 
     IEnumerator MovementWait()
     {
@@ -447,21 +436,20 @@ public class EnGiant : EnemyUnit
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta
-    public override void ShowActionPathFinding(bool shouldToShow)
+    //Mario te he cambiado el nombre del bool, que es una chorrada pero por si se me pasa decirtelo (Borralo cuando lo veas).
+    public override void ShowActionPathFinding(bool _shouldShowAction)
     {
- 
         SearchingObjectivesToAttackShowActionPathFinding();
 
         if (currentUnitsAvailableToAttack.Count > 0)
         {
-            if (shouldToShow)
+            if (_shouldShowAction)
             {
                 myLineRenderer.enabled = true;
                 if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                 {
                     shaderHover.SetActive(true);
                 }
-
             }
             else
             {
@@ -474,11 +462,8 @@ public class EnGiant : EnemyUnit
             //Cada enemigo realiza su propio path
             LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
 
-          
-      
             if (LM.TM.currentPath.Count > 2)
             {
-
                 Vector3 iniPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
 
                 myLineRenderer.SetPosition(0, iniPosition);
@@ -492,24 +477,20 @@ public class EnGiant : EnemyUnit
 
                 shaderHover.transform.DORotate(unitDirection, 0f);
             }
+
             else
             {
                 myLineRenderer.enabled = false;
                 shaderHover.SetActive(false);
             }
-         
         }
-
-    
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
     {
-
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(rangeOfAction, gameObject);
-
 
         if (currentUnitsAvailableToAttack.Count == 0)
         {
@@ -520,7 +501,6 @@ public class EnGiant : EnemyUnit
         {
             myCurentObjective = currentUnitsAvailableToAttack[0];
             myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
-
         }
 
         //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
@@ -553,7 +533,6 @@ public class EnGiant : EnemyUnit
 
             myCurentObjective = currentUnitsAvailableToAttack[0];
             myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
-
 
         }
     }

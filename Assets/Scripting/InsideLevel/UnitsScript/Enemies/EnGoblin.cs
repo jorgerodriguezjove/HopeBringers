@@ -374,11 +374,8 @@ public class EnGoblin : EnemyUnit
                         LM.TM.currentPath[i].ColorDesAttack();
                     }                    
                 }               
-            }
-            
+            }   
         }
-
-       
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

@@ -54,7 +54,8 @@ public class EnemyUnit : UnitBase
     private bool corroutineDone;
 
     //Bool que indica si el enemigo ha sido despertado o si solo tiene que comprobar su rango inicial.
-    protected bool haveIBeenAlerted = false;
+    [HideInInspector]
+    public bool haveIBeenAlerted = false;
 
     [Header("REFERENCIAS")]
 
@@ -372,8 +373,6 @@ public class EnemyUnit : UnitBase
                 //Cambio el color del personaje
                 SelectedColor();
             }
-
-
         }
     }
 
@@ -389,7 +388,6 @@ public class EnemyUnit : UnitBase
         {
             LM.ShowEnemyHover(movementUds, false ,this);
         }
-
 
         //if (hoverUnit.GetComponent<EnemyUnit>().myTierLevel == EnemyUnit.TierLevel.LevelBase1)
         //{
@@ -440,7 +438,6 @@ public class EnemyUnit : UnitBase
                 myPortrait.UnHighlightMyself();
 
             }
-
         }
     }
 
@@ -474,13 +471,10 @@ public class EnemyUnit : UnitBase
 		{
 			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
 		}
-		
 
 		ResetColor();
 
-
         myPortrait.UnHighlightMyself();
-
     }
 
     public void SelectedColor()
