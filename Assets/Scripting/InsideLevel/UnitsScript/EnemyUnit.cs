@@ -371,7 +371,6 @@ public class EnemyUnit : UnitBase
 
                 //Cambio el color del personaje
                 SelectedColor();
-
             }
 
 
