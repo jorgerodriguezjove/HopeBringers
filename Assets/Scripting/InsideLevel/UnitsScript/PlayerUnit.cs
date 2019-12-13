@@ -175,6 +175,15 @@ public class PlayerUnit : UnitBase
                     LM.ShowUnitHover(movementUds, this);
                 }
             }
+            else if(LM.selectedEnemy != null)
+            {
+                if (LM.selectedCharacter == null)
+                {
+                    myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+                    SelectedColor();
+                }
+
+            }
         }
     }
 

@@ -5,10 +5,14 @@ using DG.Tweening;
 
 public class EnGiant : EnemyUnit
 {
+    
+
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
     private UnitBase myCurentObjective;
     private IndividualTiles myCurrentObjectiveTile;
 
+
+   
     public override void SearchingObjectivesToAttack()
     {
         if (isDead || hasAttacked)
@@ -68,6 +72,8 @@ public class EnGiant : EnemyUnit
             myCurrentEnemyState = enemyState.Attacking;
         }
     }
+
+  
 
     public override void Attack()
     {
@@ -384,18 +390,33 @@ public class EnGiant : EnemyUnit
         //Muevo al gigante
         transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
-        //Actualizo las variables de los tiles
-        UpdateInformationAfterMovement(ListWithNewTile[0]);
+        ShowActionPathFinding(true);
 
-        //Aviso de que se ha movido
-        hasMoved = true;
+      
+
+        StartCoroutine("MovementWait");
+
+      
+            //Actualizo las variables de los tiles
+            UpdateInformationAfterMovement(ListWithNewTile[0]);
+
+            //Aviso de que se ha movido
+            hasMoved = true;
+
+            
+     
+       
+
+        
     }
 
-    //IEnumerator MovementWait()
-    //{
-    //    yield return new WaitForSeconds(timeWaitAfterMovement);
-    //    myCurrentEnemyState = enemyState.Searching;
-    //}
+
+
+    IEnumerator MovementWait()
+    {
+        yield return new WaitForSeconds(timeWaitAfterMovement);
+        ShowActionPathFinding(false);
+    }
 
     private void RotateLogic(FacingDirection newDirection)
     {
@@ -428,57 +449,58 @@ public class EnGiant : EnemyUnit
     //Función que se encarga de hacer que el personaje este despierto/alerta
     public override void ShowActionPathFinding(bool shouldToShow)
     {
-
-        if (shouldToShow)
-        {
-            myLineRenderer.enabled = true;
-
-        }
-        else
-        {
-            myLineRenderer.enabled = false;
-
-        }
-
+ 
         SearchingObjectivesToAttackShowActionPathFinding();
 
         if (currentUnitsAvailableToAttack.Count > 0)
         {
-            myLineRenderer.positionCount = 0;
+            if (shouldToShow)
+            {
+                myLineRenderer.enabled = true;
+                if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+                {
+                    shaderHover.SetActive(true);
+                }
+
+            }
+            else
+            {
+                myLineRenderer.enabled = false;
+                shaderHover.SetActive(false);
+            }
+            
+            myLineRenderer.positionCount = 2;
 
             //Cada enemigo realiza su propio path
             LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
 
-            //Coge
-            myLineRenderer.positionCount += (LM.TM.currentPath.Count -1) ;
-
-            //myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
-
-            for (int i = 0; i < LM.TM.currentPath.Count; i++)
+          
+      
+            if (LM.TM.currentPath.Count > 2)
             {
-                if (i < LM.TM.currentPath.Count-1)
-                {
-                    Vector3 pointPosition = new Vector3(LM.TM.currentPath[i].transform.position.x, LM.TM.currentPath[i].transform.position.y + 0.5f, LM.TM.currentPath[i].transform.position.z);
 
-                    myLineRenderer.SetPosition(i, pointPosition);
+                Vector3 iniPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
 
-                   
-                }
-                else
-                {
-                    if (shouldToShow)
-                    {
-                        LM.TM.currentPath[i].ColorAttack();
+                myLineRenderer.SetPosition(0, iniPosition);
 
-                    }
-                    else
-                    {
-                        LM.TM.currentPath[i].ColorDesAttack();
-                    }
-                }
+                Vector3 pointPosition = new Vector3(LM.TM.currentPath[1].transform.position.x, LM.TM.currentPath[1].transform.position.y + 0.5f, LM.TM.currentPath[1].transform.position.z);
+                myLineRenderer.SetPosition(1, pointPosition);
 
+                Vector3 spawnPoint = new Vector3(LM.TM.currentPath[1].transform.position.x, LM.TM.currentPath[1].transform.position.y + 0.25f, LM.TM.currentPath[1].transform.position.z);
+                shaderHover.transform.position = spawnPoint;
+                Vector3 unitDirection = new Vector3(LM.TM.currentPath[2].transform.position.x, LM.TM.currentPath[1].transform.position.y + 0.25f, LM.TM.currentPath[2].transform.position.z);
+
+                shaderHover.transform.DORotate(unitDirection, 0f);
             }
+            else
+            {
+                myLineRenderer.enabled = false;
+                shaderHover.SetActive(false);
+            }
+         
         }
+
+    
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
@@ -488,7 +510,7 @@ public class EnGiant : EnemyUnit
         //Determinamos el enemigo más cercano.
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(rangeOfAction, gameObject);
 
-        //Si no hay enemigos termina su turno
+
         if (currentUnitsAvailableToAttack.Count == 0)
         {
 
@@ -522,12 +544,10 @@ public class EnGiant : EnemyUnit
             //Si sigue habiendo varios enemigos los ordeno segun la vida
             if (currentUnitsAvailableToAttack.Count > 1)
             {
-
                 //Ordeno la lista de posibles objetivos de menor a mayor vida actual
                 currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
                 {
                     return (a.currentHealth).CompareTo(b.currentHealth);
-
                 });
             }
 
@@ -537,5 +557,6 @@ public class EnGiant : EnemyUnit
 
         }
     }
+
 
 }

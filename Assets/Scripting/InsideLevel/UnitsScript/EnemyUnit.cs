@@ -109,6 +109,8 @@ public class EnemyUnit : UnitBase
 
         movementParticle.SetActive(false);
 
+
+     
       
     }
 
@@ -167,7 +169,12 @@ public class EnemyUnit : UnitBase
         //{
         //    Debug.Log("EMPTY");
         //}
+
+
+    
     }
+
+   
 
     IEnumerator WaitBeforeNextState()
     {
@@ -305,6 +312,7 @@ public class EnemyUnit : UnitBase
 
                 LM.CheckIfHoverShouldAppear(GetComponent<EnemyUnit>());
                 LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitInfo, GetComponent<EnemyUnit>());
+                myPortrait.HighlightMyself();
 
                 //Activo la barra de vida
                 HealthBarOn_Off(true);
@@ -336,8 +344,39 @@ public class EnemyUnit : UnitBase
                     HealthBarOn_Off(true);
                 }
             }
+            else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+            {
+                //Llamo a LevelManager para activar hover				
+                LM.UIM.ShowUnitInfo(this.unitInfo, this);
+
+                //LM.UIM.ShowCharacterInfo(unitInfo, this); 
+                HealthBarOn_Off(true);
+                //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+
+                myPortrait.HighlightMyself();
+
+                //Cambio el color del personaje
+                SelectedColor();
+            }
+            else if (LM.selectedEnemy != null && LM.selectedEnemy != this)
+            {
+                //Llamo a LevelManager para activar hover				
+                LM.UIM.ShowUnitInfo(this.unitInfo, this);
+
+                //LM.UIM.ShowCharacterInfo(unitInfo, this); 
+                HealthBarOn_Off(true);
+                //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+
+                myPortrait.HighlightMyself();
+
+                //Cambio el color del personaje
+                SelectedColor();
+
+            }
+
+
         }
-	}
+    }
 
     //Creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
     public void OnHoverEnterFunctionality()
@@ -377,6 +416,9 @@ public class EnemyUnit : UnitBase
         //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
         myPortrait.HighlightMyself();
+
+        //Cambio el color del personaje
+        SelectedColor();
     }
 
     private void OnMouseExit()
@@ -387,6 +429,19 @@ public class EnemyUnit : UnitBase
             {
                 OnHoverExitFunctionality();
             }
+
+            else if (LM.selectedEnemy != null && LM.selectedEnemy != this)
+            {
+                HealthBarOn_Off(false);
+                LM.UIM.HideUnitInfo("");
+
+                ResetColor();
+
+
+                myPortrait.UnHighlightMyself();
+
+            }
+
         }
     }
 

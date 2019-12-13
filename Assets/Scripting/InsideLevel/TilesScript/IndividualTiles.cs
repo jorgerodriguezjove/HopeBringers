@@ -59,6 +59,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [HideInInspector]
     public Material attackColor;
     [HideInInspector]
+    public Material chargingAttackColor;
+    [HideInInspector]
     public Material actionRangeColor;
 
     //Material inicial del tile
@@ -116,7 +118,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn, bool _startingTile,
                              Vector3 _worldPos, int xPos, int yPos, int zPos, 
                              GameObject tilePref, LevelManager LMRef, 
-                             Material _selectMaterial, Material _currentMaterial, Material _attackMaterial, Material _actionRangeMaterial)
+                             Material _selectMaterial, Material _currentMaterial, Material _attackMaterial, Material _actionRangeMaterial, Material _chargingAttackMaterial)
     {
         //Inicializo las variables que le pasa Grid
         isObstacle = _isObstacle;
@@ -150,6 +152,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         currentTileHoverMovementColor = _currentMaterial;
         attackColor = _attackMaterial;
         actionRangeColor = _actionRangeMaterial;
+        chargingAttackColor = _chargingAttackMaterial;
 
         //Aviso a los vecinos de la ocupación del tile
         UpdateNeighboursOccupied();
@@ -299,6 +302,13 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     {
         GetComponent<MeshRenderer>().material = attackColor;
         isUnderAttack = true;
+    }
+
+    //Cambiar el color a ataque
+    public void ColorChargingAttack()
+    {
+        GetComponent<MeshRenderer>().material = chargingAttackColor;
+        
     }
 
     //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile

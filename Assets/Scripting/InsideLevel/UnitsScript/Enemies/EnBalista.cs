@@ -207,6 +207,23 @@ public class EnBalista : EnemyUnit
         }
     }
 
+    //Función que pinta o despinta los tiles a los que está atcando la ballesta
+    public void FeedbackTilesToCharge(bool shouldColorTiles)
+    {
+        for (int i = 0; i < tilesToShoot.Count; i++)
+        {
+            if (shouldColorTiles)
+            {
+                tilesToShoot[i].ColorChargingAttack();
+            }
+            else
+            {
+                tilesToShoot[i].ColorDesAttack();
+            }
+        }
+    }
+
+
     //Pongo público para acceder a la hora de hacer hover
     public override void CheckCharactersInLine()
     {

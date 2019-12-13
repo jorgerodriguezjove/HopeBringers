@@ -11,7 +11,7 @@ public class EnCharger : EnemyUnit
 
     //Path de tiles a seguir hasta el objetivo
     [SerializeField]
-    private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
+    public List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
     public override void SearchingObjectivesToAttack()
     {
@@ -210,6 +210,9 @@ public class EnCharger : EnemyUnit
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineUp[i].ColorAttack();
+                        //Roto al charger
+                        shaderHover.transform.DORotate(new Vector3(0, 0, 0), 0);
+
                     }
                     else
                     {
@@ -232,6 +235,7 @@ public class EnCharger : EnemyUnit
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineDown[i].ColorAttack();
+                        shaderHover.transform.DORotate(new Vector3(0, 180, 0), 0);
                     }
                     else
                     {
@@ -259,6 +263,7 @@ public class EnCharger : EnemyUnit
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineRight[i].ColorAttack();
+                        shaderHover.transform.DORotate(new Vector3(0, 90, 0), 0);
                     }
                     else
                     {
@@ -281,6 +286,7 @@ public class EnCharger : EnemyUnit
                     if (shouldColorTiles)
                     {
                         myCurrentTile.tilesInLineLeft[i].ColorAttack();
+                        shaderHover.transform.DORotate(new Vector3(0, -90, 0), 0);
                     }
                     else
                     {

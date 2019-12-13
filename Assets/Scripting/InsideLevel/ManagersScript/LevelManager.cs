@@ -174,6 +174,7 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
+    
     #region UNIT_INTERACTION
 
     //Al clickar sobre una unidad del jugador se llama a esta función
@@ -590,29 +591,34 @@ public class LevelManager : MonoBehaviour
     }
 
     //showActionRangeInsteadOfMovement sirve para que se pinte naranaja el rango de acción del enemigo al estar dormido
-    public void ShowEnemyHover(int movementUds, bool showActionRangeInsteadOfMovement ,EnemyUnit hoverUnit)
+    public void ShowEnemyHover(int movementUds, bool showActionRangeInsteadOfMovement, EnemyUnit hoverUnit)
     {
         if (selectedCharacter == null)
         {
             if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
-                //Muestro la acción que va a realizar el enemigo 
-                hoverUnit.ShowActionPathFinding(true);
+               
 
                 tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
 
+                //Muestro la acción que va a realizar el enemigo 
+                hoverUnit.ShowActionPathFinding(true);
+
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-                {
-                    if (showActionRangeInsteadOfMovement)
                     {
-                        tilesAvailableForMovementEnemies[i].ColorActionRange();
+                        if (showActionRangeInsteadOfMovement)
+                        {
+                            tilesAvailableForMovementEnemies[i].ColorActionRange();
+                        }
+
+                        else
+                        {
+                            tilesAvailableForMovementEnemies[i].ColorSelect();
+                        }
                     }
 
-                    else
-                    {
-                        tilesAvailableForMovementEnemies[i].ColorSelect();
-                    }
-                }
+               
+
             }
             else if (hoverUnit.GetComponent<EnBalista>())
 
@@ -621,16 +627,21 @@ public class LevelManager : MonoBehaviour
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                 {
-                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(true);
+                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
                 }
                 //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
                     IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
-                    hoverUnit.shaderHover.SetActive(true);
-                    Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
-                    hoverUnit.shaderHover.transform.position = positionToSpawn;
-                    tileToMove.ColorSelect();
+                    
+                    if (tileToMove != null)
+                    {
+                        hoverUnit.shaderHover.SetActive(true);
+                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
+                        hoverUnit.shaderHover.transform.position = positionToSpawn;
+                        tileToMove.ColorSelect();
+                    }
+                   
 
                 }               
             }
@@ -648,8 +659,13 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
                 }
 
-                hoverUnit.shaderHover.SetActive(true);
-                hoverUnit.shaderHover.transform.position = hoverUnit.currentTileVectorToMove;
+                if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 1)
+                {
+
+                    hoverUnit.shaderHover.SetActive(true);
+                    hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count-1].transform.position;
+                }
+               
 
             }
 
@@ -683,8 +699,11 @@ public class LevelManager : MonoBehaviour
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
                     IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
-                    hoverUnit.shaderHover.SetActive(false);
+                    if (tileToMove != null)
+                    {
+                        hoverUnit.shaderHover.SetActive(false);
                     tileToMove.ColorDeselect();
+                        }
 
                 }
             }

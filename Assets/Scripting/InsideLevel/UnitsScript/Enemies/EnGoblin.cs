@@ -316,22 +316,7 @@ public class EnGoblin : EnemyUnit
 
     //Función que se encarga de hacer que el personaje este despierto/alerta
     public override void ShowActionPathFinding(bool shouldToShow)
-    {
-        if (shouldToShow)
-        {
-            myLineRenderer.enabled = true;
-            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-            {
-                shaderHover.SetActive(true);
-            }
-        }
-        else
-        {
-            myLineRenderer.enabled = false;
-            shaderHover.SetActive(false);
-
-        }
-       
+    {      
         SearchingObjectivesToAttackShowActionPathFinding();
 
         if (currentUnitsAvailableToAttack.Count > 0)
@@ -340,6 +325,21 @@ public class EnGoblin : EnemyUnit
             
             //Cada enemigo realiza su propio path
             LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+
+            if (shouldToShow)
+            {
+                myLineRenderer.enabled = true;
+
+                if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.TM.currentPath.Count > 2)
+                {
+                    shaderHover.SetActive(true);
+                }
+            }
+            else
+            {
+                myLineRenderer.enabled = false;
+                shaderHover.SetActive(false);
+            }
 
             //Coge
             myLineRenderer.positionCount += (LM.TM.currentPath.Count - 1);
@@ -375,8 +375,10 @@ public class EnGoblin : EnemyUnit
                     }                    
                 }               
             }
-            //pathToObjective = LM.TM.currentPath;
+            
         }
+
+       
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

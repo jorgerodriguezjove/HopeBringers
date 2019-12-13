@@ -92,7 +92,10 @@ public class EnemyPortraits : MonoBehaviour
             LM.SelectEnemy(assignedEnemy.unitInfo,assignedEnemy);
 
             UIM.ShowUnitInfo(assignedEnemy.unitInfo, assignedEnemy);
-            
+
+            HighlightMyself();
+
+
         }
 	}
 

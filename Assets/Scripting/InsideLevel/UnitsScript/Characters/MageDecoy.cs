@@ -10,9 +10,7 @@ public class MageDecoy : Mage
 
     private void Awake()
     {
-        FindAndSetFirstTile();
-        myCurrentTile.unitOnTile = this;
-        myCurrentTile.WarnInmediateNeighbours();
+       
 
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
@@ -32,6 +30,10 @@ public class MageDecoy : Mage
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         currentHealth = maxHealth;
+
+         
+
+       
     }
 
     #endregion
@@ -43,6 +45,41 @@ public class MageDecoy : Mage
     protected override void OnMouseDown()
     {
        
+    }
+
+    public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
+    {
+        //Animación de ataque
+        myAnimator.SetTrigger("Damage");
+
+        currentHealth -= damageReceived;
+
+
+        
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
+        base.ReceiveDamage(damageReceived, unitAttacker);
+    }
+
+    public override void Die()
+    {
+        Debug.Log("Soy " + gameObject.name + " y he muerto");
+
+        //Animación de ataque
+        myAnimator.SetTrigger("Death");
+
+        Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
+
+        myCurrentTile.unitOnTile = null;
+        myCurrentTile.WarnInmediateNeighbours();
+
+       
+        Destroy(gameObject);
+
     }
 
     //Es virtual para el decoy del mago.
@@ -57,14 +94,10 @@ public class MageDecoy : Mage
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 }
                 if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-                {
-                   
+                {                   
                 }
-
                 if (!hasAttacked)
-                {
-                  
-                    SelectedColor();
+                {              
                     LM.ShowUnitHover(movementUds, this);
                 }
             }
@@ -91,9 +124,6 @@ public class MageDecoy : Mage
             ResetColor();
 
         }
-
-
-
     }
 
     #endregion
