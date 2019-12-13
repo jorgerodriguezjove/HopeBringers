@@ -299,7 +299,6 @@ public class Rogue : PlayerUnit
 
             }
         }
-
     }
 
     //Función que se encarga de realizar el calculod e daño como tal. Simplemente es para no repetir el mismo código todo el rato
@@ -308,14 +307,14 @@ public class Rogue : PlayerUnit
         //Si estoy en desventaja de altura hago menos daño
         if (unitToDealDamage.myCurrentTile.height > tileLineToCheck.height)
         {
-            damageWithMultipliersApplied *= penalizatorDamageLessHeight;
+            damageWithMultipliersApplied -= penalizatorDamageLessHeight;
 			downToUpDamageIcon.SetActive(true);
 		}
 
         //Si estoy en ventaja de altura hago más daño
         else if (unitToDealDamage.myCurrentTile.height < tileLineToCheck.height)
         {
-            damageWithMultipliersApplied *= bonusDamageMoreHeight;
+            damageWithMultipliersApplied += bonusDamageMoreHeight;
 			upToDownDamageIcon.SetActive(true);
 		}
 
@@ -323,7 +322,7 @@ public class Rogue : PlayerUnit
         if (unitToDealDamage.currentFacingDirection == directionForBackAttack)
         {
             //Ataque por la espalda
-            damageWithMultipliersApplied *= bonusDamageBackAttack;
+            damageWithMultipliersApplied += bonusDamageBackAttack;
 			backStabIcon.SetActive(true);
 		}
     }
