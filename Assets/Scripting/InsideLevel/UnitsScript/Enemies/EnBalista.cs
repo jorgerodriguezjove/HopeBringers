@@ -131,24 +131,8 @@ public class EnBalista : EnemyUnit
         {
             if (isAttackPrepared)
             {
-                for (int i = 0; i < tilesToShoot.Count; i++)
-                {
-                    if (tilesToShoot[i].unitOnTile != null)
-                    {
-                        DoDamage(tilesToShoot[i].unitOnTile);
-                    }
-
-                    //Quito el feedback de ataque de los tiles
-                    tilesToShoot[i].ColorDesAttack();
-                }
-
-                isAttackPrepared = false;
-                myCurrentEnemyState = enemyState.Ended;
-
-                tilesToShoot.Clear();
-                //Espero 1 sec
-                //myCurrentEnemyState = enemyState.Waiting;
-                //StartCoroutine("AttackWait");
+                StartCoroutine("AttackCorroutine");
+              
             }
 
             //Si el ataque no esta preparado pinto los tiles a los que voy a atacar
@@ -159,10 +143,6 @@ public class EnBalista : EnemyUnit
                  //Prepara ataque
                 isAttackPrepared = true;
                 myCurrentEnemyState = enemyState.Ended;
-                
-                //Espero 1 sec
-                //StartCoroutine("AttackWait");
-                //Colorear los tiles visualmente
             }
         }
 
@@ -172,11 +152,28 @@ public class EnBalista : EnemyUnit
         }
     }
 
-    //IEnumerator AttackWait()
-    //{
-    //    yield return new WaitForSeconds(timeWaitAfterAttack);
-    //    myCurrentEnemyState = enemyState.Ended;
-    //}
+    //Necesito una corrutina para ir instanciando las partículas y que el daño vaya acorde con esto
+    IEnumerator AttackCorroutine()
+    {
+        for (int i = 0; i < tilesToShoot.Count; i++)
+        {
+            if (tilesToShoot[i].unitOnTile != null)
+            {
+                DoDamage(tilesToShoot[i].unitOnTile);
+            }
+
+            //Instantiate(attackParticle, new Vector3(tilesToShoot[i].transform.position.x, tilesToShoot[i].transform.position.y +0.5f , tilesToShoot[i].transform.position.z) , attackParticle.transform.rotation);
+            yield return new WaitForSeconds(0.5f);
+
+            //Quito el feedback de ataque de los tiles
+            tilesToShoot[i].ColorDesAttack();
+        }
+
+        isAttackPrepared = false;
+        myCurrentEnemyState = enemyState.Ended;
+
+        tilesToShoot.Clear();
+    }
 
     public override void FinishMyActions()
     {
