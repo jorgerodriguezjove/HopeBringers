@@ -340,31 +340,37 @@ public class EnemyUnit : UnitBase
             }
             else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
-                //Llamo a LevelManager para activar hover				
-                LM.UIM.ShowUnitInfo(this.unitInfo, this);
+                if (!isDead)
+                {
+                    //Llamo a LevelManager para activar hover				
+                    LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
-                //LM.UIM.ShowCharacterInfo(unitInfo, this); 
-                HealthBarOn_Off(true);
-                //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                    //LM.UIM.ShowCharacterInfo(unitInfo, this); 
+                    HealthBarOn_Off(true);
+                    //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
-                myPortrait.HighlightMyself();
+                    myPortrait.HighlightMyself();
 
-                //Cambio el color del personaje
-                SelectedColor();
+                    //Cambio el color del personaje
+                    SelectedColor();
+                }
             }
             else if (LM.selectedEnemy != null && LM.selectedEnemy != this)
             {
-                //Llamo a LevelManager para activar hover				
-                LM.UIM.ShowUnitInfo(this.unitInfo, this);
+                if (!isDead)
+                {
+                    //Llamo a LevelManager para activar hover				
+                    LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
-                //LM.UIM.ShowCharacterInfo(unitInfo, this); 
-                HealthBarOn_Off(true);
-                //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
+                    //LM.UIM.ShowCharacterInfo(unitInfo, this); 
+                    HealthBarOn_Off(true);
+                    //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
-                myPortrait.HighlightMyself();
+                    myPortrait.HighlightMyself();
 
-                //Cambio el color del personaje
-                SelectedColor();
+                    //Cambio el color del personaje
+                    SelectedColor();
+                }
             }
         }
     }
