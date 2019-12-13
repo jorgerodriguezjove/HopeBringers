@@ -388,15 +388,17 @@ public class PlayerUnit : UnitBase
         myAnimator.SetTrigger("Damage");
 
         currentHealth -= damageReceived;
-		//Cuando me hacen daño refresco la información en la interfaz
-		UIM.RefreshHealth();
 
         Debug.Log("Soy " + name + " me han hecho daño");
 
         if (currentHealth <= 0)
         {
             Die();
+            return;
         }
+
+        //Cuando me hacen daño refresco la información en la interfaz
+        UIM.RefreshHealth();
 
         base.ReceiveDamage(damageReceived,unitAttacker);
     }
