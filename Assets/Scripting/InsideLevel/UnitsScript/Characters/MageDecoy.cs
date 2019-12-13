@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class MageDecoy : Mage
 {
-
   
     #region INIT
 
     private void Awake()
     {
-       
-
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
         //LM.characthersOnTheBoard.Add(this);
@@ -31,9 +28,6 @@ public class MageDecoy : Mage
 
         currentHealth = maxHealth;
 
-         
-
-       
     }
 
     #endregion
@@ -44,7 +38,7 @@ public class MageDecoy : Mage
     //Es virtual para el decoy del mago.
     protected override void OnMouseDown()
     {
-       
+       //PONER QUE PUEDA SER PEGADO POR ALIADOS
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
@@ -53,9 +47,6 @@ public class MageDecoy : Mage
         myAnimator.SetTrigger("Damage");
 
         currentHealth -= damageReceived;
-
-
-        
 
         if (currentHealth <= 0)
         {

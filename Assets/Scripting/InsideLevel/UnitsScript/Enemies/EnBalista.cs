@@ -98,8 +98,6 @@ public class EnBalista : EnemyUnit
         }
     }
 
-  
-
     //Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
     private void MovementLogic(IndividualTiles tileToMove)
     {
@@ -112,12 +110,6 @@ public class EnBalista : EnemyUnit
         //Aviso de que se ha movido
         hasMoved = true;
     }
-
-    //IEnumerator MovementWait()
-    //{
-    //    yield return new WaitForSeconds(timeWaitAfterMovement);
-    //    myCurrentEnemyState = enemyState.Searching;
-    //}
 
     public override void Attack()
     {
@@ -132,7 +124,7 @@ public class EnBalista : EnemyUnit
             if (isAttackPrepared)
             {
                 StartCoroutine("AttackCorroutine");
-              
+                myCurrentEnemyState = enemyState.Waiting;
             }
 
             //Si el ataque no esta preparado pinto los tiles a los que voy a atacar
@@ -155,24 +147,26 @@ public class EnBalista : EnemyUnit
     //Necesito una corrutina para ir instanciando las partículas y que el daño vaya acorde con esto
     IEnumerator AttackCorroutine()
     {
+        Debug.Log(tilesToShoot.Count);
         for (int i = 0; i < tilesToShoot.Count; i++)
         {
+            //En principio se destruye la particula por si sola al terminar
+            Instantiate(attackParticle, new Vector3(tilesToShoot[i].transform.position.x, tilesToShoot[i].transform.position.y + 0.5f, tilesToShoot[i].transform.position.z), attackParticle.transform.rotation);
+            yield return new WaitForSeconds(0.1f);
+
             if (tilesToShoot[i].unitOnTile != null)
             {
                 DoDamage(tilesToShoot[i].unitOnTile);
             }
-
-            //Instantiate(attackParticle, new Vector3(tilesToShoot[i].transform.position.x, tilesToShoot[i].transform.position.y +0.5f , tilesToShoot[i].transform.position.z) , attackParticle.transform.rotation);
-            yield return new WaitForSeconds(0.5f);
 
             //Quito el feedback de ataque de los tiles
             tilesToShoot[i].ColorDesAttack();
         }
 
         isAttackPrepared = false;
-        myCurrentEnemyState = enemyState.Ended;
 
         tilesToShoot.Clear();
+        myCurrentEnemyState = enemyState.Ended;
     }
 
     public override void FinishMyActions()
@@ -719,5 +713,4 @@ public class EnBalista : EnemyUnit
     {
                              
     }
-    
 }

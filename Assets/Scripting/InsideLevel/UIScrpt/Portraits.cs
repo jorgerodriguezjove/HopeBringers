@@ -126,10 +126,12 @@ public class Portraits : MonoBehaviour
 	{
         //GetComponent<Image>().sprite = initImage;
 
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-        {
-            selectedPanel.SetActive(false);
-        }
+        //if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        //{
+        //    selectedPanel.SetActive(false);
+        //}
+
+        selectedPanel.SetActive(false);
     }
 
 	public void ShowCharacterImageFromPortrait()

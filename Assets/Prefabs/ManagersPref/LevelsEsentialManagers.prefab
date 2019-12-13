@@ -545,7 +545,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.44656783, y: 0.19821776}
   m_AnchorMax: {x: 0.85536176, y: 0.5}
-  m_AnchoredPosition: {x: 0.0013160706, y: 1}
+  m_AnchoredPosition: {x: 0.2581787, y: -0.0144844055}
   m_SizeDelta: {x: -5.23, y: 17.09}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &626875085
@@ -1418,8 +1418,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.5, y: -76.9}
-  m_SizeDelta: {x: 80, y: 80}
+  m_AnchoredPosition: {x: 74.2, y: -76.5}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1333724561
 CanvasRenderer:
@@ -1586,7 +1586,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 14d7e490724e0474e871081514fd8721, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7b88c3d703ab2504a97a51bcbb3fb481, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2286,14 +2286,14 @@ RectTransform:
   m_GameObject: {fileID: 1802320824}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 3, y: 3.2, z: 1}
   m_Children: []
   m_Father: {fileID: 1431746520}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.022094727, y: -0.0068359375}
+  m_AnchoredPosition: {x: -0.6000061, y: -0.0068359375}
   m_SizeDelta: {x: -245.8, y: -124.82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1802320827
@@ -4174,7 +4174,7 @@ GameObject:
   - component: {fileID: 7632815108783052020}
   - component: {fileID: 4839261250544480036}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: FlechaAbajo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5915,7 +5915,7 @@ GameObject:
   - component: {fileID: 3887689709873629210}
   - component: {fileID: 4216660634786079971}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: FlechaArriba
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10806,7 +10806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -902, y: 448}
+  m_AnchoredPosition: {x: -902, y: 470}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6033102405448670241
@@ -11924,6 +11924,7 @@ MonoBehaviour:
   unvisited: []
   currentPath: []
   tilesAvailableForMovement: []
+  tilesAvailableForEnemyAction: []
   LM: {fileID: 5809797896216913893}
 --- !u!1 &5809797897025215776
 GameObject:
@@ -21337,8 +21338,8 @@ RectTransform:
   m_Father: {fileID: 8399638175238824717}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 52, y: 53}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -25899,12 +25900,12 @@ PrefabInstance:
     - target: {fileID: 8136096614560655827, guid: 20a7ec58703b2b64f99aa74a01da77a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97
+      value: 96.2
       objectReference: {fileID: 0}
     - target: {fileID: 8136096614560655827, guid: 20a7ec58703b2b64f99aa74a01da77a0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 50.1
+      value: 50.5
       objectReference: {fileID: 0}
     - target: {fileID: 8136096614560655827, guid: 20a7ec58703b2b64f99aa74a01da77a0,
         type: 3}
@@ -26449,7 +26450,7 @@ PrefabInstance:
     - target: {fileID: 7902528125350214934, guid: 0c4beaeb8ec05ce4d92e270e6e893b3a,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 49.7
+      value: 50.3
       objectReference: {fileID: 0}
     - target: {fileID: 7902528125350214934, guid: 0c4beaeb8ec05ce4d92e270e6e893b3a,
         type: 3}
