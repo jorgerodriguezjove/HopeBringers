@@ -79,7 +79,7 @@ public class EnCharger : EnemyUnit
                 }
 
                 //Roto al charger
-                transform.rotation = Quaternion.Euler(0, 0, 0);
+                unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.North;
 
                 StartCoroutine("MovingUnitAnimation");
@@ -93,7 +93,8 @@ public class EnCharger : EnemyUnit
                 }
 
                 //Roto al charger
-                transform.rotation = Quaternion.Euler(0, 180, 0); 
+
+                unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.South;
 
                 StartCoroutine("MovingUnitAnimation");
@@ -111,7 +112,8 @@ public class EnCharger : EnemyUnit
                 }
 
                 //Roto al charger
-                transform.rotation = Quaternion.Euler(0, 90, 0);
+
+                unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.East;
 
                 StartCoroutine("MovingUnitAnimation");
@@ -125,8 +127,8 @@ public class EnCharger : EnemyUnit
                 }
 
                 //Roto al charger
-                transform.rotation = Quaternion.Euler(0, -90, 0);
-                //transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+
+                unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.West;
 
                 StartCoroutine("MovingUnitAnimation");
