@@ -293,7 +293,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     public void ColorActionRange()
     {
         GetComponent<MeshRenderer>().material = actionRangeColor;
-
     }
 
 

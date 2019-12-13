@@ -643,9 +643,6 @@ public class TileManager : MonoBehaviour
                 tempCurrentPathCost = Mathf.Infinity;
             }
         }
-
-       
-
     }
 
     int GetDistance(IndividualTiles nodeA, IndividualTiles nodeB)
@@ -782,10 +779,11 @@ public class TileManager : MonoBehaviour
                 if (selectedUnit.myCurrentTile.tileX + i < gridSizeX && selectedUnit.myCurrentTile.tileX + i >= 0 &&
                     selectedUnit.myCurrentTile.tileZ + j < gridSizeZ && selectedUnit.myCurrentTile.tileZ + j >= 0)
                 {
-
-                    tilesAvailableForEnemyAction.Add(grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j]);
+                    if (!grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j].isObstacle && !grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j].isEmpty)
+                    {
+                        tilesAvailableForEnemyAction.Add(grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j]);
+                    }
                 }
-                
             }
         }
 

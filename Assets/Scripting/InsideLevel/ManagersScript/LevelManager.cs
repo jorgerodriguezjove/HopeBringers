@@ -33,6 +33,7 @@ public class LevelManager : MonoBehaviour
     private Vector3 currentTileVectorToMove;
 
     //Tile al que se va a mover tras rotar
+    [HideInInspector]
     public IndividualTiles tileToMoveAfterRotate;
 
 
