@@ -37,6 +37,7 @@ public class TableManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.unitsForCurrentLevel.Clear();
+        GameManager.Instance.characterDataForCurrentLevel.Clear();
     }
 
     #endregion
@@ -64,6 +65,7 @@ public class TableManager : MonoBehaviour
 
         //Reseteo personajes seleccionados
         GameManager.Instance.unitsForCurrentLevel.Clear();
+        GameManager.Instance.characterDataForCurrentLevel.Clear();
         currentCharacterUpgrading = null;
 
         UIMM.ResetCharacterUpbradeBookInfo();
@@ -83,6 +85,7 @@ public class TableManager : MonoBehaviour
         if (selectCamera.activeSelf)
         {
             GameManager.Instance.unitsForCurrentLevel.Add(unitClicked.myUnit);
+            GameManager.Instance.characterDataForCurrentLevel.Add(unitClicked);
         }
 
         else if (progresionCamera.activeSelf)

@@ -551,7 +551,8 @@ public class UnitBase : MonoBehaviour
 
     RaycastHit hit;
 
-    protected void FindAndSetFirstTile()
+    //Es virtual para que en el Player pueda hacer la comprobación de si el nivel viene del selector de niveles o no.
+    protected virtual void FindAndSetFirstTile()
     {
         Debug.DrawRay(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
 
@@ -559,6 +560,7 @@ public class UnitBase : MonoBehaviour
         {
             myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();            
             myCurrentTile.unitOnTile = GetComponent<UnitBase>();
+            Debug.Log(hit);
         }
 
     }

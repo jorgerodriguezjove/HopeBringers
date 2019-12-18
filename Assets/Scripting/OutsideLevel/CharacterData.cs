@@ -26,6 +26,40 @@ public class CharacterData : MonoBehaviour
     [SerializeField]
     public bool initialized = false;
 
+    [Header("Stats genéricos")]
+    [SerializeField]
+    public int maxHealth;
+    [SerializeField]
+    public int movementUds;
+    [SerializeField]
+    public int baseDamage;
+    [SerializeField]
+    public int bonusBackAttack;
+    [SerializeField]
+    public int bonusMoreHeight;
+    [SerializeField]
+    public int bonusLessHeight;
+    [SerializeField]
+    public int range;
+    [SerializeField]
+    public float maxHeightDifferenceToAttack;
+    [SerializeField]
+    public float maxHeightDifferenceToMove;
+    [SerializeField]
+    public int damageMadeByPush;
+    [SerializeField]
+    public int damageMadeByFall;
+
+
+    public bool A1;
+    public bool A2;
+    public bool A3;
+    public bool B1;
+    public bool B2;
+    public bool B3;
+
+
+
     [Header("Referencias")]
     [HideInInspector]
     private TableManager TM;
@@ -47,12 +81,18 @@ public class CharacterData : MonoBehaviour
         if (scene.name != AppScenes.MAP_SCENE && scene.name != AppScenes.MENU_SCENE)
         {
             initialized = true;
+
             //Hacer desaparecer el modelo
+            HideShowMeshCharacterData(true);
+            
         }
 
         else
         {
             //Hacer reaparecer el modelo 
+            HideShowMeshCharacterData(true);
+
+            
         }
     }
 
@@ -80,18 +120,20 @@ public class CharacterData : MonoBehaviour
         idSkillsBought.Add(idSkill);
     }
 
+    public void HideShowMeshCharacterData(bool isActive)
+    {
+        GetComponent<MeshRenderer>().enabled = isActive;
+        GetComponent<Collider>().enabled = isActive;
+    }
 
-    //int maxHealth;
-    //int movementUds;
-    //int baseDamage;
-    //float multiplicatorBackAttack;
-    //float multiplicatorMoreHeight;
-    //float multiplicatorLessHeight;
-    //int range;
-    //float maxHeightDifferenceToAttack;
-    //float maxHeightDifferenceToMove;
-    //int damageMadeByPush;
-    //int damageMadeByFall;
+   
+    public virtual void InitializeMyUnitStats()
+    {
+        //Cada Data se encarga de pasar los datos a su personaje
+    }
+
+
+    
 
 
 }

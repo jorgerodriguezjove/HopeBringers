@@ -55,7 +55,7 @@ public class LevelManager : MonoBehaviour
 
     //Bool que sirve para que se pueda probar un nivel sin necesidad de haber elegido personajes antes
     [SerializeField]
-    bool FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa;
+    public bool FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa;
 
     //Lista con unidades que no han sido colocadas en escena todavía
     List<GameObject> unitsWithoutPosition = new List<GameObject>();
@@ -111,7 +111,6 @@ public class LevelManager : MonoBehaviour
             GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
             unitInstantiated.SetActive(false);
             unitsWithoutPosition.Add(unitInstantiated);
-            
         }   
     }
 
@@ -393,7 +392,6 @@ public class LevelManager : MonoBehaviour
     //    }
     //}
 
-
     public void SelectEnemy(string _unitInfo, EnemyUnit _enemySelected)
     {
         DeselectEnemy();
@@ -404,7 +402,6 @@ public class LevelManager : MonoBehaviour
 
         _enemySelected.SelectedFunctionality();
     }
-
 
     //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
     public void TileClicked(IndividualTiles tileToMove)
@@ -848,6 +845,12 @@ public class LevelManager : MonoBehaviour
     //Función que se llama cuando se termina de colocar unidades
     private void FinishPlacingUnits()
     {
+        for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
+        {
+            GameManager.Instance.characterDataForCurrentLevel[i].InitializeMyUnitStats();
+        }
+
+
         currentLevelState = LevelState.PlayerPhase;
 
         UIM.InitializeUI();

@@ -103,9 +103,30 @@ public class PlayerUnit : UnitBase
 
         movementParticle.SetActive(false);
 
-        currentHealth = maxHealth;
+        if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+        {
+            currentHealth = maxHealth;
+        }
 
 	}
+
+    //Stats genéricos que tienen todos los personajes
+    public void SetMyGenericStats(int _maxHealth, int _movementUds,
+                                         int _baseDamage, int _bonusBackAttack,
+                                         int _bonusMoreHeightAttack, int _bonusLessHeightAttack, int _damageMadeByPush, int _damageMadeByFall,
+                                         int _range, float _maxHeightDifferenceToAttack, float _maxHeightDiferenceToMove)
+    {
+
+        Debug.Log("mi vida antes de inicializar era " + maxHealth);
+        maxHealth = _maxHealth;
+
+
+
+        //Una vez seteadas todas las variables, inicializo mi vida actual
+        currentHealth = maxHealth;
+    }
+
+
 
     #endregion
 
@@ -643,4 +664,15 @@ public class PlayerUnit : UnitBase
     }
 
     #endregion
+
+
+    //Si estamos haciendo pruebas y no cargamos desde el nivel de mapa tiene que hacer el raycast. 
+    //Si probamos desde el mapa de seleccion el tile se setea al colocar las unidades.
+    protected override void FindAndSetFirstTile()
+    {
+        if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+        {
+            base.FindAndSetFirstTile();
+        }
+    }
 }

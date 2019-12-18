@@ -13,6 +13,13 @@ public class Knight : PlayerUnit
 
     #endregion
 
+    #region INIT
+
+    
+
+    #endregion
+
+
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {

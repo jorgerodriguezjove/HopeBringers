@@ -17,9 +17,12 @@ public class UpgradeNode : MonoBehaviour
 
     [Header("LÓGICA")]
 
-    //DEBERÍAN SETEARSE AUTOMATICAMENTE
+    //[SerializeField]
+    //public int idUpgrade;
+
     [SerializeField]
-    public int idUpgrade;
+    public UpgradeType thisUpgradeType;
+    public enum UpgradeType { SMALL, MEDIUM, BIG }
 
     [SerializeField]
     public bool isBlocked;
@@ -60,6 +63,14 @@ public class UpgradeNode : MonoBehaviour
         {
             nodesUnlockedAfterBuying[i].UnlockUpgrade();
         }
+
+
+        if (thisUpgradeType == UpgradeType.BIG)
+        {
+
+        }
+
+
     }
 
     //Al desbloquear upgrades por comprar
@@ -69,7 +80,7 @@ public class UpgradeNode : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-   
+    
 
 
 }

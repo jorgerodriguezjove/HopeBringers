@@ -1456,6 +1456,17 @@ MonoBehaviour:
   powerLevel: 0
   idSkillsBought: 
   initialized: 0
+  maxHealth: 7
+  movementUds: 0
+  baseDamage: 0
+  bonusBackAttack: 0
+  bonusMoreHeight: 0
+  bonusLessHeight: 0
+  range: 0
+  maxHeightDifferenceToAttack: 0
+  maxHeightDifferenceToMove: 0
+  damageMadeByPush: 0
+  damageMadeByFall: 0
 --- !u!1 &622662035
 GameObject:
   m_ObjectHideFlags: 0
@@ -2452,6 +2463,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level03
       objectReference: {fileID: 0}
+    - target: {fileID: 3824895405149357623, guid: f9321df750baabf4ab601a5b832c2b90,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3824895405149357626, guid: f9321df750baabf4ab601a5b832c2b90,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2856,6 +2872,17 @@ MonoBehaviour:
   powerLevel: 0
   idSkillsBought: 
   initialized: 0
+  maxHealth: 0
+  movementUds: 0
+  baseDamage: 0
+  bonusBackAttack: 0
+  bonusMoreHeight: 0
+  bonusLessHeight: 0
+  range: 0
+  maxHeightDifferenceToAttack: 0
+  maxHeightDifferenceToMove: 0
+  damageMadeByPush: 0
+  damageMadeByFall: 0
 --- !u!1 &1290599190
 GameObject:
   m_ObjectHideFlags: 0
@@ -4990,6 +5017,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: TableEsentials
       objectReference: {fileID: 0}
+    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
+        type: 3}
+      propertyPath: titleTextRef
+      value: 
+      objectReference: {fileID: 1859068598}
+    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
+        type: 3}
+      propertyPath: descriptionTextRef
+      value: 
+      objectReference: {fileID: 1834927507}
+    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
+        type: 3}
+      propertyPath: panelForUnitColocation
+      value: 
+      objectReference: {fileID: 655401289}
+    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
+        type: 3}
+      propertyPath: rightPageProgresionBook
+      value: 
+      objectReference: {fileID: 622662035}
     - target: {fileID: 5520797684641119389, guid: 9a7d783f96bc98243ac5fa443a377cd1,
         type: 3}
       propertyPath: mapCamera
@@ -5060,25 +5107,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
-        type: 3}
-      propertyPath: titleTextRef
-      value: 
-      objectReference: {fileID: 1859068598}
-    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
-        type: 3}
-      propertyPath: descriptionTextRef
-      value: 
-      objectReference: {fileID: 1834927507}
-    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
-        type: 3}
-      propertyPath: panelForUnitColocation
-      value: 
-      objectReference: {fileID: 655401289}
-    - target: {fileID: 5520797683399619818, guid: 9a7d783f96bc98243ac5fa443a377cd1,
-        type: 3}
-      propertyPath: rightPageProgresionBook
-      value: 
-      objectReference: {fileID: 622662035}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a7d783f96bc98243ac5fa443a377cd1, type: 3}

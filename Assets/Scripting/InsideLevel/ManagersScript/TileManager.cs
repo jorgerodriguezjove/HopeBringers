@@ -652,8 +652,8 @@ public class TileManager : MonoBehaviour
 
     #endregion
 
-
     #region ENEMY_PATHFINDING
+
     //Estas funciones son bastante parecidas a las del pathfinding normal salvo que devuelven personajes a los que pueden atacar en vez de tiles.
     //El gigante llama a esta función pero no a las anteriores.
     //Sin embargo el goblin llama a esta por el objetivo y a las anteriores por el path
@@ -758,7 +758,6 @@ public class TileManager : MonoBehaviour
         return enemiesInRange;
     }
 
-
     //Esta función es una copia de CheckAvailableTiles for Movement solo que no calcula el pathfinding de los tiles, simplemente los pinta.
     //Esto sirve para que el rango de los enemigos no dependa de pathfinding ya que siempre es el mismo
     public List<IndividualTiles> CheckAvailableTilesForEnemyAction(int movementUds, EnemyUnit selectedUnit)
@@ -790,12 +789,8 @@ public class TileManager : MonoBehaviour
         return tilesAvailableForEnemyAction;
     }
 
-
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(new Vector3 (transform.position.x + gridWorldSize.x/2, transform.position.y + gridWorldSize.y / 2, transform.position.z + gridWorldSize.z / 2), new Vector3(gridWorldSize.x, gridWorldSize.y, gridWorldSize.z));
     }
-
-
- 
 }

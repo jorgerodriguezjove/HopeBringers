@@ -7,6 +7,10 @@ public class GameManager : PersistentSingleton<GameManager>
 {
     #region VARIABLES
 
+    //Lista de character data que se tienen que cargar en el nivel
+    [HideInInspector]
+    public List<CharacterData> characterDataForCurrentLevel = new List<CharacterData>();
+
     //Lista de unidades que se tienen que cargar en el nivel
     [HideInInspector]
     public List<PlayerUnit> unitsForCurrentLevel = new List<PlayerUnit>();
