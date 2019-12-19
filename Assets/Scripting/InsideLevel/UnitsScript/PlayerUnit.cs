@@ -8,24 +8,19 @@ public class PlayerUnit : UnitBase
 {
     #region VARIABLES
 
-    [Header("STATS PLAYER")]
+    [Header("LOGICA PLAYER")]
 
     //Bools que indican si el personaje se ha movido y si ha atacado.
-    [SerializeField]
+    [HideInInspector]
     public bool hasMoved = false;
-    [SerializeField]
+    [HideInInspector]
     public bool hasAttacked = false;
-    [SerializeField]
+    [HideInInspector]
     public bool isMovingorRotating = false;
 
     //Bool para saber si puedo hacer hover a las unidades 
+    [HideInInspector]
     public bool canHover;
-
-    [SerializeField]
-    protected GameObject movementTokenInGame;
-
-    [SerializeField]
-    private GameObject attackTokenInGame;
 
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
@@ -37,7 +32,7 @@ public class PlayerUnit : UnitBase
     protected List<IndividualTiles> myCurrentPath;
 
     [Header("FEEDBACK")]
-    
+
     [SerializeField]
     public Material selectedMaterial;
 
@@ -51,7 +46,11 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private GameObject arrowIndicator;
 
+    [SerializeField]
+    protected GameObject movementTokenInGame;
 
+    [SerializeField]
+    private GameObject attackTokenInGame;
 
     [HideInInspector]
     public GameObject myPanelPortrait;
@@ -74,6 +73,7 @@ public class PlayerUnit : UnitBase
 
 	[Header("REFERENCIAS")]
 
+    [HideInInspector]
     public LevelManager LM;
     [HideInInspector]
     public UIManager UIM;
@@ -110,14 +110,13 @@ public class PlayerUnit : UnitBase
 
 	}
 
-    //Stats genéricos que tienen todos los personajes
-    public void SetMyGenericStats(int _maxHealth, int _movementUds,
-                                         int _baseDamage, int _bonusBackAttack,
-                                         int _bonusMoreHeightAttack, int _bonusLessHeightAttack, int _damageMadeByPush, int _damageMadeByFall,
-                                         int _range, float _maxHeightDifferenceToAttack, float _maxHeightDiferenceToMove)
+    //Stats genéricos que tienen todos los personajes.
+    //Los stats especificos se ponen en cada personaje
+    public void SetMyGenericStats(int _maxHealth)
+                                         //int _baseDamage,int _movementUds, int _bonusBackAttack,
+                                         //int _bonusMoreHeightAttack, int _bonusLessHeightAttack, int _damageMadeByPush, int _damageMadeByFall,
+                                         //int _range, float _maxHeightDifferenceToAttack, float _maxHeightDiferenceToMove)
     {
-
-        Debug.Log("mi vida antes de inicializar era " + maxHealth);
         maxHealth = _maxHealth;
 
 
@@ -125,7 +124,6 @@ public class PlayerUnit : UnitBase
         //Una vez seteadas todas las variables, inicializo mi vida actual
         currentHealth = maxHealth;
     }
-
 
 
     #endregion

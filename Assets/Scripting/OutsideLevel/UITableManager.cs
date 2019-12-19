@@ -72,12 +72,15 @@ public class UITableManager : MonoBehaviour
         for (int i = 0; i < ups.Count; i++)
         {
             ups[i].GetComponent<UpgradeNode>().TM = TM;
+            ups[i].GetComponent<UpgradeNode>().myUnit = unitClicked;
 
             for (int j = 0; j < ids.Count; j++)
             {
                 if (ups[i].idUpgrade == ids[j])
                 {
                     ups[i].UpgradeBought();
+
+                    //¿Este break esta bien?
                     break;
                 }
             }

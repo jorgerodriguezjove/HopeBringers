@@ -11,14 +11,19 @@ public class Knight : PlayerUnit
     [SerializeField]
     int tilesToPush;
 
+    [Header("UPGRADES")]
+    bool bigUpgradeFirstA;
+    bool bigUpgradeFirstB;
+
+
     #endregion
 
-    #region INIT
-
-    
-
-    #endregion
-
+    public void SetSpecificStats(bool _bigUpgradeFirstA)
+    {
+        //base.SetSpecificStats();
+        bigUpgradeFirstA = _bigUpgradeFirstA;
+        
+    }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
@@ -30,6 +35,15 @@ public class Knight : PlayerUnit
 
         //Hago daño
         DoDamage(unitToAttack);
+
+        if (!bigUpgradeFirstA)
+        {
+            Debug.Log("ataque normal 1");
+        }
+        else
+        {
+            Debug.Log("Ataque mejorado A");
+        }
 
         if (currentFacingDirection == FacingDirection.North)
         {

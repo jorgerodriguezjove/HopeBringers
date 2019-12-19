@@ -27,42 +27,27 @@ public class CharacterData : MonoBehaviour
     public bool initialized = false;
 
     [Header("Stats genéricos")]
-    [SerializeField]
-    public int maxHealth;
-    [SerializeField]
-    public int movementUds;
-    [SerializeField]
-    public int baseDamage;
-    [SerializeField]
-    public int bonusBackAttack;
-    [SerializeField]
-    public int bonusMoreHeight;
-    [SerializeField]
-    public int bonusLessHeight;
-    [SerializeField]
-    public int range;
-    [SerializeField]
-    public float maxHeightDifferenceToAttack;
-    [SerializeField]
-    public float maxHeightDifferenceToMove;
-    [SerializeField]
-    public int damageMadeByPush;
-    [SerializeField]
-    public int damageMadeByFall;
-
-
-    public bool A1;
-    public bool A2;
-    public bool A3;
-    public bool B1;
-    public bool B2;
-    public bool B3;
-
-
 
     [Header("Referencias")]
     [HideInInspector]
     private TableManager TM;
+
+    //public bool A1;
+    //public bool A2;
+    //public bool A3;
+    //public bool B1;
+    //public bool B2;
+    //public bool B3;
+
+    //Diccionario con las mejoras de stats tipo int que tienen todos los personajes.
+    public Dictionary<string,int> genericUpgrades = new Dictionary<string, int>();
+
+    //Diccionario con las mejoras de stats tipo int que tiene cada personaje. Cada personaje inicializa las suyas en su script de Data.
+    public Dictionary<string, int> specificIntCharacterUpgrades = new Dictionary<string, int>();
+   
+    //Diccionario con las mejoras de stats tipo bool que tiene cada personaje. Cada personaje inicializa las suyas en su script de Data.
+    public Dictionary<string, bool> specificBoolCharacterUpgrades = new Dictionary<string, bool>();
+
 
     #endregion
 
@@ -73,6 +58,10 @@ public class CharacterData : MonoBehaviour
     {
         SceneManager.sceneLoaded += UpdateInitialized;
         DontDestroyOnLoad(gameObject);
+
+        //Inicializo los diccionarios con los valores
+        InitializeGenericUpgrades();
+        InitializeSpecificUpgrades();
     }
 
     //Si se carga una escena que no es ni el menú ni el mapa (es decir se carga un nivel) se actualiza el bool para que al volver al mapa no se borre.
@@ -91,10 +80,34 @@ public class CharacterData : MonoBehaviour
         {
             //Hacer reaparecer el modelo 
             HideShowMeshCharacterData(true);
-
-            
         }
     }
+
+    #endregion
+
+    #region INIT_STATS
+
+    private void InitializeGenericUpgrades()
+    {
+
+        genericUpgrades.Add(AppGenericUpgrades.maxHealth, myUnit.maxHealth);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+    }
+
+    protected virtual void InitializeSpecificUpgrades()
+    {
+        //Cada data se encarga de inicializar las suyas
+    }
+
 
     #endregion
 

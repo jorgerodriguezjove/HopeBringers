@@ -11,19 +11,31 @@ public class KnightData : CharacterData
 
     #endregion
 
+
     public override void InitializeMyUnitStats()
     {
-        //Referncia al personaje en el nivel
+        //Referencia al personaje en el nivel
         myUnitReferenceOnLevel = FindObjectOfType<Knight>();
 
         //Inicializo los stats genéricos
-        myUnitReferenceOnLevel.SetMyGenericStats(maxHealth, movementUds, 
-                                                        baseDamage, bonusBackAttack,
-                                                        bonusMoreHeight, bonusLessHeight, damageMadeByPush, damageMadeByFall,
-                                                        range, maxHeightDifferenceToAttack, maxHeightDifferenceToMove);
+        myUnitReferenceOnLevel.SetMyGenericStats(genericUpgrades[AppGenericUpgrades.maxHealth]);
+        //baseDamage,movementUds, bonusBackAttack,
+        //bonusMoreHeight, bonusLessHeight, damageMadeByPush, damageMadeByFall,
+        //range, maxHeightDifferenceToAttack, maxHeightDifferenceToMove);
+        
+        //Inicializo las variables especificas del personaje
+        myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.bigUpgradeFirstA]);
+    }
 
-        //Inicializo los stats propios del personaje
-        //myUnitReferenceOnLevel.InitializeMyStats();
+
+    //Esto se llama en el INIT del characterData (padre de este script)
+    protected override void InitializeSpecificUpgrades()
+    {
+        //Mejoras Tipo BOOL
+        specificBoolCharacterUpgrades.Add(AppKnightUpgrades.bigUpgradeFirstA, false);
+
+
+        //Mejoras tipo INT
     }
 
 }

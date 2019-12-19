@@ -8,7 +8,7 @@ public class UnitBase : MonoBehaviour
 {
     #region VARIABLES
 
-    [Header("STATS")]
+    [Header("STATS GENÉRICOS")]
 
     //Variable que se usará para ordenar a las unidades
     [SerializeField]
@@ -26,29 +26,46 @@ public class UnitBase : MonoBehaviour
     public int movementUds;
 
     [SerializeField]
-    protected int attackRange;
+    public int attackRange;
 
     [Header("DAMAGE")]
 
     //Daño de la unidad
     [SerializeField]
-    protected int baseDamage;
+    public int baseDamage;
 
     //Daño cuándo ataca por la espalda
     [SerializeField]
-    protected float bonusDamageBackAttack;
+    public float bonusDamageBackAttack;
 
     //Daño cuándo ataca con más altura
     [SerializeField]
-    protected float bonusDamageMoreHeight;
+    public float bonusDamageMoreHeight;
 
     //Daño cuándo ataca con menos altura
     [SerializeField]
-    protected float penalizatorDamageLessHeight;
+    public float penalizatorDamageLessHeight;
+
+    //Daño que hace cada unidad por choque
+    [SerializeField]
+    protected int damageMadeByPush;
+
+    //Daño que hace cada unidad por choque
+    [SerializeField]
+    protected int damageMadeByFall;
 
     [Header("LOGIC")]
 
+    //Modelo de la unidad. TIENE QUE ESTAR SERIALIZADO
+    [SerializeField]
+    protected GameObject unitModel;
+
+    //Modelo de la unidad dónde se guarda el material
+    [SerializeField]
+    protected GameObject unitMaterialModel;
+
     //Tile en el que está el personaje actualmente. Se setea desde el editor.
+    [HideInInspector]
     public IndividualTiles myCurrentTile;
 
     //Enum con las cuatro posibles direcciones en las que puede estar mirando una unidad.
@@ -61,15 +78,8 @@ public class UnitBase : MonoBehaviour
 
     //Posición a la que tiene que moverse la unidad actualmente
     //La cambio a public para que el LevelManager pueda acceder
+    [HideInInspector]
     public Vector3 currentTileVectorToMove;
-
-    //Modelo de la unidad
-    [SerializeField]
-    protected GameObject unitModel;
-
-    //Modelo de la unidad dónde se guarda el material
-    [SerializeField]
-    protected GameObject unitMaterialModel;
 
     [Header("ANIMATION TIME")]
 
@@ -129,16 +139,6 @@ public class UnitBase : MonoBehaviour
     protected GameObject criticAttackParticle;
     [SerializeField]
     protected GameObject collisionParticlePref;
-    
-    [Header("STATS GENÉRICOS")]
-
-    //Daño que hace cada unidad por choque
-    [SerializeField]
-    protected int damageMadeByPush;
-
-    //Daño que hace cada unidad por choque
-    [SerializeField]
-    protected int damageMadeByFall;
 
     [Header("ANIMATIONS")]
 

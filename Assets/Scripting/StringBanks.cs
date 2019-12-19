@@ -7,6 +7,32 @@ public class StringBanks : MonoBehaviour
    
 }
 
+#region CHARACTER_UPGRADES
+
+public class AppGenericUpgrades
+{
+    public static readonly string maxHealth = "maxHealth";
+    public static readonly string baseDamage = "baseDamage";
+    public static readonly string movementUds = "movementUds";
+    public static readonly string bonusBackAttack = "bonusBackAttack";
+    public static readonly string bonusMoreHeight = "bonusMoreHeight";
+    public static readonly string bonusLessHeight = "bonusLessHeight";
+    public static readonly string range = "range";
+    public static readonly string maxHeightDifferenceToAttack = "maxHeightDifferenceToAttack";
+    public static readonly string maxHeightDifferenceToMove = "maxHeightDifferenceToMove";
+    public static readonly string damageMadeByPush = "damageMadeByPush";
+    public static readonly string damageMadeByFall = "damageMadeByFall";
+}
+
+
+public class AppKnightUpgrades
+{
+    public static readonly string bigUpgradeFirstA = "bigUpgradeFirstA";
+   
+}
+
+#endregion
+
 //Nombres de escenas.
 public class AppScenes
 {
