@@ -79,7 +79,9 @@ public class Portraits : MonoBehaviour
     }
 
     #endregion
+    
 
+    //A las funciones de hover y click se llama gracias al event triggger que tienen en el componente (mirar editor vamos)
     #region INTERACTION
 
     public void AssignClickerPlayer()

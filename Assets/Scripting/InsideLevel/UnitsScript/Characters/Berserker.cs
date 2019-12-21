@@ -81,19 +81,17 @@ public class Berserker : PlayerUnit
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
-        if (!isInRage)
-        {
-            //Activo el rage
-            isInRage = true;
+        //Independientemente de si esta en rage o no, si recibe daño se vuelve a activar el rage
 
-            //La primera vez que entra en rage inicializo los turnos que puede estar en rage.
-            turnsLeftToRageOff = maxNumberOfTurnsInRage;
+        //Activo el rage
+        isInRage = true;
 
-            //Cambiar material
-            RageColor();
+        //La primera vez que entra en rage inicializo los turnos que puede estar en rage.
+        turnsLeftToRageOff = maxNumberOfTurnsInRage;
 
-        }
-       
+        //Cambiar material
+        RageColor();
+
 
         base.ReceiveDamage(damageReceived, unitAttacker);
     }

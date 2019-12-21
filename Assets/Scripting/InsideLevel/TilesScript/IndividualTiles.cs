@@ -67,7 +67,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     private Material initialColor;
 
     //Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
-    private bool isUnderAttack;
+    [HideInInspector]
+    public bool isUnderAttack;
 
     //Bool que sirve para saber si el tile estaba con feedback de movimiento antes para volver a ponerse
     private bool isMovementTile;
@@ -292,7 +293,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar a color de rango de acción dormido
     public void ColorActionRange()
     {
-        GetComponent<MeshRenderer>().material = actionRangeColor;
+        GetComponent<MeshRenderer>().material = actionRangeColor;  
     }
 
 
@@ -306,8 +307,10 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar el color a ataque
     public void ColorChargingAttack()
     {
-        GetComponent<MeshRenderer>().material = chargingAttackColor;
-        
+        if (!isUnderAttack)
+        {
+            GetComponent<MeshRenderer>().material = chargingAttackColor;
+        }
     }
 
     //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile
@@ -316,6 +319,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         GetComponent<MeshRenderer>().material = initialColor;
         isUnderAttack = false;
     }
+
 
     #endregion
 

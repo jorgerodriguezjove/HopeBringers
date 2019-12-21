@@ -105,10 +105,10 @@ public class TileManager : MonoBehaviour
     float tempCurrentObjectiveCost;
 
     //Es el equivalente a currentTileCheckingForMovement para buscar enemigos en rango para el goblin
-    private IndividualTiles currentTileCheckingForEnemy;
+    private IndividualTiles currentTileCheckingForUnit;
 
     //Lista que le paso al goblin con los enemigos en rango
-    private List<EnemyUnit> enemiesInRange = new List<EnemyUnit>();
+    private List<UnitBase> unitsInRangeWithoutPathfinding = new List<UnitBase>();
 
     //Las mismas variables que para el CheckAvailableMovement pero para las acciones enemigas
     public List<IndividualTiles> tilesAvailableForEnemyAction = new List<IndividualTiles>();
@@ -703,9 +703,9 @@ public class TileManager : MonoBehaviour
     #endregion
 
     //Función que sirve para encontrar a todos los enemigos en rango y que el goblin pueda alertarlos
-    public List<EnemyUnit> GetAllEnemiesInRange(int rangeToCheck, UnitBase selectedUnit)
+    public List<UnitBase> GetAllUnitsInRangeWithoutPathfinding(int rangeToCheck, UnitBase selectedUnit)
     {
-        enemiesInRange.Clear();
+        unitsInRangeWithoutPathfinding.Clear();
 
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
         for (int i = -rangeToCheck; i < (rangeToCheck * 2) + 1; i++)
@@ -721,13 +721,13 @@ public class TileManager : MonoBehaviour
                 if (selectedUnit.myCurrentTile.tileX + i < gridSizeX && selectedUnit.myCurrentTile.tileX + i >= 0 &&
                     selectedUnit.myCurrentTile.tileZ < gridSizeZ && selectedUnit.myCurrentTile.tileZ >= 0)
                 {
-                    currentTileCheckingForEnemy = grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ];
+                    currentTileCheckingForUnit = grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ];
 
-                    if (currentTileCheckingForEnemy != null && currentTileCheckingForEnemy.unitOnTile != null && currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>())
+                    if (currentTileCheckingForUnit != null && currentTileCheckingForUnit.unitOnTile != null && currentTileCheckingForUnit.unitOnTile.GetComponent<UnitBase>())
                     {
-                        if (currentTileCheckingForEnemy.unitOnTile.GetComponent<UnitBase>() != selectedUnit)
+                        if (currentTileCheckingForUnit.unitOnTile.GetComponent<UnitBase>() != selectedUnit)
                         {
-                            enemiesInRange.Add(currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>());
+                            unitsInRangeWithoutPathfinding.Add(currentTileCheckingForUnit.unitOnTile.GetComponent<UnitBase>());
                         }
                     }
                 }
@@ -741,13 +741,13 @@ public class TileManager : MonoBehaviour
                         selectedUnit.myCurrentTile.tileZ + j < gridSizeZ && selectedUnit.myCurrentTile.tileZ + j >= 0)
                     {
                         //Almaceno el tile en una variable
-                        currentTileCheckingForEnemy = grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j];
+                        currentTileCheckingForUnit = grid2DNode[selectedUnit.myCurrentTile.tileX + i, selectedUnit.myCurrentTile.tileZ + j];
 
-                        if (currentTileCheckingForEnemy != null && currentTileCheckingForEnemy.unitOnTile != null && currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>())
+                        if (currentTileCheckingForUnit != null && currentTileCheckingForUnit.unitOnTile != null && currentTileCheckingForUnit.unitOnTile.GetComponent<UnitBase>())
                         {
-                            if (currentTileCheckingForEnemy.unitOnTile.GetComponent<UnitBase>() != selectedUnit)
+                            if (currentTileCheckingForUnit.unitOnTile.GetComponent<UnitBase>() != selectedUnit)
                             {
-                                enemiesInRange.Add(currentTileCheckingForEnemy.unitOnTile.GetComponent<EnemyUnit>());
+                                unitsInRangeWithoutPathfinding.Add(currentTileCheckingForUnit.unitOnTile.GetComponent<UnitBase>());
                             }
                         }
                     }
@@ -755,7 +755,7 @@ public class TileManager : MonoBehaviour
             }
         }
 
-        return enemiesInRange;
+        return unitsInRangeWithoutPathfinding;
     }
 
     //Esta función es una copia de CheckAvailableTiles for Movement solo que no calcula el pathfinding de los tiles, simplemente los pinta.

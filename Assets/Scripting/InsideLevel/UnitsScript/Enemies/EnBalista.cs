@@ -31,7 +31,10 @@ public class EnBalista : EnemyUnit
         {
             if (isAttackPrepared)
             {
-                //Disparas
+                //Si pongo esta linea al disparar recarga y actualiza con los movimientos de los personajes (pero no el feedback)
+                //CheckCharactersInLine();
+
+                //Ataque
                 myCurrentEnemyState = enemyState.Attacking;
             }
 
@@ -222,6 +225,7 @@ public class EnBalista : EnemyUnit
         if (!isDead)
         {
             currentUnitsAvailableToAttack.Clear();
+            tilesToShoot.Clear();
 
             if (currentFacingDirection == FacingDirection.North)
             {
@@ -257,6 +261,15 @@ public class EnBalista : EnemyUnit
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
                             currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+
+                            //Si el personaje es un caballero mi disparo acaba aqui
+                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            {
+                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.South)
+                                {
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -294,6 +307,15 @@ public class EnBalista : EnemyUnit
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
                             currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+
+                            //Si el personaje es un caballero mi disparo acaba aqui
+                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            {
+                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.West)
+                                {
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -331,6 +353,15 @@ public class EnBalista : EnemyUnit
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
                             currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+
+                            //Si el personaje es un caballero mi disparo acaba aqui
+                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            {
+                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.North)
+                                {
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -368,6 +399,15 @@ public class EnBalista : EnemyUnit
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
                             currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+
+                            //Si el personaje es un caballero mi disparo acaba aqui
+                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            {
+                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.East)
+                                {
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -713,4 +753,5 @@ public class EnBalista : EnemyUnit
     {
                              
     }
+
 }
