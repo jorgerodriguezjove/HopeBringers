@@ -169,21 +169,21 @@ public class UIManager : MonoBehaviour
     public void ActivateDeActivateEndButton()
     {
         //endTurnButton.GetComponent<BoxCollider>().enabled = !endTurnButton.GetComponent<BoxCollider>().enabled;
-        endTurnButton.GetComponent<BoxCollider>().enabled=true;
+        endTurnButton.GetComponent<MeshCollider>().enabled=true;
     }
 
 	public void RotateButtonEndPhase()
 	{
 		//endTurnButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
 		//StartCoroutine("ButtonAnimationWaitEnd");
-		endTurnButton.GetComponent<Animator>().Play("EndTurnFlip");
+		endTurnButton.GetComponent<Animator>().Play("EndTurnCoinFlip");
 	}
 
 	public void RotateButtonStartPhase()
 	{
 		//waitingButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
 		//StartCoroutine("ButtonAnimationWaitStart");
-		endTurnButton.GetComponent<Animator>().Play("ResetEndTurnFlip");
+		endTurnButton.GetComponent<Animator>().Play("EndTurnCoinReset");
 	}
 
 	IEnumerator ButtonAnimationWaitEnd()
