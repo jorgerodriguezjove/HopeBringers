@@ -439,8 +439,8 @@ public class UIManager : MonoBehaviour
                 if (panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.down * scrollSpeed * Time.deltaTime);
-					buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
-					buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
+					//buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
+					//buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
 				}
             }
 
@@ -449,8 +449,8 @@ public class UIManager : MonoBehaviour
                 if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.up * scrollSpeed * Time.deltaTime);
-					buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
-					buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
+					//buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
+					//buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
 				}
             }
         }
