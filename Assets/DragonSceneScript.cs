@@ -12,9 +12,10 @@ public class DragonSceneScript : MonoBehaviour
     public PlayableDirector DollyCameraDragon;
     public PlayableDirector DollyCameraClose;
     public Animator dragonanim;
-    bool isFlying;
-    bool isRawring;
-    bool isWalking;
+    //bool isFlying;
+    //bool isRawring;
+    //bool isWalking;
+    //bool isFiring;
 
     //public GameObject canvasLevels;
 
@@ -29,20 +30,27 @@ public class DragonSceneScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown("1"))
         {
             dragonanim.SetBool("Fly Idle", false);
 
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown("2"))
         {
             dragonanim.SetBool("Cast Spell", true);
 
         }
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetKeyDown("3"))
         {
             dragonanim.SetBool("Walk Forward", true);
             DollyCameraDragon.Play();
+        }
+        if (Input.GetKeyDown("4"))
+        {
+            dragonanim.SetBool("Walk Forward", false);
+            dragonanim.SetBool("Fire Breath Attack", true);
+
+            //DollyCameraDragon.Stop();
         }
     }
     //void changeCamera()
