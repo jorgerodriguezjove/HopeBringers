@@ -191,6 +191,7 @@ public class LevelManager : MonoBehaviour
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
         if (currentLevelState == LevelState.ProcessingPlayerActions)
         {
+          
             //Si no hay unidad seleccionada significa que está seleccionando una unidad
             if (selectedCharacter == null)
             {
@@ -280,8 +281,9 @@ public class LevelManager : MonoBehaviour
     //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
     public void SelectUnitToAttack(UnitBase clickedUnit)
     {
-        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
+        if (selectedCharacter != null )
         {
+
             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {
                 enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
@@ -321,8 +323,16 @@ public class LevelManager : MonoBehaviour
 
     public void DeSelectUnit()
     {
-        if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
+        if (selectedCharacter != null)
         {
+            if (selectedCharacter.isMovingorRotating)
+            {
+                //Hacer que desaparezcan los botones de rotación
+                selectedCharacter.isMovingorRotating = false;
+                selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(false);
+
+            }
+
 			selectedCharacter.HealthBarOn_Off(false);
             selectedCharacter.myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
             selectedCharacter.myPanelPortrait.GetComponent<Portraits>().isClicked = false;
@@ -394,8 +404,12 @@ public class LevelManager : MonoBehaviour
 
     public void SelectEnemy(string _unitInfo, EnemyUnit _enemySelected)
     {
+
+        
         DeselectEnemy();
 
+       
+        
         selectedEnemy = _enemySelected;
         CheckIfHoverShouldAppear(_enemySelected);
         UIM.ShowUnitInfo(_unitInfo, _enemySelected);
@@ -444,7 +458,7 @@ public class LevelManager : MonoBehaviour
             {
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
-                    if (tileToMove == tilesAvailableForMovement[i])
+                    if (tileToMove == tilesAvailableForMovement[i] || tileToMove == selectedCharacter.myCurrentTile)
                     {
                         //Calculo el path de la unidad
                         TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
@@ -460,18 +474,57 @@ public class LevelManager : MonoBehaviour
                         //Aviso a la unidad de que se tiene que mover
                         if (selectedCharacter != null)
                         {
-                            tileToMoveAfterRotate = tileToMove;
+                           
+                                tileToMoveAfterRotate = tileToMove;
+                            
+                          
                             //Hacer que aparezcan los botones de rotación
                             selectedCharacter.isMovingorRotating = true;
                             selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(true);
-                            selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = tileToMove.transform.position;
 
-                           
-                                //selectedCharacter.MoveToTile(tileToMove, TM.currentPath);
+                            if (tileToMove == selectedCharacter.myCurrentTile)
+                            {
+                                Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 2f, tileToMove.transform.position.z);
+                                selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
+
+                            }
+                            else
+                            {
+                                //Vemos si tiene enemigos o tiles más altos cerca para que las flechas no se tapen
+                                for (int j = 0; j < tileToMove.neighbours.Count; ++j)
+                                {
+                                    if (tileToMove.neighbours[j].isObstacle || tileToMove.neighbours[j].isEmpty || tileToMove.neighbours[j].noTilesInThisColumn)
+                                    {
+
+                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 4f, tileToMove.transform.position.z);
+                                        selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
+                                        break;
+
+                                    }
+                                    else
+                                    {
+                                        if (tileToMove.neighboursOcuppied >= 1)
+                                        {
+                                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 2f, tileToMove.transform.position.z);
+                                            selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
+                                        }
+                                        else
+                                        {
+
+                                            selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = tileToMove.transform.position;
+                                        }
+                                    }
+
+                                }
+                            }
+                            
+                          
                             
 
+                            //selectedCharacter.MoveToTile(tileToMove, TM.currentPath); 
+
                             //Desmarco las unidades que antes estaban disponibles para ser atacadas
-                            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+                            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && tileToMove != selectedCharacter.myCurrentTile)
                             {
                                 for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
                                 {
@@ -483,6 +536,7 @@ public class LevelManager : MonoBehaviour
                             }
                         }
                     }
+                   
                 }
             }
         }

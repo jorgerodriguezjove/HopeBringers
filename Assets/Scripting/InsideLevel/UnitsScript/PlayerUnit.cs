@@ -168,7 +168,19 @@ public class PlayerUnit : UnitBase
     //Es virtual para el decoy del mago.
     protected virtual void OnMouseDown()
     {
-        LM.SelectUnit(movementUds, this);
+        if (LM.selectedCharacter == this)
+        {
+            LM.TileClicked(this.myCurrentTile);
+
+
+        }
+        else
+        {
+            LM.SelectUnit(movementUds, this);
+        }
+            
+        
+        
     }
 
     //Es virtual para el decoy del mago.
@@ -253,9 +265,20 @@ public class PlayerUnit : UnitBase
         UIM.RefreshTokens();
         myCurrentPath = pathReceived;
 
-        StartCoroutine("MovingUnitAnimation");
+        
 
-        UpdateInformationAfterMovement(tileToMove);
+        if (myCurrentPath.Count > 0)
+        {
+            StartCoroutine("MovingUnitAnimation");
+            UpdateInformationAfterMovement(tileToMove);
+        }
+        else
+        {
+            isMovingorRotating = false;
+            LM.UnitHasFinishedMovementAndRotation();
+            UpdateInformationAfterMovement(myCurrentTile);
+
+        }
     }
 
     IEnumerator MovingUnitAnimation()
@@ -265,24 +288,30 @@ public class PlayerUnit : UnitBase
 
         //isMovingorRotating = true;
 
-        //Animación de movimiento
-        for (int j = 1; j < myCurrentPath.Count; j++)
+        if(myCurrentPath.Count > 0)
         {
-            SoundManager.Instance.PlaySound(AppSounds.MOVEMENT);
 
-            //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = myCurrentPath[j].transform.position; // new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
+            //Animación de movimiento
+            for (int j = 1; j < myCurrentPath.Count; j++)
+            {
+                SoundManager.Instance.PlaySound(AppSounds.MOVEMENT);
 
-            //Muevo y roto a la unidad
-            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
-            transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
-            
-            //Espera entre casillas
-            yield return new WaitForSeconds(timeMovementAnimation);
+                //Calcula el vector al que se tiene que mover.
+                currentTileVectorToMove = myCurrentPath[j].transform.position; // new Vector3(myCurrentPath[j].transform.position.x, myCurrentPath[j].transform.position.y, myCurrentPath[j].transform.position.z);
+
+                //Muevo y roto a la unidad
+                unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
+                transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+
+                //Espera entre casillas
+                yield return new WaitForSeconds(timeMovementAnimation);
+            }
+
+            //Desactivo el trail de partículas de movimiento
+            movementParticle.SetActive(false);
+
         }
-
-        //Desactivo el trail de partículas de movimiento
-        movementParticle.SetActive(false);
+        
         isMovingorRotating = false;
 
    //     //Esto es solo para la prueba de movimiento para ver cual elegimos.
@@ -369,12 +398,16 @@ public class PlayerUnit : UnitBase
         }
 
         canvasWithRotationArrows.gameObject.SetActive(false);
-        MoveToTile(LM.tileToMoveAfterRotate, LM.TM.currentPath);
+
+        
+           
+        
+        
 
         CheckUnitsInRangeToAttack();
         isMovingorRotating = true;
-     
 
+        MoveToTile(LM.tileToMoveAfterRotate, LM.TM.currentPath);
         LM.UnitHasFinishedMovementAndRotation();
     }
 

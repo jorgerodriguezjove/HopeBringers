@@ -65,9 +65,15 @@ public class Mage : PlayerUnit
         UIM.RefreshTokens();
         myCurrentPath = pathReceived;
 
-        //Compruebo si tengo que instanciar decoy
-        CheckDecoy();
-       
+       if (tileToMove != LM.selectedCharacter.myCurrentTile)
+        {
+            //Compruebo si tengo que instanciar decoy
+            CheckDecoy();
+
+        }
+
+
+
         StartCoroutine("MovingUnitAnimation");
 
         UpdateInformationAfterMovement(tileToMove);
