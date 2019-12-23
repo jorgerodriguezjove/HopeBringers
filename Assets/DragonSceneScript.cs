@@ -8,50 +8,54 @@ public class DragonSceneScript : MonoBehaviour
 {
 
     public CinemachineStateDrivenCamera dragonCamera;
-    public PlayableDirector DollyfollowCharacters;
-    public PlayableDirector DollyCameraDragon;
-    public PlayableDirector DollyCameraClose;
+    public PlayableDirector charactersAnim;
+    public PlayableDirector dragonWalk1Anim;
+    public PlayableDirector dragonWalk2Anim;
     public Animator dragonanim;
-    //bool isFlying;
-    //bool isRawring;
-    //bool isWalking;
-    //bool isFiring;
-
-    //public GameObject canvasLevels;
-
+    
     // Start
     void Start()
     {
         dragonanim = GetComponent<Animator>();
         dragonanim.SetBool("Fly Idle", true);
-
-        //isFlying = dragonanim.GetBool("Fly idle");
     }
 
     private void Update()
-    {
+    {       
         if (Input.GetKeyDown("1"))
         {
             dragonanim.SetBool("Fly Idle", false);
-
+            dragonanim.SetBool("Fly Forward", true);           
         }
         if (Input.GetKeyDown("2"))
-        {
-            dragonanim.SetBool("Cast Spell", true);
-
+        {           
+            dragonanim.SetBool("Fly Forward", false);
+            dragonanim.SetBool("Walk Forward", true);
+            dragonWalk1Anim.Play();
         }
         if (Input.GetKeyDown("3"))
         {
-            dragonanim.SetBool("Walk Forward", true);
-            DollyCameraDragon.Play();
+            dragonanim.SetBool("Walk Forward", false);
+            dragonanim.SetBool("Idle", true);
         }
         if (Input.GetKeyDown("4"))
         {
-            dragonanim.SetBool("Walk Forward", false);
-            dragonanim.SetBool("Fire Breath Attack", true);
-
-            //DollyCameraDragon.Stop();
+            dragonanim.SetBool("Cast Spell", true);            
         }
+        if (Input.GetKeyDown("5"))
+        {
+            dragonanim.SetBool("Walk Fast Forward", true);         
+        }
+        if (Input.GetKeyDown("6"))
+        {
+            dragonanim.SetBool("Walk Fast Forward", false);
+            dragonanim.SetBool("Projectile", true);
+        }
+        if (Input.GetKeyDown("7"))
+        {
+            dragonanim.SetBool("Fire Breath Attack", true);
+        }
+
     }
     //void changeCamera()
     //{
