@@ -49,7 +49,7 @@ public class DragonSceneScript : MonoBehaviour
         if (Input.GetKeyDown("6"))
         {
             dragonanim.SetBool("Walk Fast Forward", false);
-            dragonanim.SetBool("Projectile", true);
+            dragonanim.SetBool("Take Damage", true);
         }
         if (Input.GetKeyDown("7"))
         {
