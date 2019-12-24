@@ -188,6 +188,8 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     [@TextAreaAttribute(15, 20)]
     public string unitInfo;
+	[SerializeField]
+	public string unitName;
 
     //¿SE PUEDE BORRAR?
     //Texto que describe a la unidad.
