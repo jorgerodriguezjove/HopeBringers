@@ -13,10 +13,21 @@ MonoBehaviour:
   m_Name: CM StateDrivenCamera1 Blends
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: CM vcamOpen
-    m_To: CM vcamNeutral
+  - m_From: CM vPuerta
+    m_To: CM vFollowPlayers
     m_Blend:
-      m_Style: 1
+      m_Style: 0
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM vFollowPlayers
+    m_To: CM vFollowDragon
+    m_Blend:
+      m_Style: 0
       m_Time: 3
       m_CustomCurve:
         serializedVersion: 2
@@ -24,11 +35,66 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CM vcamNeutral
-    m_To: CM vcamOpen
+  - m_From: CM vFollowDragon
+    m_To: CM vCentral
     m_Blend:
-      m_Style: 3
+      m_Style: 0
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM vCentral
+    m_To: CM vLookHeadDragon
+    m_Blend:
+      m_Style: 2
+      m_Time: 0.75
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM vLookHeadDragon
+    m_To: "CM vIrland\xE9s"
+    m_Blend:
+      m_Style: 0
       m_Time: 3
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM vFollowDragon
+    m_To: "CM vIrland\xE9s"
+    m_Blend:
+      m_Style: 0
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: "CM vIrland\xE9s"
+    m_To: CM vCentral2
+    m_Blend:
+      m_Style: 0
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CM vCentral2
+    m_To: CM vFireClose
+    m_Blend:
+      m_Style: 2
+      m_Time: 1
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
