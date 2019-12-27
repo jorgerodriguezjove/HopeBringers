@@ -31,16 +31,19 @@ public class DragonSceneScript : MonoBehaviour
     {       
         if (Input.GetKeyDown("1"))
         {
-            dragonanim.SetBool("Idle", false);
+            //dragonanim.SetBool("Idle", false);
+            dragonanim.SetBool("Fly Idle", true);
             dragonanim.SetBool("Fly Forward", true);
             spawnParticle.SetActive(true);
         }
         if (Input.GetKeyDown("2"))
-        {
-            dragonanim.SetBool("Fly Idle", false);
+        {           
+            dragonanim.SetBool("Idle", false);
             dragonanim.SetBool("Fly Forward", false);
-            dragonanim.SetBool("Idle", true);
+            dragonanim.SetBool("Fly Idle", false);
             dragonanim.SetBool("Walk Forward", true);
+            
+            
             dragonWalk1Anim.Play();
         }
         if (Input.GetKeyDown("3"))
@@ -62,8 +65,9 @@ public class DragonSceneScript : MonoBehaviour
             dragonanim.SetBool("Take Damage", true);
         }
         if (Input.GetKeyDown("7"))
-        {
+        {          
             dragonanim.SetBool("Fire Breath Attack", true);
+            fireBreathParticle.SetActive(true);
 
         }
 
