@@ -169,21 +169,21 @@ public class UIManager : MonoBehaviour
     public void ActivateDeActivateEndButton()
     {
         //endTurnButton.GetComponent<BoxCollider>().enabled = !endTurnButton.GetComponent<BoxCollider>().enabled;
-        endTurnButton.GetComponent<BoxCollider>().enabled=true;
+        endTurnButton.GetComponent<MeshCollider>().enabled=true;
     }
 
 	public void RotateButtonEndPhase()
 	{
 		//endTurnButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
 		//StartCoroutine("ButtonAnimationWaitEnd");
-		endTurnButton.GetComponent<Animator>().Play("EndTurnFlip");
+		endTurnButton.GetComponent<Animator>().Play("EndTurnCoinFlip");
 	}
 
 	public void RotateButtonStartPhase()
 	{
 		//waitingButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
 		//StartCoroutine("ButtonAnimationWaitStart");
-		endTurnButton.GetComponent<Animator>().Play("ResetEndTurnFlip");
+		endTurnButton.GetComponent<Animator>().Play("EndTurnCoinReset");
 	}
 
 	IEnumerator ButtonAnimationWaitEnd()
@@ -439,8 +439,8 @@ public class UIManager : MonoBehaviour
                 if (panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.down * scrollSpeed * Time.deltaTime);
-					buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
-					buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
+					//buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
+					//buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
 				}
             }
 
@@ -449,8 +449,8 @@ public class UIManager : MonoBehaviour
                 if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.up * scrollSpeed * Time.deltaTime);
-					buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
-					buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
+					//buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
+					//buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
 				}
             }
         }

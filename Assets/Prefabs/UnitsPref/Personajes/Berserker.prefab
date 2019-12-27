@@ -1047,7 +1047,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: d0b159b4b7dc2ba42855372ba849c485, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 853f437be8bbebc4197b9fb7adffe40e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1183,11 +1183,13 @@ MonoBehaviour:
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
+  damageMadeByPush: 1
+  damageMadeByFall: 1
+  unitModel: {fileID: 2623040261464226274}
+  unitMaterialModel: {fileID: 8183121626778123672}
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   currentTileVectorToMove: {x: 0, y: 0, z: 0}
-  unitModel: {fileID: 2623040261464226274}
-  unitMaterialModel: {fileID: 8183121626778123672}
   timePushAnimation: 0.2
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
@@ -1206,8 +1208,6 @@ MonoBehaviour:
     type: 3}
   collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
-  damageMadeByPush: 1
-  damageMadeByFall: 1
   healthBar: {fileID: 4252254210549919596}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
     type: 3}
@@ -1219,17 +1219,18 @@ MonoBehaviour:
   tooltipImage: {fileID: 21300000, guid: 1a8332aba279f5042b817756654ee71e, type: 3}
   unitInfo: "Cuando atacan al berserker, se enfurece aumentando su da\xF1o en 1 punto
     durante 3 turnos."
+  unitName: 
   hasMoved: 0
   hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
-  movementTokenInGame: {fileID: 3374764451870075132}
-  attackTokenInGame: {fileID: 5008907518220819557}
   currentUnitsAvailableToAttack: []
   selectedMaterial: {fileID: 2100000, guid: 60a650e4272b8ca45a30fd2d44220322, type: 2}
   finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
   canvasWithRotationArrows: {fileID: 1551791865549785014}
   arrowIndicator: {fileID: 83461113}
+  movementTokenInGame: {fileID: 3374764451870075132}
+  attackTokenInGame: {fileID: 5008907518220819557}
   myPanelPortrait: {fileID: 0}
   portraitImage: {fileID: 21300000, guid: 1a8332aba279f5042b817756654ee71e, type: 3}
   actionAvaliablePanel: {fileID: 4084884629964628755}
@@ -4989,6 +4990,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: DamageIcons
       objectReference: {fileID: 0}
+    - target: {fileID: 7978522504799025731, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.0610003
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978522504799025731, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.9090001
+      objectReference: {fileID: 0}
     - target: {fileID: 2729833262836248941, guid: 864806fa92359de4480634b63250853b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -5005,16 +5016,6 @@ PrefabInstance:
       value: -1.6570003
       objectReference: {fileID: 0}
     - target: {fileID: 2095317743886201847, guid: 864806fa92359de4480634b63250853b,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.9090001
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978522504799025731, guid: 864806fa92359de4480634b63250853b,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -2.0610003
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978522504799025731, guid: 864806fa92359de4480634b63250853b,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.9090001

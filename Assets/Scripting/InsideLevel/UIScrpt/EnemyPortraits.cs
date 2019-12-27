@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EnemyPortraits : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class EnemyPortraits : MonoBehaviour
 
 	[SerializeField]
 	public Image enemyIconChild;
+	[SerializeField]
+	public TextMeshProUGUI unitNameInPortrait;
 	[HideInInspector]
 	public Sprite enemyPortraitSprite;
 	[HideInInspector]
@@ -37,6 +40,7 @@ public class EnemyPortraits : MonoBehaviour
 	private void Start()
 	{
 		enemyIconChild.sprite = enemyPortraitSprite;
+		unitNameInPortrait.text = assignedEnemy.unitName;
 	}
 
 	#endregion
