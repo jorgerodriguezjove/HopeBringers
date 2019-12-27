@@ -10,9 +10,6 @@
 //Change : Add the operation for Mac
 //
 
-
-
-
 using UnityEngine;
 using System.Collections;
 
@@ -160,16 +157,25 @@ namespace CameraController
 
 		public void cameraRotate(Vector3 eulerAngle)
 		{
-			//Use Quaternion to prevent rotation flips on XY plane
-			Quaternion q = Quaternion.identity;
- 
-			Transform focusTrans = this.focusObj.transform;
-			focusTrans.localEulerAngles = focusTrans.localEulerAngles + eulerAngle;
+            //¿Este codigo se usa en algun lado?
 
-			//Change this.transform.LookAt(this.focus) to q.SetLookRotation(this.focus)
-			q.SetLookRotation (this.focus) ;
+            //Use Quaternion to prevent rotation flips on XY plane
+            Quaternion q = Quaternion.identity;
 
+            Transform focusTrans = this.focusObj.transform;
+            focusTrans.localEulerAngles = focusTrans.localEulerAngles + eulerAngle;
+
+            //Change this.transform.LookAt(this.focus) to q.SetLookRotation(this.focus)
+            q.SetLookRotation(this.focus);
+
+            Debug.Log("aa");
 			return;
+
+
+
+
+
+
 		}
 	}
 }

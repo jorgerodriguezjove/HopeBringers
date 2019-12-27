@@ -83,6 +83,9 @@ public class CameraManager : MonoBehaviour
         frameZoom += zoomAmount;
     }
 
+    RaycastHit hit;
+    Vector3 point = Vector3.zero;
+
     private void LateUpdate()
     {
         if(frameMove != Vector3.zero)
@@ -93,9 +96,23 @@ public class CameraManager : MonoBehaviour
             frameMove = Vector3.zero;
         }
 
+        //ESTA ROTACION FUNCIONA SIEMPRE Y CUANDO HAYA UN PLANO CON EL MESH RENDERER QUITADO EN ESCENA
+
         if(frameRotate != 0f)
         {
-            transform.Rotate(Vector3.up, frameRotate * Time.deltaTime * rotateSpeed);
+            //transform.RotateAround(Vector3.zero, Vector3.up, frameRotate * Time.deltaTime * rotateSpeed)
+
+            Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            Debug.DrawRay(ray.origin, ray.direction * 1000, new Color(1f, 0.922f, 0.016f, 1f));
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                transform.RotateAround(hit.point, Vector3.up, frameRotate * Time.deltaTime * rotateSpeed);
+                point = hit.point;
+                Debug.Log(hit.collider.name);
+            }
+
+            LockPositionInBounds();
             frameRotate = 0f;
         }
 

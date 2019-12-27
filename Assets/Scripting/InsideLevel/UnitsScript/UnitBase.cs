@@ -562,7 +562,7 @@ public class UnitBase : MonoBehaviour
         {
             myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();            
             myCurrentTile.unitOnTile = GetComponent<UnitBase>();
-            Debug.Log(hit);
+            //Debug.Log(hit);
         }
 
     }
