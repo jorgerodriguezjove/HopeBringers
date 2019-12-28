@@ -14,7 +14,6 @@ public class DragonSceneScript : MonoBehaviour
     public Animator dragonanim;
 
     public GameObject spawnParticle;
-    public GameObject trailParticle;
     public GameObject screamParticle;
     public GameObject fireBreathParticle;
 
@@ -53,8 +52,9 @@ public class DragonSceneScript : MonoBehaviour
         }
         if (Input.GetKeyDown("4"))
         {
-            dragonanim.SetBool("Cast Spell", true);            
-        }
+            dragonanim.SetBool("Cast Spell", true);
+            screamParticle.SetActive(true);
+}
         if (Input.GetKeyDown("5"))
         {
             dragonanim.SetBool("Walk Fast Forward", true);         
