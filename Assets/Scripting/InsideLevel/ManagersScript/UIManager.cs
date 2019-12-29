@@ -308,13 +308,22 @@ public class UIManager : MonoBehaviour
 
     public void ShowUnitInfo(string generalInfoText, UnitBase unitTooltipImage)
     {
-        //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
-        characterInfoText.text = generalInfoText;
-        if (unitTooltipImage.tooltipImage !=null)
+        if (LM.selectedCharacter == unitTooltipImage || LM.selectedEnemy == unitTooltipImage || LM.selectedCharacter == null || LM.selectedEnemy == null)
         {
-			explanationImage.gameObject.SetActive(true);
-            explanationImage.sprite = unitTooltipImage.tooltipImage;
+            //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
+            characterInfoText.text = generalInfoText;
+            if (unitTooltipImage.tooltipImage != null)
+            {
+                explanationImage.gameObject.SetActive(true);
+                explanationImage.sprite = unitTooltipImage.tooltipImage;
+            }
+            else
+            {
+                explanationImage.sprite = null;
+            }
+
         }
+        
     }
 
     public void HideUnitInfo(string textToPrint)

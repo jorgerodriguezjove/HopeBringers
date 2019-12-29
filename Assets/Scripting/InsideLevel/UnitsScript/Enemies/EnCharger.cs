@@ -190,32 +190,155 @@ public class EnCharger : EnemyUnit
     //Función que pinta o despinta los tiles a los que está atcando la ballesta
     public void FeedbackTilesToAttack(bool shouldColorTiles)
     {
-        pathToObjective.Clear();
+       
+        pathToObjective.Clear();    
+        myLineRenderer.positionCount = 0;     
+     
 
-        //Arriba o abajo
-        if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == myCurrentTile.tileX)
-        {
-            //Arriba
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
+        if (currentUnitsAvailableToAttack.Count > 0){
+
+            
+
+            //Arriba o abajo
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == myCurrentTile.tileX)
             {
-               
-                
-
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                //Arriba
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
                 {
-                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
                     {
-                        return;
+                        if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                        {
+                            return;
+                        }
+
+                        pathToObjective.Add(myCurrentTile.tilesInLineUp[i]);
+
+                        if (shouldColorTiles)
+                        {
+                            myLineRenderer.enabled = true;
+
+                            myCurrentTile.tilesInLineUp[i].ColorAttack();
+                           
+                            shaderHover.transform.DORotate(new Vector3(0, 0, 0), 0);                         
+                        }
+                        else
+                        {
+                            myLineRenderer.enabled = false;
+                            myCurrentTile.tilesInLineUp[i].ColorDesAttack();
+                        }
+                    }
+                }
+                //Abajo
+                else
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                        {
+                            return;
+                        }
+
+                        pathToObjective.Add(myCurrentTile.tilesInLineDown[i]);
+
+                        if (shouldColorTiles)
+                        {
+                            myLineRenderer.enabled = true;
+
+                            myCurrentTile.tilesInLineDown[i].ColorAttack();
+                            shaderHover.transform.DORotate(new Vector3(0, 180, 0), 0);                            
+                        }
+                        else
+                        {
+                            myLineRenderer.enabled = false;
+                            myCurrentTile.tilesInLineDown[i].ColorDesAttack();
+                        }
                     }
 
-                    pathToObjective.Add(myCurrentTile.tilesInLineUp[i]);
+                }
+            }
+            //Izquierda o derecha
+            else
+            {
+                //Derecha
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > myCurrentTile.tileX)
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                        {
+                            return;
+                        }
 
+                        pathToObjective.Add(myCurrentTile.tilesInLineRight[i]);
+
+                        if (shouldColorTiles)
+                        {
+                            myLineRenderer.enabled = true;
+                            myCurrentTile.tilesInLineRight[i].ColorAttack();
+                            shaderHover.transform.DORotate(new Vector3(0, 90, 0), 0);
+
+                          
+                        }
+                        else
+                        {
+                            myLineRenderer.enabled = false;
+                            myCurrentTile.tilesInLineRight[i].ColorDesAttack();
+                        }
+                    }
+                }
+                //Izquierda
+                else
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                        {
+                            return;
+                        }
+
+                        pathToObjective.Add(myCurrentTile.tilesInLineLeft[i]);
+
+                        if (shouldColorTiles)
+                        {
+                            myLineRenderer.enabled = true;
+                            myCurrentTile.tilesInLineLeft[i].ColorAttack();
+                            shaderHover.transform.DORotate(new Vector3(0, -90, 0), 0);
+
+                           
+
+
+                        }
+                        else
+                        {
+                            myLineRenderer.enabled = false;
+                            myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
+                        }
+                    }
+                }
+
+
+              
+
+            }
+
+           
+
+        }
+        else if (currentUnitsAvailableToAttack.Count == 0)
+        {
+            if (myCurrentTile.tilesInLineUp.Count > 0)
+            {                                           
+                for (int i = 0; i < myCurrentTile.tilesInLineUp.Count; i++)
+                {
                     if (shouldColorTiles)
                     {
+                        //Si la diferencia de altura supera la que puede tener el personaje paro de buscar
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineUp[i].ColorAttack();
-                        //Roto al charger
-                        shaderHover.transform.DORotate(new Vector3(0, 0, 0), 0);
-
                     }
                     else
                     {
@@ -223,22 +346,18 @@ public class EnCharger : EnemyUnit
                     }
                 }
             }
-            //Abajo
-            else
+
+            if (myCurrentTile.tilesInLineDown.Count > 0)
             {
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                for (int i = 0; i < myCurrentTile.tilesInLineDown.Count; i++)
                 {
-                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
-                    {
-                        return;
-                    }
-
-                    pathToObjective.Add(myCurrentTile.tilesInLineDown[i]);
-
                     if (shouldColorTiles)
                     {
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineDown[i].ColorAttack();
-                        shaderHover.transform.DORotate(new Vector3(0, 180, 0), 0);
                     }
                     else
                     {
@@ -247,57 +366,51 @@ public class EnCharger : EnemyUnit
                 }
 
             }
-        }
-        //Izquierda o derecha
-        else
-        {
-            //Derecha
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > myCurrentTile.tileX)
+
+            if (myCurrentTile.tilesInLineRight.Count > 0)
             {
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+
+                for (int i = 0; i < myCurrentTile.tilesInLineRight.Count; i++)
                 {
-                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
-                    {
-                        return;
-                    }
-
-                    pathToObjective.Add(myCurrentTile.tilesInLineRight[i]);
-
                     if (shouldColorTiles)
                     {
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineRight[i].ColorAttack();
-                        shaderHover.transform.DORotate(new Vector3(0, 90, 0), 0);
                     }
                     else
                     {
                         myCurrentTile.tilesInLineRight[i].ColorDesAttack();
                     }
                 }
+
             }
-            //Izquierda
-            else
+            if (myCurrentTile.tilesInLineLeft.Count > 0)
             {
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+
+                for (int i = 0; i < myCurrentTile.tilesInLineLeft.Count; i++)
                 {
-                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
-                    {
-                        return;
-                    }
-
-                    pathToObjective.Add(myCurrentTile.tilesInLineLeft[i]);
-
                     if (shouldColorTiles)
                     {
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToAttack)
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineLeft[i].ColorAttack();
-                        shaderHover.transform.DORotate(new Vector3(0, -90, 0), 0);
                     }
                     else
                     {
                         myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
                     }
                 }
+
             }
         }
+
+
+
     }
 
     public override void CheckCharactersInLine()
@@ -468,7 +581,24 @@ public class EnCharger : EnemyUnit
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
-    {    
-       
+    {
+        myLineRenderer.positionCount += (pathToObjective.Count);
+        for (int j = 0; j < pathToObjective.Count; j++)
+        {
+            Vector3 pointPosition = new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y + 0.5f, pathToObjective[j].transform.position.z);
+            if (j < pathToObjective.Count)
+            {
+                if (j == 0)
+                {
+                    myLineRenderer.SetPosition(0, myCurrentTile.transform.position);
+                }
+                else
+                {
+                    myLineRenderer.SetPosition(j, pointPosition);
+                }
+                
+            }
+        }
+
     }
 }

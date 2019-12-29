@@ -441,11 +441,59 @@ public class EnGiant : EnemyUnit
     {
         SearchingObjectivesToAttackShowActionPathFinding();
 
+
+        //Cada enemigo realiza su propio path
+        LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+
+
         if (currentUnitsAvailableToAttack.Count > 0)
         {
+            
+
             if (_shouldShowAction)
             {
                 myLineRenderer.enabled = true;
+
+              
+                if (LM.TM.currentPath.Count <=3)
+                {
+                   
+                    if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
+                    {
+                        myCurrentObjectiveTile.ColorAttack();
+                        
+                        if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
+                        }
+
+                        if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
+                        }
+                    }
+                    //Izquierda o derecha
+                    else
+                    {
+                        myCurrentObjectiveTile.ColorAttack();
+                                         
+                        //Comprobar si a sus lados hay unidades
+                        if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineUp[0].ColorAttack();
+                        }
+
+                        if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineDown[0].ColorAttack();
+                        }
+                    }                
+                }
+               
+
+
+
+
                 if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                 {
                     shaderHover.SetActive(true);
@@ -455,12 +503,18 @@ public class EnGiant : EnemyUnit
             {
                 myLineRenderer.enabled = false;
                 shaderHover.SetActive(false);
+
+
+               myCurrentObjectiveTile.ColorDesAttack();
+               myCurrentObjectiveTile.tilesInLineRight[0].ColorDesAttack();           
+               myCurrentObjectiveTile.tilesInLineLeft[0].ColorDesAttack();
+                myCurrentObjectiveTile.tilesInLineUp[0].ColorDesAttack();
+                myCurrentObjectiveTile.tilesInLineDown[0].ColorDesAttack();
+
             }
             
             myLineRenderer.positionCount = 2;
 
-            //Cada enemigo realiza su propio path
-            LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
 
             if (LM.TM.currentPath.Count > 2)
             {

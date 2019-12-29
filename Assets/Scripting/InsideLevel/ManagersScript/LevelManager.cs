@@ -201,6 +201,8 @@ public class LevelManager : MonoBehaviour
                     if (selectedEnemy != null)
                     {
                         DeselectEnemy();
+                      
+
                     }
 
                     //Desactivo el botón de pasar turno cuando selecciona la unidad
@@ -209,16 +211,19 @@ public class LevelManager : MonoBehaviour
 					UIM.TooltipMove();
 					
                     selectedCharacter = clickedUnit;
+                    
 
                     selectedCharacter.myCurrentTile.ColorCurrentTileHover();
                     selectedCharacter.HealthBarOn_Off(true);
 					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
+                    UIM.ShowUnitInfo(selectedCharacter.unitInfo, selectedCharacter);
+
 
                     //This
                     //UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); Legacy Code
 
-                   
+
                     tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
@@ -246,7 +251,8 @@ public class LevelManager : MonoBehaviour
                     UIM.ActivateDeActivateEndButton();
 
                     selectedCharacter = clickedUnit;
-					selectedCharacter.HealthBarOn_Off(true);
+                    
+                    selectedCharacter.HealthBarOn_Off(true);
 					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
 					/*UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);*/ /*Legacy Code*/
 					selectedCharacter.SelectedColor();
@@ -272,6 +278,8 @@ public class LevelManager : MonoBehaviour
                 if (selectedEnemy != null)
                 {
                     DeselectEnemy();
+
+                    
                 }
                 SelectUnitToAttack(clickedUnit);
             }
@@ -688,6 +696,7 @@ public class LevelManager : MonoBehaviour
                 //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
+                   
                     IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
                     
                     if (tileToMove != null)
@@ -696,8 +705,14 @@ public class LevelManager : MonoBehaviour
                         Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
                         hoverUnit.shaderHover.transform.position = positionToSpawn;
                         tileToMove.ColorSelect();
+
+                        hoverUnit.myLineRenderer.enabled = true;
+                        hoverUnit.myLineRenderer.positionCount = 2;
+                        Vector3 positionToSpawnLineRenderer = new Vector3(hoverUnit.myCurrentTile.transform.position.x, hoverUnit.myCurrentTile.transform.position.y + 0.3f, hoverUnit.myCurrentTile.transform.position.z);
+                        hoverUnit.myLineRenderer.SetPosition(0, positionToSpawnLineRenderer);
+                        hoverUnit.myLineRenderer.SetPosition(1, positionToSpawn);
                     }
-                   
+
 
                 }               
             }
@@ -712,12 +727,20 @@ public class LevelManager : MonoBehaviour
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
                 }
+                else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
+                {
+                        hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
 
-                if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 1)
+                }
+
+                
+
+                if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
                 {
 
                     hoverUnit.shaderHover.SetActive(true);
                     hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count-1].transform.position;
+                    hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
                 }
             }
         }
@@ -753,7 +776,8 @@ public class LevelManager : MonoBehaviour
                     {
                         hoverUnit.shaderHover.SetActive(false);
                     tileToMove.ColorDeselect();
-                        }
+                        hoverUnit.myLineRenderer.enabled = false;
+                    }
 
                 }
             }
@@ -765,6 +789,11 @@ public class LevelManager : MonoBehaviour
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
+                }
+                else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
+                {
+                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
+
                 }
 
             }
@@ -780,7 +809,11 @@ public class LevelManager : MonoBehaviour
             selectedEnemy.ResetColor();
             selectedEnemy.myPortrait.UnHighlightMyself();
             HideEnemyHover(selectedEnemy);
+
+       
             UIM.HideUnitInfo("");
+            
+            
             UIM.TooltipDefault();
             selectedEnemy = null;
         }

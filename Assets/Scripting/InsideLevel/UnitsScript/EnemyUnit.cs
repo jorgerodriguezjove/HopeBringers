@@ -79,7 +79,7 @@ public class EnemyUnit : UnitBase
 
     //Referencia al LineRenderer hijo para indicar el movimiento del enemigo
     [SerializeField]
-    protected LineRenderer myLineRenderer;
+    public LineRenderer myLineRenderer;
 
     //Referencia al gameobject que actua como hover de los enemigos.
     [SerializeField]
@@ -342,7 +342,7 @@ public class EnemyUnit : UnitBase
                 if (!isDead)
                 {
                     //Llamo a LevelManager para activar hover				
-                    LM.UIM.ShowUnitInfo(this.unitInfo, this);
+                    //LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
                     //LM.UIM.ShowCharacterInfo(unitInfo, this); 
                     HealthBarOn_Off(true);
@@ -359,7 +359,7 @@ public class EnemyUnit : UnitBase
                 if (!isDead)
                 {
                     //Llamo a LevelManager para activar hover				
-                    LM.UIM.ShowUnitInfo(this.unitInfo, this);
+                    //LM.UIM.ShowUnitInfo(this.unitInfo, this);
 
                     //LM.UIM.ShowCharacterInfo(unitInfo, this); 
                     HealthBarOn_Off(true);
@@ -428,7 +428,8 @@ public class EnemyUnit : UnitBase
             else if (LM.selectedEnemy != null && LM.selectedEnemy != this)
             {
                 HealthBarOn_Off(false);
-                LM.UIM.HideUnitInfo("");
+                LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+                //LM.UIM.HideUnitInfo("");
 
                 ResetColor();
 
@@ -450,7 +451,17 @@ public class EnemyUnit : UnitBase
 
         LM.HideHover(this);
         HealthBarOn_Off(false);
-        LM.UIM.HideUnitInfo("");
+
+        if(LM.selectedEnemy == null)
+        {
+            LM.UIM.HideUnitInfo("");
+        }
+        else
+        {
+            LM.UIM.HideUnitInfo("");
+            LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+        }
+        
         //LM.UIM.HideCharacterInfo("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 

@@ -98,7 +98,13 @@ public class Portraits : MonoBehaviour
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
             UIM.HighlightCharacter(assignedPlayer);
-            UIM.LM.ShowUnitHover(assignedPlayer.movementUds, assignedPlayer);
+
+            if (LM.selectedCharacter == null && LM.selectedEnemy == null)
+            {
+                ShowCharacterImageFromPortrait();
+                UIM.LM.ShowUnitHover(assignedPlayer.movementUds, assignedPlayer);
+
+            }
             selectedPanel.SetActive(true);
         }
     }
@@ -107,11 +113,28 @@ public class Portraits : MonoBehaviour
 	{
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-            UIM.UnHighlightCharacter(assignedPlayer);
-            UIM.LM.HideUnitHover(assignedPlayer);
+            if (LM.selectedCharacter == null && LM.selectedEnemy == null)
+            {
+               
+                UIM.LM.HideUnitHover(assignedPlayer);
+            }
+
+            if (LM.selectedCharacter != assignedPlayer)
+            {
+                UIM.UnHighlightCharacter(assignedPlayer);
+            }
+               
+
             if (isClicked == false)
             {
-                selectedPanel.SetActive(false);
+               
+
+                if (LM.selectedCharacter != assignedPlayer)
+                {
+                    assignedPlayer.ResetColor();
+                    selectedPanel.SetActive(false);
+                }
+        
             }
         }
     }
@@ -132,8 +155,11 @@ public class Portraits : MonoBehaviour
         //{
         //    selectedPanel.SetActive(false);
         //}
-
-        selectedPanel.SetActive(false);
+        if (LM.selectedCharacter != this)
+        {
+            selectedPanel.SetActive(false);
+        }
+            
     }
 
 	public void ShowCharacterImageFromPortrait()
@@ -147,7 +173,7 @@ public class Portraits : MonoBehaviour
 	public void OnMouseEnter()
 	{
 		Highlight();
-		ShowCharacterImageFromPortrait();
+		
 	}
 
 	private void OnMouseExit()
