@@ -15,12 +15,20 @@ public class TableManager : MonoBehaviour
     //Cámara de la progresión de unidades
     [SerializeField]
     private GameObject progresionCamera;
+    [SerializeField]
+    private GameObject upgradesCamera;
+
 
     //Referencia al personaje que esta siendo mejorado actualemente
     private CharacterData currentCharacterUpgrading;
 
     //Objeto que se mueve entre los niveles e indica el nivel actual.
+    [SerializeField]
     private GameObject levelIndicator;
+
+    //Referencia al nivel clickado. 
+    [HideInInspector]
+    public LevelNode lastLevelClicked;
 
     //Nombre del nivel actual que hay que cargar si el jugador le da a ready
     [HideInInspector]
@@ -30,6 +38,10 @@ public class TableManager : MonoBehaviour
     [SerializeField]
     private UITableManager UIMM;
 
+    //Referencia al primer nivel para que se setee al principio
+    [SerializeField]
+    private LevelNode level1;
+
     #endregion
 
     #region INIT
@@ -38,6 +50,8 @@ public class TableManager : MonoBehaviour
     {
         GameManager.Instance.unitsForCurrentLevel.Clear();
         GameManager.Instance.characterDataForCurrentLevel.Clear();
+
+        OnLevelClicked(level1);
     }
 
     #endregion
@@ -47,14 +61,45 @@ public class TableManager : MonoBehaviour
     //Al seleccionar un nivel se setea todo para que aparezca la parte de selección de unidades
     public void OnLevelClicked(LevelNode levelClicked)
     {
+        //Se mueve el indicador del nivel
+        levelIndicator.transform.position = new Vector3(levelClicked.transform.position.x, levelIndicator.transform.position.y , levelClicked.transform.position.z);
+
+        //El UI Manager se encarga de actualizar la info del nivel
+        UIMM.ShowInfoOnLevelClick(levelClicked.LevelTitle);
+
+        //Aparece el botón para entrar en la selección de nivel (quizás no es tanto que aparezca como simplmente guardar la informacion para cuando le de)
+        lastLevelClicked = levelClicked;
+    }
+
+    public void MoveToSelection()
+    {
         mapCamera.SetActive(false);
         selectCamera.SetActive(true);
 
-        UIMM.SetLevelBookInfo(levelClicked);
-        currentClickedSceneName = levelClicked.sceneName;
+        currentClickedSceneName = lastLevelClicked.sceneName;
     }
 
-    public void BackToLevelSelection()
+    public void MoveToProgresion()
+    {
+        mapCamera.SetActive(false);
+        progresionCamera.SetActive(true);
+    }
+
+    public void MoveToUpgrades()
+    {
+        //Botón de atrás ahora cambia
+
+        progresionCamera.SetActive(false);
+        upgradesCamera.SetActive(true);
+    }
+
+    public void BackToProgresion()
+    {
+        upgradesCamera.SetActive(false);
+        progresionCamera.SetActive(true);
+    }
+
+    public void BackToMap()
     {
         ///EN EL FUTURO MOVER LA FICHA AQUÍ y cambiar el nombre del capítulo arriba a la izquierda y poner confirmación del nivel
 
@@ -67,14 +112,6 @@ public class TableManager : MonoBehaviour
         GameManager.Instance.unitsForCurrentLevel.Clear();
         GameManager.Instance.characterDataForCurrentLevel.Clear();
         currentCharacterUpgrading = null;
-
-        UIMM.ResetCharacterUpbradeBookInfo();
-    }
-
-    public void MoveToUpgradeTable()
-    {
-        mapCamera.SetActive(false);
-        progresionCamera.SetActive(true);
     }
 
     #endregion
@@ -90,7 +127,8 @@ public class TableManager : MonoBehaviour
 
         else if (progresionCamera.activeSelf)
         {
-            UIMM.SetCharacterUpgradeBookInfo(unitClicked);
+            MoveToUpgrades();
+            UIMM.MoveToUpgradesUI(unitClicked);
             currentCharacterUpgrading = unitClicked;
         }
         

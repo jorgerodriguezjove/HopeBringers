@@ -8,8 +8,23 @@ using UnityEngine.SceneManagement;
 public class UITableManager : MonoBehaviour
 {
     #region VARIABLES
-    
-    [Header("UI REFERENCIAS")]
+
+    //GameObjects que guardan la UI de cada pantalla
+    [SerializeField]
+    private GameObject mapUI;
+    [SerializeField]
+    private GameObject selectionUI;
+    [SerializeField]
+    private GameObject progresionUI;
+    [SerializeField]
+    private GameObject upgradesUI;
+
+    [Header("MAP")]
+    //Referencia al texto en la esquina superior izquierda donde se muestra el nombre del nivel
+    [SerializeField]
+    private TextMeshProUGUI levelNameInfoText;
+
+    [Header("SELECTION")]
 
     //Referencia al texto de título
     [SerializeField]
@@ -19,15 +34,16 @@ public class UITableManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI descriptionTextRef;
 
+    //SIN HACER TODAVIA
     //Referencia al panel dónde se instancian los huecos para colocar a los personajes
-    [SerializeField]
-    private GameObject panelForUnitColocation;
+    //[SerializeField]
+    //private GameObject panelForUnitColocation;
+
+    [Header("PROGRESION")]
 
     //Referencia al objeto dónde aparece el árbol de habilidades del personaje.
     [SerializeField]
     private GameObject rightPageProgresionBook;
-
-    [Header("PROGRESION")]
 
     //Referencia al árbol de habilidades actualmente en pantalla.
     private GameObject currentSkillTreeObj;
@@ -45,6 +61,64 @@ public class UITableManager : MonoBehaviour
 
     #endregion
 
+    #region MAP
+
+    public void ShowInfoOnLevelClick(string levelName)
+    {
+        levelNameInfoText.SetText(levelName);
+    }
+
+    public void MoveToSelectionUI()
+    {
+        TM.MoveToSelection();
+        SetLevelBookInfo(TM.lastLevelClicked);
+
+        //Desactivar mapa
+        mapUI.SetActive(false);
+
+        //Activar Selection
+        selectionUI.SetActive(true);
+    }
+
+    public void MoveToProgresionUI()
+    {
+        TM.MoveToProgresion();
+       
+        //Desactivar mapa
+        mapUI.SetActive(false);
+
+        //Activar Progresion
+        progresionUI.SetActive(true);
+    }
+
+    public void MoveToUpgradesUI(CharacterData _unitClicked)
+    {
+        SetCharacterUpgradeBookInfo(_unitClicked);
+
+        //Desactivar progresion
+        progresionUI.SetActive(false);
+
+        //Activar mejoras
+        upgradesUI.SetActive(true);
+    }
+
+    public void BackToProgresion()
+    {
+        TM.BackToProgresion();
+
+        //Desactivar upgrades
+        upgradesUI.SetActive(false);
+
+        //Activar progresion
+        progresionUI.SetActive(true);
+
+        //Hago desaparecer el árbol de habilidades
+        ResetCharacterUpbradeBookInfo();
+    }
+
+    #endregion
+
+
     #region CHARACTER_SELECTION
 
     public void SetLevelBookInfo(LevelNode levelClicked)
@@ -56,6 +130,23 @@ public class UITableManager : MonoBehaviour
         //Crear número adecuado de huecos para personaje
     }
 
+    public void BackToMapUI()
+    {
+        //Movimientos de cámara y seteos de variables
+        TM.BackToMap();
+
+        //Activo UI Mapa
+        mapUI.SetActive(true);
+
+        //Desactivo UI Selección y progresión
+        selectionUI.SetActive(false);
+        progresionUI.SetActive(false);
+    }
+
+    #endregion
+
+    #region PROGRESION
+
     public void SetCharacterUpgradeBookInfo(CharacterData unitClicked)
     {
         if (currentSkillTreeObj != null)
@@ -64,7 +155,7 @@ public class UITableManager : MonoBehaviour
         }
 
         //Instancio árbol de habilidades
-        currentSkillTreeObj = Instantiate(unitClicked.skillTreePrefab,rightPageProgresionBook.transform);
+        currentSkillTreeObj = Instantiate(unitClicked.skillTreePrefab, rightPageProgresionBook.transform);
 
         ups = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
         ids = unitClicked.idSkillsBought;
@@ -95,6 +186,9 @@ public class UITableManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region SCENE_FUNCTIONS
 
     //Al pulsar el botón de ready se carga la escena
     public void SceneToLoad()
@@ -106,8 +200,6 @@ public class UITableManager : MonoBehaviour
     {
         Application.Quit();
     }
-
-
 
     #endregion
 
