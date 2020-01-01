@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelNode : MonoBehaviour
 {
@@ -46,15 +47,21 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public string descriptionText;
 
-    [Header("MATERIALES")]
+	[Header("MATERIALES")]
 
-    //Materiales para indicar el estado del nivel. Verde = completado. Rojo = Desbloqueado pero sin completar. Negro = Bloqueado
-    [SerializeField]
-    Material unlockedLevel;
-    [SerializeField]
-    Material completedLevel;
-    [SerializeField]
-    Material blockedLevel;
+	//Materiales para indicar el estado del nivel. Verde = completado. Rojo = Desbloqueado pero sin completar. Negro = Bloqueado
+	//[SerializeField]
+	//Material unlockedLevel;
+	//[SerializeField]
+	//Material completedLevel;
+	//[SerializeField]
+	//Material blockedLevel;
+	[SerializeField]
+	Sprite unlockedLevel;
+	[SerializeField]
+	Sprite completedLevel;
+	[SerializeField]
+	GameObject dottedLinePath;
 
     [Header("REFERENCIAS")]
     [SerializeField]
@@ -66,32 +73,41 @@ public class LevelNode : MonoBehaviour
 
     #endregion
 
-    //Al pulsar sobre el nivel
-    private void OnMouseDown()
-    {
-        //Avisar al TM de que se ha pulsado un nivel
-        if (isUnlocked)
-        {
-            TM.OnLevelClicked(GetComponent<LevelNode>());
-            GameManager.Instance.currentLevelNode = idLevel;
-        }
-    }
+	#region INTERACTION
+	
+	//Llamar en click desde el event trigger
+	public void SelectLevel()
+	{
+		//Avisar al TM de que se ha pulsado un nivel
+		if (isUnlocked)
+		{
+			TM.OnLevelClicked(GetComponent<LevelNode>());
+			GameManager.Instance.currentLevelNode = idLevel;
+		}
+	}
 
-    #region FEEDBACK
+	#endregion
 
-    //Función que desbloquea este nivel
-    public void UnlockThisLevel()
+	#region FEEDBACK
+
+	//Función que desbloquea este nivel
+	public void UnlockThisLevel()
     {
         isUnlocked = true;
-        GetComponent<MeshRenderer>().material = unlockedLevel;
+        GetComponent<Image>().sprite = unlockedLevel;
+		GetComponent<Image>().enabled = true;
+		if (dottedLinePath != null)
+		{
+			dottedLinePath.SetActive(true);
+		}
     }
 
     //Aviso a los niveles conectados que tienen que desbloquearse.
     public void UnlockConnectedLevels()
     {
-        GetComponent<MeshRenderer>().material = completedLevel;
+		GetComponent<Image>().sprite = completedLevel;
 
-        for (int i = 0; i <unlockableLevels.Count ; i++)
+		for (int i = 0; i <unlockableLevels.Count ; i++)
         {
             unlockableLevels[i].UnlockThisLevel();
         }
