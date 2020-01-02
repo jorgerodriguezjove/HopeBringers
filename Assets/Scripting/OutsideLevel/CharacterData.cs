@@ -135,7 +135,7 @@ public class CharacterData : MonoBehaviour
 
     public void HideShowMeshCharacterData(bool isActive)
     {
-        GetComponent<MeshRenderer>().enabled = isActive;
+        //GetComponent<MeshRenderer>().enabled = isActive;
         GetComponent<Collider>().enabled = isActive;
     }
 
