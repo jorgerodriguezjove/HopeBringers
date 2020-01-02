@@ -28,7 +28,8 @@ public class AppGenericUpgrades
 public class AppKnightUpgrades
 {
     public static readonly string bigUpgradeFirstA = "bigUpgradeFirstA";
-   
+    public static readonly string bigUpgradeFirstB = "bigUpgradeFirstB";
+
 }
 
 #endregion

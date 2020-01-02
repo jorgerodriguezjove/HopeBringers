@@ -24,7 +24,7 @@ public class KnightData : CharacterData
         //range, maxHeightDifferenceToAttack, maxHeightDifferenceToMove);
         
         //Inicializo las variables especificas del personaje
-        myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.bigUpgradeFirstA]);
+        myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.bigUpgradeFirstA], specificBoolCharacterUpgrades[AppKnightUpgrades.bigUpgradeFirstB]);
     }
 
 
@@ -33,6 +33,7 @@ public class KnightData : CharacterData
     {
         //Mejoras Tipo BOOL
         specificBoolCharacterUpgrades.Add(AppKnightUpgrades.bigUpgradeFirstA, false);
+        specificBoolCharacterUpgrades.Add(AppKnightUpgrades.bigUpgradeFirstB, false);
 
 
         //Mejoras tipo INT

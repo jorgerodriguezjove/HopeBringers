@@ -26,6 +26,10 @@ public class CharacterData : MonoBehaviour
     [SerializeField]
     public bool initialized = false;
 
+    //Objeto hijo que guarda el modelo del personaje
+    [SerializeField]
+    private GameObject unitModel;
+
     [Header("Stats genéricos")]
 
     [Header("Referencias")]
@@ -135,7 +139,7 @@ public class CharacterData : MonoBehaviour
 
     public void HideShowMeshCharacterData(bool isActive)
     {
-        GetComponent<MeshRenderer>().enabled = isActive;
+        unitModel.SetActive(isActive);
         GetComponent<Collider>().enabled = isActive;
     }
     

@@ -16,6 +16,9 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public int idLevel;
 
+    [SerializeField]
+    public int xpGained;
+
     ///BUSCAR FORMA MEJOR DE PASAR EL NIVEL QUE CON STRINGS. 
     //Escena asociada al nivel
     [SerializeField]
@@ -40,9 +43,6 @@ public class LevelNode : MonoBehaviour
     //Título del nivel
     [SerializeField]
     public string LevelTitle;
-    //Cápitulo al que corresponde
-    [SerializeField]
-    public string chapter;
     //Decripción del nivel
     [SerializeField]
     public string descriptionText;
@@ -83,6 +83,7 @@ public class LevelNode : MonoBehaviour
 		{
 			TM.OnLevelClicked(GetComponent<LevelNode>());
 			GameManager.Instance.currentLevelNode = idLevel;
+            GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = xpGained;
 		}
 	}
 

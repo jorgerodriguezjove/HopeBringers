@@ -119,6 +119,8 @@ public class TableManager : MonoBehaviour
     //Esto en el futuro se hará arrastrando al personaje pero de momento lo hago con click
     public void OnClickCharacter(CharacterData unitClicked)
     {
+        Debug.Log(unitClicked.name);
+
         if (selectCamera.activeSelf)
         {
             GameManager.Instance.unitsForCurrentLevel.Add(unitClicked.myUnit);
@@ -137,28 +139,23 @@ public class TableManager : MonoBehaviour
     public void BuyUpgrade(UpgradeNode upgradeClicked)
     {
         //Comprobar si tengo exp suficiente
-        if (currentCharacterUpgrading.powerLevel <= GameManager.Instance.CurrentExp)
+        if (currentCharacterUpgrading.powerLevel <= GameManager.Instance.currentExp)
         {
             //Gastar Exp
-            GameManager.Instance.CurrentExp -= currentCharacterUpgrading.powerLevel;
+            GameManager.Instance.currentExp -= currentCharacterUpgrading.powerLevel;
 
             //Avisar al nodo de mejora de que ha sido comprado  y Desbloquear los siguientes nodos
             upgradeClicked.UpgradeBought();
 
             //Aumentar power level del personaje
             //Añadir id a la lista del personaje
-            currentCharacterUpgrading.UpgradeAcquired(upgradeClicked.upgradeCost,upgradeClicked.idUpgrade);
+            currentCharacterUpgrading.UpgradeAcquired(upgradeClicked.upgradeCost, upgradeClicked.idUpgrade);
         }
-
 
         else
         {
             //¿Dar feedback de que no hay suficiente exp?
+            Debug.Log("No hay suficiente xp");
         }
-
-
-
     }
-
-
 }

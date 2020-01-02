@@ -174,7 +174,6 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
-    
     #region UNIT_INTERACTION
 
     //Al clickar sobre una unidad del jugador se llama a esta función
@@ -374,10 +373,6 @@ public class LevelManager : MonoBehaviour
         {
 
             DeselectEnemy();
-
-          
-           
-
         }
     }
 
@@ -412,12 +407,8 @@ public class LevelManager : MonoBehaviour
 
     public void SelectEnemy(string _unitInfo, EnemyUnit _enemySelected)
     {
-
-        
         DeselectEnemy();
-
-       
-        
+   
         selectedEnemy = _enemySelected;
         CheckIfHoverShouldAppear(_enemySelected);
         UIM.ShowUnitInfo(_unitInfo, _enemySelected);
@@ -937,7 +928,6 @@ public class LevelManager : MonoBehaviour
             GameManager.Instance.characterDataForCurrentLevel[i].InitializeMyUnitStats();
         }
 
-
         currentLevelState = LevelState.PlayerPhase;
 
         UIM.InitializeUI();
@@ -974,7 +964,6 @@ public class LevelManager : MonoBehaviour
 
             case (LevelState.ProcessingEnemiesActions):
                 break;
-
         }
 
         //INPUT

@@ -16,9 +16,8 @@ public class GameManager : PersistentSingleton<GameManager>
     public List<PlayerUnit> unitsForCurrentLevel = new List<PlayerUnit>();
 
     //Experiencia actual. 
-    ///El serialized y el igual a 100 es para testear.
     [SerializeField]
-    public int CurrentExp = 100;
+    public int currentExp;
 
     //Lista que va a guardar todos los objetos que tengan el componente Character Data
     CharacterData[] oldCharacterDataList;
@@ -33,6 +32,8 @@ public class GameManager : PersistentSingleton<GameManager>
 
     //Referencia al nodo del nivel que ha sido empezado
     public int currentLevelNode;
+    //Experiencia que obtiene el jugador si completa el nivel
+    public int possibleXpToGainIfCurrentLevelIsWon;
 
     #endregion
 
@@ -87,7 +88,11 @@ public class GameManager : PersistentSingleton<GameManager>
     //Al completar un nivel el levelManager avisa de que en la escena de mapa va a tener que desbloquear niveles.
     public void VictoryAchieved()
     {
+        Debug.Log(possibleXpToGainIfCurrentLevelIsWon);
+
         levelIDsUnlocked.Add(currentLevelNode);
+
+        currentExp += possibleXpToGainIfCurrentLevelIsWon;
     }
 
 }

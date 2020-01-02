@@ -109,7 +109,6 @@ public class CameraManager : MonoBehaviour
             {
                 transform.RotateAround(hit.point, Vector3.up, frameRotate * Time.deltaTime * rotateSpeed);
                 point = hit.point;
-                Debug.Log(hit.collider.name);
             }
 
             LockPositionInBounds();

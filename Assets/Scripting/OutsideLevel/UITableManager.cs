@@ -41,6 +41,12 @@ public class UITableManager : MonoBehaviour
 
     [Header("PROGRESION")]
 
+    [SerializeField]
+    private TextMeshProUGUI currentCharacterPowerLevelText;
+
+    [SerializeField]
+    private TextMeshProUGUI currentTotalXpText;
+
     //Referencia al objeto dónde aparece el árbol de habilidades del personaje.
     [SerializeField]
     private GameObject rightPageProgresionBook;
@@ -83,7 +89,13 @@ public class UITableManager : MonoBehaviour
     public void MoveToProgresionUI()
     {
         TM.MoveToProgresion();
-       
+
+        //FALTA MOSTRAR EL POWER LEVEL DEL PERSONAJE QUE PROBABLEMENTE NO VAYA NI SI QUIERA AQUI
+        //currentCharacterPowerLevelText.SetText(character)
+
+        //Setear en libro xpTotal
+        currentTotalXpText.SetText(GameManager.Instance.currentExp.ToString());
+
         //Desactivar mapa
         mapUI.SetActive(false);
 
@@ -117,7 +129,6 @@ public class UITableManager : MonoBehaviour
     }
 
     #endregion
-
 
     #region CHARACTER_SELECTION
 

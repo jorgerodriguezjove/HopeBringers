@@ -75,6 +75,8 @@ public class UpgradeNode : MonoBehaviour
     //Al comprar el upgrade
     public void UpgradeBought()
     {
+        Debug.Log("Mejora Comprada");
+
         isBlocked = false;
         isBought = true;
 

@@ -18,11 +18,12 @@ public class Knight : PlayerUnit
 
     #endregion
 
-    public void SetSpecificStats(bool _bigUpgradeFirstA)
+    public void SetSpecificStats(bool _bigUpgradeFirstA, bool _bigUpgradeFirstB)
     {
         //base.SetSpecificStats();
         bigUpgradeFirstA = _bigUpgradeFirstA;
-        
+        bigUpgradeFirstB = _bigUpgradeFirstB;
+
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.

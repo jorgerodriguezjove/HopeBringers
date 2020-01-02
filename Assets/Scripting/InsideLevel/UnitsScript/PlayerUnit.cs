@@ -91,7 +91,6 @@ public class PlayerUnit : UnitBase
 		UIM = FindObjectOfType<UIManager>();
         //Aviso al tile en el que empiezo que soy su unidad.
 
-
        ///SETEAR EL TILE AL COLOCAR A LA UNIDAD EN UNO DE LOS TILES DISPONIBLES PARA COLOCARLAS
        // myCurrentTile.unitOnTile = this;
        // myCurrentTile.WarnInmediateNeighbours();
@@ -103,12 +102,15 @@ public class PlayerUnit : UnitBase
 
         movementParticle.SetActive(false);
 
-        if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
-        {
-            currentHealth = maxHealth;
-        }
+        //if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+        //{
+        //    currentHealth = maxHealth;
+        //}
 
-	}
+        //Vigilar esto. He comentado lo anterior y puesto esto porque si no al colocar los personajes si se colocaban al principio del nivel  tenian 0 de vida.
+        currentHealth = maxHealth;
+
+    }
 
     //Stats genéricos que tienen todos los personajes.
     //Los stats especificos se ponen en cada personaje
@@ -119,10 +121,10 @@ public class PlayerUnit : UnitBase
     {
         maxHealth = _maxHealth;
 
-
-
         //Una vez seteadas todas las variables, inicializo mi vida actual
         currentHealth = maxHealth;
+
+        Debug.Log(currentHealth);
     }
 
 
@@ -171,16 +173,11 @@ public class PlayerUnit : UnitBase
         if (LM.selectedCharacter == this)
         {
             LM.TileClicked(this.myCurrentTile);
-
-
         }
         else
         {
             LM.SelectUnit(movementUds, this);
         }
-            
-        
-        
     }
 
     //Es virtual para el decoy del mago.
@@ -223,30 +220,33 @@ public class PlayerUnit : UnitBase
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
-        if (LM.selectedCharacter == null)
+        if (LM.currentLevelState != LevelManager.LevelState.Initializing)
         {
-            //Compruebo si no hay un enemigo seleccionado para no quitarle la info.
-            if (LM.selectedEnemy == null)
+            if (LM.selectedCharacter == null)
+            {
+                //Compruebo si no hay un enemigo seleccionado para no quitarle la info.
+                if (LM.selectedEnemy == null)
+                {
+                    LM.HideUnitHover(this);
+                }
+
+                myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+
+                ResetColor();
+            }
+
+            else if (LM.selectedCharacter == this)
+            {
+                return;
+            }
+
+            else if (LM.selectedCharacter != GetComponent<PlayerUnit>())
             {
                 LM.HideUnitHover(this);
+                myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
+
+                ResetColor();
             }
-            
-            myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
-           
-            ResetColor();
-        }
-
-        else if (LM.selectedCharacter == this)
-        {
-            return;
-        }
-
-        else if (LM.selectedCharacter != GetComponent<PlayerUnit>())
-        {
-            LM.HideUnitHover(this);
-            myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
-
-            ResetColor();   
         }
     }
 
