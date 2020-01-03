@@ -487,7 +487,6 @@ public class EnemyUnit : UnitBase
 
         else
         {
-            Debug.Log("reset");
             ResetColor();
         }
 		

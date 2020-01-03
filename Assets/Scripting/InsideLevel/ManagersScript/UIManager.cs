@@ -139,29 +139,30 @@ public class UIManager : MonoBehaviour
     public void EndTurn()
     {
         //He cambiado esta parte para que el end turn también borre los tiles pintados
-        if (LM.selectedCharacter == null)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-            if (LM.selectedEnemy != null)
+            if (LM.selectedCharacter == null)
             {
-                LM.DeselectEnemy();
-            }
+                if (LM.selectedEnemy != null)
+                {
+                    LM.DeselectEnemy();
+                }
 
-            Debug.Log("Soy EndTurn");
-            RotateButtonEndPhase();
-            LM.ChangePhase();
-        }
-        else if (!LM.selectedCharacter.isMovingorRotating)
-        {
-            if (LM.selectedEnemy != null)
+                RotateButtonEndPhase();
+                LM.ChangePhase();
+            }
+            else if (!LM.selectedCharacter.isMovingorRotating)
             {
-                LM.DeselectEnemy();
+                if (LM.selectedEnemy != null)
+                {
+                    LM.DeselectEnemy();
+                }
+
+                LM.DeSelectUnit();
+
+                RotateButtonEndPhase();
+                LM.ChangePhase();
             }
-
-            LM.DeSelectUnit();
-
-            Debug.Log("Soy EndTurn");
-            RotateButtonEndPhase();
-            LM.ChangePhase();
         }
     }
 

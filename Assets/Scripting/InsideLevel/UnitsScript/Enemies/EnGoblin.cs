@@ -41,7 +41,6 @@ public class EnGoblin : EnemyUnit
             }
 
             //Si llega hasta aqui significa que no había personajes en rango y termina
-            Debug.Log(gameObject.name);
             myCurrentEnemyState = enemyState.Ended;
         }
 

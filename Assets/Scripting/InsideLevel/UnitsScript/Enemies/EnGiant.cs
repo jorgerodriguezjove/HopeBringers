@@ -5,13 +5,9 @@ using DG.Tweening;
 
 public class EnGiant : EnemyUnit
 {
-    
-
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
     private UnitBase myCurentObjective;
     private IndividualTiles myCurrentObjectiveTile;
-
-
    
     public override void SearchingObjectivesToAttack()
     {
