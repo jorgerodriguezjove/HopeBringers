@@ -11,8 +11,11 @@ public class StringBanks : MonoBehaviour
 
 public class AppGenericUpgrades
 {
+    //Mejoras pequeñas
     public static readonly string maxHealth = "maxHealth";
     public static readonly string baseDamage = "baseDamage";
+
+    //Mejoras medianas
     public static readonly string movementUds = "movementUds";
     public static readonly string bonusBackAttack = "bonusBackAttack";
     public static readonly string bonusMoreHeight = "bonusMoreHeight";
@@ -27,8 +30,8 @@ public class AppGenericUpgrades
 
 public class AppKnightUpgrades
 {
-    public static readonly string bigUpgradeFirstA = "bigUpgradeFirstA";
-    public static readonly string bigUpgradeFirstB = "bigUpgradeFirstB";
+    public static readonly string pushFurther1 = "pushFurther1";
+    public static readonly string pushWider1 = "pushWider1";
 
 }
 

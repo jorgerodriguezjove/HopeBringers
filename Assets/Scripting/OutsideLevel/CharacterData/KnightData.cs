@@ -18,13 +18,14 @@ public class KnightData : CharacterData
         myUnitReferenceOnLevel = FindObjectOfType<Knight>();
 
         //Inicializo los stats genéricos
-        myUnitReferenceOnLevel.SetMyGenericStats(genericUpgrades[AppGenericUpgrades.maxHealth]);
+        myUnitReferenceOnLevel.SetMyGenericStats(genericUpgrades[AppGenericUpgrades.maxHealth], genericUpgrades[AppGenericUpgrades.baseDamage]
+                                                 );
         //baseDamage,movementUds, bonusBackAttack,
         //bonusMoreHeight, bonusLessHeight, damageMadeByPush, damageMadeByFall,
         //range, maxHeightDifferenceToAttack, maxHeightDifferenceToMove);
         
         //Inicializo las variables especificas del personaje
-        myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.bigUpgradeFirstA], specificBoolCharacterUpgrades[AppKnightUpgrades.bigUpgradeFirstB]);
+        myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.pushFurther1], specificBoolCharacterUpgrades[AppKnightUpgrades.pushWider1]);
     }
 
 
@@ -32,11 +33,12 @@ public class KnightData : CharacterData
     protected override void InitializeSpecificUpgrades()
     {
         //Mejoras Tipo BOOL
-        specificBoolCharacterUpgrades.Add(AppKnightUpgrades.bigUpgradeFirstA, false);
-        specificBoolCharacterUpgrades.Add(AppKnightUpgrades.bigUpgradeFirstB, false);
+        specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, false);
+        specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushWider1, false);
 
 
         //Mejoras tipo INT
+        //specificIntCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, myUnitReferenceOnLevel.GetComponent<Knight>().tilesToPush);
     }
 
 }

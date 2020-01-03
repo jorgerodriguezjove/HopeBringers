@@ -9,7 +9,7 @@ public class Knight : PlayerUnit
     [Header("STATS DE CLASE")]
 
     [SerializeField]
-    int tilesToPush;
+    public int tilesToPush;
 
     [Header("UPGRADES")]
     bool bigUpgradeFirstA;
@@ -23,7 +23,6 @@ public class Knight : PlayerUnit
         //base.SetSpecificStats();
         bigUpgradeFirstA = _bigUpgradeFirstA;
         bigUpgradeFirstB = _bigUpgradeFirstB;
-
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.

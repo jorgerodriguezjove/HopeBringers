@@ -93,8 +93,8 @@ public class CharacterData : MonoBehaviour
 
     private void InitializeGenericUpgrades()
     {
-
         genericUpgrades.Add(AppGenericUpgrades.maxHealth, myUnit.maxHealth);
+        genericUpgrades.Add(AppGenericUpgrades.baseDamage, myUnit.baseDamage);
         //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
         //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
         //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
