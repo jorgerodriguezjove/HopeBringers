@@ -663,6 +663,7 @@ public class TileManager : MonoBehaviour
     {
         charactersAvailableForAttack.Clear();
         tempCurrentObjectiveCost = 0;
+        tempCurrentPathCost = 0;
 
         //Reuno en una lista todos los tiles a los que puedo acceder
         OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
@@ -675,7 +676,7 @@ public class TileManager : MonoBehaviour
 
                 //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
                 if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
-                {                    
+                {
                     //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
                     if (tempCurrentPathCost != 0)
                     {
@@ -702,6 +703,44 @@ public class TileManager : MonoBehaviour
     }
     #endregion
 
+    public List<UnitBase> OnlyCheckClosestPathToPlayer()
+    {
+        charactersAvailableForAttack.Clear();
+        tempCurrentObjectiveCost = 0;
+        tempCurrentPathCost = 0;
+
+        for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+        {
+            CalculatePathForMovementCost(LM.characthersOnTheBoard[i].myCurrentTile.tileX, LM.characthersOnTheBoard[i].myCurrentTile.tileZ);
+
+            print(tempCurrentPathCost);
+            print(LM.characthersOnTheBoard[i].myCurrentTile);
+
+            if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
+            {
+                //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
+                if (tempCurrentPathCost != 0)
+                {
+                    if (tempCurrentObjectiveCost > tempCurrentPathCost)
+                    {
+                        //Limpio la lista de objetivos y añado
+                        charactersAvailableForAttack.Clear();
+                    }
+
+                    //Me guardo la distancia para checkear
+                    tempCurrentObjectiveCost = tempCurrentPathCost;
+
+                    charactersAvailableForAttack.Add(LM.characthersOnTheBoard[i]);
+                }
+            }
+
+            tempCurrentPathCost = 0;
+        }
+
+        //Reset
+        return charactersAvailableForAttack;
+    }
+                
     //Función que sirve para encontrar a todos los enemigos en rango y que el goblin pueda alertarlos
     public List<UnitBase> GetAllUnitsInRangeWithoutPathfinding(int rangeToCheck, UnitBase selectedUnit)
     {
