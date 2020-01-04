@@ -309,9 +309,9 @@ public class EnBalista : EnemyUnit
                             currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
 
                             //Si el personaje es un caballero mi disparo acaba aqui
-                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            if (myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<Knight>())
                             {
-                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.West)
+                                if (myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.West)
                                 {
                                     break;
                                 }
@@ -355,9 +355,9 @@ public class EnBalista : EnemyUnit
                             currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
 
                             //Si el personaje es un caballero mi disparo acaba aqui
-                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            if (myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<Knight>())
                             {
-                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.North)
+                                if (myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.North)
                                 {
                                     break;
                                 }
@@ -401,9 +401,9 @@ public class EnBalista : EnemyUnit
                             currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
 
                             //Si el personaje es un caballero mi disparo acaba aqui
-                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            if (myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<Knight>())
                             {
-                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.East)
+                                if (myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.East)
                                 {
                                     break;
                                 }

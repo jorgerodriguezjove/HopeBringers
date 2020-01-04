@@ -85,6 +85,9 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [HideInInspector]
     public LevelManager LM;
 
+    MeshRenderer myMeshRenderer;
+
+
     [Header("OPTIMIZATION")]
 
     //Distancia hasta el source
@@ -147,13 +150,17 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         }
 
         //Seteo los materiales
-        initialColor = GetComponent<MeshRenderer>().material;
+        myMeshRenderer = GetComponent<MeshRenderer>();
+
+        initialColor = myMeshRenderer.material;
 
         availableForMovementColor = _selectMaterial;
         currentTileHoverMovementColor = _currentMaterial;
         attackColor = _attackMaterial;
         actionRangeColor = _actionRangeMaterial;
         chargingAttackColor = _chargingAttackMaterial;
+
+        myMeshRenderer.enabled = false;
 
         //Aviso a los vecinos de la ocupación del tile
         UpdateNeighboursOccupied();
@@ -258,6 +265,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         //Con este if evito que se pinten los tiles de los personajes con el pathfinding del goblin
         if (unitOnTile == null)
         {
+            myMeshRenderer.enabled = true;
+
             GetComponent<MeshRenderer>().material = availableForMovementColor;
             isMovementTile = true;
         }
@@ -271,6 +280,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     public void ColorCurrentTileHover()
     {
+        myMeshRenderer.enabled = true;
         GetComponent<MeshRenderer>().material = currentTileHoverMovementColor;
     }
 
@@ -279,11 +289,13 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     {
         if (isUnderAttack)
         {
+            myMeshRenderer.enabled = true;
             GetComponent<MeshRenderer>().material = attackColor;
         }
         else
         {
-            GetComponent<MeshRenderer>().material = initialColor;
+            myMeshRenderer.enabled = false;
+            //GetComponent<MeshRenderer>().material = initialColor;
         }
 
         isMovementTile = false;
@@ -293,6 +305,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar a color de rango de acción dormido
     public void ColorActionRange()
     {
+        myMeshRenderer.enabled = true;
         GetComponent<MeshRenderer>().material = actionRangeColor;  
     }
 
@@ -300,6 +313,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar el color a ataque
     public void ColorAttack()
     {
+        myMeshRenderer.enabled = true;
         GetComponent<MeshRenderer>().material = attackColor;
         isUnderAttack = true;
     }
@@ -309,6 +323,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     {
         if (!isUnderAttack)
         {
+            myMeshRenderer.enabled = true;
             GetComponent<MeshRenderer>().material = chargingAttackColor;
         }
     }
@@ -316,7 +331,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile
     public void ColorDesAttack()
     {
-        GetComponent<MeshRenderer>().material = initialColor;
+        myMeshRenderer.enabled = false;
+        //GetComponent<MeshRenderer>().material = initialColor;
         isUnderAttack = false;
     }
 
