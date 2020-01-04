@@ -492,15 +492,23 @@ public class LevelManager : MonoBehaviour
                                 //Vemos si tiene enemigos o tiles más altos cerca para que las flechas no se tapen
                                 for (int j = 0; j < tileToMove.neighbours.Count; ++j)
                                 {
-                                    if (tileToMove.neighbours[j].isObstacle || tileToMove.neighbours[j].isEmpty || tileToMove.neighbours[j].noTilesInThisColumn)
+                                    if (tileToMove.neighbours[j].isObstacle 
+                                        || tileToMove.neighbours[j].isEmpty 
+                                        || tileToMove.neighbours[j].noTilesInThisColumn)
                                     {
 
                                         Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 4f, tileToMove.transform.position.z);
                                         selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
                                         break;
 
+                                    }else if (tileToMove.neighbours[j].height > tileToMove.height)
+                                    {
+                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + tileToMove.neighbours[j].height, tileToMove.transform.position.z);
+                                        selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
+                                        break;
+
                                     }
-                                    else
+                                    else 
                                     {
                                         if (tileToMove.neighboursOcuppied >= 1)
                                         {
@@ -666,11 +674,21 @@ public class LevelManager : MonoBehaviour
                 {
                     if (showActionRangeInsteadOfMovement)
                     {
+                        if (tilesAvailableForMovementEnemies[i].isObstacle
+                           || (tilesAvailableForMovementEnemies[i].isEmpty))
+                        {
+                            break;
+                        }
                         tilesAvailableForMovementEnemies[i].ColorActionRange();
                     }
 
                     else
                     {
+                        if (tilesAvailableForMovementEnemies[i].isObstacle
+                           || (tilesAvailableForMovementEnemies[i].isEmpty))
+                        {
+                            break;
+                        }
                         tilesAvailableForMovementEnemies[i].ColorSelect();
                     }
                 }
@@ -717,6 +735,14 @@ public class LevelManager : MonoBehaviour
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
+
+                    if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
+                    {
+
+                        hoverUnit.shaderHover.SetActive(true);
+                        hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
+                        hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
+                    }
                 }
                 else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
                 {
@@ -726,13 +752,7 @@ public class LevelManager : MonoBehaviour
 
                 
 
-                if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
-                {
-
-                    hoverUnit.shaderHover.SetActive(true);
-                    hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count-1].transform.position;
-                    hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
-                }
+            
             }
         }
     }

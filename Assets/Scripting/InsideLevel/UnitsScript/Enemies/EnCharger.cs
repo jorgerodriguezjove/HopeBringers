@@ -325,6 +325,7 @@ public class EnCharger : EnemyUnit
            
 
         }
+
         else if (currentUnitsAvailableToAttack.Count == 0)
         {
             if (myCurrentTile.tilesInLineUp.Count > 0)
@@ -333,8 +334,11 @@ public class EnCharger : EnemyUnit
                 {
                     if (shouldColorTiles)
                     {
-                        //Si la diferencia de altura supera la que puede tener el personaje paro de buscar
-                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToAttack)
+                       
+                        
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToAttack 
+                            || (myCurrentTile.tilesInLineUp[i].isObstacle)
+                            || (myCurrentTile.tilesInLineUp[i].isEmpty))
                         {
                             break;
                         }
@@ -342,6 +346,12 @@ public class EnCharger : EnemyUnit
                     }
                     else
                     {
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToAttack
+                              || (myCurrentTile.tilesInLineUp[i].isObstacle)
+                              || (myCurrentTile.tilesInLineUp[i].isEmpty))
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineUp[i].ColorDesAttack();
                     }
                 }
@@ -353,7 +363,9 @@ public class EnCharger : EnemyUnit
                 {
                     if (shouldColorTiles)
                     {
-                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToAttack)
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToAttack 
+                            || (myCurrentTile.tilesInLineDown[i].isObstacle)
+                             || (myCurrentTile.tilesInLineDown[i].isEmpty))
                         {
                             break;
                         }
@@ -361,6 +373,12 @@ public class EnCharger : EnemyUnit
                     }
                     else
                     {
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToAttack
+                              || (myCurrentTile.tilesInLineDown[i].isObstacle)
+                               || (myCurrentTile.tilesInLineDown[i].isEmpty))
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineDown[i].ColorDesAttack();
                     }
                 }
@@ -374,7 +392,9 @@ public class EnCharger : EnemyUnit
                 {
                     if (shouldColorTiles)
                     {
-                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToAttack)
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToAttack 
+                            || (myCurrentTile.tilesInLineRight[i].isObstacle)
+                            || (myCurrentTile.tilesInLineRight[i].isEmpty))
                         {
                             break;
                         }
@@ -382,11 +402,18 @@ public class EnCharger : EnemyUnit
                     }
                     else
                     {
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToAttack
+                              || (myCurrentTile.tilesInLineRight[i].isObstacle)
+                              || (myCurrentTile.tilesInLineRight[i].isEmpty))
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineRight[i].ColorDesAttack();
                     }
                 }
 
             }
+
             if (myCurrentTile.tilesInLineLeft.Count > 0)
             {
 
@@ -394,7 +421,9 @@ public class EnCharger : EnemyUnit
                 {
                     if (shouldColorTiles)
                     {
-                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToAttack)
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToAttack 
+                           || (myCurrentTile.tilesInLineLeft[i].isObstacle)
+                           || (myCurrentTile.tilesInLineLeft[i].isEmpty))
                         {
                             break;
                         }
@@ -402,6 +431,12 @@ public class EnCharger : EnemyUnit
                     }
                     else
                     {
+                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToAttack
+                              || (myCurrentTile.tilesInLineLeft[i].isObstacle)
+                              || (myCurrentTile.tilesInLineLeft[i].isEmpty))
+                        {
+                            break;
+                        }
                         myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
                     }
                 }

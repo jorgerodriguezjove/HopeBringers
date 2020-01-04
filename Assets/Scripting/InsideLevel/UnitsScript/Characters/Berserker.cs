@@ -23,6 +23,10 @@ public class Berserker : PlayerUnit
     public Material rageMaterial;    
     private Material finitMaterial;
 
+    [Header("MEJORAS DE PERSONAJE")]
+
+    public bool neighboursAttack;
+
     #endregion
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
@@ -30,14 +34,39 @@ public class Berserker : PlayerUnit
     {
         hasAttacked = true;
 
-        //Animación de ataque
-        myAnimator.SetTrigger("Attack");
+        if (neighboursAttack)
+        {
+            //Animación de ataque 
+            //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
+            myAnimator.SetTrigger("Attack");
 
-        //Hago daño
-        DoDamage(unitToAttack);
+            //Hago daño
+            for (int i = 0; i < myCurrentTile.neighbours.Count; ++i)
+            {
+                if (myCurrentTile.neighbours[i].unitOnTile != null)
+                {
+                    DoDamage(myCurrentTile.neighbours[i].unitOnTile);
+                }
+                
 
-        //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
-        base.Attack(unitToAttack);
+            }
+                //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+                base.Attack(unitToAttack);
+            
+
+        }
+        else
+        {
+            //Animación de ataque
+            myAnimator.SetTrigger("Attack");
+
+            //Hago daño
+            DoDamage(unitToAttack);
+
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
+        }
+        
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)

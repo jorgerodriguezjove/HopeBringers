@@ -11,63 +11,206 @@ public class Knight : PlayerUnit
     [SerializeField]
     public int tilesToPush;
 
-    [Header("UPGRADES")]
-    bool bigUpgradeFirstA;
-    bool bigUpgradeFirstB;
+    [Header("MEJORAS DE PERSONAJE")]
+
+    public bool pushFarther;
+    public bool pushWider;
+
+
 
 
     #endregion
 
-    public void SetSpecificStats(bool _bigUpgradeFirstA, bool _bigUpgradeFirstB)
+   
+    public void SetSpecificStats(bool _pushFarther, bool _pushWider)
     {
         //base.SetSpecificStats();
-        bigUpgradeFirstA = _bigUpgradeFirstA;
-        bigUpgradeFirstB = _bigUpgradeFirstB;
+        pushFarther = _pushFarther;
+        pushWider = _pushWider;
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
+
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
 
-        //Animación de ataque
-        myAnimator.SetTrigger("Attack");
-
-        //Hago daño
-        DoDamage(unitToAttack);
-
-        if (!bigUpgradeFirstA)
+       //Este primer if  lo pongo de momento para seguir la misma estructura que con los otros personajes y por si hay que cambiar algo específico como la animación, el sonido...
+        if (pushFarther)
         {
-            Debug.Log("ataque normal 1");
+            tilesToPush = 2;
+            //Animación de ataque
+            myAnimator.SetTrigger("Attack");
+
+            //Hago daño
+            DoDamage(unitToAttack);
+
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+            }
+
+            SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
+
         }
+
+        else if (pushWider)
+        {
+            //Animación de ataque
+            myAnimator.SetTrigger("Attack");
+
+            //Hago daño
+            DoDamage(unitToAttack);
+
+            //if (currentFacingDirection == FacingDirection.North || currentFacingDirection == FacingDirection.South)
+            //{
+            //    if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+            //    {
+            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+            //    }
+
+            //    if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+            //    {
+            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+            //    }
+            //}
+            //else if (currentFacingDirection == FacingDirection.East || currentFacingDirection == FacingDirection.West)
+            //{
+                
+            //    if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+            //    {
+            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+            //    }
+
+            //    if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+            //    {
+            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+            //    }
+
+            //}
+
+           
+
+
+            if (currentFacingDirection == FacingDirection.North)
+            {
+
+                if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {
+                    unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
+                   
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {
+                    unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
+                }
+
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
+
+
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+
+                if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {
+                    unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {
+                    unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+                }
+
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+
+                if (unitToAttack.myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+
+                    unitToAttack.myCurrentTile.tilesInLineUp[0].unitOnTile.CalculatePushPosition(tilesToPush - 1 , unitToAttack.myCurrentTile.tilesInLineUp[0].unitOnTile.myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+
+                    unitToAttack.myCurrentTile.tilesInLineDown[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineDown[0].unitOnTile.myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
+                }
+
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
+
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+
+                if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+                   currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+                    currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+                }
+            }
+
+            SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
+        }
+
         else
         {
-            Debug.Log("Ataque mejorado A");
+            //Animación de ataque
+            myAnimator.SetTrigger("Attack");
+
+            //Hago daño
+            DoDamage(unitToAttack);
+
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+            }
+
+            SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
-
-        if (currentFacingDirection == FacingDirection.North)
-        {
-            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
-        }
-
-        else if (currentFacingDirection == FacingDirection.South)
-        {
-            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
-        }
-
-        else if(currentFacingDirection == FacingDirection.East)
-        {
-            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
-        }
-
-        else if(currentFacingDirection == FacingDirection.West)
-        {
-            unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
-        }
-
-        SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
-
-
+                
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }

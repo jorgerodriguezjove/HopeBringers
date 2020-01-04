@@ -23,6 +23,14 @@ public class Mage : PlayerUnit
     [SerializeField]
     private int maxDecoys;
 
+
+    [Header("MEJORAS DE PERSONAJE")]
+
+    public bool crossAttack;
+    
+
+
+
     #endregion
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
@@ -34,14 +42,45 @@ public class Mage : PlayerUnit
 
         Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
-        //Hago daño
-        DoDamage(unitToAttack);
+        if (crossAttack)
+        {
 
-        SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+            //Animación de ataque 
+            //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
+            myAnimator.SetTrigger("Attack");
 
-        //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
-        base.Attack(unitToAttack);
+            //Hago daño
+            DoDamage(unitToAttack);
+
+            //Hago daño a las unidades adyacentes
+            for (int i = 0; i < unitToAttack.myCurrentTile.neighbours.Count; ++i)
+            {
+                if (unitToAttack.myCurrentTile.neighbours[i].unitOnTile != null)
+                {
+                    DoDamage(unitToAttack.myCurrentTile.neighbours[i].unitOnTile);
+                }
+
+
+            }
+
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
+        }
+        else
+        {
+            //Hago daño
+            DoDamage(unitToAttack);
+
+            SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
+        }
+
     }
+        
+
+     
 
     //Override especial del mago para que no instancie la partícula de ataque
     protected override void DoDamage(UnitBase unitToDealDamage)

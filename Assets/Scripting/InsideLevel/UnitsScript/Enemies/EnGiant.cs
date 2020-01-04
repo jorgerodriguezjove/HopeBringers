@@ -431,20 +431,17 @@ public class EnGiant : EnemyUnit
         }
     }
 
+   
     //Función que se encarga de hacer que el personaje este despierto/alerta
-    //Mario te he cambiado el nombre del bool, que es una chorrada pero por si se me pasa decirtelo (Borralo cuando lo veas).
     public override void ShowActionPathFinding(bool _shouldShowAction)
     {
-        SearchingObjectivesToAttackShowActionPathFinding();
-
-
-        //Cada enemigo realiza su propio path
-        LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
-
+        SearchingObjectivesToAttackShowActionPathFinding();    
 
         if (currentUnitsAvailableToAttack.Count > 0)
         {
-            
+
+            //Cada enemigo realiza su propio path
+            LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
 
             if (_shouldShowAction)
             {
@@ -457,22 +454,23 @@ public class EnGiant : EnemyUnit
                     if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
                     {
                         myCurrentObjectiveTile.ColorAttack();
-                        
+
                         if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                         {
                             myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
                         }
 
+
                         if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                         {
-                            myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
+                        myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
                         }
                     }
                     //Izquierda o derecha
                     else
                     {
                         myCurrentObjectiveTile.ColorAttack();
-                                         
+
                         //Comprobar si a sus lados hay unidades
                         if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                         {
@@ -502,11 +500,39 @@ public class EnGiant : EnemyUnit
 
 
                myCurrentObjectiveTile.ColorDesAttack();
-               myCurrentObjectiveTile.tilesInLineRight[0].ColorDesAttack();           
-               myCurrentObjectiveTile.tilesInLineLeft[0].ColorDesAttack();
-                myCurrentObjectiveTile.tilesInLineUp[0].ColorDesAttack();
-                myCurrentObjectiveTile.tilesInLineDown[0].ColorDesAttack();
 
+                if ( myCurrentObjectiveTile != null)
+                {
+                    if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
+                    {
+                        if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineRight[0].ColorDesAttack();
+                        }
+
+
+                        if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineLeft[0].ColorDesAttack();
+                        }
+                        
+                        
+                    }
+                    else
+                    {
+                        if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineUp[0].ColorDesAttack();
+                        }
+
+                        if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                        {
+                            myCurrentObjectiveTile.tilesInLineDown[0].ColorDesAttack();
+                        }
+
+                    }
+
+                }
             }
             
             myLineRenderer.positionCount = 2;
@@ -534,6 +560,7 @@ public class EnGiant : EnemyUnit
                 shaderHover.SetActive(false);
             }
         }
+       
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

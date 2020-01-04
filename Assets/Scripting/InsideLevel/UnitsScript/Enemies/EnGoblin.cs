@@ -351,6 +351,16 @@ public class EnGoblin : EnemyUnit
             
             //Cada enemigo realiza su propio path
             LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+            pathToObjective = LM.TM.currentPath;
+
+            if (pathToObjective.Count - 2 > movementUds)
+            {
+                limitantNumberOfTilesToMove = movementUds;
+            }
+            else
+            {
+                limitantNumberOfTilesToMove = pathToObjective.Count - 2;
+            }
 
             if (shouldShow)
             {
@@ -368,15 +378,15 @@ public class EnGoblin : EnemyUnit
             }
 
             //Coge
-            myLineRenderer.positionCount += (LM.TM.currentPath.Count - 1);
+            myLineRenderer.positionCount += (limitantNumberOfTilesToMove +1 );
 
             //myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
 
-            for (int i = 0; i < LM.TM.currentPath.Count; i++)
+            for (int i = 0; i < limitantNumberOfTilesToMove + 1; i++)
             {
-                Vector3 pointPosition = new Vector3(LM.TM.currentPath[i].transform.position.x, LM.TM.currentPath[i].transform.position.y + 0.5f, LM.TM.currentPath[i].transform.position.z);
+                Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
 
-                if (i < LM.TM.currentPath.Count - 1)
+                if (i < pathToObjective.Count - 1)
                 {
                     myLineRenderer.SetPosition(i, pointPosition);
 
@@ -392,9 +402,9 @@ public class EnGoblin : EnemyUnit
                 {
                     if (shouldShow)
                     {
-                        wasTileAlreadyUnderAttack = LM.TM.currentPath[i].isUnderAttack;
+                        wasTileAlreadyUnderAttack = pathToObjective[i].isUnderAttack;
 
-                        LM.TM.currentPath[i].ColorAttack();
+                        pathToObjective[i].ColorAttack();
 
                        
                     }
@@ -402,7 +412,7 @@ public class EnGoblin : EnemyUnit
                     {
                         if (!wasTileAlreadyUnderAttack)
                         {
-                            LM.TM.currentPath[i].ColorDesAttack();
+                            pathToObjective[i].ColorDesAttack();
                             wasTileAlreadyUnderAttack = false;
                         }
                     }                    

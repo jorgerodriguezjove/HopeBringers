@@ -8,7 +8,18 @@ public class Rogue : PlayerUnit
     #region VARIABLES
 
     //[Header("STATS DE CLASE")]
+
+    [Header("MEJORAS DE PERSONAJE")]
+
+    public bool checkersAttack;
+    public int unitsCanJump;
+    //Lista de posibles unidades a las que atacar
+    [HideInInspector]
+    public List<UnitBase> unitsAttacked;
+    public bool extraTurnAttack;
     
+
+
     #endregion
 
     public override void CheckUnitsInRangeToAttack()
@@ -146,86 +157,304 @@ public class Rogue : PlayerUnit
     {
         hasAttacked = true;
         CalculateDamage(unitToAttack);
-
-        if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)
+      
+        if (checkersAttack)
         {
-            //Arriba
-            if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
+            unitsCanJump--;
+
+            if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)
             {
-                //Quito el color del tile
-                myCurrentTile.ColorDeselect();
+                //Arriba
+                if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
 
-                //Muevo al pícaro
-                currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
-                transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
-                //Cambio la rotación
-                NewRotationAfterJump(unitToAttack.myCurrentTile);
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
 
-                //Actualizo los tiles
-                UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[1]);
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[1]);
+                }
+                //Abajo
+                else
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[1]);
+                }
             }
-            //Abajo
+            //Izquierda o derecha
             else
             {
-                //Quito el color del tile
-                myCurrentTile.ColorDeselect();
+                //Derecha
+                if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
 
-                //Muevo al pícaro
-                currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
-                transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
-                //Cambio la rotación
-                NewRotationAfterJump(unitToAttack.myCurrentTile);
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
 
-                //Actualizo los tiles
-                UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[1]);
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[1]);
+                }
+                //Izquierda
+                else
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[1]);
+                }
             }
+
+            unitsAttacked.Add(unitToAttack);
+            //Hago daño
+            DoDamage(unitToAttack);
+            
+                
+            SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
+
+            if (unitsCanJump >= 1)
+            {
+
+                hasAttacked = false;                
+                CheckUnitsInRangeToAttack();
+
+               
+
+                hasMoved = true;
+                LM.DeSelectUnit();
+                UIM.RefreshTokens();
+                LM.SelectUnit(0, this);
+
+                for (int i = 0; i < unitsAttacked.Count; i++)
+                {
+                    currentUnitsAvailableToAttack.Remove(unitsAttacked[i]);
+
+                }
+
+            }
+            else
+            {
+                //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+                base.Attack(unitToAttack);
+            }
+
         }
-        //Izquierda o derecha
+        else if (extraTurnAttack)
+        {
+
+            if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)
+            {
+                //Arriba
+                if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[1]);
+                }
+                //Abajo
+                else
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[1]);
+                }
+            }
+            //Izquierda o derecha
+            else
+            {
+                //Derecha
+                if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[1]);
+                }
+                //Izquierda
+                else
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[1]);
+                }
+            }
+
+            //Hago daño
+            DoDamage(unitToAttack);
+            
+            SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
+
+            if (unitToAttack.isDead && !hasUsedExtraTurn)
+            {
+                hasAttacked = false;
+                hasMoved = false;               
+                UIM.RefreshTokens();
+                LM.DeSelectUnit();
+                hasUsedExtraTurn = true;
+                LM.SelectUnit(movementUds, this);
+
+            }
+            else
+            {
+                //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+                base.Attack(unitToAttack);
+                
+
+            }
+
+
+        }
         else
         {
-            //Derecha
-            if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
+
+            if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)
             {
-                //Quito el color del tile
-                myCurrentTile.ColorDeselect();
+                //Arriba
+                if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
 
-                //Muevo al pícaro
-                currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
-                transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
-                //Cambio la rotación
-                NewRotationAfterJump(unitToAttack.myCurrentTile);
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
 
-                //Actualizo los tiles
-                UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[1]);
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[1]);
+                }
+                //Abajo
+                else
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[1]);
+                }
             }
-            //Izquierda
+            //Izquierda o derecha
             else
             {
-                //Quito el color del tile
-                myCurrentTile.ColorDeselect();
+                //Derecha
+                if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
 
-                //Muevo al pícaro
-                currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
-                transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
-                //Cambio la rotación
-                NewRotationAfterJump(unitToAttack.myCurrentTile);
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
 
-                //Actualizo los tiles
-                UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[1]);
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[1]);
+                }
+                //Izquierda
+                else
+                {
+                    //Quito el color del tile
+                    myCurrentTile.ColorDeselect();
+
+                    //Muevo al pícaro
+                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
+                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
+
+                    //Cambio la rotación
+                    NewRotationAfterJump(unitToAttack.myCurrentTile);
+
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[1]);
+                }
             }
+
+            //Hago daño
+            DoDamage(unitToAttack);
+
+            SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
+
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
+
         }
-               
-        //Hago daño
-        DoDamage(unitToAttack);
+        
 
-        SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
-
-        //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
-        base.Attack(unitToAttack);
+       
     }
 
     //Función genérica que comprueba la nueva dirección a la que debe mirar el pícaro tras saltar.

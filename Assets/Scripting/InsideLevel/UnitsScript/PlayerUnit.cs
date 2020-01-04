@@ -26,6 +26,10 @@ public class PlayerUnit : UnitBase
     [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
+    //Solo lo uso para el Rogue
+    [HideInInspector]
+    public bool hasUsedExtraTurn;
+
     [Header("MOVIMIENTO")]
 
     //Camino que tiene que seguir la unidad para moverse
@@ -147,6 +151,8 @@ public class PlayerUnit : UnitBase
         UIM.RefreshTokens();
         isMovingorRotating = false;
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+
+        hasUsedExtraTurn = false;
     }
 
     //La unidad ha atacado y por tanto no puede hacer nada más.
@@ -407,11 +413,13 @@ public class PlayerUnit : UnitBase
         
         
 
-        CheckUnitsInRangeToAttack();
+        
         isMovingorRotating = true;
 
         MoveToTile(LM.tileToMoveAfterRotate, LM.TM.currentPath);
         LM.UnitHasFinishedMovementAndRotation();
+
+        CheckUnitsInRangeToAttack();
     }
 
     #endregion
