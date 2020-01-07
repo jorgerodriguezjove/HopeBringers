@@ -77,104 +77,48 @@ public class Knight : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-            //if (currentFacingDirection == FacingDirection.North || currentFacingDirection == FacingDirection.South)
-            //{
-            //    if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-            //    {
-            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
-            //    }
-
-            //    if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
-            //    {
-            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
-            //    }
-            //}
-            //else if (currentFacingDirection == FacingDirection.East || currentFacingDirection == FacingDirection.West)
-            //{
-                
-            //    if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
-            //    {
-            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
-            //    }
-
-            //    if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
-            //    {
-            //       DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
-            //    }
-
-            //}
-
            
+               //if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+               //{
+               //    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+               //}
 
+               //if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+               //{
+               //    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+               //}
+            
+
+               //if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+               //{
+               //    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+               //}
+
+               //if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+               //{
+               //    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+               //}
+
+            
 
             if (currentFacingDirection == FacingDirection.North)
-            {
-
-                if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-                {
-                    unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
-                   
-                }
-
-                if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
-                {
-                    unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
-                }
-
+            {              
                 unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
-
-
             }
 
             else if (currentFacingDirection == FacingDirection.South)
-            {
-
-                if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-                {
-                    unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineRight[0].unitOnTile.myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
-                }
-
-                if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
-                {
-                    unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineLeft[0].unitOnTile.myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
-                }
-
+            {             
                 unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
-
             }
 
             else if (currentFacingDirection == FacingDirection.East)
-            {
-
-                if (unitToAttack.myCurrentTile.tilesInLineUp[0].unitOnTile != null)
-                {
-
-                    unitToAttack.myCurrentTile.tilesInLineUp[0].unitOnTile.CalculatePushPosition(tilesToPush - 1 , unitToAttack.myCurrentTile.tilesInLineUp[0].unitOnTile.myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
-                }
-
-                if (unitToAttack.myCurrentTile.tilesInLineDown[0].unitOnTile != null)
-                {
-
-                    unitToAttack.myCurrentTile.tilesInLineDown[0].unitOnTile.CalculatePushPosition(tilesToPush - 1, unitToAttack.myCurrentTile.tilesInLineDown[0].unitOnTile.myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
-                }
-
+            {              
                 unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
-
             }
 
             else if (currentFacingDirection == FacingDirection.West)
             {
-                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
-
-                if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
-                {
-                   currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
-                }
-
-                if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
-                {
-                    currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
-                }
+                unitToAttack.CalculatePushPosition(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);           
             }
 
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);

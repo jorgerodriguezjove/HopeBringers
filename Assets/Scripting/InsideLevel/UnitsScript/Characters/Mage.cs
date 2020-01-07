@@ -27,7 +27,12 @@ public class Mage : PlayerUnit
     [Header("MEJORAS DE PERSONAJE")]
 
     public bool crossAttack;
-    
+
+    public bool electricityAttack;
+    public int timeElectricityAttackExpands;
+    [HideInInspector]
+    public List<UnitBase> unitsAttacked;
+
 
 
 
@@ -47,7 +52,7 @@ public class Mage : PlayerUnit
 
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
-            myAnimator.SetTrigger("Attack");
+            //myAnimator.SetTrigger("Attack");
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -65,6 +70,43 @@ public class Mage : PlayerUnit
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
+        }
+        else if (electricityAttack)
+        {
+            //Hago daño
+            DoDamage(unitToAttack);
+            unitsAttacked.Add(unitToAttack);
+
+           
+            for (int j = 0; j < unitsAttacked.Count; j++)
+            {
+                
+                if (timeElectricityAttackExpands > 0)
+                {
+                    timeElectricityAttackExpands--;
+                    for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; ++k)
+                    {
+                       
+                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile))
+                        {
+
+                            DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+                            unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+                        }
+                    }
+
+                   
+                }
+
+            }
+               
+                
+            
+            unitsAttacked.Clear();
+
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
+
         }
         else
         {

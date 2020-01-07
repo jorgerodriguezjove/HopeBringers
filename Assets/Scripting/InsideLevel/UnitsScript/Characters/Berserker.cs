@@ -27,6 +27,9 @@ public class Berserker : PlayerUnit
 
     public bool neighboursAttack;
 
+    public bool doubleAttack;
+    public int timesDoubleAttackRepeats;
+
     #endregion
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
@@ -53,6 +56,21 @@ public class Berserker : PlayerUnit
                 //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
                 base.Attack(unitToAttack);
             
+
+        }
+        else if (doubleAttack)
+        {                       
+            for (int i = 0; i < timesDoubleAttackRepeats; i++)
+            {
+                //Animación de ataque 
+                //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
+                myAnimator.SetTrigger("Attack");
+
+                //Hago daño
+                DoDamage(unitToAttack);
+            }
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
 
         }
         else
