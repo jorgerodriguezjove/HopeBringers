@@ -4,30 +4,18 @@ using UnityEngine;
 
 public class KnightData : CharacterData
 {
-    #region VARIABLES
 
-    //La referencia a mi unidad dentro del nivel. (No puedo usar myUnit porque es  una referencia al prefab).
-    PlayerUnit myUnitReferenceOnLevel;
-
-    #endregion
-
-
-    public override void InitializeMyUnitStats()
+    public override void UpdateMyUnitStatsForTheLevel()
     {
         //Referencia al personaje en el nivel
         myUnitReferenceOnLevel = FindObjectOfType<Knight>();
 
-        //Inicializo los stats genéricos
-        myUnitReferenceOnLevel.SetMyGenericStats(genericUpgrades[AppGenericUpgrades.maxHealth], genericUpgrades[AppGenericUpgrades.baseDamage]
-                                                 );
-        //baseDamage,movementUds, bonusBackAttack,
-        //bonusMoreHeight, bonusLessHeight, damageMadeByPush, damageMadeByFall,
-        //range, maxHeightDifferenceToAttack, maxHeightDifferenceToMove);
-        
-        //Inicializo las variables especificas del personaje
+        //Aztualizo las mejoras genéricas
+        base.UpdateMyUnitStatsForTheLevel();
+
+        //Actualizo las merjoas especificas del personaje
         myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.pushFurther1], specificBoolCharacterUpgrades[AppKnightUpgrades.pushWider1]);
     }
-
 
     //Esto se llama en el INIT del characterData (padre de este script)
     protected override void InitializeSpecificUpgrades()
@@ -35,7 +23,6 @@ public class KnightData : CharacterData
         //Mejoras Tipo BOOL
         specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, false);
         specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushWider1, false);
-
 
         //Mejoras tipo INT
         //specificIntCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, myUnitReferenceOnLevel.GetComponent<Knight>().tilesToPush);

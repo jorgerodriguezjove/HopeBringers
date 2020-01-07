@@ -36,8 +36,8 @@ public class UpgradeNode : MonoBehaviour
     [Header("LÓGICA")]
 
     //Se usa para comprobar que nodos han sido comprados al recargar el árbol de habilidades. NO SE USA PARA SABER A QUE MEJORA SE APLICA
-    //Lo ideal supongo que sería que se generase automaticamente en vez de poner en el editor el id (esto puede dar lugar a repeticiones)
-    [SerializeField]
+    //Estos ids se setean automáticamente desde el UITableManager la primera vez que se setea el árbol.
+    [HideInInspector]
     public int idUpgrade;
 
     [SerializeField]
@@ -98,7 +98,6 @@ public class UpgradeNode : MonoBehaviour
            {
                Debug.LogError("Diccionario Bool no contiene el nombre: " + upgradeName);
            }
-
         }
 
         else
@@ -135,8 +134,4 @@ public class UpgradeNode : MonoBehaviour
         isBlocked = false;
         gameObject.SetActive(true);
     }
-
-    
-
-
 }

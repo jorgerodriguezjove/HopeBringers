@@ -56,7 +56,7 @@ public class UITableManager : MonoBehaviour
 
     //Referencias de las listas de ids del personaje y la lista de upgrades del skill tree.
     private List<int> ids;
-    private List<UpgradeNode> ups;
+    private List<UpgradeNode> upgrades;
 
     [Header("REFERENCIAS")]
     [SerializeField]
@@ -168,22 +168,31 @@ public class UITableManager : MonoBehaviour
         //Instancio árbol de habilidades
         currentSkillTreeObj = Instantiate(unitClicked.skillTreePrefab, rightPageProgresionBook.transform);
 
-        ups = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
+        upgrades = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
         ids = unitClicked.idSkillsBought;
 
-        for (int i = 0; i < ups.Count; i++)
+        for (int i = 0; i < upgrades.Count; i++)
         {
-            ups[i].GetComponent<UpgradeNode>().TM = TM;
-            ups[i].GetComponent<UpgradeNode>().myUnit = unitClicked;
+            upgrades[i].GetComponent<UpgradeNode>().TM = TM;
+            upgrades[i].GetComponent<UpgradeNode>().myUnit = unitClicked;
 
-            for (int j = 0; j < ids.Count; j++)
+            if (ids.Count == 0)
             {
-                if (ups[i].idUpgrade == ids[j])
-                {
-                    ups[i].UpgradeBought();
+                upgrades[i].GetComponent<UpgradeNode>().idUpgrade = i;
+            }
 
-                    //¿Este break esta bien?
-                    break;
+            //Si las ids no son 0 entonces es que no es la primera vez que se setea el árbol y no tengo que volver a setear los ids
+            else
+            {
+                for (int j = 0; j < ids.Count; j++)
+                {
+                    if (upgrades[i].idUpgrade == ids[j])
+                    {
+                        upgrades[i].UpgradeBought();
+
+                        //¿Este break esta bien?
+                        break;
+                    }
                 }
             }
         }

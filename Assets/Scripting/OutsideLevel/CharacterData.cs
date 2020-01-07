@@ -11,6 +11,10 @@ public class CharacterData : MonoBehaviour
     [SerializeField]
     public PlayerUnit myUnit;
 
+    //La referencia a mi unidad dentro del nivel. (No puedo usar myUnit porque es  una referencia al prefab).
+    //Cada personaje en su data se encarga de inicializarlo
+    protected PlayerUnit myUnitReferenceOnLevel;
+
     [SerializeField]
     public GameObject skillTreePrefab;
 
@@ -76,8 +80,7 @@ public class CharacterData : MonoBehaviour
             initialized = true;
 
             //Hacer desaparecer el modelo
-            HideShowMeshCharacterData(true);
-            
+            HideShowMeshCharacterData(false);
         }
 
         else
@@ -89,32 +92,42 @@ public class CharacterData : MonoBehaviour
 
     #endregion
 
-    #region INIT_STATS
+    #region INIT_&_UPDATE_STATS
+    
+    //NO CONFUNDIR INIT CON UPDATE.
+    //Init se encarga de crear la mejora dentro del diccionario.
+    //Update se encarga de actualizar el valor de la variable que tiene el personaje en escena
 
+    //Inicializo las mejoras genéricas en el diccionario para poder comprarlas
     private void InitializeGenericUpgrades()
     {
         genericUpgrades.Add(AppGenericUpgrades.maxHealth, myUnit.maxHealth);
         genericUpgrades.Add(AppGenericUpgrades.baseDamage, myUnit.baseDamage);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
-        //genericUpgrades.Add(AppGenericUpgrades.movementUds, myUnit.movementUds);
+        genericUpgrades.Add(AppGenericUpgrades.attackRange, myUnit.attackRange);
+        
+        //Aquí es donde irían el resto de mejoras genéricas
     }
 
+    //Cada personaje en su data inicializa las mejoras esepcíficas en el diccionario para poder comprarlas
     protected virtual void InitializeSpecificUpgrades()
     {
         //Cada data se encarga de inicializar las suyas
     }
 
+    //Al colocar las unidades en el nivel se llama a esta función para actualizar los valores de las stats.
+    public virtual void UpdateMyUnitStatsForTheLevel()
+    {
+        //Primero se llama al override para inicializar myUnitReferenceOnLevel.
+
+        //Una vez inicializado el override llama al base para que todos usen esta misma función y se seteen las mejoras genéricas.
+        myUnitReferenceOnLevel.SetMyGenericStats(genericUpgrades[AppGenericUpgrades.maxHealth], genericUpgrades[AppGenericUpgrades.baseDamage],
+                                                 genericUpgrades[AppGenericUpgrades.attackRange]);
+        //Después de esto vuelve al override donde se setean las mejoras especificas de cada personaje.
+    }
 
     #endregion
 
+    #region MISCELLANEOUS
 
     private void OnMouseDown()
     {
@@ -137,17 +150,14 @@ public class CharacterData : MonoBehaviour
         idSkillsBought.Add(idSkill);
     }
 
+    //Motrar u ocultar el modelo de la figura para que aparezca en LevelSelection pero no en los niveles.
     public void HideShowMeshCharacterData(bool isActive)
     {
         unitModel.SetActive(isActive);
         GetComponent<Collider>().enabled = isActive;
     }
-    
-   
-    public virtual void InitializeMyUnitStats()
-    {
-        //Cada Data se encarga de pasar los datos a su personaje
-    }
+
+    #endregion
 }
 
 

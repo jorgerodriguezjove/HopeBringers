@@ -118,20 +118,26 @@ public class PlayerUnit : UnitBase
 
     //Stats genéricos que tienen todos los personajes.
     //Los stats especificos se ponen en cada personaje
-    public void SetMyGenericStats(int _maxHealth, int _baseDamage)
-                                         //int _baseDamage,int _movementUds, int _bonusBackAttack,
-                                         //int _bonusMoreHeightAttack, int _bonusLessHeightAttack, int _damageMadeByPush, int _damageMadeByFall,
-                                         //int _range, float _maxHeightDifferenceToAttack, float _maxHeightDiferenceToMove)
+    public void SetMyGenericStats(int _maxHealth, int _baseDamage, 
+                                  int _attackRange)
     {
         maxHealth = _maxHealth;
 
         //Comprobar que esto no hace que el baseDamage se ponga a 0
-        //baseDamage = _baseDamage;
+        baseDamage = _baseDamage;
+
+        attackRange = _attackRange;
+
+        Debug.Log(attackRange);
+
+
+
+
+
+
 
         //Una vez seteadas todas las variables, inicializo mi vida actual
         currentHealth = maxHealth;
-
-        Debug.Log(currentHealth);
     }
 
 

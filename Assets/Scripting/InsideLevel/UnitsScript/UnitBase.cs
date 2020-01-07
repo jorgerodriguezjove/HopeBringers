@@ -65,7 +65,7 @@ public class UnitBase : MonoBehaviour
     protected GameObject unitMaterialModel;
 
     //Tile en el que está el personaje actualmente. Se setea desde el editor.
-    [HideInInspector]
+    [SerializeField]
     public IndividualTiles myCurrentTile;
 
     //Enum con las cuatro posibles direcciones en las que puede estar mirando una unidad.
@@ -216,7 +216,6 @@ public class UnitBase : MonoBehaviour
 
         InitializeHealth();
     }
-
 
     //Esta función la usan todos los personajes al moverse para reajustar la información del tile actual y del nuevo al que se van a mover.
     public void UpdateInformationAfterMovement(IndividualTiles newTile)

@@ -6,11 +6,8 @@ public class LevelManager : MonoBehaviour
 {
     #region VARIABLES
 
-    [Header("ANIMACIÓN INICIAL")]
-
-    private GameObject[] tilesInScene;
-
-    WaitForSeconds waitFallingTiles = new WaitForSeconds(0.05f);
+    [SerializeField]
+    private float offsetHeightArrow;
 
     [Header("INTERACCIÓN CON UNIDADES")]
 
@@ -40,7 +37,6 @@ public class LevelManager : MonoBehaviour
     //Tiles que los enemigos pueden moverse, que se muestran al hacer hover o clickar en los enemigos
     [HideInInspector]
     public List<IndividualTiles> tilesAvailableForMovementEnemies = new List<IndividualTiles>();
-
 
     //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
     private int enemiesNumber;
@@ -483,7 +479,7 @@ public class LevelManager : MonoBehaviour
 
                             if (tileToMove == selectedCharacter.myCurrentTile)
                             {
-                                Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 2f, tileToMove.transform.position.z);
+                                Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                                 selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
 
                             }
@@ -497,7 +493,7 @@ public class LevelManager : MonoBehaviour
                                         || tileToMove.neighbours[j].noTilesInThisColumn)
                                     {
 
-                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 4f, tileToMove.transform.position.z);
+                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                                         selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
                                         break;
 
@@ -512,7 +508,7 @@ public class LevelManager : MonoBehaviour
                                     {
                                         if (tileToMove.neighboursOcuppied >= 1)
                                         {
-                                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 2f, tileToMove.transform.position.z);
+                                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                                             selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
                                         }
                                         else
@@ -945,7 +941,7 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
         {
-            GameManager.Instance.characterDataForCurrentLevel[i].InitializeMyUnitStats();
+            GameManager.Instance.characterDataForCurrentLevel[i].UpdateMyUnitStatsForTheLevel();
         }
 
         currentLevelState = LevelState.PlayerPhase;

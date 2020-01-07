@@ -20,7 +20,7 @@ public class AppGenericUpgrades
     public static readonly string bonusBackAttack = "bonusBackAttack";
     public static readonly string bonusMoreHeight = "bonusMoreHeight";
     public static readonly string bonusLessHeight = "bonusLessHeight";
-    public static readonly string range = "range";
+    public static readonly string attackRange = "range";
     public static readonly string maxHeightDifferenceToAttack = "maxHeightDifferenceToAttack";
     public static readonly string maxHeightDifferenceToMove = "maxHeightDifferenceToMove";
     public static readonly string damageMadeByPush = "damageMadeByPush";
@@ -32,6 +32,11 @@ public class AppKnightUpgrades
 {
     public static readonly string pushFurther1 = "pushFurther1";
     public static readonly string pushWider1 = "pushWider1";
+
+}
+
+public class AppMageUpgrades
+{
 
 }
 

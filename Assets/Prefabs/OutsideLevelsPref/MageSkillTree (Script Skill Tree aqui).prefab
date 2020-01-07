@@ -106,13 +106,14 @@ GameObject:
   - component: {fileID: 3778524071156754228}
   - component: {fileID: 3778524071156754227}
   - component: {fileID: 3778524071156754230}
+  - component: {fileID: 1668340145999082563}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071156754226
 RectTransform:
   m_ObjectHideFlags: 0
@@ -125,7 +126,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3778524072379115957}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -239,6 +240,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1668340145999082563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071156754225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071165828751
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,13 +613,14 @@ GameObject:
   - component: {fileID: 3778524071242177783}
   - component: {fileID: 3778524071242177782}
   - component: {fileID: 3778524071242177785}
+  - component: {fileID: 3541112380613171961}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071242177781
 RectTransform:
   m_ObjectHideFlags: 0
@@ -720,6 +747,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &3541112380613171961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071242177780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071248003655
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,13 +931,14 @@ GameObject:
   - component: {fileID: 3778524071248121755}
   - component: {fileID: 3778524071248121754}
   - component: {fileID: 3778524071248121757}
+  - component: {fileID: 1621538594249545631}
   m_Layer: 5
-  m_Name: BigSkill4
+  m_Name: BigSkill2R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071248121753
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1012,6 +1065,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1621538594249545631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071248121752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071254325104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,13 +1292,14 @@ GameObject:
   - component: {fileID: 3778524071323809442}
   - component: {fileID: 3778524071323809441}
   - component: {fileID: 3778524071323809444}
+  - component: {fileID: 947326237276585014}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071323809440
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1231,7 +1312,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3778524072379115957}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1345,6 +1426,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &947326237276585014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071323809503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071342020325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,13 +1653,14 @@ GameObject:
   - component: {fileID: 3778524071358616825}
   - component: {fileID: 3778524071358616824}
   - component: {fileID: 3778524071358616827}
+  - component: {fileID: 13601272714871599}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071358616823
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1566,7 +1673,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3778524072379115957}
-  m_RootOrder: 8
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1680,6 +1787,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &13601272714871599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071358616822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071361617904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,7 +1849,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 1.5780001, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.16, y: -0.06}
+  m_AnchoredPosition: {x: 0.16, y: -0.59}
   m_SizeDelta: {x: 13.848, y: 7.622}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3778524071361617907
@@ -1911,13 +2043,14 @@ GameObject:
   - component: {fileID: 3778524071496516809}
   - component: {fileID: 3778524071496516808}
   - component: {fileID: 3778524071496516811}
+  - component: {fileID: 1215408399897678850}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071496516807
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1930,7 +2063,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3778524072379115957}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2044,6 +2177,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1215408399897678850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071496516806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071513297324
 GameObject:
   m_ObjectHideFlags: 0
@@ -2349,13 +2507,14 @@ GameObject:
   - component: {fileID: 3778524071668339842}
   - component: {fileID: 3778524071668339841}
   - component: {fileID: 3778524071668339844}
+  - component: {fileID: 2134950588881487391}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071668339840
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2482,6 +2641,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &2134950588881487391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071668339903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071672329649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2653,13 +2837,14 @@ GameObject:
   - component: {fileID: 3778524071720765964}
   - component: {fileID: 3778524071720765963}
   - component: {fileID: 3778524071720765966}
+  - component: {fileID: 590147804816136731}
   m_Layer: 5
   m_Name: Skill7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071720765962
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2786,6 +2971,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &590147804816136731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071720765961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071784206783
 GameObject:
   m_ObjectHideFlags: 0
@@ -2892,13 +3104,14 @@ GameObject:
   - component: {fileID: 3778524071784805774}
   - component: {fileID: 3778524071784805773}
   - component: {fileID: 3778524071784805776}
+  - component: {fileID: 8154876608970354049}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071784805772
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3025,6 +3238,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &8154876608970354049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071784805771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071813793104
 GameObject:
   m_ObjectHideFlags: 0
@@ -3330,13 +3568,14 @@ GameObject:
   - component: {fileID: 3778524071922867524}
   - component: {fileID: 3778524071922867523}
   - component: {fileID: 3778524071922867526}
+  - component: {fileID: 4277940131311925}
   m_Layer: 5
   m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071922867522
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3463,6 +3702,34 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &4277940131311925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071922867521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 13601272714871599}
+  - {fileID: 1755019669257427741}
+  - {fileID: 5623076229944267492}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071954166514
 GameObject:
   m_ObjectHideFlags: 0
@@ -3476,13 +3743,14 @@ GameObject:
   - component: {fileID: 3778524071954166517}
   - component: {fileID: 3778524071954166516}
   - component: {fileID: 3778524071954166519}
+  - component: {fileID: 5623076229944267492}
   m_Layer: 5
   m_Name: Skill4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071954166515
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3609,6 +3877,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &5623076229944267492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071954166514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071961725507
 GameObject:
   m_ObjectHideFlags: 0
@@ -3622,13 +3917,14 @@ GameObject:
   - component: {fileID: 3778524071961725510}
   - component: {fileID: 3778524071961725509}
   - component: {fileID: 3778524071961725512}
+  - component: {fileID: 1137861337890515154}
   m_Layer: 5
-  m_Name: BigSkill6
+  m_Name: BigSkill3R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071961725508
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3755,6 +4051,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1137861337890515154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071961725507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071982361740
 GameObject:
   m_ObjectHideFlags: 0
@@ -3768,13 +4091,14 @@ GameObject:
   - component: {fileID: 3778524071982361743}
   - component: {fileID: 3778524071982361742}
   - component: {fileID: 3778524071982361745}
+  - component: {fileID: 7672477506535939422}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071982361741
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3901,6 +4225,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &7672477506535939422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071982361740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071983087778
 GameObject:
   m_ObjectHideFlags: 0
@@ -3914,13 +4263,14 @@ GameObject:
   - component: {fileID: 3778524071983087781}
   - component: {fileID: 3778524071983087780}
   - component: {fileID: 3778524071983087783}
+  - component: {fileID: 1872075386133468978}
   m_Layer: 5
-  m_Name: BigSkill5
+  m_Name: BigSkill3L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524071983087779
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4047,6 +4397,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1872075386133468978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524071983087778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524071983241903
 GameObject:
   m_ObjectHideFlags: 0
@@ -4196,152 +4573,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!1 &3778524072027873373
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3778524072027873374}
-  - component: {fileID: 3778524072027873313}
-  - component: {fileID: 3778524072027873312}
-  - component: {fileID: 3778524072027873375}
-  - component: {fileID: 3778524072027873314}
-  m_Layer: 5
-  m_Name: Skill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &3778524072027873374
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778524072027873373}
-  m_LocalRotation: {x: 6.4104082e-12, y: 0.0000000018626456, z: -4.6561652e-10, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0009970631}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3778524071165828752}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.02999986, y: 2.4464}
-  m_SizeDelta: {x: 1.22, y: 0.4656}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3778524072027873313
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778524072027873373}
-  m_CullTransparentMesh: 0
---- !u!114 &3778524072027873312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778524072027873373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 0}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
---- !u!114 &3778524072027873375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778524072027873373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 3778524072027873312}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
---- !u!114 &3778524072027873314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3778524072027873373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls: []
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &3778524072078407229
 GameObject:
   m_ObjectHideFlags: 0
@@ -4501,13 +4732,14 @@ GameObject:
   - component: {fileID: 3778524072144469189}
   - component: {fileID: 3778524072144469188}
   - component: {fileID: 3778524072144469191}
+  - component: {fileID: 1755019669257427741}
   m_Layer: 5
   m_Name: Skill3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072144469187
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4634,6 +4866,34 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &1755019669257427741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072144469186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 4
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 3822528691473249676}
+  - {fileID: 2134950588881487391}
+  - {fileID: 2531285073347307661}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072146703727
 GameObject:
   m_ObjectHideFlags: 0
@@ -5109,7 +5369,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: -2.434, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.66, y: -0.06}
+  m_AnchoredPosition: {x: -0.66, y: -0.5899998}
   m_SizeDelta: {x: 13.848, y: 7.622}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3778524072301753793
@@ -5162,13 +5422,14 @@ GameObject:
   - component: {fileID: 3778524072321854428}
   - component: {fileID: 3778524072321854427}
   - component: {fileID: 3778524072321854430}
+  - component: {fileID: 6462656284696535412}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072321854426
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5295,6 +5556,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &6462656284696535412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072321854425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072354124622
 GameObject:
   m_ObjectHideFlags: 0
@@ -5468,16 +5754,16 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3778524072997576875}
-  - {fileID: 3778524072769630998}
+  - {fileID: 3778524071323809440}
+  - {fileID: 3778524071358616823}
   - {fileID: 3778524073013681968}
   - {fileID: 3778524071668339840}
+  - {fileID: 3778524071496516807}
   - {fileID: 3778524071156754226}
   - {fileID: 3778524072944910451}
-  - {fileID: 3778524071496516807}
   - {fileID: 3778524071242177781}
-  - {fileID: 3778524071358616823}
-  - {fileID: 3778524071323809440}
+  - {fileID: 3778524072997576875}
+  - {fileID: 3778524072769630998}
   - {fileID: 3778524072321854426}
   - {fileID: 3778524072697908988}
   - {fileID: 3778524071784805772}
@@ -5503,13 +5789,14 @@ GameObject:
   - component: {fileID: 3778524072401067490}
   - component: {fileID: 3778524072401067489}
   - component: {fileID: 3778524072401067492}
+  - component: {fileID: 9194014145630914588}
   m_Layer: 5
   m_Name: Skill8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072401067488
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5636,6 +5923,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &9194014145630914588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072401066527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072492948922
 GameObject:
   m_ObjectHideFlags: 0
@@ -6087,13 +6401,14 @@ GameObject:
   - component: {fileID: 3778524072579743008}
   - component: {fileID: 3778524072579743071}
   - component: {fileID: 3778524072579743010}
+  - component: {fileID: 3347882643797329446}
   m_Layer: 5
   m_Name: Skill5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072579743070
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6220,6 +6535,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &3347882643797329446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072579743069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072586822549
 GameObject:
   m_ObjectHideFlags: 0
@@ -6379,13 +6721,14 @@ GameObject:
   - component: {fileID: 3778524072605984033}
   - component: {fileID: 3778524072605984032}
   - component: {fileID: 3778524072605984035}
+  - component: {fileID: 2531285073347307661}
   m_Layer: 5
-  m_Name: BigSkill2
+  m_Name: BigSkill1R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072605984095
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6512,6 +6855,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &2531285073347307661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072605984094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072619304327
 GameObject:
   m_ObjectHideFlags: 0
@@ -6671,13 +7041,14 @@ GameObject:
   - component: {fileID: 3778524072648982093}
   - component: {fileID: 3778524072648982092}
   - component: {fileID: 3778524072648982095}
+  - component: {fileID: 5927374749437294896}
   m_Layer: 5
   m_Name: Skill6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072648982091
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6804,6 +7175,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &5927374749437294896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072648982090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072653849409
 GameObject:
   m_ObjectHideFlags: 0
@@ -7255,13 +7653,14 @@ GameObject:
   - component: {fileID: 3778524072674855912}
   - component: {fileID: 3778524072674855911}
   - component: {fileID: 3778524072674855914}
+  - component: {fileID: 7384929334101182174}
   m_Layer: 5
-  m_Name: BigSkill3
+  m_Name: BigSkill2L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072674855910
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7388,6 +7787,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &7384929334101182174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072674855909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072697908987
 GameObject:
   m_ObjectHideFlags: 0
@@ -7401,13 +7827,14 @@ GameObject:
   - component: {fileID: 3778524072697908990}
   - component: {fileID: 3778524072697908989}
   - component: {fileID: 3778524072697908928}
+  - component: {fileID: 9100535007291584131}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072697908988
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7534,6 +7961,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &9100535007291584131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072697908987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072701166736
 GameObject:
   m_ObjectHideFlags: 0
@@ -7693,13 +8145,14 @@ GameObject:
   - component: {fileID: 3778524072769631000}
   - component: {fileID: 3778524072769630999}
   - component: {fileID: 3778524072769631002}
+  - component: {fileID: 9209695228219346001}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072769630998
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7712,7 +8165,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3778524072379115957}
-  m_RootOrder: 1
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7826,6 +8279,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &9209695228219346001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072769630997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072779661975
 GameObject:
   m_ObjectHideFlags: 0
@@ -8289,13 +8767,14 @@ GameObject:
   - component: {fileID: 3778524072944910453}
   - component: {fileID: 3778524072944910452}
   - component: {fileID: 3778524072944910455}
+  - component: {fileID: 8760252126245530769}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072944910451
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8308,7 +8787,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3778524072379115957}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8422,6 +8901,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &8760252126245530769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072944910450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524072997576874
 GameObject:
   m_ObjectHideFlags: 0
@@ -8435,13 +8939,14 @@ GameObject:
   - component: {fileID: 3778524072997576877}
   - component: {fileID: 3778524072997576876}
   - component: {fileID: 3778524072997576879}
+  - component: {fileID: 4037133038688745902}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524072997576875
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8454,7 +8959,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3778524072379115957}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8568,6 +9073,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &4037133038688745902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524072997576874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524073013681967
 GameObject:
   m_ObjectHideFlags: 0
@@ -8581,13 +9111,14 @@ GameObject:
   - component: {fileID: 3778524073013681970}
   - component: {fileID: 3778524073013681969}
   - component: {fileID: 3778524073013681972}
+  - component: {fileID: 3822528691473249676}
   m_Layer: 5
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524073013681968
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8714,6 +9245,31 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &3822528691473249676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524073013681967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 100
+  tooltip: +1 vida
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: maxHealth
+  valueAdded: 1
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying: []
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524073031852366
 GameObject:
   m_ObjectHideFlags: 0
@@ -8727,13 +9283,14 @@ GameObject:
   - component: {fileID: 3778524073031852369}
   - component: {fileID: 3778524073031852368}
   - component: {fileID: 3778524073031852371}
+  - component: {fileID: 9106216648740234949}
   m_Layer: 5
-  m_Name: BigSkill
+  m_Name: BigSkill1L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3778524073031852367
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8860,6 +9417,33 @@ MonoBehaviour:
         m_Calls: []
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &9106216648740234949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3778524073031852366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeCost: 0
+  tooltip: 
+  isItMinus: 0
+  isItBoolUpgrade: 0
+  upgradeName: 
+  valueAdded: 0
+  idUpgrade: 0
+  isBlocked: 1
+  isBought: 0
+  nodesUnlockedAfterBuying:
+  - {fileID: 0}
+  - {fileID: 0}
+  myUnit: {fileID: 0}
+  feedbackIsBought: {fileID: 0}
+  TM: {fileID: 0}
 --- !u!1 &3778524073035497866
 GameObject:
   m_ObjectHideFlags: 0
@@ -9307,9 +9891,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4756267448432593221}
-  - component: {fileID: -8512973598409199643}
+  - component: {fileID: 5379332735593921348}
   m_Layer: 0
-  m_Name: MageSkillTree
+  m_Name: MageSkillTree (Script Skill Tree aqui)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9331,7 +9915,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-8512973598409199643
+--- !u!114 &5379332735593921348
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9343,4 +9927,209 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d37eebed66a394792df4cc2a3eadce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allUpgradesInTree: []
+  allUpgradesInTree:
+  - {fileID: 102939353137632980}
+  - {fileID: 4277940131311925}
+  - {fileID: 1755019669257427741}
+  - {fileID: 5623076229944267492}
+  - {fileID: 3347882643797329446}
+  - {fileID: 5927374749437294896}
+  - {fileID: 590147804816136731}
+  - {fileID: 9194014145630914588}
+  - {fileID: 947326237276585014}
+  - {fileID: 13601272714871599}
+  - {fileID: 3822528691473249676}
+  - {fileID: 2134950588881487391}
+  - {fileID: 1215408399897678850}
+  - {fileID: 1668340145999082563}
+  - {fileID: 8760252126245530769}
+  - {fileID: 3541112380613171961}
+  - {fileID: 4037133038688745902}
+  - {fileID: 9209695228219346001}
+  - {fileID: 6462656284696535412}
+  - {fileID: 9100535007291584131}
+  - {fileID: 8154876608970354049}
+  - {fileID: 7672477506535939422}
+  - {fileID: 9106216648740234949}
+  - {fileID: 2531285073347307661}
+  - {fileID: 7384929334101182174}
+  - {fileID: 1621538594249545631}
+  - {fileID: 1872075386133468978}
+  - {fileID: 1137861337890515154}
+--- !u!1001 &1373784066079397924
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3778524071165828752}
+    m_Modifications:
+    - target: {fileID: 2837455556660885625, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Name
+      value: SkillNode
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0009970631
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 6.4104082e-12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0000000018626456
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -4.6561652e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.02999986
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.4464
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.4656
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: nodesUnlockedAfterBuying.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: upgradeCost
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: tooltip
+      value: +1 Tile de ataque
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: upgradeName
+      value: attackRange
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: valueAdded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: feedbackIsBought
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: nodesUnlockedAfterBuying.Array.data[0]
+      value: 
+      objectReference: {fileID: 947326237276585014}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: nodesUnlockedAfterBuying.Array.data[1]
+      value: 
+      objectReference: {fileID: 4277940131311925}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 03d4e7ae09463e743a5b736858c6fce8, type: 3}
+--- !u!114 &102939353137632980 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1373784066079397924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba55c240b81e71940a44ff102b7d2a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &3778524072027873374 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2837455556660885626, guid: 03d4e7ae09463e743a5b736858c6fce8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1373784066079397924}
+  m_PrefabAsset: {fileID: 0}
