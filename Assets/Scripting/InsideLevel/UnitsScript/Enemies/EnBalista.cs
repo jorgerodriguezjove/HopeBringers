@@ -150,6 +150,9 @@ public class EnBalista : EnemyUnit
     //Necesito una corrutina para ir instanciando las partículas y que el daño vaya acorde con esto
     IEnumerator AttackCorroutine()
     {
+        tilesToShoot.Clear();
+        CheckCharactersInLine();
+
         Debug.Log(tilesToShoot.Count);
         for (int i = 0; i < tilesToShoot.Count; i++)
         {
@@ -220,6 +223,7 @@ public class EnBalista : EnemyUnit
     }
 
     //Pongo público para acceder a la hora de hacer hover
+    //ESTA FUNCIÓN NO PUEDE CAMBIAR EL CURRENTSTATE DEL ENEMIGO, se llama fuera del turno enemigo.
     public override void CheckCharactersInLine()
     {
         if (!isDead)
@@ -412,8 +416,52 @@ public class EnBalista : EnemyUnit
                     }
                 }
             }
+
+            //Aviso a los tiles de que tienen que buscar al caballero.
+            WarnOrResetTilesToShoot(true);
         }
     }
+
+    public void WarnOrResetTilesToShoot(bool _isWarning)
+    {
+        Debug.Log("Warn Tiles");
+        for (int i = 0; i < tilesToShoot.Count; i++)
+        {
+            if (_isWarning)
+            {
+                tilesToShoot[i].lookingForKnightToWarnBalista = true;
+                tilesToShoot[i].allBalistasToWarn.Add(GetComponent<EnBalista>());
+            }
+
+            else
+            {
+                tilesToShoot[i].lookingForKnightToWarnBalista = false;
+                tilesToShoot[i].allBalistasToWarn.Remove(GetComponent<EnBalista>());
+            }   
+        }
+    }
+
+    public void BeWarnByTile()
+    {
+        //Despinto los tiles actuales
+        if (isAttackPrepared)
+        {
+            FeedbackTilesToAttack(false);
+        }
+       
+        //Aviso a los tiles actuales de que ya no tienen que buscar
+        WarnOrResetTilesToShoot(false);
+
+        //Vuelvo a buscar los tiles a disparar
+        CheckCharactersInLine();
+
+        //Pinto los nuevos tiles
+        if (isAttackPrepared)
+        {
+            FeedbackTilesToAttack(true);
+        }
+    }
+
 
     //Esta función calcula el tile al que se tiene que mover. Sirve tanto para moverse como para mostrar la acción de la balista
     public IndividualTiles GetTileToMove()

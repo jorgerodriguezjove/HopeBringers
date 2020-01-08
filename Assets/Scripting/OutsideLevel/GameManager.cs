@@ -88,7 +88,7 @@ public class GameManager : PersistentSingleton<GameManager>
     //Al completar un nivel el levelManager avisa de que en la escena de mapa va a tener que desbloquear niveles.
     public void VictoryAchieved()
     {
-        Debug.Log(possibleXpToGainIfCurrentLevelIsWon);
+        Debug.Log("Experiencia al ganar el nivel: " + possibleXpToGainIfCurrentLevelIsWon);
 
         levelIDsUnlocked.Add(currentLevelNode);
 

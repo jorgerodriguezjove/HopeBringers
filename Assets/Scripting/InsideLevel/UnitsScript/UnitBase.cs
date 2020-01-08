@@ -224,6 +224,13 @@ public class UnitBase : MonoBehaviour
         if (myCurrentTile != null)
         {
             myCurrentTile.unitOnTile = null;
+
+            //Aviso al tile en el que estaba de que avise a la balista si le toca
+            if (GetComponent<PlayerUnit>())
+            {
+                myCurrentTile.WarnBalista(GetComponent<PlayerUnit>());
+            }
+
         }
         newTile.unitOnTile = this;
 
@@ -235,6 +242,12 @@ public class UnitBase : MonoBehaviour
             
         myCurrentTile = newTile;
         myCurrentTile.WarnInmediateNeighbours();
+
+        //Aviso al tile que me he movido de que avise a la balista si le toca
+        if (GetComponent<PlayerUnit>())
+        {
+            myCurrentTile.WarnBalista(GetComponent<PlayerUnit>());
+        }
     }
 
     #region DAMAGE_&_DIE

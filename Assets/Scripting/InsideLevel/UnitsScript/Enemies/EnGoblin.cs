@@ -139,7 +139,7 @@ public class EnGoblin : EnemyUnit
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
-            if (myCurrentTile.neighbours[i].unitOnTile != null && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0])
+            if (myCurrentTile.neighbours[i].unitOnTile != null && currentUnitsAvailableToAttack.Count >0 && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0])
             {
                 //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el goblin
                 if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
@@ -237,7 +237,7 @@ public class EnGoblin : EnemyUnit
         }
 
         //Compruebo la dirección en la que se mueve para girar a la unidad
-        CheckTileDirection(pathToObjective[0]);
+        CheckTileDirection(pathToObjective[pathToObjective.Count - 1]);
 
         myCurrentEnemyState = enemyState.Waiting;
         
@@ -267,6 +267,10 @@ public class EnGoblin : EnemyUnit
         //Espero después de moverme para que no vaya demasiado rápido
         yield return new WaitForSeconds(timeWaitAfterMovement);
         hasMoved = true;
+
+
+        //Compruebo la dirección en la que se mueve para girar a la unidad
+        CheckTileDirection(pathToObjective[pathToObjective.Count - 1]);
         myCurrentEnemyState = enemyState.Searching;
 
         movementParticle.SetActive(false);
@@ -433,7 +437,7 @@ public class EnGoblin : EnemyUnit
 
         //currentUnitsAvailableToAttack = LM.TM.OnlyCheckClosestPathToPlayer();
         currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(rangeOfAction, gameObject);
-        Debug.Log("Line 435 " + currentUnitsAvailableToAttack.Count);
+        //Debug.Log("Line 435 " + currentUnitsAvailableToAttack.Count);
 
         if (currentUnitsAvailableToAttack.Count == 1)
         {

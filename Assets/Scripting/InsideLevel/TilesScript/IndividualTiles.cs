@@ -28,6 +28,21 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [HideInInspector]
     public UnitBase unitOnTile;
 
+    //Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
+    [HideInInspector]
+    public bool isUnderAttack;
+
+    //Bool que sirve para saber si el tile estaba con feedback de movimiento antes para volver a ponerse
+    private bool isMovementTile;
+
+    //Bool que indica si el tile tiene que avisar a la balista del movimiento del caballero
+    [HideInInspector]
+    public bool lookingForKnightToWarnBalista;
+
+    //Lista de balistaque tengo que avisar si el caballero entra o sale del tile
+    [HideInInspector]
+    public List<EnBalista> allBalistasToWarn = new List<EnBalista>();
+
     [Header("TILES VECINOS")]
     //Lista con los 4 vecinos adyacentes. Esto se usa para el pathfinding.
     [SerializeField]
@@ -48,7 +63,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public List<IndividualTiles> tilesInLineLeft = new List<IndividualTiles>();
 
-
     [Header("FEEDBACK")]
 
     //Estas son las variables locales. LOS MATERIALES SE SETEAN EN EL TILE MANAGER
@@ -66,13 +80,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Material inicial del tile
     private Material initialColor;
 
-    //Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
-    [HideInInspector]
-    public bool isUnderAttack;
-
-    //Bool que sirve para saber si el tile estaba con feedback de movimiento antes para volver a ponerse
-    private bool isMovementTile;
-
     [SerializeField]
     [@TextAreaAttribute(15, 20)]
     private string tileInfo = "Falta poder setearlo desde el editor";
@@ -86,7 +93,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     public LevelManager LM;
 
     MeshRenderer myMeshRenderer;
-
 
     [Header("OPTIMIZATION")]
 
@@ -190,7 +196,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             //HACER QUE SE PINTE EL TILE Y APAREZCA LA UNIDAD QUE SE VA A COLOCAR
         }
 
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null && !LM.selectedCharacter.hasMoved)
         {
             //Cambio el cursor
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
@@ -374,6 +380,26 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     }
 
     #endregion
+
+
+
+    public void WarnBalista(UnitBase _playerMovedToThisTile)
+    {
+        if (lookingForKnightToWarnBalista)
+        {
+            if (_playerMovedToThisTile.GetComponent<Knight>())
+            {
+                //Avisar a las balistas
+                for (int i = 0; i < allBalistasToWarn.Count; i++)
+                {
+                    allBalistasToWarn[i].BeWarnByTile();
+                }
+
+                Debug.Log("Balistaaaaaa");
+            }
+        }
+    }
+
 
 }
 

@@ -480,10 +480,10 @@ public class EnemyUnit : UnitBase
 			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
 		}
 
-        if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
-        {
-            Debug.Log("rojo");
-        }
+        //if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
+        //{
+        //    Debug.Log("rojo");
+        //}
 
         else
         {
@@ -529,6 +529,7 @@ public class EnemyUnit : UnitBase
         SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
 
+        //Cambios en UI
         LM.HideHover(this);
         HealthBarOn_Off(false);
 		LM.UIM.HideTileInfo();
@@ -538,16 +539,23 @@ public class EnemyUnit : UnitBase
         myCurrentTile.unitOnTile = null;
         myCurrentTile.WarnInmediateNeighbours();
         
+        //Hago que visualmente desaparezca aunque no lo destryuo todavía.
         Destroy(unitModel);
+        if (sleepParticle != null)
+        {
+            sleepParticle.SetActive(false);
+        }
         GetComponent<Collider>().enabled = false;
 
+        //Aviso de que el enemigo está muerto
         isDead = true;
+
+        //Estas dos llamadas tienen que ir despues del bool de isdead = true
         LM.UIM.SetEnemyOrder();
-        //Tiene que ir despues del bool de isdead = true
+        LM.CheckIfGameOver();
 
-        //No uso FinishMyActions porque no me interesa que pase turno, sólo que  se quede en waiting por si acaso se muere en su turno.
+        //No uso FinishMyActions porque no me interesa que pase turno, sólo que se quede en waiting por si acaso se muere en su turno.
         myCurrentEnemyState = enemyState.Waiting;
-
     }
 
     #endregion

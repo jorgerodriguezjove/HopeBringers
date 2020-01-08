@@ -551,9 +551,7 @@ public class PlayerUnit : UnitBase
 			backStabIcon.SetActive(true);
 		}
 
-        Debug.Log(baseDamage);
-        Debug.Log(damageWithMultipliersApplied);
-
+        Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
 	}
 
 	public void HideDamageIcons()
