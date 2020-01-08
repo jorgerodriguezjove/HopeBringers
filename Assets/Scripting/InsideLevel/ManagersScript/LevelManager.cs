@@ -8,6 +8,8 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private float offsetHeightArrow;
+    [SerializeField]
+    private float offsetHeightArrowForEnemies;
 
     [Header("INTERACCIÓN CON UNIDADES")]
 
@@ -216,8 +218,7 @@ public class LevelManager : MonoBehaviour
 
 
                     //This
-                    //UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); Legacy Code
-
+                    //UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); F Code
 
                     tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
@@ -492,14 +493,13 @@ public class LevelManager : MonoBehaviour
                                         || tileToMove.neighbours[j].isEmpty 
                                         || tileToMove.neighbours[j].noTilesInThisColumn)
                                     {
-
                                         Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                                         selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
                                         break;
 
                                     }else if (tileToMove.neighbours[j].height > tileToMove.height)
                                     {
-                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + tileToMove.neighbours[j].height, tileToMove.transform.position.z);
+                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + tileToMove.neighbours[j].height +2, tileToMove.transform.position.z);
                                         selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
                                         break;
 
@@ -508,7 +508,7 @@ public class LevelManager : MonoBehaviour
                                     {
                                         if (tileToMove.neighboursOcuppied >= 1)
                                         {
-                                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
+                                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrowForEnemies, tileToMove.transform.position.z);
                                             selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
                                         }
                                         else
@@ -854,10 +854,10 @@ public class LevelManager : MonoBehaviour
 
         if (currentTurn > 0)
         {
-			//Aparece cartel con turno del player
-			UIM.RotateButtonStartPhase();
-			//Resetear todas las variables tipo bool y demás de los players
-			for (int i = 0; i < characthersOnTheBoard.Count; i++)
+            //Aparece cartel con turno del player
+            UIM.RotateButtonStartPhase();
+            //Resetear todas las variables tipo bool y demás de los players
+            for (int i = 0; i < characthersOnTheBoard.Count; i++)
             {
                 characthersOnTheBoard[i].ResetUnitState();
 
@@ -905,14 +905,6 @@ public class LevelManager : MonoBehaviour
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
 
-        else
-        {
-            Debug.Log("Victory");
-            victoryPanel.SetActive(true);
-
-            GameManager.Instance.VictoryAchieved();
-        }
-       
     }
 
     //Cuando el enemigo acaba sus acciones avisa al LM para que la siguiente unidad haga sus acciones.
@@ -960,6 +952,18 @@ public class LevelManager : MonoBehaviour
         return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck.GetComponent<EnemyUnit>());
     }
 
+    public void CheckIfGameOver()
+    {
+        if (enemiesOnTheBoard.Count == 0 ||
+            enemiesOnTheBoard.Count == 1 && enemiesOnTheBoard[0].isDead)
+        {
+            Debug.Log("Victory");
+            victoryPanel.SetActive(true);
+
+            GameManager.Instance.VictoryAchieved();
+        }
+    }
+
 
     private void Update()
     {
@@ -988,8 +992,6 @@ public class LevelManager : MonoBehaviour
             DeSelectUnit();
         }
     }
-
     #endregion
-
 }
 
