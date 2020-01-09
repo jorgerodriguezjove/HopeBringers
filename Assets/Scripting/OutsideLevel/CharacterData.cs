@@ -34,6 +34,13 @@ public class CharacterData : MonoBehaviour
     [SerializeField]
     private GameObject unitModel;
 
+    //Posición inicial en la caja de la unidad
+    [SerializeField]
+    public Vector3 initialPosition;
+
+    [HideInInspector]
+    public GameObject panelOfTheBookImIn;
+
     [Header("Stats genéricos")]
 
     [Header("Referencias")]
@@ -70,6 +77,9 @@ public class CharacterData : MonoBehaviour
         //Inicializo los diccionarios con los valores
         InitializeGenericUpgrades();
         InitializeSpecificUpgrades();
+
+        
+        initialPosition = gameObject.transform.position;
     }
 
     //Si se carga una escena que no es ni el menú ni el mapa (es decir se carga un nivel) se actualiza el bool para que al volver al mapa no se borre.

@@ -14,13 +14,13 @@ public class AppGenericUpgrades
     //Mejoras pequeñas
     public static readonly string maxHealth = "maxHealth";
     public static readonly string baseDamage = "baseDamage";
+    public static readonly string attackRange = "attackRange";
 
     //Mejoras medianas
     public static readonly string movementUds = "movementUds";
     public static readonly string bonusBackAttack = "bonusBackAttack";
     public static readonly string bonusMoreHeight = "bonusMoreHeight";
     public static readonly string bonusLessHeight = "bonusLessHeight";
-    public static readonly string attackRange = "range";
     public static readonly string maxHeightDifferenceToAttack = "maxHeightDifferenceToAttack";
     public static readonly string maxHeightDifferenceToMove = "maxHeightDifferenceToMove";
     public static readonly string damageMadeByPush = "damageMadeByPush";

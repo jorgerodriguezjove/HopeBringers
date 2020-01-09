@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UpgradeNode : MonoBehaviour
 {
@@ -37,13 +38,17 @@ public class UpgradeNode : MonoBehaviour
 
     //Se usa para comprobar que nodos han sido comprados al recargar el árbol de habilidades. NO SE USA PARA SABER A QUE MEJORA SE APLICA
     //Estos ids se setean automáticamente desde el UITableManager la primera vez que se setea el árbol.
-    [HideInInspector]
+    [SerializeField]
     public int idUpgrade;
 
-    [SerializeField]
-    public bool isBlocked;
+    //[SerializeField]
+    //public bool isBlocked;
     [SerializeField]
     public bool isBought;
+
+    //Imágen que indica si la mejora ha sido comprada
+    [SerializeField]
+    GameObject imageFeedbackIsBought;
 
     [SerializeField]
     List<UpgradeNode> nodesUnlockedAfterBuying;
@@ -62,6 +67,12 @@ public class UpgradeNode : MonoBehaviour
     private void Start()
     {
         GetComponent<Button>().onClick.AddListener(onClickUpgrade);
+
+        if (isBought)
+        {
+            imageFeedbackIsBought.SetActive(true);
+            imageFeedbackIsBought.GetComponent<ImageRadiaUpgrade>().SetImageFill(false);
+        }
     }
 
     #endregion
@@ -69,20 +80,33 @@ public class UpgradeNode : MonoBehaviour
     //Al hacer click sobre el upgrade
     public void onClickUpgrade()
     {
-        FindObjectOfType<TableManager>().BuyUpgrade(GetComponent<UpgradeNode>());
+        if(!isBought)
+        {
+            FindObjectOfType<TableManager>().BuyUpgrade(GetComponent<UpgradeNode>());
+        }
+        
     }
 
     //Al comprar el upgrade
     public void UpgradeBought()
     {
-        Debug.Log("Mejora Comprada");
+        Debug.Log("Mejora: " + upgradeName  + " Comprada");
 
-        isBlocked = false;
+        //Actualizo la info de la mejora comprada
+        //isBlocked = false;
         isBought = true;
 
-        for (int i = 0; i < nodesUnlockedAfterBuying.Count; i++)
+        //Doy feedback de que la mejora ha sido comprada
+        imageFeedbackIsBought.SetActive(true);
+        imageFeedbackIsBought.GetComponent<ImageRadiaUpgrade>().SetImageFill(true);
+
+        //Desbloqueo las siguientes mejoras
+        if (nodesUnlockedAfterBuying.Count > 0)
         {
-            nodesUnlockedAfterBuying[i].UnlockUpgrade();
+            for (int i = 0; i < nodesUnlockedAfterBuying.Count; i++)
+            {
+                nodesUnlockedAfterBuying[i].UnlockUpgrade();
+            }
         }
 
         //Si la mejora es de tipo bool busco la mejora en el diccionario y la aplico
@@ -131,7 +155,7 @@ public class UpgradeNode : MonoBehaviour
     //Al desbloquear upgrades por comprar
     public void UnlockUpgrade()
     {
-        isBlocked = false;
+        //isBlocked = false;
         gameObject.SetActive(true);
     }
 }

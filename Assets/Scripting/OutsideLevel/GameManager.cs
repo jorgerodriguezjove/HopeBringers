@@ -17,7 +17,7 @@ public class GameManager : PersistentSingleton<GameManager>
 
     //Experiencia actual. 
     [SerializeField]
-    public int currentExp;
+    public int currentExp = 600;
 
     //Lista que va a guardar todos los objetos que tengan el componente Character Data
     CharacterData[] oldCharacterDataList;

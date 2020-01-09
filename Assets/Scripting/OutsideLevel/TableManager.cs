@@ -36,7 +36,7 @@ public class TableManager : MonoBehaviour
 
     [Header("Referencias")]
     [SerializeField]
-    private UITableManager UIMM;
+    private UITableManager UITM;
 
     //Referencia al primer nivel para que se setee al principio
     [SerializeField]
@@ -65,7 +65,7 @@ public class TableManager : MonoBehaviour
         levelIndicator.transform.position = new Vector3(levelClicked.transform.position.x, levelIndicator.transform.position.y , levelClicked.transform.position.z);
 
         //El UI Manager se encarga de actualizar la info del nivel
-        UIMM.ShowInfoOnLevelClick(levelClicked.LevelTitle);
+        UITM.ShowInfoOnLevelClick(levelClicked.LevelTitle);
 
         //Aparece el botón para entrar en la selección de nivel (quizás no es tanto que aparezca como simplmente guardar la informacion para cuando le de)
         lastLevelClicked = levelClicked;
@@ -117,21 +117,48 @@ public class TableManager : MonoBehaviour
     #endregion
 
     //Esto en el futuro se hará arrastrando al personaje pero de momento lo hago con click
-    public void OnClickCharacter(CharacterData unitClicked)
+    public void OnClickCharacter(CharacterData _unitClicked)
     {
-        Debug.Log(unitClicked.name);
+        Debug.Log(_unitClicked.name);
 
         if (selectCamera.activeSelf)
         {
-            GameManager.Instance.unitsForCurrentLevel.Add(unitClicked.myUnit);
-            GameManager.Instance.characterDataForCurrentLevel.Add(unitClicked);
+            if (_unitClicked.panelOfTheBookImIn == null)
+            {
+                for (int i = 0; i < UITM.panelsForUnitColocation.Length; i++)
+                {
+                    if (UITM.panelsForUnitColocation[i].activeSelf && !UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied)
+                    {
+                        //Coloco a la unidad
+                        _unitClicked.transform.position = UITM.panelsForUnitColocation[i].transform.position;
+                        UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied = true;
+                        _unitClicked.panelOfTheBookImIn = UITM.panelsForUnitColocation[i];
+
+
+                        GameManager.Instance.unitsForCurrentLevel.Add(_unitClicked.myUnit);
+                        GameManager.Instance.characterDataForCurrentLevel.Add(_unitClicked);
+
+                        break;
+                    }
+                }   
+            }
+
+            else
+            {
+                _unitClicked.transform.position = _unitClicked.initialPosition;
+                _unitClicked.panelOfTheBookImIn.GetComponent<PanelForUnitSelection>().isOcuppied = false;
+                _unitClicked.panelOfTheBookImIn = null;
+
+                GameManager.Instance.unitsForCurrentLevel.Remove(_unitClicked.myUnit);
+                GameManager.Instance.characterDataForCurrentLevel.Remove(_unitClicked);
+            }
         }
 
         else if (progresionCamera.activeSelf)
         {
             MoveToUpgrades();
-            UIMM.MoveToUpgradesUI(unitClicked);
-            currentCharacterUpgrading = unitClicked;
+            UITM.MoveToUpgradesUI(_unitClicked);
+            currentCharacterUpgrading = _unitClicked;
         }
         
     }

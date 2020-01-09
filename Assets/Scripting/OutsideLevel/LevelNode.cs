@@ -9,6 +9,9 @@ public class LevelNode : MonoBehaviour
 
     [Header("LÓGICA")]
     //Número de unidades que requiere el nivel
+    //IMPORTANTE, SI AUMENTAMOS EL NÚMERO DE UNIDADES POR ENCIMA DE 4 HAY QUE CAMBIAR:
+    //En Ui table Manager el tamaño del array de panelsForUnitColocation
+    //En escena hay que ajustar el grid que contiene los paneles para que entren todos los paneles en el libro
     [Range(1,4)]
     [SerializeField]
     public int maxNumberOfUnits;

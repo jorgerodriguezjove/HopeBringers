@@ -34,10 +34,9 @@ public class UITableManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI descriptionTextRef;
 
-    //SIN HACER TODAVIA
-    //Referencia al panel dónde se instancian los huecos para colocar a los personajes
-    //[SerializeField]
-    //private GameObject panelForUnitColocation;
+    //Array con los paneles que se pueden activar para colocar las unidades en un nivel
+    [SerializeField]
+    public GameObject[] panelsForUnitColocation = new GameObject[4];
 
     [Header("PROGRESION")]
 
@@ -132,17 +131,26 @@ public class UITableManager : MonoBehaviour
 
     #region CHARACTER_SELECTION
 
-    public void SetLevelBookInfo(LevelNode levelClicked)
+    public void SetLevelBookInfo(LevelNode _levelClicked)
     {
         //Setear textos del nivel
-        titleTextRef.SetText(levelClicked.LevelTitle);
-        descriptionTextRef.SetText(levelClicked.descriptionText);
+        titleTextRef.SetText(_levelClicked.LevelTitle);
+        descriptionTextRef.SetText(_levelClicked.descriptionText);
 
-        //Crear número adecuado de huecos para personaje
+        for (int i = 0; i < _levelClicked.maxNumberOfUnits; i++)
+        {
+            panelsForUnitColocation[i].SetActive(true);
+        }
     }
 
     public void BackToMapUI()
     {
+        //Desactivo todos los paneles de unidad
+        for (int i = 0; i < panelsForUnitColocation.Length; i++)
+        {
+            panelsForUnitColocation[i].SetActive(false);
+        }
+
         //Movimientos de cámara y seteos de variables
         TM.BackToMap();
 
@@ -170,6 +178,7 @@ public class UITableManager : MonoBehaviour
 
         upgrades = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
         ids = unitClicked.idSkillsBought;
+        Debug.Log(unitClicked.idSkillsBought.Count);
 
         for (int i = 0; i < upgrades.Count; i++)
         {
@@ -180,22 +189,25 @@ public class UITableManager : MonoBehaviour
             {
                 upgrades[i].GetComponent<UpgradeNode>().idUpgrade = i;
             }
+        }
 
-            //Si las ids no son 0 entonces es que no es la primera vez que se setea el árbol y no tengo que volver a setear los ids
-            else
+        //Si las ids no son 0 entonces es que no es la primera vez que se setea el árbol y no tengo que volver a setear los ids
+        if (ids.Count != 0)
+        {
+            for (int j = 0; j < ids.Count; j++)
             {
-                for (int j = 0; j < ids.Count; j++)
+                if (upgrades[j].idUpgrade == ids[j])
                 {
-                    if (upgrades[i].idUpgrade == ids[j])
-                    {
-                        upgrades[i].UpgradeBought();
 
-                        //¿Este break esta bien?
-                        break;
-                    }
+                    upgrades[j].UpgradeBought();
+                    Debug.Log(upgrades[j].name);
+
+                    //¿Este break esta bien?
+                    break;
                 }
             }
         }
+           
     }
 
     public void ResetCharacterUpbradeBookInfo()
