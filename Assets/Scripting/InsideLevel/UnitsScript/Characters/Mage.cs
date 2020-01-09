@@ -26,17 +26,20 @@ public class Mage : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
-    public bool crossAttack;
+    public bool crossAreaAttack;
 
-    public bool electricityAttack;
+    public bool lightningChain;
     public int timeElectricityAttackExpands;
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
 
-
-
-
     #endregion
+
+    public void SetSpecificStats(bool _lightningChain1, bool _crossAreaAttack1)
+    {
+        lightningChain = _lightningChain1;
+        crossAreaAttack = _crossAreaAttack1;
+    }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
@@ -47,7 +50,7 @@ public class Mage : PlayerUnit
 
         Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
-        if (crossAttack)
+        if (crossAreaAttack)
         {
 
             //Animación de ataque 
@@ -71,7 +74,7 @@ public class Mage : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
-        else if (electricityAttack)
+        else if (lightningChain)
         {
             //Hago daño
             DoDamage(unitToAttack);

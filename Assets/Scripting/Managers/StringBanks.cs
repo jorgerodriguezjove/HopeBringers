@@ -37,7 +37,20 @@ public class AppKnightUpgrades
 
 public class AppMageUpgrades
 {
+    public static readonly string lightningChain1 = "lightningChain1";
+    public static readonly string crossAreaAttack1 = "crossAreaAttack1";
+}
 
+public class AppRogueUpgrades
+{
+    public static readonly string multiJumpAttack1 = "multiJumpAttack1";
+    public static readonly string extraTurnAfterKill1 = "extraTurnAfterKill1";
+}
+
+public class AppBerserkUpgrades
+{
+    public static readonly string doubleAttack1 = "doubleAttack1";
+    public static readonly string circularAttack1 = "circularAttack1";
 }
 
 #endregion

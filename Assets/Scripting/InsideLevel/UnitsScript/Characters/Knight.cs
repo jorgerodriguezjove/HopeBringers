@@ -16,15 +16,10 @@ public class Knight : PlayerUnit
     public bool pushFarther;
     public bool pushWider;
 
-
-
-
     #endregion
 
-   
     public void SetSpecificStats(bool _pushFarther, bool _pushWider)
     {
-        //base.SetSpecificStats();
         pushFarther = _pushFarther;
         pushWider = _pushWider;
     }

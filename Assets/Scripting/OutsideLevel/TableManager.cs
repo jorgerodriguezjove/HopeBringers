@@ -97,6 +97,7 @@ public class TableManager : MonoBehaviour
     {
         upgradesCamera.SetActive(false);
         progresionCamera.SetActive(true);
+        currentCharacterUpgrading.transform.position = currentCharacterUpgrading.initialPosition;
     }
 
     public void BackToMap()
@@ -157,6 +158,7 @@ public class TableManager : MonoBehaviour
         else if (progresionCamera.activeSelf)
         {
             MoveToUpgrades();
+            _unitClicked.transform.position = UITM.panelForUnitUpgrade.transform.position;
             UITM.MoveToUpgradesUI(_unitClicked);
             currentCharacterUpgrading = _unitClicked;
         }
@@ -166,10 +168,10 @@ public class TableManager : MonoBehaviour
     public void BuyUpgrade(UpgradeNode upgradeClicked)
     {
         //Comprobar si tengo exp suficiente
-        if (currentCharacterUpgrading.powerLevel <= GameManager.Instance.currentExp)
+        if (currentCharacterUpgrading.unitPowerLevel <= GameManager.Instance.currentExp)
         {
             //Gastar Exp
-            GameManager.Instance.currentExp -= currentCharacterUpgrading.powerLevel;
+            GameManager.Instance.currentExp -= currentCharacterUpgrading.unitPowerLevel;
 
             //Avisar al nodo de mejora de que ha sido comprado  y Desbloquear los siguientes nodos
             upgradeClicked.UpgradeBought();
@@ -177,6 +179,8 @@ public class TableManager : MonoBehaviour
             //Aumentar power level del personaje
             //Añadir id a la lista del personaje
             currentCharacterUpgrading.UpgradeAcquired(upgradeClicked.upgradeCost, upgradeClicked.idUpgrade);
+
+            UITM.UpdateProgresionBook(currentCharacterUpgrading);
         }
 
         else

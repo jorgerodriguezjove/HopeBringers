@@ -25,19 +25,25 @@ public class Berserker : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
-    public bool neighboursAttack;
+    public bool circularAttack;
 
     public bool doubleAttack;
     public int timesDoubleAttackRepeats;
 
     #endregion
 
+    public void SetSpecificStats(bool _doubleAttack1, bool _circularAttack1)
+    {
+        doubleAttack = _doubleAttack1;
+        circularAttack = _circularAttack1;
+    }
+
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
 
-        if (neighboursAttack)
+        if (circularAttack)
         {
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
@@ -50,13 +56,10 @@ public class Berserker : PlayerUnit
                 {
                     DoDamage(myCurrentTile.neighbours[i].unitOnTile);
                 }
-                
-
             }
-                //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
-                base.Attack(unitToAttack);
-            
 
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
         }
         else if (doubleAttack)
         {                       

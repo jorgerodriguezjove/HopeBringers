@@ -16,11 +16,17 @@ public class Rogue : PlayerUnit
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
-    public bool extraTurnAttack;
-    
+    public bool extraTurnAttackAfterKill;
+
 
 
     #endregion
+
+    public void SetSpecificStats(bool _multiJumpAttack1, bool _extraTurnAfterKill1)
+    {
+        checkersAttack = _multiJumpAttack1;
+        extraTurnAttackAfterKill = _extraTurnAfterKill1;
+    }
 
     public override void CheckUnitsInRangeToAttack()
     {
@@ -268,7 +274,7 @@ public class Rogue : PlayerUnit
             }
 
         }
-        else if (extraTurnAttack)
+        else if (extraTurnAttackAfterKill)
         {
 
             if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)

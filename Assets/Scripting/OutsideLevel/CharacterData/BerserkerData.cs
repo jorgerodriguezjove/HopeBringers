@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RogueData : CharacterData
+public class BerserkerData : CharacterData
 {
 
     public override void UpdateMyUnitStatsForTheLevel()
     {
         //Referencia al personaje en el nivel
-        myUnitReferenceOnLevel = FindObjectOfType<Rogue>();
+        myUnitReferenceOnLevel = FindObjectOfType<Berserker>();
 
         //Aztualizo las mejoras genéricas
         base.UpdateMyUnitStatsForTheLevel();
 
         //Inicializo las variables especificas del personaje
-        myUnitReferenceOnLevel.GetComponent<Rogue>().SetSpecificStats(specificBoolCharacterUpgrades[AppRogueUpgrades.multiJumpAttack1], specificBoolCharacterUpgrades[AppRogueUpgrades.extraTurnAfterKill1]);
+        myUnitReferenceOnLevel.GetComponent<Berserker>().SetSpecificStats(specificBoolCharacterUpgrades[AppBerserkUpgrades.doubleAttack1], specificBoolCharacterUpgrades[AppBerserkUpgrades.circularAttack1]);
     }
 
     //Esto se llama en el INIT del characterData (padre de este script)
     protected override void InitializeSpecificUpgrades()
     {
         //Mejoras Tipo BOOL
-        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.multiJumpAttack1, false);
-        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.extraTurnAfterKill1, false);
+        specificBoolCharacterUpgrades.Add(AppBerserkUpgrades.doubleAttack1, false);
+        specificBoolCharacterUpgrades.Add(AppBerserkUpgrades.circularAttack1, false);
 
         //Mejoras tipo INT
     }

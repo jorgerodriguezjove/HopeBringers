@@ -20,7 +20,7 @@ public class CharacterData : MonoBehaviour
 
     //Coste actual de la siguiente mejora del personaje
     [SerializeField]
-    public int powerLevel;
+    public int unitPowerLevel;
 
     //Lista que guarda las habilidades que han sido compradas
     [SerializeField]
@@ -156,7 +156,7 @@ public class CharacterData : MonoBehaviour
     //Al ser avisado de que se ha comprado una mejora aumento el powerlevel y guardo en la lista de ids la nueva habilidad para luego reactivar los nodos adecuados del árbol.
     public void UpgradeAcquired(int upgradeCost,int idSkill)
     {
-        powerLevel += upgradeCost;
+        unitPowerLevel += upgradeCost;
         idSkillsBought.Add(idSkill);
     }
 

@@ -53,6 +53,10 @@ public class UITableManager : MonoBehaviour
     //Referencia al árbol de habilidades actualmente en pantalla.
     private GameObject currentSkillTreeObj;
 
+    //Panel donde se coloca la unidad para mejorarla
+    [SerializeField]
+    public GameObject panelForUnitUpgrade;
+
     //Referencias de las listas de ids del personaje y la lista de upgrades del skill tree.
     private List<int> ids;
     private List<UpgradeNode> upgrades;
@@ -106,6 +110,8 @@ public class UITableManager : MonoBehaviour
     {
         SetCharacterUpgradeBookInfo(_unitClicked);
 
+        UpdateProgresionBook(_unitClicked);
+
         //Desactivar progresion
         progresionUI.SetActive(false);
 
@@ -116,6 +122,8 @@ public class UITableManager : MonoBehaviour
     public void BackToProgresion()
     {
         TM.BackToProgresion();
+
+        currentCharacterPowerLevelText.SetText("---");
 
         //Desactivar upgrades
         upgradesUI.SetActive(false);
@@ -208,6 +216,12 @@ public class UITableManager : MonoBehaviour
             }
         }
            
+    }
+
+    public void UpdateProgresionBook(CharacterData _unit)
+    {
+        currentCharacterPowerLevelText.SetText(_unit.unitPowerLevel.ToString());
+        currentTotalXpText.SetText(GameManager.Instance.currentExp.ToString());
     }
 
     public void ResetCharacterUpbradeBookInfo()

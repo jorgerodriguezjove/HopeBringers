@@ -84,7 +84,6 @@ public class UpgradeNode : MonoBehaviour
         {
             FindObjectOfType<TableManager>().BuyUpgrade(GetComponent<UpgradeNode>());
         }
-        
     }
 
     //Al comprar el upgrade

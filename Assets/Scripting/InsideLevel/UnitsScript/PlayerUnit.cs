@@ -140,7 +140,6 @@ public class PlayerUnit : UnitBase
         currentHealth = maxHealth;
     }
 
-
     #endregion
 
     #region TURN_STATE

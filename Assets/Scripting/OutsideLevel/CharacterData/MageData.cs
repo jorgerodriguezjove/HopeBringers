@@ -14,19 +14,19 @@ public class MageData : CharacterData
         base.UpdateMyUnitStatsForTheLevel();
 
         //Inicializo las variables especificas del personaje 
-        //CUANDO SE METAN MEJORAS ESPECIFICAS DEL MAGO DESCOMENTAR ESTA LÍNEA
-        //myUnitReferenceOnLevel.GetComponent<Mage>().SetSpecificStats();
+        myUnitReferenceOnLevel.GetComponent<Mage>().SetSpecificStats(specificBoolCharacterUpgrades[AppMageUpgrades.lightningChain1], specificBoolCharacterUpgrades[AppMageUpgrades.crossAreaAttack1]);
     }
 
 	//Esto se llama en el INIT del characterData (padre de este script)
 	protected override void InitializeSpecificUpgrades()
 	{
-		//Mejoras Tipo BOOL
-		
+        //Mejoras Tipo BOOL
+        specificBoolCharacterUpgrades.Add(AppMageUpgrades.lightningChain1, false);
+        specificBoolCharacterUpgrades.Add(AppMageUpgrades.crossAreaAttack1, false);
 
 
-		//Mejoras tipo INT
-	}
+        //Mejoras tipo INT
+    }
 
 
 
