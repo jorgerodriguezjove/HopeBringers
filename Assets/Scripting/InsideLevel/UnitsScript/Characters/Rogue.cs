@@ -361,6 +361,14 @@ public class Rogue : PlayerUnit
                 UIM.RefreshTokens();
                 LM.DeSelectUnit();
                 hasUsedExtraTurn = true;
+
+                //Lo hago aquí para que cuando se seleccione nuevamente ya esté bien calculado.
+                LM.tilesAvailableForMovement = LM.TM.OptimizedCheckAvailableTilesForMovement(movementUds, this);
+                for (int i = 0; i < LM.tilesAvailableForMovement.Count; i++)
+                {
+                    LM.tilesAvailableForMovement[i].ColorSelect();
+                }
+
                 LM.SelectUnit(movementUds, this);
 
             }

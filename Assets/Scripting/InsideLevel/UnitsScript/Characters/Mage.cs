@@ -33,6 +33,12 @@ public class Mage : PlayerUnit
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
 
+    //Este bool sirve para decidir si el ataque en concreto hace daño por la espalda o no
+    [HideInInspector]
+    public bool backDamageOff;
+
+
+
     #endregion
 
     public void SetSpecificStats(bool _lightningChain1, bool _crossAreaAttack1)
@@ -57,6 +63,7 @@ public class Mage : PlayerUnit
             //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
             //myAnimator.SetTrigger("Attack");
 
+            backDamageOff = true;
             //Hago daño
             DoDamage(unitToAttack);
 
@@ -76,6 +83,7 @@ public class Mage : PlayerUnit
         }
         else if (lightningChain)
         {
+            backDamageOff = true;
             //Hago daño
             DoDamage(unitToAttack);
             unitsAttacked.Add(unitToAttack);
@@ -124,13 +132,14 @@ public class Mage : PlayerUnit
 
     }
         
-
-     
-
     //Override especial del mago para que no instancie la partícula de ataque
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-        CalculateDamage(unitToDealDamage);
+        if (!backDamageOff)
+        {
+            CalculateDamage(unitToDealDamage);
+        }
+       
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
     }
@@ -189,5 +198,110 @@ public class Mage : PlayerUnit
         myDecoys.Add(decoyToInstantiate);
     }
 
+    #endregion
+
+    #region CHECKS
+    //Hago override a esta función para que pueda atravesar unidades al atacar.
+    public override void CheckUnitsInRangeToAttack()
+    {
+        currentUnitsAvailableToAttack.Clear();
+
+        if (currentFacingDirection == FacingDirection.North)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineUp.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.South)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineDown.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                    
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.East)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineRight.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                   
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.West)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                    
+                }
+            }
+
+        }
+
+        //Marco las unidades disponibles para atacar de color rojo
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
+        }
+
+
+    }
     #endregion
 }

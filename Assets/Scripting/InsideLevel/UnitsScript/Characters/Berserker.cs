@@ -49,14 +49,40 @@ public class Berserker : PlayerUnit
             //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
             myAnimator.SetTrigger("Attack");
 
-            //Hago daño
-            for (int i = 0; i < myCurrentTile.neighbours.Count; ++i)
+           
+
+            currentFacingDirection = FacingDirection.North;
+            if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
             {
-                if (myCurrentTile.neighbours[i].unitOnTile != null)
-                {
-                    DoDamage(myCurrentTile.neighbours[i].unitOnTile);
-                }
+                DoDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
             }
+            
+            currentFacingDirection = FacingDirection.South;
+            if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+            {
+                DoDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
+            }
+
+            currentFacingDirection = FacingDirection.East;
+            if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+            {
+                DoDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
+            }
+
+            currentFacingDirection = FacingDirection.West;
+            if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+            {
+                DoDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+            }
+
+            //Hago daño
+            //for (int i = 0; i < myCurrentTile.neighbours.Count; ++i)
+            //{
+            //    if (myCurrentTile.neighbours[i].unitOnTile != null)
+            //    {
+            //        DoDamage(myCurrentTile.neighbours[i].unitOnTile);
+            //    }
+            //}
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);

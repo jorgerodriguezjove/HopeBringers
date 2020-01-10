@@ -190,8 +190,9 @@ public class LevelManager : MonoBehaviour
         {
           
             //Si no hay unidad seleccionada significa que está seleccionando una unidad
-            if (selectedCharacter == null)
+            if (selectedCharacter == null )
             {
+                
 				//Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
 				if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
                 {
@@ -255,6 +256,17 @@ public class LevelManager : MonoBehaviour
 
                     selectedCharacter.CheckUnitsInRangeToAttack();
 
+                    //He añadido este if para que el rogue no pueda atacar dos veces a la misma unidad usando una de sus habilidades
+                    if (selectedCharacter.GetComponent<Rogue>())
+                    {
+
+                        for (int i = 0; i < selectedCharacter.GetComponent<Rogue>().unitsAttacked.Count; i++)
+                        {
+                            selectedCharacter.currentUnitsAvailableToAttack.Remove(selectedCharacter.GetComponent<Rogue>().unitsAttacked[i]);
+                            selectedCharacter.GetComponent<Rogue>().unitsAttacked[i].ResetColor();
+                        }
+                    }
+
                     if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipAttack();
@@ -277,7 +289,11 @@ public class LevelManager : MonoBehaviour
 
                     
                 }
-                SelectUnitToAttack(clickedUnit);
+                if (!selectedCharacter.isMovingorRotating)
+                {
+                    SelectUnitToAttack(clickedUnit);
+
+                }
             }
         }
     }
@@ -477,52 +493,44 @@ public class LevelManager : MonoBehaviour
                             //Hacer que aparezcan los botones de rotación
                             selectedCharacter.isMovingorRotating = true;
                             selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(true);
+                            offsetHeightArrow = 0.5f;
+                            offsetHeightArrowForEnemies = 0.5f;
 
-                            if (tileToMove == selectedCharacter.myCurrentTile)
-                            {
-                                Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
-                                selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
+                           
 
-                            }
-                            else
+                            //Vemos si tiene enemigos o tiles más altos cerca para que las flechas no se tapen
+                            for (int j = 0; j < tileToMove.neighbours.Count; ++j)
                             {
-                                //Vemos si tiene enemigos o tiles más altos cerca para que las flechas no se tapen
-                                for (int j = 0; j < tileToMove.neighbours.Count; ++j)
-                                {
-                                    if (tileToMove.neighbours[j].isObstacle 
+                                if (tileToMove.neighbours[j].isObstacle 
                                         || tileToMove.neighbours[j].isEmpty 
                                         || tileToMove.neighbours[j].noTilesInThisColumn)
-                                    {
-                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
-                                        selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
-                                        break;
+                                {
+                                    offsetHeightArrow += 0.5f;
 
-                                    }else if (tileToMove.neighbours[j].height > tileToMove.height)
+                                 }
+
+                                if (tileToMove.neighbours[j].height > tileToMove.height)
                                     {
-                                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + tileToMove.neighbours[j].height +2, tileToMove.transform.position.z);
-                                        selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
-                                        break;
+                                    offsetHeightArrow += 0.5f;
+                                    
 
                                     }
-                                    else 
-                                    {
-                                        if (tileToMove.neighboursOcuppied >= 1)
-                                        {
-                                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrowForEnemies, tileToMove.transform.position.z);
-                                            selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
-                                        }
-                                        else
-                                        {
 
-                                            selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = tileToMove.transform.position;
-                                        }
-                                    }
-
+                                if (tileToMove.neighboursOcuppied >= 1)
+                                {
+                                    offsetHeightArrowForEnemies+= 0.5f;
                                 }
+
+
                             }
-                            
-                          
-                            
+
+                            offsetHeightArrow += offsetHeightArrowForEnemies;
+                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
+                            selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
+
+
+
+
 
                             //selectedCharacter.MoveToTile(tileToMove, TM.currentPath); 
 
