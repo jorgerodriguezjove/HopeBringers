@@ -22,8 +22,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Dungeon_Material_01
   m_Shader: {fileID: 4800000, guid: 6459b2db96a08ca41b0f9b39dc7ad59e, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_GLO_ON N_F_RL_ON N_F_SL_ON N_F_SS_ON _ALPHABASECUTOUT_ON
-    _EMISSION _METALLICSPECGLOSSMAP _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_EAL_ON N_F_GLO_ON N_F_RL_ON N_F_SS_ON _ALPHABASECUTOUT_ON
+    _EMISSION _LIGHTAFFECTRIMLIGHTCOLOR_ON _LIGHTAFFECTSHADOW_ON _METALLICSPECGLOSSMAP
+    _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -164,7 +165,7 @@ Material:
     - _FlipbookMode: 0
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0
-    - _GlossColorPower: 10
+    - _GlossColorPower: 8
     - _GlossIntensity: 0.22
     - _GlossMapScale: 1
     - _GlossSoftness: 0.3
@@ -176,10 +177,10 @@ Material:
     - _GlossyReflections: 1
     - _HighlightColorPower: 1
     - _LightAffectOutlineColor: 0
-    - _LightAffectRimLightColor: 0
-    - _LightAffectShadow: 0
+    - _LightAffectRimLightColor: 1
+    - _LightAffectShadow: 1
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 0.1
+    - _LightFalloffSoftness: 0.443
     - _LightIntensity: -1
     - _MCIALO: 0
     - _MCapIntensity: 1
@@ -205,7 +206,7 @@ Material:
     - _N_F_R: 0
     - _N_F_RL: 1
     - _N_F_SCT: 0
-    - _N_F_SL: 1
+    - _N_F_SL: 0
     - _N_F_SON: 0
     - _N_F_SS: 1
     - _N_F_ST: 0
@@ -230,10 +231,10 @@ Material:
     - _RefVal: 0
     - _ReflectionIntensity: 0
     - _ReflectionRoughtness: 0
-    - _RimLightColorPower: 3
+    - _RimLightColorPower: 1
     - _RimLightInLight: 1
-    - _RimLightSoftness: 0.2
-    - _RimLightUnfill: 2
+    - _RimLightSoftness: 0.289
+    - _RimLightUnfill: 3
     - _STIL: 0
     - _Saturation: 1
     - _SelfLitHighContrast: 1
@@ -242,11 +243,11 @@ Material:
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 0.8
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 0.878
+    - _SelfShadowRealtimeShadowIntensity: 0.664
     - _SelfShadowShadowTAtViewDirection: 0
     - _SelfShadowThreshold: 0.805
     - _ShadowColorTexturePower: 0
-    - _ShadowHardness: 0
+    - _ShadowHardness: 0.668
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
     - _ShadowTIntensity: 1
