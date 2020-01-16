@@ -34,6 +34,10 @@ public class CameraManager : MonoBehaviour
     float frameZoom;
     Camera cam;
 
+    [SerializeField]
+    GameObject rotateAroundObject;
+
+
     //MÉTODOS
 
     private void Awake()
@@ -101,20 +105,22 @@ public class CameraManager : MonoBehaviour
             frameMove = Vector3.zero;
         }
 
-        //ESTA ROTACION FUNCIONA SIEMPRE Y CUANDO HAYA UN PLANO CON EL MESH RENDERER QUITADO EN ESCENA
-
         if(frameRotate != 0f)
         {
+            #region CodigoAntiguoRayCast
             //transform.RotateAround(Vector3.zero, Vector3.up, frameRotate * Time.deltaTime * rotateSpeed)
 
-            Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
-            Debug.DrawRay(ray.origin, ray.direction * 1000, new Color(1f, 0.922f, 0.016f, 1f));
+            //Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            //Debug.DrawRay(ray.origin, ray.direction * 1000, new Color(1f, 0.922f, 0.016f, 1f));
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                transform.RotateAround(hit.point, Vector3.up, frameRotate * Time.deltaTime * rotateSpeed);
-                point = hit.point;
-            }
+            //if (Physics.Raycast(ray, out hit))
+            //{
+            //    transform.RotateAround(hit.point, Vector3.up, frameRotate * Time.deltaTime * rotateSpeed);
+            //    point = hit.point;
+            //}
+            #endregion
+
+            transform.RotateAround(rotateAroundObject.transform.position, Vector3.up, frameRotate * Time.deltaTime * rotateSpeed);
 
             LockPositionInBounds();
             frameRotate = 0f;
