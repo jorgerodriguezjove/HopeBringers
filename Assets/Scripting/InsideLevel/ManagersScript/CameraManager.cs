@@ -18,10 +18,15 @@ public class CameraManager : MonoBehaviour
     public Vector2 minBounds, maxBounds;
 
     [Header("Zoom Controls")]
-    public float zoomSpeed = 4f;
-    public float nearZoomLimit = 2f;
-    public float farZoomLimit = 16f;
-    public float startingZoom = 5f;
+    public float zoomSpeed;
+    public float nearZoomLimit;
+    public float farZoomLimit;
+    public float startingZoom;
+
+    [SerializeField]
+    public float maxAngleCamera;
+    [SerializeField]
+    public float minAngleCamera;
 
     IZoomStrategy zoomStrategy;
     Vector3 frameMove;
@@ -41,7 +46,7 @@ public class CameraManager : MonoBehaviour
         //zoomStrategy = new OrtographicZoomStrategy(cam, startingZoom); //asignamos la cámara y el zoom inicial(deprecated?)
 
         //Asigna automáticamente el zoom ortográfico o perspectiva
-        zoomStrategy = cam.orthographic ? (IZoomStrategy)new OrtographicZoomStrategy(cam, startingZoom) : new PerspectiveZoomStrategy(cam, cameraOffset, startingZoom);
+        zoomStrategy = cam.orthographic ? (IZoomStrategy)new OrtographicZoomStrategy(cam, startingZoom) : new PerspectiveZoomStrategy(cam, cameraOffset, startingZoom, farZoomLimit, maxAngleCamera, minAngleCamera);
         cam.transform.LookAt(transform.position + Vector3.up * lookAtOffset);
         //Asignamos un offset de altura respecto al camera focus para dar una vista más natural(que no mire al suelo)     
     }

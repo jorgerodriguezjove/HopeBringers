@@ -24,7 +24,7 @@ public class MouseInputManager : InputManager
 
     private void Update()
     {
-       /* Vector3 mp = Input.mousePosition;
+        Vector3 mp = Input.mousePosition;
         bool mouseValid = (mp.y <= screen.y * 1.1f && mp.y >= screen.y * -0.1f &&
             mp.x <= screen.x * 1.1f && mp.x >= screen.x * -0.1f);
 //Que porcentaje de offset para que el ratón sea valido para el movimiento(esta al 10% de los bordes de la pantalla)
@@ -49,8 +49,8 @@ public class MouseInputManager : InputManager
         {
             OnMoveInput?.Invoke(-Vector3.right);
         }
-        */
-        /*//ROTACIÓN
+        
+        //ROTACIÓN
         if (Input.GetMouseButtonDown(1))//Input click derecho
         {
             mousePositionOnRotateStart = mp.x;
@@ -65,7 +65,7 @@ public class MouseInputManager : InputManager
             {
                 OnRotateInput?.Invoke(1f);
             }
-        }*/
+        }
 
         //ZOOM
         if(Input.mouseScrollDelta.y > 0)

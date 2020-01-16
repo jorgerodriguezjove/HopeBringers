@@ -12,6 +12,7 @@
 
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Serialization;
 
 namespace CameraController
 {
@@ -33,7 +34,8 @@ namespace CameraController
 
 		private Vector3 oldPos;
 
-		void setupFocusObject(string name)
+
+        void setupFocusObject(string name)
 		{
 			GameObject obj = this.focusObj = new GameObject(name);
 			obj.transform.position = this.focus;
@@ -88,6 +90,7 @@ namespace CameraController
 			this.mouseDragEvent(Input.mousePosition);
 
 			return;
+
 		}
 
 		void mouseDragEvent(Vector3 mousePos)
@@ -141,7 +144,7 @@ namespace CameraController
 			return;
 		}
 
-		void cameraTranslate(Vector3 vec)
+        void cameraTranslate(Vector3 vec)
 		{
 			Transform focusTrans = this.focusObj.transform;
 
@@ -170,12 +173,6 @@ namespace CameraController
 
             Debug.Log("aa");
 			return;
-
-
-
-
-
-
 		}
 	}
 }
