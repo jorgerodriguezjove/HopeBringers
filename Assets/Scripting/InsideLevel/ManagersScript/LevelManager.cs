@@ -664,7 +664,7 @@ public class LevelManager : MonoBehaviour
                 //Muestro la acción que va a realizar el enemigo 
                 hoverUnit.ShowActionPathFinding(true);
 
-                //¡¡MUY IMPORTANTE!! TIENE QUE IR DESPUÉS DEL hoverUnit.ShowActionPathFinding
+                //¡¡MUY IMPORTANTE!! hoverUnit.ShowActionPathFinding(true); TIENE QUE IR ANTES QUE ESTOS IFS
                 if (hoverUnit.haveIBeenAlerted)
                 {
                     tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
@@ -768,7 +768,8 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
-                hoverUnit.ShowActionPathFinding(false);
+                hoverUnit.HideActionPathfinding();
+               // hoverUnit.ShowActionPathFinding(false);
 
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
                 {
@@ -791,7 +792,7 @@ public class LevelManager : MonoBehaviour
                     if (tileToMove != null)
                     {
                         hoverUnit.shaderHover.SetActive(false);
-                    tileToMove.ColorDeselect();
+                        tileToMove.ColorDeselect();
                         hoverUnit.myLineRenderer.enabled = false;
                     }
 
@@ -956,9 +957,10 @@ public class LevelManager : MonoBehaviour
     }
 
     //Función que llaman el gigante y el goblin para determinar la distancia hasta los enmigos
-    public List<UnitBase> CheckEnemyPathfinding(int range, GameObject enemyUnitToCheck)
+    public List<UnitBase> CheckEnemyPathfinding(EnemyUnit enemyUnitToCheck)
     {
-        return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck.GetComponent<EnemyUnit>());
+        return TM.OnlyCheckClosestPathToPlayer(enemyUnitToCheck);
+        //return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck.GetComponent<EnemyUnit>());
     }
 
     public void CheckIfGameOver()

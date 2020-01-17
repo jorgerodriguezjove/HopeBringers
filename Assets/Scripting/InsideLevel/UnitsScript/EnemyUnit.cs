@@ -81,6 +81,10 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     public LineRenderer myLineRenderer;
 
+    //Bool que sirve para indicar si el tile que pinta para indicar el ataque ya estaba antes de pintarse bajo ataque para que al despintarlo se quede como estaba.
+    protected bool wasTileAlreadyUnderAttack;
+    protected IndividualTiles tileAlreadyUnderAttack;
+
     //Referencia al gameobject que actua como hover de los enemigos.
     [SerializeField]
     public GameObject shaderHover;
@@ -222,9 +226,25 @@ public class EnemyUnit : UnitBase
     }
 
     //Función que se encarga de pintar el line renderer y el tile de ataque
-    public virtual void ShowActionPathFinding(bool shouldToShow)
+    public virtual void ShowActionPathFinding(bool shouldRecalculate)
     {
         //Cada enemigo realiza su propio path
+    }
+
+    public void HideActionPathfinding()
+    {
+        myLineRenderer.enabled = false;
+        shaderHover.SetActive(false);
+
+        if (!wasTileAlreadyUnderAttack)
+        {
+            if (tileAlreadyUnderAttack != null)
+            {
+                tileAlreadyUnderAttack.ColorDesAttack();
+            }
+            
+            wasTileAlreadyUnderAttack = false;
+        }
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

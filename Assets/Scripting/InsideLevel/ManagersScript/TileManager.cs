@@ -530,6 +530,7 @@ public class TileManager : MonoBehaviour
             //Si el nodo coincide con el objetivo, terminamos la busqueda.
             if (currentNode == target)
             {
+
                 currentPath.Clear();
                 //Si llega hasta aquí si que hay un camino hasta el objetivo.
                 curr = target;
@@ -654,67 +655,28 @@ public class TileManager : MonoBehaviour
 
     #region ENEMY_PATHFINDING
 
+    //Esta lista guarda todos los personajes del jugador en el tablero (No puedo usar la del Level Manager porque no incluye la copia del mago)
+    PlayerUnit[] playersOnTheBoard;
+
     //Estas funciones son bastante parecidas a las del pathfinding normal salvo que devuelven personajes a los que pueden atacar en vez de tiles.
     //El gigante llama a esta función pero no a las anteriores.
     //Sin embargo el goblin llama a esta por el objetivo y a las anteriores por el path
 
-    //Doy feedback de que casillas están al alcance del personaje.
-    public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
+    public List<UnitBase> OnlyCheckClosestPathToPlayer(EnemyUnit _selectedUnit)
     {
+        selectedCharacter = _selectedUnit;
+
         charactersAvailableForAttack.Clear();
         tempCurrentObjectiveCost = 0;
         tempCurrentPathCost = 0;
 
-        //Reuno en una lista todos los tiles a los que puedo acceder
-        OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
+        //Actualizo la lista de personajes por si alguno ha muerto o se ha añadido la copia del mago
+        playersOnTheBoard = FindObjectsOfType<PlayerUnit>();
 
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-        {
-            if (tilesAvailableForMovement[i].unitOnTile != null && tilesAvailableForMovement[i].unitOnTile.GetComponent<PlayerUnit>())
-            {
-                CalculatePathForMovementCost(tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileX, tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileZ);
-
-                //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
-                if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
-                {
-                    //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
-                    if (tempCurrentPathCost != 0)
-                    {
-                        if (tempCurrentObjectiveCost > tempCurrentPathCost)
-                        {
-                            //Limpio la lista de objetivos y añado
-                            charactersAvailableForAttack.Clear();
-                        }
-
-                        //Me guardo la distancia para checkear
-                        tempCurrentObjectiveCost = tempCurrentPathCost;
-
-                        charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
-                    }
-                }
-                //Resetear tempcurrentPathCost a 0
-                tempCurrentPathCost = 0;
-            }
-        }
-        //Reset
-
-
-        return charactersAvailableForAttack;
-    }
-    #endregion
-
-    public List<UnitBase> OnlyCheckClosestPathToPlayer()
-    {
-        charactersAvailableForAttack.Clear();
-        tempCurrentObjectiveCost = 0;
-        tempCurrentPathCost = 0;
 
         for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
         {
-            CalculatePathForMovementCost(LM.characthersOnTheBoard[i].myCurrentTile.tileX, LM.characthersOnTheBoard[i].myCurrentTile.tileZ);
-
-            print(tempCurrentPathCost);
-            print(LM.characthersOnTheBoard[i].myCurrentTile);
+            CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ);
 
             if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
             {
@@ -730,7 +692,7 @@ public class TileManager : MonoBehaviour
                     //Me guardo la distancia para checkear
                     tempCurrentObjectiveCost = tempCurrentPathCost;
 
-                    charactersAvailableForAttack.Add(LM.characthersOnTheBoard[i]);
+                    charactersAvailableForAttack.Add(playersOnTheBoard[i]);
                 }
             }
 
@@ -827,6 +789,54 @@ public class TileManager : MonoBehaviour
 
         return tilesAvailableForEnemyAction;
     }
+    #endregion
+
+    //ESTA ERA LA FUNCIÓN QUE ROMPIA LA OPTIMIZACIÓN
+    #region DEPRECATED
+
+    public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
+    {
+        charactersAvailableForAttack.Clear();
+        tempCurrentObjectiveCost = 0;
+        tempCurrentPathCost = 0;
+
+        //Reuno en una lista todos los tiles a los que puedo acceder
+        OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
+
+        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+        {
+            if (tilesAvailableForMovement[i].unitOnTile != null && tilesAvailableForMovement[i].unitOnTile.GetComponent<PlayerUnit>())
+            {
+                CalculatePathForMovementCost(tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileX, tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileZ);
+
+                //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
+                if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
+                {
+                    //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
+                    if (tempCurrentPathCost != 0)
+                    {
+                        if (tempCurrentObjectiveCost > tempCurrentPathCost)
+                        {
+                            //Limpio la lista de objetivos y añado
+                            charactersAvailableForAttack.Clear();
+                        }
+
+                        //Me guardo la distancia para checkear
+                        tempCurrentObjectiveCost = tempCurrentPathCost;
+
+                        charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
+                    }
+                }
+                //Resetear tempcurrentPathCost a 0
+                tempCurrentPathCost = 0;
+            }
+        }
+        //Reset
+
+
+        return charactersAvailableForAttack;
+    }
+    #endregion
 
     void OnDrawGizmos()
     {
