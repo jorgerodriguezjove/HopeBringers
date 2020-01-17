@@ -116,6 +116,10 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected float maxHeightDifferenceToAttack;
 
+    //AÑADO ESTA VARIABLE PARA QUE SEPA SI PUEDE ATACAR A LA UNIDAD DEL SIGUIENTE TILE
+    [SerializeField]
+    protected float previousTileHeight;
+
     //Máxima diferencia de altura para moverse
     [SerializeField]
     public float maxHeightDifferenceToMove;

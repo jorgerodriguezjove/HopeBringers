@@ -2984,7 +2984,7 @@ GameObject:
   - component: {fileID: 6771597180991628784}
   - component: {fileID: 7737813166812585962}
   - component: {fileID: 2170307563319743806}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: East
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3339,7 +3339,7 @@ GameObject:
   - component: {fileID: 5737905876088385803}
   - component: {fileID: 8202268622804796807}
   - component: {fileID: 1004480527263933433}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Canvas Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3442,7 +3442,7 @@ GameObject:
   - component: {fileID: 5134467003541612764}
   - component: {fileID: 5652473589785445847}
   - component: {fileID: 9057949678571384333}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: West
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4028,6 +4028,7 @@ MonoBehaviour:
   timeWaitAfterAttack: 1
   timeToWaitBeforeHidingHealthbar: 1
   maxHeightDifferenceToAttack: 1
+  previousTileHeight: 0
   maxHeightDifferenceToMove: 1
   isDead: 0
   movementParticle: {fileID: 206210087116555565}
@@ -4055,6 +4056,7 @@ MonoBehaviour:
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
+  hasUsedExtraTurn: 0
   selectedMaterial: {fileID: 2100000, guid: 9c6ce42f5d9951945a5c4bdc4d065ed3, type: 2}
   finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
   canvasWithRotationArrows: {fileID: 5737905876088385803}
@@ -4078,6 +4080,11 @@ MonoBehaviour:
     type: 3}
   myDecoys: []
   maxDecoys: 1
+  crossAreaAttack: 0
+  lightningChain: 0
+  timeElectricityAttackExpands: 3
+  unitsAttacked: []
+  backDamageOff: 0
 --- !u!1 &7212565287305721264
 GameObject:
   m_ObjectHideFlags: 0
@@ -4434,7 +4441,7 @@ GameObject:
   - component: {fileID: 8565034493057499818}
   - component: {fileID: 1562953630464905875}
   - component: {fileID: 4859476204424845336}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: North
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4615,7 +4622,7 @@ GameObject:
   - component: {fileID: 8572188541558195044}
   - component: {fileID: 54746912855719}
   - component: {fileID: 1523153314772964463}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: South
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -498,33 +498,34 @@ public class LevelManager : MonoBehaviour
 
                            
 
-                            //Vemos si tiene enemigos o tiles más altos cerca para que las flechas no se tapen
-                            for (int j = 0; j < tileToMove.neighbours.Count; ++j)
-                            {
-                                if (tileToMove.neighbours[j].isObstacle 
-                                        || tileToMove.neighbours[j].isEmpty 
-                                        || tileToMove.neighbours[j].noTilesInThisColumn)
-                                {
-                                    offsetHeightArrow += 0.5f;
+                            ////Vemos si tiene enemigos o tiles más altos cerca para que las flechas no se tapen
+                            //for (int j = 0; j < tileToMove.neighbours.Count; ++j)
+                            //{
+                            //    if (tileToMove.neighbours[j].isObstacle 
+                            //            || tileToMove.neighbours[j].isEmpty 
+                            //            || tileToMove.neighbours[j].noTilesInThisColumn)
+                            //    {
+                            //        offsetHeightArrow += 0.5f;
 
-                                 }
+                            //     }
 
-                                if (tileToMove.neighbours[j].height > tileToMove.height)
-                                    {
-                                    offsetHeightArrow += 0.5f;
+                            //    if (tileToMove.neighbours[j].height > tileToMove.height)
+                            //        {
+                            //        offsetHeightArrow += 0.5f;
                                     
 
-                                    }
+                            //        }
 
-                                if (tileToMove.neighboursOcuppied >= 1)
-                                {
-                                    offsetHeightArrowForEnemies+= 0.5f;
-                                }
+                            //    if (tileToMove.neighboursOcuppied >= 1)
+                            //    {
+                            //        offsetHeightArrowForEnemies+= 0.5f;
+                            //    }
 
 
-                            }
+                            //}
 
-                            offsetHeightArrow += offsetHeightArrowForEnemies;
+                            //offsetHeightArrow += offsetHeightArrowForEnemies;
+
                             Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                             selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
 

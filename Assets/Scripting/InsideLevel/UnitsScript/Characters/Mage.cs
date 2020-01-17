@@ -97,8 +97,9 @@ public class Mage : PlayerUnit
                     timeElectricityAttackExpands--;
                     for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; ++k)
                     {
-                       
-                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile))
+
+                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile)
+                            && unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this)
                         {
 
                             DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
@@ -219,11 +220,27 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (myCurrentTile.tilesInLineUp[i].isEmpty)
+                {
+                    break;
+                }
+                if (myCurrentTile.tilesInLineUp[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineUp[i].height;
+                }
+                
+
+
                 if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
+                    
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                    
+                 if(previousTileHeight> myCurrentTile.tilesInLineUp[i].height)
+                    {
+                        currentUnitsAvailableToAttack.Remove(myCurrentTile.tilesInLineUp[i].unitOnTile);
+
+                    }
                 }
             }
         }
@@ -241,6 +258,11 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (myCurrentTile.tilesInLineDown[i].isEmpty)
+                {
+                    break;
+                }
+
                 if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
@@ -263,6 +285,10 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (myCurrentTile.tilesInLineRight[i].isEmpty)
+                {
+                    break;
+                }
                 if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
@@ -285,6 +311,11 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (myCurrentTile.tilesInLineLeft[i].isEmpty)
+                {
+                    break;
+                }
+
                 if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
