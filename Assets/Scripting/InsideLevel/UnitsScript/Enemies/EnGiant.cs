@@ -9,6 +9,10 @@ public class EnGiant : EnemyUnit
     private UnitBase myCurentObjective;
     private IndividualTiles myCurrentObjectiveTile;
 
+    //Path de tiles a seguir hasta el objetivo
+    [HideInInspector]
+    private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
+
     // Copia de la lista del goblin que en este caso uso para que la acción del gigante solo aparezca cuando hay players a su alrededor
     [HideInInspector]
     private List<UnitBase> unitsInRange = new List<UnitBase>();
@@ -17,59 +21,81 @@ public class EnGiant : EnemyUnit
     {
         if (isDead || hasAttacked)
         {
-            Debug.Log("dead");
             myCurrentEnemyState = enemyState.Ended;
             return;
         }
 
-        //Determinamos el enemigo más cercano.
-        currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
-
-        //Si no hay enemigos termina su turno
-        if (currentUnitsAvailableToAttack.Count == 0)
+        if (!haveIBeenAlerted)
         {
-            myCurrentEnemyState = enemyState.Ended;
-        }
+            //Comprobar las unidades que hay en mi rango de acción
+            unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
 
-        else if (currentUnitsAvailableToAttack.Count == 1)
-        {
-            myCurentObjective = currentUnitsAvailableToAttack[0];
-            myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
-            myCurrentEnemyState = enemyState.Attacking;
-        }
-
-        //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
-        else if (currentUnitsAvailableToAttack.Count > 1)
-        {
-            //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
-            currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+            //Si hay personajes del jugador en mi rango de acción paso a attacking donde me alerto y hago mi accion
+            for (int i = 0; i < unitsInRange.Count; i++)
             {
-                return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
-            });
-
-            //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
-            for (int i = currentUnitsAvailableToAttack.Count-1; i > 0; i--)
-            {
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                if (unitsInRange[i].GetComponent<PlayerUnit>())
                 {
-                    currentUnitsAvailableToAttack.RemoveAt(i);
+                    myCurrentEnemyState = enemyState.Attacking;
+                    return;
                 }
             }
 
-            //Si sigue habiendo varios enemigos los ordeno segun la vida
-            if (currentUnitsAvailableToAttack.Count > 1)
+            //Si llega hasta aqui significa que no había personajes en rango y termina
+            myCurrentEnemyState = enemyState.Ended;
+        }
+
+        else
+        {
+
+            //Determinamos el enemigo más cercano.
+            currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
+
+            //Si no hay enemigos termina su turno
+            if (currentUnitsAvailableToAttack.Count == 0)
             {
-                //Ordeno la lista de posibles objetivos de menor a mayor vida actual
-                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
-                {
-                    return (a.currentHealth).CompareTo(b.currentHealth);
-                });   
+                myCurrentEnemyState = enemyState.Ended;
             }
 
-            myCurentObjective = currentUnitsAvailableToAttack[0];
-            myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+            else if (currentUnitsAvailableToAttack.Count == 1)
+            {
+                myCurentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentEnemyState = enemyState.Attacking;
+            }
 
-            myCurrentEnemyState = enemyState.Attacking;
+            //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
+            else if (currentUnitsAvailableToAttack.Count > 1)
+            {
+                //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
+                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                {
+                    return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
+                });
+
+                //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
+                for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
+                {
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                    {
+                        currentUnitsAvailableToAttack.RemoveAt(i);
+                    }
+                }
+
+                //Si sigue habiendo varios enemigos los ordeno segun la vida
+                if (currentUnitsAvailableToAttack.Count > 1)
+                {
+                    //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                    currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                    {
+                        return (a.currentHealth).CompareTo(b.currentHealth);
+                    });
+                }
+
+                myCurentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+
+                myCurrentEnemyState = enemyState.Attacking;
+            }
         }
     }
 
@@ -81,6 +107,8 @@ public class EnGiant : EnemyUnit
         if (!haveIBeenAlerted)
         {
             AlertEnemy();
+            myCurrentEnemyState = enemyState.Searching;
+            return;
         }
 
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
@@ -167,231 +195,38 @@ public class EnGiant : EnemyUnit
         }
     }
 
-    //IEnumerator AttackWait()
-    //{
-    //    yield return new WaitForSeconds(timeWaitAfterAttack);
-    //    myCurrentEnemyState = enemyState.Ended;
-    //}
-
     public override void MoveUnit()
     {
+        pathToObjective.Clear();
+
         //ShowActionPathFinding(true);
         movementParticle.SetActive(true);
 
-        //Arriba o abajo
-        if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
-        {
-            //Arriba
-            if (myCurrentObjectiveTile.tileZ > myCurrentTile.tileZ)
-            {
-                if (!myCurrentTile.tilesInLineUp[0].isEmpty && !myCurrentTile.tilesInLineUp[0].isObstacle && myCurrentTile.tilesInLineUp[0].unitOnTile == null)
-                {
-                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
-                    MovementLogic(myCurrentTile.tilesInLineUp);
-                    RotateLogic(FacingDirection.North);
-                }
-                else
-                {
-                    hasMoved = true;
-                    myCurrentEnemyState = enemyState.Ended;
-                }
-            }
-            //Abajo
-            else
-            {
-                if (!myCurrentTile.tilesInLineDown[0].isEmpty && !myCurrentTile.tilesInLineDown[0].isObstacle && myCurrentTile.tilesInLineDown[0].unitOnTile == null)
-                {
-                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; // new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
-                    MovementLogic(myCurrentTile.tilesInLineDown);
-                    RotateLogic(FacingDirection.South);
-                }
+        //CAMBIAR ESTO (lm.tm)
+        LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+        pathToObjective = LM.TM.currentPath;
 
-                else
-                {
-                    hasMoved = true;
-                    myCurrentEnemyState = enemyState.Ended;
-                }
-            }
-        }
-        //Izquierda o derecha
-        else if (myCurrentObjectiveTile.tileZ == myCurrentTile.tileZ)
-        {
-            //Derecha
-            if (myCurrentObjectiveTile.tileX > myCurrentTile.tileX)
-            {
-                if (!myCurrentTile.tilesInLineRight[0].isEmpty && !myCurrentTile.tilesInLineRight[0].isObstacle && myCurrentTile.tilesInLineRight[0].unitOnTile == null)
-                {
-                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position;  // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
-                    MovementLogic(myCurrentTile.tilesInLineRight);
-                    RotateLogic(FacingDirection.East);
-                }
+        ShowActionPathFinding(false);
 
-                else
-                {
-                    hasMoved = true;
-                    myCurrentEnemyState = enemyState.Ended;
-                }
-            }
-            //Izquierda
-            else
-            {
-                if (!myCurrentTile.tilesInLineLeft[0].isEmpty && !myCurrentTile.tilesInLineLeft[0].isObstacle && myCurrentTile.tilesInLineLeft[0].unitOnTile == null)
-                {
-                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position;   //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
-                    MovementLogic(myCurrentTile.tilesInLineLeft);
-                    RotateLogic(FacingDirection.West);
-                }
-
-                else
-                {
-                    hasMoved = true;
-                    myCurrentEnemyState = enemyState.Ended;
-                }
-            }
-        }
-
-        //Diagonales
-        else
-        {
-            //Diag derecha
-            if (myCurrentObjectiveTile.tileX > myCurrentTile.tileX)
-            {
-               //Diag Arriba Derecha
-               if(myCurrentObjectiveTile.tileZ > myCurrentTile.tileZ)
-               {
-                    //Si el tile de arriba esta libre me muevo a él
-                    if (!myCurrentTile.tilesInLineUp[0].isEmpty && !myCurrentTile.tilesInLineUp[0].isObstacle && myCurrentTile.tilesInLineUp[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineUp);
-                        RotateLogic(FacingDirection.North);
-                    }
-
-                    //Si no compruebo el de la derecha para intentar moverme a él.
-                    else if (!myCurrentTile.tilesInLineRight[0].isEmpty && !myCurrentTile.tilesInLineRight[0].isObstacle && myCurrentTile.tilesInLineRight[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position;  //new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineRight);
-                        RotateLogic(FacingDirection.East);
-                    }
-
-                    else
-                    {
-                        myCurrentEnemyState = enemyState.Ended;
-                    }
-                }
-
-               //Diag Abajo Derecha
-               else
-               {
-                    //Si el tile de abajo esta libre me muevo a él
-                    if (!myCurrentTile.tilesInLineDown[0].isEmpty && !myCurrentTile.tilesInLineDown[0].isObstacle && myCurrentTile.tilesInLineDown[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; // new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineDown);
-                        RotateLogic(FacingDirection.South);
-                    }
-
-                    //Si el tile de arriba esta libre me muevo a él
-                    else if (!myCurrentTile.tilesInLineRight[0].isEmpty && !myCurrentTile.tilesInLineRight[0].isObstacle && myCurrentTile.tilesInLineRight[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineRight);
-                        RotateLogic(FacingDirection.East);
-                    }
-
-                    else
-                    {
-                        myCurrentEnemyState = enemyState.Ended;
-                    }
-                }
-            }
-            else
-            {
-                //Diag Arriba Izquierda
-                if (myCurrentObjectiveTile.tileZ > myCurrentTile.tileZ)
-                {
-                    //Si el tile de arriba esta libre me muevo a él
-                    if (!myCurrentTile.tilesInLineUp[0].isEmpty && !myCurrentTile.tilesInLineUp[0].isObstacle && myCurrentTile.tilesInLineUp[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineUp);
-                        RotateLogic(FacingDirection.North);
-                    }
-
-                    //Si el tile de arriba esta libre me muevo a él
-                    else if (!myCurrentTile.tilesInLineLeft[0].isEmpty && !myCurrentTile.tilesInLineLeft[0].isObstacle && myCurrentTile.tilesInLineLeft[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineLeft);
-                        RotateLogic(FacingDirection.West);
-                    }
-
-                    else
-                    {
-                        myCurrentEnemyState = enemyState.Ended;
-                    }
-                }
-
-                //Diag Abajo Izquierda
-                else
-                {
-                    //Si el tile de abajo esta libre me muevo a él
-                    if (!myCurrentTile.tilesInLineDown[0].isEmpty && !myCurrentTile.tilesInLineDown[0].isObstacle && myCurrentTile.tilesInLineDown[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; // new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineDown);
-                        RotateLogic(FacingDirection.South);
-                    }
-
-                    //Si el tile de arriba esta libre me muevo a él
-                    else if (!myCurrentTile.tilesInLineLeft[0].isEmpty && !myCurrentTile.tilesInLineLeft[0].isObstacle && myCurrentTile.tilesInLineLeft[0].unitOnTile == null)
-                    {
-                        currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
-                        MovementLogic(myCurrentTile.tilesInLineLeft);
-                        RotateLogic(FacingDirection.West);
-                    }
-
-                    else
-                    {
-                        myCurrentEnemyState = enemyState.Ended;
-                    }
-                }
-            }
-        }
-
-
-        //Comprueba la dirección en la que se encuentra el objetivo.
-        //Si se encuentra justo en el mismo eje (movimiento torre), el gigante avanza en esa dirección.
-        //Si se encuentra un bloqueo se queda en el sitio intentando avanzar contra el bloqueo.
-
-        //Sin embargo si el objetivo se encuentra en diágonal (por ejemplo arriba a la derecha)
-        //El gigante tiene que decidir una de las dos (DISEÑO REGLAS DE PATHFINDING)
-        //Una vez decidida avanza en esta dirección hasta que no pueda más y si sigue estando en diagonal, avanza en la que había descartado antes.
-
-        //Buscar de nuevo si puedo pegarle
-
-        movementParticle.SetActive(false);
-        myCurrentEnemyState = enemyState.Searching;
-
-        //Espero después de moverme para que no vaya demasiado rápido
-        //myCurrentEnemyState = enemyState.Waiting;
-        //StartCoroutine("MovementWait");
-
+        //Como solo se mueve un tile no hay que hacer ninguna comprobacion
+        currentTileVectorToMove = pathToObjective[1].transform.position;
+        MovementLogic(pathToObjective[1]);
     }
 
     //Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
-    private void MovementLogic(List<IndividualTiles> ListWithNewTile)
+    private void MovementLogic(IndividualTiles tileToMove)
     {
         //Muevo al gigante
         transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
 
-        ShowActionPathFinding(false);
-
         StartCoroutine("MovementWait");
 
+        movementParticle.SetActive(false);
+        CheckTileDirection(tileToMove);
+        myCurrentEnemyState = enemyState.Searching;
+
         //Actualizo las variables de los tiles
-        UpdateInformationAfterMovement(ListWithNewTile[0]);
+        UpdateInformationAfterMovement(tileToMove);
 
         //Aviso de que se ha movido
         hasMoved = true;
@@ -402,6 +237,43 @@ public class EnGiant : EnemyUnit
         yield return new WaitForSeconds(timeWaitAfterMovement);
         HideActionPathfinding();
         //ShowActionPathFinding(false);
+    }
+
+    //Decidir rotación al moverse por los tiles.
+    public void CheckTileDirection(IndividualTiles tileToCheck)
+    {
+        //Arriba o abajo
+        if (tileToCheck.tileX == myCurrentTile.tileX)
+        {
+            //Arriba
+            if (tileToCheck.tileZ > myCurrentTile.tileZ)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                currentFacingDirection = FacingDirection.North;
+            }
+            //Abajo
+            else
+            {
+                unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                currentFacingDirection = FacingDirection.South;
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+            //Derecha
+            if (tileToCheck.tileX > myCurrentTile.tileX)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                currentFacingDirection = FacingDirection.East;
+            }
+            //Izquierda
+            else
+            {
+                unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                currentFacingDirection = FacingDirection.West;
+            }
+        }
     }
 
     private void RotateLogic(FacingDirection newDirection)
@@ -436,107 +308,77 @@ public class EnGiant : EnemyUnit
     //Función que se encarga de hacer que el personaje este despierto/alerta
 
     //HACER LO MISMO QUE EN GOBLIN Y QUITAR QUE RECALCULE CUANDO ES EL TURNO ENEMIGO. MIRAR BIEN QUE HACE EXACTAMENTE CUANDO HAY QUE DESPINTAR PARA PONER EN FUNCION HIDEACTIONHOVER.
-    public override void ShowActionPathFinding(bool _shouldShowAction)
+    public override void ShowActionPathFinding(bool _shouldRecalculate)
     {
-        SearchingObjectivesToAttackShowActionPathFinding();    
-
-        if (currentUnitsAvailableToAttack.Count > 0)
+        //Si se tiene que mostrar la acción por el hover calculamos el enemigo
+        if ( _shouldRecalculate)
         {
-            //Cada enemigo realiza su propio path
-            LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
-            //Añadir variable para guardar el path
-
-            if (_shouldShowAction)
+            SearchingObjectivesToAttackShowActionPathFinding();
+            Debug.Log(myCurrentObjectiveTile);
+            if (myCurrentObjectiveTile != null)
             {
-                myLineRenderer.enabled = true;
-
-              
-                if (LM.TM.currentPath.Count <=3)
-                {
-                   
-                    if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
-                    {
-                        myCurrentObjectiveTile.ColorAttack();
-
-                        if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-                        {
-                            myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
-                        }
-
-
-                        if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
-                        {
-                        myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
-                        }
-                    }
-                    //Izquierda o derecha
-                    else
-                    {
-                        myCurrentObjectiveTile.ColorAttack();
-
-                        //Comprobar si a sus lados hay unidades
-                        if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
-                        {
-                            myCurrentObjectiveTile.tilesInLineUp[0].ColorAttack();
-                        }
-
-                        if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
-                        {
-                            myCurrentObjectiveTile.tilesInLineDown[0].ColorAttack();
-                        }
-                    }                
-                }
-               
-
-
-
-
-                if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-                {
-                    shaderHover.SetActive(true);
-                }
+                //Cada enemigo realiza su propio path
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+                pathToObjective = LM.TM.currentPath;
             }
-            else
+        }
+
+        if (myCurrentObjectiveTile != null)
+        {
+            myLineRenderer.enabled = true;
+
+            if (!_shouldRecalculate)
             {
-                myLineRenderer.enabled = false;
-                shaderHover.SetActive(false);
+                ColorAttackTile();
+            }
+
+            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+            {
+                shaderHover.SetActive(true);
+            }
+        }
+
+            //else
+            //{
+            //    myLineRenderer.enabled = false;
+            //    shaderHover.SetActive(false);
 
 
-               myCurrentObjectiveTile.ColorDesAttack();
+            //   myCurrentObjectiveTile.ColorDesAttack();
 
-                if ( myCurrentObjectiveTile != null)
-                {
-                    if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
-                    {
-                        if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-                        {
-                            myCurrentObjectiveTile.tilesInLineRight[0].ColorDesAttack();
-                        }
+            //    if ( myCurrentObjectiveTile != null)
+            //    {
+            //        if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
+            //        {
+            //            if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+            //            {
+            //                myCurrentObjectiveTile.tilesInLineRight[0].ColorDesAttack();
+            //            }
 
 
-                        if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
-                        {
-                            myCurrentObjectiveTile.tilesInLineLeft[0].ColorDesAttack();
-                        }
+            //            if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+            //            {
+            //                myCurrentObjectiveTile.tilesInLineLeft[0].ColorDesAttack();
+            //            }
                         
                         
-                    }
-                    else
-                    {
-                        if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
-                        {
-                            myCurrentObjectiveTile.tilesInLineUp[0].ColorDesAttack();
-                        }
+            //        }
+            //        else
+            //        {
+            //            if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+            //            {
+            //                myCurrentObjectiveTile.tilesInLineUp[0].ColorDesAttack();
+            //            }
 
-                        if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
-                        {
-                            myCurrentObjectiveTile.tilesInLineDown[0].ColorDesAttack();
-                        }
+            //            if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+            //            {
+            //                myCurrentObjectiveTile.tilesInLineDown[0].ColorDesAttack();
+            //            }
 
-                    }
+            //        }
 
-                }
-            }
+            //    }
+            //}
             
             myLineRenderer.positionCount = 2;
 
@@ -557,14 +399,74 @@ public class EnGiant : EnemyUnit
                 shaderHover.transform.DORotate(unitDirection, 0f);
             }
 
-            else
-            {
-                myLineRenderer.enabled = false;
-                shaderHover.SetActive(false);
-            }
-        }
+            //else
+            //{
+            //    myLineRenderer.enabled = false;
+            //    shaderHover.SetActive(false);
+            //}
+        
        
     }
+
+    //Se llama desde el LevelManager. Al final del showAction se encarga de mostrar el tile al que va a atacar
+    public override void ColorAttackTile()
+    {
+        if (pathToObjective.Count <= movementUds && myCurrentObjectiveTile != null)
+        {
+            //Compruebo si tile al que voy a atacar estaba bajo ataque
+            wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
+
+            tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile);
+
+            myCurrentObjectiveTile.ColorAttack();
+
+            if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
+            {
+                //Hago lo mismo con los tiles laterales, compruebo si hay que pintarlos en rojo y de ser así lo guarto en la lista de bools
+
+                if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0].isUnderAttack);
+
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0]);
+
+                    myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
+                }
+
+                if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0].isUnderAttack);
+
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0]);
+
+                    myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
+                }
+            }
+            //Izquierda o derecha
+            else
+            {
+                //Comprobar si a sus lados hay unidades
+                if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0].isUnderAttack);
+
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0]);
+
+                    myCurrentObjectiveTile.tilesInLineUp[0].ColorAttack();
+                }
+
+                if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0].isUnderAttack);
+
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0]);
+
+                    myCurrentObjectiveTile.tilesInLineDown[0].ColorAttack();
+                }
+            }
+        }
+    }
+
 
     bool keepSearching;
 
@@ -607,12 +509,7 @@ public class EnGiant : EnemyUnit
             //Determinamos el enemigo más cercano.
             currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
 
-            if (currentUnitsAvailableToAttack.Count == 0)
-            {
-
-            }
-
-            else if (currentUnitsAvailableToAttack.Count == 1)
+            if (currentUnitsAvailableToAttack.Count == 1)
             {
                 myCurentObjective = currentUnitsAvailableToAttack[0];
                 myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
@@ -651,5 +548,7 @@ public class EnGiant : EnemyUnit
 
             }
         }
+
+        keepSearching = false;
     }
 }

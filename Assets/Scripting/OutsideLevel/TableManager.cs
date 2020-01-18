@@ -109,6 +109,11 @@ public class TableManager : MonoBehaviour
         selectCamera.SetActive(false);
         progresionCamera.SetActive(false);
 
+        for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
+        {
+            GameManager.Instance.characterDataForCurrentLevel[i].ReturnToInitialPositionInBox();
+        }
+
         //Reseteo personajes seleccionados
         GameManager.Instance.unitsForCurrentLevel.Clear();
         GameManager.Instance.characterDataForCurrentLevel.Clear();
@@ -144,11 +149,10 @@ public class TableManager : MonoBehaviour
                 }   
             }
 
+            //Si clickas a la unidad que esta sobre el libro se devuelve a la caja
             else
             {
-                _unitClicked.transform.position = _unitClicked.initialPosition;
-                _unitClicked.panelOfTheBookImIn.GetComponent<PanelForUnitSelection>().isOcuppied = false;
-                _unitClicked.panelOfTheBookImIn = null;
+                _unitClicked.ReturnToInitialPositionInBox();
 
                 GameManager.Instance.unitsForCurrentLevel.Remove(_unitClicked.myUnit);
                 GameManager.Instance.characterDataForCurrentLevel.Remove(_unitClicked);

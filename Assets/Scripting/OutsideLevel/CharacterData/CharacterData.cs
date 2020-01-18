@@ -55,11 +55,11 @@ public class CharacterData : MonoBehaviour
     //public bool B3;
 
     //Diccionario con las mejoras de stats tipo int que tienen todos los personajes.
-    public Dictionary<string,int> genericUpgrades = new Dictionary<string, int>();
+    public Dictionary<string, int> genericUpgrades = new Dictionary<string, int>();
 
     //Diccionario con las mejoras de stats tipo int que tiene cada personaje. Cada personaje inicializa las suyas en su script de Data.
     public Dictionary<string, int> specificIntCharacterUpgrades = new Dictionary<string, int>();
-   
+
     //Diccionario con las mejoras de stats tipo bool que tiene cada personaje. Cada personaje inicializa las suyas en su script de Data.
     public Dictionary<string, bool> specificBoolCharacterUpgrades = new Dictionary<string, bool>();
 
@@ -78,7 +78,7 @@ public class CharacterData : MonoBehaviour
         InitializeGenericUpgrades();
         InitializeSpecificUpgrades();
 
-        
+
         initialPosition = gameObject.transform.position;
     }
 
@@ -103,7 +103,7 @@ public class CharacterData : MonoBehaviour
     #endregion
 
     #region INIT_&_UPDATE_STATS
-    
+
     //NO CONFUNDIR INIT CON UPDATE.
     //Init se encarga de crear la mejora dentro del diccionario.
     //Update se encarga de actualizar el valor de la variable que tiene el personaje en escena
@@ -114,7 +114,7 @@ public class CharacterData : MonoBehaviour
         genericUpgrades.Add(AppGenericUpgrades.maxHealth, myUnit.maxHealth);
         genericUpgrades.Add(AppGenericUpgrades.baseDamage, myUnit.baseDamage);
         genericUpgrades.Add(AppGenericUpgrades.attackRange, myUnit.attackRange);
-        
+
         //Aquí es donde irían el resto de mejoras genéricas
     }
 
@@ -151,6 +151,13 @@ public class CharacterData : MonoBehaviour
         {
             TM.OnClickCharacter(GetComponent<CharacterData>());
         }
+    }
+
+    public void ReturnToInitialPositionInBox()
+    {
+        transform.position = initialPosition;
+        panelOfTheBookImIn.GetComponent<PanelForUnitSelection>().isOcuppied = false;
+        panelOfTheBookImIn = null;
     }
 
     //Al ser avisado de que se ha comprado una mejora aumento el powerlevel y guardo en la lista de ids la nueva habilidad para luego reactivar los nodos adecuados del árbol.

@@ -82,8 +82,8 @@ public class EnemyUnit : UnitBase
     public LineRenderer myLineRenderer;
 
     //Bool que sirve para indicar si el tile que pinta para indicar el ataque ya estaba antes de pintarse bajo ataque para que al despintarlo se quede como estaba.
-    protected bool wasTileAlreadyUnderAttack;
-    protected IndividualTiles tileAlreadyUnderAttack;
+    protected List<bool> wereTilesAlreadyUnderAttack = new List<bool>();
+    protected List<IndividualTiles> tilesAlreadyUnderAttack = new List<IndividualTiles>();
 
     //Referencia al gameobject que actua como hover de los enemigos.
     [SerializeField]
@@ -236,15 +236,21 @@ public class EnemyUnit : UnitBase
         myLineRenderer.enabled = false;
         shaderHover.SetActive(false);
 
-        if (!wasTileAlreadyUnderAttack)
+        for (int i = 0; i < tilesAlreadyUnderAttack.Count; i++)
         {
-            if (tileAlreadyUnderAttack != null)
+            if (!wereTilesAlreadyUnderAttack[i])
             {
-                tileAlreadyUnderAttack.ColorDesAttack();
+                tilesAlreadyUnderAttack[i].ColorDesAttack();
             }
-            
-            wasTileAlreadyUnderAttack = false;
         }
+
+        wereTilesAlreadyUnderAttack.Clear();
+        tilesAlreadyUnderAttack.Clear();
+    }
+
+    public virtual void ColorAttackTile()
+    {
+        //El goblin y el gigante lo usan para pintar el tile al que van a atacar al mostrar show action
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

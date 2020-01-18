@@ -562,6 +562,8 @@ public class TileManager : MonoBehaviour
                 //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
                 currentPath.Reverse();
 
+                Debug.Log("REAL " + currentPath.Count);
+
                 //Calcular coste del path
                 for (int i = 0; i < currentPath.Count; i++)
                 {
@@ -588,7 +590,7 @@ public class TileManager : MonoBehaviour
             foreach (IndividualTiles neighbour in grid2DNode[currentNode.tileX, currentNode.tileZ].neighbours)
             {
                 //Goblin
-                if (selectedCharacter.GetComponent<EnGoblin>())
+                if (selectedCharacter.GetComponent<EnemyUnit>())
                 {
                     if (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
                     {

@@ -697,6 +697,10 @@ public class LevelManager : MonoBehaviour
                         tilesAvailableForMovementEnemies[i].ColorSelect();
                     }
                 }
+
+                //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
+                hoverUnit.ColorAttackTile();
+
             }
 
             else if (hoverUnit.GetComponent<EnBalista>())

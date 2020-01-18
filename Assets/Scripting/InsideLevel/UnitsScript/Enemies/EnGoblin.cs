@@ -205,12 +205,6 @@ public class EnGoblin : EnemyUnit
         }
     }
 
-    //IEnumerator AttackWait()
-    //{
-    //    yield return new WaitForSeconds(timeWaitAfterAttack);
-    //    myCurrentEnemyState = enemyState.Ended;
-    //}
-
     int limitantNumberOfTilesToMove;
 
     public override void MoveUnit()
@@ -360,10 +354,10 @@ public class EnGoblin : EnemyUnit
         if (_shouldRecalculate)
         {
             SearchingObjectivesToAttackShowActionPathFinding();
-            Debug.Log(myCurrentObjectiveTile);
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
+                Debug.Log(myCurrentObjectiveTile);
                 LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
                 pathToObjective = LM.TM.currentPath;
             }
@@ -413,16 +407,38 @@ public class EnGoblin : EnemyUnit
                 }
             }
 
-            if (pathToObjective[pathToObjective.Count-1].unitOnTile != null && pathToObjective[pathToObjective.Count - 1].unitOnTile.GetComponent<PlayerUnit>())
+            //A pesar de que ya se llama a esta función desde el levelManager en caso de hover, si se tiene que mostrar porque el goblin está atacando se tiene que llamar desde aqui (ya que no pasa por el level manager)
+            //Tiene que ser en falso porque si no pongo la condicion la función se cree que el tileya estaba pintado de antes
+            if (!_shouldRecalculate)
             {
-                wasTileAlreadyUnderAttack = pathToObjective[pathToObjective.Count - 1].isUnderAttack;
-
-                tileAlreadyUnderAttack = pathToObjective[pathToObjective.Count - 1];
-
-                pathToObjective[pathToObjective.Count - 1].ColorAttack();
+                ColorAttackTile();
             }
+            
         }
     }
+
+    //Se llama desde el LevelManager. Al final del showAction se encarga de mostrar el tile al que va a atacar
+    public override void ColorAttackTile()
+    {
+
+        for (int i = 0; i < pathToObjective.Count; i++)
+        {
+            Debug.Log(pathToObjective[i]);
+        }
+
+        Debug.Log(myCurentObjective + "" +  myCurrentObjectiveTile);
+
+        if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds && myCurrentObjectiveTile != null)
+        {
+            wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
+
+            tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile);
+
+            Debug.Log("Coloreado");
+            myCurrentObjectiveTile.ColorAttack();
+        }
+    }
+
 
     //Bool que indica si almenos una de las unidades encontradas en rango de acción es un player
     bool keepSearching;
