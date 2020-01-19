@@ -1201,6 +1201,7 @@ MonoBehaviour:
   timeWaitAfterAttack: 0.5
   timeToWaitBeforeHidingHealthbar: 1
   maxHeightDifferenceToAttack: 1
+  previousTileHeight: 0
   maxHeightDifferenceToMove: 1
   isDead: 0
   movementParticle: {fileID: 8076952081098728831}
@@ -1219,7 +1220,7 @@ MonoBehaviour:
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 9d147e57b15b50a45a604f14ff7a3f6a,
     type: 2}
   canvasUnit: {fileID: 9141236477566366306}
-  characterImage: {fileID: 21300000, guid: e694edfc8b64cb946b149212a71ab964, type: 3}
+  characterImage: {fileID: 21300000, guid: f6094d9ac30c0df43882ba643602c1e3, type: 3}
   tooltipImage: {fileID: 0}
   unitInfo: "Si detecta a alguien en l\xEDnea recta, carga su ataque. Al turno siguiente
     lanza un ataque devastador que golpea toda esa l\xEDnea. Hace 3 puntos de da\xF1o."
@@ -1762,16 +1763,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.5082697
       objectReference: {fileID: 0}
-    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 171608acdfd3a3f4d8bd11df54b9e6c1, type: 2}
-    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4704916689542086, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.46994293
@@ -1787,6 +1778,16 @@ PrefabInstance:
     - target: {fileID: 4704916689542086, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.12364541
+      objectReference: {fileID: 0}
+    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 171608acdfd3a3f4d8bd11df54b9e6c1, type: 2}
+    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
@@ -1873,21 +1874,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.5082697
       objectReference: {fileID: 0}
-    - target: {fileID: 137186716190997794, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 1bcc25f4c1d4aa44c9803a876bdaffcf, type: 2}
-    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 171608acdfd3a3f4d8bd11df54b9e6c1, type: 2}
-    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4704916689542086, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.46994293
@@ -1904,6 +1890,21 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 0.12364541
       objectReference: {fileID: 0}
+    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 171608acdfd3a3f4d8bd11df54b9e6c1, type: 2}
+    - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 137186716190997794, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1bcc25f4c1d4aa44c9803a876bdaffcf, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
 --- !u!4 &2803198303828946503 stripped

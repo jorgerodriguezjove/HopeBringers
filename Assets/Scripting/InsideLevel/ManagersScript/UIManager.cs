@@ -89,7 +89,7 @@ public class UIManager : MonoBehaviour
 
     //Topes que no puede superar la barra
     [SerializeField]
-    private GameObject topScrollUp, topScrollDown, buttonUp, buttonDown;
+    private GameObject topScrollUp, topScrollDown, buttonUp, buttonDown, buttonUpHighlight, buttonDownHighlight;
 
 
 
@@ -449,20 +449,30 @@ public class UIManager : MonoBehaviour
                 if (panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.down * scrollSpeed * Time.deltaTime);
+					buttonDownHighlight.SetActive(true);
 					//buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
 					//buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, 10), 0.2f);
 				}
             }
+			else
+			{
+				buttonDownHighlight.SetActive(false);
+			}
 
             if (isScrollButtonUpBeingPressed)
             {
                 if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.up * scrollSpeed * Time.deltaTime);
+					buttonUpHighlight.SetActive(true);
 					//buttonUp.gameObject.transform.DORotate(buttonUp.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
 					//buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
 				}
             }
+			else
+			{
+				buttonUpHighlight.SetActive(false);
+			}
         }
     }
 
