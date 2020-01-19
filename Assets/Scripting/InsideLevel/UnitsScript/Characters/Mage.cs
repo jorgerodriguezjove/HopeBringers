@@ -165,9 +165,6 @@ public class Mage : PlayerUnit
             CheckDecoy();
 
         }
-
-
-
         StartCoroutine("MovingUnitAnimation");
 
         UpdateInformationAfterMovement(tileToMove);
@@ -196,6 +193,9 @@ public class Mage : PlayerUnit
     public void InstantiateDecoy()
     {
         GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
+
+        decoyToInstantiate.GetComponent<MageDecoy>().SetTile(myCurrentTile);
+
         myDecoys.Add(decoyToInstantiate);
     }
 

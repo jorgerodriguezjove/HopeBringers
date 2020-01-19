@@ -6,7 +6,7 @@ using DG.Tweening;
 public class EnGoblin : EnemyUnit
 {
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
-    private UnitBase myCurentObjective;
+    private UnitBase myCurrentObjective;
     private IndividualTiles myCurrentObjectiveTile;
 
     //Path de tiles a seguir hasta el objetivo
@@ -19,6 +19,9 @@ public class EnGoblin : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
+        myCurrentObjective = null;
+        myCurrentObjectiveTile = null;
+
         if (isDead || hasAttacked)
         {
             myCurrentEnemyState = enemyState.Ended;
@@ -62,8 +65,8 @@ public class EnGoblin : EnemyUnit
 
             else if (currentUnitsAvailableToAttack.Count == 1)
             {
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                 myCurrentEnemyState = enemyState.Attacking;
             }
 
@@ -97,8 +100,8 @@ public class EnGoblin : EnemyUnit
                     });
                 }
 
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
 
                 myCurrentEnemyState = enemyState.Attacking;
             }
@@ -217,7 +220,13 @@ public class EnGoblin : EnemyUnit
 
         //CAMBIAR ESTO (lm.tm)
         LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
-        pathToObjective = LM.TM.currentPath;
+
+        //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+        //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+        for (int i = 0; i < LM.TM.currentPath.Count; i++)
+        {
+            pathToObjective.Add(LM.TM.currentPath[i]);
+        }
 
         ShowActionPathFinding(false);
 
@@ -353,13 +362,20 @@ public class EnGoblin : EnemyUnit
         //Si se tiene que mostrar la acción por el hover calculamos el enemigo
         if (_shouldRecalculate)
         {
+            pathToObjective.Clear();
+
             SearchingObjectivesToAttackShowActionPathFinding();
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
-                Debug.Log(myCurrentObjectiveTile);
                 LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
-                pathToObjective = LM.TM.currentPath;
+
+                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+                for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                {
+                    pathToObjective.Add(LM.TM.currentPath[i]);
+                }
             }
         }
 
@@ -380,7 +396,7 @@ public class EnGoblin : EnemyUnit
 
             myLineRenderer.enabled = true;
 
-            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.TM.currentPath.Count > 2)
+            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
                 shaderHover.SetActive(true);
             }
@@ -401,7 +417,7 @@ public class EnGoblin : EnemyUnit
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
                         shaderHover.transform.position = pointPosition;
-                        Vector3 positionToLook = new Vector3(myCurentObjective.transform.position.x, myCurentObjective.transform.position.y + 0.5f, myCurentObjective.transform.position.z);
+                        Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
                         shaderHover.transform.DOLookAt(positionToLook, 0);
                     }
                 }
@@ -420,21 +436,14 @@ public class EnGoblin : EnemyUnit
     //Se llama desde el LevelManager. Al final del showAction se encarga de mostrar el tile al que va a atacar
     public override void ColorAttackTile()
     {
-
-        for (int i = 0; i < pathToObjective.Count; i++)
+        //El +2 es porque pathToObjective tiene en cuenta tanto el tile inicial (ocupado por goblin) como el final (ocupado por player)
+        if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds +2 && myCurrentObjective != null)
         {
-            Debug.Log(pathToObjective[i]);
-        }
-
-        Debug.Log(myCurentObjective + "" +  myCurrentObjectiveTile);
-
-        if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds && myCurrentObjectiveTile != null)
-        {
+            Debug.Log(myCurrentObjective);
             wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
 
             tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile);
 
-            Debug.Log("Coloreado");
             myCurrentObjectiveTile.ColorAttack();
         }
     }
@@ -446,6 +455,9 @@ public class EnGoblin : EnemyUnit
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
     {
+        myCurrentObjective = null;
+        myCurrentObjectiveTile = null;
+
         //Si no ha sido alertado compruebo si hay players al alcance que van a hacer que se despierte y se mueva
         if (!haveIBeenAlerted)
         {
@@ -457,7 +469,6 @@ public class EnGoblin : EnemyUnit
                 if (unitsInRange[i].GetComponent<PlayerUnit>())
                 {
                     keepSearching = true;
-                    Debug.Log(unitsInRange[i]);
                     currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
                     break;
                 }
@@ -479,8 +490,8 @@ public class EnGoblin : EnemyUnit
         {
             if (currentUnitsAvailableToAttack.Count == 1)
             {
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
             }
 
             //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
@@ -513,8 +524,8 @@ public class EnGoblin : EnemyUnit
                     });
                 }
 
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
             }
         }
 

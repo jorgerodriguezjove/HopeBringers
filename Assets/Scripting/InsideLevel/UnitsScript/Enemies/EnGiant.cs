@@ -6,7 +6,7 @@ using DG.Tweening;
 public class EnGiant : EnemyUnit
 {
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
-    private UnitBase myCurentObjective;
+    private UnitBase myCurrentObjective;
     private IndividualTiles myCurrentObjectiveTile;
 
     //Path de tiles a seguir hasta el objetivo
@@ -19,6 +19,9 @@ public class EnGiant : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
+        myCurrentObjective = null;
+        myCurrentObjectiveTile = null;
+
         if (isDead || hasAttacked)
         {
             myCurrentEnemyState = enemyState.Ended;
@@ -58,8 +61,8 @@ public class EnGiant : EnemyUnit
 
             else if (currentUnitsAvailableToAttack.Count == 1)
             {
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                 myCurrentEnemyState = enemyState.Attacking;
             }
 
@@ -91,8 +94,8 @@ public class EnGiant : EnemyUnit
                     });
                 }
 
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
 
                 myCurrentEnemyState = enemyState.Attacking;
             }
@@ -204,7 +207,13 @@ public class EnGiant : EnemyUnit
 
         //CAMBIAR ESTO (lm.tm)
         LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
-        pathToObjective = LM.TM.currentPath;
+
+        //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+        //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+        for (int i = 0; i < LM.TM.currentPath.Count; i++)
+        {
+            pathToObjective.Add(LM.TM.currentPath[i]);
+        }
 
         ShowActionPathFinding(false);
 
@@ -313,13 +322,20 @@ public class EnGiant : EnemyUnit
         //Si se tiene que mostrar la acción por el hover calculamos el enemigo
         if ( _shouldRecalculate)
         {
+            pathToObjective.Clear();
+
             SearchingObjectivesToAttackShowActionPathFinding();
-            Debug.Log(myCurrentObjectiveTile);
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
                 LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
-                pathToObjective = LM.TM.currentPath;
+
+                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+                for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                {
+                    pathToObjective.Add(LM.TM.currentPath[i]);
+                }
             }
         }
 
@@ -332,86 +348,46 @@ public class EnGiant : EnemyUnit
                 ColorAttackTile();
             }
 
-            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+            if (pathToObjective.Count > 2)
             {
-                shaderHover.SetActive(true);
-            }
-        }
+                if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+                {
+                    shaderHover.SetActive(true);
+                }
 
-            //else
-            //{
-            //    myLineRenderer.enabled = false;
-            //    shaderHover.SetActive(false);
+                //myLineRenderer.positionCount = 2;
 
-
-            //   myCurrentObjectiveTile.ColorDesAttack();
-
-            //    if ( myCurrentObjectiveTile != null)
-            //    {
-            //        if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
-            //        {
-            //            if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-            //            {
-            //                myCurrentObjectiveTile.tilesInLineRight[0].ColorDesAttack();
-            //            }
-
-
-            //            if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
-            //            {
-            //                myCurrentObjectiveTile.tilesInLineLeft[0].ColorDesAttack();
-            //            }
-                        
-                        
-            //        }
-            //        else
-            //        {
-            //            if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
-            //            {
-            //                myCurrentObjectiveTile.tilesInLineUp[0].ColorDesAttack();
-            //            }
-
-            //            if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
-            //            {
-            //                myCurrentObjectiveTile.tilesInLineDown[0].ColorDesAttack();
-            //            }
-
-            //        }
-
-            //    }
-            //}
-            
-            myLineRenderer.positionCount = 2;
-
-
-            if (LM.TM.currentPath.Count > 2)
-            {
                 Vector3 iniPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
 
                 myLineRenderer.SetPosition(0, iniPosition);
 
-                Vector3 pointPosition = new Vector3(LM.TM.currentPath[1].transform.position.x, LM.TM.currentPath[1].transform.position.y + 0.5f, LM.TM.currentPath[1].transform.position.z);
+                Vector3 pointPosition = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.5f, pathToObjective[1].transform.position.z);
                 myLineRenderer.SetPosition(1, pointPosition);
 
-                Vector3 spawnPoint = new Vector3(LM.TM.currentPath[1].transform.position.x, LM.TM.currentPath[1].transform.position.y + 0.25f, LM.TM.currentPath[1].transform.position.z);
+                Vector3 spawnPoint = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[1].transform.position.z);
                 shaderHover.transform.position = spawnPoint;
-                Vector3 unitDirection = new Vector3(LM.TM.currentPath[2].transform.position.x, LM.TM.currentPath[1].transform.position.y + 0.25f, LM.TM.currentPath[2].transform.position.z);
+
+                Vector3 unitDirection = new Vector3(pathToObjective[2].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[2].transform.position.z);
 
                 shaderHover.transform.DORotate(unitDirection, 0f);
             }
-
-            //else
-            //{
-            //    myLineRenderer.enabled = false;
-            //    shaderHover.SetActive(false);
-            //}
-        
-       
+            else
+            {
+                myLineRenderer.enabled = false;
+            }
+        }
     }
+
+    RaycastHit hit;
+    IndividualTiles shadowHoverTile;
 
     //Se llama desde el LevelManager. Al final del showAction se encarga de mostrar el tile al que va a atacar
     public override void ColorAttackTile()
     {
-        if (pathToObjective.Count <= movementUds && myCurrentObjectiveTile != null)
+        shadowHoverTile = null;
+
+        //El +2 es porque pathToObjective tiene en cuenta tanto el tile inicial (ocupado por goblin) como el final (ocupado por player)
+        if (pathToObjective.Count > 0 &&  pathToObjective.Count <= movementUds + 2 && myCurrentObjectiveTile != null)
         {
             //Compruebo si tile al que voy a atacar estaba bajo ataque
             wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
@@ -420,7 +396,21 @@ public class EnGiant : EnemyUnit
 
             myCurrentObjectiveTile.ColorAttack();
 
-            if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
+
+            //Esto significa que el enemigo está adyacente del player (son el tile del gigante y el del player vamos)
+            if (pathToObjective.Count > 2)
+            {
+                Debug.DrawRay(new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 0.5f, shaderHover.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
+
+                if (Physics.Raycast(new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 0.5f, shaderHover.transform.position.z), transform.TransformDirection(Vector3.down), out hit))
+                {
+                    shadowHoverTile = hit.collider.gameObject.GetComponent<IndividualTiles>();
+                    //Debug.Log(hit);
+                }
+            }
+
+            if (pathToObjective.Count > 2 && myCurrentObjectiveTile.tileX == shadowHoverTile.tileX ||
+                pathToObjective.Count == 2 && myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
             {
                 //Hago lo mismo con los tiles laterales, compruebo si hay que pintarlos en rojo y de ser así lo guarto en la lista de bools
 
@@ -473,6 +463,9 @@ public class EnGiant : EnemyUnit
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
     {
+        myCurrentObjective = null;
+        myCurrentObjectiveTile = null;
+
         //Si no ha sido alertado compruebo si hay players al alcance que van a hacer que se despierte y se mueva
         if (!haveIBeenAlerted)
         {
@@ -511,8 +504,8 @@ public class EnGiant : EnemyUnit
 
             if (currentUnitsAvailableToAttack.Count == 1)
             {
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
             }
 
             //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
@@ -543,8 +536,8 @@ public class EnGiant : EnemyUnit
                     });
                 }
 
-                myCurentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurentObjective.myCurrentTile;
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
 
             }
         }

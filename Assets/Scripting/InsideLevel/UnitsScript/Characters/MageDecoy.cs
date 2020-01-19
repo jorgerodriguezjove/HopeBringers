@@ -14,12 +14,6 @@ public class MageDecoy : Mage
         //LM.characthersOnTheBoard.Add(this);
         //Referencia al UIM 
         UIM = FindObjectOfType<UIManager>();
-        //Aviso al tile en el que empiezo que soy su unidad.
-
-
-        ///SETEAR EL TILE AL COLOCAR A LA UNIDAD EN UNO DE LOS TILES DISPONIBLES PARA COLOCARLAS
-        // myCurrentTile.unitOnTile = this;
-        // myCurrentTile.WarnInmediateNeighbours();
 
         //Inicializo componente animator
         myAnimator = GetComponent<Animator>();
@@ -28,6 +22,13 @@ public class MageDecoy : Mage
 
         currentHealth = maxHealth;
 
+    }
+
+    public void SetTile(IndividualTiles _myTile)
+    {
+        myCurrentTile = _myTile;
+        myCurrentTile.unitOnTile = this;
+        myCurrentTile.WarnInmediateNeighbours();
     }
 
     #endregion

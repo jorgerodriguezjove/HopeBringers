@@ -562,7 +562,7 @@ public class TileManager : MonoBehaviour
                 //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
                 currentPath.Reverse();
 
-                Debug.Log("REAL " + currentPath.Count);
+                //Debug.Log("REAL " + currentPath.Count);
 
                 //Calcular coste del path
                 for (int i = 0; i < currentPath.Count; i++)
