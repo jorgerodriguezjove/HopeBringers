@@ -21,8 +21,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Decoy
-  m_Shader: {fileID: 4800000, guid: 32eded57cb5262149a63792841f17953, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_SS_ON _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_Shader: {fileID: 4800000, guid: 6459b2db96a08ca41b0f9b39dc7ad59e, type: 3}
+  m_ShaderKeywords: N_F_EAL_ON N_F_SS_ON _ALPHABASECUTOUT_ON _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+    _USESECONDARYCUTOUT_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -73,9 +74,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5dab8b5d7a5db2b4aacf7b82c82b9e31, type: 3}
-        m_Scale: {x: 0.53, y: 1}
-        m_Offset: {x: 0.24, y: -0.03}
+        m_Texture: {fileID: 2800000, guid: 1015cd4b55f6c34459cbd2de7eb84648, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MaskGloss:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -116,6 +117,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SecondaryCutout:
+        m_Texture: {fileID: 2800000, guid: cca143f374ac48f44b7aa0198b0df466, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ShadowColorTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -129,6 +134,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaBaseCutout: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -138,6 +144,7 @@ Material:
     - _CustomLightDirectionFollowObjectRotation: 0
     - _CustomLightDirectionIntensity: 0
     - _Cutoff: 0.5
+    - _Cutout: 0.162
     - _DetailNormalMapScale: 1
     - _DirectionalLightIntensity: 0
     - _DoubleSided: 2
@@ -145,6 +152,7 @@ Material:
     - _DstBlend: 0
     - _DynamicNoisyOutline: 0
     - _EmissionScaleUI: 0
+    - _EnableTextureTransparent: 0
     - _EnvironmentReflections: 1
     - _EnvironmentalLightingIntensity: 1
     - _FarDistanceMaxWidth: 1
@@ -175,12 +183,15 @@ Material:
     - _Mode: 0
     - _N_F_CA: 0
     - _N_F_CLD: 0
+    - _N_F_CO: 0
     - _N_F_DCS: 0
     - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HCS: 0
+    - _N_F_HDLS: 0
+    - _N_F_HPSS: 0
     - _N_F_MC: 0
     - _N_F_NLASOBF: 0
     - _N_F_NM: 0
@@ -211,6 +222,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ReduceOutlineBackFace: 0
+    - _ReduceShadowSpotDirectionalLight: 0.5
     - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionIntensity: 0
@@ -230,9 +242,12 @@ Material:
     - _SelfShadowColorPower: 1
     - _SelfShadowHardness: 1
     - _SelfShadowIntensity: 1
+    - _SelfShadowRealTimeShadowColorPower: 1
+    - _SelfShadowRealtimeShadowIntensity: 1
     - _SelfShadowShadowTAtViewDirection: 0
     - _SelfShadowThreshold: 0.85
     - _ShadowColorTexturePower: 0
+    - _ShadowHardness: 0
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
     - _ShadowTIntensity: 1
@@ -256,6 +271,7 @@ Material:
     - _TransparentThreshold: 0
     - _UVSec: 0
     - _UseFReflection: 0
+    - _UseSecondaryCutout: 1
     - _UseTLB: 0
     - _UseUIAlphaClip: 0
     - _VertexColorBlueControlSmoothObjectNormal: 0
@@ -281,6 +297,7 @@ Material:
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}
