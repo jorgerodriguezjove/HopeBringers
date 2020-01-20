@@ -23,7 +23,6 @@ public class Mage : PlayerUnit
     [SerializeField]
     private int maxDecoys;
 
-
     [Header("MEJORAS DE PERSONAJE")]
 
     public bool crossAreaAttack;
@@ -36,8 +35,6 @@ public class Mage : PlayerUnit
     //Este bool sirve para decidir si el ataque en concreto hace daño por la espalda o no
     [HideInInspector]
     public bool backDamageOff;
-
-
 
     #endregion
 
@@ -58,7 +55,6 @@ public class Mage : PlayerUnit
 
         if (crossAreaAttack)
         {
-
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
             //myAnimator.SetTrigger("Attack");
@@ -74,8 +70,6 @@ public class Mage : PlayerUnit
                 {
                     DoDamage(unitToAttack.myCurrentTile.neighbours[i].unitOnTile);
                 }
-
-
             }
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
@@ -88,7 +82,6 @@ public class Mage : PlayerUnit
             DoDamage(unitToAttack);
             unitsAttacked.Add(unitToAttack);
 
-           
             for (int j = 0; j < unitsAttacked.Count; j++)
             {
                 
@@ -106,13 +99,8 @@ public class Mage : PlayerUnit
                             unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
                         }
                     }
-
-                   
                 }
-
             }
-               
-                
             
             unitsAttacked.Clear();
 
@@ -130,7 +118,6 @@ public class Mage : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
-
     }
         
     //Override especial del mago para que no instancie la partícula de ataque
@@ -157,14 +144,22 @@ public class Mage : PlayerUnit
         movementTokenInGame.SetActive(false);
         //Refresco los tokens para reflejar el movimiento
         UIM.RefreshTokens();
-        myCurrentPath = pathReceived;
+
+        //Limpio myCurrentPath y le añado las referencias de pathReceived 
+        //(Como en el goblin no vale con hacer myCurrentPath = PathReceived porque es una referencia a la lista y necesitamos una referencia a los elementos dentro de la lista)
+        myCurrentPath.Clear();
+
+        for (int i = 0; i < pathReceived.Count; i++)
+        {
+            myCurrentPath.Add(pathReceived[i]);
+        }
 
        if (tileToMove != LM.selectedCharacter.myCurrentTile)
         {
             //Compruebo si tengo que instanciar decoy
             CheckDecoy();
-
         }
+
         StartCoroutine("MovingUnitAnimation");
 
         UpdateInformationAfterMovement(tileToMove);
@@ -206,6 +201,7 @@ public class Mage : PlayerUnit
     public override void CheckUnitsInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
+        previousTileHeight = 0;
 
         if (currentFacingDirection == FacingDirection.North)
         {
@@ -220,27 +216,32 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (myCurrentTile.tilesInLineUp[i].isEmpty)
-                {
-                    break;
-                }
+                //Guardo la altura mas alta en esta linea de tiles
                 if (myCurrentTile.tilesInLineUp[i].height > previousTileHeight)
                 {
                     previousTileHeight = myCurrentTile.tilesInLineUp[i].height;
                 }
-                
 
-
-                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                //Si hay una unidad
+                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                 {
-                    
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                 if(previousTileHeight> myCurrentTile.tilesInLineUp[i].height)
+                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                    if (Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                        || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                     {
-                        currentUnitsAvailableToAttack.Remove(myCurrentTile.tilesInLineUp[i].unitOnTile);
-
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
                     }
+
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+                if (myCurrentTile.tilesInLineUp[i].isEmpty)
+                {
+                    break;
                 }
             }
         }
@@ -258,16 +259,32 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                //Guardo la altura mas alta en esta linea de tiles
+                if (myCurrentTile.tilesInLineDown[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineDown[i].height;
+                }
+
+                //Si hay una unidad
+                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                {
+                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                    if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                        || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                    }
+
+                    else
+                    {
+                        continue;
+                    }
+                }
+
                 if (myCurrentTile.tilesInLineDown[i].isEmpty)
                 {
                     break;
-                }
-
-                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
-                {
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                    
                 }
             }
         }
@@ -285,15 +302,32 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                //Guardo la altura mas alta en esta linea de tiles
+                if (myCurrentTile.tilesInLineRight[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineRight[i].height;
+                }
+
+                //Si hay una unidad
+                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                {
+                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                    if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                        || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                    }
+
+                    else
+                    {
+                        continue;
+                    }
+                }
+
                 if (myCurrentTile.tilesInLineRight[i].isEmpty)
                 {
                     break;
-                }
-                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
-                {
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
-                   
                 }
             }
         }
@@ -311,16 +345,32 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                //Guardo la altura mas alta en esta linea de tiles
+                if (myCurrentTile.tilesInLineLeft[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineLeft[i].height;
+                }
+
+                //Si hay una unidad
+                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                {
+                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                    if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                        || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                    }
+
+                    else
+                    {
+                        continue;
+                    }
+                }
+
                 if (myCurrentTile.tilesInLineLeft[i].isEmpty)
                 {
                     break;
-                }
-
-                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
-                {
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                    
                 }
             }
 
@@ -331,8 +381,6 @@ public class Mage : PlayerUnit
         {
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
         }
-
-
     }
     #endregion
 }

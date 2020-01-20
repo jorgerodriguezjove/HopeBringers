@@ -48,9 +48,12 @@ public class TableManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.unitsForCurrentLevel.Clear();
-        GameManager.Instance.characterDataForCurrentLevel.Clear();
+        //Devuelvo las figuras a la caja y reseteo las listas de unidades
+        ResetCharactersToBox();
 
+        //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
+
+        //Hacer que se quede el último seleccioando!!!!!!!!!!!!!!!!!!!!!
         level1.SelectLevel();
     }
 
@@ -109,12 +112,18 @@ public class TableManager : MonoBehaviour
         selectCamera.SetActive(false);
         progresionCamera.SetActive(false);
 
+        //Reseteo personajes seleccionados
+        ResetCharactersToBox();
+    }
+
+    public void ResetCharactersToBox()
+    {
+        //Reseteo personajes seleccionados
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
         {
             GameManager.Instance.characterDataForCurrentLevel[i].ReturnToInitialPositionInBox();
         }
 
-        //Reseteo personajes seleccionados
         GameManager.Instance.unitsForCurrentLevel.Clear();
         GameManager.Instance.characterDataForCurrentLevel.Clear();
         currentCharacterUpgrading = null;

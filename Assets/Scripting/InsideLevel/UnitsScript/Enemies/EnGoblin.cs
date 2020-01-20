@@ -49,13 +49,8 @@ public class EnGoblin : EnemyUnit
 
         else
         {
-            //TESTING
-            //currentUnitsAvailableToAttack = LM.TM.OnlyCheckClosestPathToPlayer();
-            //Debug.Log("Line 50 " + currentUnitsAvailableToAttack.Count);
-
             //Determinamos el enemigo más cercano.
             currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
-
 
             //Si no hay enemigos termina su turno
             if (currentUnitsAvailableToAttack.Count == 0)
@@ -111,6 +106,7 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
+        //Si es Tier 2 Alerta a los enemigos en el área
         if (myTierLevel == TierLevel.Level2)
         {
             if (!haveIBeenAlerted)
@@ -126,9 +122,6 @@ public class EnGoblin : EnemyUnit
                         unitsInRange[i].GetComponent<EnemyUnit>().AlertEnemy();
                     }
                 }
-
-                //Me alerto a mi mismo
-                AlertEnemy();
             }
         }
         
@@ -181,8 +174,6 @@ public class EnGoblin : EnemyUnit
                     //Atacar al enemigo
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
-
-
 
                 //Animación de ataque
                 myAnimator.SetTrigger("Attack");

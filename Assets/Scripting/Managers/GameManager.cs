@@ -35,6 +35,7 @@ public class GameManager : PersistentSingleton<GameManager>
     //Experiencia que obtiene el jugador si completa el nivel
     public int possibleXpToGainIfCurrentLevelIsWon;
 
+
     #endregion
 
     #region INIT
@@ -96,9 +97,11 @@ public class GameManager : PersistentSingleton<GameManager>
 
     public void CheckStartLevel(string _levelName)
     {
+        //Si hay algún personaje seleccionado cargo el nivel.
         if (characterDataForCurrentLevel.Count > 0)
         {
             SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
         }
     }
+        
 }

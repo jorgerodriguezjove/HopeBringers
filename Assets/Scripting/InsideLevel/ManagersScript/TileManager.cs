@@ -675,8 +675,7 @@ public class TileManager : MonoBehaviour
         //Actualizo la lista de personajes por si alguno ha muerto o se ha añadido la copia del mago
         playersOnTheBoard = FindObjectsOfType<PlayerUnit>();
 
-
-        for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+        for (int i = 0; i < playersOnTheBoard.Length; i++)
         {
             CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ);
 

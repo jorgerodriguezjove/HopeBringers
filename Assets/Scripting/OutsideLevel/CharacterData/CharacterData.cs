@@ -155,8 +155,11 @@ public class CharacterData : MonoBehaviour
     public void ReturnToInitialPositionInBox()
     {
         transform.position = initialPosition;
-        panelOfTheBookImIn.GetComponent<PanelForUnitSelection>().isOcuppied = false;
-        panelOfTheBookImIn = null;
+        if (panelOfTheBookImIn != null)
+        {
+            panelOfTheBookImIn.GetComponent<PanelForUnitSelection>().isOcuppied = false;
+            panelOfTheBookImIn = null;
+        }
     }
 
     //Al ser avisado de que se ha comprado una mejora aumento el powerlevel y guardo en la lista de ids la nueva habilidad para luego reactivar los nodos adecuados del árbol.

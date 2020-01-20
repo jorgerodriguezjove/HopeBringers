@@ -33,7 +33,7 @@ public class PlayerUnit : UnitBase
     [Header("MOVIMIENTO")]
 
     //Camino que tiene que seguir la unidad para moverse
-    protected List<IndividualTiles> myCurrentPath;
+    protected List<IndividualTiles> myCurrentPath = new List<IndividualTiles>();
 
     [Header("FEEDBACK")]
 
@@ -273,9 +273,15 @@ public class PlayerUnit : UnitBase
         movementTokenInGame.SetActive(false);
         //Refresco los tokens para reflejar el movimiento
         UIM.RefreshTokens();
-        myCurrentPath = pathReceived;
 
-        
+        //Limpio myCurrentPath y le añado las referencias de pathReceived 
+        //(Como en el goblin no vale con hacer myCurrentPath = PathReceived porque es una referencia a la lista y necesitamos una referencia a los elementos dentro de la lista)
+        myCurrentPath.Clear();
+
+        for (int i = 0; i < pathReceived.Count; i++)
+        {
+            myCurrentPath.Add(pathReceived[i]);
+        }
 
         if (myCurrentPath.Count > 0)
         {
@@ -287,7 +293,6 @@ public class PlayerUnit : UnitBase
             isMovingorRotating = false;
             LM.UnitHasFinishedMovementAndRotation();
             UpdateInformationAfterMovement(myCurrentTile);
-
         }
     }
 
@@ -324,41 +329,10 @@ public class PlayerUnit : UnitBase
         
         isMovingorRotating = false;
 
-   //     //Esto es solo para la prueba de movimiento para ver cual elegimos.
-   //     if (!LM.TM.isDiagonalMovement)
-   //     {
-   //         //Movimiento con torre sin giro
-   //         if (!LM.TM.isChooseRotationIfTower)
-   //         {
-   //             CheckUnitsInRangeToAttack();
-   //             LM.UnitHasFinishedMovementAndRotation();
-   //             isMovingorRotating = false;
-   //         }
-
-   //         //Movimiento con torre con giro
-   //         else
-   //         {
-   //             //Hacer que aparezcan los botones
-   //           //  canvasWithRotationArrows.gameObject.SetActive(true);
-			//	//UIM.TooltipRotate();
-
-   //         }
-   //     }
-
-   //     //Movimiento en diagonal
-   //     else
-   //     {
-   //         //Hacer que aparezcan los botones
-   //         // canvasWithRotationArrows.gameObject.SetActive(true);
-			////UIM.TooltipRotate();
-   //     }
-
         //Arriba o abajo
         if (currentFacingDirection == FacingDirection.North)
         {
             unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-
-
         }
 
         else if (currentFacingDirection == FacingDirection.South)
@@ -374,7 +348,6 @@ public class PlayerUnit : UnitBase
         else if (currentFacingDirection == FacingDirection.West)
         {
             unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-
         }
     }
 
@@ -386,7 +359,6 @@ public class PlayerUnit : UnitBase
         {
             unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
             currentFacingDirection = FacingDirection.North;
-           
         }
 
         else if (newDirection == FacingDirection.South)
@@ -408,12 +380,6 @@ public class PlayerUnit : UnitBase
         }
 
         canvasWithRotationArrows.gameObject.SetActive(false);
-
-        
-           
-        
-        
-
         
         isMovingorRotating = true;
 
@@ -612,7 +578,7 @@ public class PlayerUnit : UnitBase
             {
                 rangeVSTilesInLineLimitant = attackRange;
             }
-           else
+            else
             {
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
             }
