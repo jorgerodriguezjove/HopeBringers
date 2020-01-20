@@ -87,7 +87,9 @@ public class LevelNode : MonoBehaviour
 			TM.OnLevelClicked(GetComponent<LevelNode>());
 			GameManager.Instance.currentLevelNode = idLevel;
             GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = xpGained;
-		}
+
+            Debug.Log("Xp gained " + xpGained);
+        }
 	}
 
 	#endregion

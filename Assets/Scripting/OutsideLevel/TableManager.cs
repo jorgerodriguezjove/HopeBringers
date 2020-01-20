@@ -51,7 +51,7 @@ public class TableManager : MonoBehaviour
         GameManager.Instance.unitsForCurrentLevel.Clear();
         GameManager.Instance.characterDataForCurrentLevel.Clear();
 
-        OnLevelClicked(level1);
+        level1.SelectLevel();
     }
 
     #endregion
@@ -125,8 +125,6 @@ public class TableManager : MonoBehaviour
     //Esto en el futuro se hará arrastrando al personaje pero de momento lo hago con click
     public void OnClickCharacter(CharacterData _unitClicked)
     {
-        Debug.Log(_unitClicked.name);
-
         if (selectCamera.activeSelf)
         {
             if (_unitClicked.panelOfTheBookImIn == null)

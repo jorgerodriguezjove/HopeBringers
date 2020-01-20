@@ -128,10 +128,6 @@ public class PlayerUnit : UnitBase
 
         attackRange = _attackRange;
 
-        Debug.Log(attackRange);
-
-
-
 
 
 

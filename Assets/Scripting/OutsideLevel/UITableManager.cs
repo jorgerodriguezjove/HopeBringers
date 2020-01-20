@@ -215,7 +215,6 @@ public class UITableManager : MonoBehaviour
                 }
             }
         }
-           
     }
 
     public void UpdateProgresionBook(CharacterData _unit)
@@ -239,7 +238,7 @@ public class UITableManager : MonoBehaviour
     //Al pulsar el botón de ready se carga la escena
     public void SceneToLoad()
     {
-        SceneManager.LoadScene(TM.currentClickedSceneName, LoadSceneMode.Single);
+        GameManager.Instance.CheckStartLevel(TM.currentClickedSceneName);
     }
 
     public void ExitGame()

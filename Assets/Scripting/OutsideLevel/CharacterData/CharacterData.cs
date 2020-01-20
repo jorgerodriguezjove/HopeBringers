@@ -63,7 +63,6 @@ public class CharacterData : MonoBehaviour
     //Diccionario con las mejoras de stats tipo bool que tiene cada personaje. Cada personaje inicializa las suyas en su script de Data.
     public Dictionary<string, bool> specificBoolCharacterUpgrades = new Dictionary<string, bool>();
 
-
     #endregion
 
     #region INIT
@@ -170,8 +169,12 @@ public class CharacterData : MonoBehaviour
     //Motrar u ocultar el modelo de la figura para que aparezca en LevelSelection pero no en los niveles.
     public void HideShowMeshCharacterData(bool isActive)
     {
-        unitModel.SetActive(isActive);
-        GetComponent<Collider>().enabled = isActive;
+        if (unitModel != null)
+        {
+            Debug.Log(unitModel.name);
+            unitModel.SetActive(isActive);
+            GetComponent<Collider>().enabled = isActive;
+        }
     }
 
     #endregion

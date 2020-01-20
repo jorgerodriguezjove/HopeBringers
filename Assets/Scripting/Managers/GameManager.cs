@@ -65,7 +65,6 @@ public class GameManager : PersistentSingleton<GameManager>
                         break;
                     }
                 }
-               
             }
         }
     }
@@ -95,4 +94,11 @@ public class GameManager : PersistentSingleton<GameManager>
         currentExp += possibleXpToGainIfCurrentLevelIsWon;
     }
 
+    public void CheckStartLevel(string _levelName)
+    {
+        if (characterDataForCurrentLevel.Count > 0)
+        {
+            SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
+        }
+    }
 }
