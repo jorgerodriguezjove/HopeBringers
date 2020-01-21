@@ -773,7 +773,6 @@ public class LevelManager : MonoBehaviour
             if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
             {
                 hoverUnit.HideActionPathfinding();
-               // hoverUnit.ShowActionPathFinding(false);
 
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
                 {

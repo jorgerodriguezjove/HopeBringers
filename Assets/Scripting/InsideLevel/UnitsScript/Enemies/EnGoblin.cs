@@ -21,6 +21,7 @@ public class EnGoblin : EnemyUnit
     {
         myCurrentObjective = null;
         myCurrentObjectiveTile = null;
+        pathToObjective.Clear();
 
         if (isDead || hasAttacked)
         {
@@ -58,49 +59,60 @@ public class EnGoblin : EnemyUnit
                 myCurrentEnemyState = enemyState.Ended;
             }
 
-            else if (currentUnitsAvailableToAttack.Count == 1)
+            else if (currentUnitsAvailableToAttack.Count > 0)
             {
-                myCurrentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
-                myCurrentEnemyState = enemyState.Attacking;
-            }
-
-            //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
-            else if (currentUnitsAvailableToAttack.Count > 1)
-            {
-                //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
-                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                if (currentUnitsAvailableToAttack.Count == 1)
                 {
-                    return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
-                });
-
-                //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
-                for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
-                {
-                    if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
-                    {
-                        currentUnitsAvailableToAttack.RemoveAt(i);
-                    }
+                    myCurrentObjective = currentUnitsAvailableToAttack[0];
+                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                 }
 
-                //Si sigue habiendo varios enemigos los ordeno segun la vida
-                if (currentUnitsAvailableToAttack.Count > 1)
+                //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
+                else if (currentUnitsAvailableToAttack.Count > 1)
                 {
-
-                    //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                    //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
                     currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
                     {
-                        return (a.currentHealth).CompareTo(b.currentHealth);
-
+                        return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
                     });
+
+                    //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
+                    for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
+                    {
+                        if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                        {
+                            currentUnitsAvailableToAttack.RemoveAt(i);
+                        }
+                    }
+
+                    //Si sigue habiendo varios enemigos los ordeno segun la vida
+                    if (currentUnitsAvailableToAttack.Count > 1)
+                    {
+
+                        //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                        currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                        {
+                            return (a.currentHealth).CompareTo(b.currentHealth);
+
+                        });
+                    }
+
+                    myCurrentObjective = currentUnitsAvailableToAttack[0];
+                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                 }
 
-                myCurrentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                //CAMBIAR ESTO (lm.tm)
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+
+                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+                for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                {
+                    pathToObjective.Add(LM.TM.currentPath[i]);
+                }
 
                 myCurrentEnemyState = enemyState.Attacking;
             }
-      
         }
     }
 
@@ -136,9 +148,8 @@ public class EnGoblin : EnemyUnit
 
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
-
             //Si mi objetivo es adyacente a mi le ataco
-            if (myCurrentTile.neighbours[i].unitOnTile != null && currentUnitsAvailableToAttack.Count >0 && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0])
+            if (myCurrentTile.neighbours[i].unitOnTile != null && currentUnitsAvailableToAttack.Count >0 && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0] && Mathf.Abs(myCurrentTile.height - myCurrentTile.neighbours[i].height) <= maxHeightDifferenceToAttack)
             {
                 //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el goblin
                 if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
@@ -153,6 +164,8 @@ public class EnGoblin : EnemyUnit
                     {
                         RotateLogic(FacingDirection.South);
                     }
+
+                    ColorAttackTile();
 
                     //Atacar al enemigo
                     DoDamage(currentUnitsAvailableToAttack[0]);
@@ -170,6 +183,8 @@ public class EnGoblin : EnemyUnit
                     {
                         RotateLogic(FacingDirection.West);
                     }
+
+                    ColorAttackTile();
 
                     //Atacar al enemigo
                     DoDamage(currentUnitsAvailableToAttack[0]);
@@ -203,21 +218,9 @@ public class EnGoblin : EnemyUnit
 
     public override void MoveUnit()
     {
-        pathToObjective.Clear();
-
         limitantNumberOfTilesToMove = 0;
 
         movementParticle.SetActive(true);
-
-        //CAMBIAR ESTO (lm.tm)
-        LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
-
-        //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
-        //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-        for (int i = 0; i < LM.TM.currentPath.Count; i++)
-        {
-            pathToObjective.Add(LM.TM.currentPath[i]);
-        }
 
         ShowActionPathFinding(false);
 
@@ -414,13 +417,14 @@ public class EnGoblin : EnemyUnit
                 }
             }
 
+            ///En el gigante es importante que esta función vaya después de colocar la sombra. Por si acaso asegurarse de que este if nunca se pone antes que el reposicionamiento de la sombra
+            
             //A pesar de que ya se llama a esta función desde el levelManager en caso de hover, si se tiene que mostrar porque el goblin está atacando se tiene que llamar desde aqui (ya que no pasa por el level manager)
             //Tiene que ser en falso porque si no pongo la condicion la función se cree que el tileya estaba pintado de antes
             if (!_shouldRecalculate)
             {
                 ColorAttackTile();
             }
-            
         }
     }
 

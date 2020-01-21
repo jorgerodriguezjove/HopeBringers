@@ -262,6 +262,7 @@ public class EnemyUnit : UnitBase
     //Para acabar el turno de la unnidad
     public virtual void FinishMyActions()
     {
+        LM.HideEnemyHover(GetComponent<EnemyUnit>());
         hasMoved = false;
         hasAttacked = false;
         myCurrentEnemyState = enemyState.Waiting;
