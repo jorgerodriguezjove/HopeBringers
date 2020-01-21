@@ -412,7 +412,7 @@ public class EnGoblin : EnemyUnit
                     {
                         shaderHover.transform.position = pointPosition;
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
-                        shaderHover.transform.DOLookAt(positionToLook, 0);
+                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
                     }
                 }
             }
@@ -434,7 +434,6 @@ public class EnGoblin : EnemyUnit
         //El +2 es porque pathToObjective tiene en cuenta tanto el tile inicial (ocupado por goblin) como el final (ocupado por player)
         if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds +2 && myCurrentObjective != null)
         {
-            Debug.Log(myCurrentObjective);
             wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
 
             tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile);
