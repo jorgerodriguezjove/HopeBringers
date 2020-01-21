@@ -363,8 +363,7 @@ public class EnGiant : EnemyUnit
 
                 Vector3 unitDirection = new Vector3(pathToObjective[2].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[2].transform.position.z);
 
-                shaderHover.transform.DORotate(unitDirection, 0f);
-
+                shaderHover.transform.DOLookAt(unitDirection, 0f, AxisConstraint.Y);
             }
             else
             {

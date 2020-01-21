@@ -55,8 +55,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     public bool FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa;
 
-    //Lista con unidades que no han sido colocadas en escena todavía
-    List<GameObject> unitsWithoutPosition = new List<GameObject>();
+    //Lista con unidades que no han sido colocadas en escena todavía y que estan en formato lista
+    List<GameObject> unitsWithoutPositionFromGameManager = new List<GameObject>();
+
+    //Las unidades sin colocar se pasan a un stack para que al quitar una unidad del tablero se coloque la primera
+    Stack<GameObject> unitsWithoutPosition = new Stack<GameObject>();
 
     //Lista con los tiles disponibles para colocar personajes. Me sirve para limpiar el color de los tiles al terminar.
     [HideInInspector]
@@ -108,7 +111,7 @@ public class LevelManager : MonoBehaviour
         {
             GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
             unitInstantiated.SetActive(false);
-            unitsWithoutPosition.Add(unitInstantiated);
+            unitsWithoutPosition.Push(unitInstantiated);
         }   
     }
 
@@ -182,7 +185,10 @@ public class LevelManager : MonoBehaviour
         {
             //Quitar personaje del tablero y añadirlo a la lista de nuevo
             clickedUnit.gameObject.SetActive(false);
-            unitsWithoutPosition.Add(clickedUnit.gameObject);
+            unitsWithoutPosition.Push(clickedUnit.gameObject);
+            clickedUnit.myCurrentTile.unitOnTile = null;
+            clickedUnit.myCurrentTile.WarnInmediateNeighbours();
+            clickedUnit.myCurrentTile = null;
         }
 
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
@@ -442,12 +448,14 @@ public class LevelManager : MonoBehaviour
                 if (tileToMove.isAvailableForCharacterColocation && tileToMove.unitOnTile == null)
                 {
                     //Colocar a la unidad
-                    unitsWithoutPosition[0].gameObject.SetActive(true);
-                    unitsWithoutPosition[0].gameObject.transform.position = tileToMove.transform.position;
-                    unitsWithoutPosition[0].GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
-                    unitsWithoutPosition.RemoveAt(0);
+                    //Peek sirve para tomar una referencia a la primera unidad del Stack sin retirarla
+                    unitsWithoutPosition.Peek().SetActive(true);
+                    unitsWithoutPosition.Peek().transform.position = tileToMove.transform.position;
+                    unitsWithoutPosition.Peek().GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
 
-                    //PROVISIONAL PARA VER SI FUNCIONA. NO LO CAMBIO PARA NO TOCAR EL UIMANAGER
+                    //Pop es basicamente quitar el primer elemento del Stack
+                    unitsWithoutPosition.Pop();
+
                     if (unitsWithoutPosition.Count <= 0)
                     {
                         for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
@@ -460,7 +468,6 @@ public class LevelManager : MonoBehaviour
                     }
                 }
             }
-
         }
 
         else
@@ -528,10 +535,6 @@ public class LevelManager : MonoBehaviour
 
                             Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                             selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
-
-
-
-
 
                             //selectedCharacter.MoveToTile(tileToMove, TM.currentPath); 
 
@@ -682,7 +685,7 @@ public class LevelManager : MonoBehaviour
                         if (tilesAvailableForMovementEnemies[i].isObstacle
                            || (tilesAvailableForMovementEnemies[i].isEmpty))
                         {
-                            break;
+                            continue;
                         }
                         tilesAvailableForMovementEnemies[i].ColorActionRange();
                     }
@@ -692,7 +695,7 @@ public class LevelManager : MonoBehaviour
                         if (tilesAvailableForMovementEnemies[i].isObstacle
                            || (tilesAvailableForMovementEnemies[i].isEmpty))
                         {
-                            break;
+                            continue;
                         }
                         tilesAvailableForMovementEnemies[i].ColorSelect();
                     }
