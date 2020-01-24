@@ -177,14 +177,14 @@ public class UIManager : MonoBehaviour
 	{
 		//endTurnButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
 		//StartCoroutine("ButtonAnimationWaitEnd");
-		endTurnButton.GetComponent<Animator>().Play("EndTurnCoinFlip");
+		endTurnButton.GetComponent<Animator>().Play("EndTurnFlip");
 	}
 
 	public void RotateButtonStartPhase()
 	{
 		//waitingButton.transform.DORotate(new Vector3(-180, 0, 0), durationEndTurnRotation);
 		//StartCoroutine("ButtonAnimationWaitStart");
-		endTurnButton.GetComponent<Animator>().Play("EndTurnCoinReset");
+		endTurnButton.GetComponent<Animator>().Play("ResetEndTurnFlip");
 	}
 
 	IEnumerator ButtonAnimationWaitEnd()
