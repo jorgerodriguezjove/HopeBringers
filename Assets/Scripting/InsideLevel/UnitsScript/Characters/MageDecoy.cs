@@ -39,7 +39,12 @@ public class MageDecoy : Mage
     //Es virtual para el decoy del mago.
     protected override void OnMouseDown()
     {
-       //PONER QUE PUEDA SER PEGADO POR ALIADOS
+        //PONER QUE PUEDA SER PEGADO POR ALIADOS
+        if (LM.selectedCharacter != null)
+        {
+            LM.SelectUnitToAttack(GetComponent<UnitBase>());
+        }
+
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)

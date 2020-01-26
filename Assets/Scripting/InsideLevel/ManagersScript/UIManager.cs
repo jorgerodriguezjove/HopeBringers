@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
 	private GameObject optionsScreen;
 
 	[SerializeField]
-	private GameObject optionsButton;
+	public GameObject optionsButton;
 
     //Texto de cuadro inferior derecha (tiles)
 	//[SerializeField]

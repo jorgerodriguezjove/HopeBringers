@@ -332,7 +332,7 @@ public class LevelManager : MonoBehaviour
             //Si llega hasta aqui significa que la unidad seleccionada no formaba parte de las unidades a las que puede atacar.
             //Compruebo si es un player y de ser así lo selecciono
 
-            if (clickedUnit.GetComponent<PlayerUnit>())
+            if (clickedUnit.GetComponent<PlayerUnit>() && !clickedUnit.GetComponent<MageDecoy>())
             {
                 DeSelectUnit();
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
@@ -976,7 +976,7 @@ public class LevelManager : MonoBehaviour
         {
             Debug.Log("Victory");
             victoryPanel.SetActive(true);
-
+            UIM.optionsButton.SetActive(false);
             GameManager.Instance.VictoryAchieved();
         }
     }

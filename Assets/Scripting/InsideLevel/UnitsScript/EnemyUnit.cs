@@ -454,15 +454,17 @@ public class EnemyUnit : UnitBase
 
             else if (LM.selectedEnemy != null && LM.selectedEnemy != this)
             {
+                ResetColor();
                 HealthBarOn_Off(false);
                 LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
                 //LM.UIM.HideUnitInfo("");
 
-                ResetColor();
+               
 
                 myPortrait.UnHighlightMyself();
 
             }
+
         }
     }
 
@@ -505,7 +507,8 @@ public class EnemyUnit : UnitBase
 		if(LM.selectedCharacter != null)
 		{
 			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
-		}
+            ResetColor();
+        }
 
         //if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
         //{
