@@ -582,7 +582,6 @@ public class EnemyUnit : UnitBase
 
         //Estas dos llamadas tienen que ir despues del bool de isdead = true
         LM.UIM.SetEnemyOrder();
-        LM.CheckIfGameOver();
 
         //No uso FinishMyActions porque no me interesa que pase turno, sólo que se quede en waiting por si acaso se muere en su turno.
         myCurrentEnemyState = enemyState.Waiting;

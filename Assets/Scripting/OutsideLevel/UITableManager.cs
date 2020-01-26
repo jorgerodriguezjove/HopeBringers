@@ -248,4 +248,17 @@ public class UITableManager : MonoBehaviour
 
     #endregion
 
+    LevelNode[] allLevelsInMapCheat;
+
+    //Cheats
+    public void UnlockAllLevels()
+    {
+        allLevelsInMapCheat = FindObjectsOfType<LevelNode>();
+        for (int i = 0; i < allLevelsInMapCheat.Length; i++)
+        {
+            allLevelsInMapCheat[i].UnlockThisLevel();
+        }
+    }
+
+
 }

@@ -761,10 +761,6 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
 
                 }
-
-                
-
-            
             }
         }
     }

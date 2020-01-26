@@ -100,7 +100,6 @@ public class LevelNode : MonoBehaviour
 	public void UnlockThisLevel()
     {
         isUnlocked = true;
-        GetComponent<Image>().sprite = unlockedLevel;
 		GetComponent<Image>().enabled = true;
 		if (dottedLinePath != null)
 		{

@@ -387,6 +387,8 @@ public class UIManager : MonoBehaviour
                 LM.enemiesOnTheBoard[i].GetComponent<EnemyUnit>().myPortrait = panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>();
             }
         }
+
+        LM.CheckIfGameOver();
     }
 
     public void ShowEnemyOrder(bool show_hide)

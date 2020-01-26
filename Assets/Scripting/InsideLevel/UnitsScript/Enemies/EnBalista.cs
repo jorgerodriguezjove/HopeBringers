@@ -430,13 +430,20 @@ public class EnBalista : EnemyUnit
             if (_isWarning)
             {
                 tilesToShoot[i].lookingForKnightToWarnBalista = true;
-                tilesToShoot[i].allBalistasToWarn.Add(GetComponent<EnBalista>());
+
+                if (!isDead)
+                {
+                    tilesToShoot[i].allBalistasToWarn.Add(GetComponent<EnBalista>());
+                }
             }
 
             else
             {
                 tilesToShoot[i].lookingForKnightToWarnBalista = false;
-                tilesToShoot[i].allBalistasToWarn.Remove(GetComponent<EnBalista>());
+                if (!isDead)
+                {
+                    tilesToShoot[i].allBalistasToWarn.Remove(GetComponent<EnBalista>());
+                }
             }   
         }
     }
