@@ -458,38 +458,32 @@ public class TileManager : MonoBehaviour
                         //Almaceno el tile en una variable
                         currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ + j];
 
-                        Debug.Log("Tile chequeando " + currentTileCheckingForMovement);
 
                         //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
                         //IMPORTANTE NO COMPROBAR LA ALTURA. ESO SE HACE EN EL PATHFINDING. La altura se tiene que comprobar de un tile respecto a sus vecinos, no tiene sentido comprobar el tile en el que esta el player con el que quiere llegar.
                         if (currentTileCheckingForMovement != null && !currentTileCheckingForMovement.isEmpty && !currentTileCheckingForMovement.isObstacle)
                         {
-                            Debug.Log("1");
                             //El enemigo no puede excluir los tiles que tienen personajes de jugador porque los necesita para encontrar el número de objetivos.
                             //Para que no se pinten sus tiles en la propia función de pintar he puesto un if que evita que se pintan.
                             if (currentTileCheckingForMovement.unitOnTile != null)
                             {
                                 if (selectedCharacter.GetComponent<EnemyUnit>() && currentTileCheckingForMovement.unitOnTile.GetComponent<EnemyUnit>())
                                 {
-                                    Debug.Log("Continue A");
                                     continue;
                                 }
 
                                 else if (selectedCharacter.GetComponent<PlayerUnit>())
                                 {
-                                    Debug.Log("Continue B");
                                     continue;
                                 }
                             }
 
-                            Debug.Log("2");
                             //Compruebo si existe un camino hasta el tile
                             CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
 
 
                             if (tempCurrentPathCost <= movementUds)
                             {
-                                Debug.Log("3");
                                 tilesAvailableForMovement.Add(currentTileCheckingForMovement);
                             }
 
