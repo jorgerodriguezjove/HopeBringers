@@ -174,7 +174,6 @@ public class CharacterData : MonoBehaviour
     {
         if (unitModel != null)
         {
-            Debug.Log(unitModel.name);
             unitModel.SetActive(isActive);
             GetComponent<Collider>().enabled = isActive;
         }

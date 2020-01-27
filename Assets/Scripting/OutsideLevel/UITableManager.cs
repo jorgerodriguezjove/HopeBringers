@@ -199,19 +199,17 @@ public class UITableManager : MonoBehaviour
             }
         }
 
+        Debug.Log(ids.Count);
+
         //Si las ids no son 0 entonces es que no es la primera vez que se setea el árbol y no tengo que volver a setear los ids
         if (ids.Count != 0)
         {
-            for (int j = 0; j < ids.Count; j++)
+            //Por cada mejora compruebo si existe en ids compradas un valor en la lista que coincida el id
+            for (int i = 0; i < upgrades.Count; i++)
             {
-                if (upgrades[j].idUpgrade == ids[j])
+                if (ids.Contains(upgrades[i].idUpgrade))
                 {
-
-                    upgrades[j].UpgradeBought();
-                    Debug.Log(upgrades[j].name);
-
-                    //¿Este break esta bien?
-                    break;
+                    upgrades[i].UpgradeBought();
                 }
             }
         }

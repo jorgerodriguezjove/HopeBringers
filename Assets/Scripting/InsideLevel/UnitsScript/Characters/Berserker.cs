@@ -49,8 +49,6 @@ public class Berserker : PlayerUnit
             //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
             myAnimator.SetTrigger("Attack");
 
-           
-
             currentFacingDirection = FacingDirection.North;
             if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
             {
