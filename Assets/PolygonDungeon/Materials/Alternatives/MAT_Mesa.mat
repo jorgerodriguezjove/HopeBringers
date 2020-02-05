@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7889362169191934364
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -20,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dungeon_Material_01
+  m_Name: MAT_Mesa
   m_Shader: {fileID: 4800000, guid: 6459b2db96a08ca41b0f9b39dc7ad59e, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_GLO_ON N_F_O_ON N_F_RL_ON N_F_SS_ON _ALPHABASECUTOUT_ON
-    _EMISSION _LIGHTAFFECTSHADOW_ON _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_EAL_ON N_F_GLO_ON N_F_O_ON N_F_SS_ON _ALPHABASECUTOUT_ON _EMISSION
+    _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -34,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: b24b57e0cfed05643be34b0256df875e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 31ccc8816a063274bbcd2ed6a7cd6907, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -74,7 +61,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b24b57e0cfed05643be34b0256df875e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 31ccc8816a063274bbcd2ed6a7cd6907, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
@@ -90,7 +77,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: b8d8f0f13772c374d8d6354900c44e30, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -133,24 +120,15 @@ Material:
     - _AlphaBaseCutout: 1
     - _AlphaClip: 0
     - _Blend: 0
-    - _BlendOp: 0
     - _BumpScale: 1
-    - _CameraFadingEnabled: 0
-    - _CameraFarFadeDistance: 2
-    - _CameraNearFadeDistance: 1
-    - _ColorMode: 0
     - _Compa: 8
     - _Cull: 2
     - _CustomLightDirectionFollowObjectRotation: 0
-    - _CustomLightDirectionIntensity: 0.804
+    - _CustomLightDirectionIntensity: 0
     - _Cutoff: 0.5
     - _Cutout: 0
     - _DetailNormalMapScale: 1
     - _DirectionalLightIntensity: 0
-    - _DistortionBlend: 0.5
-    - _DistortionEnabled: 0
-    - _DistortionStrength: 1
-    - _DistortionStrengthScaled: 0.1
     - _DoubleSided: 2
     - _DoubleSidedOutline: 1
     - _DstBlend: 0
@@ -160,27 +138,24 @@ Material:
     - _EnvironmentReflections: 1
     - _EnvironmentalLightingIntensity: 1
     - _FarDistanceMaxWidth: 10
-    - _FlipbookBlending: 0
-    - _FlipbookMode: 0
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0
-    - _GlossColorPower: 8
-    - _GlossIntensity: 0.75
+    - _GlossColorPower: 10
+    - _GlossIntensity: 1
     - _GlossMapScale: 1
-    - _GlossSoftness: 0.2
+    - _GlossSoftness: 0.288
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.175
-    - _GlossinessSource: 0
+    - _Glossiness: 0.25
     - _GlossyReflections: 1
     - _HighlightColorPower: 1
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
-    - _LightAffectShadow: 1
+    - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 0.651
+    - _LightFalloffSoftness: 1
     - _LightIntensity: -1
     - _MCIALO: 0
     - _MCapIntensity: 1
@@ -204,7 +179,7 @@ Material:
     - _N_F_O: 1
     - _N_F_PT: 0
     - _N_F_R: 0
-    - _N_F_RL: 1
+    - _N_F_RL: 0
     - _N_F_SCT: 0
     - _N_F_SL: 0
     - _N_F_SON: 0
@@ -212,59 +187,53 @@ Material:
     - _N_F_ST: 0
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
-    - _NoisyOutlineIntensity: 0.5
+    - _NoisyOutlineIntensity: 0
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
     - _Oper: 8
     - _OutlineExtrudeMethod: 0
-    - _OutlineWidth: 1
+    - _OutlineWidth: 0.5
     - _OutlineWidthAffectedByViewDistance: 0
-    - _OutlineZPostionInCamera: 2
+    - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 1
     - _Parallax: 0.02
     - _PointSpotlightIntensity: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ReduceShadowSpotDirectionalLight: 0.55
+    - _ReduceShadowSpotDirectionalLight: 0.5
     - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionIntensity: 0
     - _ReflectionRoughtness: 0
-    - _RimLightColorPower: 1
+    - _RimLightColorPower: 10
     - _RimLightInLight: 1
-    - _RimLightSoftness: 0.975
-    - _RimLightUnfill: 3
+    - _RimLightSoftness: 1
+    - _RimLightUnfill: 1.5
     - _STIL: 0
     - _Saturation: 1
     - _SelfLitHighContrast: 1
-    - _SelfLitIntensity: 0.948
+    - _SelfLitIntensity: 0
     - _SelfLitPower: 2
     - _SelfShadowAffectedByLightShadowStrength: 0
-    - _SelfShadowHardness: 0.8
+    - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 0.664
+    - _SelfShadowRealtimeShadowIntensity: 1
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 0.805
+    - _SelfShadowThreshold: 0.85
     - _ShadowColorTexturePower: 0
-    - _ShadowHardness: 0.668
+    - _ShadowHardness: 0
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
     - _ShadowTIntensity: 1
     - _ShadowTLightThreshold: 50
     - _ShadowTShadowThreshold: 0
-    - _Shininess: 0
     - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
     - _SmoothObjectNormal: 0
-    - _Smoothness: 1
-    - _SmoothnessSource: 0
+    - _Smoothness: 0.2
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 0
-    - _SoftParticlesFarFadeDistance: 1
-    - _SoftParticlesNearFadeDistance: 0
-    - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
@@ -280,10 +249,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
-    - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CustomLightDirection: {r: -63.09, g: 4.02, b: 10, a: 0}
+    - _CustomLightDirection: {r: 0, g: 0, b: 10, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
@@ -296,6 +263,18 @@ Material:
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _XYZPosition: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &4904383573399505786
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
