@@ -219,9 +219,9 @@ public class Knight : PlayerUnit
         if (unitAttacker != null)
         {
             if (currentFacingDirection == FacingDirection.North && unitAttacker.currentFacingDirection == FacingDirection.South
-          || currentFacingDirection == FacingDirection.East && unitAttacker.currentFacingDirection == FacingDirection.West
-          || currentFacingDirection == FacingDirection.South && unitAttacker.currentFacingDirection == FacingDirection.North
-          || currentFacingDirection == FacingDirection.West && unitAttacker.currentFacingDirection == FacingDirection.East)
+             || currentFacingDirection == FacingDirection.East && unitAttacker.currentFacingDirection == FacingDirection.West
+             || currentFacingDirection == FacingDirection.South && unitAttacker.currentFacingDirection == FacingDirection.North
+             || currentFacingDirection == FacingDirection.West && unitAttacker.currentFacingDirection == FacingDirection.East)
             {
                 //No recibe daño
                 Debug.Log("bloqueado el ataque");
