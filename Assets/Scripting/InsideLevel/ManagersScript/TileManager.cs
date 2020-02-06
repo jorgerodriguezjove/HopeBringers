@@ -114,6 +114,12 @@ public class TileManager : MonoBehaviour
     public List<IndividualTiles> tilesAvailableForEnemyAction = new List<IndividualTiles>();
     private IndividualTiles currentTileCheckingForEnemyAction;
 
+    [Header("UTILITIES")]
+
+    //Lista que guarda los tiles en un área con forma de rombo alrededor del tile
+    [HideInInspector]
+    public List<IndividualTiles> surroundingTiles;
+
     [Header("REFERENCIAS")]
     [SerializeField]
     LevelManager LM;
@@ -794,10 +800,43 @@ public class TileManager : MonoBehaviour
     }
     #endregion
 
+
+    //Esta función se usa para calcular áreas de tiles (básicamente un rombo de tiles)
+    //No mira si hay obstáculos o está vacío, únicamente si hay tiles
+    public List<IndividualTiles> GetSurroundingTiles(IndividualTiles rhombusCenter, int radius)
+    {
+        //radius equivale a la distancia entre el centro del rombo (tile que esta usando esta función) y el tile más alejado en una dirección, es decir el extremo del rombo (que al ser un rombo es la misma distancia hasta cualquier extremo)
+        surroundingTiles.Clear();
+
+        //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
+        for (int i = -radius; i < (radius * 2) + 1; i++)
+        {
+            //Al restar a losMovementUds el i actual obtengo los tiles que hay por encima de la posición del personaje en dicha columna
+            //Este número me sirve para calcular la posición en z de los tiles
+            int tilesInZ = radius - Mathf.Abs(i);
+
+            //Esto significa que es el extremo del rombo y sólo hay 1 tile en vertical
+            if (tilesInZ == 0)
+            {
+                //Compruebo si existe un tile con esas coordenadas
+                if (rhombusCenter.tileX + i < gridSizeX && rhombusCenter.tileX + i >= 0 &&
+                    rhombusCenter.tileZ < gridSizeZ && rhombusCenter.tileZ >= 0)
+                {
+
+                    //currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
+
+                    surroundingTiles.Add(grid2DNode[rhombusCenter.tileX + i, rhombusCenter.tileZ]);
+                }
+            }
+        }
+
+        return surroundingTiles;
+    }
+
     //ESTA ERA LA FUNCIÓN QUE ROMPIA LA OPTIMIZACIÓN
     #region DEPRECATED
 
-    public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
+        public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
     {
         charactersAvailableForAttack.Clear();
         tempCurrentObjectiveCost = 0;

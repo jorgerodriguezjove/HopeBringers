@@ -7,9 +7,8 @@ public class LevelManager : MonoBehaviour
     #region VARIABLES
 
     [SerializeField]
+    //Offset negativo para determinar la altura de las flechas
     private float offsetHeightArrow;
-    [SerializeField]
-    private float offsetHeightArrowForEnemies;
 
     [Header("INTERACCIÓN CON UNIDADES")]
 
@@ -500,10 +499,10 @@ public class LevelManager : MonoBehaviour
                             //Hacer que aparezcan los botones de rotación
                             selectedCharacter.isMovingorRotating = true;
                             selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(true);
-                            offsetHeightArrow = 0.5f;
-                            offsetHeightArrowForEnemies = 0.5f;
 
-                           
+                            #region DEPRECATED_ALTURA_FLECHAS_ROTACION
+                            //offsetHeightArrow = 0.5f;
+                            //offsetHeightArrowForEnemies = 0.5f;
 
                             ////Vemos si tiene enemigos o tiles más altos cerca para que las flechas no se tapen
                             //for (int j = 0; j < tileToMove.neighbours.Count; ++j)
@@ -519,7 +518,7 @@ public class LevelManager : MonoBehaviour
                             //    if (tileToMove.neighbours[j].height > tileToMove.height)
                             //        {
                             //        offsetHeightArrow += 0.5f;
-                                    
+
 
                             //        }
 
@@ -533,6 +532,9 @@ public class LevelManager : MonoBehaviour
 
                             //offsetHeightArrow += offsetHeightArrowForEnemies;
 
+                            #endregion
+
+                            //Coloco las flechas de rotación
                             Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                             selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
 
@@ -839,6 +841,13 @@ public class LevelManager : MonoBehaviour
     }
 
     #endregion
+
+    //Función intermediaria que sirve para calcular un área en forma de rombo
+    public List<IndividualTiles> CalculateRhombusArea(IndividualTiles _rhombusCenter, int _radius)
+    {
+       return TM.GetSurroundingTiles(_rhombusCenter, _radius);
+    }
+
 
     #region TURN_STATE
 
