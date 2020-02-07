@@ -64,7 +64,6 @@ public class EnemyUnit : UnitBase
     public GameObject LevelManagerRef;
     protected LevelManager LM;
 
-
     [Header("FEEDBACK")]
     //Flecha que indica que enemigo está realizando su acción.
     [SerializeField]

@@ -401,7 +401,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
                 //Avisar a las balistas
                 for (int i = 0; i < allBalistasToWarn.Count; i++)
                 {
-                    allBalistasToWarn[i].BeWarnByTile();
+                    allBalistasToWarn[i].BeWarnedByTile();
                 }
 
                 Debug.Log("Balistaaaaaa");

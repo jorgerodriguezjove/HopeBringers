@@ -448,7 +448,7 @@ public class EnBalista : EnemyUnit
         }
     }
 
-    public void BeWarnByTile()
+    public void BeWarnedByTile()
     {
         //Despinto los tiles actuales
         if (isAttackPrepared)
