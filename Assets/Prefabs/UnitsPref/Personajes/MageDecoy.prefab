@@ -3260,11 +3260,13 @@ MonoBehaviour:
   bonusDamageBackAttack: 0
   bonusDamageMoreHeight: 0
   penalizatorDamageLessHeight: 0
+  damageMadeByPush: 0
+  damageMadeByFall: 0
+  unitModel: {fileID: 7626728159252454861}
+  unitMaterialModel: {fileID: 1515530451918182361}
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   currentTileVectorToMove: {x: 0, y: 0, z: 0}
-  unitModel: {fileID: 7626728159252454861}
-  unitMaterialModel: {fileID: 1515530451918182361}
   timePushAnimation: 0
   timeMovementAnimation: 0
   timeDurationRotation: 0
@@ -3272,6 +3274,7 @@ MonoBehaviour:
   timeWaitAfterAttack: 0
   timeToWaitBeforeHidingHealthbar: 0
   maxHeightDifferenceToAttack: 0
+  previousTileHeight: 0
   maxHeightDifferenceToMove: 0
   isDead: 0
   movementParticle: {fileID: 0}
@@ -3280,29 +3283,29 @@ MonoBehaviour:
   attackParticle: {fileID: 0}
   criticAttackParticle: {fileID: 0}
   collisionParticlePref: {fileID: 0}
-  damageMadeByPush: 0
-  damageMadeByFall: 0
   healthBar: {fileID: 3508523309066854761}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 4ad50a9cace781149aefc7259c7ae462,
     type: 3}
   lifeContainer: {fileID: 491932243620477434}
-  AvailableToBeAttackedColor: {fileID: 2100000, guid: c59b730ca15b3c841b3e23bdd705ebca,
+  AvailableToBeAttackedColor: {fileID: 2100000, guid: 8e6bdba1cbbb24e479aecb51370e4081,
     type: 2}
   canvasUnit: {fileID: 0}
   characterImage: {fileID: 0}
   tooltipImage: {fileID: 0}
   unitInfo: "Se\xF1uelo del mago que atrae enemigos."
+  unitName: 
   hasMoved: 0
   hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
-  movementTokenInGame: {fileID: 0}
-  attackTokenInGame: {fileID: 0}
   currentUnitsAvailableToAttack: []
+  hasUsedExtraTurn: 0
   selectedMaterial: {fileID: 2100000, guid: 9c6ce42f5d9951945a5c4bdc4d065ed3, type: 2}
   finishedMaterial: {fileID: 2100000, guid: cc0ff8bc1ff70a141887dab62627d457, type: 2}
   canvasWithRotationArrows: {fileID: 0}
   arrowIndicator: {fileID: 0}
+  movementTokenInGame: {fileID: 0}
+  attackTokenInGame: {fileID: 0}
   myPanelPortrait: {fileID: 0}
   portraitImage: {fileID: 0}
   actionAvaliablePanel: {fileID: 0}
@@ -3318,6 +3321,11 @@ MonoBehaviour:
   mageDecoyRefAsset: {fileID: 0}
   myDecoys: []
   maxDecoys: 0
+  crossAreaAttack: 0
+  lightningChain: 0
+  timeElectricityAttackExpands: 0
+  unitsAttacked: []
+  backDamageOff: 0
 --- !u!1 &9040182218845759732
 GameObject:
   m_ObjectHideFlags: 0
