@@ -72,11 +72,19 @@ public class DamageTile : MonoBehaviour
     {
         if(hasUnit && !damageDone)
         {
-            Debug.Log(unitToDoDamage);
-            unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
+            if (unitToDoDamage.GetComponent<Druid>())
+            {
+               
+            }
+            else
+            {
+                Debug.Log(unitToDoDamage);
+                unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
+
+                damageDone = true;
+                Debug.Log("DAMAGE DONE");
+            }
             
-            damageDone = true;
-            Debug.Log("DAMAGE DONE");
             
         }
     }

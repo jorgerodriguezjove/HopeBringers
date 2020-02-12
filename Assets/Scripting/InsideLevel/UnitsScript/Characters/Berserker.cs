@@ -10,7 +10,7 @@ public class Berserker : PlayerUnit
     //Indica si el berserker está en Rage
     private bool isInRage;
 
-    //Indica si el berserker está en Rage
+    
     [SerializeField]
     private int rageDamagePlus;
 
