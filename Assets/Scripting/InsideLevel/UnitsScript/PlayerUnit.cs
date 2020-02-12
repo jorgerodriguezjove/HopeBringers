@@ -351,9 +351,8 @@ public class PlayerUnit : UnitBase
         }
     }
 
-    public void RotateUnitFromButton(FacingDirection newDirection)
+    public void RotateUnitFromButton(FacingDirection newDirection, IndividualTiles _tileToMove, List<IndividualTiles> _currentPath)
     {
-        
         //Arriba o abajo
         if (newDirection == FacingDirection.North)
         {
@@ -383,10 +382,49 @@ public class PlayerUnit : UnitBase
         
         isMovingorRotating = true;
 
-        MoveToTile(LM.tileToMoveAfterRotate, LM.TM.currentPath);
+        MoveToTile(_tileToMove, _currentPath);
         LM.UnitHasFinishedMovementAndRotation();
 
         CheckUnitsInRangeToAttack();
+    }
+
+
+    public void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack)
+    {
+        #region Rotation
+
+        if (rotationToTurnBack == FacingDirection.North)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
+            currentFacingDirection = FacingDirection.North;
+        }
+
+        else if (rotationToTurnBack == FacingDirection.South)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
+            currentFacingDirection = FacingDirection.South;
+        }
+
+        else if (rotationToTurnBack == FacingDirection.East)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
+            currentFacingDirection = FacingDirection.East;
+        }
+
+        else if (rotationToTurnBack == FacingDirection.West)
+        {
+            unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
+            currentFacingDirection = FacingDirection.West;
+        }
+        #endregion
+
+        isMovingorRotating = false;
+        hasMoved = false;
+
+        transform.DOMove(tileToMoveBack.transform.position, 0);
+        UpdateInformationAfterMovement(tileToMoveBack);
+
+
     }
 
     #endregion

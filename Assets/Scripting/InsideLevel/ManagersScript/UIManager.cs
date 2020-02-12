@@ -242,7 +242,12 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
     public void RotatePlayerInNewDirection(UnitBase.FacingDirection newDirection)
     {
-        LM.selectedCharacter.RotateUnitFromButton(newDirection);
+        //Mover esto a execute
+        //LM.selectedCharacter.RotateUnitFromButton(newDirection, LM.tileToMoveAfterRotate, LM.TM.currentPath);
+
+        ICommand command = new MoveCommand(newDirection, LM.selectedCharacter.currentFacingDirection, LM.selectedCharacter.myCurrentTile, LM.tileToMoveAfterRotate, LM.TM.currentPath, LM.selectedCharacter); 
+        CommandInvoker.AddCommand(command);
+
     }
 
 

@@ -34,7 +34,6 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public IndividualTiles tileToMoveAfterRotate;
 
-
     //Tiles que los enemigos pueden moverse, que se muestran al hacer hover o clickar en los enemigos
     [HideInInspector]
     public List<IndividualTiles> tilesAvailableForMovementEnemies = new List<IndividualTiles>();
@@ -42,11 +41,11 @@ public class LevelManager : MonoBehaviour
     //Int que guarda el número de objetivos que tiene para atacar la unidad actual. Se usa únicamente en la función SelectUnitToAttack para marcar el índice de un for y que no de error si se deselecciona la unidad actual.
     private int enemiesNumber;
 
-
     //Tiles que tienen efecto de daño
     //[HideInInspector]
     public List<DamageTile> damageTilesInBoard = new List<DamageTile>();
 
+    [Header("UNDO ACTION")]
 
     [Header("TURNOS Y FASES")]
 
@@ -482,20 +481,11 @@ public class LevelManager : MonoBehaviour
                         TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
                         selectedCharacter.myCurrentTile.ColorDeselect();
 
-                        //Al terminar de moverse se deseleccionan los tiles
-                        for (int j = 0; j < tilesAvailableForMovement.Count; j++)
-                        {
-                            tilesAvailableForMovement[j].ColorDeselect();
-                        }
-                        tilesAvailableForMovement.Clear();
-
                         //Aviso a la unidad de que se tiene que mover
                         if (selectedCharacter != null)
                         {
-                           
-                                tileToMoveAfterRotate = tileToMove;
-                            
-                          
+                            tileToMoveAfterRotate = tileToMove;
+                             
                             //Hacer que aparezcan los botones de rotación
                             selectedCharacter.isMovingorRotating = true;
                             selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(true);
@@ -538,8 +528,6 @@ public class LevelManager : MonoBehaviour
                             Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                             selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
 
-                            //selectedCharacter.MoveToTile(tileToMove, TM.currentPath); 
-
                             //Desmarco las unidades que antes estaban disponibles para ser atacadas
                             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && tileToMove != selectedCharacter.myCurrentTile)
                             {
@@ -562,8 +550,16 @@ public class LevelManager : MonoBehaviour
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
     public void UnitHasFinishedMovementAndRotation()
     {
-		//UIM.ActivateDeActivateEndButton();+
-		if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+        //UIM.ActivateDeActivateEndButton();+
+
+        //Al terminar de moverse se despintan los tiles 
+        for (int j = 0; j < tilesAvailableForMovement.Count; j++)
+        {
+            tilesAvailableForMovement[j].ColorDeselect();
+        }
+        tilesAvailableForMovement.Clear();
+
+        if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 		{
 			UIM.TooltipAttack();
 		}
