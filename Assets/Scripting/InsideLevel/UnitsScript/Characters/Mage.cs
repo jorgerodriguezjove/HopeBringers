@@ -49,6 +49,15 @@ public class Mage : PlayerUnit
     {
         hasAttacked = true;
 
+
+        if (unitToAttack.isMarked)
+        {
+            unitToAttack.isMarked = false;
+            currentHealth += 1;
+            UIM.RefreshTokens();
+
+        }
+
         Instantiate(chargingParticle, gameObject.transform.position, chargingParticle.transform.rotation);
 
         Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);

@@ -30,7 +30,15 @@ public class Knight : PlayerUnit
     {
         hasAttacked = true;
 
-       //Este primer if  lo pongo de momento para seguir la misma estructura que con los otros personajes y por si hay que cambiar algo específico como la animación, el sonido...
+        if (unitToAttack.isMarked)
+        {
+            unitToAttack.isMarked = false;
+            currentHealth += 1;
+            UIM.RefreshTokens();
+
+        }
+
+        //Este primer if  lo pongo de momento para seguir la misma estructura que con los otros personajes y por si hay que cambiar algo específico como la animación, el sonido...
         if (pushFarther)
         {
             tilesToPush = 2;

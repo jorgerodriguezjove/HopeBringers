@@ -17,7 +17,7 @@ public class CommandInvoker : MonoBehaviour
 
     public static void AddCommand(ICommand _command)
     {
-        while(commandHistory.Count > counter)
+        while (commandHistory.Count > counter)
         {
             commandHistory.RemoveAt(counter);
         }

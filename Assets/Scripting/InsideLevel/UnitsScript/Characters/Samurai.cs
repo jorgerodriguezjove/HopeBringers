@@ -150,9 +150,18 @@ public class Samurai : PlayerUnit
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
-    
-            //Animación de ataque
-            myAnimator.SetTrigger("Attack");
+
+
+        if (unitToAttack.isMarked)
+        {
+            unitToAttack.isMarked = false;
+            currentHealth += 1;
+            UIM.RefreshTokens();
+
+        }
+
+        //Animación de ataque
+        myAnimator.SetTrigger("Attack");
 
             //Hago daño
             DoDamage(unitToAttack);

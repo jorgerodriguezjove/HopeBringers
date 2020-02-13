@@ -163,6 +163,14 @@ public class Rogue : PlayerUnit
     {
         hasAttacked = true;
         CalculateDamage(unitToAttack);
+
+        if (unitToAttack.isMarked)
+        {
+            unitToAttack.isMarked = false;
+            currentHealth += 1;           
+            UIM.RefreshTokens();
+
+        }
       
         if (checkersAttack)
         {

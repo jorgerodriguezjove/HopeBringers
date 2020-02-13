@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class EnGoblin : EnemyUnit
+public class EnGrabber : EnemyUnit
 {
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
     private UnitBase myCurrentObjective;
@@ -70,7 +70,7 @@ public class EnGoblin : EnemyUnit
                 //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
                 else if (currentUnitsAvailableToAttack.Count > 1)
                 {
-                    //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
+                    //Ordeno la lista de posibles objetivos según el número de unidades adyacentes
                     currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
                     {
                         return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
@@ -118,99 +118,20 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
-        //Si es Tier 2 Alerta a los enemigos en el área
-        if (myTierLevel == TierLevel.Level2)
-        {
-            if (!haveIBeenAlerted)
-            {
-                //Le pido al TileManager los enemigos dentro de mi rango
-                unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
-
-                //Alerto a los enemigos a mi alcance
-                for (int i = 0; i < unitsInRange.Count; i++)
-                {
-                    if (unitsInRange[i].GetComponent<EnemyUnit>())
-                    {
-                        unitsInRange[i].GetComponent<EnemyUnit>().AlertEnemy();
-                    }
-                }
-            }
-        }
-        
         //Si no he sido alertado, activo mi estado de alerta.
-        //Al alertarme salo del void de ataque para hacer la busqueda normal de jugadores.
         if (!haveIBeenAlerted)
         {
             AlertEnemy();
-            myCurrentEnemyState = enemyState.Searching;
-            return;
         }
 
-        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        if (!isDead)
         {
-            //Si mi objetivo es adyacente a mi le ataco
-            if (myCurrentTile.neighbours[i].unitOnTile != null && currentUnitsAvailableToAttack.Count >0 && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0] && Mathf.Abs(myCurrentTile.height - myCurrentTile.neighbours[i].height) <= maxHeightDifferenceToAttack)
-            {
-                //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el goblin
-                if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
-                {
-                    //Arriba
-                    if (myCurrentObjectiveTile.tileZ > myCurrentTile.tileZ)
-                    {
-                        RotateLogic(FacingDirection.North);
-                    }
-                    //Abajo
-                    else
-                    {
-                        RotateLogic(FacingDirection.South);
-                    }
-
-                    ColorAttackTile();
-
-                    //Atacar al enemigo
-                    DoDamage(currentUnitsAvailableToAttack[0]);
-                }
-                //Izquierda o derecha
-                else
-                {
-                    //Arriba
-                    if (myCurrentObjectiveTile.tileX > myCurrentTile.tileX)
-                    {
-                        RotateLogic(FacingDirection.East);
-                    }
-                    //Abajo
-                    else
-                    {
-                        RotateLogic(FacingDirection.West);
-                    }
-
-                    ColorAttackTile();
-
-                    //Atacar al enemigo
-                    DoDamage(currentUnitsAvailableToAttack[0]);
-                }
-
-                //Animación de ataque
-                myAnimator.SetTrigger("Attack");
-                hasAttacked = true;
-
-                //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo.
-                //myCurrentEnemyState = enemyState.Waiting;
-                break;
-            }
-        }
-
-        if (!hasMoved && !hasAttacked)
-        {
-            myCurrentEnemyState = enemyState.Moving;
+           
         }
 
         else
         {
-            myCurrentEnemyState = enemyState.Ended;
-
-            //Espero 1 sec y cambio de estado a ended
-            //StartCoroutine("AttackWait");
+            myCurrentEnemyState = enemyState.Waiting;
         }
     }
 
@@ -226,7 +147,7 @@ public class EnGoblin : EnemyUnit
 
         //Como el path guarda el tile en el que esta el enemigo yel tile en el que esta el personaje del jugador resto 2.
         //Si esta resta se pasa del número de unidades que me puedo mover entonces solo voy a recorrer el número de tiles máximo que puedo llegar.
-        if (pathToObjective.Count-2 > movementUds)
+        if (pathToObjective.Count - 2 > movementUds)
         {
             limitantNumberOfTilesToMove = movementUds;
         }
@@ -234,14 +155,14 @@ public class EnGoblin : EnemyUnit
         //Si esta resta por el contrario es menor o igual a movementUds significa que me voy mover el máximo o menos tiles.
         else
         {
-            limitantNumberOfTilesToMove = pathToObjective.Count-2;
+            limitantNumberOfTilesToMove = pathToObjective.Count - 2;
         }
 
         //Compruebo la dirección en la que se mueve para girar a la unidad
         CheckTileDirection(pathToObjective[pathToObjective.Count - 1]);
 
         myCurrentEnemyState = enemyState.Waiting;
-        
+
         //Actualizo info de los tiles
         UpdateInformationAfterMovement(pathToObjective[limitantNumberOfTilesToMove]);
 
@@ -256,7 +177,7 @@ public class EnGoblin : EnemyUnit
         {
             //Calcula el vector al que se tiene que mover.
             currentTileVectorToMove = pathToObjective[j].transform.position;  //new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);
-            
+
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
             unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
@@ -282,7 +203,6 @@ public class EnGoblin : EnemyUnit
     }
 
     //MEJORAR ESTO. PROBABLEMENTE NO NECESITO DOS FUNCIONES  PARA ESTO Y ADEMÁS SE REPITE EN EL PLAYER UNIT
-
     //Decidir rotación al moverse por los tiles.
     public void CheckTileDirection(IndividualTiles tileToCheck)
     {
@@ -352,7 +272,7 @@ public class EnGoblin : EnemyUnit
     //Esta función muestra la acción del enemigo.
     //Para esconderla hay otra función (esta en el EnemyUnit)
     public override void ShowActionPathFinding(bool _shouldRecalculate)
-    {      
+    {
         //Si se tiene que mostrar la acción por el hover calculamos el enemigo
         if (_shouldRecalculate)
         {
@@ -418,7 +338,7 @@ public class EnGoblin : EnemyUnit
             }
 
             ///En el gigante es importante que esta función vaya después de colocar la sombra. Por si acaso asegurarse de que este if nunca se pone antes que el reposicionamiento de la sombra
-            
+
             //A pesar de que ya se llama a esta función desde el levelManager en caso de hover, si se tiene que mostrar porque el goblin está atacando se tiene que llamar desde aqui (ya que no pasa por el level manager)
             //Tiene que ser en falso porque si no pongo la condicion la función se cree que el tileya estaba pintado de antes
             if (!_shouldRecalculate)
@@ -432,7 +352,7 @@ public class EnGoblin : EnemyUnit
     public override void ColorAttackTile()
     {
         //El +2 es porque pathToObjective tiene en cuenta tanto el tile inicial (ocupado por goblin) como el final (ocupado por player)
-        if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds +2 && myCurrentObjective != null)
+        if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds + 2 && myCurrentObjective != null)
         {
             wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
 

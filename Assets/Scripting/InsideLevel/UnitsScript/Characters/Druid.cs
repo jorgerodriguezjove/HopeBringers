@@ -18,6 +18,14 @@ public class Druid : PlayerUnit
     {
         hasAttacked = true;
 
+
+        if (unitToAttack.isMarked)
+        {
+            unitToAttack.isMarked = false;
+            currentHealth += 1;
+            UIM.RefreshTokens();
+
+        }
         //Hay que cambiar
         //Instantiate(chargingParticle, gameObject.transform.position, chargingParticle.transform.rotation);
         //Hay que cambiar

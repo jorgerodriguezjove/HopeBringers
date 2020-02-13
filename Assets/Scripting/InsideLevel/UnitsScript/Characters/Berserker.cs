@@ -43,6 +43,14 @@ public class Berserker : PlayerUnit
     {
         hasAttacked = true;
 
+        if (unitToAttack.isMarked)
+        {
+            unitToAttack.isMarked = false;
+            currentHealth += 1;
+            UIM.RefreshTokens();
+
+        }
+
         if (circularAttack)
         {
             //Animación de ataque 

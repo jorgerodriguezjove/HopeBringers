@@ -28,6 +28,10 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int attackRange;
 
+    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
+    //Bool que indica si está marcado o no 
+    public bool isMarked;
+
     [Header("DAMAGE")]
 
     //Daño de la unidad
