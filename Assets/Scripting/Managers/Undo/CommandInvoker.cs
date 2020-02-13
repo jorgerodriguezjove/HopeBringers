@@ -9,10 +9,18 @@ public class CommandInvoker : MonoBehaviour
     static List<ICommand> commandHistory;
     static int counter;
 
+    [Header("REFERENCES")]
+    private LevelManager LM;
+
+    //Unidad que estaba seleccionada cuando le he dado a undo move
+    PlayerUnit playerSelectedWhileClickingUndo;
+
     private void Awake()
     {
         commandBuffer = new Queue<ICommand>();
         commandHistory = new List<ICommand>();
+
+        LM = FindObjectOfType<LevelManager>();
     }
 
     public static void AddCommand(ICommand _command)
@@ -36,18 +44,32 @@ public class CommandInvoker : MonoBehaviour
             counter++;
             Debug.Log("Command History length: " + commandHistory.Count);
         }
+    }
 
-        else
+    public void UndoAction()
+    {
+        playerSelectedWhileClickingUndo = LM.selectedCharacter;
+
+       
+        if (playerSelectedWhileClickingUndo != null && !playerSelectedWhileClickingUndo.isMovingorRotating || playerSelectedWhileClickingUndo == null)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (counter > 0)
             {
-                if (counter > 0)
-                {
-                    counter--;
-                    commandHistory[counter].Undo();
-                }
+                counter--;
+                commandHistory[counter].Undo();
+                LM.DeSelectUnit();
             }
         }
+
+        playerSelectedWhileClickingUndo = null;
+    }
+
+    //Resetear el undo
+    public void ResetCommandList()
+    {
+        commandBuffer.Clear();
+        commandHistory.Clear();
+        counter = 0;
     }
 
 }

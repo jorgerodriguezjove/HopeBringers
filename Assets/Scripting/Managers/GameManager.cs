@@ -35,6 +35,9 @@ public class GameManager : PersistentSingleton<GameManager>
     //Experiencia que obtiene el jugador si completa el nivel
     public int possibleXpToGainIfCurrentLevelIsWon;
 
+    //Bool que indica si al cargar el level selection debería desbloquear un nuevo personaje
+    public GameObject newCharacterToUnlock;
+
 
     #endregion
 
@@ -95,6 +98,11 @@ public class GameManager : PersistentSingleton<GameManager>
         currentExp += possibleXpToGainIfCurrentLevelIsWon;
     }
 
+    public void LevelLost()
+    {
+        newCharacterToUnlock = null;
+    }
+
     public void CheckStartLevel(string _levelName)
     {
         //Si hay algún personaje seleccionado cargo el nivel.
@@ -103,5 +111,10 @@ public class GameManager : PersistentSingleton<GameManager>
             SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
         }
     }
-        
+
+
+    private void Update()
+    {
+        Debug.Log(newCharacterToUnlock);
+    }
 }

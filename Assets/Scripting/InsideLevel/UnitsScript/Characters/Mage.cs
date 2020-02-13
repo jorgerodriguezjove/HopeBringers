@@ -393,4 +393,13 @@ public class Mage : PlayerUnit
     }
 
     #endregion
+
+
+    public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack)
+    {
+        base.UndoMove(tileToMoveBack, rotationToTurnBack);
+
+        Destroy(myDecoys[myDecoys.Count - 1]);
+        myDecoys.RemoveAt(myDecoys.Count - 1);
+    }
 }

@@ -69,7 +69,7 @@ public class LevelManager : MonoBehaviour
     //Cada unidad se encarga desde su script de incluirse en la lista
     //Lista con todas las unidades del jugador en el tablero
     //[HideInInspector]
-    public List<PlayerUnit> characthersOnTheBoard;
+    public List<PlayerUnit> charactersOnTheBoard;
     
     //Lista con todas las unidades enemigas en el tablero
     [SerializeField]
@@ -98,6 +98,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject victoryPanel;
 
+    //Referencia momentanea para el playtesting
+    [SerializeField]
+    private GameObject defeatPanel;
+
     #endregion
 
     #region INIT
@@ -118,6 +122,8 @@ public class LevelManager : MonoBehaviour
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
 
+        FindObjectOfType<CommandInvoker>().ResetCommandList();
+
         //Crea a los jugadores seleccionados para el nivel.
         if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
         {
@@ -136,9 +142,9 @@ public class LevelManager : MonoBehaviour
     //Cuando muere un enemigo, también se llama aquí
     private void UpdateUnitsOrder()
     {
-        if (characthersOnTheBoard.Count > 0)
+        if (charactersOnTheBoard.Count > 0)
         {
-            characthersOnTheBoard.Sort(delegate (PlayerUnit a, PlayerUnit b)
+            charactersOnTheBoard.Sort(delegate (PlayerUnit a, PlayerUnit b)
             {
                 return (b.GetComponent<PlayerUnit>().speed).CompareTo(a.GetComponent<PlayerUnit>().speed);
 
@@ -851,6 +857,8 @@ public class LevelManager : MonoBehaviour
     //Se llama desde el UI Manager al pulsar el botón de end turn 
     public void ChangePhase()
     {
+        FindObjectOfType<CommandInvoker>().ResetCommandList();
+
         currentLevelState = LevelState.EnemyPhase;
     }
 
@@ -874,13 +882,13 @@ public class LevelManager : MonoBehaviour
             //Aparece cartel con turno del player
             UIM.RotateButtonStartPhase();
             //Resetear todas las variables tipo bool y demás de los players
-            for (int i = 0; i < characthersOnTheBoard.Count; i++)
+            for (int i = 0; i < charactersOnTheBoard.Count; i++)
             {
-                characthersOnTheBoard[i].ResetUnitState();
+                charactersOnTheBoard[i].ResetUnitState();
 
-                if (characthersOnTheBoard[i].GetComponent<Berserker>())
+                if (charactersOnTheBoard[i].GetComponent<Berserker>())
                 {
-                    characthersOnTheBoard[i].GetComponent<Berserker>().RageChecker();
+                    charactersOnTheBoard[i].GetComponent<Berserker>().RageChecker();
                 }
             }
 
@@ -979,6 +987,14 @@ public class LevelManager : MonoBehaviour
             victoryPanel.SetActive(true);
             UIM.optionsButton.SetActive(false);
             GameManager.Instance.VictoryAchieved();
+        }
+
+        if (charactersOnTheBoard.Count == 0)
+        {
+            Debug.Log("Game Over");
+            defeatPanel.SetActive(true);
+            UIM.optionsButton.SetActive(false);
+            GameManager.Instance.LevelLost();
         }
     }
 

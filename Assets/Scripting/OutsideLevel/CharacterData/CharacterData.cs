@@ -38,6 +38,9 @@ public class CharacterData : MonoBehaviour
     [SerializeField]
     public Vector3 initialPosition;
 
+    [SerializeField]
+    public bool isCharacterUnlocked;
+
     [HideInInspector]
     public GameObject panelOfTheBookImIn;
 
@@ -172,7 +175,7 @@ public class CharacterData : MonoBehaviour
     //Motrar u ocultar el modelo de la figura para que aparezca en LevelSelection pero no en los niveles.
     public void HideShowMeshCharacterData(bool isActive)
     {
-        if (unitModel != null)
+        if (unitModel != null && isCharacterUnlocked)
         {
             unitModel.SetActive(isActive);
             GetComponent<Collider>().enabled = isActive;

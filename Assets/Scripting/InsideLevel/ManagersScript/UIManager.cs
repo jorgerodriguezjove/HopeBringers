@@ -116,12 +116,12 @@ public class UIManager : MonoBehaviour
         //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
         initialScrollPosition = padrePanelesEnemigos.transform.position;
 
-        for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+        for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
         {
             //Activamos los retratos necesarios y les asignamos su jugador
             panelesPJ[i].SetActive(true);
-            panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.characthersOnTheBoard[i];
-            LM.characthersOnTheBoard[i].myPanelPortrait = panelesPJ[i];
+            panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.charactersOnTheBoard[i];
+            LM.charactersOnTheBoard[i].myPanelPortrait = panelesPJ[i];
 
             //Actualizamos las barras de vida
             panelesPJ[i].GetComponent<Portraits>().InitializeHealth();
@@ -204,24 +204,24 @@ public class UIManager : MonoBehaviour
 
 	public void ActivateEndTurnHover()
 	{
-		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
-			if(LM.characthersOnTheBoard[i].hasMoved == false)
+			if(LM.charactersOnTheBoard[i].hasMoved == false)
 			{
-				LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
+				LM.charactersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
 			}
-			else if (LM.characthersOnTheBoard[i].hasAttacked == false && hasCharacterUnitInRange)
+			else if (LM.charactersOnTheBoard[i].hasAttacked == false && hasCharacterUnitInRange)
 			{
-				LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
+				LM.charactersOnTheBoard[i].actionAvaliablePanel.SetActive(true);
 			}
 		}
 	}
 
 	public void DeactivateEndTurnHover()
 	{
-		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
-			LM.characthersOnTheBoard[i].actionAvaliablePanel.SetActive(false);
+			LM.charactersOnTheBoard[i].actionAvaliablePanel.SetActive(false);
 		}
 	}
 
@@ -245,12 +245,9 @@ public class UIManager : MonoBehaviour
         //Mover esto a execute
         //LM.selectedCharacter.RotateUnitFromButton(newDirection, LM.tileToMoveAfterRotate, LM.TM.currentPath);
 
-        
         ICommand command = new MoveCommand(newDirection, LM.selectedCharacter.currentFacingDirection, LM.selectedCharacter.myCurrentTile, LM.tileToMoveAfterRotate, LM.TM.currentPath, LM.selectedCharacter);
         CommandInvoker.AddCommand(command);
-
     }
-
 
 	#endregion
 
@@ -258,7 +255,7 @@ public class UIManager : MonoBehaviour
 	//Avisa a los retratos activos de que refresquen las barras de vida
 	public void RefreshHealth()
 	{
-		for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
             panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
 		}
@@ -266,7 +263,7 @@ public class UIManager : MonoBehaviour
     //Avisa a los retratos activos de que refresquen los tokens
     public void RefreshTokens()
 	{
-        for (int i = 0; i < LM.characthersOnTheBoard.Count; i++)
+        for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
         {
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
         }

@@ -97,7 +97,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -992,6 +992,8 @@ MonoBehaviour:
   maxNumberOfUnits: 1
   idLevel: 1
   xpGained: 100
+  characterToUnlock: 1
+  newCharacterToUnlock: {fileID: 0}
   sceneName: Level1
   isUnlocked: 1
   surroundingLevels:
@@ -6562,6 +6564,7 @@ MonoBehaviour:
   initialized: 0
   unitModel: {fileID: 806498855}
   initialPosition: {x: 0, y: 0, z: 0}
+  isCharacterUnlocked: 1
   panelOfTheBookImIn: {fileID: 0}
 --- !u!1 &582657293
 GameObject:
@@ -10858,6 +10861,8 @@ MonoBehaviour:
   maxNumberOfUnits: 4
   idLevel: 5
   xpGained: 300
+  characterToUnlock: 0
+  newCharacterToUnlock: {fileID: 0}
   sceneName: Level5
   isUnlocked: 0
   surroundingLevels:
@@ -14091,6 +14096,7 @@ MonoBehaviour:
   initialized: 0
   unitModel: {fileID: 1641899186}
   initialPosition: {x: 0, y: 0, z: 0}
+  isCharacterUnlocked: 1
   panelOfTheBookImIn: {fileID: 0}
 --- !u!1 &1268096146
 GameObject:
@@ -15440,6 +15446,8 @@ MonoBehaviour:
   maxNumberOfUnits: 4
   idLevel: 6
   xpGained: 300
+  characterToUnlock: 0
+  newCharacterToUnlock: {fileID: 0}
   sceneName: Level6
   isUnlocked: 0
   surroundingLevels:
@@ -16038,6 +16046,8 @@ MonoBehaviour:
   maxNumberOfUnits: 3
   idLevel: 3
   xpGained: 300
+  characterToUnlock: 0
+  newCharacterToUnlock: {fileID: 0}
   sceneName: Level3
   isUnlocked: 0
   surroundingLevels:
@@ -17360,6 +17370,8 @@ MonoBehaviour:
   maxNumberOfUnits: 2
   idLevel: 2
   xpGained: 200
+  characterToUnlock: 0
+  newCharacterToUnlock: {fileID: 0}
   sceneName: Level2
   isUnlocked: 0
   surroundingLevels:
@@ -18363,6 +18375,7 @@ MonoBehaviour:
   initialized: 0
   unitModel: {fileID: 1887099535}
   initialPosition: {x: 0, y: 0, z: 0}
+  isCharacterUnlocked: 1
   panelOfTheBookImIn: {fileID: 0}
 --- !u!136 &1641118757
 CapsuleCollider:
@@ -19172,6 +19185,8 @@ MonoBehaviour:
   maxNumberOfUnits: 4
   idLevel: 4
   xpGained: 300
+  characterToUnlock: 0
+  newCharacterToUnlock: {fileID: 0}
   sceneName: Level4Playtesting
   isUnlocked: 0
   surroundingLevels:
@@ -20166,6 +20181,7 @@ MonoBehaviour:
   initialized: 0
   unitModel: {fileID: 2101961272}
   initialPosition: {x: 0, y: 0, z: 0}
+  isCharacterUnlocked: 0
   panelOfTheBookImIn: {fileID: 0}
 --- !u!136 &1834575042
 CapsuleCollider:
@@ -20176,7 +20192,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1834575040}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.58684915
   m_Height: 2.7816753
   m_Direction: 1
@@ -23487,7 +23503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2101961273
 Transform:
   m_ObjectHideFlags: 0

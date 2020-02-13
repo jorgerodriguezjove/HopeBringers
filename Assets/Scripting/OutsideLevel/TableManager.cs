@@ -30,6 +30,10 @@ public class TableManager : MonoBehaviour
     [HideInInspector]
     public LevelNode lastLevelClicked;
 
+    //En caso de que al completar este nivel se desbloquee un personaje se guarda en esta variable
+    [SerializeField]
+    public GameObject newCharacterToUnlock;
+
     //Nombre del nivel actual que hay que cargar si el jugador le da a ready
     [HideInInspector]
     public string currentClickedSceneName;
@@ -51,10 +55,19 @@ public class TableManager : MonoBehaviour
         //Devuelvo las figuras a la caja y reseteo las listas de unidades
         ResetCharactersToBox();
 
-        //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
+        //Si he completado el nivel y hay un personaje que desbloquear lo desbloqueo.
+        //TIENE QUE IR ANTES QUE level1.SelectLevel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (GameManager.Instance.newCharacterToUnlock != null)
+        {
+            UnlockNewCharacter();
+        }
 
+
+        //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
         //Hacer que se quede el último seleccioando!!!!!!!!!!!!!!!!!!!!!
         level1.SelectLevel();
+
+
     }
 
     #endregion
@@ -200,4 +213,21 @@ public class TableManager : MonoBehaviour
             Debug.Log("No hay suficiente xp");
         }
     }
+
+    //Desbloquear nuevo personaje
+    public void UnlockNewCharacter()
+    {
+        Debug.Log("Unlock");
+
+        if (!GameManager.Instance.newCharacterToUnlock.GetComponent<CharacterData>().isCharacterUnlocked)
+        {
+            Debug.Log("Has desbloqueado a un nuevo pj");
+
+            //Activo la ficha dentro de la caja
+            GameManager.Instance.newCharacterToUnlock.GetComponent<CharacterData>().isCharacterUnlocked = true;
+            GameManager.Instance.newCharacterToUnlock.GetComponent<CharacterData>().HideShowMeshCharacterData(true);
+        }
+
+    }
+
 }

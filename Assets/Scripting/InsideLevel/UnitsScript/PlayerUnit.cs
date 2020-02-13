@@ -90,7 +90,7 @@ public class PlayerUnit : UnitBase
     {
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
-        LM.characthersOnTheBoard.Add(this);
+        LM.charactersOnTheBoard.Add(this);
 		//Referencia al UIM 
 		UIM = FindObjectOfType<UIManager>();
         //Aviso al tile en el que empiezo que soy su unidad.
@@ -326,8 +326,6 @@ public class PlayerUnit : UnitBase
             movementParticle.SetActive(false);
 
         }
-        
-        isMovingorRotating = false;
 
         //Arriba o abajo
         if (currentFacingDirection == FacingDirection.North)
@@ -349,6 +347,10 @@ public class PlayerUnit : UnitBase
         {
             unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
         }
+
+        yield return new WaitForSeconds(timeDurationRotation);
+
+        isMovingorRotating = false;
     }
 
     public void RotateUnitFromButton(FacingDirection newDirection, IndividualTiles _tileToMove, List<IndividualTiles> _currentPath)
@@ -383,13 +385,14 @@ public class PlayerUnit : UnitBase
         isMovingorRotating = true;
 
         MoveToTile(_tileToMove, _currentPath);
+
         LM.UnitHasFinishedMovementAndRotation();
 
         CheckUnitsInRangeToAttack();
     }
 
-
-    public void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack)
+    //Es virtual porque el mago tiene que añadir la funcionalidad de quitar el decoy
+    public virtual void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack)
     {
         #region Rotation
 
@@ -423,8 +426,6 @@ public class PlayerUnit : UnitBase
 
         transform.DOMove(tileToMoveBack.transform.position, 0);
         UpdateInformationAfterMovement(tileToMoveBack);
-
-
     }
 
     #endregion
@@ -483,7 +484,7 @@ public class PlayerUnit : UnitBase
         myCurrentTile.unitOnTile = null;
         myCurrentTile.WarnInmediateNeighbours();
 
-        LM.characthersOnTheBoard.Remove(this);
+        LM.charactersOnTheBoard.Remove(this);
         myPanelPortrait.SetActive(false);
         UIM.panelesPJ.Remove(myPanelPortrait);
         Destroy(gameObject);        

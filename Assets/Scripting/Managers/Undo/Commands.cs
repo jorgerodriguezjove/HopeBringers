@@ -40,3 +40,28 @@ public class MoveCommand : ICommand
         pj.GetComponent<PlayerUnit>().UndoMove(previousTile, previousRotation);
     }
 }
+
+public class AttackCommand : ICommand
+{
+    UnitBase.FacingDirection enemynewRotation;
+    UnitBase.FacingDirection enemypreviousRotation;
+    IndividualTiles enemyPreviousTile;
+    IndividualTiles enemyNewTile;
+    UnitBase pj;
+    UnitBase enemy;
+
+
+    public void Execute()
+    {
+        //En level manager no mueve al personaje si no que llama a esto
+        //Mover el personaje (posición inicial y PJ) aqui basicamente llamar a función de movimiento una vez level manager ha dado visto bueno. 
+        //Rotación, color y token más adelante
+
+        //GameObject.FindObjectOfType<LevelManager>().selectedCharacter.RotateUnitFromButton(newRotation, tileToMove, currentPath);
+    }
+
+    public void Undo()
+    {
+        
+    }
+}

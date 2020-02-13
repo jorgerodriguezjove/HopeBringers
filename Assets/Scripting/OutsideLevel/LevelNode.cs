@@ -22,6 +22,16 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public int xpGained;
 
+
+    public enum PossibleCharactersToUnlock { none, Berserker, Mage, Ninja, Valkyrie, Druid, Monk, Samurai };
+
+    [SerializeField]
+    public PossibleCharactersToUnlock characterToUnlock;
+
+    //En caso de que al completar este nivel se desbloquee un personaje se guarda en esta variable
+    [HideInInspector]
+    public GameObject newCharacterToUnlock;
+
     ///BUSCAR FORMA MEJOR DE PASAR EL NIVEL QUE CON STRINGS. 
     //Escena asociada al nivel
     [SerializeField]
@@ -74,12 +84,56 @@ public class LevelNode : MonoBehaviour
 
     #region INIT
 
+    private void Start()
+    {
+        if (characterToUnlock == PossibleCharactersToUnlock.none)
+        {
+            newCharacterToUnlock = null;
+        }
+
+        else if (characterToUnlock == PossibleCharactersToUnlock.Berserker)
+        {
+            newCharacterToUnlock = FindObjectOfType<BerserkerData>().gameObject;
+        }
+
+        else if (characterToUnlock == PossibleCharactersToUnlock.Mage)
+        {
+            newCharacterToUnlock = FindObjectOfType<MageData>().gameObject;
+        }
+
+        else if (characterToUnlock == PossibleCharactersToUnlock.Ninja)
+        {
+            newCharacterToUnlock = FindObjectOfType<RogueData>().gameObject;
+        }
+
+        //else if (characterEnum == PossibleCharactersToUnlock.Druid)
+        //{
+        //    newCharacterToUnlock = FindObjectOfType<DruidData>().gameObject;
+        //}
+
+        //else if (characterEnum == PossibleCharactersToUnlock.Monk)
+        //{
+        //    newCharacterToUnlock = FindObjectOfType<MonkData>().gameObject;
+        //}
+
+        //else if (characterEnum == PossibleCharactersToUnlock.Valkyrie)
+        //{
+        //    newCharacterToUnlock = FindObjectOfType<ValkyrieData>().gameObject;
+        //}
+
+        //else if (characterEnum == PossibleCharactersToUnlock.Samurai)
+        //{
+        //    newCharacterToUnlock = FindObjectOfType<SamuraiData>().gameObject;
+        //}
+
+    }
+
     #endregion
 
-	#region INTERACTION
-	
-	//Llamar en click desde el event trigger
-	public void SelectLevel()
+    #region INTERACTION
+
+    //Llamar en click desde el event trigger
+    public void SelectLevel()
 	{
 		//Avisar al TM de que se ha pulsado un nivel
 		if (isUnlocked)
@@ -87,6 +141,16 @@ public class LevelNode : MonoBehaviour
 			TM.OnLevelClicked(GetComponent<LevelNode>());
 			GameManager.Instance.currentLevelNode = idLevel;
             GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = xpGained;
+
+            if (newCharacterToUnlock != null)
+            {
+                GameManager.Instance.newCharacterToUnlock = newCharacterToUnlock;
+            }
+
+            else
+            {
+                GameManager.Instance.newCharacterToUnlock = null;
+            }
 
             Debug.Log("Xp gained " + xpGained);
         }
