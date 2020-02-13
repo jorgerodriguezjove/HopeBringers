@@ -391,41 +391,36 @@ public class PlayerUnit : UnitBase
         CheckUnitsInRangeToAttack();
     }
 
-    //Es virtual porque el mago tiene que añadir la funcionalidad de quitar el decoy
-    public virtual void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack)
+    public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
     {
-        #region Rotation
+        base.UndoMove(tileToMoveBack, rotationToTurnBack, shouldResetMovement);
 
-        if (rotationToTurnBack == FacingDirection.North)
+        if (shouldResetMovement)
         {
-            unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
-            currentFacingDirection = FacingDirection.North;
+            isMovingorRotating = false;
+            hasMoved = false;
         }
 
-        else if (rotationToTurnBack == FacingDirection.South)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
-            currentFacingDirection = FacingDirection.South;
-        }
+        UIM.RefreshTokens();
+    }
 
-        else if (rotationToTurnBack == FacingDirection.East)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
-            currentFacingDirection = FacingDirection.East;
-        }
+    public override void UndoAttack(int previousHealth)
+    {
+        //Todo esto es una copia del undo move sin la parte que resetea el movimiento.
 
-        else if (rotationToTurnBack == FacingDirection.West)
-        {
-            unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
-            currentFacingDirection = FacingDirection.West;
-        }
-        #endregion
+        //Permitirle otra vez atacar
+        hasAttacked = false;
 
-        isMovingorRotating = false;
-        hasMoved = false;
+        //Resetear el material
+        ResetColor();
+       
+        //Base (restaurar vida a nivel lógico)
+        base.UndoAttack(previousHealth);
 
-        transform.DOMove(tileToMoveBack.transform.position, 0);
-        UpdateInformationAfterMovement(tileToMoveBack);
+        //Actualizar hud
+        UIM.RefreshHealth();
+        UIM.RefreshTokens();
+
     }
 
     #endregion
@@ -439,7 +434,7 @@ public class PlayerUnit : UnitBase
 
         //El daño y la animación no lo pongo aquí porque tiene que ser lo primero que se calcule.
 
-        //Cada unidad se encargará de aplicar su efecto.
+        //Cada unidad se encargará de aplicar su efecto en su override.
 
         //La unidad ha atacado y por tanto no puede hacer nada más. Así que espero a que acabe la animación y finalizo su turno.
         StartCoroutine("AttackWait");

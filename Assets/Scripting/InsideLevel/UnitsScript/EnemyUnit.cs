@@ -567,9 +567,9 @@ public class EnemyUnit : UnitBase
         //Cambios en la lógica para indicar que ha muerto
         myCurrentTile.unitOnTile = null;
         myCurrentTile.WarnInmediateNeighbours();
-        
+
         //Hago que visualmente desaparezca aunque no lo destryuo todavía.
-        Destroy(unitModel);
+        unitModel.SetActive(false);
         if (sleepParticle != null)
         {
             sleepParticle.SetActive(false);
@@ -596,7 +596,7 @@ public class EnemyUnit : UnitBase
         
     }
 
-        
+
 
     /// <summary>
     /// Adaptando la función de pathfinding del Tile Manager usamos eso para al igual que hicimos con el charger guardar los enemigos con la menor distancia
@@ -609,4 +609,46 @@ public class EnemyUnit : UnitBase
 
 
     #endregion
+
+    public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
+    {
+        if (isDead)
+        {
+            ////Cambios en UI
+            //LM.HideHover(this);
+            //HealthBarOn_Off(false);
+            //LM.UIM.HideTileInfo();
+            //Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+            myAnimator.Play("Idle");
+
+            //Cambios en la lógica para indicar que ha muerto
+            myCurrentTile.unitOnTile = GetComponent<UnitBase>();
+            myCurrentTile.WarnInmediateNeighbours();
+
+            //Hago que visualmente desaparezca aunque no lo destryuo todavía.
+            unitModel.SetActive(true);
+            GetComponent<Collider>().enabled = true;
+
+            //Aviso de que el enemigo está muerto
+            isDead = false;
+
+            //Estas dos llamadas tienen que ir despues del bool de isdead = true
+            LM.UIM.SetEnemyOrder();
+
+            //No uso FinishMyActions porque no me interesa que pase turno, sólo que se quede en waiting por si acaso se muere en su turno.
+            myCurrentEnemyState = enemyState.Waiting;
+        }
+
+
+        base.UndoMove(tileToMoveBack, rotationToTurnBack, shouldResetMovement);
+    }
+
+    public override void UndoAttack(int previousHealth)
+    {
+        base.UndoAttack(previousHealth);
+
+        RefreshHealth(true);
+    }
+
 }

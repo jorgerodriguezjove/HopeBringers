@@ -313,7 +313,7 @@ public class UnitBase : MonoBehaviour
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
         HealthBarOn_Off(true);
         shouldLockHealthBar = true;
-        RefreshHealth();
+        RefreshHealth(false);
         StartCoroutine("WaitBeforeHiding");
     }
 
@@ -539,7 +539,7 @@ public class UnitBase : MonoBehaviour
     }
 
     //Función que se encarga de actualizar la vida del personaje.
-    public void RefreshHealth()
+    public void RefreshHealth(bool undoHealthDamage)
     {
         //Recorro la lista de tokens empezando por el final. 
         //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
@@ -550,7 +550,12 @@ public class UnitBase : MonoBehaviour
             {
                 if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
                 {
-                    if (!lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().haveIFlipped)
+                    if (undoHealthDamage)
+                    {
+                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
+                    }
+
+                    else if (!lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().haveIFlipped)
                     {
                         lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
                     }
@@ -590,5 +595,44 @@ public class UnitBase : MonoBehaviour
 
 
     #endregion
+
+    //Es virtual porque el mago tiene que añadir la funcionalidad de quitar el decoy
+    public virtual void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
+    {
+        #region Rotation
+
+        if (rotationToTurnBack == FacingDirection.North)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
+            currentFacingDirection = FacingDirection.North;
+        }
+
+        else if (rotationToTurnBack == FacingDirection.South)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
+            currentFacingDirection = FacingDirection.South;
+        }
+
+        else if (rotationToTurnBack == FacingDirection.East)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
+            currentFacingDirection = FacingDirection.East;
+        }
+
+        else if (rotationToTurnBack == FacingDirection.West)
+        {
+            unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
+            currentFacingDirection = FacingDirection.West;
+        }
+        #endregion
+
+        transform.DOMove(tileToMoveBack.transform.position, 0);
+        UpdateInformationAfterMovement(tileToMoveBack);
+    }
+
+    public virtual void UndoAttack(int previousHealth)
+    {
+        currentHealth = previousHealth;
+    }
 
 }

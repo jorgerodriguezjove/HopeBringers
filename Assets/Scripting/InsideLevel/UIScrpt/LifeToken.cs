@@ -19,4 +19,10 @@ public class LifeToken : MonoBehaviour
         GetComponent<Animator>().Play("LifeTokenFLip");
     }
 
+    public void ResetToken()
+    {
+        haveIFlipped = false;
+        GetComponent<Animator>().Play("LifeTokenReset");
+    }
+
 }

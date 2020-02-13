@@ -91,8 +91,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject topScrollUp, topScrollDown, buttonUp, buttonDown, buttonUpHighlight, buttonDownHighlight;
 
-
-
     [Header("REFERENCIAS")]
 
     //Level Manager

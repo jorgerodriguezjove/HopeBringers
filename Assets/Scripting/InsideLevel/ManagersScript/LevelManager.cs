@@ -313,7 +313,6 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter != null )
         {
-
             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {
                 enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
@@ -325,7 +324,8 @@ public class LevelManager : MonoBehaviour
                     {
                         if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
                         {
-                            selectedCharacter.Attack(clickedUnit);
+                            ICommand command = new AttackCommand(selectedCharacter.currentUnitsAvailableToAttack[i].currentFacingDirection, selectedCharacter.currentFacingDirection, selectedCharacter.currentUnitsAvailableToAttack[i].myCurrentTile, selectedCharacter.myCurrentTile, selectedCharacter.currentUnitsAvailableToAttack[i].currentHealth, selectedCharacter.currentHealth, selectedCharacter, selectedCharacter.currentUnitsAvailableToAttack[i]);
+                            CommandInvoker.AddCommand(command);
                             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                             return;
                         }
