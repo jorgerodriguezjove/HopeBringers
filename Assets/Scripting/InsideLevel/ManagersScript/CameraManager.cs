@@ -37,7 +37,6 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     GameObject rotateAroundObject;
 
-
     //MÉTODOS
 
     private void Awake()
