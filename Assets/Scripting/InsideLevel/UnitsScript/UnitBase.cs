@@ -62,7 +62,7 @@ public class UnitBase : MonoBehaviour
 
     //Modelo de la unidad. TIENE QUE ESTAR SERIALIZADO
     [SerializeField]
-    protected GameObject unitModel;
+    public GameObject unitModel;
 
     //Modelo de la unidad dónde se guarda el material
     [SerializeField]
