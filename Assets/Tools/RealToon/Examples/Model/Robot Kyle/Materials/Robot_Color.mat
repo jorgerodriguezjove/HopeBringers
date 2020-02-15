@@ -8,11 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Robot_Color
-  m_Shader: {fileID: 4800000, guid: 873ca913aa1970d4baee6909030d1474, type: 3}
-  m_ShaderKeywords: N_F_NM_ON N_F_RL_ON N_F_SS_ON _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON
-    _EMISSION _ENABLELIGHTFALLOFF_ON _FRESNELONLIGHT_ON _FRESNELONSHADOWDARK_ON _GIFLATSHADE_ON
-    _HARDEDGEFRESNEL_ON _NORMALMAP _SHADOWMASKGLOSSTEXTURE_ON _SHOWSHADOWTONLIGHT_ON
-    _SHOWSHADOWTONSELFSHADOW_ON _USEGILIGHTING_ON
+  m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
+  m_ShaderKeywords: N_F_EAL_ON N_F_NM_ON N_F_O_ON N_F_RL_ON N_F_SS_ON _ALPHABASECUTOUT_ON
+    _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON _EMISSION _ENABLELIGHTFALLOFF_ON
+    _FRESNELONLIGHT_ON _FRESNELONSHADOWDARK_ON _GIFLATSHADE_ON _HARDEDGEFRESNEL_ON
+    _NORMALMAP _SHADOWMASKGLOSSTEXTURE_ON _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSELFSHADOW_ON
+    _USEGILIGHTING_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -86,11 +87,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OutlineWidthControl:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _PTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SecondaryCutout:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -137,10 +146,14 @@ Material:
     - _DirectionalLightAffectShadow: 0
     - _DirectionalLightIntensity: 0
     - _DoubleSided: 2
+    - _DoubleSidedOutline: 1
     - _DstBlend: 0
     - _DynamicNoiseOutline: 0
+    - _DynamicNoisyOutline: 0
     - _EnableLightFalloff: 1
+    - _EnableTextureTransparent: 0
     - _EnvironmentalLightingIntensity: 1
+    - _FarDistanceMaxWidth: 10
     - _FresnelFill: -0.06
     - _FresnelIntensity: 0.366
     - _FresnelOnLight: 1
@@ -161,25 +174,35 @@ Material:
     - _GlossyReflections: 1
     - _HardEdgeFresnel: 1
     - _HighlightColorPower: 1
+    - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
     - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
     - _LightFalloffSoftness: 1
     - _LightIntensity: -1
+    - _MCIALO: 0
     - _MCapIntensity: 1
+    - _MVCOL: 0
     - _MainColorAffectTexture: 0
     - _MainTextureColorGloss: 0
     - _Metallic: 0
+    - _MixMainTexToOutline: 0
     - _Mode: 0
     - _N_F_CA: 0
     - _N_F_CLD: 0
+    - _N_F_CO: 0
     - _N_F_D: 0
+    - _N_F_DCS: 0
+    - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
+    - _N_F_HDLS: 0
+    - _N_F_HPSS: 0
     - _N_F_MC: 0
     - _N_F_NLASOBF: 0
     - _N_F_NM: 1
+    - _N_F_O: 1
     - _N_F_PT: 0
     - _N_F_R: 0
     - _N_F_RL: 1
@@ -190,17 +213,23 @@ Material:
     - _N_F_ST: 0
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
+    - _NoisyOutlineIntensity: 0
     - _NormalIntensity: 4.32
     - _NormalMapIntensity: 7.8
     - _OcclusionStrength: 1
     - _Oper: 8
+    - _OutlineExtrudeMethod: 0
     - _OutlineNoiseIntensity: 0
     - _OutlineWidth: 0.003
+    - _OutlineWidthAffectedByViewDistance: 0
+    - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 0
     - _Parallax: 0.02
     - _PointSpotlightIntensity: 0.3
+    - _ReduceShadowSpotDirectionalLight: 0.5
     - _ReduceTextureQuality: 0
+    - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionBlendToMainTexture: 0
     - _ReflectionIntensity: 0
@@ -219,6 +248,8 @@ Material:
     - _SelfShadowColorPower: 1
     - _SelfShadowHardness: 1
     - _SelfShadowIntensity: 1
+    - _SelfShadowRealTimeShadowColorPower: 1
+    - _SelfShadowRealtimeShadowIntensity: 1
     - _SelfShadowShadowTAtViewDirection: 0
     - _SelfShadowSize: 0.56
     - _SelfShadowThreshold: 0.82
@@ -226,6 +257,7 @@ Material:
     - _ShadowAddLight: 2.18
     - _ShadowColorTextureIntensity: 1
     - _ShadowColorTexturePower: 1.43
+    - _ShadowHardness: 0
     - _ShadowMaskGlossTexture: 1
     - _ShadowPTextureIntensity: 0
     - _ShadowTColorPower: 1
@@ -253,8 +285,11 @@ Material:
     - _UVSec: 0
     - _UseFReflection: 0
     - _UseGILighting: 1
+    - _UseSecondaryCutout: 0
+    - _UseTLB: 0
     - _VertexColorBlueControlSmoothObjectNormal: 0
     - _VertexColorGreenControlSelfShadowThreshold: 0
+    - _VertexColorRedAffectOutlineWitdh: 0
     - _VertexColorsIntensity: 0
     - _XYZHardness: 14
     - _ZWrite: 1
@@ -268,10 +303,12 @@ Material:
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0.8014706, g: 0.8014706, b: 0.8014706, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimLightColor: {r: 0.07352942, g: 0.7699796, b: 1, a: 1}
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowOverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTColor: {r: 0, g: 0, b: 0, a: 1}
     - _XYZPosition: {r: 0, g: 0, b: 0, a: 0}

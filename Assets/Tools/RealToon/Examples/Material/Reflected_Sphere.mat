@@ -4,14 +4,16 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Reflected_Sphere
-  m_Shader: {fileID: 4800000, guid: d12428961551799408aa97256fd770c3, type: 3}
-  m_ShaderKeywords: N_F_O_ON N_F_R_ON _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON
+  m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
+  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_R_ON _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON
     _DYNAMICNOISEOUTLINE_ON _DYNAMICNOISYOUTLINE_ON _ENABLELIGHTFALLOFF_ON _FRESNELONLIGHT_ON
-    _FRESNELONSHADOWDARK_ON _REFLECTIONBLENDTOMAINTEXTURE_ON _RIMLIGHTINLIGHT_ON _SHADOWMASKGLOSSTEXTURE_ON
-    _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSELFSHADOW_ON _USEGILIGHTING_ON
+    _FRESNELONSHADOWDARK_ON _REFLECTIONBLENDTOMAINTEXTURE_ON _RIMLIGHTINLIGHT_ON
+    _SHADOWMASKGLOSSTEXTURE_ON _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSELFSHADOW_ON
+    _USEGILIGHTING_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -26,6 +28,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlossTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MCap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MCapMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -98,12 +108,14 @@ Material:
     - _DirectionalLightAffectShadow: 0
     - _DirectionalLightIntensity: 0
     - _DoubleSided: 2
+    - _DoubleSidedOutline: 1
     - _DynamicNoiseOutline: 1
     - _DynamicNoisyOutline: 1
     - _EOPO: 0
     - _EnableLightFalloff: 1
     - _EnableTextureTransparent: 0
     - _EnvironmentalLightingIntensity: 1
+    - _FarDistanceMaxWidth: 10
     - _FresnelFill: 0.57
     - _FresnelIntensity: 0.13
     - _FresnelOnLight: 1
@@ -129,17 +141,26 @@ Material:
     - _LightFalloffSoftness: 1
     - _LightIntensity: -1
     - _LightIntensityAffectOCALCTPTDirectionalLight: 0
+    - _MCIALO: 0
+    - _MCapIntensity: 1
+    - _MVCOL: 0
     - _MainColorAffectTexture: 0
     - _MainTextureColorGloss: 0
+    - _MixMainTexToOutline: 0
     - _N_F_CA: 0
     - _N_F_CLD: 0
     - _N_F_CO: 0
     - _N_F_D: 0
+    - _N_F_DCS: 0
+    - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
+    - _N_F_MC: 0
+    - _N_F_NLASOBF: 0
+    - _N_F_NM: 0
     - _N_F_O: 1
     - _N_F_PT: 0
     - _N_F_R: 1
@@ -155,16 +176,19 @@ Material:
     - _NormalIntensity: 1
     - _NormalMapIntensity: 0
     - _Oper: 8
+    - _OutlineExtrudeMethod: 0
     - _OutlineMode: 0
     - _OutlineNoiseIntensity: 0.844
     - _OutlineWidth: 9.55
     - _OutlineWidthAffectedByViewDistance: 0
+    - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 0
     - _PointSpotlightIntensity: 0.3
     - _ReduceShadowPointLight: 0
     - _ReduceShadowSpotDirectionalLight: 1
     - _ReduceTextureQuality: 0
+    - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionBlendToMainTexture: 1
     - _ReflectionIntensity: 1
@@ -174,6 +198,7 @@ Material:
     - _RimLightInLight: 1
     - _RimLightSoftness: 1
     - _RimLightUnfill: 1.5
+    - _STIL: 0
     - _Saturation: 1
     - _SaturationPointSpotlight: 1
     - _SelfLitHighContrast: 0
@@ -192,6 +217,7 @@ Material:
     - _ShadowAddLight: 1
     - _ShadowColorTextureIntensity: 0
     - _ShadowColorTexturePower: 0
+    - _ShadowHardness: 0
     - _ShadowMaskGlossTexture: 1
     - _ShadowPTextureIntensity: 0
     - _ShadowPTexturePower: 1
@@ -203,6 +229,7 @@ Material:
     - _ShadowTShadowSize: 0
     - _ShadowTShadowThreshold: 0
     - _ShowInAmbientLightIntensity: 1
+    - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
     - _ShowShadowTOnLight: 1
@@ -215,6 +242,7 @@ Material:
     - _UseFReflection: 0
     - _UseGILighting: 1
     - _UseSecondaryCutout: 0
+    - _UseTLB: 0
     - _VertexColorBlueControlSmoothObjectNormal: 0
     - _VertexColorGreenControlSelfShadowThreshold: 0
     - _VertexColorRedAffectOutlineWitdh: 0

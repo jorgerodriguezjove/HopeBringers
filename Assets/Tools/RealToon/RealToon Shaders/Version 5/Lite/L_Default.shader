@@ -173,7 +173,7 @@ Shader "RealToon/Version 5/Lite/Default" {
             #pragma only_renderers d3d9 d3d11 vulkan glcore gles3 gles metal xboxone ps4 wiiu switch
             #pragma target 3.0
 
-			#pragma shader_feature_local L_F_O_ON
+			#pragma shader_feature L_F_O_ON
 
 			#if L_F_O_ON
 
@@ -325,20 +325,20 @@ Shader "RealToon/Version 5/Lite/Default" {
             #pragma only_renderers d3d9 d3d11 vulkan glcore gles3 gles metal xboxone ps4 wiiu switch
             #pragma target 3.0
 
-			#pragma shader_feature_local L_F_MC_ON
-			#pragma shader_feature_local L_F_NM_ON
-			#pragma shader_feature_local L_F_SL_ON
-			#pragma shader_feature_local L_F_GLO_ON
-			#pragma shader_feature_local L_F_GLOT_ON
-			#pragma shader_feature_local L_F_SS_ON
-			#pragma shader_feature_local L_F_SON_ON
-			#pragma shader_feature_local L_F_SCT_ON
-			#pragma shader_feature_local L_F_ST_ON
-			#pragma shader_feature_local L_F_PT_ON
-			#pragma shader_feature_local L_F_FR_ON
-			#pragma shader_feature_local L_F_RL_ON
-			#pragma shader_feature_local L_F_UOAL_ON
-			#pragma shader_feature_local L_F_CLD_ON
+			#pragma shader_feature L_F_MC_ON
+			#pragma shader_feature L_F_NM_ON
+			#pragma shader_feature L_F_SL_ON
+			#pragma shader_feature L_F_GLO_ON
+			#pragma shader_feature L_F_GLOT_ON
+			#pragma shader_feature L_F_SS_ON
+			#pragma shader_feature L_F_SON_ON
+			#pragma shader_feature L_F_SCT_ON
+			#pragma shader_feature L_F_ST_ON
+			#pragma shader_feature L_F_PT_ON
+			#pragma shader_feature L_F_FR_ON
+			#pragma shader_feature L_F_RL_ON
+			#pragma shader_feature L_F_UOAL_ON
+			#pragma shader_feature L_F_CLD_ON
 
 			uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
             uniform half4 _MainColor;
@@ -818,21 +818,21 @@ Shader "RealToon/Version 5/Lite/Default" {
             #pragma only_renderers d3d9 d3d11 vulkan glcore gles3 gles metal xboxone ps4 wiiu switch
             #pragma target 3.0
 
-			#pragma shader_feature_local L_F_MC_ON
-			#pragma shader_feature_local L_F_NM_ON
-			#pragma shader_feature_local L_F_SL_ON
-			#pragma shader_feature_local L_F_GLO_ON
-			#pragma shader_feature_local L_F_GLOT_ON
-			#pragma shader_feature_local L_F_SS_ON
-			#pragma shader_feature_local L_F_SON_ON
-			#pragma shader_feature_local L_F_SCT_ON
-			#pragma shader_feature_local L_F_ST_ON
-			#pragma shader_feature_local L_F_PT_ON
-			#pragma shader_feature_local L_F_FR_ON
-			#pragma shader_feature_local L_F_RL_ON
-			#pragma shader_feature_local L_F_UOAL_ON
-			#pragma shader_feature_local L_F_CLD_ON
-			#pragma shader_feature_local L_F_HPSS_ON
+			#pragma shader_feature L_F_MC_ON
+			#pragma shader_feature L_F_NM_ON
+			#pragma shader_feature L_F_SL_ON
+			#pragma shader_feature L_F_GLO_ON
+			#pragma shader_feature L_F_GLOT_ON
+			#pragma shader_feature L_F_SS_ON
+			#pragma shader_feature L_F_SON_ON
+			#pragma shader_feature L_F_SCT_ON
+			#pragma shader_feature L_F_ST_ON
+			#pragma shader_feature L_F_PT_ON
+			#pragma shader_feature L_F_FR_ON
+			#pragma shader_feature L_F_RL_ON
+			#pragma shader_feature L_F_UOAL_ON
+			#pragma shader_feature L_F_CLD_ON
+			#pragma shader_feature L_F_HPSS_ON
 
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
             uniform half4 _MainColor;

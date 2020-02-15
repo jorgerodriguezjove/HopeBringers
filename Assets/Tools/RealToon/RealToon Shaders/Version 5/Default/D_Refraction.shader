@@ -184,25 +184,25 @@ Shader "RealToon/Version 5/Default/Refraction" {
             #pragma only_renderers d3d9 d3d11 vulkan glcore gles3 metal xboxone ps4 wiiu switch
             #pragma target 3.0
 
-			#pragma shader_feature_local N_F_MC_ON
-			#pragma shader_feature_local N_F_NM_ON
-			#pragma shader_feature_local N_F_CA_ON
-			#pragma shader_feature_local N_F_SL_ON
-			#pragma shader_feature_local N_F_GLO_ON
-			#pragma shader_feature_local N_F_GLOT_ON
-			#pragma shader_feature_local N_F_SS_ON
-			#pragma shader_feature_local N_F_SCT_ON
-			#pragma shader_feature_local N_F_ST_ON
-			#pragma shader_feature_local N_F_STIS_ON
-			#pragma shader_feature_local N_F_STIAL_ON 
-			#pragma shader_feature_local N_F_SON_ON
-			#pragma shader_feature_local N_F_PT_ON
-			#pragma shader_feature_local N_F_CLD_ON
-			#pragma shader_feature_local N_F_R_ON
-			#pragma shader_feature_local N_F_FR_ON
-			#pragma shader_feature_local N_F_RL_ON
-			#pragma shader_feature_local N_F_D_ON
-			#pragma shader_feature_local N_F_NLASOBF_ON
+			#pragma shader_feature N_F_MC_ON
+			#pragma shader_feature N_F_NM_ON
+			#pragma shader_feature N_F_CA_ON
+			#pragma shader_feature N_F_SL_ON
+			#pragma shader_feature N_F_GLO_ON
+			#pragma shader_feature N_F_GLOT_ON
+			#pragma shader_feature N_F_SS_ON
+			#pragma shader_feature N_F_SCT_ON
+			#pragma shader_feature N_F_ST_ON
+			#pragma shader_feature N_F_STIS_ON
+			#pragma shader_feature N_F_STIAL_ON 
+			#pragma shader_feature N_F_SON_ON
+			#pragma shader_feature N_F_PT_ON
+			#pragma shader_feature N_F_CLD_ON
+			#pragma shader_feature N_F_R_ON
+			#pragma shader_feature N_F_FR_ON
+			#pragma shader_feature N_F_RL_ON
+			#pragma shader_feature N_F_D_ON
+			#pragma shader_feature N_F_NLASOBF_ON
 
 			uniform sampler2D _GrabTexture;
             uniform sampler2D _CameraDepthTexture;
@@ -834,25 +834,25 @@ Shader "RealToon/Version 5/Default/Refraction" {
             #pragma only_renderers d3d9 d3d11 vulkan glcore gles3 metal xboxone ps4 wiiu switch
             #pragma target 3.0
 
-			#pragma shader_feature_local N_F_MC_ON
-			#pragma shader_feature_local N_F_NM_ON
-			#pragma shader_feature_local N_F_CA_ON
-			#pragma shader_feature_local N_F_SL_ON
-			#pragma shader_feature_local N_F_GLO_ON
-			#pragma shader_feature_local N_F_GLOT_ON
-			#pragma shader_feature_local N_F_SS_ON
-			#pragma shader_feature_local N_F_SCT_ON
-			#pragma shader_feature_local N_F_ST_ON
-			#pragma shader_feature_local N_F_STIS_ON
-			#pragma shader_feature_local N_F_STIAL_ON 
-			#pragma shader_feature_local N_F_SON_ON
-			#pragma shader_feature_local N_F_PT_ON
-			#pragma shader_feature_local N_F_CLD_ON
-			#pragma shader_feature_local N_F_R_ON
-			#pragma shader_feature_local N_F_FR_ON
-			#pragma shader_feature_local N_F_RL_ON
-			#pragma shader_feature_local N_F_D_ON
-			#pragma shader_feature_local N_F_NLASOBF_ON
+			#pragma shader_feature N_F_MC_ON
+			#pragma shader_feature N_F_NM_ON
+			#pragma shader_feature N_F_CA_ON
+			#pragma shader_feature N_F_SL_ON
+			#pragma shader_feature N_F_GLO_ON
+			#pragma shader_feature N_F_GLOT_ON
+			#pragma shader_feature N_F_SS_ON
+			#pragma shader_feature N_F_SCT_ON
+			#pragma shader_feature N_F_ST_ON
+			#pragma shader_feature N_F_STIS_ON
+			#pragma shader_feature N_F_STIAL_ON 
+			#pragma shader_feature N_F_SON_ON
+			#pragma shader_feature N_F_PT_ON
+			#pragma shader_feature N_F_CLD_ON
+			#pragma shader_feature N_F_R_ON
+			#pragma shader_feature N_F_FR_ON
+			#pragma shader_feature N_F_RL_ON
+			#pragma shader_feature N_F_D_ON
+			#pragma shader_feature N_F_NLASOBF_ON
 
             uniform sampler2D _GrabTexture;
             uniform sampler2D _CameraDepthTexture;

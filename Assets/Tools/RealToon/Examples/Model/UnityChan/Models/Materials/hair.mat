@@ -4,12 +4,13 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: hair
-  m_Shader: {fileID: 4800000, guid: d12428961551799408aa97256fd770c3, type: 3}
-  m_ShaderKeywords: N_F_GLOT_ON N_F_GLO_ON N_F_O_ON N_F_RL_ON N_F_SCT_ON N_F_SON_ON
-    N_F_SS_ON N_F_STIAL_ON N_F_STIS_ON N_F_ST_ON _AFFECTLIGHTDIRECTIONALLIGHTONLY_ON
+  m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
+  m_ShaderKeywords: N_F_EAL_ON N_F_GLOT_ON N_F_GLO_ON N_F_O_ON N_F_RL_ON N_F_SCT_ON
+    N_F_SON_ON N_F_SS_ON N_F_STIAL_ON N_F_STIS_ON N_F_ST_ON _AFFECTLIGHTDIRECTIONALLIGHTONLY_ON
     _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON _ENABLELIGHTFALLOFF_ON
     _FRESNELONLIGHT_ON _FRESNELONSELFSHADOW_ON _GIFLATSHADE_ON _GLOSSTEXTUREFOLLOWLIGHT_ON
     _GLOSSTEXTUREFOLLOWOBJECTROTATION_ON _HARDEDGEFRESNEL_ON _MAINTEXTURECOLORAO_ON
@@ -50,6 +51,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: a7c070b84165b3642b099cda9569f556, type: 3}
         m_Scale: {x: 8.61, y: 1.12}
         m_Offset: {x: 0, y: -0.67}
+    - _MCap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MCapMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: b8c385f77e3cc4c4498f9460faa83b3f, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -153,6 +162,7 @@ Material:
     - _FReflectionIntensity: 0
     - _FReflectionTextureBlend: 0
     - _FalloffPower: 0.5
+    - _FarDistanceMaxWidth: 10
     - _FresnelFill: -0.03
     - _FresnelIntensity: 0
     - _FresnelOnLight: 1
@@ -181,6 +191,9 @@ Material:
     - _LightFalloffSoftness: 1
     - _LightIntensity: -1
     - _LightIntensityAffectOCALCTPTDirectionalLight: 0
+    - _MCIALO: 0
+    - _MCapIntensity: 1
+    - _MVCOL: 0
     - _MainTextureColorAO: 1
     - _MainTextureColorGloss: 1
     - _MainTextureColorSMixShadowColor: 0.44
@@ -191,14 +204,20 @@ Material:
     - _MainTextureColorSelfShadow: 1
     - _MainTextureColorShadow: 1
     - _MainTextureColorShadowT: 1
+    - _MixMainTexToOutline: 0
     - _N_F_CA: 0
     - _N_F_CLD: 0
     - _N_F_CO: 0
+    - _N_F_DCS: 0
+    - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 1
     - _N_F_GLOT: 1
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
+    - _N_F_MC: 0
+    - _N_F_NLASOBF: 0
+    - _N_F_NM: 0
     - _N_F_O: 1
     - _N_F_PT: 0
     - _N_F_R: 0
@@ -223,6 +242,7 @@ Material:
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1.16
     - _PTexturePower: 0
+    - _PointLightSVD: 0
     - _PointSpotlightIntensity: 0.3
     - _ReceiveShadowsIntensity: 1
     - _ReduceShadowPointLight: 0
@@ -238,6 +258,7 @@ Material:
     - _RimLightInLight: 0
     - _RimLightSoftness: 0.242
     - _RimLightUnfill: 2.25
+    - _STIL: 0
     - _Saturation: 0.73
     - _SaturationPointSpotlight: 1
     - _SelfLitHighContrast: 0
@@ -276,6 +297,7 @@ Material:
     - _ShowAOonAmbientLight: 0
     - _ShowAOonLight: 0
     - _ShowInAmbientLightIntensity: 0.245
+    - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
     - _ShowShadowTOnLight: 1
@@ -293,6 +315,7 @@ Material:
     - _UseFReflection: 0
     - _UseGILighting: 1
     - _UseSecondaryCutout: 0
+    - _UseTLB: 0
     - _VertexColorBlueControlSmoothObjectNormal: 0
     - _VertexColorGreenControlSelfShadowThreshold: 0
     - _VertexColorRedAffectOutlineWitdh: 0

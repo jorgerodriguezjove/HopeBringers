@@ -225,8 +225,8 @@ Shader "RealToon/Version 5/Tessellation/Default" {
             #pragma only_renderers d3d9 d3d11 glcore gles3 metal xboxone ps4 wiiu 
             #pragma target 5.0
 
-			#pragma shader_feature_local N_F_O_ON
-			#pragma shader_feature_local N_F_CO_ON
+			#pragma shader_feature N_F_O_ON
+			#pragma shader_feature N_F_CO_ON
 
 			#if N_F_O_ON
 
@@ -529,26 +529,26 @@ Shader "RealToon/Version 5/Tessellation/Default" {
             #pragma only_renderers d3d9 d3d11 glcore gles3 metal xboxone ps4 wiiu 
             #pragma target 5.0
 
-			#pragma shader_feature_local N_F_MC_ON
-			#pragma shader_feature_local N_F_NM_ON
-			#pragma shader_feature_local N_F_CO_ON
-			#pragma shader_feature_local N_F_SL_ON
-			#pragma shader_feature_local N_F_CA_ON
-			#pragma shader_feature_local N_F_GLO_ON
-			#pragma shader_feature_local N_F_GLOT_ON
-			#pragma shader_feature_local N_F_SS_ON
-			#pragma shader_feature_local N_F_SCT_ON
-			#pragma shader_feature_local N_F_ST_ON
-			#pragma shader_feature_local N_F_STIS_ON
-			#pragma shader_feature_local N_F_STIAL_ON 
-			#pragma shader_feature_local N_F_SON_ON
-			#pragma shader_feature_local N_F_PT_ON
-			#pragma shader_feature_local N_F_CLD_ON
-			#pragma shader_feature_local N_F_R_ON
-			#pragma shader_feature_local N_F_FR_ON
-			#pragma shader_feature_local N_F_RL_ON
-			#pragma shader_feature_local N_F_HDLS_ON
-			#pragma shader_feature_local N_F_NLASOBF_ON
+			#pragma shader_feature N_F_MC_ON
+			#pragma shader_feature N_F_NM_ON
+			#pragma shader_feature N_F_CO_ON
+			#pragma shader_feature N_F_SL_ON
+			#pragma shader_feature N_F_CA_ON
+			#pragma shader_feature N_F_GLO_ON
+			#pragma shader_feature N_F_GLOT_ON
+			#pragma shader_feature N_F_SS_ON
+			#pragma shader_feature N_F_SCT_ON
+			#pragma shader_feature N_F_ST_ON
+			#pragma shader_feature N_F_STIS_ON
+			#pragma shader_feature N_F_STIAL_ON 
+			#pragma shader_feature N_F_SON_ON
+			#pragma shader_feature N_F_PT_ON
+			#pragma shader_feature N_F_CLD_ON
+			#pragma shader_feature N_F_R_ON
+			#pragma shader_feature N_F_FR_ON
+			#pragma shader_feature N_F_RL_ON
+			#pragma shader_feature N_F_HDLS_ON
+			#pragma shader_feature N_F_NLASOBF_ON
 
 			uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
 			uniform half4 _MainColor;
@@ -1313,26 +1313,26 @@ Shader "RealToon/Version 5/Tessellation/Default" {
             #pragma only_renderers d3d9 d3d11 glcore gles3 metal xboxone ps4 wiiu 
             #pragma target 5.0
 
-			#pragma shader_feature_local N_F_MC_ON
-			#pragma shader_feature_local N_F_NM_ON
-			#pragma shader_feature_local N_F_CO_ON
-			#pragma shader_feature_local N_F_SL_ON
-			#pragma shader_feature_local N_F_CA_ON
-			#pragma shader_feature_local N_F_GLO_ON
-			#pragma shader_feature_local N_F_GLOT_ON
-			#pragma shader_feature_local N_F_SS_ON
-			#pragma shader_feature_local N_F_SCT_ON
-			#pragma shader_feature_local N_F_ST_ON
-			#pragma shader_feature_local N_F_STIS_ON
-			#pragma shader_feature_local N_F_STIAL_ON 
-			#pragma shader_feature_local N_F_SON_ON
-			#pragma shader_feature_local N_F_PT_ON
-			#pragma shader_feature_local N_F_CLD_ON
-			#pragma shader_feature_local N_F_R_ON
-			#pragma shader_feature_local N_F_FR_ON
-			#pragma shader_feature_local N_F_RL_ON
-			#pragma shader_feature_local N_F_HPSS_ON
-			#pragma shader_feature_local N_F_NLASOBF_ON
+			#pragma shader_feature N_F_MC_ON
+			#pragma shader_feature N_F_NM_ON
+			#pragma shader_feature N_F_CO_ON
+			#pragma shader_feature N_F_SL_ON
+			#pragma shader_feature N_F_CA_ON
+			#pragma shader_feature N_F_GLO_ON
+			#pragma shader_feature N_F_GLOT_ON
+			#pragma shader_feature N_F_SS_ON
+			#pragma shader_feature N_F_SCT_ON
+			#pragma shader_feature N_F_ST_ON
+			#pragma shader_feature N_F_STIS_ON
+			#pragma shader_feature N_F_STIAL_ON 
+			#pragma shader_feature N_F_SON_ON
+			#pragma shader_feature N_F_PT_ON
+			#pragma shader_feature N_F_CLD_ON
+			#pragma shader_feature N_F_R_ON
+			#pragma shader_feature N_F_FR_ON
+			#pragma shader_feature N_F_RL_ON
+			#pragma shader_feature N_F_HPSS_ON
+			#pragma shader_feature N_F_NLASOBF_ON
 
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
 			uniform half4 _MainColor;
@@ -2133,7 +2133,7 @@ Shader "RealToon/Version 5/Tessellation/Default" {
             #pragma only_renderers d3d9 d3d11 glcore gles3 metal xboxone ps4 wiiu 
             #pragma target 5.0
 
-			#pragma shader_feature_local N_F_CO_ON
+			#pragma shader_feature N_F_CO_ON
 
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
 			uniform fixed _TexturePatternStyle;

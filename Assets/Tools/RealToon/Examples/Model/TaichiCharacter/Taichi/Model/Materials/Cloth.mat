@@ -4,12 +4,13 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Cloth
-  m_Shader: {fileID: 4800000, guid: d12428961551799408aa97256fd770c3, type: 3}
-  m_ShaderKeywords: N_F_O_ON N_F_RL_ON N_F_SCT_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON
-    _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON _EMISSION _ENABLELIGHTFALLOFF_ON
+  m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
+  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_RL_ON N_F_SCT_ON N_F_SS_ON N_F_ST_ON
+    _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON _EMISSION _ENABLELIGHTFALLOFF_ON
     _FRESNELONLIGHT_ON _IS_BLENDADDTOMATCAP_ON _IS_LIGHTCOLOR_1ST_SHADE_ON _IS_LIGHTCOLOR_2ND_SHADE_ON
     _IS_LIGHTCOLOR_AP_RIMLIGHT_ON _IS_LIGHTCOLOR_BASE_ON _IS_LIGHTCOLOR_HIGHCOLOR_ON
     _IS_LIGHTCOLOR_MATCAP_ON _IS_LIGHTCOLOR_RIMLIGHT_ON _MAINTEXTURECOLORSHADOW_ON
@@ -29,6 +30,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlossTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MCap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MCapMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -104,6 +113,7 @@ Material:
     - _EnableLightFalloff: 1
     - _EnableTextureTransparent: 0
     - _EnvironmentalLightingIntensity: 1
+    - _FarDistanceMaxWidth: 10
     - _FresnelFill: 1
     - _FresnelIntensity: 0
     - _FresnelOnLight: 1
@@ -129,15 +139,24 @@ Material:
     - _LightFalloffSoftness: 1
     - _LightIntensity: -1
     - _LightIntensityAffectOCALCTPTDirectionalLight: 0
+    - _MCIALO: 0
+    - _MCapIntensity: 1
+    - _MVCOL: 0
     - _MainTextureColorGloss: 0
+    - _MixMainTexToOutline: 0
     - _N_F_CA: 0
     - _N_F_CLD: 0
     - _N_F_CO: 0
+    - _N_F_DCS: 0
+    - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
+    - _N_F_MC: 0
+    - _N_F_NLASOBF: 0
+    - _N_F_NM: 0
     - _N_F_O: 1
     - _N_F_PT: 0
     - _N_F_R: 0
@@ -161,6 +180,7 @@ Material:
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 0
+    - _PointLightSVD: 0
     - _PointSpotlightIntensity: 0.3
     - _ReduceShadowPointLight: 0
     - _ReduceShadowSpotDirectionalLight: 1
@@ -174,6 +194,7 @@ Material:
     - _RimLightInLight: 1
     - _RimLightSoftness: 0
     - _RimLightUnfill: 2.37
+    - _STIL: 0
     - _Saturation: 1
     - _SaturationPointSpotlight: 1
     - _SelfLitHighContrast: 0
@@ -203,6 +224,7 @@ Material:
     - _ShadowTShadowSize: 0
     - _ShadowTShadowThreshold: 0
     - _ShowInAmbientLightIntensity: 1
+    - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
     - _ShowShadowTOnLight: 1
@@ -214,6 +236,7 @@ Material:
     - _UseFReflection: 0
     - _UseGILighting: 1
     - _UseSecondaryCutout: 0
+    - _UseTLB: 0
     - _VertexColorBlueControlSmoothObjectNormal: 0
     - _VertexColorGreenControlSelfShadowThreshold: 0
     - _VertexColorRedAffectOutlineWitdh: 0

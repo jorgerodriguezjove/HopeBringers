@@ -4,15 +4,16 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: eye_R1
-  m_Shader: {fileID: 4800000, guid: d12428961551799408aa97256fd770c3, type: 3}
-  m_ShaderKeywords: N_F_SL_ON N_F_SS_ON _AFFECTSHADOW_ON _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON
-    _ENABLELIGHTFALLOFF_ON _ENABLETEXTURETRANSPARENT_ON _MAINTEXTURECOLORSMIXSHADOWCOLOR_ON
-    _MAINTEXTURECOLORSSMIXSELFSHADOWCOLOR_ON _RIMLIGHTINLIGHT_ON _SHOWAOONAMBIENTLIGHT_ON
-    _SHOWAOONLIGHT_ON _SHOWSHADOWTONAMBIENTLIGHT_ON _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSHADOW_ON
-    _TRANSPARENT_ON _USEGILIGHTING_ON
+  m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
+  m_ShaderKeywords: N_F_EAL_ON N_F_SL_ON N_F_SS_ON _AFFECTSHADOW_ON _ALPHABASECUTOUT_ON
+    _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON _ENABLELIGHTFALLOFF_ON _ENABLETEXTURETRANSPARENT_ON
+    _MAINTEXTURECOLORSMIXSHADOWCOLOR_ON _MAINTEXTURECOLORSSMIXSELFSHADOWCOLOR_ON
+    _RIMLIGHTINLIGHT_ON _SHOWAOONAMBIENTLIGHT_ON _SHOWAOONLIGHT_ON _SHOWSHADOWTONAMBIENTLIGHT_ON
+    _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSHADOW_ON _TRANSPARENT_ON _USEGILIGHTING_ON
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -32,6 +33,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GlossTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MCap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MCapMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -115,6 +124,7 @@ Material:
     - _DirectionalLightAffectShadow: 0
     - _DirectionalLightIntensity: 0
     - _DoubleSided: 2
+    - _DoubleSidedOutline: 1
     - _DynamicNoiseOutline: 0
     - _DynamicNoisyOutline: 0
     - _EOPO: 0
@@ -123,6 +133,7 @@ Material:
     - _EnvironmentalLightingIntensity: 1
     - _FReflectionIntensity: 0
     - _FReflectionTextureBlend: 0
+    - _FarDistanceMaxWidth: 10
     - _FresnelFill: 1
     - _FresnelIntensity: 0
     - _FresnelOnLight: 0
@@ -151,6 +162,9 @@ Material:
     - _LightFalloffSoftness: 1
     - _LightIntensity: -1
     - _LightIntensityAffectOCALCTPTDirectionalLight: 0
+    - _MCIALO: 0
+    - _MCapIntensity: 1
+    - _MVCOL: 0
     - _MainTextureColorGloss: 0
     - _MainTextureColorSMixShadowColor: 0.44
     - _MainTextureColorSSMixSelfShadowColor: 0.44
@@ -160,14 +174,20 @@ Material:
     - _MainTextureColorSelfShadow: 0
     - _MainTextureColorShadow: 0
     - _MainTextureColorShadowT: 0
+    - _MixMainTexToOutline: 0
     - _N_F_CA: 0
     - _N_F_CLD: 0
     - _N_F_CO: 0
+    - _N_F_DCS: 0
+    - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
+    - _N_F_MC: 0
+    - _N_F_NLASOBF: 0
+    - _N_F_NM: 0
     - _N_F_O: 0
     - _N_F_PT: 0
     - _N_F_R: 0
@@ -184,17 +204,21 @@ Material:
     - _NormalMapIntensity: 0
     - _Opacity: 1
     - _Oper: 8
+    - _OutlineExtrudeMethod: 0
     - _OutlineNoiseIntensity: 0
     - _OutlineWidth: 0.001
     - _OutlineWidthAffectedByViewDistance: 0
+    - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 0
+    - _PointLightSVD: 0
     - _PointSpotlightIntensity: 0.3
     - _ReceiveShadowsIntensity: 1
     - _ReduceShadowPointLight: 0
     - _ReduceShadowSpotDirectionalLight: 1
     - _ReduceTextureQuality: 0
     - _ReduceWhite: 0
+    - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionBlendToMainTexture: 0
     - _ReflectionIntensity: 0
@@ -203,6 +227,7 @@ Material:
     - _RimLightInLight: 1
     - _RimLightSoftness: 1
     - _RimLightUnfill: 1.5
+    - _STIL: 0
     - _Saturation: 1
     - _SaturationPointSpotlight: 1
     - _SelfLitHighContrast: 0
@@ -223,6 +248,7 @@ Material:
     - _ShadowAddLight: 2
     - _ShadowColorTextureIntensity: 0
     - _ShadowColorTexturePower: 0
+    - _ShadowHardness: 0
     - _ShadowIntensity: 1
     - _ShadowMaskGlossTexture: 0
     - _ShadowPTextureIntensity: 0
@@ -237,6 +263,7 @@ Material:
     - _ShadowTShadowThreshold: 0
     - _ShadowTSize: 0
     - _ShowInAmbientLightIntensity: 1
+    - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
     - _ShowShadowTOnLight: 1
@@ -253,6 +280,7 @@ Material:
     - _UseFReflection: 0
     - _UseGILighting: 1
     - _UseSecondaryCutout: 0
+    - _UseTLB: 0
     - _VertexColorBlueControlSmoothObjectNormal: 0
     - _VertexColorGreenControlSelfShadowThreshold: 0
     - _VertexColorRedAffectOutlineWitdh: 0
