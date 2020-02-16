@@ -35,6 +35,10 @@ public class PlayerUnit : UnitBase
     //Camino que tiene que seguir la unidad para moverse
     protected List<IndividualTiles> myCurrentPath = new List<IndividualTiles>();
 
+    //Tiempo a esperar tras atacar
+    [SerializeField]
+    protected float timeWaitAfterAttack;
+
     [Header("FEEDBACK")]
 
     [SerializeField]
