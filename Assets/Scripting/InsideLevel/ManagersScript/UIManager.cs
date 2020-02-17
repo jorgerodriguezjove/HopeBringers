@@ -223,21 +223,53 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-	#endregion
+    #endregion
 
-	#region UNDO_MOVE
+    #region FAST_FORWARD
 
-	////Se llama desde el botón de finalizar turno
-	//public void UndoMove()
-	//{
-	//    LM.UndoMove();
-	//}
+    bool isGameAccelerated;
+    [SerializeField]
+    GameObject fastForwardButton;
+    [SerializeField]
+    TextMeshProUGUI changeSpeedText;
+    [SerializeField]
+    GameObject undoButton;
 
-	#endregion
+    public void FastForwardButton()
+    {
+        if (isGameAccelerated)
+        {
+            LM.ChangeGameSpeed(false);
+            isGameAccelerated = false;
+            changeSpeedText.SetText("x1 Speed");
+        }
+        else
+        {
+            LM.ChangeGameSpeed(true);
+            isGameAccelerated = true;
+            changeSpeedText.SetText("x2 Speed");
+        }
+    }
 
-	#region ROTATION_ARROWS
+    //Hago aparecer o desaparecer, el botón de undo, fast forward...
+    public void HideShowEnemyUi(bool _shouldShow)
+    {
+        fastForwardButton.SetActive(_shouldShow);
 
-	[SerializeField]
+        //Si el juego esta acelerado al acabar el turno enemigo lo pongo a velocidad normal antes de desactivar el botón
+        if (isGameAccelerated)
+        {
+            FastForwardButton();
+        }
+
+        undoButton.SetActive(!_shouldShow);
+    }
+
+    #endregion
+
+    #region ROTATION_ARROWS
+
+    [SerializeField]
     public void RotatePlayerInNewDirection(UnitBase.FacingDirection newDirection)
     {
         //Mover esto a execute

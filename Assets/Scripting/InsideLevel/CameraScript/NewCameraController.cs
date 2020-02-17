@@ -47,10 +47,8 @@ public class NewCameraController : MonoBehaviour
     Quaternion referenceQuaternionToAddRotation;
 
     //Bool que sirve para indicar si la cámara se puede mover y rotar. Se usa para no poder mover y rotar la cámara mientras se hace zoom;
-    [SerializeField]
     bool canMoveAndRotateCamera = true;
     //Bool que sirve para indicar si la cámara puede hacer zoom. Se usa para no poder hacer zoom mientras se está rotando la cámara.
-    [SerializeField]
     bool canZoomCamera = true;
 
     [Header("REFERENCIAS")]
@@ -280,18 +278,49 @@ public class NewCameraController : MonoBehaviour
                 StopCoroutine("RotateCameraLeftCoroutine");
                 StartCoroutine("RotateCameraLeftCoroutine");
             }
+
+            //Swipe
+            if (Input.GetMouseButtonDown(1))
+            {
+                firstPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                currentSwipe = new Vector3(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
+
+                //Me aseguro de que no ha sido un tap y que de verdad está haciendo swipe
+                if (currentSwipe.magnitude < minSwipeLength)
+                {
+                    return;
+                }
+
+                currentSwipe.Normalize();
+
+                if (currentSwipe.x < 0)
+                {
+                    StopCoroutine("RotateCameraRightCoroutine");
+                    StartCoroutine("RotateCameraRightCoroutine");
+                }
+                else if (currentSwipe.x > 0)
+                {
+                    StopCoroutine("RotateCameraLeftCoroutine");
+                    StartCoroutine("RotateCameraLeftCoroutine");
+                }
+            }
         }
 
         //Input Zoom
         if (canZoomCamera)
         {
             //Input Zoom
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.Z) || Input.GetAxis("Mouse ScrollWheel") > 0f)
             {
                 ZoomIn();
             }
 
-            if (Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.X) || Input.GetAxis("Mouse ScrollWheel") < 0f)
             {
                 ZoomOut();
             }
@@ -312,4 +341,15 @@ public class NewCameraController : MonoBehaviour
             Mathf.Clamp(transform.position.z, cameraBoundsRef.transform.position.z - cameraBoundsSize.z/2, cameraBoundsRef.transform.position.z + cameraBoundsSize.z/2)
             );
     }
+
+ 
+
+
+    public float minSwipeLength = 200f;
+    Vector2 firstPressPos;
+    Vector2 secondPressPos;
+    Vector2 currentSwipe;
+       
+
+
 }
