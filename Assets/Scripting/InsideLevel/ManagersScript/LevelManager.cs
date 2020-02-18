@@ -867,6 +867,9 @@ public class LevelManager : MonoBehaviour
         //Recoloco la lista de enemigos donde estaba al inicio.
         UIM.ResetScrollPosition();
 
+        //Hago desaparecer el botón de fast forward y aparecer el de undo
+        UIM.HideShowEnemyUi(false);
+
         //Quito los booleanos de los tiles de daño para que puedan hace daño el próximo turno.
         for (int i = 0; i < damageTilesInBoard.Count; i++)
         {
@@ -908,6 +911,9 @@ public class LevelManager : MonoBehaviour
 
     private void BeginEnemyPhase()
     {
+        //Hago aparecer el botón de fast forward y desaparecer el de undo
+        UIM.HideShowEnemyUi(true);
+
         //Compruebro si los tiles de daño tienen que hacer daño. Lo añado aquí porque si no salía un bug al morir una unidad mediante un tile de daño, ya que la ordenaba y luego la intentaba buscar.
         for (int i = 0; i < damageTilesInBoard.Count; i++)
         {
@@ -995,6 +1001,19 @@ public class LevelManager : MonoBehaviour
             defeatPanel.SetActive(true);
             UIM.optionsButton.SetActive(false);
             GameManager.Instance.LevelLost();
+        }
+    }
+
+    public void ChangeGameSpeed(bool _shouldFastForward)
+    {
+        if (_shouldFastForward)
+        {
+            Time.timeScale = 2;
+        }
+
+        else
+        {
+            Time.timeScale = 1;
         }
     }
 

@@ -99,14 +99,6 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected float timeDurationRotation;
 
-    //Tiempo a esperar tras moverse
-    [SerializeField]
-    protected float timeWaitAfterMovement;
-
-    //Tiempo a esperar tras atacar
-    [SerializeField]
-    protected float timeWaitAfterAttack;
-
     //Tiempo que pasa antes de ocultarse la barra de vida después de recibir daño.
     [SerializeField]
     float timeToWaitBeforeHidingHealthbar;

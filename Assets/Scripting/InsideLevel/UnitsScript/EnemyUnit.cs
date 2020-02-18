@@ -13,11 +13,17 @@ public class EnemyUnit : UnitBase
     public int rangeOfAction;
 
     [SerializeField]
-    private float timeWaitingMovement;
+    private float timeWaitingBeforeMovement;
+    //Tiempo a esperar tras moverse
+    [SerializeField]
+    protected float timeWaitAfterMovement;
     [SerializeField]
     private float timeWaitingAttacking;
     [SerializeField]
     private float timeWaitingEnded;
+
+   
+
 
     //Estado actual del enemigo
     [SerializeField]
@@ -179,7 +185,7 @@ public class EnemyUnit : UnitBase
 
         if (myCurrentEnemyState == enemyState.Moving)
         {
-            yield return new WaitForSeconds(timeWaitingMovement);
+            yield return new WaitForSeconds(timeWaitingBeforeMovement);
             MoveUnit();
         }
 

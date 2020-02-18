@@ -116,5 +116,6 @@ public class GameManager : PersistentSingleton<GameManager>
     private void Update()
     {
         Debug.Log(newCharacterToUnlock);
+
     }
 }
