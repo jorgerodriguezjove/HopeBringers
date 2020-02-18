@@ -55,6 +55,8 @@ public class Portraits : MonoBehaviour
     //Bool que indica a los retratos si están clickados
     public bool isClicked;
 
+	
+
     #endregion
 
     #region INIT
@@ -73,18 +75,19 @@ public class Portraits : MonoBehaviour
 
     private void Start()
     {
+		
         RefreshHealth();
         RefreshSprites();
         RefreshTokens();
     }
 
-    #endregion
-    
+	#endregion
 
-    //A las funciones de hover y click se llama gracias al event triggger que tienen en el componente (mirar editor vamos)
-    #region INTERACTION
+	
+	//A las funciones de hover y click se llama gracias al event triggger que tienen en el componente (mirar editor vamos)
+	#region INTERACTION
 
-    public void AssignClickerPlayer()
+	public void AssignClickerPlayer()
 	{
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
@@ -138,6 +141,7 @@ public class Portraits : MonoBehaviour
             }
         }
     }
+
 
 	public void HighlightPortrait()
 	{

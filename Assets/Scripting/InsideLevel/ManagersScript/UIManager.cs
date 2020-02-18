@@ -119,6 +119,7 @@ public class UIManager : MonoBehaviour
             //Activamos los retratos necesarios y les asignamos su jugador
             panelesPJ[i].SetActive(true);
             panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.charactersOnTheBoard[i];
+			panelesPJ[i].GetComponent<Tooltips>().tooltipAssignerPlayer = LM.charactersOnTheBoard[i];
             LM.charactersOnTheBoard[i].myPanelPortrait = panelesPJ[i];
 
             //Actualizamos las barras de vida
@@ -415,9 +416,10 @@ public class UIManager : MonoBehaviour
 
                 //IMPORTANTE. El contador de paneles enemigos no puede ser i ya que puede ser que haya un enemigo muerto y por tanto i sea demasiado grande.
                 panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().assignedEnemy = LM.enemiesOnTheBoard[i];
-                panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;
+				panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;
+				//panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyTooltip>().tooltipAssignedEnemy = LM.enemiesOnTheBoard[i];
 
-                LM.enemiesOnTheBoard[i].GetComponent<EnemyUnit>().myPortrait = panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>();
+				LM.enemiesOnTheBoard[i].GetComponent<EnemyUnit>().myPortrait = panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>();
             }
         }
 
