@@ -71,13 +71,22 @@ public class PlayerUnit : UnitBase
 	public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
 
 	//Para el tooltip de ataque
+
+
+
+
+	[Header("INFO")]
+	[@TextAreaAttribute(15, 20)]
+	public string activeSkilllInfo;
+	[SerializeField]
+	public Sprite attackTooltipImage;
+	[@TextAreaAttribute(15, 20)]
+	public string pasiveSkillInfo;
+	[SerializeField]
+	public Sprite pasiveTooltipImage;
 	[SerializeField]
 	[@TextAreaAttribute(15, 20)]
 	public string attackInfo;
-
-	[SerializeField]
-	public Sprite attackTooltipImage;
-
 
 	[Header("REFERENCIAS")]
 

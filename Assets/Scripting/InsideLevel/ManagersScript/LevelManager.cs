@@ -225,7 +225,7 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter.HealthBarOn_Off(true);
 					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
-                    UIM.ShowUnitInfo(selectedCharacter.unitInfo, selectedCharacter);
+                    UIM.ShowUnitInfo(selectedCharacter.unitGeneralInfo, selectedCharacter);
 
 
                     //This
@@ -340,13 +340,13 @@ public class LevelManager : MonoBehaviour
             {
                 DeSelectUnit();
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
-                UIM.ShowUnitInfo(clickedUnit.unitInfo, clickedUnit);
+                UIM.ShowUnitInfo(clickedUnit.unitGeneralInfo, clickedUnit);
             }
 
             else if (clickedUnit.GetComponent<EnemyUnit>())
             {
                 DeSelectUnit();
-                SelectEnemy(clickedUnit.unitInfo ,clickedUnit.GetComponent<EnemyUnit>());
+                SelectEnemy(clickedUnit.unitGeneralInfo ,clickedUnit.GetComponent<EnemyUnit>());
             }
         }
     }
@@ -610,7 +610,7 @@ public class LevelManager : MonoBehaviour
             hoverUnit.HealthBarOn_Off(true);
             //hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
-            UIM.ShowUnitInfo(hoverUnit.unitInfo, hoverUnit);
+            UIM.ShowUnitInfo(hoverUnit.unitGeneralInfo, hoverUnit);
 
             if (hoverUnit.hasMoved == false)
             {
@@ -648,11 +648,11 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter != null)
         {
-            UIM.ShowUnitInfo(selectedCharacter.unitInfo, selectedCharacter);
+            UIM.ShowUnitInfo(selectedCharacter.unitGeneralInfo, selectedCharacter);
         }
         else if (selectedEnemy != null)
         {
-            UIM.ShowUnitInfo(selectedEnemy.unitInfo, selectedEnemy);
+            UIM.ShowUnitInfo(selectedEnemy.unitGeneralInfo, selectedEnemy);
         }
     }
 

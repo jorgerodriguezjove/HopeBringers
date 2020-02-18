@@ -70,7 +70,14 @@ public class EnemyUnit : UnitBase
     public GameObject LevelManagerRef;
     protected LevelManager LM;
 
-    [Header("FEEDBACK")]
+	[Header("INFO")]
+
+	[@TextAreaAttribute(15, 20)]
+	public string enemyTierInfo;
+	[SerializeField]
+	public Sprite enemyTierImage;
+
+	[Header("FEEDBACK")]
     //Flecha que indica que enemigo está realizando su acción.
     [SerializeField]
     private GameObject arrowEnemyIndicator;
@@ -96,6 +103,11 @@ public class EnemyUnit : UnitBase
 
     [SerializeField]
     private GameObject sleepParticle;
+
+	//Variables del doble click
+	int clicked;
+	float clickTime;
+	float clickDelay = 0.5f;
 
     #endregion
 
@@ -293,10 +305,28 @@ public class EnemyUnit : UnitBase
             {
                 if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                 {
-                    LM.SelectEnemy(GetComponent<EnemyUnit>().unitInfo, GetComponent<EnemyUnit>());
+                    LM.SelectEnemy(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
                 }
             }
         }
+		//Doble click
+		clicked++;
+		if(clicked == 1)
+		{
+			clickTime = Time.time;
+		}
+		if(clicked > 1 && (Time.time - clickTime) < clickDelay)
+		{
+			clicked = 0;
+			clickTime = 0;
+			LM.UIM.EnemyCameraFocus(this);
+			//Focus camera
+		}
+		else if (clicked > 2 || Time.time - clickTime > 1)
+		{
+			clicked = 0;
+		}
+
     }
 
     //Función que guarda todo lo que ocurre cuando se selecciona un personaje. Esta función sirve para no repetir codigo y además para poder llamarla desde el Level Manager.
@@ -336,7 +366,7 @@ public class EnemyUnit : UnitBase
                 LM.selectedEnemy = GetComponent<EnemyUnit>();
 
                 LM.CheckIfHoverShouldAppear(GetComponent<EnemyUnit>());
-                LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitInfo, GetComponent<EnemyUnit>());
+                LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
                 myPortrait.HighlightMyself();
 
                 //Activo la barra de vida
@@ -436,7 +466,7 @@ public class EnemyUnit : UnitBase
         //}
 
         //Llamo a LevelManager para activar hover				
-        LM.UIM.ShowUnitInfo(this.unitInfo, this);
+        LM.UIM.ShowUnitInfo(this.unitGeneralInfo, this);
 
 		//LM.UIM.ShowCharacterInfo(unitInfo, this); 
 		HealthBarOn_Off(true);
@@ -461,7 +491,7 @@ public class EnemyUnit : UnitBase
             {
                 ResetColor();
                 HealthBarOn_Off(false);
-                LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+                LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
                 //LM.UIM.HideUnitInfo("");
 
                
@@ -493,7 +523,7 @@ public class EnemyUnit : UnitBase
         else
         {
             LM.UIM.HideUnitInfo("");
-            LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitInfo, LM.selectedEnemy);
+            LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
         }
         
         //LM.UIM.HideCharacterInfo("");
@@ -511,7 +541,7 @@ public class EnemyUnit : UnitBase
 		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 		if(LM.selectedCharacter != null)
 		{
-			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitInfo, LM.selectedCharacter);
+			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
             ResetColor();
         }
 

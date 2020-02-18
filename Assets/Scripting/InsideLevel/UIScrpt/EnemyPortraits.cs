@@ -93,9 +93,11 @@ public class EnemyPortraits : MonoBehaviour
 	{
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-            LM.SelectEnemy(assignedEnemy.unitInfo,assignedEnemy);
+            LM.SelectEnemy(assignedEnemy.unitGeneralInfo,assignedEnemy);
 
-            UIM.ShowUnitInfo(assignedEnemy.unitInfo, assignedEnemy);
+            UIM.ShowUnitInfo(assignedEnemy.unitGeneralInfo, assignedEnemy);
+
+			UIM.EnemyCameraFocus(assignedEnemy);
 
             HighlightMyself();
 

@@ -92,6 +92,7 @@ public class Portraits : MonoBehaviour
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
             UIM.PortraitCharacterSelect(assignedPlayer);
+			UIM.PlayerCameraFocus(assignedPlayer);
             isClicked = true;
         }
 	}
@@ -170,7 +171,7 @@ public class Portraits : MonoBehaviour
 	{
 		if (UIM.LM.selectedCharacter == null)
 		{
-			UIM.ShowUnitInfo(assignedPlayer.unitInfo, assignedPlayer);
+			UIM.ShowUnitInfo(assignedPlayer.unitGeneralInfo, assignedPlayer);
 		}
 	}
 

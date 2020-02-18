@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class EnemyTooltip : MonoBehaviour
 {
@@ -17,10 +19,15 @@ public class EnemyTooltip : MonoBehaviour
 	bool startTooltip = false;
 
 	[SerializeField]
-	bool generalTooltip;
-	[SerializeField]
 	bool enemyTier;
-
+	[SerializeField]
+	GameObject tooltipPanel;
+	[SerializeField]
+	GameObject fatherTooltip;
+	[SerializeField]
+	TextMeshProUGUI textPanel;
+	[SerializeField]
+	Image imagePanel;
 
 	#region INIT
 	private void Start()
@@ -40,6 +47,17 @@ public class EnemyTooltip : MonoBehaviour
 				Debug.Log("Timer");
 				if (timeToShowTooltipTimer <= 0)
 				{
+					tooltipPanel.SetActive(true);
+					if (enemyTier)
+					{
+						textPanel.text = fatherTooltip.GetComponent<EnemyTooltip>().tooltipAssignedEnemy.enemyTierInfo;
+						imagePanel.sprite = fatherTooltip.GetComponent<EnemyTooltip>().tooltipAssignedEnemy.enemyTierImage;
+					}
+					else
+					{
+						textPanel.text = tooltipAssignedEnemy.unitGeneralInfo;
+						imagePanel.sprite = tooltipAssignedEnemy.tooltipImage;
+					}
 					//Mostrar el tooltip
 					Debug.Log("Tooltip Aparece");
 				}
@@ -47,6 +65,7 @@ public class EnemyTooltip : MonoBehaviour
 			else
 			{
 				timeToShowTooltipTimer = timeToShowTooltip;
+				tooltipPanel.SetActive(false);
 				//Tooltip desaparece
 				Debug.Log("Tooltip Desaparece");
 			}

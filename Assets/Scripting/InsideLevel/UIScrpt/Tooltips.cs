@@ -19,13 +19,13 @@ public class Tooltips : MonoBehaviour
 	bool startTooltip = false;
 
 	[SerializeField]
-	bool generalTooltip;
-	[SerializeField]
 	bool activeSkill;
 	[SerializeField]
 	bool pasiveSkill;
 	[SerializeField]
 	GameObject tooltipPanel;
+	[SerializeField]
+	GameObject fatherTooltip;
 	[SerializeField]
 	TextMeshProUGUI textPanel;
 	[SerializeField]
@@ -50,8 +50,21 @@ public class Tooltips : MonoBehaviour
 				if (timeToShowTooltipTimer <= 0)
 				{
 					tooltipPanel.SetActive(true);
-					textPanel.text = tooltipAssignerPlayer.unitInfo;
-					imagePanel.sprite = tooltipAssignerPlayer.attackTooltipImage;
+					if (activeSkill)
+					{
+						textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.activeSkilllInfo;
+						imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.attackTooltipImage;
+					}
+					else if (pasiveSkill)
+					{
+						textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveSkillInfo;
+						imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveTooltipImage;
+					}
+					else
+					{
+						textPanel.text = tooltipAssignerPlayer.unitGeneralInfo;
+						imagePanel.sprite = tooltipAssignerPlayer.attackTooltipImage;
+					}				
 					//Mostrar el tooltip
 					Debug.Log("Tooltip Aparece");
 				}
