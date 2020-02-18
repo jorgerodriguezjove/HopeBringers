@@ -20,8 +20,7 @@ public class LevelNode : MonoBehaviour
     public int idLevel;
 
     [SerializeField]
-    public int xpGained;
-
+    public int xpToWin;
 
     public enum PossibleCharactersToUnlock { none, Berserker, Mage, Ninja, Valkyrie, Druid, Monk, Samurai };
 
@@ -46,7 +45,6 @@ public class LevelNode : MonoBehaviour
     //Niveles que están conectados a este nivel. En el futuro servirá para el movimiento de la ficha
     [SerializeField]
     public List<LevelNode> surroundingLevels;
-
     //Niveles que se desbloquean al completarse este nivel
     [SerializeField]
     public List<LevelNode> unlockableLevels;
@@ -60,7 +58,13 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public string descriptionText;
 
-	[Header("MATERIALES")]
+    [SerializeField]
+    TextAsset startDialog;
+    [SerializeField]
+    TextAsset endDialog;
+
+
+    [Header("MATERIALES")]
 
 	//Materiales para indicar el estado del nivel. Verde = completado. Rojo = Desbloqueado pero sin completar. Negro = Bloqueado
 	//[SerializeField]
@@ -138,21 +142,7 @@ public class LevelNode : MonoBehaviour
 		//Avisar al TM de que se ha pulsado un nivel
 		if (isUnlocked)
 		{
-			TM.OnLevelClicked(GetComponent<LevelNode>());
-			GameManager.Instance.currentLevelNode = idLevel;
-            GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = xpGained;
-
-            if (newCharacterToUnlock != null)
-            {
-                GameManager.Instance.newCharacterToUnlock = newCharacterToUnlock;
-            }
-
-            else
-            {
-                GameManager.Instance.newCharacterToUnlock = null;
-            }
-
-            Debug.Log("Xp gained " + xpGained);
+			TM.OnLevelClicked(GetComponent<LevelNode>(), idLevel, xpToWin, startDialog, endDialog);
         }
 	}
 

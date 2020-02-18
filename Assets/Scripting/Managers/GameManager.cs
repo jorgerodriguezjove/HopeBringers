@@ -7,6 +7,8 @@ public class GameManager : PersistentSingleton<GameManager>
 {
     #region VARIABLES
 
+    [Header("VARIBLES NIVEL SELECCIONADO")]
+
     //Lista de character data que se tienen que cargar en el nivel
     [HideInInspector]
     public List<CharacterData> characterDataForCurrentLevel = new List<CharacterData>();
@@ -14,6 +16,22 @@ public class GameManager : PersistentSingleton<GameManager>
     //Lista de unidades que se tienen que cargar en el nivel
     [HideInInspector]
     public List<PlayerUnit> unitsForCurrentLevel = new List<PlayerUnit>();
+
+    //Bool que indica si al cargar el level selection debería desbloquear un nuevo personaje
+    [HideInInspector]
+    public GameObject newCharacterToUnlock;
+
+    [HideInInspector]
+    public TextAsset currentLevelStartDialog;
+    [HideInInspector]
+    public TextAsset currentLevelEndDialog;
+
+    //Referencia al nodo del nivel que ha sido empezado
+    public int currentLevelNode;
+    //Experiencia que obtiene el jugador si completa el nivel
+    public int possibleXpToGainIfCurrentLevelIsWon;
+
+    [Header ("GAME PROGRESS")]
 
     //Experiencia actual. 
     [SerializeField]
@@ -30,24 +48,27 @@ public class GameManager : PersistentSingleton<GameManager>
     [HideInInspector]
     public List<int> levelIDsUnlocked = new List<int>();
 
-    //Referencia al nodo del nivel que ha sido empezado
-    public int currentLevelNode;
-    //Experiencia que obtiene el jugador si completa el nivel
-    public int possibleXpToGainIfCurrentLevelIsWon;
+    [Header("REFERENCIAS")]
 
-    //Bool que indica si al cargar el level selection debería desbloquear un nuevo personaje
-    public GameObject newCharacterToUnlock;
+    //Variable que avisa al InkManager de que se ha inicializado
+    public bool dialogTime;
 
+    //Referencia al InkManRef
+    private InkManager inkManRef;
+    private DialogManager dialogManRef;
 
     #endregion
 
     #region INIT
-    
+
     //Añado la función a la carga de escenas
     private void OnEnable()
     {
         SceneManager.sceneLoaded += RemoveOldCharacterData;
         SceneManager.sceneLoaded += UpdateLevelStates;
+
+        inkManRef = FindObjectOfType<InkManager>();
+        dialogManRef = FindObjectOfType<DialogManager>();
     }
 
     #endregion
@@ -112,10 +133,65 @@ public class GameManager : PersistentSingleton<GameManager>
         }
     }
 
+    #region DIALOG
+
+    public void EndDialog()
+    {
+        ///dialogManRef.CloseDialogWindow();
+        ///hasDialogEnded = true;
+        ///SoundManager.Instance.PlaySound(AppSounds.ENDDIALOG_SFX);
+
+        Debug.Log("dialog ended");
+
+    }
+
 
     private void Update()
     {
-        Debug.Log(newCharacterToUnlock);
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            StartDialog(prueba, dataprueba, dialog);
+        }
+    }
+
+    [SerializeField]
+    TextAsset prueba;
+    [SerializeField]
+    NpcSCO dataprueba;
+    string dialog = "reactions.InReac";
+
+
+
+    public void StartDialog(bool isStartDialog, NpcSCO npcData, string dialogToReproduce) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/
+    {
+        dialogTime = true;
+
+        //Si es startDialog cargo el dialogo de start y si no cargo el de end
+        if (isStartDialog)
+        {
+            inkManRef.inkJSONAsset = currentLevelStartDialog;
+        }
+
+        else
+        {
+            inkManRef.inkJSONAsset = currentLevelEndDialog;
+        }
+
+        inkManRef.InitNPCVariables(npcData.portraitNPC, npcData.nameNPC, npcData.colorTextNPC);
+        inkManRef.StartStory();
+
+
+        inkManRef.story.ChoosePathString(dialogToReproduce);
+        inkManRef.RefreshView();
+
+        //dialogManRef.SetVariables(dialogToReproduce, portraitNPC);
+        dialogManRef.OpenDialogWindow();    
+        ///SoundManager.Instance.PlaySound(AppSounds.ENTERDIALOG_SFX);
+        ///npcEndsound = npcData.finalAudio;
+
 
     }
+
+    #endregion
+
 }

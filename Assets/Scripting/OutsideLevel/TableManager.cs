@@ -75,10 +75,28 @@ public class TableManager : MonoBehaviour
     #region CAMERA_MOVEMENT
 
     //Al seleccionar un nivel se setea todo para que aparezca la parte de selección de unidades
-    public void OnLevelClicked(LevelNode levelClicked)
+    public void OnLevelClicked(LevelNode levelClicked, int _idLevel, int _xpToWin, TextAsset _startDialog, TextAsset _endDialog)
     {
         //Se mueve el indicador del nivel
         levelIndicator.transform.position = new Vector3(levelClicked.transform.position.x, levelIndicator.transform.position.y , levelClicked.transform.position.z);
+
+        //Cargo la información en el GameManager
+        GameManager.Instance.currentLevelNode = _idLevel;
+        GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = _xpToWin;
+        GameManager.Instance.currentLevelStartDialog = _startDialog;
+        GameManager.Instance.currentLevelEndDialog = _endDialog;
+
+        //Personaje a desbloquear
+        if (newCharacterToUnlock != null)
+        {
+            GameManager.Instance.newCharacterToUnlock = newCharacterToUnlock;
+        }
+        else
+        {
+            GameManager.Instance.newCharacterToUnlock = null;
+        }
+
+        Debug.Log("Xp to win in this level " + _xpToWin);
 
         //El UI Manager se encarga de actualizar la info del nivel
         UITM.ShowInfoOnLevelClick(levelClicked.LevelTitle);
@@ -108,7 +126,7 @@ public class TableManager : MonoBehaviour
         progresionCamera.SetActive(false);
         upgradesCamera.SetActive(true);
     }
-
+    
     public void BackToProgresion()
     {
         upgradesCamera.SetActive(false);
