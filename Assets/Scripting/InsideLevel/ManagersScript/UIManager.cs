@@ -13,7 +13,11 @@ public class UIManager : MonoBehaviour
 	[Header("HUD")]
 
     [SerializeField]
-    private GameObject endTurnButton;
+    public GameObject endTurnButton;
+	[HideInInspector]
+	public Material endTurnBttnInitMaterial;
+	[SerializeField]
+	Material noMoreActionMaterial;
 
 	[SerializeField]
 	private GameObject optionsScreen;
@@ -116,7 +120,7 @@ public class UIManager : MonoBehaviour
     public void InitializeUI()
     {
         characterInfoOriginalPosition = characterInfo.transform.position;
-
+		endTurnBttnInitMaterial = endTurnButton.GetComponent<MeshRenderer>().material;
         //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
         initialScrollPosition = padrePanelesEnemigos.transform.position;
 
@@ -227,6 +231,25 @@ public class UIManager : MonoBehaviour
 		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
 			LM.charactersOnTheBoard[i].actionAvaliablePanel.SetActive(false);
+		}
+	}
+
+	public void CheckActionsAvaliable()
+	{
+		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+		{
+			if(LM.charactersOnTheBoard[i].hasMoved == false)
+			{
+				break;
+			}
+			else if(LM.charactersOnTheBoard[i].hasAttacked == false && hasCharacterUnitInRange)
+			{
+				break;
+			}
+			else
+			{
+				endTurnButton.GetComponent<MeshRenderer>().material = noMoreActionMaterial;
+			}
 		}
 	}
 
@@ -548,6 +571,7 @@ public class UIManager : MonoBehaviour
 	{
 		tooltipAccionesText.text = "Esta unidad no tiene ningún enemigo a rango";
 		hasCharacterUnitInRange = false;
+		CheckActionsAvaliable();
 	}
 	public void TooltipRotate()
 	{

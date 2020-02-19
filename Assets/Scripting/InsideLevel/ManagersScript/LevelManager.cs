@@ -327,6 +327,7 @@ public class LevelManager : MonoBehaviour
                             ICommand command = new AttackCommand(selectedCharacter.currentUnitsAvailableToAttack[i].currentFacingDirection, selectedCharacter.currentFacingDirection, selectedCharacter.currentUnitsAvailableToAttack[i].myCurrentTile, selectedCharacter.myCurrentTile, selectedCharacter.currentUnitsAvailableToAttack[i].currentHealth, selectedCharacter.currentHealth, selectedCharacter, selectedCharacter.currentUnitsAvailableToAttack[i]);
                             CommandInvoker.AddCommand(command);
                             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+							UIM.CheckActionsAvaliable();
                             return;
                         }
                     }
@@ -884,6 +885,7 @@ public class LevelManager : MonoBehaviour
         {
             //Aparece cartel con turno del player
             UIM.RotateButtonStartPhase();
+			UIM.endTurnButton.GetComponent<MeshRenderer>().material = UIM.endTurnBttnInitMaterial;
             //Resetear todas las variables tipo bool y demás de los players
             for (int i = 0; i < charactersOnTheBoard.Count; i++)
             {
