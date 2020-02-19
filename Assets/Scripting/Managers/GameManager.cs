@@ -150,7 +150,7 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            StartDialog(prueba, dataprueba, dialog);
+            StartDialog(true, dataprueba, dialog);
         }
     }
 
@@ -164,6 +164,14 @@ public class GameManager : PersistentSingleton<GameManager>
 
     public void StartDialog(bool isStartDialog, NpcSCO npcData, string dialogToReproduce) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/
     {
+        //Debug
+        currentLevelStartDialog = prueba;
+
+
+
+
+
+
         dialogTime = true;
 
         //Si es startDialog cargo el dialogo de start y si no cargo el de end
