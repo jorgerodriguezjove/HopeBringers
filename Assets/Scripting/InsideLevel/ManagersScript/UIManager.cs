@@ -13,11 +13,13 @@ public class UIManager : MonoBehaviour
 	[Header("HUD")]
 
     [SerializeField]
-    public GameObject endTurnButton;
+    GameObject endTurnButton;
 	[HideInInspector]
 	public Material endTurnBttnInitMaterial;
 	[SerializeField]
 	Material noMoreActionMaterial;
+	[SerializeField]
+	GameObject noMoreActionsPanel;
 
 	[SerializeField]
 	private GameObject optionsScreen;
@@ -83,6 +85,7 @@ public class UIManager : MonoBehaviour
     //Bools que indican si se estan pulsando los botones
     private bool isScrollButtonDownBeingPressed;
     private bool isScrollButtonUpBeingPressed;
+	private bool scrollUpToEnemy, scrollDownToEnemy;
 
 	//Bool para saber si la unidad tiene alguna unidad a rango o no
 	private bool hasCharacterUnitInRange;
@@ -90,6 +93,8 @@ public class UIManager : MonoBehaviour
     //Velocidad de scroll
     [SerializeField]
     private float scrollSpeed;
+	[SerializeField]
+	private float autoScrollSpeed;
     //Separación entre retratos de personajes (el 69 no va en coña, de verdad que está bien separado así)
     [SerializeField]
     private int enemyPortraitSeparation;
@@ -249,8 +254,14 @@ public class UIManager : MonoBehaviour
 			else
 			{
 				endTurnButton.GetComponent<MeshRenderer>().material = noMoreActionMaterial;
+				noMoreActionsPanel.SetActive(true);
 			}
 		}
+	}
+	public void ResetActionsAvaliable()
+	{
+		endTurnButton.GetComponent<MeshRenderer>().material = endTurnBttnInitMaterial;
+		noMoreActionsPanel.SetActive(false);
 	}
 
     #endregion
@@ -451,7 +462,7 @@ public class UIManager : MonoBehaviour
             if (!LM.enemiesOnTheBoard[i].isDead)
             {
                 GameObject enemyPanel = Instantiate(panelesEnemigosPrefab, padrePanelesEnemigos.transform, false);
-                enemyPanel.transform.position = new Vector3(enemyPanel.transform.position.x, enemyPanel.transform.position.y - i* enemyPortraitSeparation, enemyPanel.transform.position.z);
+                //enemyPanel.transform.position = new Vector3(enemyPanel.transform.position.x, enemyPanel.transform.position.y - i* enemyPortraitSeparation, enemyPanel.transform.position.z);
                 panelesEnemigos.Add(enemyPanel);
 
                 //IMPORTANTE. El contador de paneles enemigos no puede ser i ya que puede ser que haya un enemigo muerto y por tanto i sea demasiado grande.
@@ -482,6 +493,7 @@ public class UIManager : MonoBehaviour
     }
 
     //Scrolear la barra de lista hacia abajo
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Literalmente mueve la lista hacia abajo y en los botones está invertido!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public void ScrollDown()
     {
         isScrollButtonDownBeingPressed = true;
@@ -510,8 +522,16 @@ public class UIManager : MonoBehaviour
     }
 
     //Función que se 
-    public void MoveScrollToEnemy()
+    public void MoveScrollToEnemy(EnemyUnit selectedEnemy)
     {
+		if(selectedEnemy.myPortrait.transform.position.y >= topScrollUp.transform.position.y)
+		{
+			scrollDownToEnemy = true;
+		}
+		else if(selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
+		{
+			scrollUpToEnemy = true;
+		}
         //Comprobar si el retrato enemigo esta entre el tope inferior y superior
         //Comprobar si esta por encima de ambos topes o por debajo de ambos topes para decidir si subo o bajo la lista
         //Contar el número de retratos que hay hasta que haya uno dentro del cuadro para saber cuánta distancia tengo que bajar o subir la barra.
@@ -550,7 +570,34 @@ public class UIManager : MonoBehaviour
 			{
 				buttonUpHighlight.SetActive(false);
 			}
-        }
+
+			if(scrollDownToEnemy && LM.selectedEnemy != null)
+			{
+				if (panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y && LM.selectedEnemy.myPortrait.transform.position.y >= topScrollUp.transform.position.y)
+				{
+					padrePanelesEnemigos.transform.Translate(Vector3.down * autoScrollSpeed * Time.deltaTime);
+					buttonDownHighlight.SetActive(true);
+				}
+				else
+				{
+					scrollDownToEnemy = false;
+				}
+			}
+
+			if (scrollUpToEnemy && LM.selectedEnemy != null)
+			{
+				if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y && LM.selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
+				{
+					padrePanelesEnemigos.transform.Translate(Vector3.up * autoScrollSpeed * Time.deltaTime);
+					buttonUpHighlight.SetActive(true);
+				}
+				else
+				{
+					scrollUpToEnemy = false;
+				}
+			}
+
+		}
     }
 
 

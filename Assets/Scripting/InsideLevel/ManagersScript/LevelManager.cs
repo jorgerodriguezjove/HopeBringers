@@ -438,7 +438,8 @@ public class LevelManager : MonoBehaviour
         UIM.ShowUnitInfo(_unitInfo, _enemySelected);
 
         _enemySelected.SelectedFunctionality();
-    }
+		UIM.MoveScrollToEnemy(_enemySelected);
+	}
 
     //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
     public void TileClicked(IndividualTiles tileToMove)
@@ -888,7 +889,7 @@ public class LevelManager : MonoBehaviour
         {
             //Aparece cartel con turno del player
             UIM.RotateButtonStartPhase();
-			UIM.endTurnButton.GetComponent<MeshRenderer>().material = UIM.endTurnBttnInitMaterial;
+			UIM.ResetActionsAvaliable();
             //Resetear todas las variables tipo bool y demás de los players
             for (int i = 0; i < charactersOnTheBoard.Count; i++)
             {
