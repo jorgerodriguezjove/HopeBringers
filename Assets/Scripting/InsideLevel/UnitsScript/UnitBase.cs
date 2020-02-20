@@ -220,7 +220,8 @@ public class UnitBase : MonoBehaviour
     }
 
     //Esta función la usan todos los personajes al moverse para reajustar la información del tile actual y del nuevo al que se van a mover.
-    public void UpdateInformationAfterMovement(IndividualTiles newTile)
+    //El override se hace en el dragón ya que tiene que actualizar más tiles.
+    public virtual void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
         //Este if está porque la funicón también se usa al colocar las unidades al principio del nivel y ahí no hay tile
         if (myCurrentTile != null)

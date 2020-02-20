@@ -667,51 +667,7 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
-            if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
-            {
-                //Muestro la acción que va a realizar el enemigo 
-                hoverUnit.ShowActionPathFinding(true);
-
-                //¡¡MUY IMPORTANTE!! hoverUnit.ShowActionPathFinding(true); TIENE QUE IR ANTES QUE ESTOS IFS
-                if (hoverUnit.haveIBeenAlerted)
-                {
-                    tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
-                }
-
-                else
-                {
-                    tilesAvailableForMovementEnemies = TM.CheckAvailableTilesForEnemyAction(movementUds, hoverUnit);
-                }
-
-                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-                {
-                    if (showActionRangeInsteadOfMovement)
-                    {
-                        if (tilesAvailableForMovementEnemies[i].isObstacle
-                           || (tilesAvailableForMovementEnemies[i].isEmpty))
-                        {
-                            continue;
-                        }
-                        tilesAvailableForMovementEnemies[i].ColorActionRange();
-                    }
-
-                    else
-                    {
-                        if (tilesAvailableForMovementEnemies[i].isObstacle
-                           || (tilesAvailableForMovementEnemies[i].isEmpty))
-                        {
-                            continue;
-                        }
-                        tilesAvailableForMovementEnemies[i].ColorSelect();
-                    }
-                }
-
-                //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
-                hoverUnit.ColorAttackTile();
-
-            }
-
-            else if (hoverUnit.GetComponent<EnBalista>())
+            if (hoverUnit.GetComponent<EnBalista>())
             {
                 hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
@@ -767,6 +723,51 @@ public class LevelManager : MonoBehaviour
 
                 }
             }
+
+            //Goblin, gigante, boss y demás
+            else
+            {
+                //Muestro la acción que va a realizar el enemigo 
+                hoverUnit.ShowActionPathFinding(true);
+
+                //¡¡MUY IMPORTANTE!! hoverUnit.ShowActionPathFinding(true); TIENE QUE IR ANTES QUE ESTOS IFS
+                if (hoverUnit.haveIBeenAlerted)
+                {
+                    tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
+                }
+
+                else
+                {
+                    tilesAvailableForMovementEnemies = TM.CheckAvailableTilesForEnemyAction(movementUds, hoverUnit);
+                }
+
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    if (showActionRangeInsteadOfMovement)
+                    {
+                        if (tilesAvailableForMovementEnemies[i].isObstacle
+                           || (tilesAvailableForMovementEnemies[i].isEmpty))
+                        {
+                            continue;
+                        }
+                        tilesAvailableForMovementEnemies[i].ColorActionRange();
+                    }
+
+                    else
+                    {
+                        if (tilesAvailableForMovementEnemies[i].isObstacle
+                           || (tilesAvailableForMovementEnemies[i].isEmpty))
+                        {
+                            continue;
+                        }
+                        tilesAvailableForMovementEnemies[i].ColorSelect();
+                    }
+                }
+
+                //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
+                hoverUnit.ColorAttackTile();
+
+            }
         }
     }
 
@@ -774,17 +775,7 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
-            if (hoverUnit.GetComponent<EnGiant>() || hoverUnit.GetComponent<EnGoblin>())
-            {
-                hoverUnit.HideActionPathfinding();
-
-                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-                {
-                    tilesAvailableForMovementEnemies[i].ColorDeselect();
-                }
-                tilesAvailableForMovementEnemies.Clear();
-            }
-            else if (hoverUnit.GetComponent<EnBalista>())
+            if (hoverUnit.GetComponent<EnBalista>())
             {
                 hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
                 
@@ -822,6 +813,18 @@ public class LevelManager : MonoBehaviour
 
             }
 
+            //Goblin, gigante, boss y demás
+            else 
+            {
+                hoverUnit.HideActionPathfinding();
+
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    tilesAvailableForMovementEnemies[i].ColorDeselect();
+                }
+                tilesAvailableForMovementEnemies.Clear();
+            }
+
         }
     }
 
@@ -848,7 +851,7 @@ public class LevelManager : MonoBehaviour
     //Función intermediaria que sirve para calcular un área en forma de rombo
     public List<IndividualTiles> CalculateRhombusArea(IndividualTiles _rhombusCenter, int _radius)
     {
-       return TM.GetSurroundingTiles(_rhombusCenter, _radius);
+       return TM.GetRhombusTiles(_rhombusCenter, _radius);
     }
 
 

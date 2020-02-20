@@ -118,7 +118,7 @@ public class TileManager : MonoBehaviour
 
     //Lista que guarda los tiles en un área con forma de rombo alrededor del tile
     [HideInInspector]
-    public List<IndividualTiles> surroundingTiles;
+    public List<IndividualTiles> rhombusTiles;
 
     [Header("REFERENCIAS")]
     [SerializeField]
@@ -803,10 +803,10 @@ public class TileManager : MonoBehaviour
 
     //Esta función se usa para calcular áreas de tiles (básicamente un rombo de tiles)
     //No mira si hay obstáculos o está vacío, únicamente si hay tiles
-    public List<IndividualTiles> GetSurroundingTiles(IndividualTiles rhombusCenter, int radius)
+    public List<IndividualTiles> GetRhombusTiles(IndividualTiles rhombusCenter, int radius)
     {
         //radius equivale a la distancia entre el centro del rombo (tile que esta usando esta función) y el tile más alejado en una dirección, es decir el extremo del rombo (que al ser un rombo es la misma distancia hasta cualquier extremo)
-        surroundingTiles.Clear();
+        rhombusTiles.Clear();
 
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
         for (int i = -radius; i < (radius * 2) + 1; i++)
@@ -825,13 +825,34 @@ public class TileManager : MonoBehaviour
 
                     //currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
 
-                    surroundingTiles.Add(grid2DNode[rhombusCenter.tileX + i, rhombusCenter.tileZ]);
+                    rhombusTiles.Add(grid2DNode[rhombusCenter.tileX + i, rhombusCenter.tileZ]);
                 }
             }
         }
 
+        return rhombusTiles;
+    }
+
+    List<IndividualTiles> surroundingTiles = new List<IndividualTiles>();
+
+    //Obtener los vecinos + las diagonales de un tile
+    public List<IndividualTiles> GetSurroundingTiles(IndividualTiles centerTile)
+    {
+        //Vecinos
+        for (int i = 0; i < centerTile.neighbours.Count; i++)
+        {
+            surroundingTiles.Add(centerTile.neighbours[i]);
+        }
+
+        //Diagonales
+        surroundingTiles.Add(grid2DNode[centerTile.tileX + 1, centerTile.tileZ + 1]);
+        surroundingTiles.Add(grid2DNode[centerTile.tileX + 1, centerTile.tileZ - 1]);
+        surroundingTiles.Add(grid2DNode[centerTile.tileX - 1, centerTile.tileZ + 1]);
+        surroundingTiles.Add(grid2DNode[centerTile.tileX - 1, centerTile.tileZ - 1]);
+
         return surroundingTiles;
     }
+
 
     //ESTA ERA LA FUNCIÓN QUE ROMPIA LA OPTIMIZACIÓN
     #region DEPRECATED
