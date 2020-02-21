@@ -117,11 +117,16 @@ public class LevelManager : MonoBehaviour
         }   
     }
 
-    private void Start()
+    //IMPORTANTE QUE ESTAS DOS REFERENCIAS VAYAN EN EL AWAKE
+    //Si no el dragón no puede buscar sus tiles a través del tilemanager cuando empieza el nivel.
+    private void Awake()
     {
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
+    }
 
+    private void Start()
+    {
         FindObjectOfType<CommandInvoker>().ResetCommandList();
 
         //Crea a los jugadores seleccionados para el nivel.

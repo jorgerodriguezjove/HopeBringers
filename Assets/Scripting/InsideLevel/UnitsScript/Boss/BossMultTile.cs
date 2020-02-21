@@ -5,29 +5,35 @@ using DG.Tweening;
 
 public class BossMultTile : EnemyUnit
 {
-    List<IndividualTiles> surroundingTiles = new List<IndividualTiles>();
+    [SerializeField]
+    List<IndividualTiles> exteriorTiles = new List<IndividualTiles>();
 
+    //Override a la información que se actualiza al moverse
     public override void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
-        //Quito los tiles alrededor
-        surroundingTiles = LM.TM.GetSurroundingTiles(myCurrentTile);
-
-        for (int i = 0; i < surroundingTiles.Count; i++)
+        //Aviso a los tiles alrededor
+        for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; i++)
         {
-            //surroundingTiles[i].unitOnTile = null;
-            //surroundingTiles[i].WarnInmediateNeighbours();
+            myCurrentTile.surroundingNeighbours[i].unitOnTile = null;
+            myCurrentTile.surroundingNeighbours[i].WarnInmediateNeighbours();
         }
 
         //Actualizo normal
         base.UpdateInformationAfterMovement(newTile);
 
-        surroundingTiles = LM.TM.GetSurroundingTiles(myCurrentTile);
-
-        //Añado los tiles alrededor
-        for (int i = 0; i < surroundingTiles.Count; i++)
+        //Aviso a los tiles de alrededor
+        for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; i++)
         {
-            //surroundingTiles[i].unitOnTile = GetComponent<UnitBase>();
-            //surroundingTiles[i].WarnInmediateNeighbours();
+            myCurrentTile.surroundingNeighbours[i].unitOnTile = GetComponent<UnitBase>();
+            myCurrentTile.surroundingNeighbours[i].WarnInmediateNeighbours();
+        }
+
+        //Añado los tiles exteriores (los que se usan para atacar).
+        exteriorTiles.Clear();
+        
+        for (int i = 0; i < LM.TM.GetSurroundingTiles(myCurrentTile,2, false, true).Count; i++)
+        {
+            exteriorTiles.Add(LM.TM.GetSurroundingTiles(myCurrentTile,2, false, true)[i]);
         }
     }
 
@@ -95,28 +101,12 @@ public class BossMultTile : EnemyUnit
                     myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                 }
 
-                //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
+                //Si hay varios enemigos a la misma distancia
                 else if (currentUnitsAvailableToAttack.Count > 1)
                 {
-                    //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
-                    currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
-                    {
-                        return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
-                    });
-
-                    //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
-                    for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
-                    {
-                        if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
-                        {
-                            currentUnitsAvailableToAttack.RemoveAt(i);
-                        }
-                    }
-
                     //Si sigue habiendo varios enemigos los ordeno segun la vida
                     if (currentUnitsAvailableToAttack.Count > 1)
                     {
-
                         //Ordeno la lista de posibles objetivos de menor a mayor vida actual
                         currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
                         {
@@ -134,8 +124,10 @@ public class BossMultTile : EnemyUnit
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-                for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                //ES -1 PORQUE EN EL CASO DEL DRAGÓN HAY QUE RESTAR UN TILE YA QUE ESTÁ OCUPADO POR EL PROPIO DRAGÓN!!!!!!!!!!!!!!!!!!!!!!!!
+                for (int i = 0; i < LM.TM.currentPath.Count-1; i++)
                 {
+                    
                     pathToObjective.Add(LM.TM.currentPath[i]);
                 }
 
@@ -146,25 +138,6 @@ public class BossMultTile : EnemyUnit
 
     public override void Attack()
     {
-        //Si es Tier 2 Alerta a los enemigos en el área
-        if (myTierLevel == TierLevel.Level2)
-        {
-            if (!haveIBeenAlerted)
-            {
-                //Le pido al TileManager los enemigos dentro de mi rango
-                unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
-
-                //Alerto a los enemigos a mi alcance
-                for (int i = 0; i < unitsInRange.Count; i++)
-                {
-                    if (unitsInRange[i].GetComponent<EnemyUnit>())
-                    {
-                        unitsInRange[i].GetComponent<EnemyUnit>().AlertEnemy();
-                    }
-                }
-            }
-        }
-
         //Si no he sido alertado, activo mi estado de alerta.
         //Al alertarme salo del void de ataque para hacer la busqueda normal de jugadores.
         if (!haveIBeenAlerted)
@@ -174,10 +147,10 @@ public class BossMultTile : EnemyUnit
             return;
         }
 
-        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        for (int i = 0; i < exteriorTiles.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
-            if (myCurrentTile.neighbours[i].unitOnTile != null && currentUnitsAvailableToAttack.Count > 0 && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0] && Mathf.Abs(myCurrentTile.height - myCurrentTile.neighbours[i].height) <= maxHeightDifferenceToAttack)
+            if (exteriorTiles[i].unitOnTile != null && currentUnitsAvailableToAttack.Count > 0 && exteriorTiles[i].unitOnTile == currentUnitsAvailableToAttack[0] && Mathf.Abs(myCurrentTile.height - exteriorTiles[i].height) <= maxHeightDifferenceToAttack)
             {
                 //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el goblin
                 if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
@@ -394,7 +367,8 @@ public class BossMultTile : EnemyUnit
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-                for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                //ES -1 PORQUE EN EL CASO DEL DRAGÓN HAY QUE RESTAR UN TILE YA QUE ESTÁ OCUPADO POR EL PROPIO DRAGÓN!!!!!!!!!!!!!!!!!!!!!!!!
+                for (int i = 0; i < LM.TM.currentPath.Count-1; i++)
                 {
                     pathToObjective.Add(LM.TM.currentPath[i]);
                 }

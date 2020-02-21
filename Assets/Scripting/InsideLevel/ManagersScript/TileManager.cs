@@ -369,6 +369,20 @@ public class TileManager : MonoBehaviour
                 }
 
                 #endregion
+
+            }
+        }
+
+        //Seteo los tiles que rodean (la lista que incluye las diagonales vamos)
+        for (int z = 0; z < gridSizeZ; z++)
+        {
+            for (int x = 0; x < gridSizeX; x++)
+            {
+                GetSurroundingTiles(grid2DNode[x, z], 1,true,false);
+                for (int j = 0; j < surroundingTiles.Count; j++)
+                {
+                    grid2DNode[x, z].surroundingNeighbours.Add(surroundingTiles[j]);
+                }
             }
         }
     }
@@ -503,6 +517,15 @@ public class TileManager : MonoBehaviour
         return tilesAvailableForMovement;
     }
 
+    //Bool que sirve para saber si en el caso del dragón el foreach que comprueba los surroundings tiles ha encontrado uno ocupado por el que no pasa el dragón
+    bool shouldSkipSurroundingTile;
+
+    bool targetFoundInSurroundingTiles;
+
+    private List<IndividualTiles> obstacleSurroundingTarget = new List<IndividualTiles>();
+
+    bool noTargetInNeighbours;
+
     public void CalculatePathForMovementCost(int x, int z)
     {
         openList.Clear();
@@ -598,8 +621,113 @@ public class TileManager : MonoBehaviour
 
             foreach (IndividualTiles neighbour in grid2DNode[currentNode.tileX, currentNode.tileZ].neighbours)
             {
-                //Goblin
-                if (selectedCharacter.GetComponent<EnemyUnit>())
+                //Dragón. Es igual que el de los enemigos pero con el añadido de que ignora los tiles ocupados por si mismo
+                if (selectedCharacter.GetComponent<BossMultTile>())
+                {
+                    if (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
+                    {
+                        //if (neighbour.unitOnTile != null)
+                        //{
+                        //    Debug.Log( "First" + neighbour.unitOnTile.name);
+                        //}
+
+                        continue;
+                    }
+
+                    //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
+                    else if (neighbour != target && neighbour.unitOnTile != null || neighbour.unitOnTile != null && neighbour.unitOnTile.GetComponent<EnemyUnit>())
+                    {
+                        //if (neighbour.unitOnTile != null)
+                        //{
+                        //    Debug.Log("Second" + neighbour.unitOnTile.name);
+                        //}
+
+                        //Solo hago continue si la unidad no es el propio dragón,
+                        if (neighbour.unitOnTile != selectedCharacter)
+                        {
+                            continue;
+                        }
+                    }
+
+                    obstacleSurroundingTarget.Clear();
+                    shouldSkipSurroundingTile = false;
+                    targetFoundInSurroundingTiles = false;
+                    noTargetInNeighbours = true;
+
+                    if (neighbour != target)
+                    {
+                        foreach (IndividualTiles surrTile in neighbour.surroundingNeighbours)
+                        {
+                            //Check 1 por si el tile no es valido
+                            if (surrTile == null || surrTile.isEmpty || surrTile.isObstacle || Mathf.Abs(surrTile.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
+                            {
+                                obstacleSurroundingTarget.Add(surrTile);
+                                //shouldSkipSurroundingTile = true;
+                                continue;
+                            }
+
+                            //Check 2 por si el tile no es valido para colocarse
+                            else if (surrTile != target && surrTile.unitOnTile != null || surrTile.unitOnTile != null && surrTile.unitOnTile.GetComponent<EnemyUnit>())
+                            {
+                                //Solo hago continue si la unidad no es el propio dragón,
+                                if (surrTile.unitOnTile != selectedCharacter)
+                                {
+                                    obstacleSurroundingTarget.Add(surrTile);
+                                    //shouldSkipSurroundingTile = true;
+                                    continue;
+                                }
+                            }
+
+                            if (surrTile == target)
+                            {
+                                targetFoundInSurroundingTiles = true;
+                            }
+                        }
+
+
+                    }
+
+                    if (targetFoundInSurroundingTiles)
+                    {
+                        for (int i = 0; i < obstacleSurroundingTarget.Count; i++)
+                        {
+                            for (int j = 0; j < obstacleSurroundingTarget[i].neighbours.Count; j++)
+                            {
+                                //Si uno de los vecinos del tile con obstáculo es el target entonces no me impide colocarme en este tile y paso al siguiente.
+                                //Esto es porque solo pueden existir simultaneamente 2 tiles que sean vecinos del target y al mismo tiempo surrounding del tile que estoy comprobando
+                                //En ambos casos ninguno de estos tiles impide que me coloque para atacar al target
+                                if (obstacleSurroundingTarget[i].neighbours[j] == target)
+                                {
+                                    noTargetInNeighbours = false;
+                                    break;
+                                }  
+                            }
+
+                            //Como al resetearlo lo pongo en verdadero, si no se ha puesto en falso significa que no ha encontrado vecino con target.
+                            if (noTargetInNeighbours)
+                            {
+                                //Si he encontrado un obstáculo que no es vecino del target significa que no puedo colocarme en este tile
+                                shouldSkipSurroundingTile = true;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    else if (obstacleSurroundingTarget.Count > 0)
+                    {
+                        shouldSkipSurroundingTile = true;
+                    }
+
+                    if (shouldSkipSurroundingTile)
+                    {
+                        continue;
+                    }
+                }
+
+                //Goblin Y  gigante.
+                //Importante que sea else if para que el dragón no entre en la condición
+                else if (selectedCharacter.GetComponent<EnemyUnit>())
                 {
                     if (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
                     {
@@ -617,6 +745,7 @@ public class TileManager : MonoBehaviour
                         //{
                         //    Debug.Log("Second" + neighbour.unitOnTile.name);
                         //}
+
                         continue;
                     }                 
                 }
@@ -836,69 +965,123 @@ public class TileManager : MonoBehaviour
     List<IndividualTiles> surroundingTiles = new List<IndividualTiles>();
 
     //Obtener los vecinos + las diagonales de un tile
-    public List<IndividualTiles> GetSurroundingTiles(IndividualTiles centerTile)
+    //Si radius es igual a uno se obtienen los 8 tiles que rodean al tile (neighbours + diagonales)
+    //Si radius es 2 se ignoran estos 8 tiles y se obtienen los 14 tiles que rodean a estos 8. Básicamente lo uso para saber los tiles a los que puede atacar el dragón.
+    public List<IndividualTiles> GetSurroundingTiles(IndividualTiles centerTile, int radius, bool shouldIAddCorners, bool shouldAddOnlyBorder)
     {
-        //Vecinos
-        for (int i = 0; i < centerTile.neighbours.Count; i++)
+        surroundingTiles.Clear();
+
+        //Filas.
+        //Resto en vez de sumar para que vaya de arriba a abajo. Por eso es -Radius
+        for (int i = radius; i >= -radius; i--)
         {
-            surroundingTiles.Add(centerTile.neighbours[i]);
+            //Columnas.
+            //Aqui sumo para que vaya de izquierda a derecha.
+            for (int j = -radius; j <= radius; j++)
+            {  
+               if (centerTile.tileZ + j < gridSizeZ && centerTile.tileZ + j >= 0 &&  
+                    centerTile.tileX + i < gridSizeX && centerTile.tileX + i >= 0 &&
+                    grid2DNode[centerTile.tileX + i, centerTile.tileZ + j] != centerTile)
+               {
+                    //Si añado las esquinas
+                    if (shouldIAddCorners)
+                    {
+                        //Si cojo solo el borde
+                        if (shouldAddOnlyBorder)
+                        {
+                            if (Mathf.Abs(j) == radius || Mathf.Abs(i) == radius)
+                            {
+                                surroundingTiles.Add(grid2DNode[centerTile.tileX + i, centerTile.tileZ + j]);
+                            }
+                        }
+
+                        //Si cojo toda el área
+                        else
+                        {
+                            surroundingTiles.Add(grid2DNode[centerTile.tileX + i, centerTile.tileZ + j]);
+                        }
+                    }
+
+                    //Si no quiero añadir las esquinas
+                    else
+                    {
+                        //Si coincide que la j y la i estan a la vez en uno de los máximos o de los mínimos entonces es una esquina
+                        if (j == -radius && (i == radius || i == -radius) ||
+                            j == radius && (i == radius || i == -radius))
+                        {
+                            continue;
+                        }
+
+                        else
+                        {
+                            //Si cojo solo el borde
+                            if (shouldAddOnlyBorder)
+                            {
+                                if (Mathf.Abs(j) == radius || Mathf.Abs(i) == radius)
+                                {
+                                    surroundingTiles.Add(grid2DNode[centerTile.tileX + i, centerTile.tileZ + j]);
+                                }
+                            }
+
+                            //Si cojo toda el área
+                            else
+                            {
+                                surroundingTiles.Add(grid2DNode[centerTile.tileX + i, centerTile.tileZ + j]);
+                            }
+
+                        }
+                    }
+               }
+            }
         }
-
-        //Diagonales
-        surroundingTiles.Add(grid2DNode[centerTile.tileX + 1, centerTile.tileZ + 1]);
-        surroundingTiles.Add(grid2DNode[centerTile.tileX + 1, centerTile.tileZ - 1]);
-        surroundingTiles.Add(grid2DNode[centerTile.tileX - 1, centerTile.tileZ + 1]);
-        surroundingTiles.Add(grid2DNode[centerTile.tileX - 1, centerTile.tileZ - 1]);
-
         return surroundingTiles;
     }
-
 
     //ESTA ERA LA FUNCIÓN QUE ROMPIA LA OPTIMIZACIÓN
     #region DEPRECATED
 
-        public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
-    {
-        charactersAvailableForAttack.Clear();
-        tempCurrentObjectiveCost = 0;
-        tempCurrentPathCost = 0;
+    //    public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
+    //{
+    //    charactersAvailableForAttack.Clear();
+    //    tempCurrentObjectiveCost = 0;
+    //    tempCurrentPathCost = 0;
 
-        //Reuno en una lista todos los tiles a los que puedo acceder
-        OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
+    //    //Reuno en una lista todos los tiles a los que puedo acceder
+    //    OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
 
-        for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-        {
-            if (tilesAvailableForMovement[i].unitOnTile != null && tilesAvailableForMovement[i].unitOnTile.GetComponent<PlayerUnit>())
-            {
-                CalculatePathForMovementCost(tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileX, tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileZ);
+    //    for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+    //    {
+    //        if (tilesAvailableForMovement[i].unitOnTile != null && tilesAvailableForMovement[i].unitOnTile.GetComponent<PlayerUnit>())
+    //        {
+    //            CalculatePathForMovementCost(tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileX, tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileZ);
 
-                //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
-                if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
-                {
-                    //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
-                    if (tempCurrentPathCost != 0)
-                    {
-                        if (tempCurrentObjectiveCost > tempCurrentPathCost)
-                        {
-                            //Limpio la lista de objetivos y añado
-                            charactersAvailableForAttack.Clear();
-                        }
+    //            //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
+    //            if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
+    //            {
+    //                //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
+    //                if (tempCurrentPathCost != 0)
+    //                {
+    //                    if (tempCurrentObjectiveCost > tempCurrentPathCost)
+    //                    {
+    //                        //Limpio la lista de objetivos y añado
+    //                        charactersAvailableForAttack.Clear();
+    //                    }
 
-                        //Me guardo la distancia para checkear
-                        tempCurrentObjectiveCost = tempCurrentPathCost;
+    //                    //Me guardo la distancia para checkear
+    //                    tempCurrentObjectiveCost = tempCurrentPathCost;
 
-                        charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
-                    }
-                }
-                //Resetear tempcurrentPathCost a 0
-                tempCurrentPathCost = 0;
-            }
-        }
-        //Reset
+    //                    charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
+    //                }
+    //            }
+    //            //Resetear tempcurrentPathCost a 0
+    //            tempCurrentPathCost = 0;
+    //        }
+    //    }
+    //    //Reset
 
 
-        return charactersAvailableForAttack;
-    }
+    //    return charactersAvailableForAttack;
+    //}
     #endregion
 
     void OnDrawGizmos()
