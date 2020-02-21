@@ -58,6 +58,9 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected int damageMadeByFall;
 
+    //Daño para añadir buff o debuff
+    public int bonusStateDamage;
+
     [Header("LOGIC")]
 
     //Modelo de la unidad. TIENE QUE ESTAR SERIALIZADO
@@ -223,7 +226,7 @@ public class UnitBase : MonoBehaviour
     //El override se hace en el dragón ya que tiene que actualizar más tiles.
     public virtual void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
-        //Este if está porque la funicón también se usa al colocar las unidades al principio del nivel y ahí no hay tile
+        //Este if está porque la función también se usa al colocar las unidades al principio del nivel y ahí no hay tile
         if (myCurrentTile != null)
         {
             myCurrentTile.unitOnTile = null;
@@ -279,6 +282,8 @@ public class UnitBase : MonoBehaviour
             //Ataque por la espalda
             damageWithMultipliersApplied += bonusDamageBackAttack;
         }
+
+        damageWithMultipliersApplied += bonusStateDamage;
     }
 
     //Aplico el daño a la unidad elegida
@@ -586,8 +591,6 @@ public class UnitBase : MonoBehaviour
         }
 
     }
-
-
 
     #endregion
 

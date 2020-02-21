@@ -143,7 +143,10 @@ public class EnemyUnit : UnitBase
 
     public void MyTurnStart()
     {
-        myPortrait.HighlightMyself();
+        if (myPortrait !=null)
+        {
+            myPortrait.HighlightMyself();
+        }       
         myCurrentEnemyState = enemyState.Searching;
     }
 
@@ -283,7 +286,11 @@ public class EnemyUnit : UnitBase
         hasMoved = false;
         hasAttacked = false;
         myCurrentEnemyState = enemyState.Waiting;
-        myPortrait.UnHighlightMyself();
+        if (myPortrait != null)
+        {
+            myPortrait.UnHighlightMyself();
+        }
+        
         LM.NextEnemyInList();
     }
 
