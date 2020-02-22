@@ -8,6 +8,12 @@ public class BossMultTile : EnemyUnit
     [SerializeField]
     List<IndividualTiles> exteriorTiles = new List<IndividualTiles>();
 
+    //Número de tiles que tengo que restar al path para compensar el hecho de que ocupa 3x3
+    int offsetPathBecauseDragon = 1;
+
+    [SerializeField]
+    List<IndividualTiles> lastTileInPathSurroundingTiles = new List<IndividualTiles>();
+
     //Override a la información que se actualiza al moverse
     public override void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
@@ -125,10 +131,27 @@ public class BossMultTile : EnemyUnit
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
                 //ES -1 PORQUE EN EL CASO DEL DRAGÓN HAY QUE RESTAR UN TILE YA QUE ESTÁ OCUPADO POR EL PROPIO DRAGÓN!!!!!!!!!!!!!!!!!!!!!!!!
-                for (int i = 0; i < LM.TM.currentPath.Count-1; i++)
+                for (int i = 0; i < LM.TM.currentPath.Count - offsetPathBecauseDragon; i++)
                 {
-                    
                     pathToObjective.Add(LM.TM.currentPath[i]);
+                }
+
+                lastTileInPathSurroundingTiles.Clear();
+
+                //Despúes de haber restado uno al path compruebo que en este último tile sigue sin estar el jugador.
+                //En caso contrario resto otro tile al path
+                for (int i = 0; i < LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false).Count; i++)
+                {
+                    lastTileInPathSurroundingTiles.Add(LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false)[i]);
+                }
+
+                for (int i = 0; i < lastTileInPathSurroundingTiles.Count; i++)
+                {
+                    if (lastTileInPathSurroundingTiles[i].unitOnTile != null && lastTileInPathSurroundingTiles[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        pathToObjective.RemoveAt(pathToObjective.Count - 2);
+                        break;
+                    }
                 }
 
                 myCurrentEnemyState = enemyState.Attacking;
@@ -368,9 +391,28 @@ public class BossMultTile : EnemyUnit
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
                 //ES -1 PORQUE EN EL CASO DEL DRAGÓN HAY QUE RESTAR UN TILE YA QUE ESTÁ OCUPADO POR EL PROPIO DRAGÓN!!!!!!!!!!!!!!!!!!!!!!!!
-                for (int i = 0; i < LM.TM.currentPath.Count-1; i++)
+                for (int i = 0; i < LM.TM.currentPath.Count - offsetPathBecauseDragon; i++)
                 {
                     pathToObjective.Add(LM.TM.currentPath[i]);
+                }
+
+
+                lastTileInPathSurroundingTiles.Clear();
+
+                //Despúes de haber restado uno al path compruebo que en este último tile sigue sin estar el jugador.
+                //En caso contrario resto otro tile al path
+                for (int i = 0; i < LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false).Count; i++)
+                {
+                    lastTileInPathSurroundingTiles.Add(LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false)[i]);
+                }
+
+                for (int i = 0; i < lastTileInPathSurroundingTiles.Count; i++)
+                {
+                    if (lastTileInPathSurroundingTiles[i].unitOnTile != null && lastTileInPathSurroundingTiles[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        pathToObjective.RemoveAt(pathToObjective.Count - 2);
+                        break;
+                    }
                 }
             }
         }
