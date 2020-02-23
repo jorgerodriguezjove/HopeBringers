@@ -1020,20 +1020,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void ChangeGameSpeed(bool _shouldFastForward)
-    {
-        if (_shouldFastForward)
-        {
-            Time.timeScale = 2;
-        }
-
-        else
-        {
-            Time.timeScale = 1;
-        }
-    }
-
-
     private void Update()
     {
         switch (currentLevelState)

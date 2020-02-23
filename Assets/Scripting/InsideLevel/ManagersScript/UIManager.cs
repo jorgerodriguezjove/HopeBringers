@@ -276,32 +276,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject undoButton;
 
-    public void FastForwardButton()
-    {
-        //if (isGameAccelerated)
-        //{
-        //    LM.ChangeGameSpeed(false);
-        //    isGameAccelerated = false;
-        //    changeSpeedText.SetText("x1 Speed");
-        //}
-        //else
-        //{
-        //    LM.ChangeGameSpeed(true);
-        //    isGameAccelerated = true;
-        //    changeSpeedText.SetText("x2 Speed");
-        //}
-    }
-
     //Hago aparecer o desaparecer, el botón de undo, fast forward...
     public void HideShowEnemyUi(bool _shouldShow)
     {
         fastForwardButton.SetActive(_shouldShow);
-
-        //Si el juego esta acelerado al acabar el turno enemigo lo pongo a velocidad normal antes de desactivar el botón
-        if (isGameAccelerated)
-        {
-            FastForwardButton();
-        }
 
         undoButton.SetActive(!_shouldShow);
     }
