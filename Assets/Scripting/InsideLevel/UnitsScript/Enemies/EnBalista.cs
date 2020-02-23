@@ -105,7 +105,7 @@ public class EnBalista : EnemyUnit
     private void MovementLogic(IndividualTiles tileToMove)
     {
         //Muevo a la balista
-        transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+        transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
 
         //Actualizo las variables de los tiles
         UpdateInformationAfterMovement(tileToMove);

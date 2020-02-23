@@ -100,7 +100,7 @@ public class EnGiant : EnemyUnit
                 }
 
                 //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
@@ -228,7 +228,7 @@ public class EnGiant : EnemyUnit
     private void MovementLogic(IndividualTiles tileToMove)
     {
         //Muevo al gigante
-        transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+        transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
 
         StartCoroutine("MovementWait");
 
@@ -328,7 +328,7 @@ public class EnGiant : EnemyUnit
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective

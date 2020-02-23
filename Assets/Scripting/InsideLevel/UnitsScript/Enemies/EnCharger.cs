@@ -148,10 +148,10 @@ public class EnCharger : EnemyUnit
             currentTileVectorToMove = pathToObjective[j].transform.position;
 
             //Muevo y roto a la unidad
-            transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+            transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
 
             //Espera entre casillas
-            yield return new WaitForSeconds(timeMovementAnimation);
+            yield return new WaitForSeconds(currentTimeForMovement);
 
             //Si es tier 2 instancia fuego
             if (myTierLevel == TierLevel.Level2)

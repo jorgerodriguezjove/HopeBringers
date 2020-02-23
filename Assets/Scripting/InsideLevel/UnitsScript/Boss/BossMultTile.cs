@@ -126,7 +126,7 @@ public class BossMultTile : EnemyUnit
                 }
 
                 //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ,false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
@@ -282,15 +282,15 @@ public class BossMultTile : EnemyUnit
             currentTileVectorToMove = pathToObjective[j].transform.position;  //new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);
 
             //Muevo y roto a la unidad
-            transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+            transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
             unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
 
             //Espera entre casillas
-            yield return new WaitForSeconds(timeMovementAnimation);
+            yield return new WaitForSeconds(currentTimeForMovement);
         }
 
         //Espero después de moverme para que no vaya demasiado rápido
-        yield return new WaitForSeconds(timeWaitAfterMovement);
+        yield return new WaitForSeconds(currentTimeForMovement);
         hasMoved = true;
 
 
@@ -386,7 +386,7 @@ public class BossMultTile : EnemyUnit
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective

@@ -22,8 +22,13 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     private float timeWaitingEnded;
 
-   
+    //La variable de time for movement que esta en unitbase determina el tiempo que tarda por tile al moverse.
+    //Esta variable sirve para que cuando le de al skip el tiempo pase a ser 0 para que vaya rápido
+    protected float currentTimeForMovement;
 
+    //La variable timeWaitingAttacking ESTA MAL NOMBRADA y sirve de espera después de moverse haya atacado o no
+    //Rsta variable al igual que currentTimeForMovement sirve para acelerar el turno enemigo
+    protected float currentTimeWaitinAttacking;
 
     //Estado actual del enemigo
     [SerializeField]
@@ -131,9 +136,8 @@ public class EnemyUnit : UnitBase
 
         movementParticle.SetActive(false);
 
-
-     
-      
+        currentTimeForMovement = timeMovementAnimation;
+        currentTimeWaitinAttacking = timeWaitingAttacking;
     }
 
    
@@ -206,7 +210,7 @@ public class EnemyUnit : UnitBase
 
         else if (myCurrentEnemyState == enemyState.Attacking)
         {
-            yield return new WaitForSeconds(timeWaitingAttacking);
+            yield return new WaitForSeconds(currentTimeWaitinAttacking);
             Attack();
         }
 
@@ -286,12 +290,23 @@ public class EnemyUnit : UnitBase
         hasMoved = false;
         hasAttacked = false;
         myCurrentEnemyState = enemyState.Waiting;
+
+        //Me aseguro de que el tiempo de movimiento vuelve a la normalidad por si le ha dado a acelerar
+        currentTimeForMovement = timeMovementAnimation;
+        currentTimeWaitinAttacking = timeWaitingAttacking;
+
         if (myPortrait != null)
         {
             myPortrait.UnHighlightMyself();
         }
         
         LM.NextEnemyInList();
+    }
+
+    public void SkipAnimation()
+    {
+        currentTimeForMovement = 0;
+        currentTimeWaitinAttacking = 0;
     }
 
     #endregion

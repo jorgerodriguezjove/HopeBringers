@@ -491,7 +491,7 @@ public class LevelManager : MonoBehaviour
                     if (tileToMove == tilesAvailableForMovement[i] || tileToMove == selectedCharacter.myCurrentTile)
                     {
                         //Calculo el path de la unidad
-                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ);
+                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ, false);
                         selectedCharacter.myCurrentTile.ColorDeselect();
 
                         //Aviso a la unidad de que se tiene que mover
@@ -858,6 +858,11 @@ public class LevelManager : MonoBehaviour
     public List<IndividualTiles> CalculateRhombusArea(IndividualTiles _rhombusCenter, int _radius)
     {
        return TM.GetRhombusTiles(_rhombusCenter, _radius);
+    }
+
+    public void SkipEnemyAnimation()
+    {
+        enemiesOnTheBoard[counterForEnemiesOrder].SkipAnimation();
     }
 
 

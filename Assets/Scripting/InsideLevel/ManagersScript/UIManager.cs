@@ -278,18 +278,18 @@ public class UIManager : MonoBehaviour
 
     public void FastForwardButton()
     {
-        if (isGameAccelerated)
-        {
-            LM.ChangeGameSpeed(false);
-            isGameAccelerated = false;
-            changeSpeedText.SetText("x1 Speed");
-        }
-        else
-        {
-            LM.ChangeGameSpeed(true);
-            isGameAccelerated = true;
-            changeSpeedText.SetText("x2 Speed");
-        }
+        //if (isGameAccelerated)
+        //{
+        //    LM.ChangeGameSpeed(false);
+        //    isGameAccelerated = false;
+        //    changeSpeedText.SetText("x1 Speed");
+        //}
+        //else
+        //{
+        //    LM.ChangeGameSpeed(true);
+        //    isGameAccelerated = true;
+        //    changeSpeedText.SetText("x2 Speed");
+        //}
     }
 
     //Hago aparecer o desaparecer, el botón de undo, fast forward...
@@ -598,6 +598,18 @@ public class UIManager : MonoBehaviour
 			}
 
 		}
+
+
+        if (skipButtonHolding)
+        {
+            skipTimer += Time.deltaTime;
+
+            if (skipTimer > timeToSkipNextEnemy)
+            {
+                LM.SkipEnemyAnimation();
+                skipTimer = 0;
+            }
+        }
     }
 
 
@@ -642,8 +654,27 @@ public class UIManager : MonoBehaviour
 		optionsScreen.SetActive(isActivated);
 		optionsButton.SetActive(!isActivated);
 	}
-	#endregion
+    #endregion
 
+    bool skipButtonHolding = false;
 
+    float skipTimer;
+    [SerializeField]
+    float timeToSkipNextEnemy;
+    
+   
+    public void ClickDownSkipButton()
+    {
+        Debug.Log("click");
+        LM.SkipEnemyAnimation();
+        skipButtonHolding = true;
+    }
+
+    public void ClickUpSkipButton()
+    {
+        Debug.Log("suelto");
+        skipButtonHolding = false;
+        skipTimer = 0;
+    }
 
 }

@@ -471,7 +471,7 @@ public class TileManager : MonoBehaviour
                             }
                         }
                         
-                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
 
                         if (tempCurrentPathCost <= movementUds)
                         {
@@ -515,7 +515,7 @@ public class TileManager : MonoBehaviour
                             }
 
                             //Compruebo si existe un camino hasta el tile
-                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ);
+                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
 
 
                             if (tempCurrentPathCost <= movementUds)
@@ -537,7 +537,7 @@ public class TileManager : MonoBehaviour
     int numberOfNeighboursWithDifferentHeight;
 
 
-    public void CalculatePathForMovementCost(int x, int z)
+    public void CalculatePathForMovementCost(int x, int z, bool _shouldIgnoreUnitsForRepath)
     {
         openList.Clear();
         closedHasSet.Clear();
@@ -581,6 +581,7 @@ public class TileManager : MonoBehaviour
 
             foreach (IndividualTiles neighbour in grid2DNode[currentNode.tileX, currentNode.tileZ].neighbours)
             {
+                //No le he puesto !_shouldIgnoreUnitsForRepath. Solo está en el enemigo normal
                 #region DRAGON
                 //Dragón.
                 if (selectedCharacter.GetComponent<BossMultTile>())
@@ -779,7 +780,7 @@ public class TileManager : MonoBehaviour
                     }
 
                     //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
-                    else if (neighbour != target && neighbour.unitOnTile != null || neighbour.unitOnTile != null && neighbour.unitOnTile.GetComponent<EnemyUnit>())
+                    else if (!_shouldIgnoreUnitsForRepath && (neighbour != target && neighbour.unitOnTile != null || neighbour.unitOnTile != null && neighbour.unitOnTile.GetComponent<EnemyUnit>()))
                     {
                         //if (neighbour.unitOnTile != null)
                         //{
@@ -787,7 +788,7 @@ public class TileManager : MonoBehaviour
                         //}
 
                         continue;
-                    }                 
+                    }
                 }
 
                 //Player
@@ -819,13 +820,53 @@ public class TileManager : MonoBehaviour
             //Si llega hasta aqui significa que no hay tiles a los que moverse por lo que el coste es infinito.
             //NO PONER RETURN, puede darse el caso de que este llegando al ultimo tile de una fila y si estan todos los lados bloqueados menos el tile anterior,
             //entraria aqui porque el tile anterior no puede revisitarlo, asi que cortariamos el proceso de seguir comprobando el resto de tiles de Open antes de tiempo.
+            
+
             if (openList.Count == 0)
             {
-                //Debug.Log("No hay tiles a los que me pueda mover");
-                tempCurrentPathCost = Mathf.Infinity;
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //ES MUY POSIBLE QUE ESTE SEGUNDO IF HAGA LO MISMO QUE EL RETURN Y ROMPA LO QUE PONGO EN EL COMENTARIO DE ARRIBA
+                if (!_shouldIgnoreUnitsForRepath && !recalculatePathAtTheEndOfTheFunction)
+                {
+                    recalculatePathAtTheEndOfTheFunction = true;
+                }
+
+                else if (_shouldIgnoreUnitsForRepath)
+                {
+                    recalculatePathAtTheEndOfTheFunction = false;
+                    tempCurrentPathCost = Mathf.Infinity;
+                }
+              
             }
         }
+
+        if (recalculatePathAtTheEndOfTheFunction)
+        {
+            RecalculateUnreachablePath(x, z);
+        }
+
     }
+
+    //Este bool indica que el objetivo que busca el path es inalcanzable y que por tanto al final de la función tiene que llamar a recalcular el path sin tener en cuenta los enemigos
+    private bool recalculatePathAtTheEndOfTheFunction;
+
+    public void RecalculateUnreachablePath(int x, int z)
+    {
+        CalculatePathForMovementCost(x, z, true);
+
+        //Le resto 2 porque no quiero tener en cuenta el ultimo tile ya que es en el que esta el player y otro más porque count sin más se sale de la lista (ya que el último elemento es siempre count-1).
+        for (int i = currentPath.Count-2; i > 0; i--)
+        {
+            if (currentPath[i].unitOnTile != null)
+            {
+                CalculatePathForMovementCost(currentPath[i].tileX, currentPath[i].tileZ, false);
+                return;
+            }
+        }
+
+        tempCurrentPathCost = Mathf.Infinity;
+    }
+
 
     private void LastPartOfPathfinding()
     {
@@ -911,7 +952,7 @@ public class TileManager : MonoBehaviour
 
         for (int i = 0; i < playersOnTheBoard.Length; i++)
         {
-            CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ);
+            CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ, false);
 
             if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
             {
