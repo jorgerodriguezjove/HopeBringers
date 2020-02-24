@@ -399,9 +399,13 @@ public class PlayerUnit : UnitBase
 
         MoveToTile(_tileToMove, _currentPath);
 
+        //Esto tiene que ir antes del  LM.UnitHasFinishedMovementAndRotation() para que función de UnitHasFinishedMovementAndRotation() sepa si hay
+        // enemigos a los que atacar
+        CheckUnitsInRangeToAttack();
+
         LM.UnitHasFinishedMovementAndRotation();
 
-        CheckUnitsInRangeToAttack();
+        
     }
 
     public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)

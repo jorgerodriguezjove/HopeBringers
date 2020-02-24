@@ -282,6 +282,7 @@ public class LevelManager : MonoBehaviour
                         }
                     }
 
+                    
                     if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipAttack();
@@ -572,6 +573,7 @@ public class LevelManager : MonoBehaviour
         }
         tilesAvailableForMovement.Clear();
 
+       
         if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 		{
 			UIM.TooltipAttack();

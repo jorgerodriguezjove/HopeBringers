@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	GameObject noMoreActionsPanel;
 
+	//Este int lo uso para saber cuantos personajes han acabado sus acciones. Al acabar todos, el panel ya tendría que salir.
+	int numberOfCharactersFinished;
+
 	[SerializeField]
 	private GameObject optionsScreen;
 
@@ -241,22 +244,35 @@ public class UIManager : MonoBehaviour
 
 	public void CheckActionsAvaliable()
 	{
+
+		numberOfCharactersFinished = 0;
 		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
 			if(LM.charactersOnTheBoard[i].hasMoved == false)
 			{
-				break;
+				Debug.Log("Break1");
+				//break;
 			}
 			else if(LM.charactersOnTheBoard[i].hasAttacked == false && hasCharacterUnitInRange)
 			{
-				break;
+				Debug.Log("Break2");
+				//break;
 			}
 			else
 			{
-				endTurnButton.GetComponent<MeshRenderer>().material = noMoreActionMaterial;
-				noMoreActionsPanel.SetActive(true);
+				
+				numberOfCharactersFinished++;
+				Debug.Log("Durante " + numberOfCharactersFinished);
 			}
 		}
+
+		
+		if (numberOfCharactersFinished == LM.charactersOnTheBoard.Count)
+		{
+			endTurnButton.GetComponent<MeshRenderer>().material = noMoreActionMaterial;
+			noMoreActionsPanel.SetActive(true);
+		}
+		Debug.Log("Después de " + numberOfCharactersFinished);
 	}
 	public void ResetActionsAvaliable()
 	{
