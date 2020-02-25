@@ -18,20 +18,20 @@ public class Tooltips : MonoBehaviour
 	//Bool para controlar que el código del update solo se ejecute al entrar en un panel
 	bool startTooltip = false;
 
+	private UIManager UIM;
 	[SerializeField]
 	bool activeSkill;
 	[SerializeField]
 	bool pasiveSkill;
 	[SerializeField]
-	GameObject tooltipPanel;
-	[SerializeField]
 	GameObject fatherTooltip;
-	[SerializeField]
-	TextMeshProUGUI textPanel;
-	[SerializeField]
-	Image imagePanel;
+
 
 	#region INIT
+	private void Awake()
+	{
+		UIM = FindObjectOfType<UIManager>();
+	}
 	private void Start()
 	{
 		timeToShowTooltipTimer = timeToShowTooltip;
@@ -49,21 +49,21 @@ public class Tooltips : MonoBehaviour
 				Debug.Log("Timer");
 				if (timeToShowTooltipTimer <= 0)
 				{
-					tooltipPanel.SetActive(true);
+					UIM.tooltipPanel.SetActive(true);
 					if (activeSkill)
 					{
-						textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.activeSkilllInfo;
-						imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.attackTooltipImage;
+						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.activeSkilllInfo;
+						UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.attackTooltipImage;
 					}
 					else if (pasiveSkill)
 					{
-						textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveSkillInfo;
-						imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveTooltipImage;
+						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveSkillInfo;
+						UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveTooltipImage;
 					}
 					else
 					{
-						textPanel.text = tooltipAssignerPlayer.unitGeneralInfo;
-						imagePanel.sprite = tooltipAssignerPlayer.attackTooltipImage;
+						UIM.textPanel.text = tooltipAssignerPlayer.unitGeneralInfo;
+						UIM.imagePanel.sprite = tooltipAssignerPlayer.attackTooltipImage;
 					}				
 					//Mostrar el tooltip
 					Debug.Log("Tooltip Aparece");
@@ -72,7 +72,7 @@ public class Tooltips : MonoBehaviour
 			else
 			{
 				timeToShowTooltipTimer = timeToShowTooltip;
-				tooltipPanel.SetActive(false);
+				UIM.tooltipPanel.SetActive(false);
 				//Tooltip desaparece
 				Debug.Log("Tooltip Desaparece");
 			}

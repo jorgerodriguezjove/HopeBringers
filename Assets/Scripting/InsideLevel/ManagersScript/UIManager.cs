@@ -72,12 +72,21 @@ public class UIManager : MonoBehaviour
 	GameObject cameraController;
 	[SerializeField]
 	float focusDuration = 1f;
-	
-    [Header("CURSORES")]
-	[SerializeField]
-	public Texture2D attackCursor, movementCursor;
 
-    //Imagen de cada player explicando sus acciones
+	[SerializeField]
+	public GameObject tooltipPanel;
+	[SerializeField]
+	public TextMeshProUGUI textPanel;
+	[SerializeField]
+	public Image imagePanel;
+
+	[Header("CURSORES")]
+
+	[SerializeField]
+	public Texture2D attackCursor;
+	public Texture2D movementCursor;
+
+	//Imagen de cada player explicando sus acciones
 	[SerializeField]
 	public Image explanationImage;
 
