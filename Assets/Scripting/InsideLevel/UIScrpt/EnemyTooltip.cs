@@ -51,12 +51,30 @@ public class EnemyTooltip : MonoBehaviour
 					if (enemyTier)
 					{
 						textPanel.text = fatherTooltip.GetComponent<EnemyTooltip>().tooltipAssignedEnemy.enemyTierInfo;
-						imagePanel.sprite = fatherTooltip.GetComponent<EnemyTooltip>().tooltipAssignedEnemy.enemyTierImage;
+						if(fatherTooltip.GetComponent<EnemyTooltip>().tooltipAssignedEnemy.enemyTierImage != null)
+						{
+							imagePanel.gameObject.SetActive(true);
+							imagePanel.sprite = fatherTooltip.GetComponent<EnemyTooltip>().tooltipAssignedEnemy.enemyTierImage;
+						}
+						else
+						{
+							imagePanel.gameObject.SetActive(false);
+						}
+						
 					}
 					else
 					{
 						textPanel.text = tooltipAssignedEnemy.unitGeneralInfo;
-						imagePanel.sprite = tooltipAssignedEnemy.tooltipImage;
+						if (tooltipAssignedEnemy.tooltipImage != null)
+						{
+							imagePanel.gameObject.SetActive(true);
+							imagePanel.sprite = tooltipAssignedEnemy.tooltipImage;
+						}
+						else
+						{
+							imagePanel.gameObject.SetActive(false);
+						}
+						
 					}
 					//Mostrar el tooltip
 					Debug.Log("Tooltip Aparece");

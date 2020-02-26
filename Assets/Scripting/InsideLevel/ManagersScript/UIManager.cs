@@ -147,7 +147,7 @@ public class UIManager : MonoBehaviour
             //Activamos los retratos necesarios y les asignamos su jugador
             panelesPJ[i].SetActive(true);
             panelesPJ[i].GetComponent<Portraits>().assignedPlayer = LM.charactersOnTheBoard[i];
-			panelesPJ[i].GetComponent<Tooltips>().tooltipAssignerPlayer = LM.charactersOnTheBoard[i];
+			panelesPJ[i].GetComponent<Tooltips>().tooltipAssignedPlayer = LM.charactersOnTheBoard[i];
             LM.charactersOnTheBoard[i].myPanelPortrait = panelesPJ[i];
 
             //Actualizamos las barras de vida
