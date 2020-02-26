@@ -7,7 +7,7 @@ using TMPro;
 public class Tooltips : MonoBehaviour
 {
 	[HideInInspector]
-	public PlayerUnit tooltipAssignerPlayer;
+	public PlayerUnit tooltipAssignedPlayer;
 	//Contador para retrasar la aparición del tooltip
 	public float timeToShowTooltip = 1f;
 	float timeToShowTooltipTimer;
@@ -52,18 +52,44 @@ public class Tooltips : MonoBehaviour
 					UIM.tooltipPanel.SetActive(true);
 					if (activeSkill)
 					{
-						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.activeSkilllInfo;
-						UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.attackTooltipImage;
+						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.activeSkillInfo;
+						if(fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.attackTooltipImage != null)
+						{
+							UIM.imagePanel.gameObject.SetActive(true);
+							UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.attackTooltipImage;
+						}
+						else
+						{
+							UIM.imagePanel.gameObject.SetActive(false);
+						}
+						
 					}
 					else if (pasiveSkill)
 					{
-						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveSkillInfo;
-						UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignerPlayer.pasiveTooltipImage;
+						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.pasiveSkillInfo;
+						if (fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.attackTooltipImage != null)
+						{
+							UIM.imagePanel.gameObject.SetActive(true);
+							UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.pasiveTooltipImage;
+						}
+						else
+						{
+							UIM.imagePanel.gameObject.SetActive(false);
+						}
 					}
 					else
 					{
-						UIM.textPanel.text = tooltipAssignerPlayer.unitGeneralInfo;
-						UIM.imagePanel.sprite = tooltipAssignerPlayer.attackTooltipImage;
+						UIM.textPanel.text = tooltipAssignedPlayer.unitGeneralInfo;
+						if (tooltipAssignedPlayer.attackTooltipImage != null)
+						{
+							UIM.imagePanel.gameObject.SetActive(true);
+							UIM.imagePanel.sprite = tooltipAssignedPlayer.attackTooltipImage;
+						}
+						else
+						{
+							UIM.imagePanel.gameObject.SetActive(false);
+						}
+						
 					}				
 					//Mostrar el tooltip
 					Debug.Log("Tooltip Aparece");

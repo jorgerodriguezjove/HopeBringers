@@ -39,7 +39,18 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     protected float timeWaitAfterAttack;
 
-    [Header("FEEDBACK")]
+	[Header("INFO")]
+	[@TextAreaAttribute(15, 20)]
+	public string activeSkillInfo;
+	[SerializeField]
+	public Sprite attackTooltipImage;
+	[@TextAreaAttribute(15, 20)]
+	public string pasiveSkillInfo;
+	[SerializeField]
+	public Sprite pasiveTooltipImage;
+	public string attackInfo;
+
+	[Header("FEEDBACK")]
 
     [SerializeField]
     public Material selectedMaterial;
@@ -71,22 +82,6 @@ public class PlayerUnit : UnitBase
 	public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
 
 	//Para el tooltip de ataque
-
-
-
-
-	[Header("INFO")]
-	[@TextAreaAttribute(15, 20)]
-	public string activeSkilllInfo;
-	[SerializeField]
-	public Sprite attackTooltipImage;
-	[@TextAreaAttribute(15, 20)]
-	public string pasiveSkillInfo;
-	[SerializeField]
-	public Sprite pasiveTooltipImage;
-	[SerializeField]
-	[@TextAreaAttribute(15, 20)]
-	public string attackInfo;
 
 	[Header("REFERENCIAS")]
 
