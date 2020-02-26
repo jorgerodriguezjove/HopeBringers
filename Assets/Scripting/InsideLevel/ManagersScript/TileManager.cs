@@ -38,18 +38,6 @@ public class TileManager : MonoBehaviour
 
     int gridSizeY;
 
-    //Colores tiles
-    [SerializeField]
-    private Material availableForMovementColor;
-    [SerializeField]
-    private Material currentTileHoverMovementColor;
-    [SerializeField]
-    private Material attackColor;
-    [SerializeField]
-    private Material chargingAttackColor;
-    [SerializeField]
-    private Material actionRangeColor;
-
     [Header("FUNCIÓN CREAR PATH")]
 
     //Diccionario con distancia a nodos
@@ -250,9 +238,7 @@ public class TileManager : MonoBehaviour
 
                     gridObject[x, y, z] = Instantiate(tilePref, new Vector3(worldPoint.x, worldPoint.y - 0.5f, worldPoint.z), Quaternion.identity);
 
-                    gridObject[x, y, z].AddComponent<IndividualTiles>();
-
-                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn, startingTile, worldPoint, x, y, z, tilePref, LM, availableForMovementColor, currentTileHoverMovementColor, attackColor, actionRangeColor, chargingAttackColor);
+                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn, startingTile, worldPoint, x, y, z, tilePref, LM);
 
                     grid3DNode[x, y, z] = gridObject[x, y, z].GetComponent<IndividualTiles>();
                 }

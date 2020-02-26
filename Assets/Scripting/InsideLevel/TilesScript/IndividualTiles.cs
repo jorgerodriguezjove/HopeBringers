@@ -79,16 +79,21 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [Header("FEEDBACK")]
 
     //Estas son las variables locales. LOS MATERIALES SE SETEAN EN EL TILE MANAGER
-    [HideInInspector]
-    public Material availableForMovementColor;
-    [HideInInspector]
-    public Material currentTileHoverMovementColor;
-    [HideInInspector]
-    public Material attackColor;
-    [HideInInspector]
-    public Material chargingAttackColor;
-    [HideInInspector]
-    public Material actionRangeColor;
+    [SerializeField]
+    public Material moveInteriorColor;
+    [SerializeField]
+    public Material moveBorderColor;
+
+
+    [SerializeField]
+    public Material hoverTileBorderColor;
+
+    [SerializeField]
+    public Material attackBorderColor;
+    [SerializeField]
+    public Material chargingAttackBorderColor;
+    [SerializeField]
+    public Material actionRangeBorderColor;
 
     //Material inicial del tile
     private Material initialColor;
@@ -105,7 +110,12 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [HideInInspector]
     public LevelManager LM;
 
-    MeshRenderer myMeshRenderer;
+    MeshRenderer meshRendererUsing;
+
+    [SerializeField]
+    MeshRenderer tileBorder;
+    [SerializeField]
+    MeshRenderer tileInterior;
 
     [Header("OPTIMIZATION")]
 
@@ -140,8 +150,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Constructor
     public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn, bool _startingTile,
                              Vector3 _worldPos, int xPos, int yPos, int zPos, 
-                             GameObject tilePref, LevelManager LMRef, 
-                             Material _selectMaterial, Material _currentMaterial, Material _attackMaterial, Material _actionRangeMaterial, Material _chargingAttackMaterial)
+                             GameObject tilePref, LevelManager LMRef)
     {
         //Inicializo las variables que le pasa Grid
         isObstacle = _isObstacle;
@@ -169,17 +178,13 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         }
 
         //Seteo los materiales
-        myMeshRenderer = GetComponent<MeshRenderer>();
+        meshRendererUsing = GetComponent<MeshRenderer>();
 
-        initialColor = myMeshRenderer.material;
+        initialColor = meshRendererUsing.material;
 
-        availableForMovementColor = _selectMaterial;
-        currentTileHoverMovementColor = _currentMaterial;
-        attackColor = _attackMaterial;
-        actionRangeColor = _actionRangeMaterial;
-        chargingAttackColor = _chargingAttackMaterial;
-
-        myMeshRenderer.enabled = false;
+        meshRendererUsing.enabled = false;
+        tileBorder.enabled = false;
+        tileInterior.enabled = false;
 
         //Aviso a los vecinos de la ocupación del tile
         UpdateNeighboursOccupied();
@@ -284,9 +289,12 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         //Con este if evito que se pinten los tiles de los personajes con el pathfinding del goblin
         if (unitOnTile == null)
         {
-            myMeshRenderer.enabled = true;
+            tileInterior.enabled = true;
+            tileInterior.material = moveInteriorColor;
 
-            GetComponent<MeshRenderer>().material = availableForMovementColor;
+            tileBorder.enabled = true;
+            tileBorder.material = moveBorderColor;
+
             isMovementTile = true;
         }
 
@@ -294,13 +302,15 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         {
             Debug.Log("Soy tile " + name + "y me han dicho que me pinte aunque tengo una unidad");
         }
-        
     }
 
     public void ColorCurrentTileHover()
     {
-        myMeshRenderer.enabled = true;
-        GetComponent<MeshRenderer>().material = currentTileHoverMovementColor;
+        //tileInterior.enabled = true;
+        //tileInterior.material = hoverTileBorderColor;
+
+        tileBorder.enabled = true;
+        tileBorder.material = hoverTileBorderColor;
     }
 
     //Cambiar a color normal
@@ -308,13 +318,16 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     {
         if (isUnderAttack)
         {
-            myMeshRenderer.enabled = true;
-            GetComponent<MeshRenderer>().material = attackColor;
+            tileInterior.enabled = true;
+            tileInterior.material = attackBorderColor;
+
+            tileBorder.enabled = true;
+            tileBorder.material = attackBorderColor;
         }
         else
         {
-            myMeshRenderer.enabled = false;
-            //GetComponent<MeshRenderer>().material = initialColor;
+            tileInterior.enabled = false;
+            tileBorder.enabled = false;
         }
 
         isMovementTile = false;
@@ -324,16 +337,24 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar a color de rango de acción dormido
     public void ColorActionRange()
     {
-        myMeshRenderer.enabled = true;
-        GetComponent<MeshRenderer>().material = actionRangeColor;  
+        tileBorder.enabled = true;
+        tileBorder.material = actionRangeBorderColor;
     }
+
+
+
+
 
 
     //Cambiar el color a ataque
     public void ColorAttack()
     {
-        myMeshRenderer.enabled = true;
-        GetComponent<MeshRenderer>().material = attackColor;
+        //tileInterior.enabled = true;
+        //tileInterior.material = attackBorderColor;
+
+        tileBorder.enabled = true;
+        tileBorder.material = attackBorderColor;
+
         isUnderAttack = true;
     }
 
@@ -342,16 +363,20 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     {
         if (!isUnderAttack)
         {
-            myMeshRenderer.enabled = true;
-            GetComponent<MeshRenderer>().material = chargingAttackColor;
+            //tileInterior.enabled = true;
+            //tileInterior.material = chargingAttackBorderColor;
+
+            tileBorder.enabled = true;
+            tileBorder.material = chargingAttackBorderColor;
         }
     }
 
     //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile
     public void ColorDesAttack()
     {
-        myMeshRenderer.enabled = false;
-        //GetComponent<MeshRenderer>().material = initialColor;
+        tileBorder.enabled = false;
+        //tileInterior.enabled = false;
+
         isUnderAttack = false;
     }
 
