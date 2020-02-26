@@ -100,6 +100,7 @@ public class UIManager : MonoBehaviour
 	private bool scrollUpToEnemy, scrollDownToEnemy;
 
 	//Bool para saber si la unidad tiene alguna unidad a rango o no
+	
 	private bool hasCharacterUnitInRange;
 
     //Velocidad de scroll
@@ -257,22 +258,21 @@ public class UIManager : MonoBehaviour
 		numberOfCharactersFinished = 0;
 		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
-			if(LM.charactersOnTheBoard[i].hasMoved == false)
+			if (LM.charactersOnTheBoard[i].hasAttacked)
 			{
-				Debug.Log("Break1");
-				//break;
-			}
-			else if(LM.charactersOnTheBoard[i].hasAttacked == false && hasCharacterUnitInRange)
-			{
-				Debug.Log("Break2");
-				//break;
-			}
-			else
-			{
-				
 				numberOfCharactersFinished++;
-				Debug.Log("Durante " + numberOfCharactersFinished);
 			}
+			else if(LM.charactersOnTheBoard[i].hasMoved && LM.charactersOnTheBoard[i].hasAttacked == false 
+				&& LM.charactersOnTheBoard[i].currentUnitsAvailableToAttack.Count == 0)
+			{
+				numberOfCharactersFinished++;
+			}
+			else 
+			{
+				Debug.Log(LM.charactersOnTheBoard[i] + " Ha pasado ");
+				
+			}
+			
 		}
 
 		

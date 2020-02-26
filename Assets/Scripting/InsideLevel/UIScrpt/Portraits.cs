@@ -16,6 +16,9 @@ public class Portraits : MonoBehaviour
     [HideInInspector]
     private LevelManager LM;
 
+    //Uso este int para poder resetear los tokens 
+    private int activatedTokens;
+
     //Barra de vida y valor de la barra del personaje
     [SerializeField]
     public TextMeshProUGUI healthValue;
@@ -77,6 +80,7 @@ public class Portraits : MonoBehaviour
     {
 		
         RefreshHealth();
+        activatedTokens = assignedPlayer.maxHealth;
         RefreshSprites();
         RefreshTokens();
     }
@@ -214,11 +218,19 @@ public class Portraits : MonoBehaviour
         //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
         for (int i = lifeTokensList.Count - 1; i+1 > assignedPlayer.currentHealth ; i--)
         {
+
             if (lifeTokensList[i].GetComponent<LifeToken>())
             {
                 if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
                 {
                     lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
+                    activatedTokens--;
+                }
+                else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
+                    && assignedPlayer.currentHealth > activatedTokens )
+                {
+                    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+                    activatedTokens++;
                 }
             }
         }

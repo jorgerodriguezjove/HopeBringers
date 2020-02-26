@@ -40,7 +40,7 @@ public class Druid : PlayerUnit
             unitToAttack.currentHealth += healedLife;
             currentHealth -= healedLife;
             UIM.RefreshTokens();
-
+            UIM.RefreshHealth();
 
         }
         else
@@ -52,6 +52,7 @@ public class Druid : PlayerUnit
             {
                 currentHealth += healedLife;
                 UIM.RefreshTokens();
+                UIM.RefreshHealth();
             }
 
             //Hay que cambiar

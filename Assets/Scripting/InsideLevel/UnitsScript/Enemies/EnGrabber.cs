@@ -527,7 +527,7 @@ public class EnGrabber : EnemyUnit
         keepSearching = false;
     }
 
-    //Hago override a esta función para que pueda atravesar unidades al atacar.
+   
     public void CheckUnitToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
@@ -553,7 +553,7 @@ public class EnGrabber : EnemyUnit
                 }
 
                 //Si hay una unidad
-                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
                     //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
                     if (Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
@@ -561,6 +561,7 @@ public class EnGrabber : EnemyUnit
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                        break;
                     }
 
                     else
@@ -568,6 +569,11 @@ public class EnGrabber : EnemyUnit
                         continue;
                     }
                 }
+                else if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                {
+                    break;
+                }
+
 
                 if (myCurrentTile.tilesInLineUp[i].isEmpty)
                 {
@@ -596,7 +602,7 @@ public class EnGrabber : EnemyUnit
                 }
 
                 //Si hay una unidad
-                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
                     //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
                     if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
@@ -604,12 +610,17 @@ public class EnGrabber : EnemyUnit
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                        break;
                     }
 
                     else
                     {
                         continue;
                     }
+                }
+                else if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                {
+                    break;
                 }
 
                 if (myCurrentTile.tilesInLineDown[i].isEmpty)
@@ -639,7 +650,7 @@ public class EnGrabber : EnemyUnit
                 }
 
                 //Si hay una unidad
-                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
                     //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
                     if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
@@ -647,12 +658,17 @@ public class EnGrabber : EnemyUnit
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        break;
                     }
 
                     else
                     {
                         continue;
                     }
+                }
+                else if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                {
+                    break;
                 }
 
                 if (myCurrentTile.tilesInLineRight[i].isEmpty)
@@ -682,7 +698,7 @@ public class EnGrabber : EnemyUnit
                 }
 
                 //Si hay una unidad
-                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
                     //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
                     if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
@@ -690,12 +706,16 @@ public class EnGrabber : EnemyUnit
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                        break;
                     }
 
                     else
                     {
                         continue;
                     }
+                }
+                else if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null) {
+                    break;
                 }
 
                 if (myCurrentTile.tilesInLineLeft[i].isEmpty)
@@ -712,5 +732,4 @@ public class EnGrabber : EnemyUnit
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
         }
     }
-
 }

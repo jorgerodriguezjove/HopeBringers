@@ -330,6 +330,7 @@ public class PlayerUnit : UnitBase
                 //Muevo y roto a la unidad
                 unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
                 transform.DOMove(currentTileVectorToMove, timeMovementAnimation);
+                
 
                 //Espera entre casillas
                 yield return new WaitForSeconds(timeMovementAnimation);
@@ -453,6 +454,8 @@ public class PlayerUnit : UnitBase
 
         //Cada unidad se encargará de aplicar su efecto en su override.
 
+
+        UIM.CheckActionsAvaliable();
         //La unidad ha atacado y por tanto no puede hacer nada más. Así que espero a que acabe la animación y finalizo su turno.
         StartCoroutine("AttackWait");
     }
