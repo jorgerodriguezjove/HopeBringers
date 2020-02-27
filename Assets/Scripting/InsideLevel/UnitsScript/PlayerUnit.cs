@@ -26,6 +26,10 @@ public class PlayerUnit : UnitBase
     [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
+    //Lista de posibles unidades a las que atacar
+    [HideInInspector]
+    public List<IndividualTiles> tilesInRangeForAttack;
+
     //Solo lo uso para el Rogue
     [HideInInspector]
     public bool hasUsedExtraTurn;
@@ -396,7 +400,7 @@ public class PlayerUnit : UnitBase
 
         //Esto tiene que ir antes del  LM.UnitHasFinishedMovementAndRotation() para que función de UnitHasFinishedMovementAndRotation() sepa si hay
         // enemigos a los que atacar
-        CheckUnitsInRangeToAttack();
+        CheckUnitsAndTilesInRangeToAttack();
 
         LM.UnitHasFinishedMovementAndRotation();
 
@@ -616,9 +620,10 @@ public class PlayerUnit : UnitBase
 
     //Comprueba las unidades (tanto aliadas como enemigas) que están en alcance para ser atacadas.
     //Es virtual porque la comprobación del pícaro es diferente (tiene que tener en cuenta el tile en el que va a acabar tras el salto).
-    public virtual void CheckUnitsInRangeToAttack()
+    public virtual void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
+        tilesInRangeForAttack.Clear();
 
         if (currentFacingDirection == FacingDirection.North)
         {
@@ -637,6 +642,7 @@ public class PlayerUnit : UnitBase
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    //tilesInRangeForAttack.Add();
                     break;
                 }
             }

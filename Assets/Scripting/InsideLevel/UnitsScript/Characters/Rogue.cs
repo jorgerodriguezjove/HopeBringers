@@ -28,7 +28,7 @@ public class Rogue : PlayerUnit
         extraTurnAttackAfterKill = _extraTurnAfterKill1;
     }
 
-    public override void CheckUnitsInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
 
@@ -259,7 +259,7 @@ public class Rogue : PlayerUnit
             {
 
                 hasAttacked = false;                
-                CheckUnitsInRangeToAttack();
+                CheckUnitsAndTilesInRangeToAttack();
 
                
 

@@ -12,7 +12,7 @@ public class Samurai : PlayerUnit
     #endregion
 
 
-    public override void CheckUnitsInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
 

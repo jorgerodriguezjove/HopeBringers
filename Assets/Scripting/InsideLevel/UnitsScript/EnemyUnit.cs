@@ -468,8 +468,11 @@ public class EnemyUnit : UnitBase
         //Muestro el rango de acción del personaje.
         if (!haveIBeenAlerted)
         {
+            //Pinto el rango de acción y de movimiento
             LM.ShowEnemyHover(rangeOfAction, true ,this);
         }
+
+        //Pinto únicamente el rango de movimiento
         else
         {
             LM.ShowEnemyHover(movementUds, false ,this);
