@@ -210,6 +210,7 @@ public class Mage : PlayerUnit
     public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
         previousTileHeight = 0;
 
         if (currentFacingDirection == FacingDirection.North)
@@ -231,26 +232,32 @@ public class Mage : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineUp[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Si no hay obstáculo marco el tile para indicar el rango
+                    if (!myCurrentTile.tilesInLineUp[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
                     }
 
-                    else
+                    if (myCurrentTile.tilesInLineUp[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
-                }
-
-                if (myCurrentTile.tilesInLineUp[i].isEmpty)
-                {
-                    break;
                 }
             }
         }
@@ -274,26 +281,32 @@ public class Mage : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineDown[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Si no hay obstáculo marco el tile para indicar el rango
+                    if (!myCurrentTile.tilesInLineDown[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
                     }
 
-                    else
+                    if (myCurrentTile.tilesInLineDown[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
-                }
-
-                if (myCurrentTile.tilesInLineDown[i].isEmpty)
-                {
-                    break;
                 }
             }
         }
@@ -317,26 +330,32 @@ public class Mage : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineRight[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Si no hay obstáculo marco el tile para indicar el rango
+                    if (!myCurrentTile.tilesInLineRight[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
                     }
 
-                    else
+                    if (myCurrentTile.tilesInLineRight[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
-                }
-
-                if (myCurrentTile.tilesInLineRight[i].isEmpty)
-                {
-                    break;
                 }
             }
         }
@@ -360,26 +379,32 @@ public class Mage : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineLeft[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Si no hay obstáculo marco el tile para indicar el rango
+                    if (!myCurrentTile.tilesInLineLeft[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                     {
                         //Almaceno la primera unidad en la lista de posibles unidades
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                     }
 
-                    else
+                    if (myCurrentTile.tilesInLineLeft[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
-                }
-
-                if (myCurrentTile.tilesInLineLeft[i].isEmpty)
-                {
-                    break;
                 }
             }
 
@@ -389,6 +414,13 @@ public class Mage : PlayerUnit
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
+            currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+
+        }
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
         }
     }
 

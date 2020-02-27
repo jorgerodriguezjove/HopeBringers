@@ -214,7 +214,7 @@ public class EnBalista : EnemyUnit
         {
             if (shouldColorTiles)
             {
-                tilesToShoot[i].ColorChargingAttack();
+                tilesToShoot[i].ColorBorderRed();
             }
             else
             {

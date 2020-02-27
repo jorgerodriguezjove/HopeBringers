@@ -391,6 +391,15 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
+            //Desmarco los tiles indicando rango de ataque
+            if (selectedCharacter.currentTilesInRangeForAttack.Count > 0)
+            {
+                for (int i = 0; i < selectedCharacter.currentTilesInRangeForAttack.Count; i++)
+                {
+                    selectedCharacter.currentTilesInRangeForAttack[i].ColorDesAttack();
+                }
+            }
+
             //Si no se ha movido lo deselecciono.
             for (int i = 0; i < tilesAvailableForMovement.Count; i++)
             {
@@ -413,35 +422,6 @@ public class LevelManager : MonoBehaviour
             DeselectEnemy();
         }
     }
-
-    //public void UndoMove()
-    //{
-    //    //ESTO HAY QUE CAMBIARLO PARA QUE GUARDE TANTO LA UNIDAD CÓMO EL TILE EN EL QUE ESTABA (QUIZÁS USAR UN DICCIONARIO)
-
-    //    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating)
-    //    {
-    //        //Si el personaje ya se ha movido lo vuelvo a poner donde estaba.
-    //        if (selectedCharacter.hasMoved)
-    //        {
-    //            selectedCharacter.gameObject.transform.position = new Vector3(previousCharacterTile.transform.position.x, previousCharacterTile.transform.position.y + 1, previousCharacterTile.transform.position.z);
-
-    //            selectedCharacter.myCurrentTile = previousCharacterTile;
-
-    //            selectedCharacter.hasMoved = false;
-
-    //            tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter);
-    //            for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-    //            {
-    //                tilesAvailableForMovement[i].ColorSelect();
-    //            }
-    //        }
-    //    }
-
-    //    else if (previousCharacterTile != null)
-    //    {
-
-    //    }
-    //}
 
     public void SelectEnemy(string _unitInfo, EnemyUnit _enemySelected)
     {
@@ -605,8 +585,6 @@ public class LevelManager : MonoBehaviour
                 {
                     //Muestro hover avisando a Selected Character
                     selectedCharacter.ShowHover(enemyToCheck);
-
-                    //Cambiar icono del cursor
                 }
             }
         }
@@ -629,22 +607,9 @@ public class LevelManager : MonoBehaviour
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
             UIM.ShowUnitInfo(hoverUnit.unitGeneralInfo, hoverUnit);
 
-            //Mirar como hacer para optimizar
-            hoverUnit.CheckUnitsAndTilesInRangeToAttack();
-            if (hoverUnit.currentUnitsAvailableToAttack.Count>0)
-            {
-                for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
-                {
-                    if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
-                    {
-                        Debug.Log(hoverUnit.currentUnitsAvailableToAttack[i]);
-                        hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit);
-                    }
-                }
-            }
-            
-           
+
             //Pinto tiles de movimiento
+            //Importante tienen que ir antes de pintar el rango de ataque
             if (hoverUnit.hasMoved == false)
             {
                 tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
@@ -653,6 +618,25 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForMovement[i].ColorSelect();
                 }
             }
+
+            //Chequeo y pinto el rango de ataque
+            hoverUnit.CheckUnitsAndTilesInRangeToAttack();
+
+
+            //Esto creo que no hace nada
+
+            //if (hoverUnit.currentUnitsAvailableToAttack.Count>0)
+            //{
+            //    for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+            //    {
+            //        if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
+            //        {
+            //            Debug.Log(hoverUnit.currentUnitsAvailableToAttack[i]);
+            //            hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit);
+            //        }
+            //    }
+            //}
+           
         }
     }
 
@@ -672,7 +656,6 @@ public class LevelManager : MonoBehaviour
                 {
                     if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
                     {
-                        
                         hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
                         hoverUnit.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesAttack();
                         hoverUnit.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
@@ -680,7 +663,18 @@ public class LevelManager : MonoBehaviour
 
                     }
                 }
+
+               
             }
+
+            if (hoverUnit.currentTilesInRangeForAttack.Count > 0)
+            {
+                for (int i = 0; i < hoverUnit.currentTilesInRangeForAttack.Count; i++)
+                {
+                    hoverUnit.currentTilesInRangeForAttack[i].ColorDesAttack();
+                }
+            }
+                
 
             if (hoverUnit.hasMoved == false)
             {
@@ -709,8 +703,6 @@ public class LevelManager : MonoBehaviour
     {
         UIM.HideUnitInfo("");
     }
-
-
 
     //showActionRangeInsteadOfMovement sirve para que se pinte naranaja el rango de acción del enemigo al estar dormido
     public void ShowEnemyHover(int movementUds, bool showActionRangeInsteadOfMovement, EnemyUnit hoverUnit)

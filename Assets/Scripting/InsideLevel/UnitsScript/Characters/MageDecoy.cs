@@ -101,7 +101,6 @@ public class MageDecoy : Mage
         }
     }
 
-    //Es virtual para el decoy del mago.
     protected override void OnMouseExit()
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);

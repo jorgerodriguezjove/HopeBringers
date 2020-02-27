@@ -28,7 +28,7 @@ public class PlayerUnit : UnitBase
 
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
-    public List<IndividualTiles> tilesInRangeForAttack;
+    public List<IndividualTiles> currentTilesInRangeForAttack;
 
     //Solo lo uso para el Rogue
     [HideInInspector]
@@ -623,7 +623,7 @@ public class PlayerUnit : UnitBase
     public virtual void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
-        tilesInRangeForAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
 
         if (currentFacingDirection == FacingDirection.North)
         {
@@ -638,6 +638,11 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineUp[i].isEmpty || !myCurrentTile.tilesInLineUp[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
+                }
+
                 if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height -myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
@@ -661,6 +666,11 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineDown[i].isEmpty || !myCurrentTile.tilesInLineDown[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
+                }
+
                 if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
@@ -683,6 +693,11 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineRight[i].isEmpty || !myCurrentTile.tilesInLineRight[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
+                }
+
                 if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
@@ -705,23 +720,33 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineLeft[i].isEmpty || !myCurrentTile.tilesInLineLeft[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
+                }
+
                 if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                     break;
                 }
-            }
-			
+            }	
 		}
 
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
+            currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
         }
 
-		
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
+        }
+
     }
 
     #endregion

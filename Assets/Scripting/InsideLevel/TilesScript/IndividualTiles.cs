@@ -90,8 +90,12 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     [SerializeField]
     public Material attackBorderColor;
+
+    [SerializeField]
+    public Material chargingAttackInteriorColor;
     [SerializeField]
     public Material chargingAttackBorderColor;
+
     [SerializeField]
     public Material actionRangeBorderColor;
 
@@ -348,9 +352,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
 
 
-
-
-
     //Cambiar el color a ataque
     public void ColorAttack()
     {
@@ -364,23 +365,28 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     }
 
     //Cambiar el color a ataque
-    public void ColorChargingAttack()
+    public void ColorBorderRed()
     {
         if (!isUnderAttack)
         {
-            //tileInterior.enabled = true;
-            //tileInterior.material = chargingAttackBorderColor;
-
             tileBorder.enabled = true;
             tileBorder.material = chargingAttackBorderColor;
         }
+    }
+
+    public void ColorInteriorRed()
+    {
+        Debug.Log("AAAAAAAAAAA");
+
+        tileInterior.enabled = true;
+        tileInterior.material = chargingAttackInteriorColor;
     }
 
     //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile
     public void ColorDesAttack()
     {
         tileBorder.enabled = false;
-        //tileInterior.enabled = false;
+        tileInterior.enabled = false;
 
         isUnderAttack = false;
     }

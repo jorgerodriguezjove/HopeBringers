@@ -505,7 +505,6 @@ public class UnitBase : MonoBehaviour
         if (!isDead)
         {
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
-            myCurrentTile.ColorAttack();
             previsualizeAttackIcon.SetActive(true);
            
             unitThatAttacks.CalculateDamage(this);
