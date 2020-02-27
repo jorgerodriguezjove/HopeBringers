@@ -119,7 +119,28 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject topScrollUp, topScrollDown, buttonUp, buttonDown, buttonUpHighlight, buttonDownHighlight;
 
-    [Header("REFERENCIAS")]
+	[Header("TUTORIAL")]
+	int turnNumber = 1;
+	[SerializeField]
+	bool tutorialLevel;
+	[SerializeField]
+	GameObject panelTutorial;
+	[SerializeField]
+	TextMeshProUGUI textTutorial;
+	[SerializeField]
+	[@TextAreaAttribute(5, 10)]
+	string tutorialText1;
+	[SerializeField]
+	[@TextAreaAttribute(5, 10)]
+	string tutorialText2;
+	[SerializeField]
+	[@TextAreaAttribute(5, 10)]
+	string tutorialText3;
+	[SerializeField]
+	[@TextAreaAttribute(5, 10)]
+	string tutorialText4;
+
+	[Header("REFERENCIAS")]
 
     //Level Manager
 	[HideInInspector]
@@ -132,7 +153,8 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         LM = FindObjectOfType<LevelManager>();
-    }
+		
+	}
 
     //Lo pongo en una variable en vez de en el start para que lo pueda llamar el Level Manager
     public void InitializeUI()
@@ -142,7 +164,13 @@ public class UIManager : MonoBehaviour
         //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
         initialScrollPosition = padrePanelesEnemigos.transform.position;
 
-        for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+		if (tutorialLevel)
+		{
+			panelTutorial.SetActive(true);
+			textTutorial.text = tutorialText1;
+		}
+
+		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
         {
             //Activamos los retratos necesarios y les asignamos su jugador
             panelesPJ[i].SetActive(true);
@@ -174,7 +202,26 @@ public class UIManager : MonoBehaviour
                 {
                     LM.DeselectEnemy();
                 }
-
+				if (tutorialLevel)
+				{
+					turnNumber++;
+				}
+				if(turnNumber == 2)
+				{
+					textTutorial.text = tutorialText2;
+				}
+				else if(turnNumber == 3)
+				{
+					textTutorial.text = tutorialText3;
+				}
+				else if(turnNumber == 4)
+				{
+					textTutorial.text = tutorialText4;
+				}
+				else
+				{
+					panelTutorial.SetActive(false);
+				}
                 RotateButtonEndPhase();
                 LM.ChangePhase();
             }
