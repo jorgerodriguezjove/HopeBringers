@@ -118,25 +118,7 @@ public class EnDuelist : EnemyUnit
 
     public override void Attack()
     {
-        //Si es Tier 2 Alerta a los enemigos en el área
-        if (myTierLevel == TierLevel.Level2)
-        {
-            if (!haveIBeenAlerted)
-            {
-                //Le pido al TileManager los enemigos dentro de mi rango
-                unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
-
-                //Alerto a los enemigos a mi alcance
-                for (int i = 0; i < unitsInRange.Count; i++)
-                {
-                    if (unitsInRange[i].GetComponent<EnemyUnit>())
-                    {
-                        unitsInRange[i].GetComponent<EnemyUnit>().AlertEnemy();
-                    }
-                }
-            }
-        }
-
+        
         //Si no he sido alertado, activo mi estado de alerta.
         //Al alertarme salo del void de ataque para hacer la busqueda normal de jugadores.
         if (!haveIBeenAlerted)
@@ -145,12 +127,36 @@ public class EnDuelist : EnemyUnit
             myCurrentEnemyState = enemyState.Searching;
             return;
         }
-
+        base.Attack();
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
             if (myCurrentTile.neighbours[i].unitOnTile != null && currentUnitsAvailableToAttack.Count > 0 && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0] && Mathf.Abs(myCurrentTile.height - myCurrentTile.neighbours[i].height) <= maxHeightDifferenceToAttack)
             {
+
+                if (currentFacingDirection == FacingDirection.North)
+                {
+                    currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.South;
+                    currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                }
+
+                else if (currentFacingDirection == FacingDirection.South)
+                {
+                    currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.North;
+                    currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                }
+
+                else if (currentFacingDirection == FacingDirection.East)
+                {
+                    currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.West;
+                    currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                }
+
+                else if (currentFacingDirection == FacingDirection.West)
+                {
+                    currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.East;
+                    currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                }
                 //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el goblin
                 if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
                 {
@@ -166,33 +172,7 @@ public class EnDuelist : EnemyUnit
                     }
 
                     ColorAttackTile();
-
-
-                    if (currentFacingDirection == FacingDirection.North)
-                    {
-                        currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.South;
-                        currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-                    }
-
-                    else if (currentFacingDirection == FacingDirection.South)
-                    {
-                        currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.North;
-                        currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-                    }
-
-                    else if (currentFacingDirection == FacingDirection.East)
-                    {
-                        currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.West;
-                        currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-                    }
-
-                    else if (currentFacingDirection == FacingDirection.West)
-                    {
-                        currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.East;
-                        currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-                    }
-
-                 
+                                  
                     //Atacar al enemigo
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
@@ -216,6 +196,7 @@ public class EnDuelist : EnemyUnit
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
 
+              
                 //Animación de ataque
                 myAnimator.SetTrigger("Attack");
                 hasAttacked = true;

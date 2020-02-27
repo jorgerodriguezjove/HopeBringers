@@ -381,6 +381,9 @@ public class LevelManager : MonoBehaviour
                 if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
                 {
                     selectedCharacter.currentUnitsAvailableToAttack[i].ResetColor();
+                    selectedCharacter.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesAttack();
+                    selectedCharacter.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
+                    selectedCharacter.currentUnitsAvailableToAttack[i].DisableCanvasHover();
                 }
             }
 
@@ -393,7 +396,8 @@ public class LevelManager : MonoBehaviour
             //Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
             UIM.ActivateDeActivateEndButton();
             UIM.HideUnitInfo("");
-            selectedCharacter.HideDamageIcons();
+            selectedCharacter.HideDamageIcons(selectedCharacter);
+            
             tilesAvailableForMovement.Clear();
             selectedCharacter.ResetColor();
             selectedCharacter.myCurrentTile.ColorDeselect();
@@ -621,6 +625,22 @@ public class LevelManager : MonoBehaviour
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
             UIM.ShowUnitInfo(hoverUnit.unitGeneralInfo, hoverUnit);
 
+            //Mirar como hacer para optimizar
+            hoverUnit.CheckUnitsInRangeToAttack();
+            if (hoverUnit.currentUnitsAvailableToAttack.Count>0)
+            {
+                for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                {
+                    if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
+                    {
+                        
+                        hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit);
+                    }
+                }
+            }
+            
+           
+
             if (hoverUnit.hasMoved == false)
             {
                 tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
@@ -641,6 +661,22 @@ public class LevelManager : MonoBehaviour
             UIM.HideUnitInfo("");
             UIM.TooltipDefault();
             hoverUnit.myCurrentTile.ColorDeselect();
+
+            if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+            {
+                for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                {
+                    if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
+                    {
+                        
+                        hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
+                        hoverUnit.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesAttack();
+                        hoverUnit.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
+                        hoverUnit.currentUnitsAvailableToAttack[i].DisableCanvasHover();
+
+                    }
+                }
+            }
 
             if (hoverUnit.hasMoved == false)
             {
@@ -772,6 +808,10 @@ public class LevelManager : MonoBehaviour
                     }
                 }
 
+
+                
+                hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit);
+
                 //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
                 hoverUnit.ColorAttackTile();
 
@@ -824,6 +864,7 @@ public class LevelManager : MonoBehaviour
             //Goblin, gigante, boss y demás
             else 
             {
+                hoverUnit.currentUnitsAvailableToAttack[0].myCurrentTile.ColorDesAttack();
                 hoverUnit.HideActionPathfinding();
 
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
@@ -831,6 +872,12 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForMovementEnemies[i].ColorDeselect();
                 }
                 tilesAvailableForMovementEnemies.Clear();
+
+                hoverUnit.currentUnitsAvailableToAttack[0].ResetColor();
+                
+                hoverUnit.currentUnitsAvailableToAttack[0].previsualizeAttackIcon.SetActive(false);
+
+                hoverUnit.currentUnitsAvailableToAttack[0].DisableCanvasHover();
             }
 
         }

@@ -119,6 +119,7 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
+        
         //Si es Tier 2 Alerta a los enemigos en el área
         if (myTierLevel == TierLevel.Level2)
         {
@@ -146,6 +147,7 @@ public class EnGoblin : EnemyUnit
             myCurrentEnemyState = enemyState.Searching;
             return;
         }
+        base.Attack();        
 
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {

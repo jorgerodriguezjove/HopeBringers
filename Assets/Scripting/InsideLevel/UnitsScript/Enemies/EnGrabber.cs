@@ -129,7 +129,7 @@ public class EnGrabber : EnemyUnit
         }
 
         CheckUnitToAttack();
-       
+        base.Attack();
 
         if (currentUnitsAvailableToAttack.Count == 0)
         {
@@ -729,7 +729,7 @@ public class EnGrabber : EnemyUnit
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
         }
     }
 }

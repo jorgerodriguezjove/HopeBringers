@@ -154,7 +154,7 @@ public class Rogue : PlayerUnit
         //Feedback de ataque
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
         }
     }
 

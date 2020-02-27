@@ -78,8 +78,7 @@ public class PlayerUnit : UnitBase
 
 	[SerializeField]
 	public GameObject actionAvaliablePanel;
-	[SerializeField]
-	public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
+	
 
 	//Para el tooltip de ataque
 
@@ -543,14 +542,14 @@ public class PlayerUnit : UnitBase
 		if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
 		{
 			damageWithMultipliersApplied -= penalizatorDamageLessHeight;
-			downToUpDamageIcon.SetActive(true);
+            unitToDealDamage.downToUpDamageIcon.SetActive(true);
 		}
 
 		//Si estoy en ventaja de altura hago más daño
 		else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
 		{
 			damageWithMultipliersApplied += bonusDamageMoreHeight;
-			upToDownDamageIcon.SetActive(true);
+            unitToDealDamage.upToDownDamageIcon.SetActive(true);
 		}
 
 		//Si le ataco por la espalda hago más daño
@@ -558,17 +557,17 @@ public class PlayerUnit : UnitBase
 		{
 			//Ataque por la espalda
 			damageWithMultipliersApplied += bonusDamageBackAttack;
-			backStabIcon.SetActive(true);
+            unitToDealDamage.backStabIcon.SetActive(true);
 		}
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
 	}
 
-	public void HideDamageIcons()
+	public void HideDamageIcons(UnitBase unitToHide)
 	{
-		downToUpDamageIcon.SetActive(false);
-		upToDownDamageIcon.SetActive(false);
-		backStabIcon.SetActive(false);
+        unitToHide.downToUpDamageIcon.SetActive(false);
+        unitToHide.upToDownDamageIcon.SetActive(false);
+        unitToHide.backStabIcon.SetActive(false);
 	}
 
 	#endregion
@@ -713,7 +712,7 @@ public class PlayerUnit : UnitBase
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked();
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
         }
 
 		

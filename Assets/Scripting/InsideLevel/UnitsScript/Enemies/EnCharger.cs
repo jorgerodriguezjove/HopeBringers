@@ -63,7 +63,7 @@ public class EnCharger : EnemyUnit
         {
             AlertEnemy();
         }
-
+        base.Attack();
         movementParticle.SetActive(true);
         pathToObjective.Clear();
 

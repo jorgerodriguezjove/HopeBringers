@@ -126,6 +126,7 @@ public class EnBalista : EnemyUnit
         {
             if (isAttackPrepared)
             {
+                base.Attack();
                 StartCoroutine("AttackCorroutine");
                 myCurrentEnemyState = enemyState.Waiting;
             }

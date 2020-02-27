@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
+
 public class UnitBase : MonoBehaviour
 {
     #region VARIABLES
@@ -171,6 +172,15 @@ public class UnitBase : MonoBehaviour
 
     [SerializeField]
     private Material AvailableToBeAttackedColor;
+
+
+    //Este icono lo utilizo para poner la espada encima de los posibles enemigos. 
+    [SerializeField]
+    public GameObject previsualizeAttackIcon;
+
+    [SerializeField]
+    public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
+
 
     //Material inicial y al ser seleccionado
     protected Material initMaterial;
@@ -490,11 +500,18 @@ public class UnitBase : MonoBehaviour
     }
 
     //Cambiar a color que indica que puede ser atacado
-    public void ColorAvailableToBeAttacked()
+    public void ColorAvailableToBeAttacked(UnitBase unitThatAttacks)
     {
         if (!isDead)
         {
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
+            myCurrentTile.ColorAttack();
+            previsualizeAttackIcon.SetActive(true);
+           
+            unitThatAttacks.CalculateDamage(this);
+            EnableCanvasHover(damageWithMultipliersApplied);
+            
+
         }
         
     }
@@ -503,10 +520,10 @@ public class UnitBase : MonoBehaviour
 
     #region UI_HOVER
 
-    public void EnableCanvasHover(int damageReceived)
+    public void EnableCanvasHover(float damageReceived)
     {
         canvasUnit.SetActive(true);
-        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText(damageReceived.ToString());
+        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText( "-" + damageReceived.ToString());
     }
 
     public void DisableCanvasHover()

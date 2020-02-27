@@ -239,6 +239,8 @@ public class EnemyUnit : UnitBase
     public virtual void Attack()
     {
         //Cada enemigo realiza su propio ataque
+
+        currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(this);
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta
@@ -265,6 +267,8 @@ public class EnemyUnit : UnitBase
             if (!wereTilesAlreadyUnderAttack[i])
             {
                 tilesAlreadyUnderAttack[i].ColorDesAttack();
+                tilesAlreadyUnderAttack[i].unitOnTile.previsualizeAttackIcon.SetActive(false);
+                
             }
         }
 
@@ -362,7 +366,7 @@ public class EnemyUnit : UnitBase
                 //Llamo a LevelManager para desactivar hover
                 if (LM.selectedCharacter != null)
                 {
-                    LM.selectedCharacter.HideDamageIcons();
+                    LM.selectedCharacter.HideDamageIcons(this);
                 }
                 LM.HideHover(LM.selectedEnemy);
                 LM.selectedEnemy.HealthBarOn_Off(false);
@@ -529,11 +533,7 @@ public class EnemyUnit : UnitBase
     public void OnHoverExitFunctionality()
     {
         LM.HideEnemyHover(this);
-        //Llamo a LevelManager para desactivar hover
-        if (LM.selectedCharacter != null)
-        {
-            LM.selectedCharacter.HideDamageIcons();
-        }
+       
 
         LM.HideHover(this);
         HealthBarOn_Off(false);
@@ -546,6 +546,9 @@ public class EnemyUnit : UnitBase
         {
             LM.UIM.HideUnitInfo("");
             LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
+            LM.selectedCharacter.HideDamageIcons(this);
+            myCurrentTile.ColorDesAttack();
+            previsualizeAttackIcon.SetActive(false);
         }
         
         //LM.UIM.HideCharacterInfo("");
@@ -564,7 +567,7 @@ public class EnemyUnit : UnitBase
 		if(LM.selectedCharacter != null)
 		{
 			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
-            ResetColor();
+            
         }
 
         //if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
