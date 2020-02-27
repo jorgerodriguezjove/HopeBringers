@@ -295,6 +295,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             tileBorder.enabled = true;
             tileBorder.material = moveBorderColor;
 
+
             isMovementTile = true;
         }
 
@@ -337,8 +338,12 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar a color de rango de acción dormido
     public void ColorActionRange()
     {
-        tileBorder.enabled = true;
-        tileBorder.material = actionRangeBorderColor;
+        if (!tileBorder.enabled)
+        {
+            tileBorder.enabled = true;
+            tileBorder.material = actionRangeBorderColor;
+        }
+        
     }
 
 

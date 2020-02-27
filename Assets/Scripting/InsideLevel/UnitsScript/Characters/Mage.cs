@@ -207,7 +207,7 @@ public class Mage : PlayerUnit
 
     #region CHECKS
     //Hago override a esta función para que pueda atravesar unidades al atacar.
-    public override void CheckUnitsInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
         previousTileHeight = 0;

@@ -68,7 +68,7 @@ public class Druid : PlayerUnit
 
     #region CHECKS
     //AL igual que con el Mago, se hace override a esta función para que pueda atravesar unidades al atacar.
-    public override void CheckUnitsInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
         previousTileHeight = 0;
