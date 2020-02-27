@@ -243,7 +243,7 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
-                        tilesAvailableForMovement[i].ColorSelect();
+                        tilesAvailableForMovement[i].ColorMovement();
                     }
 
                     selectedCharacter.CheckUnitsAndTilesInRangeToAttack();
@@ -396,7 +396,7 @@ public class LevelManager : MonoBehaviour
             {
                 for (int i = 0; i < selectedCharacter.currentTilesInRangeForAttack.Count; i++)
                 {
-                    selectedCharacter.currentTilesInRangeForAttack[i].ColorDesAttack();
+                    selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
                 }
             }
 
@@ -533,6 +533,11 @@ public class LevelManager : MonoBehaviour
                             //Desmarco las unidades que antes estaban disponibles para ser atacadas
                             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && tileToMove != selectedCharacter.myCurrentTile)
                             {
+                                for (int j = 0; j < selectedCharacter.currentTilesInRangeForAttack.Count; j++)
+                                {
+                                    selectedCharacter.currentTilesInRangeForAttack[j].ColorDeselect();
+                                }
+
                                 for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
                                 {
                                     if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
@@ -570,7 +575,16 @@ public class LevelManager : MonoBehaviour
 		{
 			UIM.TooltipNoAttackable();
 		}
-	}
+
+        //Desmarco los tiles indicando rango de ataque
+        if (selectedCharacter.currentTilesInRangeForAttack.Count > 0)
+        {
+            for (int i = 0; i < selectedCharacter.currentTilesInRangeForAttack.Count; i++)
+            {
+                selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
+            }
+        }
+    }
 
     //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.
     public void CheckIfHoverShouldAppear(UnitBase enemyToCheck)
@@ -615,7 +629,7 @@ public class LevelManager : MonoBehaviour
                 tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
-                    tilesAvailableForMovement[i].ColorSelect();
+                    tilesAvailableForMovement[i].ColorMovement();
                 }
             }
 
@@ -728,7 +742,7 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.shaderHover.SetActive(true);
                         Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
                         hoverUnit.shaderHover.transform.position = positionToSpawn;
-                        tileToMove.ColorSelect();
+                        tileToMove.ColorMovement();
 
                         hoverUnit.myLineRenderer.enabled = true;
                         hoverUnit.myLineRenderer.positionCount = 2;
@@ -790,7 +804,7 @@ public class LevelManager : MonoBehaviour
                     }
                     */
 
-                    tilesAvailableForMovementEnemies[i].ColorSelect();
+                    tilesAvailableForMovementEnemies[i].ColorMovement();
                 }
 
                 for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)

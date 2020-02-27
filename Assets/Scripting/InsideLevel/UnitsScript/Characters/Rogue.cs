@@ -374,7 +374,7 @@ public class Rogue : PlayerUnit
                 LM.tilesAvailableForMovement = LM.TM.OptimizedCheckAvailableTilesForMovement(movementUds, this);
                 for (int i = 0; i < LM.tilesAvailableForMovement.Count; i++)
                 {
-                    LM.tilesAvailableForMovement[i].ColorSelect();
+                    LM.tilesAvailableForMovement[i].ColorMovement();
                 }
 
                 LM.SelectUnit(movementUds, this);
