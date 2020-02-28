@@ -658,6 +658,7 @@ MonoBehaviour:
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
   timeToWaitBeforeHidingHealthbar: 1
+  damageWithMultipliersApplied: 0
   maxHeightDifferenceToAttack: 1
   previousTileHeight: 0
   maxHeightDifferenceToMove: 1
@@ -678,6 +679,9 @@ MonoBehaviour:
   AvailableToBeAttackedColor: {fileID: 2100000, guid: dc40779953137a74a81461539b289e0d,
     type: 2}
   previsualizeAttackIcon: {fileID: 9211857429141671202}
+  backStabIcon: {fileID: 5880793711535612123}
+  upToDownDamageIcon: {fileID: 4480465609355621345}
+  downToUpDamageIcon: {fileID: 5622723419331680742}
   canvasUnit: {fileID: 5934998408798371808}
   unitGeneralInfo: 
   characterImage: {fileID: 21300000, guid: 1a8332aba279f5042b817756654ee71e, type: 3}
@@ -688,6 +692,7 @@ MonoBehaviour:
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
+  currentTilesInRangeForAttack: []
   hasUsedExtraTurn: 0
   timeWaitAfterAttack: 1
   activeSkillInfo: 
@@ -704,9 +709,6 @@ MonoBehaviour:
   myPanelPortrait: {fileID: 0}
   portraitImage: {fileID: 21300000, guid: 1a8332aba279f5042b817756654ee71e, type: 3}
   actionAvaliablePanel: {fileID: 1683627653943443089}
-  backStabIcon: {fileID: 5880793711535612123}
-  upToDownDamageIcon: {fileID: 4480465609355621345}
-  downToUpDamageIcon: {fileID: 5622723419331680742}
   LM: {fileID: 0}
   UIM: {fileID: 0}
 --- !u!1 &1683627653943443089
@@ -3369,6 +3371,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5579306423391873758, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2e3acfa7ff9ac494881704ffd8ee60fd,
+        type: 3}
     - target: {fileID: 7978522504799025731, guid: 864806fa92359de4480634b63250853b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -3384,6 +3392,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 8836884938630293723, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71ca515532ac94b4ca2de6d5bdcabb24,
+        type: 3}
+    - target: {fileID: 9222091305690705822, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5545b2579e3c9b64a9bbcaa1ee88b0ee,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 864806fa92359de4480634b63250853b, type: 3}
 --- !u!224 &699170218544141045 stripped

@@ -738,7 +738,6 @@ public class PlayerUnit : UnitBase
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
-           
             currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
             currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
         }

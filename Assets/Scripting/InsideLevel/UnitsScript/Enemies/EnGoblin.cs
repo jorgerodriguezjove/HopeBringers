@@ -415,7 +415,16 @@ public class EnGoblin : EnemyUnit
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
                         shaderHover.transform.position = pointPosition;
-                        CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[i]);
+                        if ((pathToObjective[i]) == currentUnitsAvailableToAttack[0].myCurrentTile)
+                        {
+
+                            CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1]);
+                        }
+                        else
+                        {
+
+                            damageWithMultipliersApplied = -999;
+                        }
                         
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
                         shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
