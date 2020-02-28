@@ -250,7 +250,8 @@ public class LevelManager : MonoBehaviour
 					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipMoveorAttack();
-					}
+                      
+                    }
 
 					SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
                 }
@@ -388,6 +389,7 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesAttack();
                     selectedCharacter.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
                     selectedCharacter.currentUnitsAvailableToAttack[i].DisableCanvasHover();
+                    selectedCharacter.currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
                 }
             }
 
@@ -415,6 +417,8 @@ public class LevelManager : MonoBehaviour
             selectedCharacter.ResetColor();
             selectedCharacter.myCurrentTile.ColorDeselect();
             selectedCharacter = null;
+
+
         }
         else if(selectedEnemy !=null)
         {
@@ -730,6 +734,14 @@ public class LevelManager : MonoBehaviour
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                 {
                     hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
+
+                    //Marco las unidades disponibles para atacar de color rojo
+                    for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                    {
+                        hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
+                        hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+                        hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                    }
                 }
                 //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
@@ -764,11 +776,19 @@ public class LevelManager : MonoBehaviour
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
 
+                    hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[0]);
+                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);                   
+                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+                    
+
                     if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
                     {
                         hoverUnit.shaderHover.SetActive(true);
                         hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
                         hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
+
+                      
                     }
                 }
                 else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
@@ -818,11 +838,15 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForRangeEnemies[i].ColorActionRange();
                 }
 
-                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 )
                 {
-                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit);
+                    
+                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+                    
+                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
                 }
-                
+
 
                 //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
                 hoverUnit.ColorAttackTile();
@@ -898,9 +922,7 @@ public class LevelManager : MonoBehaviour
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
                     hoverUnit.currentUnitsAvailableToAttack[0].ResetColor();
-
                     hoverUnit.currentUnitsAvailableToAttack[0].previsualizeAttackIcon.SetActive(false);
-
                     hoverUnit.currentUnitsAvailableToAttack[0].DisableCanvasHover();
                 }
             }

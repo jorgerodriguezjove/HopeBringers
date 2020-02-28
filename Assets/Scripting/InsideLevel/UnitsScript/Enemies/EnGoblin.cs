@@ -407,7 +407,7 @@ public class EnGoblin : EnemyUnit
             for (int i = 0; i < limitantNumberOfTilesToMove + 1; i++)
             {
                 Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
-
+                
                 if (i < pathToObjective.Count - 1)
                 {
                     myLineRenderer.SetPosition(i, pointPosition);
@@ -415,6 +415,8 @@ public class EnGoblin : EnemyUnit
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
                         shaderHover.transform.position = pointPosition;
+                        CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[i]);
+                        
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
                         shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
                     }

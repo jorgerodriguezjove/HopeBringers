@@ -110,7 +110,7 @@ public class UnitBase : MonoBehaviour
     [Header("ATAQUE")]
 
     //Variable en la que guardo el daño a realizar
-    protected float damageWithMultipliersApplied;
+    public float damageWithMultipliersApplied;
 
     //Máxima diferencia de altura para atacar
     [SerializeField]
@@ -269,7 +269,7 @@ public class UnitBase : MonoBehaviour
     #region DAMAGE_&_DIE
 
     //Calcula PERO NO aplico el daño a la unidad elegida
-    protected virtual void CalculateDamage(UnitBase unitToDealDamage)
+    public virtual void CalculateDamage(UnitBase unitToDealDamage)
     {
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;
@@ -294,6 +294,34 @@ public class UnitBase : MonoBehaviour
         }
 
         damageWithMultipliersApplied += bonusStateDamage;
+    }
+
+    //Prueba para calcular damages en el hover
+    public virtual void CalculateDamagePreviousAttack(UnitBase unitToDealDamage, UnitBase unitAttacking, IndividualTiles tileAttack)
+    {
+        //Reseteo la variable de daño a realizar
+        unitAttacking.damageWithMultipliersApplied = unitAttacking.baseDamage;
+
+        //Si estoy en desventaja de altura hago menos daño
+        if (unitToDealDamage.myCurrentTile.height > tileAttack.height)
+        {
+            unitAttacking.damageWithMultipliersApplied -= unitAttacking.penalizatorDamageLessHeight;
+        }
+
+        //Si estoy en ventaja de altura hago más daño
+        else if (unitToDealDamage.myCurrentTile.height < tileAttack.height)
+        {
+            unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageMoreHeight;
+        }
+
+        //Si le ataco por la espalda hago más daño
+        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+        {
+            //Ataque por la espalda
+            unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageBackAttack;
+        }
+
+        unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusStateDamage;
     }
 
     //Aplico el daño a la unidad elegida
@@ -500,16 +528,25 @@ public class UnitBase : MonoBehaviour
     }
 
     //Cambiar a color que indica que puede ser atacado
-    public void ColorAvailableToBeAttacked(UnitBase unitThatAttacks)
+    public void ColorAvailableToBeAttacked(float damageCalculated)
     {
-        if (!isDead)
+        if (!isDead )
         {
+
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
-            previsualizeAttackIcon.SetActive(true);
-           
-            unitThatAttacks.CalculateDamage(this);
-            EnableCanvasHover(damageWithMultipliersApplied);
+
+
+
             
+            if (damageCalculated >= 0)
+            {
+                previsualizeAttackIcon.SetActive(true);
+                EnableCanvasHover(damageCalculated);
+
+            }
+
+
+
 
         }
         
