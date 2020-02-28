@@ -547,6 +547,9 @@ public class LevelManager : MonoBehaviour
                                     if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
                                     {
                                         selectedCharacter.currentUnitsAvailableToAttack[j].ResetColor();
+                                        //AAAAAAA
+                                        selectedCharacter.currentUnitsAvailableToAttack[j].previsualizeAttackIcon.SetActive(false);
+                                        selectedCharacter.currentUnitsAvailableToAttack[j].DisableCanvasHover();
                                     }
                                 }
                             }
