@@ -343,6 +343,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar a color normal
     public void ColorDeselect()
     {
+        isMovementTile = false;
+
         if (tileBorder.enabled && tileBorder.material != attackBorderColor)
         {
             if (isUnderAttack)
@@ -404,6 +406,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         tileBorder.enabled = false;
         tileInterior.enabled = false;
 
+        isBorderRed = false;
         isUnderAttack = false;
     }
 
