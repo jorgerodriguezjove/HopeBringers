@@ -409,7 +409,9 @@ public class Mage : PlayerUnit
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
+            CalculateDamage(currentUnitsAvailableToAttack[i]);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+           
             currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
 
         }
