@@ -31,6 +31,15 @@ public class Rogue : PlayerUnit
     public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
+
+        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        {
+            if (!myCurrentTile.neighbours[i].isEmpty && !myCurrentTile.neighbours[i].isObstacle)
+            {
+                currentTilesInRangeForAttack.Add(myCurrentTile.neighbours[i]);
+            }
+        }
 
         //Arriba
         if (myCurrentTile.tilesInLineUp.Count > 1)
@@ -158,6 +167,11 @@ public class Rogue : PlayerUnit
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
             
             currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+        }
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
         }
     }
 

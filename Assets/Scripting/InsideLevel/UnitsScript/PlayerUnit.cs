@@ -534,6 +534,7 @@ public class PlayerUnit : UnitBase
         {
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
         }
+
     }
 
 	public override void CalculateDamage(UnitBase unitToDealDamage)

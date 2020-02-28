@@ -271,8 +271,11 @@ public class EnemyUnit : UnitBase
             if (!wereTilesAlreadyUnderAttack[i])
             {
                 tilesAlreadyUnderAttack[i].ColorDesAttack();
-                tilesAlreadyUnderAttack[i].unitOnTile.previsualizeAttackIcon.SetActive(false);
-                
+
+                if (tilesAlreadyUnderAttack[i].unitOnTile != null)
+                {
+                    tilesAlreadyUnderAttack[i].unitOnTile.previsualizeAttackIcon.SetActive(false);
+                }
             }
         }
 

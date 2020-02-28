@@ -136,9 +136,6 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	[@TextAreaAttribute(5, 10)]
 	string tutorialText3;
-	[SerializeField]
-	[@TextAreaAttribute(5, 10)]
-	string tutorialText4;
 
 	[Header("REFERENCIAS")]
 
@@ -213,10 +210,6 @@ public class UIManager : MonoBehaviour
 				else if(turnNumber == 3)
 				{
 					textTutorial.text = tutorialText3;
-				}
-				else if(turnNumber == 4)
-				{
-					textTutorial.text = tutorialText4;
 				}
 				else
 				{

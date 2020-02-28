@@ -921,9 +921,12 @@ public class LevelManager : MonoBehaviour
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
-                    hoverUnit.currentUnitsAvailableToAttack[0].ResetColor();
-                    hoverUnit.currentUnitsAvailableToAttack[0].previsualizeAttackIcon.SetActive(false);
-                    hoverUnit.currentUnitsAvailableToAttack[0].DisableCanvasHover();
+                    if (hoverUnit.currentUnitsAvailableToAttack[0] != null)
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].ResetColor();
+                        hoverUnit.currentUnitsAvailableToAttack[0].previsualizeAttackIcon.SetActive(false);
+                        hoverUnit.currentUnitsAvailableToAttack[0].DisableCanvasHover();
+                    }
                 }
             }
 
