@@ -97,6 +97,10 @@ public class LevelManager : MonoBehaviour
     public TileManager TM;
 	[HideInInspector]
     public UIManager UIM;
+    [HideInInspector]
+    public NewCameraController camRef;
+    [HideInInspector]
+    public MapGenerator MapGenRef;
 
     //Referencia momentanea para el playtesting
     [SerializeField]
@@ -127,6 +131,16 @@ public class LevelManager : MonoBehaviour
     {
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
+        camRef = FindObjectOfType<NewCameraController>();
+        MapGenRef = FindObjectOfType<MapGenerator>();
+
+        //Si es un mapa aleatorio se hace antes que la creación de grids
+        if (MapGenRef != null)
+        {
+            MapGenRef.Init();
+        }
+
+        TM.CreateGrid();
     }
 
     private void Start()
@@ -986,6 +1000,8 @@ public class LevelManager : MonoBehaviour
         //Hago desaparecer el botón de fast forward y aparecer el de undo
         UIM.HideShowEnemyUi(false);
 
+        camRef.SetCameraMovable(true);
+
         //Quito los booleanos de los tiles de daño para que puedan hace daño el próximo turno.
         for (int i = 0; i < damageTilesInBoard.Count; i++)
         {
@@ -1050,6 +1066,14 @@ public class LevelManager : MonoBehaviour
             //Actualizo el número de unidades en el tablero (Lo hago aquí en vez de  al morir la unidad para que no se cambie el orden en medio del turno enemigo)
 
             counterForEnemiesOrder = 0;
+
+            //Focus camera
+            
+            camRef.SetCameraMovable(false);
+            camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+
+
+            //Turn Start
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
 
@@ -1072,6 +1096,8 @@ public class LevelManager : MonoBehaviour
             UIM.ScrollUpOnce();
 
             //Empieza el turno enemigo
+            camRef.SetCameraMovable(false);
+            camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
     }
@@ -1149,5 +1175,7 @@ public class LevelManager : MonoBehaviour
         }
     }
     #endregion
+
+
 }
 

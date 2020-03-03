@@ -132,7 +132,9 @@ public class TileManager : MonoBehaviour
 
     #region INIT
 
-    private void Awake()
+    
+    //Esto se llama desde el awake del level manager
+    public void CreateGrid()
     {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
@@ -140,11 +142,6 @@ public class TileManager : MonoBehaviour
 
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
 
-        CreateGrid();
-    }
-
-    void CreateGrid()
-    {
         //Inicializo el array y la posición en la que se inicia a comprobar el grid
         gridObject = new GameObject[gridSizeX, gridSizeY, gridSizeZ];
         grid3DNode = new IndividualTiles[gridSizeX, gridSizeY, gridSizeZ];

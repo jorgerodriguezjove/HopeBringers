@@ -352,7 +352,7 @@ public class EnemyUnit : UnitBase
 		{
 			clicked = 0;
 			clickTime = 0;
-			LM.UIM.EnemyCameraFocus(this);
+			LM.camRef.FocusCameraOnCharacter(gameObject);
 			//Focus camera
 		}
 		else if (clicked > 2 || Time.time - clickTime > 1)
@@ -738,4 +738,28 @@ public class EnemyUnit : UnitBase
         RefreshHealth(true);
     }
 
+    //public void ChangeDirectionAfterBeingSpawnedRandom(FacingDirection newFacingDirection)
+    //{
+    //    currentFacingDirection = newFacingDirection;
+
+    //    if (currentFacingDirection == FacingDirection.North)
+    //    {
+    //        unitModel.
+    //    }
+
+    //    else if (currentFacingDirection == FacingDirection.East)
+    //    {
+
+    //    }
+
+    //    else if (currentFacingDirection == FacingDirection.South)
+    //    {
+
+    //    }
+
+    //    else if (currentFacingDirection == FacingDirection.West)
+    //    {
+
+    //    }
+    //}
 }

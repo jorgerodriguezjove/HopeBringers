@@ -67,11 +67,7 @@ public class UIManager : MonoBehaviour
 	[HideInInspector]
 	public List<GameObject> panelesEnemigos;
 
-	[Header("CAMARA")]
-	[SerializeField]
-	GameObject cameraController;
-	[SerializeField]
-	float focusDuration = 1f;
+	[Header("TOOLTIPS")]
 
 	[SerializeField]
 	public GameObject tooltipPanel;
@@ -163,8 +159,11 @@ public class UIManager : MonoBehaviour
 
 		if (tutorialLevel)
 		{
-			panelTutorial.SetActive(true);
-			textTutorial.text = tutorialText1;
+            if (panelTutorial != null)
+            {
+                panelTutorial.SetActive(true);
+                textTutorial.text = tutorialText1;
+            }
 		}
 
 		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
@@ -213,8 +212,11 @@ public class UIManager : MonoBehaviour
 				}
 				else
 				{
-					panelTutorial.SetActive(false);
-				}
+                    if (panelTutorial != null)
+                    {
+                        panelTutorial.SetActive(false);
+                    }
+                }
                 RotateButtonEndPhase();
                 LM.ChangePhase();
             }
@@ -344,9 +346,9 @@ public class UIManager : MonoBehaviour
     //Hago aparecer o desaparecer, el botón de undo, fast forward...
     public void HideShowEnemyUi(bool _shouldShow)
     {
-        fastForwardButton.SetActive(_shouldShow);
+        //fastForwardButton.SetActive(_shouldShow);
 
-        undoButton.SetActive(!_shouldShow);
+        //undoButton.SetActive(!_shouldShow);
     }
 
     #endregion
@@ -387,22 +389,12 @@ public class UIManager : MonoBehaviour
 	{
 		LM.SelectUnit(characterToSelect.movementUds, characterToSelect);
 	}
-	public void PlayerCameraFocus(PlayerUnit characterToFocus)
-	{
-		cameraController.transform.DOMove
-			(new Vector3(characterToFocus.transform.position.x, cameraController.transform.position.y, characterToFocus.transform.position.z), focusDuration);
-	}
 	
 	public void PortraitEnemySelect(EnemyUnit enemyToSelect)
 	{
 		LM.selectedEnemy = enemyToSelect;
 	}
 
-	public void EnemyCameraFocus(EnemyUnit characterToFocus)
-	{
-		cameraController.transform.DOMove
-			(new Vector3(characterToFocus.transform.position.x, cameraController.transform.position.y, characterToFocus.transform.position.z), focusDuration);
-	}
 	public void HighlightCharacter(PlayerUnit characterToHighlight)
 	{
 		characterToHighlight.SelectedColor();
