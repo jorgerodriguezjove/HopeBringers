@@ -66,6 +66,9 @@ public class InkManager : MonoBehaviour
 
     public void StartStory()
     {
+        //Inicializo todos los structs con el retrato, color y nombre del personaje
+        InitNPCVariables();
+
         HideChoices();
         story = new Story(inkJSONAsset.text);
 
@@ -217,14 +220,17 @@ public class InkManager : MonoBehaviour
     }
 
     //Se llama desde el GameManager y setea la variable con el sprite del NPC.
-    public void InitNPCVariables(Sprite NPCPortrait, string NPCName, Color textColor)
+    public void InitNPCVariables()
     {
-        structPortraitColor.portraitStruct = NPCPortrait;
-        structPortraitColor.colorStruct = textColor;
-
-        if (!nameAndPortrait.ContainsKey(NPCName))
+        for (int i = 0; i < allCharactersInGame.Count; i++)
         {
-            nameAndPortrait.Add(NPCName, structPortraitColor);
+            structPortraitColor.portraitStruct = allCharactersInGame[i].portraitNPC;
+            structPortraitColor.colorStruct = allCharactersInGame[i].colorTextNPC;
+
+            if (!nameAndPortrait.ContainsKey(allCharactersInGame[i].nameNPC))
+            {
+                nameAndPortrait.Add(allCharactersInGame[i].nameNPC, structPortraitColor);
+            }
         }
     }
 

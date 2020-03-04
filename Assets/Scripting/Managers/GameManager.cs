@@ -150,22 +150,20 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            StartDialog(true, dataprueba, dialog);
+            StartDialog(true, dialog);
         }
     }
 
     [SerializeField]
-    TextAsset prueba;
-    [SerializeField]
-    NpcSCO dataprueba;
+    TextAsset textoPrueba;
     string dialog = "reactions.InReac";
 
 
 
-    public void StartDialog(bool isStartDialog, NpcSCO npcData, string dialogToReproduce) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/
+    public void StartDialog(bool isStartDialog, string dialogToReproduce) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/
     {
         //Debug
-        currentLevelStartDialog = prueba;
+        currentLevelStartDialog = textoPrueba;
 
         dialogTime = true;
 
@@ -180,7 +178,6 @@ public class GameManager : PersistentSingleton<GameManager>
             inkManRef.inkJSONAsset = currentLevelEndDialog;
         }
 
-        inkManRef.InitNPCVariables(npcData.portraitNPC, npcData.nameNPC, npcData.colorTextNPC);
         inkManRef.StartStory();
 
 
