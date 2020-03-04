@@ -1,7 +1,8 @@
 ===reactions===
 = InReac
-POLO
-H.I.B.O.: LMAO
-Player: LOL
+Prueba sin personaje.
+H.I.B.O.: Prueba Personaje inicial.
+Knight: Prueba segundo personaje.
+Player: Prueba player.
 
 ->END

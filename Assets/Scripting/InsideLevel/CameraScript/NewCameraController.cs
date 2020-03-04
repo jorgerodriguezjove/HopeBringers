@@ -280,7 +280,10 @@ public class NewCameraController : MonoBehaviour
         //Lock sobre un enemigo para seguirle mientras se mueve
         if (iscameraLockedOnEnemy)
         {
-            transform.position = new Vector3(characterToFocus.transform.position.x, transform.transform.position.y, characterToFocus.transform.position.z);
+            if (characterToFocus != null)
+            {
+                transform.position = new Vector3(characterToFocus.transform.position.x, transform.transform.position.y, characterToFocus.transform.position.z);
+            }
         }
     }
 

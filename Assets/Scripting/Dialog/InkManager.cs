@@ -8,7 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class InkManager : MonoBehaviour
 {
- 
+    [SerializeField]
+    List<NpcSCO> allCharactersInGame = new List<NpcSCO>();
+
     //Archivos de text
     [HideInInspector]
     public TextAsset inkJSONAsset;
@@ -80,7 +82,6 @@ public class InkManager : MonoBehaviour
                 {
                     triangleUI.SetActive(true);
                 }
-
             }
 
             if (!waitingOnInput && Input.GetMouseButtonDown(0))
