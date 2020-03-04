@@ -4906,8 +4906,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1669172723219604694}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5285442591063363154}
@@ -11898,6 +11898,7 @@ MonoBehaviour:
   TM: {fileID: 0}
   UIM: {fileID: 0}
   camRef: {fileID: 0}
+  MapGenRef: {fileID: 0}
   victoryPanel: {fileID: 5601286640884180856}
   defeatPanel: {fileID: 5049101243439474246}
 --- !u!1 &5809797896588658038
@@ -13571,20 +13572,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e63f05cfeccb74faa71ef8deb89a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceFromCenterToCamera: 10
-  heightOffset: 10
-  zoomDifference: 10
-  panSpeed: 12
+  movementSpeed: 0.2
   borderThickness: 5
-  timeRotation: 1
-  timeZoom: 0.5
-  anglesCameraRotation: 45
-  currentRotationPosition: 0
+  rotationAmount: 45
+  zoomAmount: 5
   minSwipeLength: 200
   myCamera: {fileID: 1669172723219604694}
   cameraBoundsRef: {fileID: 1038410030}
   deactivateBorderMovement: 1
   focusDuration: 1
+  lockCamera: 0
 --- !u!1 &7477022501077565636
 GameObject:
   m_ObjectHideFlags: 0

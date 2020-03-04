@@ -7,46 +7,40 @@ public class NewCameraController : MonoBehaviour
 {
     #region VARIABLES
 
-    [Header("POSICIÓN DE CÁMARA")]
-
-    //Distancia desde el focusPoint hasta la cámara.
+    [Header("MOVIMIENTO")]
     [SerializeField]
-    float distanceFromCenterToCamera;
-
-    //Diferencia de altura entre las cámaras y el punto central.
-    //Este número también implica la rotación de la cámara (lo picada que esta).
-    [SerializeField]
-    float heightOffset;
-
-    //Distancia que se suma al hacer zoomOut
-    [SerializeField]
-    float zoomDifference;
-
-    [Header("CONTROLES DE CÁMARA")]
-    [SerializeField]
-    private float panSpeed;
+    private float movementSpeed;
+    private float movementTime = 5f;
     [SerializeField]
     private float borderThickness;
-    [SerializeField]
-    private float timeRotation;
-    [SerializeField]
-    private float timeZoom;
-    [SerializeField]
-    private int anglesCameraRotation;
 
-    //Rotación de la cámara
-    private enum cameraRotationPosition {north, east, south, west }
+    //Vector que guarda la posición y los cambios que se realizan al pulsar las teclas para mover la cámara
+    Vector3 newPos;
+
+    [Header("ROTACIÓN")]
     [SerializeField]
-    private cameraRotationPosition currentRotationPosition;
+    private float rotationAmount;
+    private float timeRotation = 5f;
+
+    //Quaternion que guarda la nueva rotación al pulsar inputs.
+    Quaternion newRotation;
+
+    [Header("ZOOM")]
+    [Tooltip("NO SE PUEDE CAMBIAR EN PLAY")]
+    [SerializeField]
+    private int zoomAmount;
+    //Zoom amount tiene que ser un vector 3 para aplicar los cambios, pero en el editor es poco intuitivo. Lo que hago es que en el editor aparezca un int y ese int
+    //se pone como -y & como z en el nuevo vector new Vector3 (x, -zoomAmount, zoomAmount);
+    private Vector3 realZoomAmount;
+    private float timeZoom = 5f;
 
     private enum cameraZoomLevel {close, far }
     private cameraZoomLevel currentCameraZoom;
 
-    //Vector que guarda la posición y los cambios que se realizan al pulsar las teclas para mover la cámara
-    Vector3 pos;
+    //Vector que guarda la posición de la cámara para el zoom
+    private Vector3 newZoom;
 
-    //Quaternion en el que se guarda la rotación que tiene que usar según si está en north, east...
-    Quaternion referenceQuaternionToAddRotation;
+    [Header ("LIMITAR ACCIONES")]
 
     //Bool que sirve para indicar si la cámara se puede mover y rotar. Se usa para no poder mover y rotar la cámara mientras se hace zoom;
     bool canMoveCamera = true;
@@ -55,12 +49,19 @@ public class NewCameraController : MonoBehaviour
     //Bool que sirve para indicar si la cámara puede hacer zoom. Se usa para no poder hacer zoom mientras se está rotando la cámara.
     bool canZoomCamera = true;
 
+    [Header("MOUSE")]
+    private Vector3 dragStartPosition;
+    private Vector3 dragCurrentPosition;
+
+    private Vector3 mouseRotateStartPosition;
+    private Vector3 mouseRotateCurrentPosition;
+
+
     [Header("SWIPE")]
     public float minSwipeLength = 200f;
     Vector2 firstPressPos;
     Vector2 secondPressPos;
     Vector2 currentSwipe;
-
 
     [Header("REFERENCIAS")]
 
@@ -79,93 +80,88 @@ public class NewCameraController : MonoBehaviour
 
     private void Start()
     {
+        //Seteo los bounds de la cámara
         cameraBoundsSize = cameraBoundsRef.boundsSize;
 
-        //Inicializo el punto central y el diámetro
-        StartCoroutine("SetZoomCoroutine");
-
-        currentRotationPosition = cameraRotationPosition.north;
-
+        //Seteo el estado del zoom
         currentCameraZoom = cameraZoomLevel.close;
+
+        //Seteo la posición, rotación y zoom iniciales
+        newPos = transform.position;
+        newRotation = transform.rotation;
+        newZoom = myCamera.transform.localPosition;
+
+        //Creo el vector zoom teniendo en cuenta lo que se ha puesto en el editor
+        realZoomAmount = new Vector3(realZoomAmount.x, -zoomAmount, zoomAmount);
     }
 
-    #region ROTATION
+    #region MOVEMENT
 
-    IEnumerator RotateCameraRightCoroutine()
+    void HandleMovementInput()
     {
-        canZoomCamera = false;
-
-        CalculateReferenceRotation();
-        gameObject.transform.DORotate((referenceQuaternionToAddRotation * Quaternion.Euler(0, anglesCameraRotation, 0)).eulerAngles, timeRotation);
-
-        if ((int)currentRotationPosition > 2)
+        if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - borderThickness && !deactivateBorderMovement)
         {
-            currentRotationPosition = cameraRotationPosition.north;
+            newPos += (transform.forward * movementSpeed);
         }
 
-        else
+        if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - borderThickness && !deactivateBorderMovement)
         {
-            currentRotationPosition += 1;
+            newPos += (transform.right * movementSpeed);
         }
 
-        yield return new WaitForSeconds(timeRotation);
+        if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= borderThickness && !deactivateBorderMovement)
+        {
+            newPos += (transform.forward * -movementSpeed);
+        }
 
-        canZoomCamera = true;
+        if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= borderThickness && !deactivateBorderMovement)
+        {
+            newPos += (transform.right * -movementSpeed);
+
+        }
+
+        transform.position = Vector3.Lerp(transform.position, newPos, Time.deltaTime * movementTime);
     }
 
-    IEnumerator RotateCameraLeftCoroutine()
+    void HandleMovementMouseInput()
     {
-        canZoomCamera = false;
-
-        CalculateReferenceRotation();
-        gameObject.transform.DORotate((referenceQuaternionToAddRotation * Quaternion.Euler(0, -anglesCameraRotation, 0)).eulerAngles, timeRotation);
-
-        if ((int)currentRotationPosition < 1)
+        //Click der down
+        if (Input.GetMouseButtonDown(0))
         {
-            currentRotationPosition = cameraRotationPosition.west;
+            Debug.Log("Click Der");
+
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            float entryPoint;
+
+            if (plane.Raycast(ray, out entryPoint))
+            {
+                dragStartPosition = ray.GetPoint(entryPoint);
+            }
         }
 
-        else
+        //Mantener click der
+        if (Input.GetMouseButton(0))
         {
-            currentRotationPosition -= 1;
+            Debug.Log("Hold Click Der");
+
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            float entryPoint;
+
+            if (plane.Raycast(ray, out entryPoint))
+            {
+                dragCurrentPosition = ray.GetPoint(entryPoint);
+
+                newPos = transform.position + dragStartPosition - dragCurrentPosition;
+            }
         }
-
-        yield return new WaitForSeconds(timeRotation);
-
-        canZoomCamera = true;
     }
 
-    //Calcula el transform.rotation que tendría el gameObject en cada punto (norte,sur...) para usarlo como referencia y sumarle o restarle 90º.
-    //Esto hace que en caso de darle varias veces al botón de rotar no tome la rotación del objeto mientras esta griando si no directametne en la que va a acabar.
-    private void CalculateReferenceRotation()
-    {
-        Debug.Log(transform.rotation.eulerAngles);
-        Debug.Log(transform.rotation);
-
-        if (currentRotationPosition == cameraRotationPosition.north)
-            referenceQuaternionToAddRotation = new Quaternion(0, 0, 0, 1);
-
-        //if(currentRotationPosition == cameraRotationPosition.northEast)
-        //    referenceQuaternionToAddRotation = new Quaternion(0, -0.4f, 0, 0.9f);
-
-        if (currentRotationPosition == cameraRotationPosition.east)
-            referenceQuaternionToAddRotation = new Quaternion(0, 0.7f, 0, 0.7f);
-
-        //if (currentRotationPosition == cameraRotationPosition.southEast)
-        //    referenceQuaternionToAddRotation = new Quaternion(0, -0.9f, 0, 0.4f);
-
-        if (currentRotationPosition == cameraRotationPosition.south)
-            referenceQuaternionToAddRotation = new Quaternion(0, 1, 0, 0);
-
-        //if (currentRotationPosition == cameraRotationPosition.southWest)
-        //    referenceQuaternionToAddRotation = new Quaternion(0, -0.9f, 0, 0.4f);
-
-        if (currentRotationPosition == cameraRotationPosition.west)
-            referenceQuaternionToAddRotation = new Quaternion(0, 0.7f, 0, -0.7f);
-
-        //if (currentRotationPosition == cameraRotationPosition.northWest)
-        //    referenceQuaternionToAddRotation = new Quaternion(0, 0.4f, 0, 0.9f);
-    }
     #endregion
 
     #region ZOOM
@@ -174,9 +170,7 @@ public class NewCameraController : MonoBehaviour
     {
         if (currentCameraZoom != cameraZoomLevel.far)
         {
-            distanceFromCenterToCamera += zoomDifference;
-            heightOffset += zoomDifference;
-            StartCoroutine("SetZoomCoroutine");
+            newZoom -= realZoomAmount;
             currentCameraZoom = cameraZoomLevel.far;
         }
     }
@@ -185,158 +179,85 @@ public class NewCameraController : MonoBehaviour
     {
         if (currentCameraZoom != cameraZoomLevel.close)
         {
-            distanceFromCenterToCamera -= zoomDifference;
-            heightOffset -= zoomDifference;
-            StartCoroutine("SetZoomCoroutine");
+            newZoom += realZoomAmount;
             currentCameraZoom = cameraZoomLevel.close;
         }
     }
 
-    IEnumerator SetZoomCoroutine()
-    {
-        canMoveCamera = false;
-        canRotateCamera = false;
-
-        if (currentRotationPosition == cameraRotationPosition.north)
-        {
-            myCamera.transform.DOMove(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + heightOffset, gameObject.transform.position.z - distanceFromCenterToCamera), timeZoom);
-        }
-
-        else if (currentRotationPosition == cameraRotationPosition.east)
-        {
-            myCamera.transform.DOMove(new Vector3(gameObject.transform.position.x - distanceFromCenterToCamera, gameObject.transform.position.y + heightOffset, gameObject.transform.position.z), timeZoom);
-        }
-
-        else if (currentRotationPosition == cameraRotationPosition.south)
-        {
-            myCamera.transform.DOMove(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + heightOffset, gameObject.transform.position.z + distanceFromCenterToCamera), timeZoom);
-        }
-
-        else if (currentRotationPosition == cameraRotationPosition.west)
-        {
-            myCamera.transform.DOMove(new Vector3(gameObject.transform.position.x + distanceFromCenterToCamera, gameObject.transform.position.y + heightOffset, gameObject.transform.position.z), timeZoom);
-        }
-
-        yield return new WaitForSeconds(timeZoom);
-
-        canRotateCamera = true;
-        canMoveCamera = true;
-    }
-
     #endregion
+
+    void HandleRotationMouseInput()
+    {
+        //Click botón
+        if (Input.GetMouseButtonDown(1))
+        {
+            mouseRotateStartPosition = Input.mousePosition;
+        }
+
+        //Mantener pulsado el botón
+        if (Input.GetMouseButton(1))
+        {
+            mouseRotateCurrentPosition = Input.mousePosition;
+
+            //Calculo la diferencia entre start y current
+            Vector3 difference = mouseRotateStartPosition - mouseRotateCurrentPosition;
+
+            //Reseteo la posición inicial a la current en el siguiente frame
+            mouseRotateStartPosition = mouseRotateCurrentPosition;
+
+            //Roto la cámara. Está en negativo para que gire al contrario que el ratón.
+            newRotation *= Quaternion.Euler(Vector3.up * (-difference.x / 5f));
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            //Hacer snap al ángulo multiplo de 45 más cercano
+            newRotation = Quaternion.Euler(new Vector3(Vector3.up.x, Mathf.Round(newRotation.eulerAngles.y / 45) * 45, Vector3.up.z));
+        }
+    }
 
     private void Update()
     {
         //La cámara siempre mira hacia el focusPoint
         myCamera.transform.LookAt(gameObject.transform);
 
-        //Seteo la posición actual
-        pos = transform.position;
-
-        //Ifs que hacen que la cámara se mueva correctamente independientemente de la rotación de la cámara y modifican la posición.
-        #region MOVEMENT
-
+        //Movimiento de la cámara
         if (canMoveCamera)
         {
-            if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - borderThickness && !deactivateBorderMovement)
-            {
-                if (currentRotationPosition == cameraRotationPosition.north)
-                    pos.z += panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.east)
-                    pos.x += panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.south)
-                    pos.z -= panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.west)
-                    pos.x -= panSpeed * Time.deltaTime;
-            }
-
-            if (Input.GetKey(KeyCode.D) || Input.mousePosition.x >= Screen.width - borderThickness && !deactivateBorderMovement)
-            {
-                if (currentRotationPosition == cameraRotationPosition.north)
-                    pos.x += panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.east)
-                    pos.z -= panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.south)
-                    pos.x -= panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.west)
-                    pos.z += panSpeed * Time.deltaTime;
-            }
-
-            if (Input.GetKey(KeyCode.S) || Input.mousePosition.y <= borderThickness && !deactivateBorderMovement)
-            {
-                if (currentRotationPosition == cameraRotationPosition.north)
-                    pos.z -= panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.east)
-                    pos.x -= panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.south)
-                    pos.z += panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.west)
-                    pos.x += panSpeed * Time.deltaTime;
-
-            }
-
-            if (Input.GetKey(KeyCode.A) || Input.mousePosition.x <= borderThickness && !deactivateBorderMovement)
-            {
-                if (currentRotationPosition == cameraRotationPosition.north)
-                    pos.x -= panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.east)
-                    pos.z += panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.south)
-                    pos.x += panSpeed * Time.deltaTime;
-                if (currentRotationPosition == cameraRotationPosition.west)
-                    pos.z -= panSpeed * Time.deltaTime;
-            }
+            HandleMovementInput();
+            HandleMovementMouseInput();
         }
-        #endregion
-
-        //Actualiza la posición
-        transform.position = pos;
 
         //Input Rotación
         if (canRotateCamera)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                StopCoroutine("RotateCameraRightCoroutine");
-                StartCoroutine("RotateCameraRightCoroutine");
+                canZoomCamera = false;
+
+                //Seteo la nueva rotación
+                newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
+
+                canZoomCamera = true;
+
             }
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                StopCoroutine("RotateCameraLeftCoroutine");
-                StartCoroutine("RotateCameraLeftCoroutine");
+                canZoomCamera = false;
+
+                //Seteo la nueva rotación
+                newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
+
+                canZoomCamera = true;
             }
 
-            //Swipe
-            if (Input.GetMouseButtonDown(1))
-            {
-                firstPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            //Hago un lerp entre la rotación actual y la nueva.
+            transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * timeRotation);
 
-            }
-            if (Input.GetMouseButtonUp(1))
-            {
-                secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-                currentSwipe = new Vector3(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
+            //Rotación con ratón.
+            HandleRotationMouseInput();
 
-                //Me aseguro de que no ha sido un tap y que de verdad está haciendo swipe
-                if (currentSwipe.magnitude < minSwipeLength)
-                {
-                    return;
-                }
-
-                currentSwipe.Normalize();
-
-                if (currentSwipe.x < 0)
-                {
-                    StopCoroutine("RotateCameraRightCoroutine");
-                    StartCoroutine("RotateCameraRightCoroutine");
-                }
-                else if (currentSwipe.x > 0)
-                {
-                    StopCoroutine("RotateCameraLeftCoroutine");
-                    StartCoroutine("RotateCameraLeftCoroutine");
-                }
-            }
         }
 
         //Input Zoom
@@ -354,13 +275,13 @@ public class NewCameraController : MonoBehaviour
             }
         }
 
+        myCamera.transform.localPosition = Vector3.Lerp(myCamera.transform.localPosition, newZoom, Time.deltaTime * timeZoom);
 
-
+        //Lock sobre un enemigo para seguirle mientras se mueve
         if (iscameraLockedOnEnemy)
         {
             transform.position = new Vector3(characterToFocus.transform.position.x, transform.transform.position.y, characterToFocus.transform.position.z);
         }
-
     }
 
     private void LateUpdate()
@@ -378,7 +299,6 @@ public class NewCameraController : MonoBehaviour
             );
     }
 
- 
     public void SetCameraMovable(bool _shouldmove)
     {
         canMoveCamera = _shouldmove;
@@ -405,6 +325,9 @@ public class NewCameraController : MonoBehaviour
              (new Vector3(characterToFocus.transform.position.x, transform.position.y, characterToFocus.transform.position.z), focusDuration);
 
         yield return new WaitForSeconds(focusDuration);
+
+        //Para que no vuelva a su posición anterior seteo la posición de la cámara.
+        newPos = transform.position;
 
         if (lockCamera)
         {

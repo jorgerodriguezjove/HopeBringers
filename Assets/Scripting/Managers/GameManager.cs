@@ -167,11 +167,6 @@ public class GameManager : PersistentSingleton<GameManager>
         //Debug
         currentLevelStartDialog = prueba;
 
-
-
-
-
-
         dialogTime = true;
 
         //Si es startDialog cargo el dialogo de start y si no cargo el de end
