@@ -237,7 +237,7 @@ public class Mage : PlayerUnit
                     || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
                     //Si no hay obstáculo marco el tile para indicar el rango
-                    if (!myCurrentTile.tilesInLineUp[i].isObstacle)
+                    if (!myCurrentTile.tilesInLineUp[i].isEmpty && !myCurrentTile.tilesInLineUp[i].isObstacle)
                     {
                         currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
                     }
@@ -285,8 +285,7 @@ public class Mage : PlayerUnit
                 if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
                     || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Si no hay obstáculo marco el tile para indicar el rango
-                    if (!myCurrentTile.tilesInLineDown[i].isObstacle)
+                    if (!myCurrentTile.tilesInLineDown[i].isEmpty && !myCurrentTile.tilesInLineDown[i].isObstacle)
                     {
                         currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
                     }
@@ -334,12 +333,10 @@ public class Mage : PlayerUnit
                 if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
                     || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Si no hay obstáculo marco el tile para indicar el rango
-                    if (!myCurrentTile.tilesInLineRight[i].isObstacle)
+                    if (!myCurrentTile.tilesInLineRight[i].isEmpty && !myCurrentTile.tilesInLineRight[i].isObstacle)
                     {
                         currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
                     }
-
                     else
                     {
                         break;
@@ -383,8 +380,7 @@ public class Mage : PlayerUnit
                 if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
                     || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Si no hay obstáculo marco el tile para indicar el rango
-                    if (!myCurrentTile.tilesInLineLeft[i].isObstacle)
+                    if (!myCurrentTile.tilesInLineLeft[i].isEmpty && !myCurrentTile.tilesInLineLeft[i].isObstacle)
                     {
                         currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
                     }
@@ -413,7 +409,9 @@ public class Mage : PlayerUnit
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
+            CalculateDamage(currentUnitsAvailableToAttack[i]);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
             currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
 
         }
@@ -422,6 +420,8 @@ public class Mage : PlayerUnit
         {
             currentTilesInRangeForAttack[i].ColorBorderRed();
         }
+
+
     }
 
     #endregion

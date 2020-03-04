@@ -398,13 +398,12 @@ public class PlayerUnit : UnitBase
 
         MoveToTile(_tileToMove, _currentPath);
 
+        LM.UnitHasFinishedMovementAndRotation();
+
+        //IMPORTANTE: HE PUESTO ESTO DESPUÉS PARA QUE FUNCIONE EL MOSTRAR RANGO DE ATAQUE Y PARECE NO DAR PROBLEMAS. REVISAR EN EL FUTURO
         //Esto tiene que ir antes del  LM.UnitHasFinishedMovementAndRotation() para que función de UnitHasFinishedMovementAndRotation() sepa si hay
         // enemigos a los que atacar
         CheckUnitsAndTilesInRangeToAttack();
-
-        LM.UnitHasFinishedMovementAndRotation();
-
-        
     }
 
     public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
@@ -535,9 +534,10 @@ public class PlayerUnit : UnitBase
         {
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
         }
+
     }
 
-	protected override void CalculateDamage(UnitBase unitToDealDamage)
+	public override void CalculateDamage(UnitBase unitToDealDamage)
 	{
 		//Reseteo la variable de daño a realizar
 		damageWithMultipliersApplied = baseDamage;
@@ -638,7 +638,7 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (!myCurrentTile.tilesInLineUp[i].isEmpty || !myCurrentTile.tilesInLineUp[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                if (!myCurrentTile.tilesInLineUp[i].isEmpty && !myCurrentTile.tilesInLineUp[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
                 }
@@ -666,7 +666,7 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (!myCurrentTile.tilesInLineDown[i].isEmpty || !myCurrentTile.tilesInLineDown[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                if (!myCurrentTile.tilesInLineDown[i].isEmpty && !myCurrentTile.tilesInLineDown[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
                 }
@@ -693,7 +693,7 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (!myCurrentTile.tilesInLineRight[i].isEmpty || !myCurrentTile.tilesInLineRight[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                if (!myCurrentTile.tilesInLineRight[i].isEmpty && !myCurrentTile.tilesInLineRight[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
                 }
@@ -720,7 +720,7 @@ public class PlayerUnit : UnitBase
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
-                if (!myCurrentTile.tilesInLineLeft[i].isEmpty || !myCurrentTile.tilesInLineLeft[i].isObstacle || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                if (!myCurrentTile.tilesInLineLeft[i].isEmpty && !myCurrentTile.tilesInLineLeft[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
                 }
@@ -737,7 +737,9 @@ public class PlayerUnit : UnitBase
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
+            CalculateDamage(currentUnitsAvailableToAttack[i]);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
             currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
         }
 
@@ -746,6 +748,7 @@ public class PlayerUnit : UnitBase
         {
             currentTilesInRangeForAttack[i].ColorBorderRed();
         }
+
 
     }
 

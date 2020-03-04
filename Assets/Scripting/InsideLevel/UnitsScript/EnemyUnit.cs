@@ -240,7 +240,11 @@ public class EnemyUnit : UnitBase
     {
         //Cada enemigo realiza su propio ataque
 
-        currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(this);
+
+       
+        CalculateDamage(currentUnitsAvailableToAttack[0]);
+        currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+        
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta
@@ -267,8 +271,11 @@ public class EnemyUnit : UnitBase
             if (!wereTilesAlreadyUnderAttack[i])
             {
                 tilesAlreadyUnderAttack[i].ColorDesAttack();
-                tilesAlreadyUnderAttack[i].unitOnTile.previsualizeAttackIcon.SetActive(false);
-                
+
+                if (tilesAlreadyUnderAttack[i].unitOnTile != null)
+                {
+                    tilesAlreadyUnderAttack[i].unitOnTile.previsualizeAttackIcon.SetActive(false);
+                }
             }
         }
 
@@ -345,7 +352,7 @@ public class EnemyUnit : UnitBase
 		{
 			clicked = 0;
 			clickTime = 0;
-			LM.UIM.EnemyCameraFocus(this);
+			LM.camRef.FocusCameraOnCharacter(gameObject);
 			//Focus camera
 		}
 		else if (clicked > 2 || Time.time - clickTime > 1)
@@ -536,17 +543,32 @@ public class EnemyUnit : UnitBase
     public void OnHoverExitFunctionality()
     {
         LM.HideEnemyHover(this);
-       
 
-        LM.HideHover(this);
-        HealthBarOn_Off(false);
+        
 
-        if(LM.selectedEnemy == null)
+        if (LM.selectedEnemy == null)
         {
             LM.UIM.HideUnitInfo("");
+            if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+            {
+                ResetColor();
+                myPortrait.UnHighlightMyself();
+                LM.HideHover(this);
+                HealthBarOn_Off(false);
+            }
+
+
+          
+
         }
         else
         {
+            if (LM.selectedEnemy != this)
+            {
+                LM.HideHover(this);
+                HealthBarOn_Off(false);
+            }
+
             LM.UIM.HideUnitInfo("");
             LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
             LM.selectedCharacter.HideDamageIcons(this);
@@ -558,8 +580,7 @@ public class EnemyUnit : UnitBase
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
 		
-        LM.HideHover(this);
-        HealthBarOn_Off(false);
+        
 		//LM.UIM.HideCharacterInfo("");
 		if (LM.selectedCharacter == null)
 		{
@@ -581,6 +602,8 @@ public class EnemyUnit : UnitBase
         else
         {
             ResetColor();
+            LM.HideHover(this);
+            HealthBarOn_Off(false);
         }
 		
 
@@ -715,4 +738,28 @@ public class EnemyUnit : UnitBase
         RefreshHealth(true);
     }
 
+    //public void ChangeDirectionAfterBeingSpawnedRandom(FacingDirection newFacingDirection)
+    //{
+    //    currentFacingDirection = newFacingDirection;
+
+    //    if (currentFacingDirection == FacingDirection.North)
+    //    {
+    //        unitModel.
+    //    }
+
+    //    else if (currentFacingDirection == FacingDirection.East)
+    //    {
+
+    //    }
+
+    //    else if (currentFacingDirection == FacingDirection.South)
+    //    {
+
+    //    }
+
+    //    else if (currentFacingDirection == FacingDirection.West)
+    //    {
+
+    //    }
+    //}
 }

@@ -31,6 +31,15 @@ public class Rogue : PlayerUnit
     public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
+
+        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        {
+            if (!myCurrentTile.neighbours[i].isEmpty && !myCurrentTile.neighbours[i].isObstacle)
+            {
+                currentTilesInRangeForAttack.Add(myCurrentTile.neighbours[i]);
+            }
+        }
 
         //Arriba
         if (myCurrentTile.tilesInLineUp.Count > 1)
@@ -154,7 +163,15 @@ public class Rogue : PlayerUnit
         //Feedback de ataque
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(this);
+            CalculateDamage(currentUnitsAvailableToAttack[i]);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            
+            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+        }
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
         }
     }
 
@@ -374,7 +391,7 @@ public class Rogue : PlayerUnit
                 LM.tilesAvailableForMovement = LM.TM.OptimizedCheckAvailableTilesForMovement(movementUds, this);
                 for (int i = 0; i < LM.tilesAvailableForMovement.Count; i++)
                 {
-                    LM.tilesAvailableForMovement[i].ColorSelect();
+                    LM.tilesAvailableForMovement[i].ColorMovement();
                 }
 
                 LM.SelectUnit(movementUds, this);
@@ -516,7 +533,7 @@ public class Rogue : PlayerUnit
     }
 
     //Override al calculo de daño porque tiene que mostrar el daño tras el cambio de posición
-    protected override void CalculateDamage(UnitBase unitToDealDamage)
+    public override void CalculateDamage(UnitBase unitToDealDamage)
     {
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;
@@ -559,14 +576,14 @@ public class Rogue : PlayerUnit
         if (unitToDealDamage.myCurrentTile.height > tileLineToCheck.height)
         {
             damageWithMultipliersApplied -= penalizatorDamageLessHeight;
-			downToUpDamageIcon.SetActive(true);
+            unitToDealDamage.downToUpDamageIcon.SetActive(true);
 		}
 
         //Si estoy en ventaja de altura hago más daño
         else if (unitToDealDamage.myCurrentTile.height < tileLineToCheck.height)
         {
             damageWithMultipliersApplied += bonusDamageMoreHeight;
-			upToDownDamageIcon.SetActive(true);
+            unitToDealDamage.upToDownDamageIcon.SetActive(true);
 		}
 
         //Si le ataco por la espalda hago más daño
@@ -574,7 +591,7 @@ public class Rogue : PlayerUnit
         {
             //Ataque por la espalda
             damageWithMultipliersApplied += bonusDamageBackAttack;
-			backStabIcon.SetActive(true);
+            unitToDealDamage.backStabIcon.SetActive(true);
 		}
     }
 

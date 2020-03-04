@@ -31,6 +31,8 @@ public class NewCameraController : MonoBehaviour
     private float timeRotation;
     [SerializeField]
     private float timeZoom;
+    [SerializeField]
+    private int anglesCameraRotation;
 
     //Rotación de la cámara
     private enum cameraRotationPosition {north, east, south, west }
@@ -47,9 +49,18 @@ public class NewCameraController : MonoBehaviour
     Quaternion referenceQuaternionToAddRotation;
 
     //Bool que sirve para indicar si la cámara se puede mover y rotar. Se usa para no poder mover y rotar la cámara mientras se hace zoom;
-    bool canMoveAndRotateCamera = true;
+    bool canMoveCamera = true;
+
+    bool canRotateCamera = true;
     //Bool que sirve para indicar si la cámara puede hacer zoom. Se usa para no poder hacer zoom mientras se está rotando la cámara.
     bool canZoomCamera = true;
+
+    [Header("SWIPE")]
+    public float minSwipeLength = 200f;
+    Vector2 firstPressPos;
+    Vector2 secondPressPos;
+    Vector2 currentSwipe;
+
 
     [Header("REFERENCIAS")]
 
@@ -85,7 +96,7 @@ public class NewCameraController : MonoBehaviour
         canZoomCamera = false;
 
         CalculateReferenceRotation();
-        gameObject.transform.DORotate((referenceQuaternionToAddRotation * Quaternion.Euler(0, 90, 0)).eulerAngles, timeRotation);
+        gameObject.transform.DORotate((referenceQuaternionToAddRotation * Quaternion.Euler(0, anglesCameraRotation, 0)).eulerAngles, timeRotation);
 
         if ((int)currentRotationPosition > 2)
         {
@@ -107,7 +118,7 @@ public class NewCameraController : MonoBehaviour
         canZoomCamera = false;
 
         CalculateReferenceRotation();
-        gameObject.transform.DORotate((referenceQuaternionToAddRotation * Quaternion.Euler(0, -90, 0)).eulerAngles, timeRotation);
+        gameObject.transform.DORotate((referenceQuaternionToAddRotation * Quaternion.Euler(0, -anglesCameraRotation, 0)).eulerAngles, timeRotation);
 
         if ((int)currentRotationPosition < 1)
         {
@@ -128,17 +139,32 @@ public class NewCameraController : MonoBehaviour
     //Esto hace que en caso de darle varias veces al botón de rotar no tome la rotación del objeto mientras esta griando si no directametne en la que va a acabar.
     private void CalculateReferenceRotation()
     {
+        Debug.Log(transform.rotation.eulerAngles);
+        Debug.Log(transform.rotation);
+
         if (currentRotationPosition == cameraRotationPosition.north)
-            referenceQuaternionToAddRotation = new Quaternion(0,0,0,1);
+            referenceQuaternionToAddRotation = new Quaternion(0, 0, 0, 1);
+
+        //if(currentRotationPosition == cameraRotationPosition.northEast)
+        //    referenceQuaternionToAddRotation = new Quaternion(0, -0.4f, 0, 0.9f);
 
         if (currentRotationPosition == cameraRotationPosition.east)
             referenceQuaternionToAddRotation = new Quaternion(0, 0.7f, 0, 0.7f);
 
+        //if (currentRotationPosition == cameraRotationPosition.southEast)
+        //    referenceQuaternionToAddRotation = new Quaternion(0, -0.9f, 0, 0.4f);
+
         if (currentRotationPosition == cameraRotationPosition.south)
             referenceQuaternionToAddRotation = new Quaternion(0, 1, 0, 0);
 
+        //if (currentRotationPosition == cameraRotationPosition.southWest)
+        //    referenceQuaternionToAddRotation = new Quaternion(0, -0.9f, 0, 0.4f);
+
         if (currentRotationPosition == cameraRotationPosition.west)
-            referenceQuaternionToAddRotation = new Quaternion(0,0.7f, 0, -0.7f);
+            referenceQuaternionToAddRotation = new Quaternion(0, 0.7f, 0, -0.7f);
+
+        //if (currentRotationPosition == cameraRotationPosition.northWest)
+        //    referenceQuaternionToAddRotation = new Quaternion(0, 0.4f, 0, 0.9f);
     }
     #endregion
 
@@ -168,7 +194,8 @@ public class NewCameraController : MonoBehaviour
 
     IEnumerator SetZoomCoroutine()
     {
-        canMoveAndRotateCamera = false;
+        canMoveCamera = false;
+        canRotateCamera = false;
 
         if (currentRotationPosition == cameraRotationPosition.north)
         {
@@ -192,7 +219,8 @@ public class NewCameraController : MonoBehaviour
 
         yield return new WaitForSeconds(timeZoom);
 
-        canMoveAndRotateCamera = true;
+        canRotateCamera = true;
+        canMoveCamera = true;
     }
 
     #endregion
@@ -208,7 +236,7 @@ public class NewCameraController : MonoBehaviour
         //Ifs que hacen que la cámara se mueva correctamente independientemente de la rotación de la cámara y modifican la posición.
         #region MOVEMENT
 
-        if (canMoveAndRotateCamera)
+        if (canMoveCamera)
         {
             if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - borderThickness && !deactivateBorderMovement)
             {
@@ -265,7 +293,7 @@ public class NewCameraController : MonoBehaviour
         transform.position = pos;
 
         //Input Rotación
-        if (canMoveAndRotateCamera)
+        if (canRotateCamera)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -325,6 +353,14 @@ public class NewCameraController : MonoBehaviour
                 ZoomOut();
             }
         }
+
+
+
+        if (iscameraLockedOnEnemy)
+        {
+            transform.position = new Vector3(characterToFocus.transform.position.x, transform.transform.position.y, characterToFocus.transform.position.z);
+        }
+
     }
 
     private void LateUpdate()
@@ -343,12 +379,67 @@ public class NewCameraController : MonoBehaviour
     }
 
  
+    public void SetCameraMovable(bool _shouldmove)
+    {
+        canMoveCamera = _shouldmove;
+        canZoomCamera = _shouldmove;
+
+        if (_shouldmove)
+        {
+            iscameraLockedOnEnemy = false;
+            characterToFocus = null;
+        }
+    }
+
+    private GameObject characterToFocus;
+    [SerializeField]
+    int focusDuration;
+    
+
+    IEnumerator FocusCameraOnCharacter()
+    {
+        canZoomCamera = false;
+        canMoveCamera = false;
+
+        transform.DOMove
+             (new Vector3(characterToFocus.transform.position.x, transform.position.y, characterToFocus.transform.position.z), focusDuration);
+
+        yield return new WaitForSeconds(focusDuration);
+
+        if (lockCamera)
+        {
+            iscameraLockedOnEnemy = true;
+            lockCamera = false;
+        }
+
+        if (!iscameraLockedOnEnemy)
+        {
+            canZoomCamera = true;
+            canMoveCamera = true;
+        }
+    }
+
+    //Focus es simplemente mover la cámara hasta el enemigo
+    public void FocusCameraOnCharacter(GameObject _charaterToFocus)
+    {
+        iscameraLockedOnEnemy = false;
+        characterToFocus = _charaterToFocus;
+        StartCoroutine("FocusCameraOnCharacter");
+    }
+
+    public bool lockCamera;
+    private bool iscameraLockedOnEnemy;
 
 
-    public float minSwipeLength = 200f;
-    Vector2 firstPressPos;
-    Vector2 secondPressPos;
-    Vector2 currentSwipe;
+    //Lock es mover la cámara y que esta siga al enemigo
+    public void LockCameraOnEnemy(GameObject _enemyToFocus)
+    {
+        iscameraLockedOnEnemy = false;
+        lockCamera = true;
+        characterToFocus = _enemyToFocus;
+        FocusCameraOnCharacter(characterToFocus);
+    }
+    
        
 
 

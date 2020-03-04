@@ -497,6 +497,7 @@ MonoBehaviour:
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
   timeToWaitBeforeHidingHealthbar: 1
+  damageWithMultipliersApplied: 0
   maxHeightDifferenceToAttack: 1
   previousTileHeight: 0
   maxHeightDifferenceToMove: 1
@@ -521,7 +522,10 @@ MonoBehaviour:
   upToDownDamageIcon: {fileID: 5391060345964104170}
   downToUpDamageIcon: {fileID: 4249927181617374189}
   canvasUnit: {fileID: 1018097020543958301}
-  unitGeneralInfo: Info general Ninja
+  unitGeneralInfo: 'Ataque:
+
+
+    Pasiva:'
   characterImage: {fileID: 21300000, guid: 804fb8e6562a3a84f96ca849eb0988e2, type: 3}
   tooltipImage: {fileID: 0}
   unitName: 
@@ -530,7 +534,7 @@ MonoBehaviour:
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
-  tilesInRangeForAttack: []
+  currentTilesInRangeForAttack: []
   hasUsedExtraTurn: 0
   timeWaitAfterAttack: 1
   activeSkillInfo: Info habilidad activa Ninja
@@ -4966,7 +4970,7 @@ GameObject:
   - component: {fileID: 7635276916118981455}
   - component: {fileID: 1625020431877996122}
   - component: {fileID: 6663731117073393046}
-  m_Layer: 13
+  m_Layer: 12
   m_Name: Canvas Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6120,6 +6124,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5579306423391873758, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2e3acfa7ff9ac494881704ffd8ee60fd,
+        type: 3}
     - target: {fileID: 7978522504799025731, guid: 864806fa92359de4480634b63250853b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6135,6 +6145,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 8836884938630293723, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 71ca515532ac94b4ca2de6d5bdcabb24,
+        type: 3}
+    - target: {fileID: 9222091305690705822, guid: 864806fa92359de4480634b63250853b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5545b2579e3c9b64a9bbcaa1ee88b0ee,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 864806fa92359de4480634b63250853b, type: 3}
 --- !u!224 &9029392853524506878 stripped

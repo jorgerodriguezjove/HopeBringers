@@ -96,7 +96,7 @@ public class Portraits : MonoBehaviour
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
             UIM.PortraitCharacterSelect(assignedPlayer);
-			UIM.PlayerCameraFocus(assignedPlayer);
+			LM.camRef.FocusCameraOnCharacter(assignedPlayer.gameObject);
             isClicked = true;
         }
 	}

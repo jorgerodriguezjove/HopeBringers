@@ -360,7 +360,18 @@ public class EnGiant : EnemyUnit
 
                 Vector3 spawnPoint = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[1].transform.position.z);
                 shaderHover.transform.position = spawnPoint;
-
+               
+                
+                if ((pathToObjective[2]) == currentUnitsAvailableToAttack[0].myCurrentTile)
+                {
+                    
+                    CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1]);
+                }
+                else
+                {
+                    
+                    damageWithMultipliersApplied = -999;
+                }
                 Vector3 unitDirection = new Vector3(pathToObjective[2].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[2].transform.position.z);
 
                 shaderHover.transform.DOLookAt(unitDirection, 0f, AxisConstraint.Y);

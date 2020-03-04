@@ -34,6 +34,9 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [HideInInspector]
     public bool isUnderAttack;
 
+    [HideInInspector]
+    private bool isBorderRed;
+
     //Bool que sirve para saber si el tile estaba con feedback de movimiento antes para volver a ponerse
     private bool isMovementTile;
 
@@ -132,6 +135,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     //Esto era antes el diccioanrio de prev de tileManger. Ahora el propio tile almacena el tile anterior del path.
     public IndividualTiles parent;
+
 
     int heapIndex;
 
@@ -246,7 +250,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
         if (isMovementTile)
         {
-            ColorSelect();
+            ColorMovement();
         }
 
         else if (isUnderAttack)
@@ -287,8 +291,9 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     #region COLORS
 
+   
     //Cambiar a color movimiento
-    public void ColorSelect()
+    public void ColorMovement()
     {
         //Con este if evito que se pinten los tiles de los personajes con el pathfinding del goblin
         if (unitOnTile == null)
@@ -296,9 +301,17 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             tileInterior.enabled = true;
             tileInterior.material = moveInteriorColor;
 
-            tileBorder.enabled = true;
-            tileBorder.material = moveBorderColor;
+            if (!isBorderRed)
+            {
+                tileBorder.enabled = true;
+                tileBorder.material = moveBorderColor;
+            }
 
+            else
+            {
+                ColorBorderRed();
+            }
+            
 
             isMovementTile = true;
         }
@@ -311,53 +324,57 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     public void ColorCurrentTileHover()
     {
-        //tileInterior.enabled = true;
-        //tileInterior.material = hoverTileBorderColor;
-
         tileBorder.enabled = true;
         tileBorder.material = hoverTileBorderColor;
-    }
-
-    //Cambiar a color normal
-    public void ColorDeselect()
-    {
-        if (isUnderAttack)
-        {
-            tileInterior.enabled = true;
-            tileInterior.material = attackBorderColor;
-
-            tileBorder.enabled = true;
-            tileBorder.material = attackBorderColor;
-        }
-        else
-        {
-            tileInterior.enabled = false;
-            tileBorder.enabled = false;
-        }
-
-        isMovementTile = false;
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     //Cambiar a color de rango de acción dormido
     public void ColorActionRange()
     {
+        //Esto es para que no pinte el borde de los tiles de movimiento
         if (!tileBorder.enabled)
         {
             tileBorder.enabled = true;
             tileBorder.material = actionRangeBorderColor;
         }
-        
     }
 
+
+    //Cambiar a color normal
+    public void ColorDeselect()
+    {
+        isMovementTile = false;
+
+        if (tileBorder.enabled && tileBorder.material != attackBorderColor)
+        {
+            if (isUnderAttack)
+            {
+                tileInterior.enabled = true;
+                tileInterior.material = attackBorderColor;
+
+                tileBorder.enabled = true;
+                tileBorder.material = attackBorderColor;
+            }
+            else
+            {
+                tileInterior.enabled = false;
+                tileBorder.enabled = false;
+                isBorderRed = false;
+            }
+
+            isMovementTile = false;
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+            return;
+        }
+    }
+
+    
 
 
     //Cambiar el color a ataque
     public void ColorAttack()
     {
-        //tileInterior.enabled = true;
-        //tileInterior.material = attackBorderColor;
-
         tileBorder.enabled = true;
         tileBorder.material = attackBorderColor;
 
@@ -371,12 +388,12 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         {
             tileBorder.enabled = true;
             tileBorder.material = chargingAttackBorderColor;
+            isBorderRed = true;
         }
     }
 
     public void ColorInteriorRed()
     {
-        Debug.Log("AAAAAAAAAAA");
 
         tileInterior.enabled = true;
         tileInterior.material = chargingAttackInteriorColor;
@@ -385,9 +402,11 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile
     public void ColorDesAttack()
     {
+   
         tileBorder.enabled = false;
         tileInterior.enabled = false;
 
+        isBorderRed = false;
         isUnderAttack = false;
     }
 
