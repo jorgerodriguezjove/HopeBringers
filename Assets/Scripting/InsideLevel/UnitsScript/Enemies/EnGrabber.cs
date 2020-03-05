@@ -63,8 +63,14 @@ public class EnGrabber : EnemyUnit
             {
                 if (currentUnitsAvailableToAttack.Count == 1)
                 {
-                    myCurrentObjective = currentUnitsAvailableToAttack[0];
-                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    //Añado esto para eliminar a los personajes ocultos
+                    base.SearchingObjectivesToAttack();
+
+                    if (currentUnitsAvailableToAttack.Count == 1)
+                    {
+                        myCurrentObjective = currentUnitsAvailableToAttack[0];
+                        myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    }
                 }
 
                 //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
@@ -88,6 +94,9 @@ public class EnGrabber : EnemyUnit
                     //Si sigue habiendo varios enemigos los ordeno segun la vida
                     if (currentUnitsAvailableToAttack.Count > 1)
                     {
+
+                        //Añado esto para eliminar a los personajes ocultos
+                        base.SearchingObjectivesToAttack();
 
                         //Ordeno la lista de posibles objetivos de menor a mayor vida actual
                         currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)

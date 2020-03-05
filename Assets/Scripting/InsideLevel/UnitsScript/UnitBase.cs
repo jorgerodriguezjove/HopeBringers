@@ -33,6 +33,15 @@ public class UnitBase : MonoBehaviour
     //Bool que indica si está marcado o no 
     public bool isMarked;
 
+    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
+    //Bool que indica si está stuneado o no 
+    public bool isStunned;
+    //Añado esto por si los stuns se puede acumular
+    public int turnStunned;
+
+    //Bool para poder ocultar a las unidades
+    public bool isHidden;
+
     [Header("DAMAGE")]
 
     //Daño de la unidad
@@ -384,7 +393,7 @@ public class UnitBase : MonoBehaviour
                 //Hago animación de rebote??
             }
 
-            //Si hay tiles en la lista me empjuan contra tiles que no son bordes 
+            //Si hay tiles en la lista me empujan contra tiles que no son bordes 
             else
             {
                 for (int i = 1; i <= numberOfTilesMoved; i++)
@@ -498,7 +507,7 @@ public class UnitBase : MonoBehaviour
 
     //Función que ejecuta el movimiento del push
     //Es virtual para que la balista pueda despintar y pintar los nuevos tiles
-    protected virtual void MoveToTilePushed(IndividualTiles newTile)
+    public virtual void MoveToTilePushed(IndividualTiles newTile)
     {
         //Mover al nuevo tile
         currentTileVectorToMove = newTile.transform.position;

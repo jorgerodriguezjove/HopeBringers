@@ -11,14 +11,32 @@ public class Rogue : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
+    //ACTIVAS
     public bool checkersAttack;
     public int unitsCanJump;
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
+
     public bool extraTurnAttackAfterKill;
 
+    //PASIVAS
 
+     //Comprobar si tiene la habilidad comprada
+    public bool afterKillBonus;
+     //El bonus de ataque que se añade tras matar a un enemigo
+    public int bonusAttackAfterKill;
+    //Máximo de veces que se puede acumular
+    public int maxbonusAttackAfterKill;
+    //Pasiva mejorada (supongo que no tiene limitante de maxBonus)
+    public bool afterKillBonus2;
+
+    //Comprobar si tiene la habilidad comprada
+    public bool smokeBomb;
+    public GameObject smokeBombPref;
+    //Pasuva mejorada
+    public bool smokeBomb2;
+    public GameObject smokeBombPref2;
 
     #endregion
 
@@ -268,6 +286,37 @@ public class Rogue : PlayerUnit
             unitsAttacked.Add(unitToAttack);
             //Hago daño
             DoDamage(unitToAttack);
+
+            if (afterKillBonus)
+            {
+                if (unitToAttack.isDead)
+                {
+                    if (afterKillBonus2)
+                    {
+                        baseDamage += bonusAttackAfterKill;
+                    }
+                    else if (maxbonusAttackAfterKill > 0)
+                    {
+                        baseDamage += bonusAttackAfterKill;
+                        maxbonusAttackAfterKill--;
+                    }                    
+                }
+            }
+            else if(smokeBomb)            
+            {
+                if (unitToAttack.isDead)
+                {
+                    if (smokeBomb2)
+                    {
+                        Instantiate(smokeBombPref2);
+                    }
+                    else
+                    {
+                        Instantiate(smokeBombPref);
+
+                    }                   
+                }               
+            }
             
                 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
@@ -376,7 +425,8 @@ public class Rogue : PlayerUnit
 
             //Hago daño
             DoDamage(unitToAttack);
-            
+
+           
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
             if (unitToAttack.isDead && !hasUsedExtraTurn)
@@ -484,6 +534,8 @@ public class Rogue : PlayerUnit
 
             //Hago daño
             DoDamage(unitToAttack);
+
+            
 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 

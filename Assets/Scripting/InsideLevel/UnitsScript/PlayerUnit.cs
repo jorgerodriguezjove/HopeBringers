@@ -463,12 +463,65 @@ public class PlayerUnit : UnitBase
         FinishMyActions();
     }
 
+    public void CheckIfKnightIsDefending(Knight knightThatDef, UnitBase unitThatIsAttacking)
+    {
+        //Este es el valor que queremos que tenga para defender unidades
+        knightThatDef.shieldDef = 5;
+        if (knightThatDef.isBlockingNeighbours)
+        {
+            if (knightThatDef.myCurrentTile.neighbours.Contains(myCurrentTile))
+            {
+
+                if ((knightThatDef.currentFacingDirection == FacingDirection.North && unitThatIsAttacking.currentFacingDirection == FacingDirection.South)
+                    || (knightThatDef.currentFacingDirection == FacingDirection.South && unitThatIsAttacking.currentFacingDirection == FacingDirection.North)
+                    || (knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttacking.currentFacingDirection == FacingDirection.East)
+                    || (knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttacking.currentFacingDirection == FacingDirection.West))
+                {
+
+                    //Cambiar variable en el Knight
+                    if (knightThatDef.isBlockingNeighboursFull)
+                    {
+                        knightThatDef.shieldDef = 999; 
+                    }
+
+                }
+                else
+                {
+                    knightThatDef.shieldDef = 0;
+                }
+            }
+            else
+            {
+                knightThatDef.shieldDef = 0;
+            }
+
+        }
+        else
+        {
+            knightThatDef.shieldDef = 0;
+        }
+
+
+    }
+
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         //Animación de ataque
         myAnimator.SetTrigger("Damage");
 
+        //Estas líneas las añado para comprobar si el caballero tiene que defender
+        Knight knightDef = FindObjectOfType<Knight>();
+        CheckIfKnightIsDefending(knightDef, unitAttacker);
+        
+        damageReceived -=  knightDef.shieldDef;
+
+        if (damageReceived < 0)
+        {
+            damageReceived = 0;
+        }
+
         currentHealth -= damageReceived;
+
 
         Debug.Log("Soy " + name + " me han hecho daño");
 
@@ -764,4 +817,6 @@ public class PlayerUnit : UnitBase
             base.FindAndSetFirstTile();
         }
     }
+
+    
 }

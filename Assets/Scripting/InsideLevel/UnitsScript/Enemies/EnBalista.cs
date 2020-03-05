@@ -783,7 +783,7 @@ public class EnBalista : EnemyUnit
         return null;
     }
 
-    protected override void MoveToTilePushed(IndividualTiles newTile)
+    public override void MoveToTilePushed(IndividualTiles newTile)
     {
         FeedbackTilesToAttack(false);
         base.MoveToTilePushed(newTile);

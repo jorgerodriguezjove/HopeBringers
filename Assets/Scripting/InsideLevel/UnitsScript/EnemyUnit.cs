@@ -164,8 +164,26 @@ public class EnemyUnit : UnitBase
                 break;
 
             case (enemyState.Searching):
+
+
                 arrowEnemyIndicator.SetActive(true);
-                SearchingObjectivesToAttack();
+
+                //Añado esto para stunnear a los enemigos (no sé si los jugadores tendrán stun luego)
+                if (!isStunned)
+                {
+                    SearchingObjectivesToAttack();
+                }
+                else
+                {
+                    turnStunned--;
+                    if (turnStunned <= 0)
+                    {
+                        isStunned = false;
+                    }
+
+                    myCurrentEnemyState = enemyState.Ended;
+                }
+                
 
                 break;
 
@@ -226,7 +244,18 @@ public class EnemyUnit : UnitBase
 
     public virtual void SearchingObjectivesToAttack()
     {
+
         //Cada enemigo busca enemigos a su manera
+        
+
+        //Añadido esto para saber si los jugadores están ocultos (Añadir a todos los enemigos despues de que compruebe posibles objetivos pero antes de que busque al último)
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            if (currentUnitsAvailableToAttack[i].isHidden)
+            {
+                currentUnitsAvailableToAttack.Remove(currentUnitsAvailableToAttack[i]);
+            }
+        }
     }
 
 

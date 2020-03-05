@@ -10,23 +10,23 @@ public class DamageTile : MonoBehaviour
     public bool damageDone;
 
     [SerializeField]
-    private bool hasUnit;
+    public bool hasUnit;
 
     [SerializeField]
-    private GameObject unitToDoDamage;
+    public GameObject unitToDoDamage;
 
     [SerializeField]
-    private int damageToDo;
+    public int damageToDo;
 
 	[SerializeField]
 	[@TextAreaAttribute(15, 20)]
-	private string tileInfo;
+    public string tileInfo;
 
 	[SerializeField]
-	private Sprite tileImage;
+    public Sprite tileImage;
 
 	[Header("REFERENCIAS")]
-    private LevelManager LM;
+    public LevelManager LM;
 
 
     #endregion
@@ -37,9 +37,9 @@ public class DamageTile : MonoBehaviour
         LM = FindObjectOfType<LevelManager>();
         LM.damageTilesInBoard.Add(this);
     }
-	#endregion
+    #endregion
 
-	void OnTriggerStay(Collider unitOnTile)
+    public virtual void OnTriggerStay(Collider unitOnTile)
 	{
 		//if (LM.currentLevelState == LevelManager.LevelState.ProcessingEnemiesActions && !damageDone)
 		//{
@@ -59,7 +59,7 @@ public class DamageTile : MonoBehaviour
         }
 	}
 
-	void OnTriggerExit(Collider unitOnTile)
+    public virtual void OnTriggerExit(Collider unitOnTile)
     {
         if (unitOnTile.GetComponent<UnitBase>())
         {
@@ -68,7 +68,7 @@ public class DamageTile : MonoBehaviour
         }
     }
 
-    public void CheckHasToDoDamage()
+    public virtual void CheckHasToDoDamage()
     {
         if(hasUnit && !damageDone)
         {
@@ -92,7 +92,7 @@ public class DamageTile : MonoBehaviour
 	
 
 
-	void Update()
+	public virtual void Update()
 	{
 		if (LM.currentLevelState == LevelManager.LevelState.PlayerPhase)
 		{

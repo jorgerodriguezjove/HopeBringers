@@ -20,6 +20,7 @@ public class EnGoblin : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
+        
         myCurrentObjective = null;
         myCurrentObjectiveTile = null;
         pathToObjective.Clear();
@@ -64,8 +65,13 @@ public class EnGoblin : EnemyUnit
             {
                 if (currentUnitsAvailableToAttack.Count == 1)
                 {
-                    myCurrentObjective = currentUnitsAvailableToAttack[0];
-                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    base.SearchingObjectivesToAttack();
+
+                    if (currentUnitsAvailableToAttack.Count == 1)
+                    {
+                        myCurrentObjective = currentUnitsAvailableToAttack[0];
+                        myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    }
                 }
 
                 //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
@@ -89,6 +95,8 @@ public class EnGoblin : EnemyUnit
                     //Si sigue habiendo varios enemigos los ordeno segun la vida
                     if (currentUnitsAvailableToAttack.Count > 1)
                     {
+                        //Añado esto para eliminar a los personajes ocultos
+                        base.SearchingObjectivesToAttack();
 
                         //Ordeno la lista de posibles objetivos de menor a mayor vida actual
                         currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
@@ -112,6 +120,7 @@ public class EnGoblin : EnemyUnit
                     pathToObjective.Add(LM.TM.currentPath[i]);
                 }
 
+                
                 myCurrentEnemyState = enemyState.Attacking;
             }
         }
@@ -463,6 +472,7 @@ public class EnGoblin : EnemyUnit
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
     {
+        
         myCurrentObjective = null;
         myCurrentObjectiveTile = null;
 
