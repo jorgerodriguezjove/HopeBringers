@@ -232,7 +232,8 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
-    private void Start()
+    //El level manager llama a esta función sustituyendo al start
+    public void InitializeUnitOnTile()
     {
         FindAndSetFirstTile();
         myCurrentTile.unitOnTile = this;

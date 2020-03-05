@@ -114,52 +114,92 @@ public class LevelManager : MonoBehaviour
 
     #region INIT
 
-    //Crea a los personajes del jugador correspondientes
-    private void InitializeCharacters()
-    { 
-        for (int i = 0; i < GameManager.Instance.unitsForCurrentLevel.Count; i++)
-        {
-            GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
-            unitInstantiated.SetActive(false);
-            unitsWithoutPosition.Push(unitInstantiated);
-        }   
-    }
-
-    //IMPORTANTE QUE ESTAS DOS REFERENCIAS VAYAN EN EL AWAKE
-    //Si no el dragón no puede buscar sus tiles a través del tilemanager cuando empieza el nivel.
-    private void Awake()
+    
+    //IMPORTANTE QUE SEA START Y NO AWAKE
+    //EL ENEMYUNIT Y EL PLAYERUNIT TIENEN QUE INICIALIZARSE EN EL AWAKE ANTES DE PODER HACER ESTO
+    //TANTO EL Start COMO StartGameplayAfterDialog TIENEN UN ORDEN MUY CONCRETO QUE NO SE PUEDE CAMBIAR A LA LIGERA POR EL ORDEN DE INICIALIZACIÓN
+    /// <summary>
+    /// Tenía aqui apuntado esto antes de hacer el cambio de quitar los awakes y eso:
+    /// //Si no el dragón no puede buscar sus tiles a través del tilemanager cuando empieza el nivel.
+    /// Revisar si el dragón sigue funcionando
+    /// </summary>
+    private void Start()
     {
+        //Se inicializan los managers de este nivel
         TM = FindObjectOfType<TileManager>();
         UIM = FindObjectOfType<UIManager>();
         camRef = FindObjectOfType<NewCameraController>();
         MapGenRef = FindObjectOfType<MapGenerator>();
 
-        //Si es un mapa aleatorio se hace antes que la creación de grids
+        //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
         if (MapGenRef != null)
         {
             MapGenRef.Init();
         }
 
-        TM.CreateGrid();
-    }
-
-    private void Start()
-    {
-        FindObjectOfType<CommandInvoker>().ResetCommandList();
-
-        //Crea a los jugadores seleccionados para el nivel.
+        ///DEBUG!!!!
+        ///ESTA IF SIRVE SI EN EDITOR SE HA ACTIVADO EL BOOL PARA JUGAR SIN PASAR POR EL LEVEL MANAGER
+        ///Hace lo mismo que el StartGameplayAfterDialog pero sin colocar a las unidades
+        ///DEBUG!!!!
         if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
         {
+            TM.CreateGrid();
+            for (int i = 0; i < charactersOnTheBoard.Count; i++)
+            {
+                charactersOnTheBoard[i].InitializeUnitOnTile();
+            }
+
+            for (int i = 0; i < enemiesOnTheBoard.Count; i++)
+            {
+                enemiesOnTheBoard[i].InitializeUnitOnTile();
+            }
             UIM.InitializeUI();
             currentLevelState = LevelState.PlayerPhase;
+            camRef.SetCameraMovable(true, true);
         }
-        else
-        {
-            InitializeCharacters();
-        }        
 
-        //La inicialización real ocurren en la función de Tile clicked cuando detecta que se han colocado todas las unidades.
+        //Se resetea la lista de comandos por si acaso tenía algún elemento dentro
+        FindObjectOfType<CommandInvoker>().ResetCommandList();
     }
+
+    //Una vez ha terminado el diálogo, el GameManager avisa a esta función de que comience el nivel
+    public void StartGameplayAfterDialog()
+    {
+        //Se crea el grid
+        TM.CreateGrid();
+
+        //Se inicializan todas las unidades
+        for (int i = 0; i < charactersOnTheBoard.Count; i++)
+        {
+            charactersOnTheBoard[i].InitializeUnitOnTile();
+        }
+
+        for (int i = 0; i < enemiesOnTheBoard.Count; i++)
+        {
+            enemiesOnTheBoard[i].InitializeUnitOnTile();
+        }
+
+        //Se avisa al UiManager
+        UIM.InitializeUI();
+
+        //Se activa la cámara
+        camRef.SetCameraMovable(true, true);
+
+        //Comienza la fase de colocación de unidades
+        InitializeCharacters();
+    }
+
+    //Crea a los personajes del jugador correspondientes
+    private void InitializeCharacters()
+    {
+        for (int i = 0; i < GameManager.Instance.unitsForCurrentLevel.Count; i++)
+        {
+            GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
+            unitInstantiated.SetActive(false);
+            unitsWithoutPosition.Push(unitInstantiated);
+        }
+    }
+
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
     //Cuando muere un enemigo, también se llama aquí
@@ -983,13 +1023,41 @@ public class LevelManager : MonoBehaviour
 
     #region TURN_STATE
 
-    //Cambia de fase. Si era la fase del player ahora es la del enemigo y viceversa
-    //Se llama desde el UI Manager al pulsar el botón de end turn 
     public void ChangePhase()
     {
         FindObjectOfType<CommandInvoker>().ResetCommandList();
 
         currentLevelState = LevelState.EnemyPhase;
+    }
+
+
+    IEnumerator ChangePhaseWait()
+    {
+        if(currentLevelState == LevelState.EnemyPhase)
+        {
+            //Aparece cartel
+            UIM.EnemyTurnBanner(true);
+
+            //Pausa
+            yield return new WaitForSeconds(UIM.bannerTime);
+
+            //Comienza turno enemigo
+            UIM.EnemyTurnBanner(false);
+            BeginEnemyPhase();
+        }
+
+        else if (currentLevelState == LevelState.PlayerPhase)
+        {
+            //Aparece cartel
+            UIM.PlayerTurnBanner(true);
+
+            //Pausa
+            yield return new WaitForSeconds(UIM.bannerTime);
+
+            //Comienza turno player
+            UIM.PlayerTurnBanner(false);
+            BeginPlayerPhase();
+        }
     }
 
     private void BeginPlayerPhase()
@@ -1000,7 +1068,7 @@ public class LevelManager : MonoBehaviour
         //Hago desaparecer el botón de fast forward y aparecer el de undo
         UIM.HideShowEnemyUi(false);
 
-        camRef.SetCameraMovable(true);
+        camRef.SetCameraMovable(true,true);
 
         //Quito los booleanos de los tiles de daño para que puedan hace daño el próximo turno.
         for (int i = 0; i < damageTilesInBoard.Count; i++)
@@ -1042,6 +1110,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    //Se llama desde el UI Manager al pulsar el botón de end turn 
     private void BeginEnemyPhase()
     {
         //Hago aparecer el botón de fast forward y desaparecer el de undo
@@ -1069,7 +1138,7 @@ public class LevelManager : MonoBehaviour
 
             //Focus camera
             
-            camRef.SetCameraMovable(false);
+            camRef.SetCameraMovable(false, true);
             camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
 
 
@@ -1096,7 +1165,7 @@ public class LevelManager : MonoBehaviour
             UIM.ScrollUpOnce();
 
             //Empieza el turno enemigo
-            camRef.SetCameraMovable(false);
+            camRef.SetCameraMovable(false, true);
             camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
@@ -1147,12 +1216,13 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+
     private void Update()
     {
         switch (currentLevelState)
         {
             case (LevelState.PlayerPhase):
-                BeginPlayerPhase();
+                StartCoroutine("ChangePhaseWait");
                 currentLevelState = LevelState.ProcessingPlayerActions;
                 break;
 
@@ -1160,7 +1230,7 @@ public class LevelManager : MonoBehaviour
                 break;
 
             case (LevelState.EnemyPhase):
-                BeginEnemyPhase();
+                StartCoroutine("ChangePhaseWait");
                 currentLevelState = LevelState.ProcessingEnemiesActions;
                 break;
 

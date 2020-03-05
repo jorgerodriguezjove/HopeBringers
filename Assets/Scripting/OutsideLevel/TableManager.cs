@@ -47,7 +47,7 @@ public class TableManager : MonoBehaviour
     private LevelNode level1;
 
     #endregion
-
+    
     #region INIT
 
     private void Start()

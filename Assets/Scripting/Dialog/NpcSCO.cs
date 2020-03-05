@@ -8,7 +8,7 @@ public class NpcSCO : ScriptableObject
     //Valores que deben tener todos los items.
     [Header("BasicInfo")]
     public string nameNPC;
-    public Sprite portraitNPC;
+    public GameObject characterModel;
     public Color colorTextNPC;
 
 }

@@ -26,47 +26,4 @@ public class BerserkerData : CharacterData
 
         //Mejoras tipo INT
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //CODIGO ANTIGUO COMPROBAR SI SE PUEDE BORRAR
-    //RogueData otherRogueInScene;
-
-
-
-    //public override void Awake()
-    //{
-    //    otherRogueInScene = FindObjectOfType<RogueData>();
-
-    //    if (otherRogueInScene != null && otherRogueInScene.gameObject != this.gameObject)
-    //    {
-    //        Destroy(otherRogueInScene.gameObject);
-    //    }
-
-    //    base.Awake();
-    //}
 }

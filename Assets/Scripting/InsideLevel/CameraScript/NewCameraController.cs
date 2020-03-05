@@ -93,6 +93,9 @@ public class NewCameraController : MonoBehaviour
 
         //Creo el vector zoom teniendo en cuenta lo que se ha puesto en el editor
         realZoomAmount = new Vector3(realZoomAmount.x, -zoomAmount, zoomAmount);
+
+        //La cámara empieza sin poder moverse y se activa una vez se haya terminado el diálogo inicial
+        SetCameraMovable(false, false);
     }
 
     #region MOVEMENT
@@ -302,16 +305,17 @@ public class NewCameraController : MonoBehaviour
             );
     }
 
-    public void SetCameraMovable(bool _shouldmove)
+    public void SetCameraMovable(bool _shouldmoveAndZoom, bool _shouldRotate)
     {
-        canMoveCamera = _shouldmove;
-        canZoomCamera = _shouldmove;
+        canMoveCamera = _shouldmoveAndZoom;
+        canZoomCamera = _shouldmoveAndZoom;
+        canRotateCamera = _shouldRotate;
 
-        if (_shouldmove)
+        if (_shouldmoveAndZoom)
         {
             iscameraLockedOnEnemy = false;
             characterToFocus = null;
-        }
+        }            
     }
 
     private GameObject characterToFocus;
@@ -360,6 +364,8 @@ public class NewCameraController : MonoBehaviour
     //Lock es mover la cámara y que esta siga al enemigo
     public void LockCameraOnEnemy(GameObject _enemyToFocus)
     {
+        ZoomOut();
+        canZoomCamera = false;
         iscameraLockedOnEnemy = false;
         lockCamera = true;
         characterToFocus = _enemyToFocus;

@@ -7,6 +7,7 @@ public class DialogManager : MonoBehaviour
 {
     #region VARIABLES
 
+    [SerializeField] GameObject  blackImage;
     [SerializeField] GameObject  myBackgroundInCanvas;
     [SerializeField] Image       myPortraitInCanvas;
     [SerializeField] Text        myTextInCanvas;
@@ -26,6 +27,7 @@ public class DialogManager : MonoBehaviour
     public void OpenDialogWindow()
     {
         myBackgroundInCanvas.SetActive(true);
+        blackImage.SetActive(true);
 
         ///GameManager.Instance.MakeAllButtonsNOInteractable();
         ///
@@ -36,6 +38,8 @@ public class DialogManager : MonoBehaviour
     public void CloseDialogWindow()
     {
         myBackgroundInCanvas.SetActive(false);
+        blackImage.SetActive(false);
+
         ///GameManager.Instance.MakeAllButtonsYESInteractable();
         ///
 

@@ -102,19 +102,13 @@ public class PlayerUnit : UnitBase
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
         LM.charactersOnTheBoard.Add(this);
+
 		//Referencia al UIM 
 		UIM = FindObjectOfType<UIManager>();
-        //Aviso al tile en el que empiezo que soy su unidad.
 
-       ///SETEAR EL TILE AL COLOCAR A LA UNIDAD EN UNO DE LOS TILES DISPONIBLES PARA COLOCARLAS
-       // myCurrentTile.unitOnTile = this;
-       // myCurrentTile.WarnInmediateNeighbours();
-
-        //Inicializo componente animator
+        //Inicializo componente animator, material inicial y particula mov
         myAnimator = GetComponent<Animator>();
-
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
-
         movementParticle.SetActive(false);
 
         //if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
@@ -124,7 +118,6 @@ public class PlayerUnit : UnitBase
 
         //Vigilar esto. He comentado lo anterior y puesto esto porque si no al colocar los personajes si se colocaban al principio del nivel  tenian 0 de vida.
         currentHealth = maxHealth;
-
     }
 
     //Stats genéricos que tienen todos los personajes.

@@ -132,7 +132,6 @@ public class TileManager : MonoBehaviour
 
     #region INIT
 
-    
     //Esto se llama desde el awake del level manager
     public void CreateGrid()
     {

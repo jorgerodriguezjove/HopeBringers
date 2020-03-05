@@ -67,7 +67,16 @@ public class UIManager : MonoBehaviour
 	[HideInInspector]
 	public List<GameObject> panelesEnemigos;
 
-	[Header("TOOLTIPS")]
+    [Header("EXTRAS")]
+    //Están solo de placeholder, en el futuro quizás tienen que ser imagenes y tendrán animación.
+    [SerializeField]
+    GameObject enemyBanner;
+    [SerializeField]
+    GameObject playerbanner;
+    [SerializeField]
+    public float bannerTime;
+
+    [Header("TOOLTIPS")]
 
 	[SerializeField]
 	public GameObject tooltipPanel;
@@ -146,7 +155,6 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         LM = FindObjectOfType<LevelManager>();
-		
 	}
 
     //Lo pongo en una variable en vez de en el start para que lo pueda llamar el Level Manager
@@ -691,6 +699,8 @@ public class UIManager : MonoBehaviour
 	}
     #endregion
 
+    #region SKIP
+
     bool skipButtonHolding = false;
 
     float skipTimer;
@@ -712,4 +722,18 @@ public class UIManager : MonoBehaviour
         skipTimer = 0;
     }
 
+    #endregion
+
+    #region CHANGE_PHASE_BANNER
+
+    public void PlayerTurnBanner(bool _isActivate)
+    {
+        playerbanner.SetActive(_isActivate);
+    }
+
+    public void EnemyTurnBanner(bool _isActivate)
+    {
+        enemyBanner.SetActive(_isActivate);
+    }
+    #endregion
 }

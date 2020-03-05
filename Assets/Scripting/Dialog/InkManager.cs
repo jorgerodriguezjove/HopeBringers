@@ -8,6 +8,10 @@ using UnityEngine.SceneManagement;
 
 public class InkManager : MonoBehaviour
 {
+    public TextAsset debugDialog;
+
+
+    [Header("PERSONAJES SCO")]
     [SerializeField]
     List<NpcSCO> allCharactersInGame = new List<NpcSCO>();
 
@@ -17,6 +21,7 @@ public class InkManager : MonoBehaviour
     [HideInInspector]
     public Story story;
 
+    [Header("REFERENCIAS")]
     //Caja dónde aparece el texto
     [SerializeField]
     private GameObject textBox;
@@ -37,7 +42,7 @@ public class InkManager : MonoBehaviour
     //Struct y Diccionario para tener diálogos con más de un NPC
     public struct valuePortraitAndColor
     {
-        public Sprite portraitStruct;
+        public GameObject characterModel;
         public Color  colorStruct;
     }
     valuePortraitAndColor structPortraitColor;
@@ -224,7 +229,7 @@ public class InkManager : MonoBehaviour
     {
         for (int i = 0; i < allCharactersInGame.Count; i++)
         {
-            structPortraitColor.portraitStruct = allCharactersInGame[i].portraitNPC;
+            structPortraitColor.characterModel = allCharactersInGame[i].characterModel;
             structPortraitColor.colorStruct = allCharactersInGame[i].colorTextNPC;
 
             if (!nameAndPortrait.ContainsKey(allCharactersInGame[i].nameNPC))
@@ -244,7 +249,10 @@ public class InkManager : MonoBehaviour
         {
             if (nameAndPortrait.ContainsKey(speaker))
             {
-                portraitLocation.GetComponent<Image>().sprite = nameAndPortrait[speaker].portraitStruct;
+                //Encontrar clase modelo en escena y decirle que se resalte y que se oculte el anterior
+
+                //nameAndPortrait[speaker].characterModel;
+                //portraitLocation.GetComponent<Image>().sprite = nameAndPortrait[speaker].characterModel;
                 text.color = nameAndPortrait[speaker].colorStruct;
             }
         }
