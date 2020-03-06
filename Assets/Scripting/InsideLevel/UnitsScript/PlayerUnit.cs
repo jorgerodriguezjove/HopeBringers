@@ -93,6 +93,9 @@ public class PlayerUnit : UnitBase
     [HideInInspector]
     public UIManager UIM;
 
+    //Añado esto para que el mage pueda acceder a la función de GetSurroundingTiles()
+    public TileManager TM;
+
     #endregion
 
     #region INIT
@@ -102,6 +105,8 @@ public class PlayerUnit : UnitBase
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
         LM.charactersOnTheBoard.Add(this);
+
+        TM = FindObjectOfType<TileManager>();
 
 		//Referencia al UIM 
 		UIM = FindObjectOfType<UIManager>();
@@ -458,43 +463,46 @@ public class PlayerUnit : UnitBase
 
     public void CheckIfKnightIsDefending(Knight knightThatDef, UnitBase unitThatIsAttacking)
     {
-        //Este es el valor que queremos que tenga para defender unidades
-        knightThatDef.shieldDef = 5;
-        if (knightThatDef.isBlockingNeighbours)
+        if (knightThatDef != null)
         {
-            if (knightThatDef.myCurrentTile.neighbours.Contains(myCurrentTile))
+            //Este es el valor que queremos que tenga para defender unidades
+            knightThatDef.shieldDef = 5;
+            if (knightThatDef.isBlockingNeighbours)
             {
-
-                if ((knightThatDef.currentFacingDirection == FacingDirection.North && unitThatIsAttacking.currentFacingDirection == FacingDirection.South)
-                    || (knightThatDef.currentFacingDirection == FacingDirection.South && unitThatIsAttacking.currentFacingDirection == FacingDirection.North)
-                    || (knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttacking.currentFacingDirection == FacingDirection.East)
-                    || (knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttacking.currentFacingDirection == FacingDirection.West))
+                if (knightThatDef.myCurrentTile.neighbours.Contains(myCurrentTile))
                 {
 
-                    //Cambiar variable en el Knight
-                    if (knightThatDef.isBlockingNeighboursFull)
+                    if ((knightThatDef.currentFacingDirection == FacingDirection.North && unitThatIsAttacking.currentFacingDirection == FacingDirection.South)
+                        || (knightThatDef.currentFacingDirection == FacingDirection.South && unitThatIsAttacking.currentFacingDirection == FacingDirection.North)
+                        || (knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttacking.currentFacingDirection == FacingDirection.East)
+                        || (knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttacking.currentFacingDirection == FacingDirection.West))
                     {
-                        knightThatDef.shieldDef = 999; 
-                    }
 
+                        //Cambiar variable en el Knight
+                        if (knightThatDef.isBlockingNeighboursFull)
+                        {
+                            knightThatDef.shieldDef = 999;
+                        }
+
+                    }
+                    else
+                    {
+                        knightThatDef.shieldDef = 0;
+                    }
                 }
                 else
                 {
                     knightThatDef.shieldDef = 0;
                 }
+
             }
             else
             {
                 knightThatDef.shieldDef = 0;
             }
 
-        }
-        else
-        {
-            knightThatDef.shieldDef = 0;
-        }
 
-
+        }
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)

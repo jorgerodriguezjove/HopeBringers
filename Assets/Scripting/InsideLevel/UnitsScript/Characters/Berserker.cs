@@ -11,9 +11,7 @@ public class Berserker : PlayerUnit
     private bool isInRage;
 
     
-    [SerializeField]
-    private int rageDamagePlus;
-
+ 
     //Al llegar a 0, el rage se quita
     private int turnsLeftToRageOff;
     [SerializeField]
@@ -25,16 +23,35 @@ public class Berserker : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
+    //ACTIVAS
     public bool circularAttack;
+    //Esta variable tiene que cambiar en la mejora 2 de este ataque
+    public int timeCircularAttackrepeats;
 
-    public bool doubleAttack;
-    public int timesDoubleAttackRepeats;
+    public bool areaAttack;
+    //Esta variable tiene que cambiar en la mejora 2 de este ataque
+    public int bonusDamageAreaAttack;
+
+
+
+    //PASIVAS
+
+    [SerializeField]
+    //Este es el int que hay que cambiar para que el rage haga más daño
+    private int rageDamagePlus;
+
+    private bool rageFear;
+    [SerializeField]
+    //Este es el int que hay que cambiar para que el el berserker meta más turnos de miedo
+    private int fearTurnBonus;
+
 
     #endregion
 
-    public void SetSpecificStats(bool _doubleAttack1, bool _circularAttack1)
+    public void SetSpecificStats(bool _areaAttack, bool _circularAttack1)
     {
-        doubleAttack = _doubleAttack1;
+
+        areaAttack = _areaAttack;
         circularAttack = _circularAttack1;
     }
 
@@ -56,56 +73,103 @@ public class Berserker : PlayerUnit
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
             myAnimator.SetTrigger("Attack");
+            for (int i = 0; i < timeCircularAttackrepeats; i++)
+            {
+                currentFacingDirection = FacingDirection.North;
+                if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+                    DoDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
+                }
 
-            currentFacingDirection = FacingDirection.North;
-            if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
-            {
-                DoDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
+                currentFacingDirection = FacingDirection.South;
+                if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+                    DoDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
+                }
+
+                currentFacingDirection = FacingDirection.East;
+                if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {
+                    DoDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
+                }
+
+                currentFacingDirection = FacingDirection.West;
+                if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {
+                    DoDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+                }
+
+                //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+                base.Attack(unitToAttack);
             }
-            
-            currentFacingDirection = FacingDirection.South;
-            if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+           
+        }
+        else if (areaAttack)
+        {
+            baseDamage += bonusDamageAreaAttack;
+
+            if (currentFacingDirection == FacingDirection.North)
             {
-                DoDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
+                if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {                   
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);                   
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {                    
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);                  
+                }
             }
 
-            currentFacingDirection = FacingDirection.East;
-            if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+            else if (currentFacingDirection == FacingDirection.South)
             {
-                DoDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
+                if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {                  
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+                }
             }
 
-            currentFacingDirection = FacingDirection.West;
-            if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+            else if (currentFacingDirection == FacingDirection.East)
             {
-                DoDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+                if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+                }
             }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+
+                if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+                }
+
+                if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+                    DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+                }
+            }
+
+            //Animación de ataque
+            myAnimator.SetTrigger("Attack");
 
             //Hago daño
-            //for (int i = 0; i < myCurrentTile.neighbours.Count; ++i)
-            //{
-            //    if (myCurrentTile.neighbours[i].unitOnTile != null)
-            //    {
-            //        DoDamage(myCurrentTile.neighbours[i].unitOnTile);
-            //    }
-            //}
+            DoDamage(unitToAttack);
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-        }
-        else if (doubleAttack)
-        {                       
-            for (int i = 0; i < timesDoubleAttackRepeats; i++)
-            {
-                //Animación de ataque 
-                //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
-                myAnimator.SetTrigger("Attack");
-
-                //Hago daño
-                DoDamage(unitToAttack);
-            }
-            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
-            base.Attack(unitToAttack);
+            
 
         }
         else
@@ -138,6 +202,13 @@ public class Berserker : PlayerUnit
 
             //Una vez aplicados los multiplicadores efectuo el daño.
             unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+
+            if (rageFear)
+            {
+                unitToDealDamage.hasFear = true;
+                unitToDealDamage.turnsWithFear += fearTurnBonus;
+
+            }
 
 
         }
