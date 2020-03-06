@@ -1082,7 +1082,7 @@ public class TileManager : MonoBehaviour
         return rhombusTiles;
     }
 
-    List<IndividualTiles> surroundingTiles = new List<IndividualTiles>();
+    public List<IndividualTiles> surroundingTiles = new List<IndividualTiles>();
 
     //Obtener los vecinos + las diagonales de un tile
     //Si radius es igual a uno se obtienen los 8 tiles que rodean al tile (neighbours + diagonales)

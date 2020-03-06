@@ -9,6 +9,18 @@ public class Samurai : PlayerUnit
     [SerializeField]
     private int samuraiFrontAttack;
 
+
+
+    [Header("MEJORAS DE PERSONAJE")]
+
+    //ACTIVAS
+   
+    public bool doubleAttack;
+    public int timesDoubleAttackRepeats;
+
+    //PASIVAS
+
+
     #endregion
 
 
@@ -162,18 +174,38 @@ public class Samurai : PlayerUnit
 
         }
 
-        //Animación de ataque
-        myAnimator.SetTrigger("Attack");
+        if (doubleAttack)
+        {
+            for (int i = 0; i < timesDoubleAttackRepeats; i++)
+            {
+                //Animación de ataque 
+                //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
+                myAnimator.SetTrigger("Attack");
+
+                //Hago daño
+                DoDamage(unitToAttack);
+            }
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
+
+        }
+        else
+        {
+            //Animación de ataque
+            myAnimator.SetTrigger("Attack");
 
             //Hago daño
             DoDamage(unitToAttack);
-            
+
             //Meter sonido Samurai
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
-        
 
-        //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
-        base.Attack(unitToAttack);
+
+            //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
+
+        }
+        
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)

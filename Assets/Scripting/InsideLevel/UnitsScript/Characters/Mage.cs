@@ -23,25 +23,48 @@ public class Mage : PlayerUnit
     [SerializeField]
     private int maxDecoys;
 
+    //Este bool sirve para decidir si el ataque en concreto hace daño por la espalda o no
+    [HideInInspector]
+    public bool backDamageOff;
+
     [Header("MEJORAS DE PERSONAJE")]
 
-    public bool crossAreaAttack;
+    //ACTIVAS
+
+    public bool areaAttack;
+    //Esta es la variable que hay que cambiar para la mejora
+    public int areaRange;
+    
 
     public bool lightningChain;
     public int timeElectricityAttackExpands;
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
 
-    //Este bool sirve para decidir si el ataque en concreto hace daño por la espalda o no
-    [HideInInspector]
-    public bool backDamageOff;
+    //Mejora del ataque (no hace daño a aliados y cada vez que hace la cadena, aumenta el daño)
+    public bool lightningChain2;
+    public int limitantAttackBonus;
+
+    //Las dos siguientes variables las suelo poner en el awake pero se puede poner de forma manual. Hay que mirar como solucionarlo
+    //Este int lo añado para que el limite de ataques vuelva a su estado del principio antes de volver a atacar
+    public int fLimitantAttackBonus=3;
+    //Este int lo añado para que el ataque del mago vuelva a su estado del principio antes de volver a atacar
+    public int fBaseDamage=1;
+
+    //PASIVAS
+    public bool isDecoyBomb;
+    //Esta mejora está en los decoys
+    public bool isDecoyBomb2;
+
+    public bool mirrorDecoy;
+    public bool mirrorDecoy2;
 
     #endregion
 
     public void SetSpecificStats(bool _lightningChain1, bool _crossAreaAttack1)
     {
         lightningChain = _lightningChain1;
-        crossAreaAttack = _crossAreaAttack1;
+        areaAttack = _crossAreaAttack1;
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
@@ -58,28 +81,47 @@ public class Mage : PlayerUnit
 
         }
 
+        if (mirrorDecoy)
+        {
+            for (int i = 0; i < myDecoys.Count; i++)
+            {
+                //En el override de esta función el decoy también comprueba si tiene la segunda mejora y ataca de una forma o de la otra
+                myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesInRangeToAttack();
+            }
+
+        }
         Instantiate(chargingParticle, gameObject.transform.position, chargingParticle.transform.rotation);
 
         Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
-        if (crossAreaAttack)
+        if (areaAttack)
         {
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
             //myAnimator.SetTrigger("Attack");
 
             backDamageOff = true;
-            //Hago daño
-            DoDamage(unitToAttack);
 
-            //Hago daño a las unidades adyacentes
-            for (int i = 0; i < unitToAttack.myCurrentTile.neighbours.Count; ++i)
-            {
-                if (unitToAttack.myCurrentTile.neighbours[i].unitOnTile != null)
+            //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
+                TM.surroundingTiles.Clear();
+
+                TM.GetSurroundingTiles(unitToAttack.myCurrentTile, areaRange, true, false);
+
+                //Hago daño
+                DoDamage(unitToAttack);
+
+                //Hago daño a las unidades adyacentes
+                for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                 {
-                    DoDamage(unitToAttack.myCurrentTile.neighbours[i].unitOnTile);
+                    if (TM.surroundingTiles[i].unitOnTile != null)
+                    {
+                        DoDamage(TM.surroundingTiles[i].unitOnTile);
+                    }
                 }
-            }
+
+
+            
+
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
@@ -87,8 +129,17 @@ public class Mage : PlayerUnit
         else if (lightningChain)
         {
             backDamageOff = true;
-            //Hago daño
-            DoDamage(unitToAttack);
+            
+            if(lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
+            {
+
+            }
+            else
+            {
+                //Hago daño
+                DoDamage(unitToAttack);
+            }
+            
             unitsAttacked.Add(unitToAttack);
 
             for (int j = 0; j < unitsAttacked.Count; j++)
@@ -97,14 +148,31 @@ public class Mage : PlayerUnit
                 if (timeElectricityAttackExpands > 0)
                 {
                     timeElectricityAttackExpands--;
+                    limitantAttackBonus--;
+                    
                     for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; ++k)
                     {
 
                         if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile)
                             && unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this)
                         {
+                            if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
+                            {
 
-                            DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+                            }
+                            else
+                            {
+                                if (limitantAttackBonus<= 0 && lightningChain2)
+                                {
+                                    
+                                }
+                                else if(lightningChain2)
+                                {
+                                    baseDamage++;
+                                }
+                                DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+                            }
+                            
                             unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
                         }
                     }
@@ -112,7 +180,8 @@ public class Mage : PlayerUnit
             }
             
             unitsAttacked.Clear();
-
+            limitantAttackBonus = fLimitantAttackBonus;
+            baseDamage = fBaseDamage;
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
 
@@ -199,6 +268,9 @@ public class Mage : PlayerUnit
         GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
 
         decoyToInstantiate.GetComponent<MageDecoy>().SetTile(myCurrentTile);
+
+        //Pongo esta referencia para que el mage solo pueda cambiarse con sus decoys y para que pueda comprobar sus booleanos (para las habilidades)
+        decoyToInstantiate.GetComponent<MageDecoy>().myMage = this;
 
         myDecoys.Add(decoyToInstantiate);
     }
