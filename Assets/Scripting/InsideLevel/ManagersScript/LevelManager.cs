@@ -142,11 +142,16 @@ public class LevelManager : MonoBehaviour
         ///ESTA IF SIRVE SI EN EDITOR SE HA ACTIVADO EL BOOL PARA JUGAR SIN PASAR POR EL LEVEL MANAGER
         ///Hace lo mismo que el StartGameplayAfterDialog pero sin colocar a las unidades
         ///DEBUG!!!!
+
         if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
         {
             TM.CreateGrid();
-            for (int i = 0; i < charactersOnTheBoard.Count; i++)
+
+            characterSelectionBox.SetActive(false);
+
+            for (int i = 0; i < FindObjectsOfType<PlayerUnit>().Length; i++)
             {
+                charactersOnTheBoard.Add(FindObjectsOfType<PlayerUnit>()[i]);
                 charactersOnTheBoard[i].InitializeUnitOnTile();
             }
 
@@ -249,8 +254,6 @@ public class LevelManager : MonoBehaviour
 
             });
         }
-
-
 
 		UIM.SetEnemyOrder();
 	}
