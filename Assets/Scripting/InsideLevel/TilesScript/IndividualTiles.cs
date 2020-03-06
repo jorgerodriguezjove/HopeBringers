@@ -57,6 +57,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public List<IndividualTiles> surroundingNeighbours = new List<IndividualTiles>();
 
+    
+
     //Número tiles vecinos ocupados por una unidad.
     //Acordarse de ocultar en editor y acordarse de actualizar este valor cada vez que se mueva una unidad.
     [SerializeField]

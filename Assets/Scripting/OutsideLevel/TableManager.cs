@@ -6,6 +6,14 @@ public class TableManager : MonoBehaviour
 {
     #region VARIABLES
 
+    [Header("PERSONAJES")]
+    //Referencia al personaje que esta siendo mejorado actualemente
+    private CharacterData currentCharacterUpgrading;
+
+    [SerializeField]
+    private List<CharacterData> initialCharacters = new List<CharacterData>();
+
+    [Header("CÁMARAS")]
     //Cámara del mapa
     [SerializeField]
     private GameObject mapCamera;
@@ -18,10 +26,8 @@ public class TableManager : MonoBehaviour
     [SerializeField]
     private GameObject upgradesCamera;
 
-
-    //Referencia al personaje que esta siendo mejorado actualemente
-    private CharacterData currentCharacterUpgrading;
-
+   
+    [Header("LEVEL")]
     //Objeto que se mueve entre los niveles e indica el nivel actual.
     [SerializeField]
     private GameObject levelIndicator;
@@ -38,7 +44,7 @@ public class TableManager : MonoBehaviour
     [HideInInspector]
     public string currentClickedSceneName;
 
-    [Header("Referencias")]
+    [Header("REFERENCIAS")]
     [SerializeField]
     private UITableManager UITM;
 
@@ -52,6 +58,17 @@ public class TableManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log(GameManager.Instance);
+        //La primera vez que se abre el juego añado las unidades iniciales.
+        if (GameManager.Instance._isFirstTimeLoadingGame)
+        {
+            for (int i = 0; i < initialCharacters.Count; i++)
+            {
+                GameManager.Instance.characterDataForCurrentLevel.Add(initialCharacters[i].GetComponent<CharacterData>());
+                GameManager.Instance._isFirstTimeLoadingGame = false;
+            }
+        }
+
         //Devuelvo las figuras a la caja y reseteo las listas de unidades
         ResetCharactersToBox();
 
@@ -62,11 +79,9 @@ public class TableManager : MonoBehaviour
             UnlockNewCharacter();
         }
 
-
         //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
         //Hacer que se quede el último seleccioando!!!!!!!!!!!!!!!!!!!!!
         level1.SelectLevel();
-
 
     }
 
@@ -75,7 +90,7 @@ public class TableManager : MonoBehaviour
     #region CAMERA_MOVEMENT
 
     //Al seleccionar un nivel se setea todo para que aparezca la parte de selección de unidades
-    public void OnLevelClicked(LevelNode levelClicked, int _idLevel, int _xpToWin, TextAsset _startDialog, TextAsset _endDialog)
+    public void OnLevelClicked(LevelNode levelClicked, int _idLevel, int _xpToWin, int _maxUnits ,TextAsset _startDialog, TextAsset _endDialog)
     {
         //Se mueve el indicador del nivel
         levelIndicator.transform.position = new Vector3(levelClicked.transform.position.x, levelIndicator.transform.position.y , levelClicked.transform.position.z);
@@ -83,6 +98,7 @@ public class TableManager : MonoBehaviour
         //Cargo la información en el GameManager
         GameManager.Instance.currentLevelNode = _idLevel;
         GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = _xpToWin;
+        GameManager.Instance.maxUnitsInThisLevel = _maxUnits;
         GameManager.Instance.currentLevelStartDialog = _startDialog;
         GameManager.Instance.currentLevelEndDialog = _endDialog;
 
@@ -149,14 +165,14 @@ public class TableManager : MonoBehaviour
 
     public void ResetCharactersToBox()
     {
-        //Reseteo personajes seleccionados
-        for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
-        {
-            GameManager.Instance.characterDataForCurrentLevel[i].ReturnToInitialPositionInBox();
-        }
+        ////Reseteo personajes seleccionados
+        //for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
+        //{
+        //    GameManager.Instance.characterDataForCurrentLevel[i].ReturnToInitialPositionInBox();
+        //}
 
-        GameManager.Instance.unitsForCurrentLevel.Clear();
-        GameManager.Instance.characterDataForCurrentLevel.Clear();
+        //GameManager.Instance.unitsUnlocked.Clear();
+        //GameManager.Instance.characterDataForCurrentLevel.Clear();
         currentCharacterUpgrading = null;
     }
 
@@ -165,39 +181,39 @@ public class TableManager : MonoBehaviour
     //Esto en el futuro se hará arrastrando al personaje pero de momento lo hago con click
     public void OnClickCharacter(CharacterData _unitClicked)
     {
-        if (selectCamera.activeSelf)
-        {
-            if (_unitClicked.panelOfTheBookImIn == null)
-            {
-                for (int i = 0; i < UITM.panelsForUnitColocation.Length; i++)
-                {
-                    if (UITM.panelsForUnitColocation[i].activeSelf && !UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied)
-                    {
-                        //Coloco a la unidad
-                        _unitClicked.transform.position = UITM.panelsForUnitColocation[i].transform.position;
-                        UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied = true;
-                        _unitClicked.panelOfTheBookImIn = UITM.panelsForUnitColocation[i];
+        //if (selectCamera.activeSelf)
+        //{
+        //    if (_unitClicked.panelOfTheBookImIn == null)
+        //    {
+        //        for (int i = 0; i < UITM.panelsForUnitColocation.Length; i++)
+        //        {
+        //            if (UITM.panelsForUnitColocation[i].activeSelf && !UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied)
+        //            {
+        //                //Coloco a la unidad
+        //                _unitClicked.transform.position = UITM.panelsForUnitColocation[i].transform.position;
+        //                UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied = true;
+        //                _unitClicked.panelOfTheBookImIn = UITM.panelsForUnitColocation[i];
 
 
-                        GameManager.Instance.unitsForCurrentLevel.Add(_unitClicked.myUnit);
-                        GameManager.Instance.characterDataForCurrentLevel.Add(_unitClicked);
+        //                GameManager.Instance.unitsUnlocked.Add(_unitClicked.myUnit);
+        //                GameManager.Instance.characterDataForCurrentLevel.Add(_unitClicked);
 
-                        break;
-                    }
-                }   
-            }
+        //                break;
+        //            }
+        //        }
+        //    }
 
-            //Si clickas a la unidad que esta sobre el libro se devuelve a la caja
-            else
-            {
-                _unitClicked.ReturnToInitialPositionInBox();
+        //    //Si clickas a la unidad que esta sobre el libro se devuelve a la caja
+        //    else
+        //    {
+        //        _unitClicked.ReturnToInitialPositionInBox();
 
-                GameManager.Instance.unitsForCurrentLevel.Remove(_unitClicked.myUnit);
-                GameManager.Instance.characterDataForCurrentLevel.Remove(_unitClicked);
-            }
-        }
+        //        GameManager.Instance.unitsUnlocked.Remove(_unitClicked.myUnit);
+        //        GameManager.Instance.characterDataForCurrentLevel.Remove(_unitClicked);
+        //    }
+        //}
 
-        else if (progresionCamera.activeSelf)
+        if (progresionCamera.activeSelf)
         {
             MoveToUpgrades();
             _unitClicked.transform.position = UITM.panelForUnitUpgrade.transform.position;
@@ -244,6 +260,7 @@ public class TableManager : MonoBehaviour
             //Activo la ficha dentro de la caja
             GameManager.Instance.newCharacterToUnlock.GetComponent<CharacterData>().isCharacterUnlocked = true;
             GameManager.Instance.newCharacterToUnlock.GetComponent<CharacterData>().HideShowMeshCharacterData(true);
+            GameManager.Instance.characterDataForCurrentLevel.Add(GameManager.Instance.newCharacterToUnlock.GetComponent<CharacterData>());
         }
 
     }

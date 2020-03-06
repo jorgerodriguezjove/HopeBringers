@@ -131,8 +131,6 @@ public class NewCameraController : MonoBehaviour
         //Click der down
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Click Der");
-
             Plane plane = new Plane(Vector3.up, Vector3.zero);
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -148,8 +146,6 @@ public class NewCameraController : MonoBehaviour
         //Mantener click der
         if (Input.GetMouseButton(0))
         {
-            Debug.Log("Hold Click Der");
-
             Plane plane = new Plane(Vector3.up, Vector3.zero);
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

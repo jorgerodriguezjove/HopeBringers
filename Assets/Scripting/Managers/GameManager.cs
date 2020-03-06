@@ -13,12 +13,8 @@ public class GameManager : PersistentSingleton<GameManager>
 
     [Header("VARIBLES NIVEL SELECCIONADO")]
     //Lista de character data que se tienen que cargar en el nivel
-    [HideInInspector]
+    [SerializeField]
     public List<CharacterData> characterDataForCurrentLevel = new List<CharacterData>();
-
-    //Lista de unidades que se tienen que cargar en el nivel
-    [HideInInspector]
-    public List<PlayerUnit> unitsForCurrentLevel = new List<PlayerUnit>();
 
     //Bool que indica si al cargar el level selection debería desbloquear un nuevo personaje
     [HideInInspector]
@@ -29,6 +25,9 @@ public class GameManager : PersistentSingleton<GameManager>
     //Experiencia que obtiene el jugador si completa el nivel
     public int possibleXpToGainIfCurrentLevelIsWon;
 
+    [SerializeField]
+    public int maxUnitsInThisLevel;
+
     [Header("DIÁLOGOS")]
     [HideInInspector]
     public TextAsset currentLevelStartDialog;
@@ -37,11 +36,19 @@ public class GameManager : PersistentSingleton<GameManager>
 
     string dialogInitializer = "reactions.InReac";
 
-    [Header("GAME PROGRESS")]
+    //HACER QUE ESTA VARIABLE NO SE PUEDA SETEAR DESDE OTROS SCRIPTS
+    [HideInInspector]
+    public bool _isFirstTimeLoadingGame = true;
 
+
+    [Header("GAME PROGRESS")]
     //Experiencia actual. 
     [SerializeField]
     public int currentExp;
+
+    ////Lista de unidades que están actualmente desbloqueadas
+    //[SerializeField]
+    //public List<PlayerUnit> unitsUnlocked = new List<PlayerUnit>();
 
     //Lista que va a guardar todos los objetos que tengan el componente Character Data
     CharacterData[] oldCharacterDataList;
@@ -123,11 +130,13 @@ public class GameManager : PersistentSingleton<GameManager>
 
     public void CheckStartLevel(string _levelName)
     {
-        //Si hay algún personaje seleccionado cargo el nivel.
-        if (characterDataForCurrentLevel.Count > 0)
-        {
-            SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
-        }
+        ////Si hay algún personaje seleccionado cargo el nivel.
+        //if (characterDataForCurrentLevel.Count > 0)
+        //{
+        //    SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
+        //}
+
+        SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
     }
 
     private void WaitForLevelEndChargingToStartDialog(Scene scene, LoadSceneMode mode)

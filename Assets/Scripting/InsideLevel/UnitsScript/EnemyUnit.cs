@@ -166,8 +166,8 @@ public class EnemyUnit : UnitBase
             case (enemyState.Searching):
 
 
-                arrowEnemyIndicator.SetActive(true);
-
+                arrowEnemyIndicator.SetActive(true);               
+                
                 //Añado esto para stunnear a los enemigos (no sé si los jugadores tendrán stun luego)
                 if (!isStunned)
                 {
@@ -202,9 +202,19 @@ public class EnemyUnit : UnitBase
                 break;
 
             case (enemyState.Ended):
+
+
                 if (!corroutineDone)
                 {
-                    
+                    //Añado esto para ir eliminando el miedo a los enemigos 
+                    if (hasFear)
+                    {
+                        turnsWithFear--;
+                        if (turnsWithFear<=0)
+                        {
+                            hasFear = false;
+                        }
+                    }
                     StartCoroutine("WaitBeforeNextState");
                 }
                 break;
@@ -268,12 +278,12 @@ public class EnemyUnit : UnitBase
     public virtual void Attack()
     {
         //Cada enemigo realiza su propio ataque
-
-
        
-        CalculateDamage(currentUnitsAvailableToAttack[0]);
-        currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
-        
+        if(currentUnitsAvailableToAttack.Count > 0)
+        {
+            CalculateDamage(currentUnitsAvailableToAttack[0]);
+            currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+        }
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta

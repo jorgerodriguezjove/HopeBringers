@@ -38,7 +38,7 @@ public class EnWatcher : EnemyUnit
             {
                 if (unitsInRange[i].GetComponent<PlayerUnit>())
                 {
-                    unitsInRange[i].bonusStateDamage -= debuff;
+                    unitsInRange[i].BuffbonusStateDamage -= debuff;
                     
                 }
             }
@@ -71,7 +71,7 @@ public class EnWatcher : EnemyUnit
         {
             if (unitsInRange[i].GetComponent<PlayerUnit>())
             {
-                unitsInRange[i].bonusStateDamage += debuff;
+                unitsInRange[i].BuffbonusStateDamage += debuff;
                 
             }
         }

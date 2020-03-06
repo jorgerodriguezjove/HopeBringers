@@ -142,7 +142,7 @@ public class LevelNode : MonoBehaviour
 		//Avisar al TM de que se ha pulsado un nivel
 		if (isUnlocked)
 		{
-			TM.OnLevelClicked(GetComponent<LevelNode>(), idLevel, xpToWin, startDialog, endDialog);
+			TM.OnLevelClicked(GetComponent<LevelNode>(), idLevel, xpToWin, maxNumberOfUnits ,startDialog, endDialog);
         }
 	}
 

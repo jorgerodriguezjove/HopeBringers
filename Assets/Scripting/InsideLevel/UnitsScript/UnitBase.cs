@@ -34,6 +34,12 @@ public class UnitBase : MonoBehaviour
     public bool isMarked;
 
     //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
+    //Bool que indica si la unidad tiene miedo o no
+    public bool hasFear;
+    //Añado esto para acumular el número de turnos que la unidad tiene miedo
+    public int turnsWithFear;
+
+    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
     //Bool que indica si está stuneado o no 
     public bool isStunned;
     //Añado esto por si los stuns se puede acumular
@@ -68,8 +74,11 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected int damageMadeByFall;
 
-    //Daño para añadir buff o debuff
-    public int bonusStateDamage;
+    //Daño para añadir buff 
+    public int BuffbonusStateDamage;
+
+    //Daño para añadir buff 
+    public int DebuffbonusStateDamage;
 
     [Header("LOGIC")]
 
@@ -303,7 +312,14 @@ public class UnitBase : MonoBehaviour
             damageWithMultipliersApplied += bonusDamageBackAttack;
         }
 
-        damageWithMultipliersApplied += bonusStateDamage;
+        
+        damageWithMultipliersApplied += BuffbonusStateDamage;
+
+        if (hasFear)
+        {
+
+            damageWithMultipliersApplied -= DebuffbonusStateDamage;
+        }
     }
 
     //Prueba para calcular damages en el hover
@@ -331,7 +347,7 @@ public class UnitBase : MonoBehaviour
             unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageBackAttack;
         }
 
-        unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusStateDamage;
+        unitAttacking.damageWithMultipliersApplied += unitAttacking.BuffbonusStateDamage;
     }
 
     //Aplico el daño a la unidad elegida

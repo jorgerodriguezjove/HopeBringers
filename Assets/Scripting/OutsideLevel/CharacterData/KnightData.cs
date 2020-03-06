@@ -10,11 +10,14 @@ public class KnightData : CharacterData
         //Referencia al personaje en el nivel
         myUnitReferenceOnLevel = FindObjectOfType<Knight>();
 
-        //Aztualizo las mejoras genéricas
-        base.UpdateMyUnitStatsForTheLevel();
+        if (myUnitReferenceOnLevel != null)
+        {
+            //Aztualizo las mejoras genéricas
+            base.UpdateMyUnitStatsForTheLevel();
 
-        //Actualizo las merjoas especificas del personaje
-        myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.pushFurther1], specificBoolCharacterUpgrades[AppKnightUpgrades.pushWider1]);
+            //Actualizo las merjoas especificas del personaje
+            myUnitReferenceOnLevel.GetComponent<Knight>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.pushFurther1], specificBoolCharacterUpgrades[AppKnightUpgrades.pushWider1]);
+        }
     }
 
     //Esto se llama en el INIT del characterData (padre de este script)
