@@ -278,12 +278,12 @@ public class EnemyUnit : UnitBase
     public virtual void Attack()
     {
         //Cada enemigo realiza su propio ataque
-
-
        
-        CalculateDamage(currentUnitsAvailableToAttack[0]);
-        currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
-        
+        if(currentUnitsAvailableToAttack.Count > 0)
+        {
+            CalculateDamage(currentUnitsAvailableToAttack[0]);
+            currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+        }
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta

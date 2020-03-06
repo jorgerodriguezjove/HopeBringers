@@ -8,6 +8,10 @@ public class PlayerUnit : UnitBase
 {
     #region VARIABLES
 
+    [Header("COLOCACIÓN DE UNIDAD")]
+    [HideInInspector]
+    public Transform initialPosInBox;
+
     [Header("LOGICA PLAYER")]
 
     //Bools que indican si el personaje se ha movido y si ha atacado.
@@ -104,7 +108,6 @@ public class PlayerUnit : UnitBase
     {
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
-        LM.charactersOnTheBoard.Add(this);
 
         TM = FindObjectOfType<TileManager>();
 

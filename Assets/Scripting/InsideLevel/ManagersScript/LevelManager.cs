@@ -10,6 +10,12 @@ public class LevelManager : MonoBehaviour
     //Offset negativo para determinar la altura de las flechas
     private float offsetHeightArrow;
 
+    [Header("SELECCIÓN DE UNIDADES")]
+    [SerializeField]
+    private List<Transform> initialCharacterDataPosition = new List<Transform>();
+    [SerializeField]
+    private GameObject characterSelectionBox;
+
     [Header("INTERACCIÓN CON UNIDADES")]
 
     //Personaje actualmente seleccionado.
@@ -49,8 +55,6 @@ public class LevelManager : MonoBehaviour
     //[HideInInspector]
     public List<DamageTile> damageTilesInBoard = new List<DamageTile>();
 
-    [Header("UNDO ACTION")]
-
     [Header("TURNOS Y FASES")]
 
     //Bool que sirve para que se pueda probar un nivel sin necesidad de haber elegido personajes antes
@@ -59,9 +63,6 @@ public class LevelManager : MonoBehaviour
 
     //Lista con unidades que no han sido colocadas en escena todavía y que estan en formato lista
     List<GameObject> unitsWithoutPositionFromGameManager = new List<GameObject>();
-
-    //Las unidades sin colocar se pasan a un stack para que al quitar una unidad del tablero se coloque la primera
-    Stack<GameObject> unitsWithoutPosition = new Stack<GameObject>();
 
     //Lista con los tiles disponibles para colocar personajes. Me sirve para limpiar el color de los tiles al terminar.
     [HideInInspector]
@@ -192,12 +193,26 @@ public class LevelManager : MonoBehaviour
     //Crea a los personajes del jugador correspondientes
     private void InitializeCharacters()
     {
-        for (int i = 0; i < GameManager.Instance.unitsForCurrentLevel.Count; i++)
+        //for (int i = 0; i < GameManager.Instance.unitsForCurrentLevel.Count; i++)
+        //{
+        //    GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
+        //    unitInstantiated.SetActive(false);
+        //    unitsWithoutPosition.Push(unitInstantiated);
+        //}
+
+        //Aparece la caja
+        characterSelectionBox.SetActive(true);
+
+        //Se instancian en los transform los personajes desbloqueados (GameManager necesita saberlos)
+        for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
         {
-            GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
-            unitInstantiated.SetActive(false);
-            unitsWithoutPosition.Push(unitInstantiated);
+            GameObject unitInstantiated = Instantiate(GameManager.Instance.characterDataForCurrentLevel[i].GetComponent<CharacterData>().myUnit.gameObject, initialCharacterDataPosition[i]);
+            unitInstantiated.transform.position = initialCharacterDataPosition[i].position;
+            unitInstantiated.transform.localScale = Vector3.one;
+            Debug.Log("Instantiated");
         }
+
+        //Funcionalidad de hacer click y ponerlos
     }
 
 
@@ -244,18 +259,60 @@ public class LevelManager : MonoBehaviour
 
     #region UNIT_INTERACTION
 
+    PlayerUnit currentCharacterPlacing;
+    [SerializeField]
+    List<PlayerUnit> charactersAlreadyPlaced = new List<PlayerUnit>();
+
+
     //Al clickar sobre una unidad del jugador se llama a esta función
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
     {
         //Si es el comienzo del nivel y estoy recolocando las unidades
         if (currentLevelState == LevelState.Initializing)
         {
+            if (charactersAlreadyPlaced.Count < GameManager.Instance.maxUnitsInThisLevel)
+            {
+                //Coger personaje para moverlo a tile inicial
+                if (clickedUnit.GetComponent<PlayerUnit>().myCurrentTile == null)
+                {
+                    currentCharacterPlacing = clickedUnit;
+                    currentCharacterPlacing.GetComponent<PlayerUnit>().initialPosInBox = currentCharacterPlacing.transform.parent;
+
+                    Debug.Log(clickedUnit.name + " clickado");
+                }
+
+                //Quitar personaje de un tile
+                else if (currentCharacterPlacing == null)
+                {
+                    currentCharacterPlacing = clickedUnit;
+                    clickedUnit.myCurrentTile.unitOnTile = null;
+                    clickedUnit.myCurrentTile.WarnInmediateNeighbours();
+                    clickedUnit.myCurrentTile = null;
+                }
+
+                else
+                {
+                    SustituteUnitsOnPlacementPhase(clickedUnit.myCurrentTile);
+                }
+            }
+
+            //Finaliza de colocar players (temporal)
+            else
+            {
+                for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
+                {
+                    tilesForCharacterPlacement[i].ColorDeselect();
+                }
+
+                FinishPlacingUnits();
+            }
+
             //Quitar personaje del tablero y añadirlo a la lista de nuevo
-            clickedUnit.gameObject.SetActive(false);
-            unitsWithoutPosition.Push(clickedUnit.gameObject);
-            clickedUnit.myCurrentTile.unitOnTile = null;
-            clickedUnit.myCurrentTile.WarnInmediateNeighbours();
-            clickedUnit.myCurrentTile = null;
+            //clickedUnit.gameObject.SetActive(false);
+            //unitsWithoutPosition.Push(clickedUnit.gameObject);
+            //clickedUnit.myCurrentTile.unitOnTile = null;
+            //clickedUnit.myCurrentTile.WarnInmediateNeighbours();
+            //clickedUnit.myCurrentTile = null;
         }
 
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
@@ -499,31 +556,32 @@ public class LevelManager : MonoBehaviour
         //Si es el comienzo del nivel
         if (currentLevelState == LevelState.Initializing)
         {
-            //Si hay unidades por colocar todavía
-            if (unitsWithoutPosition.Count > 0)
+            if (currentCharacterPlacing != null)
             {
-                //Si el tile clickado está disponible para colocar unidades.
+                //Coloco el personaje si el tile está pensado para colocar personajes y está vacío
                 if (tileToMove.isAvailableForCharacterColocation && tileToMove.unitOnTile == null)
                 {
-                    //Colocar a la unidad
-                    //Peek sirve para tomar una referencia a la primera unidad del Stack sin retirarla
-                    unitsWithoutPosition.Peek().SetActive(true);
-                    unitsWithoutPosition.Peek().transform.position = tileToMove.transform.position;
-                    unitsWithoutPosition.Peek().GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
-
-                    //Pop es basicamente quitar el primer elemento del Stack
-                    unitsWithoutPosition.Pop();
-
-                    if (unitsWithoutPosition.Count <= 0)
+                    //Le coloco en el tile
+                    if (!charactersAlreadyPlaced.Contains(currentCharacterPlacing))
                     {
-                        for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
-                        {
-                            tilesForCharacterPlacement[i].ColorDeselect();
-                        }
-
-                        //AQUÍ COMIENZA LA PARTIDA COMO TAL
-                        FinishPlacingUnits();
+                        charactersAlreadyPlaced.Add(currentCharacterPlacing);
                     }
+                    currentCharacterPlacing.transform.position = tileToMove.transform.position;
+                    currentCharacterPlacing.GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
+
+
+                    //Le quito el padre y le pongo en la escala correcta
+                    currentCharacterPlacing.transform.parent = null;
+                    currentCharacterPlacing.transform.localScale = Vector3.one;
+
+                    //Variable a null
+                    currentCharacterPlacing = null;
+                }
+
+                //Si no está vacío sustituyo la unidad
+                else if(tileToMove.isAvailableForCharacterColocation)
+                {
+                    SustituteUnitsOnPlacementPhase(tileToMove);
                 }
             }
         }
@@ -612,6 +670,41 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    //Si hago click en una unidad en la caja y luego a otra en escena, devuelve la de escena a la caja y coloca la clickada en el tile en el que estaba la anterior.
+    private void SustituteUnitsOnPlacementPhase(IndividualTiles tileToMove)
+    {
+        PlayerUnit previousUnit = tileToMove.GetComponent<IndividualTiles>().unitOnTile.GetComponent<PlayerUnit>();
+
+        //Quitar de la listas de unidades en el tablero
+        charactersAlreadyPlaced.Remove(previousUnit);
+
+        //Quitar tile y avisar
+        previousUnit.myCurrentTile.unitOnTile = null;
+        previousUnit.myCurrentTile.WarnInmediateNeighbours();
+        previousUnit.myCurrentTile = null;
+
+        //Devolver a la caja, padre y tamaño
+        previousUnit.transform.parent = previousUnit.initialPosInBox;
+        previousUnit.transform.localScale = Vector3.one;
+        previousUnit.transform.localPosition = Vector3.zero;
+
+        Debug.Log(currentCharacterPlacing);
+
+        //Coloco a la nueva Unidad
+
+        //Le coloco en el tile
+        charactersAlreadyPlaced.Add(currentCharacterPlacing);
+        currentCharacterPlacing.transform.position = tileToMove.transform.position;
+        currentCharacterPlacing.GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
+
+        //Le quito el padre y le pongo en la escala correcta
+        currentCharacterPlacing.transform.parent = null;
+        currentCharacterPlacing.transform.localScale = Vector3.one;
+
+        //Variable a null
+        currentCharacterPlacing = null;
     }
 
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
@@ -1174,6 +1267,14 @@ public class LevelManager : MonoBehaviour
     //Función que se llama cuando se termina de colocar unidades
     private void FinishPlacingUnits()
     {
+        characterSelectionBox.SetActive(false);
+
+        for (int i = 0; i < charactersAlreadyPlaced.Count; i++)
+        {
+            //Añado las unidades que han quedado al final colocadas en la lista de unidades en el tablero.
+            charactersOnTheBoard.Add(charactersAlreadyPlaced[i]);
+        }
+
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
         {
             GameManager.Instance.characterDataForCurrentLevel[i].UpdateMyUnitStatsForTheLevel();
