@@ -107,10 +107,11 @@ public class MapGenerator : MonoBehaviour
     public void Init()
     {
         LookAndSortSpots();
-        //SetEnemyProbablity();
-        //CreateEnemies();
-
+        SetEnemyProbablity();
+        CreateEnemies();
         CreateObstacle();
+
+        Debug.Log("Enemigos y Obstáculos randoms creados");
     }
 
     public void LookAndSortSpots()

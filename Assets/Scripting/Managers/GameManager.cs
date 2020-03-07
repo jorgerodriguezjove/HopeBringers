@@ -40,15 +40,10 @@ public class GameManager : PersistentSingleton<GameManager>
     [HideInInspector]
     public bool _isFirstTimeLoadingGame = true;
 
-
     [Header("GAME PROGRESS")]
     //Experiencia actual. 
     [SerializeField]
     public int currentExp;
-
-    ////Lista de unidades que están actualmente desbloqueadas
-    //[SerializeField]
-    //public List<PlayerUnit> unitsUnlocked = new List<PlayerUnit>();
 
     //Lista que va a guardar todos los objetos que tengan el componente Character Data
     CharacterData[] oldCharacterDataList;
@@ -128,14 +123,9 @@ public class GameManager : PersistentSingleton<GameManager>
 
     #region LEVEL_START
 
+    //Cargar el nivel
     public void CheckStartLevel(string _levelName)
     {
-        ////Si hay algún personaje seleccionado cargo el nivel.
-        //if (characterDataForCurrentLevel.Count > 0)
-        //{
-        //    SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
-        //}
-
         SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
     }
 

@@ -108,7 +108,7 @@ public class EnGiant : EnemyUnit
                 }
 
                 //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
@@ -200,9 +200,10 @@ public class EnGiant : EnemyUnit
                 }
 
                 hasAttacked = true;
-                myAnimator.SetTrigger("Attack");
-                //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo
-                //myCurrentEnemyState = enemyState.Waiting;
+                ExecuteAnimationAttack();
+                //Se tiene que poner en wait hasta que acabe la animación de ataque
+                myCurrentEnemyState = enemyState.Waiting;
+
                 break;
             }
         }
@@ -210,13 +211,6 @@ public class EnGiant : EnemyUnit
         if (!hasMoved && !hasAttacked)
         {
             myCurrentEnemyState = enemyState.Moving;
-        }
-
-        else
-        {
-            myCurrentEnemyState = enemyState.Ended;
-            //Espero 1 sec y cambio de estado a ended
-            //StartCoroutine("AttackWait");
         }
     }
 
@@ -253,7 +247,7 @@ public class EnGiant : EnemyUnit
 
     IEnumerator MovementWait()
     {
-        yield return new WaitForSeconds(timeWaitAfterMovement);
+        yield return new WaitForSeconds(currentTimeForMovement);
         HideActionPathfinding();
     }
 
@@ -336,7 +330,7 @@ public class EnGiant : EnemyUnit
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective

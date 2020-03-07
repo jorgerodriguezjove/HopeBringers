@@ -163,9 +163,6 @@ public class EnCharger : EnemyUnit
             }
         }
 
-        //Espero después de moverme para que no vaya demasiado rápido
-        yield return new WaitForSeconds(timeWaitAfterMovement);
-
         //Actualizo toda la información al terminar de moverme
         hasMoved = true;
         movementParticle.SetActive(false);

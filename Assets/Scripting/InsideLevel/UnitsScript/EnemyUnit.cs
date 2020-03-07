@@ -12,15 +12,15 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     public int rangeOfAction;
 
+    //Tiempo antes de empezar a buscar, antes de empezar a moverse, antes de hacer la animación de ataque y antes de pasar al siguiente enemigo
+    [SerializeField]
+    private float timeWaitingBeforeStarting;
     [SerializeField]
     private float timeWaitingBeforeMovement;
-    //Tiempo a esperar tras moverse
     [SerializeField]
-    protected float timeWaitAfterMovement;
+    private float timeWaitingBeforeAttacking;
     [SerializeField]
-    private float timeWaitingAttacking;
-    [SerializeField]
-    private float timeWaitingEnded;
+    private float timeWaitingBeforeEnding;
 
     //La variable de time for movement que esta en unitbase determina el tiempo que tarda por tile al moverse.
     //Esta variable sirve para que cuando le de al skip el tiempo pase a ser 0 para que vaya rápido
@@ -137,7 +137,7 @@ public class EnemyUnit : UnitBase
         movementParticle.SetActive(false);
 
         currentTimeForMovement = timeMovementAnimation;
-        currentTimeWaitinAttacking = timeWaitingAttacking;
+        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
     }
 
    
@@ -150,14 +150,13 @@ public class EnemyUnit : UnitBase
         if (myPortrait !=null)
         {
             myPortrait.HighlightMyself();
-        }       
-        myCurrentEnemyState = enemyState.Searching;
+        }
+
+        StartCoroutine("WaitBeforeNextState");
     }
 
     private void Update()
     {
-        //Debug.Log(myCurrentEnemyState);
-
         switch (myCurrentEnemyState)
         {
             case (enemyState.Waiting):
@@ -165,9 +164,10 @@ public class EnemyUnit : UnitBase
 
             case (enemyState.Searching):
 
+                //Aqui no hay wait, porque se tiene que esperar antes de empezar a buscar, no con cada busqueda.
 
-                arrowEnemyIndicator.SetActive(true);               
-                
+                arrowEnemyIndicator.SetActive(true);
+
                 //Añado esto para stunnear a los enemigos (no sé si los jugadores tendrán stun luego)
                 if (!isStunned)
                 {
@@ -183,7 +183,6 @@ public class EnemyUnit : UnitBase
 
                     myCurrentEnemyState = enemyState.Ended;
                 }
-                
 
                 break;
 
@@ -195,14 +194,13 @@ public class EnemyUnit : UnitBase
                 break;
 
             case (enemyState.Attacking):
-                if (!corroutineDone)
-                {
-                    StartCoroutine("WaitBeforeNextState");
-                }
+
+                //Aqui no hay wait, por que se tiene que esperar antes de hacer la animación de atque, no al entrar en la función attack.
+                Attack();
+
                 break;
 
             case (enemyState.Ended):
-
 
                 if (!corroutineDone)
                 {
@@ -230,23 +228,27 @@ public class EnemyUnit : UnitBase
     {
         corroutineDone = true;
 
+        if (myCurrentEnemyState == enemyState.Waiting)
+        {
+            Debug.Log("starting");
+            yield return new WaitForSeconds(timeWaitingBeforeStarting);
+            myCurrentEnemyState = enemyState.Searching;
+        }
+
         if (myCurrentEnemyState == enemyState.Moving)
         {
+            Debug.Log("Moving");
             yield return new WaitForSeconds(timeWaitingBeforeMovement);
             MoveUnit();
         }
 
-        else if (myCurrentEnemyState == enemyState.Attacking)
-        {
-            yield return new WaitForSeconds(currentTimeWaitinAttacking);
-            Attack();
-        }
-
         else if (myCurrentEnemyState == enemyState.Ended)
         {
-            yield return new WaitForSeconds(timeWaitingEnded);
+            Debug.Log("Ended");
+            yield return new WaitForSeconds(timeWaitingBeforeEnding);
             arrowEnemyIndicator.SetActive(false);
             FinishMyActions();
+            Debug.Break();
         }
 
         corroutineDone = false;
@@ -254,10 +256,8 @@ public class EnemyUnit : UnitBase
 
     public virtual void SearchingObjectivesToAttack()
     {
-
         //Cada enemigo busca enemigos a su manera
         
-
         //Añadido esto para saber si los jugadores están ocultos (Añadir a todos los enemigos despues de que compruebe posibles objetivos pero antes de que busque al último)
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
@@ -265,6 +265,12 @@ public class EnemyUnit : UnitBase
             {
                 currentUnitsAvailableToAttack.Remove(currentUnitsAvailableToAttack[i]);
             }
+        }
+
+        //Actualizo el panel de dormido de mi retrato en la lista de enemigos
+        if (haveIBeenAlerted)
+        {
+            myPortrait.UpdateSleepState(true);
         }
     }
 
@@ -343,7 +349,7 @@ public class EnemyUnit : UnitBase
 
         //Me aseguro de que el tiempo de movimiento vuelve a la normalidad por si le ha dado a acelerar
         currentTimeForMovement = timeMovementAnimation;
-        currentTimeWaitinAttacking = timeWaitingAttacking;
+        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
 
         if (myPortrait != null)
         {
@@ -524,22 +530,6 @@ public class EnemyUnit : UnitBase
             LM.ShowEnemyHover(movementUds, false ,this);
         }
 
-        //if (hoverUnit.GetComponent<EnemyUnit>().myTierLevel == EnemyUnit.TierLevel.LevelBase1)
-        //{
-        //    for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-        //    {
-        //        tilesAvailableForMovementEnemies[i].ColorSelect();
-        //    }
-        //}
-
-        //else if (hoverUnit.GetComponent<EnemyUnit>().myTierLevel == EnemyUnit.TierLevel.Level2 && hoverUnit.GetComponent<EnemyUnit>().isAlerted)
-        //{
-        //    for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-        //    {
-        //        tilesAvailableForMovementEnemies[i].ColorActionRange();
-        //    }
-        //}
-
         //Llamo a LevelManager para activar hover				
         LM.UIM.ShowUnitInfo(this.unitGeneralInfo, this);
 
@@ -568,8 +558,6 @@ public class EnemyUnit : UnitBase
                 HealthBarOn_Off(false);
                 LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
                 //LM.UIM.HideUnitInfo("");
-
-               
 
                 myPortrait.UnHighlightMyself();
 
@@ -657,6 +645,15 @@ public class EnemyUnit : UnitBase
     #endregion
 
     #region DAMAGE
+
+    protected override void DoDamage(UnitBase unitToDealDamage)
+    {
+        //ES LO MISMO PERO SIN LA INSTANCIACIÓN DE PARTICULAS. EN EL FUTURO HACER QUE LAS PARTÍCULAS VAYAN POR EVENTOS DE ANIMACIÓN
+
+        CalculateDamage(unitToDealDamage);
+        //Una vez aplicados los multiplicadores efectuo el daño.
+        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+    }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
@@ -776,6 +773,33 @@ public class EnemyUnit : UnitBase
 
         RefreshHealth(true);
     }
+
+
+    public void ExecuteAnimationAttack()
+    {
+        StartCoroutine("AnimationAttack");
+    }
+
+    IEnumerator AnimationAttack()
+    {
+        Debug.Log("attacking");
+        yield return new WaitForSeconds(timeWaitingBeforeAttacking);
+        myAnimator.SetTrigger("Attack");
+        Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+
+        myCurrentEnemyState = enemyState.Ended;
+        //Esta ultima linea sustituye a los:
+        ///else
+        ///{
+        ///    myCurrentEnemyState = enemyState.Ended;
+        ///}
+        //Actualmetne el summoner,skeleton, watcher no llaman a ExecuteAnimationAttack por lo que si se cambia habrá que arreglar que llamen a enemystate.ended.
+        //El problema básicamnet es que aunque aqui se llama a una corrutina para esperar a la animación, el codigo en el propio enemigo sigue funcionando,
+        //por lo que es como si no hubiese habido ninguna pausa realmente.
+    }
+
+
+
 
     //public void ChangeDirectionAfterBeingSpawnedRandom(FacingDirection newFacingDirection)
     //{

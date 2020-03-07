@@ -72,9 +72,9 @@ public class DamageTile : MonoBehaviour
     {
         if(hasUnit && !damageDone)
         {
-            if (unitToDoDamage.GetComponent<Druid>())
+            if (unitToDoDamage != null && unitToDoDamage.GetComponent<Druid>())
             {
-               
+                
             }
             else
             {
@@ -85,7 +85,7 @@ public class DamageTile : MonoBehaviour
                 Debug.Log("DAMAGE DONE");
             }
             
-            
+
         }
     }
 

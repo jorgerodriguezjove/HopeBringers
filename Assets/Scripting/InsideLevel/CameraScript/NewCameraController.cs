@@ -360,6 +360,11 @@ public class NewCameraController : MonoBehaviour
     //Lock es mover la cámara y que esta siga al enemigo
     public void LockCameraOnEnemy(GameObject _enemyToFocus)
     {
+        if (_enemyToFocus.GetComponent<EnemyUnit>().haveIBeenAlerted)
+        {
+            
+        }
+
         ZoomOut();
         canZoomCamera = false;
         iscameraLockedOnEnemy = false;
@@ -367,8 +372,4 @@ public class NewCameraController : MonoBehaviour
         characterToFocus = _enemyToFocus;
         FocusCameraOnCharacter(characterToFocus);
     }
-    
-       
-
-
 }

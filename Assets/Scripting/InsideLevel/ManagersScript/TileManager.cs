@@ -131,7 +131,6 @@ public class TileManager : MonoBehaviour
     #endregion
 
     #region INIT
-
     //Esto se llama desde el awake del level manager
     public void CreateGrid()
     {
@@ -288,6 +287,8 @@ public class TileManager : MonoBehaviour
         }
 
         SetTilesNeighbours();
+
+        Debug.Log(grid2DNode.Length);
     }
 
     //NO ESTÁ PENSADO PARA QUE HAYA TILES ENCIMA DE OTROS A DIFERENTES ALTURAS.
@@ -387,22 +388,6 @@ public class TileManager : MonoBehaviour
 
     #endregion
 
-    //public IndividualTiles NodeFromWorldPoint(Vector3 worldPosition)
-    //{
-    //    float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-    //    float percentZ = (worldPosition.z + gridWorldSize.z / 2) / gridWorldSize.z;
-    //    float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
-
-    //    percentX = Mathf.Clamp01(percentX);
-    //    percentZ = Mathf.Clamp01(percentZ);
-    //    percentY = Mathf.Clamp01(percentY);
-
-    //    int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-    //    int z = Mathf.RoundToInt((gridSizeZ - 1) * percentZ);
-    //    int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-    //    return grid2DNode[x, z];
-    //}
-
     #region PATHFINDING
 
     //Calculo el coste de una casilla
@@ -412,7 +397,7 @@ public class TileManager : MonoBehaviour
     }
 
     //Calculo tiles a los que se puede mover una unidad o en los que puede un enemigo buscar objetivos
-    public List<IndividualTiles> OptimizedCheckAvailableTilesForMovement(int movementUds, UnitBase selectedUnit)
+    public List<IndividualTiles> OptimizedCheckAvailableTilesForMovement(int movementUds, UnitBase selectedUnit, bool _shouldUseHeap)
     {
         selectedCharacter = selectedUnit;
         tilesAvailableForMovement.Clear();
@@ -453,7 +438,7 @@ public class TileManager : MonoBehaviour
                             }
                         }
                         
-                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
+                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false, _shouldUseHeap);
 
                         if (tempCurrentPathCost <= movementUds)
                         {
@@ -497,7 +482,7 @@ public class TileManager : MonoBehaviour
                             }
 
                             //Compruebo si existe un camino hasta el tile
-                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
+                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false, _shouldUseHeap);
 
 
                             if (tempCurrentPathCost <= movementUds)
@@ -515,39 +500,68 @@ public class TileManager : MonoBehaviour
         return tilesAvailableForMovement;
     }
 
-
     int numberOfNeighboursWithDifferentHeight;
 
+    //Calcula el tamaño del grid para que el heap pueda pillarlo al construirlo.
+    public int MaxSize
+    {
+        get
+        {
+            return gridSizeX * gridSizeZ;
+        }
+    }
 
-    public void CalculatePathForMovementCost(int x, int z, bool _shouldIgnoreUnitsForRepath)
+    public void CalculatePathForMovementCost(int x, int z, bool _shouldIgnoreUnitsForRepath, bool _shouldUseHeap)
     {
         openList.Clear();
+        //La variable se tiene que quedar aqui porque si no el Heap da error y pide que sea static.
+        Heap<IndividualTiles> openHeap = new Heap<IndividualTiles>(MaxSize);
         closedHasSet.Clear();
 
         //Origen y target
         source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
         target = grid2DNode[x, z];
 
-        //Debug.Log("SOURCE " + source.name);
-        //Debug.Log("TARGET " + target.name);
+        //Si no uso heap lo añado a la lista
+        if(!_shouldUseHeap)
+        {
+            openList.Add(source);
+        }
 
-        openList.Add(source);
+        else
+        {
+            openHeap.Add(source);
+        }
+       
 
         //Mientras que haya nodos que no hayan sido visitados...
         while (openList.Count > 0)
         {
-            IndividualTiles currentNode = openList[0];
+            IndividualTiles currentNode;
 
-            for (int i = 0; i < openList.Count; i++)
+            //Esto solo es necesario si no uso heap
+            if (!_shouldUseHeap)
             {
-                if (openList[i].CalculateFCost < currentNode.CalculateFCost ||
-                    openList[i].CalculateFCost == currentNode.CalculateFCost && openList[i].hCost < currentNode.hCost)
+                currentNode = openList[0];
+
+                for (int i = 0; i < openList.Count; i++)
                 {
-                    currentNode = openList[i];
+                    if (openList[i].CalculateFCost < currentNode.CalculateFCost ||
+                        openList[i].CalculateFCost == currentNode.CalculateFCost && openList[i].hCost < currentNode.hCost)
+                    {
+                        currentNode = openList[i];
+                    }
                 }
+
+                openList.Remove(currentNode);
             }
 
-            openList.Remove(currentNode);
+            //Empiezo el heap
+            else
+            {
+                currentNode = openHeap.RemoveFirst();
+            }
+
             closedHasSet.Add(currentNode);
 
             #region LAST_PART
@@ -834,14 +848,14 @@ public class TileManager : MonoBehaviour
 
     public void RecalculateUnreachablePath(int x, int z)
     {
-        CalculatePathForMovementCost(x, z, true);
+        CalculatePathForMovementCost(x, z, true, false);
 
         //Le resto 2 porque no quiero tener en cuenta el ultimo tile ya que es en el que esta el player y otro más porque count sin más se sale de la lista (ya que el último elemento es siempre count-1).
         for (int i = currentPath.Count-2; i > 0; i--)
         {
             if (currentPath[i].unitOnTile != null)
             {
-                CalculatePathForMovementCost(currentPath[i].tileX, currentPath[i].tileZ, false);
+                CalculatePathForMovementCost(currentPath[i].tileX, currentPath[i].tileZ, false, false);
                 return;
             }
         }
@@ -934,7 +948,7 @@ public class TileManager : MonoBehaviour
 
         for (int i = 0; i < playersOnTheBoard.Length; i++)
         {
-            CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ, false);
+            CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ, false, false);
 
             if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
             {

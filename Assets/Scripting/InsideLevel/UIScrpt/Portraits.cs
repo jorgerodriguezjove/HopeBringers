@@ -249,7 +249,7 @@ public class Portraits : MonoBehaviour
         for (int i = 0; i < attackTokens.Count; i++)
         {
             //Añado este if para que compruebe si es un decoy o no.
-            if (!assignedPlayer.GetComponent<MageDecoy>())
+            if (assignedPlayer != null && !assignedPlayer.GetComponent<MageDecoy>())
             {
                 //attackTokens[i].SetActive(!assignedPlayer.hasAttacked);
                 if (!assignedPlayer.hasAttacked)
@@ -265,7 +265,7 @@ public class Portraits : MonoBehaviour
         for (int i = 0; i < movementTokens.Count; i++)
         {
             //Añado este if para que compruebe si es un decoy o no.
-            if (!assignedPlayer.GetComponent<MageDecoy>())
+            if (assignedPlayer != null && !assignedPlayer.GetComponent<MageDecoy>())
             {
                 //movementTokens[i].SetActive(!assignedPlayer.hasMoved);
                 if (!assignedPlayer.hasMoved)

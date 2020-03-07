@@ -165,54 +165,14 @@ public class TableManager : MonoBehaviour
 
     public void ResetCharactersToBox()
     {
-        ////Reseteo personajes seleccionados
-        //for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
-        //{
-        //    GameManager.Instance.characterDataForCurrentLevel[i].ReturnToInitialPositionInBox();
-        //}
-
-        //GameManager.Instance.unitsUnlocked.Clear();
-        //GameManager.Instance.characterDataForCurrentLevel.Clear();
         currentCharacterUpgrading = null;
     }
 
     #endregion
 
-    //Esto en el futuro se hará arrastrando al personaje pero de momento lo hago con click
+    //Al hacer click sobre el personaje aparece sus árboles de habilidad
     public void OnClickCharacter(CharacterData _unitClicked)
     {
-        //if (selectCamera.activeSelf)
-        //{
-        //    if (_unitClicked.panelOfTheBookImIn == null)
-        //    {
-        //        for (int i = 0; i < UITM.panelsForUnitColocation.Length; i++)
-        //        {
-        //            if (UITM.panelsForUnitColocation[i].activeSelf && !UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied)
-        //            {
-        //                //Coloco a la unidad
-        //                _unitClicked.transform.position = UITM.panelsForUnitColocation[i].transform.position;
-        //                UITM.panelsForUnitColocation[i].GetComponent<PanelForUnitSelection>().isOcuppied = true;
-        //                _unitClicked.panelOfTheBookImIn = UITM.panelsForUnitColocation[i];
-
-
-        //                GameManager.Instance.unitsUnlocked.Add(_unitClicked.myUnit);
-        //                GameManager.Instance.characterDataForCurrentLevel.Add(_unitClicked);
-
-        //                break;
-        //            }
-        //        }
-        //    }
-
-        //    //Si clickas a la unidad que esta sobre el libro se devuelve a la caja
-        //    else
-        //    {
-        //        _unitClicked.ReturnToInitialPositionInBox();
-
-        //        GameManager.Instance.unitsUnlocked.Remove(_unitClicked.myUnit);
-        //        GameManager.Instance.characterDataForCurrentLevel.Remove(_unitClicked);
-        //    }
-        //}
-
         if (progresionCamera.activeSelf)
         {
             MoveToUpgrades();
@@ -220,7 +180,6 @@ public class TableManager : MonoBehaviour
             UITM.MoveToUpgradesUI(_unitClicked);
             currentCharacterUpgrading = _unitClicked;
         }
-        
     }
 
     public void BuyUpgrade(UpgradeNode upgradeClicked)
