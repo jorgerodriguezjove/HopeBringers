@@ -93,14 +93,8 @@ public class EnSummoner : EnemyUnit
       
         else
         {
-
             myCurrentEnemyState = enemyState.Ended;
-
         }
-
-       
     }
-
-
 }
 

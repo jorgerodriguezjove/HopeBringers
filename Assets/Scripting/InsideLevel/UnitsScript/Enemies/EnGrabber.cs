@@ -111,7 +111,7 @@ public class EnGrabber : EnemyUnit
                 }
 
                 //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
@@ -199,30 +199,19 @@ public class EnGrabber : EnemyUnit
                     currentUnitsAvailableToAttack[0].transform.DOMove(currentTileVectorToMove, 0.1f);
 
                     currentUnitsAvailableToAttack[0].UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[0]);
-
-
-
                 }
-
 
                 //Atacar al enemigo
                 DoDamage(currentUnitsAvailableToAttack[0]);
                 //Animación de ataque
-                myAnimator.SetTrigger("Attack");
+                ExecuteAnimationAttack();
                 hasAttacked = true;
-                
-
             }
             else
             {
-
                 myCurrentEnemyState = enemyState.Ended;
             }
-
         }
-
-
-       
     }
 
     int limitantNumberOfTilesToMove;
@@ -276,8 +265,6 @@ public class EnGrabber : EnemyUnit
             yield return new WaitForSeconds(currentTimeForMovement);
         }
 
-        //Espero después de moverme para que no vaya demasiado rápido
-        yield return new WaitForSeconds(timeWaitAfterMovement);
         hasMoved = true;
 
 
@@ -373,7 +360,7 @@ public class EnGrabber : EnemyUnit
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective

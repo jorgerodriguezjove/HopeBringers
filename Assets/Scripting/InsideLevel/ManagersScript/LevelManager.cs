@@ -185,26 +185,18 @@ public class LevelManager : MonoBehaviour
             enemiesOnTheBoard[i].InitializeUnitOnTile();
         }
 
-        //Se avisa al UiManager
-        UIM.InitializeUI();
-
         //Se activa la cámara
         camRef.SetCameraMovable(true, true);
 
         //Comienza la fase de colocación de unidades
         InitializeCharacters();
+
+        //El Hud se inicializa al terminar la colocación de unidades
     }
 
     //Crea a los personajes del jugador correspondientes
     private void InitializeCharacters()
     {
-        //for (int i = 0; i < GameManager.Instance.unitsForCurrentLevel.Count; i++)
-        //{
-        //    GameObject unitInstantiated = Instantiate(GameManager.Instance.unitsForCurrentLevel[i].gameObject);
-        //    unitInstantiated.SetActive(false);
-        //    unitsWithoutPosition.Push(unitInstantiated);
-        //}
-
         //Aparece la caja
         characterSelectionBox.SetActive(true);
 
@@ -214,12 +206,8 @@ public class LevelManager : MonoBehaviour
             GameObject unitInstantiated = Instantiate(GameManager.Instance.characterDataForCurrentLevel[i].GetComponent<CharacterData>().myUnit.gameObject, initialCharacterDataPosition[i]);
             unitInstantiated.transform.position = initialCharacterDataPosition[i].position;
             unitInstantiated.transform.localScale = Vector3.one;
-            Debug.Log("Instantiated");
         }
-
-        //Funcionalidad de hacer click y ponerlos
     }
-
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
     //Cuando muere un enemigo, también se llama aquí
@@ -266,6 +254,322 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     List<PlayerUnit> charactersAlreadyPlaced = new List<PlayerUnit>();
 
+        #region HOVER
+
+    //Muestra el rango de movimiento de una unidad aliada al hacer hover en ella.
+    public void ShowUnitHover(int movementUds, PlayerUnit hoverUnit)
+    {
+        if (selectedCharacter == null)
+        {
+            hoverUnit.HealthBarOn_Off(true);
+            //hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
+            hoverUnit.myCurrentTile.ColorCurrentTileHover();
+            UIM.ShowUnitInfo(hoverUnit.unitGeneralInfo, hoverUnit);
+
+
+            //Pinto tiles de movimiento
+            //Importante tienen que ir antes de pintar el rango de ataque
+            if (hoverUnit.hasMoved == false)
+            {
+                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit, true);
+                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                {
+                    tilesAvailableForMovement[i].ColorMovement();
+                }
+            }
+
+            //Chequeo y pinto el rango de ataque
+            hoverUnit.CheckUnitsAndTilesInRangeToAttack();
+        }
+    }
+
+    //Hago desaparecer el hover
+    public void HideHover(UnitBase enemyToCheck)
+    {
+        //Ocultar hover
+        enemyToCheck.DisableCanvasHover();
+    }
+
+    //Esconde el rango de movimiento de una unidad aliada al quitar el ratón de ella. !!Cuidado con función de arriba que se llama parecido (HideHover)!!
+    public void HideUnitHover(PlayerUnit hoverUnit)
+    {
+        if (selectedCharacter == null)
+        {
+            hoverUnit.HealthBarOn_Off(false);
+            UIM.HideUnitInfo("");
+            UIM.TooltipDefault();
+            hoverUnit.myCurrentTile.ColorDeselect();
+
+            if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+            {
+                for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                {
+                    if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
+                        hoverUnit.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesAttack();
+                        hoverUnit.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
+                        hoverUnit.currentUnitsAvailableToAttack[i].DisableCanvasHover();
+
+                    }
+                }
+
+
+            }
+
+            if (hoverUnit.currentTilesInRangeForAttack.Count > 0)
+            {
+                for (int i = 0; i < hoverUnit.currentTilesInRangeForAttack.Count; i++)
+                {
+                    hoverUnit.currentTilesInRangeForAttack[i].ColorDesAttack();
+                }
+            }
+
+
+            if (hoverUnit.hasMoved == false)
+            {
+                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
+                {
+                    tilesAvailableForMovement[i].ColorDeselect();
+                }
+                tilesAvailableForMovement.Clear();
+            }
+        }
+    }
+
+    //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.
+    public void CheckIfHoverShouldAppear(UnitBase enemyToCheck)
+    {
+        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+        {
+            enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+
+            for (int i = 0; i < enemiesNumber; i++)
+            {
+                if (enemyToCheck == selectedCharacter.currentUnitsAvailableToAttack[i])
+                {
+                    //Muestro hover avisando a Selected Character
+                    selectedCharacter.ShowHover(enemyToCheck);
+                }
+            }
+        }
+    }
+
+    //showActionRangeInsteadOfMovement sirve para que se pinte naranaja el rango de acción del enemigo al estar dormido
+    public void ShowEnemyHover(int movementUds, bool showActionRangeInsteadOfMovement, EnemyUnit hoverUnit)
+    {
+        if (selectedCharacter == null)
+        {
+            if (hoverUnit.GetComponent<EnBalista>())
+            {
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+                //Dibuja el ataque que va a preparar si las unidades se quedan ahí
+                if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
+                {
+                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
+
+                    //Marco las unidades disponibles para atacar de color rojo
+                    for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                    {
+                        hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
+                        hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+                        hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                    }
+                }
+                //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
+                else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
+                {
+
+                    IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
+
+                    if (tileToMove != null)
+                    {
+                        hoverUnit.shaderHover.SetActive(true);
+                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
+                        hoverUnit.shaderHover.transform.position = positionToSpawn;
+                        tileToMove.ColorMovement();
+
+                        hoverUnit.myLineRenderer.enabled = true;
+                        hoverUnit.myLineRenderer.positionCount = 2;
+                        Vector3 positionToSpawnLineRenderer = new Vector3(hoverUnit.myCurrentTile.transform.position.x, hoverUnit.myCurrentTile.transform.position.y + 0.3f, hoverUnit.myCurrentTile.transform.position.z);
+                        hoverUnit.myLineRenderer.SetPosition(0, positionToSpawnLineRenderer);
+                        hoverUnit.myLineRenderer.SetPosition(1, positionToSpawn);
+                    }
+
+
+                }
+            }
+
+            else if (hoverUnit.GetComponent<EnCharger>())
+            {
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+
+                //Dibuja el ataque que va a preparar si las unidades se quedan ahí
+                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
+                {
+                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
+
+                    hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[0]);
+                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+
+
+                    if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
+                    {
+                        hoverUnit.shaderHover.SetActive(true);
+                        hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
+                        hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
+
+
+                    }
+                }
+                else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
+                {
+                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
+
+                }
+            }
+
+            //Goblin, gigante, boss y demás
+            else
+            {
+                //Muestro la acción que va a realizar el enemigo 
+                hoverUnit.ShowActionPathFinding(true);
+
+                //¡¡MUY IMPORTANTE!! hoverUnit.ShowActionPathFinding(true); TIENE QUE IR ANTES QUE ESTOS ifs
+                if (!hoverUnit.haveIBeenAlerted)
+                {
+                    //Rango de acción sólo se pinta si no ha sido alertado
+                    tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
+                }
+
+                tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(hoverUnit.movementUds, hoverUnit, true);
+
+
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    /*
+                    if (tilesAvailableForMovementEnemies[i].isObstacle
+                         || (tilesAvailableForMovementEnemies[i].isEmpty))
+                    {
+                        continue;
+                    }
+                    */
+
+                    tilesAvailableForMovementEnemies[i].ColorMovement();
+                }
+
+                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
+                {
+                    /*
+                    if (tilesAvailableForRangeEnemies[i].isObstacle
+                           || (tilesAvailableForRangeEnemies[i].isEmpty))
+                    {
+                        continue;
+                    }*/
+                    tilesAvailableForRangeEnemies[i].ColorActionRange();
+                }
+
+                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                {
+
+                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+
+                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+                }
+
+
+                //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
+                hoverUnit.ColorAttackTile();
+
+            }
+        }
+    }
+
+    public void HideEnemyHover(EnemyUnit hoverUnit)
+    {
+        if (selectedCharacter == null)
+        {
+            if (hoverUnit.GetComponent<EnBalista>())
+            {
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+
+                if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
+                {
+                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(false);
+                }
+
+                else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
+                {
+                    IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
+                    if (tileToMove != null)
+                    {
+                        hoverUnit.shaderHover.SetActive(false);
+                        tileToMove.ColorDeselect();
+                        hoverUnit.myLineRenderer.enabled = false;
+                    }
+
+                }
+            }
+            else if (hoverUnit.GetComponent<EnCharger>())
+
+            {
+                hoverUnit.shaderHover.SetActive(false);
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
+                {
+                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
+                }
+                else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
+                {
+                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
+
+                }
+
+            }
+
+            //Goblin, gigante, boss y demás
+            else
+            {
+                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                {
+                    hoverUnit.currentUnitsAvailableToAttack[0].myCurrentTile.ColorDesAttack();
+                }
+
+                hoverUnit.HideActionPathfinding();
+
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    tilesAvailableForMovementEnemies[i].ColorDeselect();
+                }
+                tilesAvailableForMovementEnemies.Clear();
+
+                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
+                {
+                    tilesAvailableForRangeEnemies[i].ColorDeselect();
+                }
+                tilesAvailableForRangeEnemies.Clear();
+
+                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                {
+                    if (hoverUnit.currentUnitsAvailableToAttack[0] != null)
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].ResetColor();
+                        hoverUnit.currentUnitsAvailableToAttack[0].previsualizeAttackIcon.SetActive(false);
+                        hoverUnit.currentUnitsAvailableToAttack[0].DisableCanvasHover();
+                    }
+                }
+            }
+
+        }
+    }
+
+   
+    #endregion
+
+        #region SELECT_&_DESELECT
 
     //Al clickar sobre una unidad del jugador se llama a esta función
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
@@ -309,13 +613,6 @@ public class LevelManager : MonoBehaviour
 
                 FinishPlacingUnits();
             }
-
-            //Quitar personaje del tablero y añadirlo a la lista de nuevo
-            //clickedUnit.gameObject.SetActive(false);
-            //unitsWithoutPosition.Push(clickedUnit.gameObject);
-            //clickedUnit.myCurrentTile.unitOnTile = null;
-            //clickedUnit.myCurrentTile.WarnInmediateNeighbours();
-            //clickedUnit.myCurrentTile = null;
         }
 
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
@@ -354,7 +651,7 @@ public class LevelManager : MonoBehaviour
                     //This
                     //UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); F Code
 
-                    tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit);
+                    tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit, true);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
                         tilesAvailableForMovement[i].ColorMovement();
@@ -429,50 +726,6 @@ public class LevelManager : MonoBehaviour
                     SelectUnitToAttack(clickedUnit);
 
                 }
-            }
-        }
-    }
-
-    //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
-    public void SelectUnitToAttack(UnitBase clickedUnit)
-    {
-        if (selectedCharacter != null )
-        {
-            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
-            {
-                enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
-
-                //Compruebo si está en la lista de posibles targets
-                for (int i = 0; i < enemiesNumber; i++)
-                {
-                    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating && !selectedCharacter.hasAttacked)
-                    {
-                        if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
-                        {
-                            ICommand command = new AttackCommand(selectedCharacter.currentUnitsAvailableToAttack[i].currentFacingDirection, selectedCharacter.currentFacingDirection, selectedCharacter.currentUnitsAvailableToAttack[i].myCurrentTile, selectedCharacter.myCurrentTile, selectedCharacter.currentUnitsAvailableToAttack[i].currentHealth, selectedCharacter.currentHealth, selectedCharacter, selectedCharacter.currentUnitsAvailableToAttack[i]);
-                            CommandInvoker.AddCommand(command);
-                            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-							UIM.CheckActionsAvaliable();
-                            return;
-                        }
-                    }
-                }
-            }
-
-            //Si llega hasta aqui significa que la unidad seleccionada no formaba parte de las unidades a las que puede atacar.
-            //Compruebo si es un player y de ser así lo selecciono
-
-            if (clickedUnit.GetComponent<PlayerUnit>() && !clickedUnit.GetComponent<MageDecoy>())
-            {
-                DeSelectUnit();
-                SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
-                UIM.ShowUnitInfo(clickedUnit.unitGeneralInfo, clickedUnit);
-            }
-
-            else if (clickedUnit.GetComponent<EnemyUnit>())
-            {
-                DeSelectUnit();
-                SelectEnemy(clickedUnit.unitGeneralInfo ,clickedUnit.GetComponent<EnemyUnit>());
             }
         }
     }
@@ -553,6 +806,72 @@ public class LevelManager : MonoBehaviour
 		UIM.MoveScrollToEnemy(_enemySelected);
 	}
 
+    //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
+    public void SelectUnitToAttack(UnitBase clickedUnit)
+    {
+        if (selectedCharacter != null)
+        {
+            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
+            {
+                enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+
+                //Compruebo si está en la lista de posibles targets
+                for (int i = 0; i < enemiesNumber; i++)
+                {
+                    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating && !selectedCharacter.hasAttacked)
+                    {
+                        if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
+                        {
+                            ICommand command = new AttackCommand(selectedCharacter.currentUnitsAvailableToAttack[i].currentFacingDirection, selectedCharacter.currentFacingDirection, selectedCharacter.currentUnitsAvailableToAttack[i].myCurrentTile, selectedCharacter.myCurrentTile, selectedCharacter.currentUnitsAvailableToAttack[i].currentHealth, selectedCharacter.currentHealth, selectedCharacter, selectedCharacter.currentUnitsAvailableToAttack[i]);
+                            CommandInvoker.AddCommand(command);
+                            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                            UIM.CheckActionsAvaliable();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            //Si llega hasta aqui significa que la unidad seleccionada no formaba parte de las unidades a las que puede atacar.
+            //Compruebo si es un player y de ser así lo selecciono
+
+            if (clickedUnit.GetComponent<PlayerUnit>() && !clickedUnit.GetComponent<MageDecoy>())
+            {
+                DeSelectUnit();
+                SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
+                UIM.ShowUnitInfo(clickedUnit.unitGeneralInfo, clickedUnit);
+            }
+
+            else if (clickedUnit.GetComponent<EnemyUnit>())
+            {
+                DeSelectUnit();
+                SelectEnemy(clickedUnit.unitGeneralInfo, clickedUnit.GetComponent<EnemyUnit>());
+            }
+        }
+    }
+
+    public void DeselectEnemy()
+    {
+        if (selectedEnemy != null)
+        {
+            selectedEnemy.HealthBarOn_Off(false);
+            selectedEnemy.ResetColor();
+            selectedEnemy.myPortrait.UnHighlightMyself();
+            HideEnemyHover(selectedEnemy);
+
+
+            UIM.HideUnitInfo("");
+
+
+            UIM.TooltipDefault();
+            selectedEnemy = null;
+        }
+    }
+
+    #endregion
+
+        #region TILE_&_PACEMENT
+
     //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
     public void TileClicked(IndividualTiles tileToMove)
     {
@@ -599,7 +918,7 @@ public class LevelManager : MonoBehaviour
                     if (tileToMove == tilesAvailableForMovement[i] || tileToMove == selectedCharacter.myCurrentTile)
                     {
                         //Calculo el path de la unidad
-                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ, false);
+                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ, false, false);
                         selectedCharacter.myCurrentTile.ColorDeselect();
 
                         //Aviso a la unidad de que se tiene que mover
@@ -662,7 +981,6 @@ public class LevelManager : MonoBehaviour
                                     if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
                                     {
                                         selectedCharacter.currentUnitsAvailableToAttack[j].ResetColor();
-                                        //AAAAAAA
                                         selectedCharacter.currentUnitsAvailableToAttack[j].previsualizeAttackIcon.SetActive(false);
                                         selectedCharacter.currentUnitsAvailableToAttack[j].DisableCanvasHover();
                                     }
@@ -710,152 +1028,9 @@ public class LevelManager : MonoBehaviour
         currentCharacterPlacing = null;
     }
 
-    //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
-    public void UnitHasFinishedMovementAndRotation()
-    {
-        //UIM.ActivateDeActivateEndButton();+
+        #endregion
 
-        //Al terminar de moverse se despintan los tiles 
-        for (int j = 0; j < tilesAvailableForMovement.Count; j++)
-        {
-            tilesAvailableForMovement[j].ColorDeselect();
-        }
-        tilesAvailableForMovement.Clear();
-
-       
-        if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
-		{
-			UIM.TooltipAttack();
-		}
-		else
-		{
-			UIM.TooltipNoAttackable();
-		}
-
-        //Desmarco los tiles indicando rango de ataque
-        if (selectedCharacter.currentTilesInRangeForAttack.Count > 0)
-        {
-            for (int i = 0; i < selectedCharacter.currentTilesInRangeForAttack.Count; i++)
-            {
-                selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
-            }
-        }
-    }
-
-    //Compruebo si el enemigo sobre el que está haciendo hover el jugador está disponible para atacar o no.
-    public void CheckIfHoverShouldAppear(UnitBase enemyToCheck)
-    {
-        if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
-        {
-            enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
-
-            for (int i = 0; i < enemiesNumber; i++)
-            {
-                if (enemyToCheck == selectedCharacter.currentUnitsAvailableToAttack[i])
-                {
-                    //Muestro hover avisando a Selected Character
-                    selectedCharacter.ShowHover(enemyToCheck);
-                }
-            }
-        }
-    }
-
-    //Hago desaparecer el hover
-    public void HideHover(UnitBase enemyToCheck)
-    {
-        //Ocultar hover
-        enemyToCheck.DisableCanvasHover();
-    }
-
-    //Muestra el rango de movimiento de una unidad aliada al hacer hover en ella.
-    public void ShowUnitHover(int movementUds, PlayerUnit hoverUnit)
-    {
-        if (selectedCharacter == null)
-        {
-            hoverUnit.HealthBarOn_Off(true);
-            //hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
-            hoverUnit.myCurrentTile.ColorCurrentTileHover();
-            UIM.ShowUnitInfo(hoverUnit.unitGeneralInfo, hoverUnit);
-
-
-            //Pinto tiles de movimiento
-            //Importante tienen que ir antes de pintar el rango de ataque
-            if (hoverUnit.hasMoved == false)
-            {
-                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit);
-                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-                {
-                    tilesAvailableForMovement[i].ColorMovement();
-                }
-            }
-
-            //Chequeo y pinto el rango de ataque
-            hoverUnit.CheckUnitsAndTilesInRangeToAttack();
-
-
-            //Esto creo que no hace nada
-
-            //if (hoverUnit.currentUnitsAvailableToAttack.Count>0)
-            //{
-            //    for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
-            //    {
-            //        if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
-            //        {
-            //            Debug.Log(hoverUnit.currentUnitsAvailableToAttack[i]);
-            //            hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit);
-            //        }
-            //    }
-            //}
-           
-        }
-    }
-
-    //Esconde el rango de movimiento de una unidad aliada al quitar el ratón de ella. !!Cuidado con función de arriba que se llama parecido (HideHover)!!
-    public void HideUnitHover(PlayerUnit hoverUnit)
-    {
-        if (selectedCharacter == null)
-        {
-            hoverUnit.HealthBarOn_Off(false);
-            UIM.HideUnitInfo("");
-            UIM.TooltipDefault();
-            hoverUnit.myCurrentTile.ColorDeselect();
-
-            if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
-            {
-                for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
-                {
-                    if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
-                    {
-                        hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
-                        hoverUnit.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesAttack();
-                        hoverUnit.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
-                        hoverUnit.currentUnitsAvailableToAttack[i].DisableCanvasHover();
-
-                    }
-                }
-
-               
-            }
-
-            if (hoverUnit.currentTilesInRangeForAttack.Count > 0)
-            {
-                for (int i = 0; i < hoverUnit.currentTilesInRangeForAttack.Count; i++)
-                {
-                    hoverUnit.currentTilesInRangeForAttack[i].ColorDesAttack();
-                }
-            }
-                
-
-            if (hoverUnit.hasMoved == false)
-            {
-                for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-                {
-                    tilesAvailableForMovement[i].ColorDeselect();
-                }
-                tilesAvailableForMovement.Clear();
-            }
-        }
-    }
+        #region UNIT_INFO
 
     public void ShowUnitInfo()
     {
@@ -874,232 +1049,39 @@ public class LevelManager : MonoBehaviour
         UIM.HideUnitInfo("");
     }
 
-    //showActionRangeInsteadOfMovement sirve para que se pinte naranaja el rango de acción del enemigo al estar dormido
-    public void ShowEnemyHover(int movementUds, bool showActionRangeInsteadOfMovement, EnemyUnit hoverUnit)
+
+
+        #endregion
+
+    //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
+    public void UnitHasFinishedMovementAndRotation()
     {
-        if (selectedCharacter == null)
+        //UIM.ActivateDeActivateEndButton();+
+
+        //Al terminar de moverse se despintan los tiles 
+        for (int j = 0; j < tilesAvailableForMovement.Count; j++)
         {
-            if (hoverUnit.GetComponent<EnBalista>())
-            {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
-                //Dibuja el ataque que va a preparar si las unidades se quedan ahí
-                if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
-                {
-                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
-
-                    //Marco las unidades disponibles para atacar de color rojo
-                    for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
-                    {
-                        hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
-                        hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
-                        hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
-                    }
-                }
-                //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
-                else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
-                {
-                   
-                    IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
-                    
-                    if (tileToMove != null)
-                    {
-                        hoverUnit.shaderHover.SetActive(true);
-                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
-                        hoverUnit.shaderHover.transform.position = positionToSpawn;
-                        tileToMove.ColorMovement();
-
-                        hoverUnit.myLineRenderer.enabled = true;
-                        hoverUnit.myLineRenderer.positionCount = 2;
-                        Vector3 positionToSpawnLineRenderer = new Vector3(hoverUnit.myCurrentTile.transform.position.x, hoverUnit.myCurrentTile.transform.position.y + 0.3f, hoverUnit.myCurrentTile.transform.position.z);
-                        hoverUnit.myLineRenderer.SetPosition(0, positionToSpawnLineRenderer);
-                        hoverUnit.myLineRenderer.SetPosition(1, positionToSpawn);
-                    }
-
-
-                }               
-            }
-
-            else if (hoverUnit.GetComponent<EnCharger>())
-            {
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
-                
-                //Dibuja el ataque que va a preparar si las unidades se quedan ahí
-                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
-                {
-                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
-
-                    hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[0]);
-                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);                   
-                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
-
-                    
-
-                    if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
-                    {
-                        hoverUnit.shaderHover.SetActive(true);
-                        hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
-                        hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
-
-                      
-                    }
-                }
-                else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
-                {
-                        hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
-
-                }
-            }
-
-            //Goblin, gigante, boss y demás
-            else
-            {
-                //Muestro la acción que va a realizar el enemigo 
-                hoverUnit.ShowActionPathFinding(true);
-
-                //¡¡MUY IMPORTANTE!! hoverUnit.ShowActionPathFinding(true); TIENE QUE IR ANTES QUE ESTOS ifs
-                if (!hoverUnit.haveIBeenAlerted)
-                {
-                    //Rango de acción sólo se pinta si no ha sido alertado
-                    tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
-                }
-
-                tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(hoverUnit.movementUds, hoverUnit);
-
-
-                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-                {
-                    /*
-                    if (tilesAvailableForMovementEnemies[i].isObstacle
-                         || (tilesAvailableForMovementEnemies[i].isEmpty))
-                    {
-                        continue;
-                    }
-                    */
-
-                    tilesAvailableForMovementEnemies[i].ColorMovement();
-                }
-
-                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
-                {
-                    /*
-                    if (tilesAvailableForRangeEnemies[i].isObstacle
-                           || (tilesAvailableForRangeEnemies[i].isEmpty))
-                    {
-                        continue;
-                    }*/
-                    tilesAvailableForRangeEnemies[i].ColorActionRange();
-                }
-
-                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 )
-                {
-                    
-                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
-                    
-                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
-
-                }
-
-
-                //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
-                hoverUnit.ColorAttackTile();
-
-            }
+            tilesAvailableForMovement[j].ColorDeselect();
         }
-    }
+        tilesAvailableForMovement.Clear();
 
-    public void HideEnemyHover(EnemyUnit hoverUnit)
-    {
-        if (selectedCharacter == null)
+
+        if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
         {
-            if (hoverUnit.GetComponent<EnBalista>())
-            {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
-                
-                if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
-                {
-                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(false);
-                }
-                
-                else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
-                {
-                    IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
-                    if (tileToMove != null)
-                    {
-                        hoverUnit.shaderHover.SetActive(false);
-                        tileToMove.ColorDeselect();
-                        hoverUnit.myLineRenderer.enabled = false;
-                    }
-
-                }
-            }
-            else if (hoverUnit.GetComponent<EnCharger>())
-
-            {
-                hoverUnit.shaderHover.SetActive(false);
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
-                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
-                {
-                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
-                }
-                else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
-                {
-                    hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
-
-                }
-
-            }
-
-            //Goblin, gigante, boss y demás
-            else 
-            {
-                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
-                {
-                    hoverUnit.currentUnitsAvailableToAttack[0].myCurrentTile.ColorDesAttack();
-                }
-
-                hoverUnit.HideActionPathfinding();
-
-                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
-                {
-                    tilesAvailableForMovementEnemies[i].ColorDeselect();
-                }
-                tilesAvailableForMovementEnemies.Clear();
-
-                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
-                {
-                    tilesAvailableForRangeEnemies[i].ColorDeselect();
-                }
-                tilesAvailableForRangeEnemies.Clear();
-
-                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
-                {
-                    if (hoverUnit.currentUnitsAvailableToAttack[0] != null)
-                    {
-                        hoverUnit.currentUnitsAvailableToAttack[0].ResetColor();
-                        hoverUnit.currentUnitsAvailableToAttack[0].previsualizeAttackIcon.SetActive(false);
-                        hoverUnit.currentUnitsAvailableToAttack[0].DisableCanvasHover();
-                    }
-                }
-            }
-
+            UIM.TooltipAttack();
         }
-    }
-
-    public void DeselectEnemy()
-    {
-        if (selectedEnemy != null)
+        else
         {
-            selectedEnemy.HealthBarOn_Off(false);
-            selectedEnemy.ResetColor();
-            selectedEnemy.myPortrait.UnHighlightMyself();
-            HideEnemyHover(selectedEnemy);
+            UIM.TooltipNoAttackable();
+        }
 
-       
-            UIM.HideUnitInfo("");
-            
-            
-            UIM.TooltipDefault();
-            selectedEnemy = null;
+        //Desmarco los tiles indicando rango de ataque
+        if (selectedCharacter.currentTilesInRangeForAttack.Count > 0)
+        {
+            for (int i = 0; i < selectedCharacter.currentTilesInRangeForAttack.Count; i++)
+            {
+                selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
+            }
         }
     }
 

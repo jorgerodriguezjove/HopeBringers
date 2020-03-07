@@ -148,6 +148,12 @@ public class UIManager : MonoBehaviour
 	[HideInInspector]
     public LevelManager LM;
 
+    [SerializeField]
+    GameObject hudParentObject;
+    [SerializeField]
+    GameObject hud3DParentObject;
+
+
     #endregion
 
     #region INIT
@@ -160,6 +166,9 @@ public class UIManager : MonoBehaviour
     //Lo pongo en una variable en vez de en el start para que lo pueda llamar el Level Manager
     public void InitializeUI()
     {
+        hudParentObject.SetActive(true);
+        hud3DParentObject.SetActive(true);
+
         characterInfoOriginalPosition = characterInfo.transform.position;
 		endTurnBttnInitMaterial = endTurnButton.GetComponent<MeshRenderer>().material;
         //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
@@ -511,7 +520,13 @@ public class UIManager : MonoBehaviour
                 //IMPORTANTE. El contador de paneles enemigos no puede ser i ya que puede ser que haya un enemigo muerto y por tanto i sea demasiado grande.
                 panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().assignedEnemy = LM.enemiesOnTheBoard[i];
 				panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;
-				panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyTooltip>().tooltipAssignedEnemy = LM.enemiesOnTheBoard[i];
+
+                //Número y estado dormido/despierto
+                panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>().UpdateOrder(i+1, LM.enemiesOnTheBoard[i].haveIBeenAlerted);
+
+                //Asigo el tooltip
+                panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyTooltip>().tooltipAssignedEnemy = LM.enemiesOnTheBoard[i];
+                
 
 				LM.enemiesOnTheBoard[i].GetComponent<EnemyUnit>().myPortrait = panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>();
             }

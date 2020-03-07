@@ -18,6 +18,10 @@ public class EnemyPortraits : MonoBehaviour
 	public EnemyUnit assignedEnemy;
 	[HideInInspector]
 	public UIManager UIM;
+    [SerializeField]
+    public TextMeshProUGUI enemyOrderText;
+    [SerializeField]
+    private GameObject sleepPanel;
 
     //Refernecia al panel con el highlight
     [SerializeField]
@@ -106,4 +110,16 @@ public class EnemyPortraits : MonoBehaviour
 	}
 
 	#endregion
+
+    public void UpdateSleepState(bool _isEnemyAwake)
+    {
+        sleepPanel.SetActive(!_isEnemyAwake);
+    }
+
+    public void UpdateOrder(int _positionInList, bool _isEnemyAwake)
+    {
+        UpdateSleepState(_isEnemyAwake);
+        enemyOrderText.gameObject.SetActive(true);
+        enemyOrderText.SetText(_positionInList.ToString());
+    }
 }

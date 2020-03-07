@@ -106,7 +106,7 @@ public class EnSkeleton : EnemyUnit
                 }
 
                 //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
@@ -195,11 +195,11 @@ public class EnSkeleton : EnemyUnit
                 }
 
                 //Animación de ataque
-                myAnimator.SetTrigger("Attack");
+                ExecuteAnimationAttack();
                 hasAttacked = true;
+                //Se tiene que poner en wait hasta que acabe la animación de ataque
+                myCurrentEnemyState = enemyState.Waiting;
 
-                //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo.
-                //myCurrentEnemyState = enemyState.Waiting;
                 break;
             }
         }
@@ -207,14 +207,6 @@ public class EnSkeleton : EnemyUnit
         if (!hasMoved && !hasAttacked)
         {
             myCurrentEnemyState = enemyState.Moving;
-        }
-
-        else
-        {
-            myCurrentEnemyState = enemyState.Ended;
-
-            //Espero 1 sec y cambio de estado a ended
-            //StartCoroutine("AttackWait");
         }
     }
 
@@ -269,8 +261,6 @@ public class EnSkeleton : EnemyUnit
             yield return new WaitForSeconds(currentTimeForMovement);
         }
 
-        //Espero después de moverme para que no vaya demasiado rápido
-        yield return new WaitForSeconds(timeWaitAfterMovement);
         hasMoved = true;
 
 
@@ -366,7 +356,7 @@ public class EnSkeleton : EnemyUnit
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective

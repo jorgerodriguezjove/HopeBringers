@@ -16,7 +16,7 @@ public class MageDecoy : Mage
     {
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
-        //LM.characthersOnTheBoard.Add(this);
+        LM.charactersOnTheBoard.Add(GetComponent<PlayerUnit>());
         //Referencia al UIM 
         UIM = FindObjectOfType<UIManager>();
 

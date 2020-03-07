@@ -20,7 +20,6 @@ public class EnGoblin : EnemyUnit
 
     public override void SearchingObjectivesToAttack()
     {
-        
         myCurrentObjective = null;
         myCurrentObjectiveTile = null;
         pathToObjective.Clear();
@@ -111,7 +110,7 @@ public class EnGoblin : EnemyUnit
                 }
 
                 //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
@@ -128,7 +127,7 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
-        
+        Debug.Log("aaaaa");
         //Si es Tier 2 Alerta a los enemigos en el área
         if (myTierLevel == TierLevel.Level2)
         {
@@ -203,8 +202,10 @@ public class EnGoblin : EnemyUnit
                 }
 
                 //Animación de ataque
-                myAnimator.SetTrigger("Attack");
                 hasAttacked = true;
+                ExecuteAnimationAttack();
+                //Se tiene que poner en wait hasta que acabe la animación de ataque
+                myCurrentEnemyState = enemyState.Waiting;
 
                 //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo.
                 //myCurrentEnemyState = enemyState.Waiting;
@@ -215,14 +216,6 @@ public class EnGoblin : EnemyUnit
         if (!hasMoved && !hasAttacked)
         {
             myCurrentEnemyState = enemyState.Moving;
-        }
-
-        else
-        {
-            myCurrentEnemyState = enemyState.Ended;
-
-            //Espero 1 sec y cambio de estado a ended
-            //StartCoroutine("AttackWait");
         }
     }
 
@@ -278,8 +271,6 @@ public class EnGoblin : EnemyUnit
             yield return new WaitForSeconds(currentTimeForMovement);
         }
 
-        //Espero después de moverme para que no vaya demasiado rápido
-        yield return new WaitForSeconds(timeWaitAfterMovement);
         hasMoved = true;
 
 
@@ -375,7 +366,7 @@ public class EnGoblin : EnemyUnit
             if (myCurrentObjectiveTile != null)
             {
                 //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
 
                 //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
                 //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
