@@ -4287,19 +4287,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fea6cd8d9d8b747a00e7ca61fc7f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 9
   maxHealth: 2
   currentHealth: 0
   movementUds: 3
   attackRange: 1
   isMarked: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  DebuffbonusStateDamage: 0
   unitModel: {fileID: 8751282822399317446}
   unitMaterialModel: {fileID: 2420689641354982513}
   myCurrentTile: {fileID: 0}
@@ -5002,11 +5008,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4604415163970502, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4785066959759292, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4958464907473990, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_LocalPosition.x

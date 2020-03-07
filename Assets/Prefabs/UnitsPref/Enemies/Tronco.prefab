@@ -1177,19 +1177,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2de2c391d89964bbdb8f701d619a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 10
   maxHealth: 3
   currentHealth: 0
   movementUds: 1
   attackRange: 1
   isMarked: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 3
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  DebuffbonusStateDamage: 0
   unitModel: {fileID: 267636537148215698}
   unitMaterialModel: {fileID: 2444741754030437646}
   myCurrentTile: {fileID: 0}
@@ -1228,7 +1234,7 @@ MonoBehaviour:
   characterImage: {fileID: 21300000, guid: 6e45d05b55b98ec4b921462a4dba0d7a, type: 3}
   tooltipImage: {fileID: 0}
   unitName: Stump
-  rangeOfAction: 6
+  rangeOfAction: 90
   timeWaitingBeforeMovement: 0.5
   timeWaitAfterMovement: 0
   timeWaitingAttacking: 0.5
