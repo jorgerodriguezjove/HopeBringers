@@ -230,25 +230,21 @@ public class EnemyUnit : UnitBase
 
         if (myCurrentEnemyState == enemyState.Waiting)
         {
-            Debug.Log("starting");
             yield return new WaitForSeconds(timeWaitingBeforeStarting);
             myCurrentEnemyState = enemyState.Searching;
         }
 
         if (myCurrentEnemyState == enemyState.Moving)
         {
-            Debug.Log("Moving");
             yield return new WaitForSeconds(timeWaitingBeforeMovement);
             MoveUnit();
         }
 
         else if (myCurrentEnemyState == enemyState.Ended)
         {
-            Debug.Log("Ended");
             yield return new WaitForSeconds(timeWaitingBeforeEnding);
             arrowEnemyIndicator.SetActive(false);
             FinishMyActions();
-            Debug.Break();
         }
 
         corroutineDone = false;
@@ -782,7 +778,6 @@ public class EnemyUnit : UnitBase
 
     IEnumerator AnimationAttack()
     {
-        Debug.Log("attacking");
         yield return new WaitForSeconds(timeWaitingBeforeAttacking);
         myAnimator.SetTrigger("Attack");
         Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
