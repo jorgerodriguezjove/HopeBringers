@@ -10,10 +10,13 @@ public class InkManager : MonoBehaviour
 {
     public TextAsset debugDialog;
 
-
-    [Header("PERSONAJES SCO")]
+    [Header("PERSONAJES")]
     [SerializeField]
     List<NpcSCO> allCharactersInGame = new List<NpcSCO>();
+
+    //La 0 es fuera de escena y 1,2,3,4 son las que se ven en cámara
+    [SerializeField]
+    public List<Transform> allCharacterPositionsInDialog = new List<Transform>();
 
     //Archivos de text
     [HideInInspector]
@@ -40,13 +43,15 @@ public class InkManager : MonoBehaviour
     private Sprite portraitPlayer;  //El retrato del protagonista se pone desde el editor.
 
     //Struct y Diccionario para tener diálogos con más de un NPC
-    public struct valuePortraitAndColor
+    public struct structCharacters
     {
-        public GameObject characterModel;
-        public Color  colorStruct;
+        public Color                colorStruct;
+        public CharacterInDialog    characterInstantiated;
     }
-    valuePortraitAndColor structPortraitColor;
-    Dictionary<string, valuePortraitAndColor> nameAndPortrait = new Dictionary<string, valuePortraitAndColor>();
+    structCharacters currStruct;
+    Dictionary<string, structCharacters> nameAndModelDict = new Dictionary<string, structCharacters>();
+    //Esta lista simplemente la uso para mover a todos los personajes al acabar el dialogo
+    List<CharacterInDialog> listWithOnlyCharacters = new List<CharacterInDialog>();
 
     // UI Prefabs
     [SerializeField]
@@ -126,13 +131,20 @@ public class InkManager : MonoBehaviour
                         xUI.SetActive(false);
                         text.GetComponent<TeleType>().ResetVisibleLetters();
 
+                        for (int i = 0; i < listWithOnlyCharacters.Count; i++)
+                        {
+                            listWithOnlyCharacters[i].DeactivateCharacters();
+
+                        }
+
+
                         GameManager.Instance.EndDialog();
 
                         Destroy(text.gameObject);
                         text = Instantiate(textPrefabTeleType, textBox.transform);
 
                         //Vacio el diccionario
-                        nameAndPortrait.Clear();
+                        nameAndModelDict.Clear();
 
 
                         ///GameManager.Instance.playerScriptRef.currentMode = PlayerController.PlayerMode.DEFAULT;
@@ -194,16 +206,40 @@ public class InkManager : MonoBehaviour
         }
     }
 
+    
     public string ParseContent(string rawContent)
     {
+        //Se crean dos variables string que van a guardar el texto que queda a la izquierda y a la derecha después de la división
         string subjectID = "";
         string content = "";
-        if (!TrySplitContentBySearchString(rawContent, ": ", ref subjectID, ref content)) return rawContent;
-        ChangeSpeaker(subjectID);
-        return content;
-       
+        
+        //Compruebo si es un cambio de personaje
+        if (TrySplitContentBySearchString(rawContent, "%", ref subjectID, ref content))
+        {
+            Debug.Log(subjectID);
+            Debug.Log(content);
+            Debug.Log(int.Parse(content));
+
+            nameAndModelDict[subjectID].characterInstantiated.MoveToPosition(int.Parse(content));
+
+            //Esto habrá que hacer que en vez de devolver "" que salte a la siguiente línea
+            //O quizas está bien para que se vea como entra/sale el personaje
+            return "";
+        }
+
+        //Esto es lo que permite saber quien esta hablando al poner "nombre: " en el inkle
+        else
+        {
+            //Se llama a la funcion que divide el contenido. Si no encuentra ninguna división devuelve el texto sin cambios
+            if (!TrySplitContentBySearchString(rawContent, ": ", ref subjectID, ref content)) return rawContent;
+            Debug.Log(subjectID);
+            ChangeSpeaker(subjectID);
+            return content;
+        }
     }
 
+    //Divide una línea de texto en 2. Recibe el texto normal, lo que tiene que buscar como divisor (por ej ": ") y una referencia a 2 variables string para guardar
+    //el contenido que queda a la izquierda y otra a la derecha
     public bool TrySplitContentBySearchString(string rawContent, string searchString, ref string left, ref string right)
     {
         int firstSpecialCharacterIndex = rawContent.IndexOf(searchString);
@@ -212,6 +248,7 @@ public class InkManager : MonoBehaviour
         left = rawContent.Substring(0, firstSpecialCharacterIndex).Trim();
         right = rawContent.Substring(firstSpecialCharacterIndex + searchString.Length, rawContent.Length - firstSpecialCharacterIndex - searchString.Length).Trim();
         return true;
+
     }
 
     // When we click the choice button, tell the story to choose that choice!
@@ -229,15 +266,25 @@ public class InkManager : MonoBehaviour
     {
         for (int i = 0; i < allCharactersInGame.Count; i++)
         {
-            structPortraitColor.characterModel = allCharactersInGame[i].characterModel;
-            structPortraitColor.colorStruct = allCharactersInGame[i].colorTextNPC;
+            //Instancio el personaje, le añado el componentte y le seteo las posiciones
+            GameObject pjInst = Instantiate(allCharactersInGame[i].characterModel, allCharacterPositionsInDialog[0]);
+            pjInst.AddComponent<CharacterInDialog>();
+            pjInst.GetComponent<CharacterInDialog>().positionsToMove = allCharacterPositionsInDialog;
 
-            if (!nameAndPortrait.ContainsKey(allCharactersInGame[i].nameNPC))
+            //Seteo los valores del struct y de la lista solo con los charactersDialog
+            currStruct.characterInstantiated = pjInst.GetComponent <CharacterInDialog>();
+            listWithOnlyCharacters.Add(pjInst.GetComponent<CharacterInDialog>());
+            currStruct.colorStruct = allCharactersInGame[i].colorTextNPC;
+
+            //Si no está repetido en el diccionario le añado
+            if (!nameAndModelDict.ContainsKey(allCharactersInGame[i].nameNPC))
             {
-                nameAndPortrait.Add(allCharactersInGame[i].nameNPC, structPortraitColor);
+                nameAndModelDict.Add(allCharactersInGame[i].nameNPC, currStruct);
             }
         }
     }
+
+    string previousSpeaker;
 
     //Cambia el retrato en función de la persona que está hablando.
     private void ChangeSpeaker(string speaker)
@@ -245,15 +292,24 @@ public class InkManager : MonoBehaviour
         portraitLocation.GetComponent<Image>().sprite = portraitPlayer;
         text.color = Color.white; //Prueba a hacer que el texto del player sea blanco
 
-        for (int i = 0; i < nameAndPortrait.Count; i++)
+        for (int i = 0; i < nameAndModelDict.Count; i++)
         {
-            if (nameAndPortrait.ContainsKey(speaker))
+            if (nameAndModelDict.ContainsKey(speaker))
             {
-                //Encontrar clase modelo en escena y decirle que se resalte y que se oculte el anterior
+                if (previousSpeaker != null)
+                {
+                    nameAndModelDict[previousSpeaker].characterInstantiated.DesHighlightSpeaker();
+                }
 
-                //nameAndPortrait[speaker].characterModel;
-                //portraitLocation.GetComponent<Image>().sprite = nameAndPortrait[speaker].characterModel;
-                text.color = nameAndPortrait[speaker].colorStruct;
+                //Encontrar clase modelo en escena y decirle que se resalte y que se oculte el anterior
+                Debug.Log(speaker);
+                Debug.Log(nameAndModelDict[speaker]);
+                Debug.Log(nameAndModelDict[speaker].characterInstantiated);
+
+                nameAndModelDict[speaker].characterInstantiated.HighlightSpeaker();
+                text.color = nameAndModelDict[speaker].colorStruct;
+
+                previousSpeaker = speaker;
             }
         }
     }

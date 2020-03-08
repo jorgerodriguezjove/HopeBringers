@@ -1,8 +1,12 @@
 ===reactions===
 = InReac
-Prueba sin personaje.
-H.I.B.O.: Prueba Personaje inicial.
-Knight: Prueba segundo personaje.
-Player: Prueba player.
+Knight%1
+Ninja%3
+
+Knight: Prueba Personaje inicial.
+Ninja: Prueba segundo personaje.
+
+Knight%0
+Ninja%4
 
 ->END
