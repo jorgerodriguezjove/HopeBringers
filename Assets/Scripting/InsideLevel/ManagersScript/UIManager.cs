@@ -400,7 +400,7 @@ public class UIManager : MonoBehaviour
 	//Avisa a los retratos activos de que refresquen las barras de vida
 	public void RefreshHealth()
 	{
-		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+		for (int i = 0; i < panelesPJ.Count; i++)
 		{
             panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
 		}
@@ -408,8 +408,9 @@ public class UIManager : MonoBehaviour
     //Avisa a los retratos activos de que refresquen los tokens
     public void RefreshTokens()
 	{
-        for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+        for (int i = 0; i < panelesPJ.Count; i++)
         {
+            
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
         }
 	}
