@@ -17,6 +17,8 @@ public class EnDuelist : EnemyUnit
     [HideInInspector]
     private List<UnitBase> unitsInRange = new List<UnitBase>();
 
+    public bool hasTier2;
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -157,7 +159,7 @@ public class EnDuelist : EnemyUnit
                     currentUnitsAvailableToAttack[0].currentFacingDirection = FacingDirection.East;
                     currentUnitsAvailableToAttack[0].unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
                 }
-                //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el goblin
+                //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el duelist
                 if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
                 {
                     //Arriba
@@ -320,7 +322,7 @@ public class EnDuelist : EnemyUnit
     //Decidir rotación al terminar de moverse para atacar
     private void RotateLogic(FacingDirection newDirection)
     {
-        //Roto al gigante
+        //Roto al duelist
         if (newDirection == FacingDirection.North)
         {
             unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);

@@ -164,6 +164,27 @@ public class EnBalista : EnemyUnit
             if (tilesToShoot[i].unitOnTile != null)
             {
                 DoDamage(tilesToShoot[i].unitOnTile);
+
+                if (myTierLevel == TierLevel.Level2)
+                {
+                   if(tilesToShoot[i].unitOnTile == null)
+                    {
+                        //Añadir partícula de explosión
+
+
+                        FindObjectOfType<TileManager>().GetSurroundingTiles(tilesToShoot[i], 1, true, false);
+                        //Hago daño a las unidades adyacentes(3x3)
+                        for (int j = 0; j < tilesToShoot[i].surroundingNeighbours.Count; ++j)
+                        {
+                            if (tilesToShoot[i].surroundingNeighbours[j].unitOnTile != null)
+                            {
+                                DoDamage(tilesToShoot[i].surroundingNeighbours[j].unitOnTile);
+                            }
+                        }
+                    }
+
+                }
+                
             }
 
             //Quito el feedback de ataque de los tiles

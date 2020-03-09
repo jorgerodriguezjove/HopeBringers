@@ -27,6 +27,10 @@ public class EnSummoner : EnemyUnit
 
     public Vector3 posToSpawn;
 
+  
+    //Número de bufo que aplica a las unidades
+    public int enemyBuff;
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -42,9 +46,23 @@ public class EnSummoner : EnemyUnit
             //Comprobar las unidades que hay en mi rango de acción
             unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
 
-            //Si hay personajes del jugador en mi rango de acción paso a attacking donde me alerto y hago mi accion
+        if (myTierLevel == TierLevel.Level2)
+        {
             for (int i = 0; i < unitsInRange.Count; i++)
             {
+
+                if (unitsInRange[i].GetComponent<EnemyUnit>())
+                {
+                    unitsInRange[i].GetComponent<EnemyUnit>().BuffbonusStateDamage = enemyBuff;
+                }
+            }
+           
+        }
+        
+        //Si hay personajes del jugador en mi rango de acción paso a attacking donde me alerto y hago mi accion
+        for (int i = 0; i < unitsInRange.Count; i++)
+            {
+
                 if (unitsInRange[i].GetComponent<PlayerUnit>())
                 {
                     myCurrentEnemyState = enemyState.Attacking;

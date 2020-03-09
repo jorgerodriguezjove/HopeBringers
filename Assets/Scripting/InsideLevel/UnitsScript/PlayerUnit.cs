@@ -100,6 +100,9 @@ public class PlayerUnit : UnitBase
     //Añado esto para que el mage pueda acceder a la función de GetSurroundingTiles()
     public TileManager TM;
 
+    //Este int lo pongo para saber el primer número y que así el tier 2 del Watcher no esté restando a los current movementsUds
+    public int fMovementUds;
+
     #endregion
 
     #region INIT
@@ -119,13 +122,16 @@ public class PlayerUnit : UnitBase
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
         movementParticle.SetActive(false);
 
-        //if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
-        //{
-        //    currentHealth = maxHealth;
-        //}
+        fMovementUds = movementUds;
 
-        //Vigilar esto. He comentado lo anterior y puesto esto porque si no al colocar los personajes si se colocaban al principio del nivel  tenian 0 de vida.
-        currentHealth = maxHealth;
+
+    //if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+    //{
+    //    currentHealth = maxHealth;
+    //}
+
+    //Vigilar esto. He comentado lo anterior y puesto esto porque si no al colocar los personajes si se colocaban al principio del nivel  tenian 0 de vida.
+    currentHealth = maxHealth;
     }
 
     //Stats genéricos que tienen todos los personajes.
@@ -155,17 +161,41 @@ public class PlayerUnit : UnitBase
     //Reseteo las variables
     public void ResetUnitState()
     {
-        arrowIndicator.SetActive(true);
-        hasMoved = false;
-        movementTokenInGame.SetActive(true);
-        hasAttacked = false;
-        attackTokenInGame.SetActive(true);
-        //Refresco de los tokens para resetearlos en pantalla
-        UIM.RefreshTokens();
-        isMovingorRotating = false;
-        unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+        //Añado esto para stunnear a los enemigos 
+        if (!isStunned)
+        {
+            arrowIndicator.SetActive(true);
+            hasMoved = false;
+            movementTokenInGame.SetActive(true);
+            hasAttacked = false;
+            attackTokenInGame.SetActive(true);
+            //Refresco de los tokens para resetearlos en pantalla
+            UIM.RefreshTokens();
+            isMovingorRotating = false;
+            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+            hasUsedExtraTurn = false;
+        }
+        else
+        {
+            arrowIndicator.SetActive(false);
+            hasMoved = true;
+            movementTokenInGame.SetActive(false);
+            hasAttacked = true;
+            attackTokenInGame.SetActive(false);
+            //Refresco de los tokens para resetearlos en pantalla
+            UIM.RefreshTokens();
+            isMovingorRotating = false;
+            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
+            hasUsedExtraTurn = false;
 
-        hasUsedExtraTurn = false;
+            if (turnStunned <= 0)
+            {
+                isStunned = false;
+                turnStunned = 0;
+            }
+            turnStunned--;
+        }
+      
     }
 
     //La unidad ha atacado y por tanto no puede hacer nada más.
@@ -616,10 +646,52 @@ public class PlayerUnit : UnitBase
 		//Si le ataco por la espalda hago más daño
 		if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
 		{
-			//Ataque por la espalda
-			damageWithMultipliersApplied += bonusDamageBackAttack;
-            unitToDealDamage.backStabIcon.SetActive(true);
+            if (unitToDealDamage.GetComponent<EnDuelist>()
+               && unitToDealDamage.GetComponent<EnDuelist>().hasTier2
+               && hasAttacked)
+            {
+
+                if (currentFacingDirection == FacingDirection.North)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.South;
+                }
+
+                else if (currentFacingDirection == FacingDirection.South)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.North;
+                }
+
+                else if (currentFacingDirection == FacingDirection.East)
+                {
+
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.West;
+                }
+
+                else if (currentFacingDirection == FacingDirection.West)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.East;
+                }
+
+            }
+            else
+            {
+                //Ataque por la espalda
+                damageWithMultipliersApplied += bonusDamageBackAttack;
+                unitToDealDamage.backStabIcon.SetActive(true);
+            }
 		}
+
+        damageWithMultipliersApplied += BuffbonusStateDamage;
+
+        //if (hasFear)
+        //{
+
+        //    damageWithMultipliersApplied -= DebuffbonusStateDamage;
+        //}
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
 	}

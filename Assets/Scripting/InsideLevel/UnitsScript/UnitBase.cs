@@ -308,18 +308,53 @@ public class UnitBase : MonoBehaviour
         //Si le ataco por la espalda hago más daño
         if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
         {
-            //Ataque por la espalda
-            damageWithMultipliersApplied += bonusDamageBackAttack;
+            if (unitToDealDamage.GetComponent<EnDuelist>()
+                && unitToDealDamage.GetComponent<EnDuelist>().hasTier2)
+            {
+                
+                if (currentFacingDirection == FacingDirection.North)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.South;
+                }
+
+                else if (currentFacingDirection == FacingDirection.South)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.North;
+                }
+
+                else if (currentFacingDirection == FacingDirection.East)
+                {
+                   
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.West;
+                }
+
+                else if (currentFacingDirection == FacingDirection.West)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.East;
+                }
+
+            }
+            else
+            {
+                //Ataque por la espalda
+                damageWithMultipliersApplied += bonusDamageBackAttack;
+
+            }
+            
         }
 
         
         damageWithMultipliersApplied += BuffbonusStateDamage;
 
-        if (hasFear)
-        {
+        //if (hasFear)
+        //{
 
-            damageWithMultipliersApplied -= DebuffbonusStateDamage;
-        }
+        //    damageWithMultipliersApplied -= DebuffbonusStateDamage;
+        //}
     }
 
     //Prueba para calcular damages en el hover

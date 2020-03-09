@@ -17,6 +17,8 @@ public class EnGrabber : EnemyUnit
     [HideInInspector]
     private List<UnitBase> unitsInRange = new List<UnitBase>();
 
+    public int turn2StunEnemy;
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -167,7 +169,6 @@ public class EnGrabber : EnemyUnit
                     //Calcula el vector al que se tiene que mover.
                     currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position;
                     currentUnitsAvailableToAttack[0].transform.DOMove(currentTileVectorToMove, 0.1f);
-
                     currentUnitsAvailableToAttack[0].UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[0]);
                 }
 
@@ -176,7 +177,6 @@ public class EnGrabber : EnemyUnit
                     //Calcula el vector al que se tiene que mover.
                     currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position;
                     currentUnitsAvailableToAttack[0].transform.DOMove(currentTileVectorToMove, 0.1f);
-
                     currentUnitsAvailableToAttack[0].UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[0]);
 
                 }
@@ -186,7 +186,6 @@ public class EnGrabber : EnemyUnit
                     //Calcula el vector al que se tiene que mover.
                     currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position;
                     currentUnitsAvailableToAttack[0].transform.DOMove(currentTileVectorToMove, 0.1f);
-
                     currentUnitsAvailableToAttack[0].UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[0]);
 
 
@@ -197,12 +196,23 @@ public class EnGrabber : EnemyUnit
                     //Calcula el vector al que se tiene que mover.
                     currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position;
                     currentUnitsAvailableToAttack[0].transform.DOMove(currentTileVectorToMove, 0.1f);
-
                     currentUnitsAvailableToAttack[0].UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[0]);
                 }
 
                 //Atacar al enemigo
                 DoDamage(currentUnitsAvailableToAttack[0]);
+
+                if(myTierLevel== TierLevel.Level2
+                    && !currentUnitsAvailableToAttack[0].isDead)
+                {
+                    currentUnitsAvailableToAttack[0].isStunned = true;
+                    if (currentUnitsAvailableToAttack[0].turnStunned < 0)
+                    {
+                        currentUnitsAvailableToAttack[0].turnStunned = 0;
+                    }
+                    currentUnitsAvailableToAttack[0].turnStunned += turn2StunEnemy;
+
+                }
                 //Animación de ataque
                 ExecuteAnimationAttack();
                 hasAttacked = true;

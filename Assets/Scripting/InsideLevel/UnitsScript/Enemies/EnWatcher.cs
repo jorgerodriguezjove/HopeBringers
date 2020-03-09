@@ -17,8 +17,14 @@ public class EnWatcher : EnemyUnit
     [HideInInspector]
     private List<UnitBase> unitsInRange = new List<UnitBase>();
 
-    //Debuff que mete a las unidades que están dentro de su alcance
-    public int debuff;
+    //Debuff de ataque que mete a las unidades que están dentro de su alcance
+    public int attackDebuff;
+
+    //Debuff de movimient que mete a las unidades que están dentro de su alcance en el Tier 2
+    public int movementDebuff;
+
+    
+
 
     public override void SearchingObjectivesToAttack()
     {
@@ -32,17 +38,17 @@ public class EnWatcher : EnemyUnit
             return;
         }
 
-        if(unitsInRange.Count > 0)
-        {
-            for (int i = 0; i < unitsInRange.Count; i++)
-            {
-                if (unitsInRange[i].GetComponent<PlayerUnit>())
-                {
-                    unitsInRange[i].BuffbonusStateDamage -= debuff;
+        //if(unitsInRange.Count > 0)
+        //{
+        //    for (int i = 0; i < unitsInRange.Count; i++)
+        //    {
+        //        if (unitsInRange[i].GetComponent<PlayerUnit>())
+        //        {
+        //            unitsInRange[i].BuffbonusStateDamage -= attackDebuff;
                     
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
         
         //Comprobar las unidades que hay en mi rango de acción
         unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
@@ -71,7 +77,12 @@ public class EnWatcher : EnemyUnit
         {
             if (unitsInRange[i].GetComponent<PlayerUnit>())
             {
-                unitsInRange[i].BuffbonusStateDamage += debuff;
+                unitsInRange[i].BuffbonusStateDamage = attackDebuff;
+
+                if (myTierLevel == TierLevel.Level2)
+                {
+                    unitsInRange[i].GetComponent<PlayerUnit>().movementUds = movementUds - movementDebuff;
+                }
                 
             }
         }

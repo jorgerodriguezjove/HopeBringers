@@ -168,19 +168,19 @@ public class EnemyUnit : UnitBase
 
                 arrowEnemyIndicator.SetActive(true);
 
-                //Añado esto para stunnear a los enemigos (no sé si los jugadores tendrán stun luego)
+                //Añado esto para stunnear a los enemigos 
                 if (!isStunned)
                 {
                     SearchingObjectivesToAttack();
                 }
                 else
                 {
-                    turnStunned--;
+                    
                     if (turnStunned <= 0)
                     {
                         isStunned = false;
                     }
-
+                    turnStunned--;
                     myCurrentEnemyState = enemyState.Ended;
                 }
 
