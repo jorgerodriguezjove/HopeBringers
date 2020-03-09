@@ -287,8 +287,6 @@ public class TileManager : MonoBehaviour
         }
 
         SetTilesNeighbours();
-
-        Debug.Log(grid2DNode.Length);
     }
 
     //NO ESTÁ PENSADO PARA QUE HAYA TILES ENCIMA DE OTROS A DIFERENTES ALTURAS.

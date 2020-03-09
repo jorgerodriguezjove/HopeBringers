@@ -151,7 +151,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject hudParentObject;
     [SerializeField]
-    GameObject hud3DParentObject;
+    GameObject hud3DInGame;
+    [SerializeField]
+    GameObject hud3DInDialog;
+    [SerializeField]
+    GameObject hud3DUnitPlacement;
 
 
     #endregion
@@ -163,11 +167,19 @@ public class UIManager : MonoBehaviour
         LM = FindObjectOfType<LevelManager>();
 	}
 
+    public void ActivateHudUnitPlacement()
+    {
+        hud3DInDialog.SetActive(false);
+        hud3DUnitPlacement.SetActive(true);
+    }
+
     //Lo pongo en una variable en vez de en el start para que lo pueda llamar el Level Manager
     public void InitializeUI()
     {
         hudParentObject.SetActive(true);
-        hud3DParentObject.SetActive(true);
+        hud3DInGame.SetActive(true);
+        hud3DInDialog.SetActive(false);
+        hud3DUnitPlacement.SetActive(false);
 
         characterInfoOriginalPosition = characterInfo.transform.position;
 		endTurnBttnInitMaterial = endTurnButton.GetComponent<MeshRenderer>().material;

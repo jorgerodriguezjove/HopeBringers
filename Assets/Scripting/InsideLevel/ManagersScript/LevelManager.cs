@@ -198,7 +198,7 @@ public class LevelManager : MonoBehaviour
     private void InitializeCharacters()
     {
         //Aparece la caja
-        characterSelectionBox.SetActive(true);
+        UIM.ActivateHudUnitPlacement();
 
         //Se instancian en los transform los personajes desbloqueados (GameManager necesita saberlos)
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
