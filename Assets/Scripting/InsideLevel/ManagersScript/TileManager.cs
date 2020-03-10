@@ -1173,11 +1173,11 @@ public class TileManager : MonoBehaviour
     public List<IndividualTiles> coneTiles = new List<IndividualTiles>();
     int coneIndex;
 
-    public List<IndividualTiles> GetConeTiles(List<IndividualTiles> middleLine, int _coneDistance, UnitBase.FacingDirection _direction)
+    public List<IndividualTiles> GetConeTiles(List<IndividualTiles> middleLine, UnitBase.FacingDirection _direction)
     {
         coneIndex = 0;
 
-        for (int i = 0; i < _coneDistance; i++)
+        for (int i = 0; i < middleLine.Count; i++)
         {
             for (int j = 0; j < middleLine[i].GetLateralTilesBasedOnDirection(_direction, coneIndex).Count; j++)
             {

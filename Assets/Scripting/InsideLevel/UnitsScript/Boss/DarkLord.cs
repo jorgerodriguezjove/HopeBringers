@@ -7,7 +7,10 @@ using DG.Tweening;
 public class DarkLord : EnemyUnit
 {
     [Header("TRASPASO DE ALMA")]
-    private int cooldownSoulSkill;
+    [SerializeField]
+    private int maxCooldownSoulsSkill;
+    private int currentCooldownSoulSkill = 3;
+
     //Bool que indica cuál es el dark lord original (ya que los enemigos controlados usan este script también)
     [SerializeField]
     private bool amITheOriginalDarkLord;
@@ -16,6 +19,16 @@ public class DarkLord : EnemyUnit
     bool areaUsed;
     bool attackUsed;
     bool stunUsed;
+
+    [Header("ÁREA")]
+    [SerializeField]
+    int normalAttackRange = 2;
+
+    [Header("CONO")]
+    [SerializeField]
+    int coneRange = 5;
+
+    List<UnitBase> enemiesInConeArea = new List<UnitBase>();
 
 
     #region COPIA_GOBLIN
@@ -37,7 +50,7 @@ public class DarkLord : EnemyUnit
         myCurrentObjective = null;
         myCurrentObjectiveTile = null;
         pathToObjective.Clear();
-
+        currentUnitsAvailableToAttack.Clear();
 
         //CAMBIAR ESTE HASATTACKED
         if (isDead || hasAttacked)
@@ -48,97 +61,163 @@ public class DarkLord : EnemyUnit
 
         else
         {
-            LM.TM.GetConeTiles(myCurrentTile.tilesInLineDown,5, UnitBase.FacingDirection.South);
-
-            Debug.Break();
-
             //Comprueba si ha atacado ¿?
 
             ///Comprueba si puede hacer el traspaso de alma
-            if (cooldownSoulSkill <= 0)
+            if (currentCooldownSoulSkill <= 0)
             {
                 ///Haz traspaso de alma
+                Debug.Log("Traspaso de alma");
             }
 
             //Como no puedo hacer traspaso, compruebo que ataques puedo hacer
             else
             {
+                for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+                {
+                    if (myCurrentTile.neighbours[i].unitOnTile != null && myCurrentTile.neighbours[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        Debug.Log("For ÁREA ");
+                        Debug.Log(myCurrentTile.neighbours[i]);
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.neighbours[i].unitOnTile);
+                    }
+                }
+
                 ///Comprueba si tiene + de 1 objetivo para hacer área
-                ///Comprueba si tiene 1 objetivo a rango de cono para hacer cono
-                ///Comprueba si tiene 1 objetivo para hacer ataque normal
-                ///Comprueba si se ha movido (si no, se mueve y repite todas las comprobaciones menos el traspaso)
-
-                //Determinamos el enemigo más cercano.
-                currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
-
-                //Si no hay enemigos termina su turno
-                if (currentUnitsAvailableToAttack.Count == 0)
+                if (currentUnitsAvailableToAttack.Count > 1)
                 {
+                    //Ataque en área
+                    Debug.Log("Ataque en área");
                     myCurrentEnemyState = enemyState.Ended;
+                    return;
                 }
 
-                else if (currentUnitsAvailableToAttack.Count > 0)
+                ///Comprueba si tiene 1 objetivo para hacer ataque normal en los tiles de delante
+                else
                 {
-                    if (currentUnitsAvailableToAttack.Count == 1)
-                    {
-                        base.SearchingObjectivesToAttack();
+                    //Limpio la lista de objetivos
+                    currentUnitsAvailableToAttack.Clear();
 
-                        if (currentUnitsAvailableToAttack.Count == 1)
+                    Debug.Log("PRINCIPIO ATAQUE NORMAL");
+                    //Compruebo si en los 2 tiles de delante hay al menos un enemigo
+                    for (int i = 0; i < myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, normalAttackRange).Count; i++)
+                    {
+                        Debug.Log("For ATAQUE NORMAL ");
+                        if (myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, normalAttackRange)[i].unitOnTile != null &&
+                            myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, normalAttackRange)[i].unitOnTile.GetComponent<PlayerUnit>())
                         {
-                            myCurrentObjective = currentUnitsAvailableToAttack[0];
-                            myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                            Debug.Log("For INSIDE ATAQUE NORMAL ");
+                            currentUnitsAvailableToAttack.Add(myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, normalAttackRange)[i].unitOnTile);
                         }
                     }
-
-                    //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
-                    else if (currentUnitsAvailableToAttack.Count > 1)
-                    {
-                        //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
-                        currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
-                        {
-                            return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
-                        });
-
-                        //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
-                        for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
-                        {
-                            if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
-                            {
-                                currentUnitsAvailableToAttack.RemoveAt(i);
-                            }
-                        }
-
-                        //Si sigue habiendo varios enemigos los ordeno segun la vida
-                        if (currentUnitsAvailableToAttack.Count > 1)
-                        {
-                            //Añado esto para eliminar a los personajes ocultos
-                            base.SearchingObjectivesToAttack();
-
-                            //Ordeno la lista de posibles objetivos de menor a mayor vida actual
-                            currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
-                            {
-                                return (a.currentHealth).CompareTo(b.currentHealth);
-
-                            });
-                        }
-
-                        myCurrentObjective = currentUnitsAvailableToAttack[0];
-                        myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
-                    }
-
-                    //CAMBIAR ESTO (lm.tm)
-                    LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
-
-                    //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
-                    //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-                    for (int i = 0; i < LM.TM.currentPath.Count; i++)
-                    {
-                        pathToObjective.Add(LM.TM.currentPath[i]);
-                    }
-
-
-                    myCurrentEnemyState = enemyState.Attacking;
                 }
+
+                if (currentUnitsAvailableToAttack.Count >= 1)
+                {
+                    //Ataque normal
+                    Debug.Log("Ataque normal");
+                    myCurrentEnemyState = enemyState.Ended;
+                    return;
+                }
+
+                ///Comprueba si tiene 1 objetivo a rango de cono para hacer cono
+                else
+                {
+                    for (int i = 0; i < LM.TM.GetConeTiles(myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, coneRange), currentFacingDirection).Count; i++)
+                    {
+                        if (LM.TM.GetConeTiles(myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, coneRange), currentFacingDirection)[i].unitOnTile != null &&
+                            LM.TM.GetConeTiles(myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, coneRange), currentFacingDirection)[i].unitOnTile.GetComponent<PlayerUnit>())
+                        {
+                            Debug.Log("For AREA ");
+                            enemiesInConeArea.Add(LM.TM.GetConeTiles(myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, coneRange), currentFacingDirection)[i].unitOnTile);
+                        }
+                    }
+
+                    if (enemiesInConeArea.Count > 0)
+                    {
+                        //Hacer ataque en cono
+                        Debug.Log("Ataque en cono");
+                        myCurrentEnemyState = enemyState.Ended;
+                        return;
+                    }
+                }
+
+                Debug.Log("ended");
+                myCurrentEnemyState = enemyState.Ended;
+
+                /////Comprueba si se ha movido (si no, se mueve y repite todas las comprobaciones menos el traspaso)
+
+                ////Determinamos el enemigo más cercano.
+                //currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
+
+                ////Si no hay enemigos termina su turno
+                //if (currentUnitsAvailableToAttack.Count == 0)
+                //{
+                //    myCurrentEnemyState = enemyState.Ended;
+                //}
+
+                //else if (currentUnitsAvailableToAttack.Count > 0)
+                //{
+                //    if (currentUnitsAvailableToAttack.Count == 1)
+                //    {
+                //        base.SearchingObjectivesToAttack();
+
+                //        if (currentUnitsAvailableToAttack.Count == 1)
+                //        {
+                //            myCurrentObjective = currentUnitsAvailableToAttack[0];
+                //            myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                //        }
+                //    }
+
+                //    //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
+                //    else if (currentUnitsAvailableToAttack.Count > 1)
+                //    {
+                //        //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
+                //        currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                //        {
+                //            return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
+                //        });
+
+                //        //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
+                //        for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
+                //        {
+                //            if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                //            {
+                //                currentUnitsAvailableToAttack.RemoveAt(i);
+                //            }
+                //        }
+
+                //        //Si sigue habiendo varios enemigos los ordeno segun la vida
+                //        if (currentUnitsAvailableToAttack.Count > 1)
+                //        {
+                //            //Añado esto para eliminar a los personajes ocultos
+                //            base.SearchingObjectivesToAttack();
+
+                //            //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                //            currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                //            {
+                //                return (a.currentHealth).CompareTo(b.currentHealth);
+
+                //            });
+                //        }
+
+                //        myCurrentObjective = currentUnitsAvailableToAttack[0];
+                //        myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                //    }
+
+                //    //CAMBIAR ESTO (lm.tm)
+                //    LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false, false);
+
+                //    //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+                //    //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+                //    for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                //    {
+                //        pathToObjective.Add(LM.TM.currentPath[i]);
+                //    }
+
+
+                //    //    myCurrentEnemyState = enemyState.Attacking;
+                //    }
             }
         }
     }

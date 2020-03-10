@@ -57,8 +57,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public List<IndividualTiles> surroundingNeighbours = new List<IndividualTiles>();
 
-    
-
     //Número tiles vecinos ocupados por una unidad.
     //Acordarse de ocultar en editor y acordarse de actualizar este valor cada vez que se mueva una unidad.
     [SerializeField]
@@ -75,9 +73,11 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     public List<IndividualTiles> tilesInLineLeft = new List<IndividualTiles>();
 
 
-    //Lista con los tiles a ambos lados del tile según la dirección que se le ha pasado
-    [HideInInspector]
-    public List<IndividualTiles> translatedLateralTiles;
+    //Lista con los tiles a ambos lados del tile según la dirección que se le ha pasado. Es privada porque para comprobarla se llama a la función
+    private List<IndividualTiles> translatedLateralTiles = new List<IndividualTiles>();
+
+    //Lista con los tiles en frente del personage según la dirección en la que mira. Es privada porque para comprobarla se llama a la función
+    private List<IndividualTiles> translatedTilesInFront = new List<IndividualTiles>();
 
     [Header("FEEDBACK")]
 
@@ -468,6 +468,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         }
     }
 
+    #region CALCULATE_TILES_WITH_DIRECTION
 
     //Decide que tile es derecha, izquierda, arriba o abajo en función de la dirección que recibe.
     //Por defecto las listas de tile dan por hecho que el norte es arriba, este derecha y así.
@@ -509,5 +510,56 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
        
         return translatedLateralTiles;
     }
+
+    //Calcular los tiles en frente de un personaje según a dónde esté mirando
+    public List<IndividualTiles> GetTilesInFrontOfTheCharacter(UnitBase.FacingDirection _referenceDirection, int _numberOfTilesInThatDirection)
+    {
+        translatedTilesInFront.Clear();
+
+        if (_referenceDirection == UnitBase.FacingDirection.North)
+        {
+            CheckTilesForFront(tilesInLineUp, _numberOfTilesInThatDirection);
+        }
+
+        if (_referenceDirection == UnitBase.FacingDirection.East)
+        {
+            CheckTilesForFront(tilesInLineRight, _numberOfTilesInThatDirection);
+        }
+
+        if (_referenceDirection == UnitBase.FacingDirection.South)
+        {
+            CheckTilesForFront(tilesInLineDown, _numberOfTilesInThatDirection);
+        }
+
+        if (_referenceDirection == UnitBase.FacingDirection.West)
+        {
+            CheckTilesForFront(tilesInLineLeft, _numberOfTilesInThatDirection);
+        }
+
+        return translatedTilesInFront;
+    }
+
+    //Para no tener que repetir el mismo for con cada dirección lo hago genérico en esta función
+    private void CheckTilesForFront(List<IndividualTiles> tilesInLine, int _numberOfTiles)
+    {
+        if (_numberOfTiles > tilesInLine.Count)
+        {
+            _numberOfTiles = tilesInLine.Count;
+        }
+
+        Debug.Log(_numberOfTiles + "ASDASD");
+
+        for (int i = 0; i < _numberOfTiles; i++)
+        {
+            Debug.Log("BRO");
+            if (tilesInLine[i] != null && !tilesInLine[i].isEmpty && !tilesInLine[i].isObstacle)
+            {
+                translatedTilesInFront.Add(tilesInLine[i]);
+                Debug.Log(tilesInLine[i].name);
+            }
+        }
+    }
+
+    #endregion
 }
 
