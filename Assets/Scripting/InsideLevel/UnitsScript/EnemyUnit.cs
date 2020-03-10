@@ -147,6 +147,11 @@ public class EnemyUnit : UnitBase
 
     public void MyTurnStart()
     {
+        if (GetComponent<DarkLord>() && GetComponent<DarkLord>() != this)
+        {
+            Debug.Log("Desactivar componente enemigo y tener cuidado por si variables en awake no se setyean");
+        }
+
         if (myPortrait !=null)
         {
             myPortrait.HighlightMyself();

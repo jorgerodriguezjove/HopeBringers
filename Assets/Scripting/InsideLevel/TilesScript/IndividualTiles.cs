@@ -74,10 +74,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public List<IndividualTiles> tilesInLineLeft = new List<IndividualTiles>();
 
-    //Estos dos tiles sirven para pasar los tiles adyacentes dependiendo de la dirección recibida (Se usa en la función GetLateralTilesBasedOnDirection)
-    private IndividualTiles translatedRightTile;
-    private IndividualTiles translatedLeftTile;
-    //Lista que recibe la unidad con los tiles traducidos
+
+    //Lista con los tiles a ambos lados del tile según la dirección que se le ha pasado
     [HideInInspector]
     public List<IndividualTiles> translatedLateralTiles;
 
@@ -153,7 +151,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //[SerializeField]
     //private Sprite tileImage;
 
-    #endregion
+    #endregion 
 
     #region INIT
 
@@ -474,37 +472,41 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Decide que tile es derecha, izquierda, arriba o abajo en función de la dirección que recibe.
     //Por defecto las listas de tile dan por hecho que el norte es arriba, este derecha y así.
     //Al pasarle otra dirección como por ejemplo el este, arriba pasaría a ser el este y derecha el norte. Con esto podemos calcular los tiles laterales con una única función.
-    public List<IndividualTiles> GetLateralTilesBasedOnDirection(UnitBase.FacingDirection _referenceDirection)
+    public List<IndividualTiles> GetLateralTilesBasedOnDirection(UnitBase.FacingDirection _referenceDirection, int _numberOfTilesInThatDirection)
     {
         translatedLateralTiles.Clear();
 
-        if (_referenceDirection == UnitBase.FacingDirection.North)
+        if (_referenceDirection == UnitBase.FacingDirection.North || _referenceDirection == UnitBase.FacingDirection.South)
         {
-            translatedRightTile = tilesInLineRight[0];
-            translatedLeftTile = tilesInLineLeft[0];
+            for (int i = 0; i < _numberOfTilesInThatDirection; i++)
+            {
+                if (tilesInLineRight[i] != null)
+                {
+                    translatedLateralTiles.Add(tilesInLineRight[i]);
+                }
+
+                if (tilesInLineLeft[i] != null)
+                {
+                    translatedLateralTiles.Add(tilesInLineLeft[i]);
+                }
+            }
         }
 
-        else if (_referenceDirection == UnitBase.FacingDirection.East)
+        if(_referenceDirection == UnitBase.FacingDirection.East || _referenceDirection == UnitBase.FacingDirection.West)
         {
-            translatedRightTile = tilesInLineDown[0];
-            translatedLeftTile = tilesInLineUp[0];
+            for (int i = 0; i < _numberOfTilesInThatDirection; i++)
+            {
+                if (tilesInLineUp[i] != null)
+                {
+                    translatedLateralTiles.Add(tilesInLineUp[i]);
+                }
+                if (tilesInLineDown[i] != null)
+                {
+                    translatedLateralTiles.Add(tilesInLineDown[i]);
+                }
+            }
         }
-
-        else if (_referenceDirection == UnitBase.FacingDirection.South)
-        {
-            translatedRightTile = tilesInLineLeft[0];
-            translatedLeftTile = tilesInLineRight[0];
-        }
-
-        else if (_referenceDirection == UnitBase.FacingDirection.West)
-        {
-            translatedRightTile = tilesInLineUp[0];
-            translatedLeftTile = tilesInLineDown[0];
-        }
-
-        translatedLateralTiles.Add(translatedRightTile);
-        translatedLateralTiles.Add(translatedLeftTile);
-
+       
         return translatedLateralTiles;
     }
 }

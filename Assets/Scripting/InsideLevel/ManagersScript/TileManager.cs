@@ -1169,52 +1169,34 @@ public class TileManager : MonoBehaviour
         return surroundingTiles;
     }
 
-    //ESTA ERA LA FUNCIÓN QUE ROMPIA LA OPTIMIZACIÓN
-    #region DEPRECATED
 
-    //    public List<UnitBase> checkAvailableCharactersForAttack(int range, EnemyUnit currentEnemy)
-    //{
-    //    charactersAvailableForAttack.Clear();
-    //    tempCurrentObjectiveCost = 0;
-    //    tempCurrentPathCost = 0;
+    public List<IndividualTiles> coneTiles = new List<IndividualTiles>();
+    int coneIndex;
 
-    //    //Reuno en una lista todos los tiles a los que puedo acceder
-    //    OptimizedCheckAvailableTilesForMovement(range, currentEnemy);
+    public List<IndividualTiles> GetConeTiles(List<IndividualTiles> middleLine, int _coneDistance, UnitBase.FacingDirection _direction)
+    {
+        coneIndex = 0;
 
-    //    for (int i = 0; i < tilesAvailableForMovement.Count; i++)
-    //    {
-    //        if (tilesAvailableForMovement[i].unitOnTile != null && tilesAvailableForMovement[i].unitOnTile.GetComponent<PlayerUnit>())
-    //        {
-    //            CalculatePathForMovementCost(tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileX, tilesAvailableForMovement[i].unitOnTile.myCurrentTile.tileZ);
+        for (int i = 0; i < _coneDistance; i++)
+        {
+            for (int j = 0; j < middleLine[i].GetLateralTilesBasedOnDirection(_direction, coneIndex).Count; j++)
+            {
+                coneTiles.Add(middleLine[i].GetLateralTilesBasedOnDirection(_direction, coneIndex)[j]);
+            }
+            coneTiles.Add(middleLine[i]);
 
-    //            //Guardar el tempcurrentPathcost en otra variable y usarlo para comparar
-    //            if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
-    //            {
-    //                //Si se da el caso que temCurrentPathCost es 0 significa que no ha encontrado un camino hasta el enemigo (creo)
-    //                if (tempCurrentPathCost != 0)
-    //                {
-    //                    if (tempCurrentObjectiveCost > tempCurrentPathCost)
-    //                    {
-    //                        //Limpio la lista de objetivos y añado
-    //                        charactersAvailableForAttack.Clear();
-    //                    }
-
-    //                    //Me guardo la distancia para checkear
-    //                    tempCurrentObjectiveCost = tempCurrentPathCost;
-
-    //                    charactersAvailableForAttack.Add(tilesAvailableForMovement[i].unitOnTile);
-    //                }
-    //            }
-    //            //Resetear tempcurrentPathCost a 0
-    //            tempCurrentPathCost = 0;
-    //        }
-    //    }
-    //    //Reset
+            coneIndex += 1;
+        }
 
 
-    //    return charactersAvailableForAttack;
-    //}
-    #endregion
+        for (int i = 0; i < coneTiles.Count; i++)
+        {
+            coneTiles[i].ColorAttack();
+        }
+
+        return coneTiles;
+
+    }
 
     void OnDrawGizmos()
     {
