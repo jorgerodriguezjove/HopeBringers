@@ -1188,14 +1188,7 @@ public class TileManager : MonoBehaviour
             coneIndex += 1;
         }
 
-
-        for (int i = 0; i < coneTiles.Count; i++)
-        {
-            coneTiles[i].ColorAttack();
-        }
-
         return coneTiles;
-
     }
 
     void OnDrawGizmos()

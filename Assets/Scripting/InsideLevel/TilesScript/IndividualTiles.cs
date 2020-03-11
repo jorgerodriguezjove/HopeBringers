@@ -470,6 +470,9 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     #region CALCULATE_TILES_WITH_DIRECTION
 
+    int maxTilesRightUpSide;
+    int maxTilesLeftDownSide;
+
     //Decide que tile es derecha, izquierda, arriba o abajo en función de la dirección que recibe.
     //Por defecto las listas de tile dan por hecho que el norte es arriba, este derecha y así.
     //Al pasarle otra dirección como por ejemplo el este, arriba pasaría a ser el este y derecha el norte. Con esto podemos calcular los tiles laterales con una única función.
@@ -479,14 +482,40 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
         if (_referenceDirection == UnitBase.FacingDirection.North || _referenceDirection == UnitBase.FacingDirection.South)
         {
-            for (int i = 0; i < _numberOfTilesInThatDirection; i++)
+            //Compruebo que el número recibido no es más grande que los tiles que hay en la derecha
+            if (_numberOfTilesInThatDirection > tilesInLineRight.Count)
             {
-                if (tilesInLineRight[i] != null)
+                maxTilesRightUpSide = tilesInLineRight.Count;
+            }
+
+            else
+            {
+                maxTilesRightUpSide = _numberOfTilesInThatDirection;
+            }
+
+            for (int i = 0; i < maxTilesRightUpSide; i++)
+            {
+                if (tilesInLineRight[i] != null && !tilesInLineRight[i].isEmpty && !tilesInLineRight[i].isObstacle)
                 {
                     translatedLateralTiles.Add(tilesInLineRight[i]);
                 }
+            }
 
-                if (tilesInLineLeft[i] != null)
+
+            //Hago lo mismo para la izquierda
+            if (_numberOfTilesInThatDirection > tilesInLineLeft.Count)
+            {
+                maxTilesLeftDownSide = tilesInLineLeft.Count;
+            }
+
+            else
+            {
+                maxTilesLeftDownSide = _numberOfTilesInThatDirection;
+            }
+
+            for (int i = 0; i < maxTilesLeftDownSide; i++)
+            {
+                if (tilesInLineLeft[i] != null && !tilesInLineLeft[i].isEmpty && !tilesInLineLeft[i].isObstacle)
                 {
                     translatedLateralTiles.Add(tilesInLineLeft[i]);
                 }
@@ -495,13 +524,39 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
         if(_referenceDirection == UnitBase.FacingDirection.East || _referenceDirection == UnitBase.FacingDirection.West)
         {
-            for (int i = 0; i < _numberOfTilesInThatDirection; i++)
+            //Compruebo que el número recibido no es más grande que los tiles que hay arriba
+            if (_numberOfTilesInThatDirection > tilesInLineUp.Count)
             {
-                if (tilesInLineUp[i] != null)
+                maxTilesRightUpSide = tilesInLineUp.Count;
+            }
+
+            else
+            {
+                maxTilesRightUpSide = _numberOfTilesInThatDirection;
+            }
+
+            for (int i = 0; i < maxTilesRightUpSide; i++)
+            {
+                if (tilesInLineUp[i] != null && !tilesInLineUp[i].isEmpty && !tilesInLineUp[i].isObstacle)
                 {
                     translatedLateralTiles.Add(tilesInLineUp[i]);
                 }
-                if (tilesInLineDown[i] != null)
+            }
+
+            //Hago lo mismo para la abajo
+            if (_numberOfTilesInThatDirection > tilesInLineDown.Count)
+            {
+                maxTilesLeftDownSide = tilesInLineDown.Count;
+            }
+
+            else
+            {
+                maxTilesLeftDownSide = _numberOfTilesInThatDirection;
+            }
+
+            for (int i = 0; i < maxTilesLeftDownSide; i++)
+            {
+                if (tilesInLineDown[i] != null && !tilesInLineDown[i].isEmpty && !tilesInLineDown[i].isObstacle)
                 {
                     translatedLateralTiles.Add(tilesInLineDown[i]);
                 }
@@ -536,6 +591,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             CheckTilesForFront(tilesInLineLeft, _numberOfTilesInThatDirection);
         }
 
+        Debug.Log("translatedTilesInFront.Count = " + translatedTilesInFront.Count);
         return translatedTilesInFront;
     }
 
@@ -547,15 +603,11 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             _numberOfTiles = tilesInLine.Count;
         }
 
-        Debug.Log(_numberOfTiles + "ASDASD");
-
         for (int i = 0; i < _numberOfTiles; i++)
         {
-            Debug.Log("BRO");
             if (tilesInLine[i] != null && !tilesInLine[i].isEmpty && !tilesInLine[i].isObstacle)
             {
                 translatedTilesInFront.Add(tilesInLine[i]);
-                Debug.Log(tilesInLine[i].name);
             }
         }
     }
