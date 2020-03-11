@@ -591,7 +591,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             CheckTilesForFront(tilesInLineLeft, _numberOfTilesInThatDirection);
         }
 
-        Debug.Log("translatedTilesInFront.Count = " + translatedTilesInFront.Count);
         return translatedTilesInFront;
     }
 
