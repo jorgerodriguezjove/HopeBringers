@@ -547,7 +547,11 @@ public class PlayerUnit : UnitBase
         Knight knightDef = FindObjectOfType<Knight>();
         CheckIfKnightIsDefending(knightDef, unitAttacker);
         
-        damageReceived -=  knightDef.shieldDef;
+        if (knightDef != null)
+        {
+            damageReceived -= knightDef.shieldDef;
+        }
+        
 
         if (damageReceived < 0)
         {

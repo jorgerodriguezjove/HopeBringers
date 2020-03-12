@@ -81,7 +81,8 @@ public class LevelManager : MonoBehaviour
     public List<EnemyUnit> enemiesOnTheBoard;
 
     //Contador que controla a que unidad le toca. Sirve cómo indice para la lista de enemigos.
-    [HideInInspector]
+    //QUITAR EL SERIALIZED
+    [SerializeField]
     public int counterForEnemiesOrder;
 
     //Enum que indica si es la fase del jugador o del enemigo.

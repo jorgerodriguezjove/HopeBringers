@@ -18,7 +18,7 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     private float timeWaitingBeforeMovement;
     [SerializeField]
-    private float timeWaitingBeforeAttacking;
+    protected float timeWaitingBeforeAttacking;
     [SerializeField]
     private float timeWaitingBeforeEnding;
 
@@ -118,7 +118,7 @@ public class EnemyUnit : UnitBase
 
     #region INIT
 
-    private void Awake()
+    protected virtual void Awake()
     {
         //Le digo al enemigo cual es el LevelManager del nivel actual
         LevelManagerRef = FindObjectOfType<LevelManager>().gameObject;
@@ -126,6 +126,7 @@ public class EnemyUnit : UnitBase
         //Referencia al LM y me incluyo en la lista de enemiogos
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
+
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         //Inicializo componente animator
@@ -134,7 +135,7 @@ public class EnemyUnit : UnitBase
         myCurrentEnemyState = enemyState.Waiting;
         currentHealth = maxHealth;
 
-        movementParticle.SetActive(false);
+        initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         currentTimeForMovement = timeMovementAnimation;
         currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
@@ -147,11 +148,6 @@ public class EnemyUnit : UnitBase
 
     public void MyTurnStart()
     {
-        if (GetComponent<DarkLord>() && GetComponent<DarkLord>() != this)
-        {
-            Debug.Log("Desactivar componente enemigo y tener cuidado por si variables en awake no se setyean");
-        }
-
         if (myPortrait !=null)
         {
             myPortrait.HighlightMyself();
@@ -199,10 +195,11 @@ public class EnemyUnit : UnitBase
                 break;
 
             case (enemyState.Attacking):
-
                 //Aqui no hay wait, por que se tiene que esperar antes de hacer la animación de atque, no al entrar en la función attack.
-                Attack();
-
+                if (!corroutineDone)
+                {
+                    StartCoroutine("WaitBeforeNextState");
+                }
                 break;
 
             case (enemyState.Ended):
@@ -243,6 +240,12 @@ public class EnemyUnit : UnitBase
         {
             yield return new WaitForSeconds(timeWaitingBeforeMovement);
             MoveUnit();
+        }
+
+        //No hay yield return porque va en la propia animación de ataque
+        if (myCurrentEnemyState == enemyState.Attacking)
+        {
+            Attack();
         }
 
         else if (myCurrentEnemyState == enemyState.Ended)
@@ -645,6 +648,56 @@ public class EnemyUnit : UnitBase
 
     #endregion
 
+    #region DARK_LORD_POSSESION
+
+    EnemyUnit[] allEnemiesScript;
+
+    public void StartPosesion()
+    {
+        if (GetComponent<DarkLord>() && GetComponent<DarkLord>() != this)
+        {
+           
+        }
+
+        GetComponent<DarkLord>().enabled = true;
+        GetComponent<DarkLord>().amITheOriginalDarkLord = false;
+
+        gameObject.name = "Poseido";
+
+        arrowEnemyIndicator.SetActive(false);
+        myCurrentEnemyState = enemyState.Waiting;
+
+        #region copia FinishActions sin pasar de turno
+        LM.HideEnemyHover(GetComponent<EnemyUnit>());
+        hasMoved = false;
+        hasAttacked = false;
+        myCurrentEnemyState = enemyState.Waiting;
+
+        //Me aseguro de que el tiempo de movimiento vuelve a la normalidad por si le ha dado a acelerar
+        currentTimeForMovement = timeMovementAnimation;
+        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
+
+        if (myPortrait != null)
+        {
+            myPortrait.UnHighlightMyself();
+        }
+
+        #endregion
+
+        LM.NextEnemyInList();
+
+        Debug.Log("d");
+        LM.enemiesOnTheBoard.Remove(this);
+        this.enabled = false;
+        GetComponent<DarkLord>().InitializeAfterPosesion(currentHealth);
+
+        return;
+
+      
+    }
+
+    #endregion
+
     #region DAMAGE
 
     protected override void DoDamage(UnitBase unitToDealDamage)
@@ -778,11 +831,15 @@ public class EnemyUnit : UnitBase
 
     public void ExecuteAnimationAttack()
     {
+        //Debug.Log("Corruitna ataque");
         StartCoroutine("AnimationAttack");
     }
 
     IEnumerator AnimationAttack()
     {
+        //Debug.Log("waiting");
+
+
         yield return new WaitForSeconds(timeWaitingBeforeAttacking);
         myAnimator.SetTrigger("Attack");
         Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);

@@ -127,7 +127,7 @@ public class EnGoblin : EnemyUnit
 
     public override void Attack()
     {
-        Debug.Log("aaaaa");
+        Debug.Log("Llamada a función de ataque");
         //Si es Tier 2 Alerta a los enemigos en el área
         if (myTierLevel == TierLevel.Level2)
         {
@@ -216,6 +216,12 @@ public class EnGoblin : EnemyUnit
         if (!hasMoved && !hasAttacked)
         {
             myCurrentEnemyState = enemyState.Moving;
+        }
+
+        //Si llega hasta aqui significa que ya se ha movido y no puede atacar
+        if (hasMoved && !hasAttacked)
+        {
+            myCurrentEnemyState = enemyState.Ended;
         }
     }
 

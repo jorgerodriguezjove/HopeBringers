@@ -9,11 +9,16 @@ public class DarkLord : EnemyUnit
     [Header("TRASPASO DE ALMA")]
     [SerializeField]
     private int maxCooldownSoulsSkill;
-    private int currentCooldownSoulSkill = 3;
+    private int currentCooldownSoulSkill;
 
     //Bool que indica cuál es el dark lord original (ya que los enemigos controlados usan este script también)
     [SerializeField]
-    private bool amITheOriginalDarkLord;
+    public bool amITheOriginalDarkLord;
+
+    private bool currentlyPossesing;
+
+    [SerializeField]
+    private GameObject obstacleWhilePossesing;
 
     bool coneUsed;
     bool areaUsed;
@@ -37,7 +42,6 @@ public class DarkLord : EnemyUnit
     //El cono es especial porque en tilesToCheck guardo la línea central del cono y en cone tile guardo el cono entero
     List<IndividualTiles> coneTiles = new List<IndividualTiles>();
 
-
     #region COPIA_GOBLIN
 
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
@@ -51,6 +55,47 @@ public class DarkLord : EnemyUnit
     //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
     [HideInInspector]
     private List<UnitBase> unitsInRange = new List<UnitBase>();
+
+    protected override void Awake()
+    {
+        Debug.Log("Awake");
+        //Le digo al enemigo cual es el LevelManager del nivel actual
+        LevelManagerRef = FindObjectOfType<LevelManager>().gameObject;
+
+        //Referencia al LM y me incluyo en la lista de enemiogos
+        LM = LevelManagerRef.GetComponent<LevelManager>();
+
+        if (amITheOriginalDarkLord)
+        {
+            LM.enemiesOnTheBoard.Add(this);
+            currentHealth = maxHealth;
+        }
+
+        initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
+
+        //Inicializo componente animator
+        myAnimator = GetComponent<Animator>();
+
+        myCurrentEnemyState = enemyState.Waiting;
+        
+        initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
+
+        currentTimeForMovement = timeMovementAnimation;
+        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
+    }
+
+    public void InitializeAfterPosesion(int _currentEnemyHealth)
+    {
+        currentHealth = _currentEnemyHealth;
+        LM.enemiesOnTheBoard.Insert(1, this);
+        FindAndSetFirstTile();
+        //myCurrentEnemyState = enemyState.Searching;
+    }
+
+    private void Start()
+    {
+        currentCooldownSoulSkill = maxCooldownSoulsSkill;
+    }
 
     public override void SearchingObjectivesToAttack()
     {
@@ -79,12 +124,22 @@ public class DarkLord : EnemyUnit
                 attackCountThisTurn++;
             }
 
+            if (currentlyPossesing)
+            {
+                //Resto al contador para explotar al enemigo
+                Debug.Log("Aqui tengo que restar para explotar al enemigo");
+                myCurrentEnemyState = enemyState.Ended;
+                return;
+            }
+
             ///Comprueba si puede hacer el traspaso de alma
-            if (currentCooldownSoulSkill <= 0)
+            if (amITheOriginalDarkLord && currentCooldownSoulSkill <= 0)
             {
                 ///Haz traspaso de alma
                 Debug.Log("0.5 Traspaso de alma");
+                DoSoulAttack();
                 myCurrentEnemyState = enemyState.Ended;
+                return;
             }
 
             //Como no puedo hacer traspaso, compruebo que ataques puedo hacer
@@ -383,6 +438,62 @@ public class DarkLord : EnemyUnit
     }
 
     #endregion
+
+    EnemyUnit chosenEnemy;
+    DarkLord newEnemyDarkLordRef;
+
+    private void DoSoulAttack()
+    {
+        //Elegir enemigo
+        chosenEnemy = LM.enemiesOnTheBoard[1];
+
+        //Desactivar personaje
+        unitModel.SetActive(false);
+        GetComponent<Collider>().enabled = false;
+        currentlyPossesing = true;
+
+        //Aparece bloque en su lugar
+        obstacleWhilePossesing.SetActive(true);
+
+        //Nuevo enemigo cambia comportamiento y da feedback de que está poseido
+        chosenEnemy.StartPosesion();
+    }
+
+    private void EndPosesion()
+    {
+        Debug.Log("EndPosesion");
+
+        //Curar o Hacer daño al personaje 
+
+        //Desactivar personaje
+        unitModel.SetActive(true);
+        GetComponent<Collider>().enabled = true;
+        currentlyPossesing = false;
+
+        //Aparece bloque en su lugar
+        obstacleWhilePossesing.SetActive(false);
+    }
+
+    private void DoAreaAttack()
+    {
+
+    }
+
+    private void DoNormalAttack()
+    {
+
+    }
+
+    private void DoConeAttack()
+    {
+
+    }
+
+    private void DoStunAttack()
+    {
+
+    }
+
 
 
     public override void Attack()

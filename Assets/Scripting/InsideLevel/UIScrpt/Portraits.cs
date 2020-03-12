@@ -8,6 +8,7 @@ public class Portraits : MonoBehaviour
 {
 	#region VARIABLES
 
+    //QUITAR SERIALIZED
 	[HideInInspector]
 	public PlayerUnit assignedPlayer;
 	[HideInInspector]
@@ -213,12 +214,14 @@ public class Portraits : MonoBehaviour
     //Función que se encarga de actualizar la vida del personaje.
     public void RefreshHealth()
     {
+        //Debug.Log(lifeTokensList.Count);
+        //Debug.Log(assignedPlayer + "mi vida: " + assignedPlayer.currentHealth.ToString());
+
         //Recorro la lista de tokens empezando por el final. 
         //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
         //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
         for (int i = lifeTokensList.Count - 1; i+1 > assignedPlayer.currentHealth ; i--)
         {
-
             if (lifeTokensList[i].GetComponent<LifeToken>())
             {
                 if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
