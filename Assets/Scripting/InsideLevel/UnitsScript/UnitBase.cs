@@ -208,8 +208,6 @@ public class UnitBase : MonoBehaviour
     private GameObject canvasUnit;
 
 
-
-
     [Header("INFO")]
 
     [SerializeField]
@@ -425,7 +423,7 @@ public class UnitBase : MonoBehaviour
 
     #region PUSH
     //Función genérica que sirve para calcular a que tile debe ser empujada una unidad
-    //La función pide tatno el daño pro caída como el daño de empujón de la unidad atacante ya que pueden existir mejoras que modifiquen estos valores.
+    //La función pide tanto el daño por caída como el daño de empujón de la unidad atacante ya que pueden existir mejoras que modifiquen estos valores.
     public void CalculatePushPosition(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
     {
         Debug.Log("Empuje");
@@ -552,6 +550,7 @@ public class UnitBase : MonoBehaviour
                 //Desplazo a la unidad
                 MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
                 Debug.Log(tilesToCheckForCollision[0]);
+                Debug.Break();
             }
         }
        

@@ -29,6 +29,8 @@ public class DarkLord : EnemyUnit
     [Header("ÁREA")]
     bool areaCharged;
 
+    List<IndividualTiles> tilesInArea = new List<IndividualTiles>();
+
     [Header("CONO")]
     [SerializeField]
     int coneRange = 5;
@@ -107,7 +109,7 @@ public class DarkLord : EnemyUnit
         currentUnitsAvailableToAttack.Clear();
 
         //CAMBIAR ESTE HASATTACKED
-        if (isDead || hasAttacked)
+        if (isDead || attackCountThisTurn >=2)
         {
             myCurrentEnemyState = enemyState.Ended;
             return;
@@ -118,8 +120,9 @@ public class DarkLord : EnemyUnit
             if (areaCharged)
             {
                 //Explotar área
-
                 Debug.Log("0.Area Explota");
+                DoAreaAttack();
+
                 areaCharged = false;
                 attackCountThisTurn++;
             }
@@ -133,7 +136,7 @@ public class DarkLord : EnemyUnit
             }
 
             ///Comprueba si puede hacer el traspaso de alma
-            if (amITheOriginalDarkLord && currentCooldownSoulSkill <= 0)
+            if (amITheOriginalDarkLord && currentCooldownSoulSkill <= 0 && LM.enemiesOnTheBoard.Count > 1 && !LM.enemiesOnTheBoard[1].isDead)
             {
                 ///Haz traspaso de alma
                 Debug.Log("0.5 Traspaso de alma");
@@ -147,8 +150,8 @@ public class DarkLord : EnemyUnit
             {
                 if (CheckCono())
                 {
-                    //Do área
                     Debug.Log("1.Cono");
+                    DoConeAttack();
 
                     attackCountThisTurn++;
 
@@ -163,6 +166,8 @@ public class DarkLord : EnemyUnit
                     else if (CheckArea())
                     {
                         Debug.Log("2. Área");
+                        DoAreaAttack();
+
                         attackCountThisTurn++;
                         myCurrentEnemyState = enemyState.Ended;
                         return;
@@ -176,10 +181,12 @@ public class DarkLord : EnemyUnit
                     attackCountThisTurn++;
 
                     Debug.Log("3. Físico");
+                    DoNormalAttack();
 
                     if (attackCountThisTurn >= 2)
                     {
                         Debug.Log("Físico era el 2º ataque");
+
                         myCurrentEnemyState = enemyState.Ended;
                         return;
                     }
@@ -188,6 +195,8 @@ public class DarkLord : EnemyUnit
                     {
                         //Do Area
                         Debug.Log("4. Area post Fisico");
+                        DoAreaAttack();
+
                         attackCountThisTurn++;
                         myCurrentEnemyState = enemyState.Ended;
                         return;
@@ -197,6 +206,8 @@ public class DarkLord : EnemyUnit
                     {
                         //Do Stun
                         Debug.Log("5. Stun");
+                        DoStunAttack();
+
                         attackCountThisTurn++;
                         myCurrentEnemyState = enemyState.Ended;
                         return;
@@ -208,6 +219,8 @@ public class DarkLord : EnemyUnit
                     if (CheckArea())
                     {
                         Debug.Log("5. Área");
+                        DoAreaAttack();
+
                         myCurrentEnemyState = enemyState.Ended;
                         return;
                     }
@@ -367,6 +380,8 @@ public class DarkLord : EnemyUnit
                     tilesToCheck[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
                     currentUnitsAvailableToAttack.Add(tilesToCheck[i].unitOnTile);
+                    Debug.Log("El primer enemigo a mi alcance es"+ currentUnitsAvailableToAttack[0]);
+                    break;
                 }
             }
 
@@ -396,11 +411,6 @@ public class DarkLord : EnemyUnit
 
         else
         {
-            ///Comprueba si tiene 2 objetivos a rango de cono para hacer cono
-            tilesToCheck.Clear();
-            coneTiles.Clear();
-            currentUnitsAvailableToAttack.Clear();
-
             //Guardo los tiles de la línea central del cono
             tilesToCheck = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, coneRange);
 
@@ -457,6 +467,7 @@ public class DarkLord : EnemyUnit
 
         //Nuevo enemigo cambia comportamiento y da feedback de que está poseido
         chosenEnemy.StartPosesion();
+
     }
 
     private void EndPosesion()
@@ -476,22 +487,102 @@ public class DarkLord : EnemyUnit
 
     private void DoAreaAttack()
     {
+        //Ataque
+        if (areaCharged)
+        {
+            //Tiles
+            for (int i = 0; i < tilesInArea.Count; i++)
+            {
+                //AQUI FEEDBACK ATAQUE (PARTÍCULAS)
 
+
+                //Quitar feedback tiles
+                tilesInArea[i].ColorDesAttack();
+
+                //Daño
+                if (tilesInArea[i].unitOnTile != null)
+                {
+                    DoDamage(tilesInArea[i].unitOnTile);
+                }
+            }
+
+            tilesInArea.Clear();
+            areaCharged = false;
+        }
+
+        //Carga
+        else
+        {
+            for (int i = 0; i < tilesToCheck.Count; i++)
+            {
+
+                //Feedback tiles cargados
+                tilesToCheck[i].ColorAttack();
+                tilesInArea.Add(tilesToCheck[i]);
+            }
+
+            areaCharged = true;
+        }
     }
 
     private void DoNormalAttack()
     {
-
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            DoDamage(currentUnitsAvailableToAttack[i]);
+        }
     }
 
     private void DoConeAttack()
     {
+        for (int i = 0; i < coneTiles.Count; i++)
+        {
+            if (coneTiles[i].unitOnTile != null)
+            {
+                //El daño tiene que ir antes de moverles
+                DoDamage(coneTiles[i].unitOnTile);
+
+                #region CheckPullDirection
+
+                //Por algún motivo, poniendolo a 1 atrae a los personajes 2 tiles asi que lo dejo a 0 que atrae unicamente 1 tile.
+
+                if (currentFacingDirection == FacingDirection.North)
+                {
+                    coneTiles[i].unitOnTile.CalculatePushPosition(0,coneTiles[i].tilesInLineDown,damageMadeByPush,damageMadeByFall);
+                }
+
+                if (currentFacingDirection == FacingDirection.South)
+                {
+                    coneTiles[i].unitOnTile.CalculatePushPosition(0, coneTiles[i].tilesInLineUp, damageMadeByPush, damageMadeByFall);
+                }
+
+                if (currentFacingDirection == FacingDirection.East)
+                {
+                    coneTiles[i].unitOnTile.CalculatePushPosition(0, coneTiles[i].tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+                }
+
+                if (currentFacingDirection == FacingDirection.West)
+                {
+                    coneTiles[i].unitOnTile.CalculatePushPosition(0, coneTiles[i].tilesInLineRight, damageMadeByPush, damageMadeByFall);
+                }
+
+                #endregion
+            }
+        }
 
     }
 
     private void DoStunAttack()
     {
+        //for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        //{
+        //    stun currentUnitsAvailableToAttack[i]
+        //}
+    }
 
+    IEnumerator WaitBetweenAttacks()
+    {
+        yield return new WaitForSeconds(2f);
     }
 
 
