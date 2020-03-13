@@ -5,6 +5,18 @@ using DG.Tweening;
 
 public class BossMultTile : EnemyUnit
 {
+    [Header("ATTACKS")]
+    private bool isPhase2;
+
+    private int attackCountThisTurn;
+
+    private bool isBeamOrMeteoriteCharged;
+
+
+    bool sweepOrStompUsed;
+    bool coneUsed;
+
+
     [SerializeField]
     List<IndividualTiles> exteriorTiles = new List<IndividualTiles>();
 
@@ -71,74 +83,336 @@ public class BossMultTile : EnemyUnit
 
         else
         {
-            //Determinamos el enemigo más cercano.
-            currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
-
-            //Si no hay enemigos termina su turno
-            if (currentUnitsAvailableToAttack.Count == 0)
+            if (isBeamOrMeteoriteCharged)
             {
-                myCurrentEnemyState = enemyState.Ended;
+                //Usar Beam o Meteoritos
+                Debug.Log("Global");
+
+                //Meteoritos o Beam según fase
+                //El check no se usa ya que se llama al final para comprobar si tiene que cargar el ataque
+                if (isPhase2)
+                {
+                    DoMeteorites();
+                }
+
+                else
+                {
+                    DoBeam();
+                }
+
+                //Importante no poner isBeamOrMeteoriteCharged = false; porque eso se llama al final para determinar si tiene que hacer la carga o no si ya ha disparado.
+
+                attackCountThisTurn++;
             }
 
-            else if (currentUnitsAvailableToAttack.Count > 0)
+            else
             {
-                if (currentUnitsAvailableToAttack.Count == 1)
+                if (CheckSweepOrStomp())
                 {
-                    myCurrentObjective = currentUnitsAvailableToAttack[0];
-                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    if (isPhase2)
+                    {
+                        DoStomp();
+                    }
+
+                    else
+                    {
+                        DoSweep();
+                    }
                 }
 
-                //Si hay varios enemigos a la misma distancia
-                else if (currentUnitsAvailableToAttack.Count > 1)
+                if (CheckFireCone())
                 {
-                    //Si sigue habiendo varios enemigos los ordeno segun la vida
-                    if (currentUnitsAvailableToAttack.Count > 1)
+                    DoConoFuego();
+                }
+
+                if (!hasMoved)
+                {
+                    //Move
+                }
+
+                else
+                {
+                    if (CheckBeamOrMeteorites())
                     {
-                        //Ordeno la lista de posibles objetivos de menor a mayor vida actual
-                        currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                        if (isPhase2)
                         {
-                            return (a.currentHealth).CompareTo(b.currentHealth);
+                            DoMeteorites();
+                        }
 
-                        });
+                        else
+                        {
+                            DoBeam();
+                        }
                     }
-
-                    myCurrentObjective = currentUnitsAvailableToAttack[0];
-                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                 }
+            }
+        }
 
-                //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ,false, false);
+        //else
+        //{
+        //    //Determinamos el enemigo más cercano.
+        //    currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
 
-                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
-                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-                //ES -1 PORQUE EN EL CASO DEL DRAGÓN HAY QUE RESTAR UN TILE YA QUE ESTÁ OCUPADO POR EL PROPIO DRAGÓN!!!!!!!!!!!!!!!!!!!!!!!!
-                for (int i = 0; i < LM.TM.currentPath.Count - offsetPathBecauseDragon; i++)
+        //    //Si no hay enemigos termina su turno
+        //    if (currentUnitsAvailableToAttack.Count == 0)
+        //    {
+        //        myCurrentEnemyState = enemyState.Ended;
+        //    }
+
+        //    else if (currentUnitsAvailableToAttack.Count > 0)
+        //    {
+        //        if (currentUnitsAvailableToAttack.Count == 1)
+        //        {
+        //            myCurrentObjective = currentUnitsAvailableToAttack[0];
+        //            myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+        //        }
+
+        //        //Si hay varios enemigos a la misma distancia
+        //        else if (currentUnitsAvailableToAttack.Count > 1)
+        //        {
+        //            //Si sigue habiendo varios enemigos los ordeno segun la vida
+        //            if (currentUnitsAvailableToAttack.Count > 1)
+        //            {
+        //                //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+        //                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+        //                {
+        //                    return (a.currentHealth).CompareTo(b.currentHealth);
+
+        //                });
+        //            }
+
+        //            myCurrentObjective = currentUnitsAvailableToAttack[0];
+        //            myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+        //        }
+
+        //        //CAMBIAR ESTO (lm.tm)
+        //        LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ,false, false);
+
+        //        //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+        //        //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+        //        //ES -1 PORQUE EN EL CASO DEL DRAGÓN HAY QUE RESTAR UN TILE YA QUE ESTÁ OCUPADO POR EL PROPIO DRAGÓN!!!!!!!!!!!!!!!!!!!!!!!!
+        //        for (int i = 0; i < LM.TM.currentPath.Count - offsetPathBecauseDragon; i++)
+        //        {
+        //            pathToObjective.Add(LM.TM.currentPath[i]);
+        //        }
+
+        //        lastTileInPathSurroundingTiles.Clear();
+
+        //        //Despúes de haber restado uno al path compruebo que en este último tile sigue sin estar el jugador.
+        //        //En caso contrario resto otro tile al path
+        //        for (int i = 0; i < LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false).Count; i++)
+        //        {
+        //            lastTileInPathSurroundingTiles.Add(LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false)[i]);
+        //        }
+
+        //        for (int i = 0; i < lastTileInPathSurroundingTiles.Count; i++)
+        //        {
+        //            if (lastTileInPathSurroundingTiles[i].unitOnTile != null && lastTileInPathSurroundingTiles[i].unitOnTile.GetComponent<PlayerUnit>())
+        //            {
+        //                pathToObjective.RemoveAt(pathToObjective.Count - 2);
+        //                break;
+        //            }
+        //        }
+
+        //        myCurrentEnemyState = enemyState.Attacking;
+        //    }
+        //}
+    }
+
+    #region CHECK_ATTACKS
+    //Cada check sirve para la versión normal y la mejorada. Además guardan los tiles para usar en las funciones de hacer ataque
+
+    List<IndividualTiles> threeTilesInFront = new List<IndividualTiles>();
+
+    private bool CheckSweepOrStomp()
+    {
+        currentUnitsAvailableToAttack.Clear();
+
+        if (!sweepOrStompUsed)
+        {
+            //Calculo pisotón
+            if (isPhase2)
+            {
+                for (int i = 0; i < exteriorTiles.Count; i++)
                 {
-                    pathToObjective.Add(LM.TM.currentPath[i]);
-                }
-
-                lastTileInPathSurroundingTiles.Clear();
-
-                //Despúes de haber restado uno al path compruebo que en este último tile sigue sin estar el jugador.
-                //En caso contrario resto otro tile al path
-                for (int i = 0; i < LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false).Count; i++)
-                {
-                    lastTileInPathSurroundingTiles.Add(LM.TM.GetSurroundingTiles(pathToObjective[pathToObjective.Count - 2], 1, true, false)[i]);
-                }
-
-                for (int i = 0; i < lastTileInPathSurroundingTiles.Count; i++)
-                {
-                    if (lastTileInPathSurroundingTiles[i].unitOnTile != null && lastTileInPathSurroundingTiles[i].unitOnTile.GetComponent<PlayerUnit>())
+                    if (exteriorTiles[i].unitOnTile != null)
                     {
-                        pathToObjective.RemoveAt(pathToObjective.Count - 2);
-                        break;
+                        currentUnitsAvailableToAttack.Add(exteriorTiles[i].unitOnTile);
                     }
                 }
 
-                myCurrentEnemyState = enemyState.Attacking;
+                if (currentUnitsAvailableToAttack.Count >0)
+                {
+                    return true;
+                }
+
+                else
+                {
+                    return false;
+                }
+            }
+
+            //Calculo Barrido
+            else
+            {
+                threeTilesInFront = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, 2)[1].GetLateralTilesBasedOnDirection(currentFacingDirection, 1);
+
+                for (int i = 0; i < threeTilesInFront.Count; i++)
+                {
+                    if (threeTilesInFront[i].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack.Add(threeTilesInFront[i].unitOnTile);
+                    }
+                }
+
+                if (currentUnitsAvailableToAttack.Count > 0)
+                {
+                    return true;
+                }
+
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        //No puedo hacer ninguno de los dos ataques
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool CheckFireCone()
+    {
+        if (!coneUsed)
+        {
+            //Calcular tiles cono
+
+            if (isPhase2)
+            {
+                //Do extra
+            }
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }      
+    }
+
+    List<IndividualTiles> surroundingPlayerTiles = new List<IndividualTiles>();
+    List<IndividualTiles> middleLineTilesInFront = new List<IndividualTiles>();
+    List<IndividualTiles> lateralMidLineTiles = new List<IndividualTiles>();
+    List<IndividualTiles> beamOrMeteoriteTiles = new List<IndividualTiles>();
+
+    private bool CheckBeamOrMeteorites()
+    {
+        surroundingPlayerTiles.Clear();
+        middleLineTilesInFront.Clear();
+        lateralMidLineTiles.Clear();
+        beamOrMeteoriteTiles.Clear();
+
+        //Ataque en si
+        if (isBeamOrMeteoriteCharged)
+        {
+            //Partículas en tiles
+
+            for (int i = 0; i < beamOrMeteoriteTiles.Count; i++)
+            {
+                if (beamOrMeteoriteTiles[i].unitOnTile != null)
+                {
+                    DoDamage(beamOrMeteoriteTiles[i].unitOnTile);
+                }
+            }
+
+            isBeamOrMeteoriteCharged = false;
+            return false;
+        }
+
+        //Carga Meteorito
+        else
+        {
+            //Partículas en tiles
+          
+            if (isPhase2)
+            {
+                for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+                {
+                    surroundingPlayerTiles = LM.TM.GetSurroundingTiles(LM.charactersOnTheBoard[i].myCurrentTile,1,true,false);
+
+                    for (int j = 0; j < surroundingPlayerTiles.Count; j++)
+                    {
+                        surroundingPlayerTiles[j].ColorAttack();
+                        beamOrMeteoriteTiles.Add(surroundingPlayerTiles[i]);
+                    }
+                }
+                return true;
+            }
+
+            //Beam
+            else
+            {
+                middleLineTilesInFront = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection,50);
+
+                for (int i = 0; i < middleLineTilesInFront.Count; i++)
+                {
+                    beamOrMeteoriteTiles.Add(middleLineTilesInFront[i]);
+                    lateralMidLineTiles.Clear();
+
+                    lateralMidLineTiles = middleLineTilesInFront[i].GetLateralTilesBasedOnDirection(currentFacingDirection, 1);
+
+                    for (int j = 0; j < lateralMidLineTiles.Count; j++)
+                    {
+                        beamOrMeteoriteTiles.Add(lateralMidLineTiles[j]);
+                    }
+                }
+
+
+                return true;
             }
         }
     }
+
+    #endregion
+
+    #region DO_ATTACKS
+    //Al contrario de los checks hay un do por cada ataque (a excepción del cono de fuego que usa la misma)
+
+
+    private void DoSweep()
+    {
+
+    }
+
+    private void DoStomp()
+    {
+
+    }
+
+    private void DoConoFuego()
+    {
+
+    }
+
+    private void DoBeam()
+    {
+
+    }
+
+    private void DoMeteorites()
+    {
+
+    }
+
+    #endregion
+
+
+
+
+
 
     public override void Attack()
     {
@@ -532,6 +806,17 @@ public class BossMultTile : EnemyUnit
 
         keepSearching = false;
     }
+
+    public override void FinishMyActions()
+    {
+        base.FinishMyActions();
+
+        attackCountThisTurn = 0;
+
+        sweepOrStompUsed = false;
+        coneUsed = false;
+    }
+
 
     #endregion
 

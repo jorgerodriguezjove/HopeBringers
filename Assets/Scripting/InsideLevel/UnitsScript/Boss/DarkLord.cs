@@ -449,6 +449,8 @@ public class DarkLord : EnemyUnit
 
     #endregion
 
+    #region ATTACKS
+
     EnemyUnit chosenEnemy;
     DarkLord newEnemyDarkLordRef;
 
@@ -578,14 +580,18 @@ public class DarkLord : EnemyUnit
         //{
         //    stun currentUnitsAvailableToAttack[i]
         //}
+
+        Debug.Log("AQUI FALTA FUNCIÓN DE STUN");
     }
 
+    #endregion
+
+    //SIN USAR DE MOMENTO
     IEnumerator WaitBetweenAttacks()
     {
+        
         yield return new WaitForSeconds(2f);
     }
-
-
 
     public override void Attack()
     {
@@ -979,6 +985,9 @@ public class DarkLord : EnemyUnit
         base.FinishMyActions();
 
         attackCountThisTurn = 0;
+        coneUsed = false;
+        areaUsed = false; 
+        attackUsed = false; 
     }
 
 }
