@@ -29,6 +29,7 @@ public class Mage : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
+    [Header("Activas")]
     //ACTIVAS
 
     public bool areaAttack;
@@ -51,6 +52,7 @@ public class Mage : PlayerUnit
     //Este int lo añado para que el ataque del mago vuelva a su estado del principio antes de volver a atacar
     public int fBaseDamage=1;
 
+    [Header("Pasivas")]
     //PASIVAS
     public bool isDecoyBomb;
     //Esta mejora está en los decoys
@@ -76,7 +78,24 @@ public class Mage : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
-            currentHealth += 1;
+
+            currentHealth += FindObjectOfType<Monk>().healerBonus;
+
+            if (FindObjectOfType<Monk>().debuffMark2)
+            {
+                if (!unitToAttack.isStunned)
+                {
+                    unitToAttack.isStunned = true; 
+                    unitToAttack.turnStunned = 1; 
+                }
+                
+            }
+            else if (FindObjectOfType<Monk>().healerMark2)
+            {
+                BuffbonusStateDamage = 1;
+
+            }
+
             UIM.RefreshTokens();
 
         }
@@ -201,11 +220,23 @@ public class Mage : PlayerUnit
     //Override especial del mago para que no instancie la partícula de ataque
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-        if (!backDamageOff)
+       
+
+            if (!backDamageOff)
         {
             CalculateDamage(unitToDealDamage);
         }
-       
+
+            //Añado este if para el count de honor del samurai
+        if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+       || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+       || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+       || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
+       )
+        {           
+                LM.honorCount++;            
+        }
+
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
     }

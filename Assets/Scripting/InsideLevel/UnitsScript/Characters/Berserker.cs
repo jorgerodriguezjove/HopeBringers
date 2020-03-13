@@ -23,6 +23,7 @@ public class Berserker : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
+    [Header("Activas")]
     //ACTIVAS
     public bool circularAttack;
     //Esta variable tiene que cambiar en la mejora 2 de este ataque
@@ -33,7 +34,7 @@ public class Berserker : PlayerUnit
     public int bonusDamageAreaAttack;
 
 
-
+    [Header("Pasivas")]
     //PASIVAS
 
     [SerializeField]
@@ -63,7 +64,22 @@ public class Berserker : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
-            currentHealth += 1;
+            currentHealth += FindObjectOfType<Monk>().healerBonus;
+
+            if (FindObjectOfType<Monk>().debuffMark2)
+            {
+                if (!unitToAttack.isStunned)
+                {
+                    unitToAttack.isStunned = true;
+                    unitToAttack.turnStunned = 1;
+                }
+
+            }
+            else if (FindObjectOfType<Monk>().healerMark2)
+            {
+                BuffbonusStateDamage = 1;
+
+            }
             UIM.RefreshTokens();
 
         }
@@ -219,6 +235,15 @@ public class Berserker : PlayerUnit
             unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
         }
 
+        //Añado este if para el count de honor del samurai
+        if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+       || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+       || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+       || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
+       )
+        {
+            LM.honorCount++;
+        }
         //Si ataco por la espalda instancio la partícula de ataque crítico
         if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
         {

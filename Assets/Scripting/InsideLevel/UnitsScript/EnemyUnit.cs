@@ -169,6 +169,12 @@ public class EnemyUnit : UnitBase
 
                 arrowEnemyIndicator.SetActive(true);
 
+                if (isMarked && FindObjectOfType<Monk>().debuffMark)
+                {
+
+                    BuffbonusStateDamage = -1;
+                }
+
                 //Añado esto para stunnear a los enemigos 
                 if (!isStunned)
                 {

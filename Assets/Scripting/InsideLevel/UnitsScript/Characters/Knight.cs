@@ -13,6 +13,7 @@ public class Knight : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
+    [Header("Activas")]
     //ACTIVAS
     //Empuje en línea
     public bool pushFarther;
@@ -27,7 +28,7 @@ public class Knight : PlayerUnit
 
 
 
-
+    [Header("Pasivas")]
     //PASIVAS
 
     //Bloqueo individual (por los lados recibe menos daño)
@@ -66,7 +67,22 @@ public class Knight : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
-            currentHealth += 1;
+            currentHealth += FindObjectOfType<Monk>().healerBonus;
+
+            if (FindObjectOfType<Monk>().debuffMark2)
+            {
+                if (!unitToAttack.isStunned)
+                {
+                    unitToAttack.isStunned = true;
+                    unitToAttack.turnStunned = 1;
+                }
+
+            }
+            else if (FindObjectOfType<Monk>().healerMark2)
+            {
+                BuffbonusStateDamage = 1;
+
+            }
             UIM.RefreshTokens();
 
         }
@@ -469,5 +485,17 @@ public class Knight : PlayerUnit
         }
     }
 
-
+    protected override void DoDamage(UnitBase unitToDealDamage)
+    {
+        //Añado este if para el count de honor del samurai
+        if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+       || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+       || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+       || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
+       )
+        {
+            LM.honorCount++;
+        }
+        base.DoDamage(unitToDealDamage);
+    }
 }

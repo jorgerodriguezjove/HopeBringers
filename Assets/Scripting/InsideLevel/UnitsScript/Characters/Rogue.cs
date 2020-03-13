@@ -11,6 +11,7 @@ public class Rogue : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
+    [Header("Activas")]
     //ACTIVAS
     public bool checkersAttack;
     public int unitsCanJump;
@@ -20,9 +21,10 @@ public class Rogue : PlayerUnit
 
     public bool extraTurnAttackAfterKill;
 
+    [Header("Pasivas")]
     //PASIVAS
 
-     //Comprobar si tiene la habilidad comprada
+    //Comprobar si tiene la habilidad comprada
     public bool afterKillBonus;
      //El bonus de ataque que se añade tras matar a un enemigo
     public int bonusAttackAfterKill;
@@ -202,7 +204,23 @@ public class Rogue : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
-            currentHealth += 1;           
+            currentHealth += FindObjectOfType<Monk>().healerBonus;
+
+            if (FindObjectOfType<Monk>().debuffMark2)
+            {
+                if (!unitToAttack.isStunned)
+                {
+                    unitToAttack.isStunned = true;
+                    unitToAttack.turnStunned = 1;
+                }
+
+            }
+            else if (FindObjectOfType<Monk>().healerMark2)
+            {
+                BuffbonusStateDamage = 1;
+
+            }
+
             UIM.RefreshTokens();
 
         }
@@ -222,7 +240,7 @@ public class Rogue : PlayerUnit
                     //Muevo al pícaro
                     currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
                     transform.DOJump(currentTileVectorToMove, 1, 1, 1);
-
+                    
                     //Cambio la rotación
                     NewRotationAfterJump(unitToAttack.myCurrentTile);
 
@@ -650,6 +668,17 @@ public class Rogue : PlayerUnit
     //La función es exactamente igual que la original salvo que no calcula el daño, ya que el rogue lo calcula antes de saltar
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
+
+        //Añado este if para el count de honor del samurai
+        if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+       || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+       || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+       || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
+       )
+        {
+            LM.honorCount++;
+        }
+
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
 

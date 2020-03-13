@@ -39,6 +39,15 @@ public class DamageTile : MonoBehaviour
     }
     #endregion
 
+    public  virtual void OnTriggerEnter(Collider unitOnTile)
+    {
+
+        if (unitOnTile.GetComponent<Druid>().tileSustitute)
+        {
+            Instantiate(unitOnTile.GetComponent<Druid>().healerTilePref, transform.position, transform.rotation);
+            Destroy(this.gameObject);
+        }
+    }
     public virtual void OnTriggerStay(Collider unitOnTile)
 	{
 		//if (LM.currentLevelState == LevelManager.LevelState.ProcessingEnemiesActions && !damageDone)

@@ -48,6 +48,8 @@ public class UnitBase : MonoBehaviour
     //Bool para poder ocultar a las unidades
     public bool isHidden;
 
+   
+
     [Header("DAMAGE")]
 
     //Daño de la unidad
@@ -350,11 +352,7 @@ public class UnitBase : MonoBehaviour
         
         damageWithMultipliersApplied += BuffbonusStateDamage;
 
-        //if (hasFear)
-        //{
-
-        //    damageWithMultipliersApplied -= DebuffbonusStateDamage;
-        //}
+       
     }
 
     //Prueba para calcular damages en el hover
@@ -396,6 +394,7 @@ public class UnitBase : MonoBehaviour
         if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
         {
             Instantiate(criticAttackParticle, unitModel.transform.position, unitModel.transform.rotation);
+           
         }
 
         //Si no, instancio la partícula normal

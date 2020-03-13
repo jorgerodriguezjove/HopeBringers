@@ -9,17 +9,39 @@ public class Samurai : PlayerUnit
     [SerializeField]
     private int samuraiFrontAttack;
 
-
-
     [Header("MEJORAS DE PERSONAJE")]
 
+    [Header("Activas")]
     //ACTIVAS
-   
+
+    //bool para la activa 1
+    public bool parryOn;
+
+    //bool para la mejora de la activa 1
+    public bool parryOn2;
+
+    public UnitBase unitToParry;
+
+    //bool para la activa 2
     public bool doubleAttack;
+    //int que  indica el número de veces que el samurai ataca
     public int timesDoubleAttackRepeats;
 
+    [Header("Pasivas")]
     //PASIVAS
 
+    //bool para la pasiva 1
+    public bool itsForHonorTime;
+
+    //bool para la mejora de la pasiva 1
+    public bool itsForHonorTime2;
+
+    //bool para la pasiva 2
+    public bool buffLonelyArea;
+    //bool que indica si tiene aliados en un área de 3x3 o no
+    public bool isLonelyLikeMe;
+    //int que añade daño si el samurai no tiene aliados en un área de 3x3
+    public int lonelyAreaDamage;
 
     #endregion
 
@@ -169,17 +191,40 @@ public class Samurai : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
-            currentHealth += 1;
+            currentHealth += FindObjectOfType<Monk>().healerBonus;
+
+            if (FindObjectOfType<Monk>().debuffMark2)
+            {
+                if (!unitToAttack.isStunned)
+                {
+                    unitToAttack.isStunned = true;
+                    unitToAttack.turnStunned = 1;
+                }
+
+            }
+            else if (FindObjectOfType<Monk>().healerMark2)
+            {
+                BuffbonusStateDamage = 1;
+
+            }
+
             UIM.RefreshTokens();
 
         }
 
-        if (doubleAttack)
+        if (parryOn)
+        {
+            unitToParry = unitToAttack;
+
+            //Animación de preparar el parry            
+            myAnimator.SetTrigger("Attack");
+
+        }
+        else if (doubleAttack)
         {
             for (int i = 0; i < timesDoubleAttackRepeats; i++)
             {
-                //Animación de ataque 
-                //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
+                //Animación de ataque                
                 myAnimator.SetTrigger("Attack");
 
                 //Hago daño
@@ -217,28 +262,126 @@ public class Samurai : PlayerUnit
             || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
             )
         {
+            if (itsForHonorTime)
+            {
+                LM.honorCount++;              
+            }
 
             CalculateDamage(unitToDealDamage);
 
             Debug.Log(damageWithMultipliersApplied);
 
-            //Añado el daño de rage.
+            //Añado el daño de ataque frontal
             damageWithMultipliersApplied += samuraiFrontAttack;
 
-            Debug.Log(damageWithMultipliersApplied);
-
-            //Una vez aplicados los multiplicadores efectuo el daño.
-            unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
-
+            
 
         }
         else
         {
             CalculateDamage(unitToDealDamage);
             //Una vez aplicados los multiplicadores efectuo el daño.
-            unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+           
         }
-      
-            Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+
+        if (buffLonelyArea)
+        {
+            TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+            //Hago daño a las unidades adyacentes(3x3)
+            for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; ++i)
+            {
+                if (myCurrentTile.surroundingNeighbours[i].unitOnTile != null)
+                {
+                    if (myCurrentTile.surroundingNeighbours[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        isLonelyLikeMe = false;
+                        break;
+                    }
+                    else
+                    {
+                        isLonelyLikeMe = true;
+                    }
+                }              
+                else 
+                {
+                    isLonelyLikeMe = true;
+                   
+                }
+            }
+            if (isLonelyLikeMe)
+            {
+                //Añado el daño de area solitaria
+                damageWithMultipliersApplied += lonelyAreaDamage;
+
+            }
+
+        }
+
+
+        if (itsForHonorTime)
+        {
+            if (itsForHonorTime2)
+            {
+                //Este espacio lo dejo para que el multiplicador no se sume dos veces, ya que al ser la mejora de la pasiva el multiplicador se suma en la función calculateDamage para todas las unidades.
+            }
+            else{
+                damageWithMultipliersApplied += LM.honorCount;
+            }
+          
+        }
+        //Una vez aplicados los multiplicadores efectuo el daño.
+        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+
+        Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+    }
+
+    public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
+    {
+        if (parryOn)
+        {
+            if (parryOn2)
+            {
+                if (unitAttacker == unitToParry)
+                {
+                    damageReceived = 0;
+                    unitToParry.currentHealth -= unitAttacker.baseDamage;
+                    UIM.RefreshHealth();
+                    unitToParry = null;
+                }
+                else if (unitToParry != null)
+                {
+                    if (( unitAttacker.currentFacingDirection == FacingDirection.North || unitAttacker.currentFacingDirection == FacingDirection.South
+                        && currentFacingDirection == FacingDirection.West || currentFacingDirection == FacingDirection.East)
+                        ||
+                        (unitAttacker.currentFacingDirection == FacingDirection.West || unitAttacker.currentFacingDirection == FacingDirection.East
+                        && currentFacingDirection == FacingDirection.North || currentFacingDirection == FacingDirection.South))
+                    {
+
+                        damageReceived = 0;
+                        unitToParry.currentHealth -= unitAttacker.baseDamage;
+                        UIM.RefreshHealth();
+                        unitToParry = null;
+
+                    }
+                  
+
+                }
+                
+            }
+            else if(unitAttacker == unitToParry)
+            {
+                damageReceived = 0;
+                unitToParry.currentHealth -= unitAttacker.baseDamage;
+                UIM.RefreshHealth();
+                unitToParry = null;
+
+            }
+            
+        }
+        else
+        {
+            base.ReceiveDamage(damageReceived, unitAttacker);
+        }
+        
     }
 }

@@ -538,6 +538,7 @@ public class PlayerUnit : UnitBase
         }
     }
 
+
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         //Animación de ataque
@@ -683,19 +684,27 @@ public class PlayerUnit : UnitBase
             }
             else
             {
+                //Añado este if para que, cada vez que ataque un jugador y si le va a realizar daño por la espalda, el count del honor se resetea
+                if (hasAttacked)
+                {
+                    LM.honorCount = 0;
+                }
                 //Ataque por la espalda
                 damageWithMultipliersApplied += bonusDamageBackAttack;
                 unitToDealDamage.backStabIcon.SetActive(true);
             }
 		}
 
+        //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded.itsForHonorTime2)
+        {
+            damageWithMultipliersApplied += LM.honorCount;
+
+        }
+
         damageWithMultipliersApplied += BuffbonusStateDamage;
-
-        //if (hasFear)
-        //{
-
-        //    damageWithMultipliersApplied -= DebuffbonusStateDamage;
-        //}
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
 	}

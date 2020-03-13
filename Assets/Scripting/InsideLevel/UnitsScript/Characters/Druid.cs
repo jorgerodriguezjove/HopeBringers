@@ -6,10 +6,48 @@ public class Druid : PlayerUnit
 {
     #region VARIABLES
 
-    [SerializeField]
-    private int healedLife;
+   
+    [Header("MEJORAS DE PERSONAJE")]
 
-    
+    [SerializeField]
+    public  int healedLife;
+
+    [Header("Activas")]
+    //ACTIVAS
+
+    //La activa uno depende de cambiar el int healedLife;
+
+    //bool mejora de la activa 1
+    public bool individualHealer2;
+
+    //int que indica cuantas unidades de movimiento se mejora a la unidad
+    //Jojo, acuerdate de que hay que incremeentar healedLife más aún
+    public int movementUpgrade;
+
+
+    //bool activa 2
+    public bool areaHealer;
+
+    //bool mejora activa 2
+    public bool areaHealer2;
+
+    [Header("Pasivas")]
+    //PASIVAS
+
+    //bool pasiva 1
+    public bool tileTransformer;
+
+    //bool pasiva 2
+    public bool tileSustitute;
+
+    //bool mejora de la pasiva 2
+    public bool tileSustitute2;
+
+    //int que añade bonus al druida si está en un tile de curación
+    public int bonusOnTile;
+
+    public GameObject healerTilePref;
+
     #endregion
 
 
@@ -18,53 +56,129 @@ public class Druid : PlayerUnit
     {
         hasAttacked = true;
 
-
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
-            currentHealth += 1;
+            currentHealth += FindObjectOfType<Monk>().healerBonus;
+
+            if (FindObjectOfType<Monk>().debuffMark2)
+            {
+                if (!unitToAttack.isStunned)
+                {
+                    unitToAttack.isStunned = true;
+                    unitToAttack.turnStunned = 1;
+                }
+
+            }
+            else if (FindObjectOfType<Monk>().healerMark2)
+            {
+                BuffbonusStateDamage = 1;
+
+            }
+
             UIM.RefreshTokens();
 
         }
-        //Hay que cambiar
-        //Instantiate(chargingParticle, gameObject.transform.position, chargingParticle.transform.rotation);
-        //Hay que cambiar
-        Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
-
-        if (unitToAttack.GetComponent<PlayerUnit>())
+        if (areaHealer)
         {
             //Hay que cambiar
-            SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+            Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
-            unitToAttack.currentHealth += healedLife;
-            currentHealth -= healedLife;
+            currentHealth -= 1;
             UIM.RefreshTokens();
             UIM.RefreshHealth();
 
+            //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
+            TM.surroundingTiles.Clear();
+
+            TM.GetSurroundingTiles(unitToAttack.myCurrentTile, 1, true, false);
+            //Hago daño a las unidades adyacentes
+            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+            {
+                if (TM.surroundingTiles[i].unitOnTile != null)
+                {
+                    if (areaHealer2)
+                    {
+                        TM.surroundingTiles[i].unitOnTile.isStunned = false;
+                        TM.surroundingTiles[i].unitOnTile.turnStunned = 0;
+                        TM.surroundingTiles[i].unitOnTile.hasFear = false;
+                        TM.surroundingTiles[i].unitOnTile.turnsWithFear = 0;
+                        TM.surroundingTiles[i].unitOnTile.BuffbonusStateDamage = 0;
+                        
+                    }
+                    if (tileTransformer)
+                    {
+                        Instantiate(healerTilePref, TM.surroundingTiles[i].unitOnTile.transform.position, TM.surroundingTiles[i].unitOnTile.transform.rotation);
+
+                    }
+                    TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
+                }
+            }
+          
         }
         else
         {
-            //Hago daño
-            DoDamage(unitToAttack);
+            //Hay que cambiar
+            Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
-            if (currentHealth< maxHealth)
+            if (unitToAttack.GetComponent<PlayerUnit>())
             {
-                currentHealth += healedLife;
+                //Hay que cambiar
+                SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+                if (individualHealer2)
+                {
+                    unitToAttack.movementUds = unitToAttack.GetComponent<PlayerUnit>().fMovementUds + movementUpgrade;
+                }
+                else if (tileTransformer)
+                {
+                    Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation);
+
+                }
+                unitToAttack.currentHealth += healedLife;
+                currentHealth -= 1;
                 UIM.RefreshTokens();
                 UIM.RefreshHealth();
             }
+            else
+            {
+                //Hago daño
+                DoDamage(unitToAttack);
 
-            //Hay que cambiar
-            SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+                if (currentHealth < maxHealth)
+                {
+                    currentHealth += healedLife;
+                    UIM.RefreshTokens();
+                    UIM.RefreshHealth();
+                }
 
+                //Hay que cambiar
+                SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+
+            }
         }
+        
 
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
         
     }
 
+    protected override void DoDamage(UnitBase unitToDealDamage)
+    {
+
+        //Añado este if para el count de honor del samurai
+        if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+       || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+       || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+       || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
+       )
+        {
+            LM.honorCount++;
+        }
+
+        base.DoDamage(unitToDealDamage);
+    }
 
     #region CHECKS
     //AL igual que con el Mago, se hace override a esta función para que pueda atravesar unidades al atacar.

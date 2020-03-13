@@ -112,11 +112,15 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject defeatPanel;
 
+    //Lo añado al LevelManager porque quiero que solo exista un count global para todos los personajes
+    //int con el honor acumulador
+    public int honorCount;
+
     #endregion
 
     #region INIT
 
-    
+
     //IMPORTANTE QUE SEA START Y NO AWAKE
     //EL ENEMYUNIT Y EL PLAYERUNIT TIENEN QUE INICIALIZARSE EN EL AWAKE ANTES DE PODER HACER ESTO
     //TANTO EL Start COMO StartGameplayAfterDialog TIENEN UN ORDEN MUY CONCRETO QUE NO SE PUEDE CAMBIAR A LA LIGERA POR EL ORDEN DE INICIALIZACIÓN

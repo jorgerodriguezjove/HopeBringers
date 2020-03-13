@@ -229,12 +229,12 @@ public class Portraits : MonoBehaviour
                     lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
                     activatedTokens--;
                 }
-                else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
-                    && assignedPlayer.currentHealth > activatedTokens )
-                {
-                    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
-                    activatedTokens++;
-                }
+                //else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
+                //    && assignedPlayer.currentHealth > activatedTokens )
+                //{
+                //    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+                //    activatedTokens++;
+                //}
             }
         }
 
