@@ -478,14 +478,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4122368960967281066}
-  m_LocalRotation: {x: -0, y: -0.7933522, z: -0, w: 0.608763}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1556511933795451499}
   m_Father: {fileID: 4926793531634623103}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: -105.00001, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4216300234818962365
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,13 +921,19 @@ MonoBehaviour:
   movementUds: 1
   attackRange: 1
   isMarked: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  DebuffbonusStateDamage: 0
   unitModel: {fileID: 4122368960967281066}
   unitMaterialModel: {fileID: 1554931980889414177}
   myCurrentTile: {fileID: 0}
@@ -967,10 +973,10 @@ MonoBehaviour:
   tooltipImage: {fileID: 0}
   unitName: Watcher
   rangeOfAction: 4
+  timeWaitingBeforeStarting: 0
   timeWaitingBeforeMovement: 0.5
-  timeWaitAfterMovement: 0
-  timeWaitingAttacking: 0.5
-  timeWaitingEnded: 1
+  timeWaitingBeforeAttacking: 0
+  timeWaitingBeforeEnding: 0
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
@@ -986,7 +992,8 @@ MonoBehaviour:
   myLineRenderer: {fileID: 3529563833753634424}
   shaderHover: {fileID: 2048962299636238563}
   sleepParticle: {fileID: 0}
-  debuff: -1
+  attackDebuff: 0
+  movementDebuff: 0
 --- !u!1 &4926793532522313444
 GameObject:
   m_ObjectHideFlags: 0
