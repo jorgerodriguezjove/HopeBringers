@@ -220,24 +220,28 @@ public class Portraits : MonoBehaviour
         //Recorro la lista de tokens empezando por el final. 
         //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
         //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
-        for (int i = lifeTokensList.Count - 1; i+1 > assignedPlayer.currentHealth ; i--)
+        if (assignedPlayer != null)
         {
-            if (lifeTokensList[i].GetComponent<LifeToken>())
+
+
+            for (int i = lifeTokensList.Count - 1; i + 1 > assignedPlayer.currentHealth; i--)
             {
-                if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
+                if (lifeTokensList[i].GetComponent<LifeToken>())
                 {
-                    lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
-                    activatedTokens--;
+                    if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
+                    {
+                        lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
+                        activatedTokens--;
+                    }
+                    //else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
+                    //    && assignedPlayer.currentHealth > activatedTokens )
+                    //{
+                    //    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+                    //    activatedTokens++;
+                    //}
                 }
-                //else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
-                //    && assignedPlayer.currentHealth > activatedTokens )
-                //{
-                //    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
-                //    activatedTokens++;
-                //}
             }
         }
-
         //Código antiguo con la barra de vida
         #region OldCode
         //healthBar.maxValue = assignedPlayer.maxHealth;

@@ -68,15 +68,40 @@ public class HealerTile : DamageTile
 
     public override void CheckHasToDoDamage()
     {
+
+        //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
+        Druid druidUpgraded = FindObjectOfType<Druid>();
+  
         if (hasUnit && !damageDone)
         {
-
-            unitToDoDamage.GetComponent<UnitBase>().currentHealth += lifeToHeal;
-           
-            if (unitToDoDamage.GetComponent<UnitBase>().currentHealth > unitToDoDamage.GetComponent<UnitBase>().maxHealth)
+            if (druidUpgraded.tileTransformer2)
             {
-             unitToDoDamage.GetComponent<UnitBase>().currentHealth = unitToDoDamage.GetComponent<UnitBase>().maxHealth;               
+                if (unitToDoDamage.GetComponent<EnemyUnit>())
+                {
+                    unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
+
+                }
+                else
+                {
+                    unitToDoDamage.GetComponent<UnitBase>().currentHealth += lifeToHeal;
+
+                    if (unitToDoDamage.GetComponent<UnitBase>().currentHealth > unitToDoDamage.GetComponent<UnitBase>().maxHealth)
+                    {
+                        unitToDoDamage.GetComponent<UnitBase>().currentHealth = unitToDoDamage.GetComponent<UnitBase>().maxHealth;
+                    }
+                }
             }
+            else
+            {
+                unitToDoDamage.GetComponent<UnitBase>().currentHealth += lifeToHeal;
+
+                if (unitToDoDamage.GetComponent<UnitBase>().currentHealth > unitToDoDamage.GetComponent<UnitBase>().maxHealth)
+                {
+                    unitToDoDamage.GetComponent<UnitBase>().currentHealth = unitToDoDamage.GetComponent<UnitBase>().maxHealth;
+                }
+
+            }
+          
 
            
             

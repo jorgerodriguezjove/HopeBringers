@@ -64,14 +64,14 @@ public class Berserker : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
-            currentHealth += FindObjectOfType<Monk>().healerBonus;
+            currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
+            unitToAttack.numberOfMarks = 0;
 
             if (FindObjectOfType<Monk>().debuffMark2)
             {
                 if (!unitToAttack.isStunned)
                 {
-                    unitToAttack.isStunned = true;
-                    unitToAttack.turnStunned = 1;
+                    StunUnit(unitToAttack, 1);
                 }
 
             }

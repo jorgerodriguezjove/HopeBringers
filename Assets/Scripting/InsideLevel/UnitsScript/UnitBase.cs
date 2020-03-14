@@ -22,6 +22,8 @@ public class UnitBase : MonoBehaviour
 	[HideInInspector]
     public int currentHealth;
 
+    public int currentArmor;
+
     //Uds movimiento máximas de la unidad.
     [SerializeField]
     public int movementUds;
@@ -32,6 +34,8 @@ public class UnitBase : MonoBehaviour
     //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
     //Bool que indica si está marcado o no 
     public bool isMarked;
+    //Int para poder utilizar la mejora de la activa 2 del monk
+    public int numberOfMarks;
 
     //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
     //Bool que indica si la unidad tiene miedo o no
@@ -744,6 +748,12 @@ public class UnitBase : MonoBehaviour
     public virtual void UndoAttack(int previousHealth)
     {
         currentHealth = previousHealth;
+    }
+
+    public virtual void StunUnit(UnitBase unitToStun , int turnsToStunned)
+    {
+        unitToStun.isStunned = true;
+        unitToStun.turnStunned = turnsToStunned;
     }
 
 }

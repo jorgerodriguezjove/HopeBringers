@@ -24,6 +24,8 @@ public class Monk : PlayerUnit
     //bool para la activa 2
     public bool suplex;
 
+    public bool suplex2;
+
 
     [Header("Pasivas")]
     //PASIVAS
@@ -54,11 +56,12 @@ public class Monk : PlayerUnit
             myAnimator.SetTrigger("Attack");
 
             unitToAttack.isMarked = true;
+            unitToAttack.numberOfMarks = 1;
 
             //PREGUNTAR SI LA ROTACIÓN TIENE QUE IR ANTES O DESPÚES DE HACER DAÑO
 
-        
-         if (unitToAttack.currentFacingDirection == FacingDirection.North)
+
+            if (unitToAttack.currentFacingDirection == FacingDirection.North)
          {
                 unitToAttack.unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
                 unitToAttack.currentFacingDirection = FacingDirection.South;
@@ -180,6 +183,18 @@ public class Monk : PlayerUnit
 
             unitToAttack.isMarked = true;
 
+            if (suplex2 && unitToAttack.numberOfMarks == 1)
+            {
+
+                unitToAttack.numberOfMarks = 2;
+
+            }
+            else
+            {
+                unitToAttack.numberOfMarks = 1;
+
+            }
+
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -198,6 +213,7 @@ public class Monk : PlayerUnit
             myAnimator.SetTrigger("Attack");
 
             unitToAttack.isMarked = true;
+            unitToAttack.numberOfMarks = 1;
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -228,5 +244,152 @@ public class Monk : PlayerUnit
         }
 
         base.DoDamage(unitToDealDamage);
+    }
+
+    public override void CheckUnitsAndTilesInRangeToAttack()
+    {
+        currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
+
+        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        {
+            if (!myCurrentTile.neighbours[i].isEmpty && !myCurrentTile.neighbours[i].isObstacle)
+            {
+                currentTilesInRangeForAttack.Add(myCurrentTile.neighbours[i]);
+            }
+        }
+
+        //Arriba
+        if (myCurrentTile.tilesInLineUp.Count > 1)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineUp.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null &&
+                   (myCurrentTile.tilesInLineDown[i] != null &&
+                    myCurrentTile.tilesInLineDown[i].unitOnTile == null &&
+                   !myCurrentTile.tilesInLineDown[i].isEmpty &&
+                   !myCurrentTile.tilesInLineDown[i].isObstacle) &&
+                   Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                   Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        //Abajo
+
+        if (myCurrentTile.tilesInLineDown.Count > 1)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineDown.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null &&
+                   (myCurrentTile.tilesInLineUp[i] != null &&
+                    myCurrentTile.tilesInLineUp[i].unitOnTile == null &&
+                   !myCurrentTile.tilesInLineUp[i].isEmpty &&
+                   !myCurrentTile.tilesInLineUp[i].isObstacle) &&
+                    Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                    Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        //Derecha
+
+        if (myCurrentTile.tilesInLineRight.Count > 1)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineRight.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null &&
+                   (myCurrentTile.tilesInLineLeft[i] != null &&
+                    myCurrentTile.tilesInLineLeft[i].unitOnTile == null &&
+                   !myCurrentTile.tilesInLineLeft[i].isEmpty &&
+                   !myCurrentTile.tilesInLineLeft[i].isObstacle) &&
+                    Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                    Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        //Izquierda
+
+        if (myCurrentTile.tilesInLineLeft.Count > 1)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null &&
+                   (myCurrentTile.tilesInLineRight[i] != null &&
+                    myCurrentTile.tilesInLineRight[i].unitOnTile == null &&
+                   !myCurrentTile.tilesInLineRight[i].isEmpty &&
+                   !myCurrentTile.tilesInLineRight[i].isObstacle) &&
+                    Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                    Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        //Feedback de ataque
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            CalculateDamage(currentUnitsAvailableToAttack[i]);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+
+            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+        }
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
+        }
     }
 }

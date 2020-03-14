@@ -228,7 +228,20 @@ public class PlayerUnit : UnitBase
         }
         else
         {
-            LM.SelectUnit(movementUds, this);
+            Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+            if (LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved && valkyrieRef.changePositions)
+            {
+                if (currentHealth <= valkyrieRef.numberCanChange)
+                {
+                    valkyrieRef.ChangePosition(this);
+                }
+ 
+            }
+            else
+            {
+                LM.SelectUnit(movementUds, this);
+            }
+           
         }
     }
 
@@ -559,7 +572,22 @@ public class PlayerUnit : UnitBase
             damageReceived = 0;
         }
 
-        currentHealth -= damageReceived;
+        if (currentArmor > 0)
+        {
+            currentArmor -= damageReceived;
+            if (currentArmor < 0)
+            {
+                damageReceived = currentArmor * -1;
+                currentHealth -= damageReceived;
+                currentArmor = 0;
+
+            }
+        }
+        else
+        {
+            currentHealth -= damageReceived;
+        }
+       
 
 
         Debug.Log("Soy " + name + " me han hecho daño");
@@ -698,7 +726,7 @@ public class PlayerUnit : UnitBase
         //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
         Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
 
-        if (samuraiUpgraded.itsForHonorTime2)
+        if (samuraiUpgraded != null && samuraiUpgraded.itsForHonorTime2)
         {
             damageWithMultipliersApplied += LM.honorCount;
 
