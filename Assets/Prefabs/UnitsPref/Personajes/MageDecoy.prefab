@@ -3562,9 +3562,11 @@ MonoBehaviour:
   speed: 0
   maxHealth: 1
   currentHealth: 0
+  currentArmor: 0
   movementUds: 0
   attackRange: 5
   isMarked: 0
+  numberOfMarks: 0
   hasFear: 0
   turnsWithFear: 0
   isStunned: 0
@@ -3613,6 +3615,7 @@ MonoBehaviour:
   characterImage: {fileID: 0}
   tooltipImage: {fileID: 0}
   unitName: 
+  initialPosInBox: {fileID: 0}
   hasMoved: 0
   hasAttacked: 0
   isMovingorRotating: 0
@@ -3638,13 +3641,15 @@ MonoBehaviour:
   LM: {fileID: 0}
   UIM: {fileID: 0}
   TM: {fileID: 0}
+  fMovementUds: 0
   chargingParticle: {fileID: 8061592988846048939, guid: 4a2b675ed56e21e48ae33c1b7b8295e9,
     type: 3}
   mageDecoyRefAsset: {fileID: 0}
   myDecoys: []
   maxDecoys: 0
   backDamageOff: 0
-  crossAreaAttack: 0
+  areaAttack: 0
+  areaRange: 0
   lightningChain: 0
   timeElectricityAttackExpands: 0
   unitsAttacked: []
@@ -3653,6 +3658,7 @@ MonoBehaviour:
   fLimitantAttackBonus: 0
   fBaseDamage: 0
   isDecoyBomb: 0
+  isDecoyBomb2: 0
   mirrorDecoy: 0
   mirrorDecoy2: 0
   myMage: {fileID: 0}
