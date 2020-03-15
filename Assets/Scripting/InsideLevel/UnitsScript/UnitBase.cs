@@ -595,21 +595,12 @@ public class UnitBase : MonoBehaviour
 
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
 
-
-
-            
             if (damageCalculated >= 0)
             {
                 previsualizeAttackIcon.SetActive(true);
                 EnableCanvasHover(damageCalculated);
-
             }
-
-
-
-
-        }
-        
+        }        
     }
 
     #endregion
