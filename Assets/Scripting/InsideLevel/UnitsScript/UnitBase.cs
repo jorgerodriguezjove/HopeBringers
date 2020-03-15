@@ -214,8 +214,6 @@ public class UnitBase : MonoBehaviour
     private GameObject canvasUnit;
 
 
-
-
     [Header("INFO")]
 
     [SerializeField]
@@ -248,7 +246,7 @@ public class UnitBase : MonoBehaviour
     #endregion
 
     //El level manager llama a esta función sustituyendo al start
-    public void InitializeUnitOnTile()
+    public virtual void InitializeUnitOnTile()
     {
         FindAndSetFirstTile();
         myCurrentTile.unitOnTile = this;
@@ -428,7 +426,7 @@ public class UnitBase : MonoBehaviour
 
     #region PUSH
     //Función genérica que sirve para calcular a que tile debe ser empujada una unidad
-    //La función pide tatno el daño pro caída como el daño de empujón de la unidad atacante ya que pueden existir mejoras que modifiquen estos valores.
+    //La función pide tanto el daño por caída como el daño de empujón de la unidad atacante ya que pueden existir mejoras que modifiquen estos valores.
     public void CalculatePushPosition(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
     {
         Debug.Log("Empuje");
@@ -552,9 +550,12 @@ public class UnitBase : MonoBehaviour
 
                 SoundManager.Instance.PlaySound(AppSounds.COLLISION);
 
-                //Desplazo a la unidad
-                MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
-                Debug.Log(tilesToCheckForCollision[0]);
+                if (numberOfTilesMoved > 0)
+                {
+                    //Desplazo a la unidad
+                    MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
+                    Debug.Log(tilesToCheckForCollision[numberOfTilesMoved]);
+                }
             }
         }
        
@@ -599,21 +600,12 @@ public class UnitBase : MonoBehaviour
 
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
 
-
-
-            
             if (damageCalculated >= 0)
             {
                 previsualizeAttackIcon.SetActive(true);
                 EnableCanvasHover(damageCalculated);
-
             }
-
-
-
-
-        }
-        
+        }        
     }
 
     #endregion

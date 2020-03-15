@@ -696,6 +696,7 @@ Transform:
   - {fileID: 5160084470383639825}
   - {fileID: 2908689184618371349}
   - {fileID: 8047555687725469819}
+  - {fileID: 677816675328443168}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -771,12 +772,19 @@ MonoBehaviour:
   movementUds: 3
   attackRange: 1
   isMarked: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
+  BuffbonusStateDamage: 0
+  DebuffbonusStateDamage: 0
   unitModel: {fileID: 812720015327976743}
   unitMaterialModel: {fileID: 8025675287679305071}
   myCurrentTile: {fileID: 0}
@@ -786,6 +794,7 @@ MonoBehaviour:
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
   timeToWaitBeforeHidingHealthbar: 1
+  damageWithMultipliersApplied: 0
   maxHeightDifferenceToAttack: 1
   previousTileHeight: 0
   maxHeightDifferenceToMove: 1
@@ -806,16 +815,20 @@ MonoBehaviour:
   lifeContainer: {fileID: 1426873507318865757}
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 138a6284f26a7d6488028cc22d37c737,
     type: 2}
+  previsualizeAttackIcon: {fileID: 676464519764190498}
+  backStabIcon: {fileID: 0}
+  upToDownDamageIcon: {fileID: 0}
+  downToUpDamageIcon: {fileID: 0}
   canvasUnit: {fileID: 7958651517046312001}
   unitGeneralInfo: 
   characterImage: {fileID: 21300000, guid: aa3ce8612d60160468799b75006009da, type: 3}
   tooltipImage: {fileID: 0}
   unitName: Dragon
   rangeOfAction: 8
+  timeWaitingBeforeStarting: 0
   timeWaitingBeforeMovement: 0
-  timeWaitAfterMovement: 0
-  timeWaitingAttacking: 0.5
-  timeWaitingEnded: 0.1
+  timeWaitingBeforeAttacking: 0
+  timeWaitingBeforeEnding: 0
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
@@ -831,6 +844,12 @@ MonoBehaviour:
   myLineRenderer: {fileID: 4166784548494198478}
   shaderHover: {fileID: 8512296912233093262}
   sleepParticle: {fileID: 5234941581242037568}
+  isPhase2: 0
+  isBeamOrMeteoriteCharged: 0
+  sweepOrStompUsed: 0
+  coneUsed: 0
+  exteriorTiles: []
+  lastTileInPathSurroundingTiles: []
 --- !u!1 &1795801030875091168
 GameObject:
   m_ObjectHideFlags: 0
@@ -2727,6 +2746,107 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3826585472637648313}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4582804360979372871
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1638395921944197800}
+    m_Modifications:
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 19.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.672001
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 26.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3457999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3457999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3457999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961527941904105061, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_Name
+      value: PowerupIconAttackAvailable
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961527941904105061, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9c3a89aa8aff5824a8083dd89da53ac6, type: 3}
+--- !u!1 &676464519764190498 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3961527941904105061, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4582804360979372871}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &677816675328443168 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3959071878806542439, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4582804360979372871}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6590435503557366733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2928,15 +3048,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7bcb29445a037e844aa28192f4a736a5, type: 3}
---- !u!4 &8031645819223989767 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4569660890401836, guid: 7bcb29445a037e844aa28192f4a736a5,
-    type: 3}
-  m_PrefabInstance: {fileID: 8027137765546463787}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8025675287679305071 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1955354095425348, guid: 7bcb29445a037e844aa28192f4a736a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 8027137765546463787}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8031645819223989767 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4569660890401836, guid: 7bcb29445a037e844aa28192f4a736a5,
     type: 3}
   m_PrefabInstance: {fileID: 8027137765546463787}
   m_PrefabAsset: {fileID: 0}

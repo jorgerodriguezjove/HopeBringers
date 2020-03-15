@@ -27,7 +27,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public int tileX, height, tileZ;
 
-    [HideInInspector]
+    //QUITAR
+    [SerializeField]
     public UnitBase unitOnTile;
 
     //Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
