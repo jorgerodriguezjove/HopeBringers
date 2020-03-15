@@ -31,6 +31,13 @@ public class BossMultTile : EnemyUnit
     [SerializeField]
     List<IndividualTiles> lastTileInPathSurroundingTiles = new List<IndividualTiles>();
 
+    public override void InitializeUnitOnTile()
+    {
+        base.InitializeUnitOnTile();
+
+        UpdateInformationAfterMovement(myCurrentTile);
+    }
+
     //Override a la información que se actualiza al moverse
     public override void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
@@ -49,6 +56,14 @@ public class BossMultTile : EnemyUnit
         {
             myCurrentTile.surroundingNeighbours[i].unitOnTile = GetComponent<UnitBase>();
             myCurrentTile.surroundingNeighbours[i].WarnInmediateNeighbours();
+        }
+
+        exteriorTiles.Clear();
+
+        //Añado los tiles exteriores para el stomp.
+        for (int i = 0; i < LM.TM.GetSurroundingTiles(myCurrentTile, 2, true, true).Count; i++)
+        {
+            exteriorTiles.Add(LM.TM.GetSurroundingTiles(myCurrentTile, 2, true, true)[i]);
         }
     }
 
@@ -343,10 +358,14 @@ public class BossMultTile : EnemyUnit
         }
     }
 
+    List<IndividualTiles> tilesListToPull = new List<IndividualTiles>();
+
+
     private void DoConoFuego()
     {
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
+            tilesListToPull.Clear();
             DoDamage(currentUnitsAvailableToAttack[i]);
 
             if (isPhase2)
@@ -356,23 +375,53 @@ public class BossMultTile : EnemyUnit
 
                 if (currentFacingDirection == FacingDirection.North)
                 {
-                    currentUnitsAvailableToAttack[i].CalculatePushPosition(0, currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
+
+                    for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineDown.Count; j++)
+                    {
+                        tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineDown[j]);
+                    }
                 }
 
                 if (currentFacingDirection == FacingDirection.South)
                 {
-                    currentUnitsAvailableToAttack[i].CalculatePushPosition(0, currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
+                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
+
+                    for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineUp.Count; j++)
+                    {
+                        tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineUp[j]);
+                    }
                 }
 
                 if (currentFacingDirection == FacingDirection.East)
                 {
-                    currentUnitsAvailableToAttack[i].CalculatePushPosition(0, currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
+
+                    for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineLeft.Count; j++)
+                    {
+                        tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineLeft[j]);
+                    }
                 }
 
                 if (currentFacingDirection == FacingDirection.West)
                 {
-                    currentUnitsAvailableToAttack[i].CalculatePushPosition(0, currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
+                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
+
+                    for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineRight.Count; j++)
+                    {
+                        tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineRight[j]);
+                    }
                 }
+
+
+                if (exteriorTiles.Contains(currentUnitsAvailableToAttack[i].myCurrentTile))
+                {
+                    DoDamage(currentUnitsAvailableToAttack[i]);
+
+                    continue;
+                }
+
+                currentUnitsAvailableToAttack[i].CalculatePushPosition(1, tilesListToPull, damageMadeByPush, damageMadeByFall);  
 
                 #endregion
             }

@@ -240,7 +240,7 @@ public class UnitBase : MonoBehaviour
     #endregion
 
     //El level manager llama a esta función sustituyendo al start
-    public void InitializeUnitOnTile()
+    public virtual void InitializeUnitOnTile()
     {
         FindAndSetFirstTile();
         myCurrentTile.unitOnTile = this;
@@ -547,10 +547,12 @@ public class UnitBase : MonoBehaviour
 
                 SoundManager.Instance.PlaySound(AppSounds.COLLISION);
 
-                //Desplazo a la unidad
-                MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
-                Debug.Log(tilesToCheckForCollision[0]);
-                Debug.Break();
+                if (numberOfTilesMoved > 0)
+                {
+                    //Desplazo a la unidad
+                    MoveToTilePushed(tilesToCheckForCollision[numberOfTilesMoved]);
+                    Debug.Log(tilesToCheckForCollision[numberOfTilesMoved]);
+                }
             }
         }
        
