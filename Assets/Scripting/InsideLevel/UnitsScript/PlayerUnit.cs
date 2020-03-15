@@ -229,7 +229,7 @@ public class PlayerUnit : UnitBase
         else
         {
             Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
-            if (LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved && valkyrieRef.changePositions)
+            if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved && valkyrieRef.changePositions)
             {
                 if (currentHealth <= valkyrieRef.numberCanChange)
                 {
