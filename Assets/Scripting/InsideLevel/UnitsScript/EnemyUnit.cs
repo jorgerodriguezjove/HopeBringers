@@ -169,10 +169,16 @@ public class EnemyUnit : UnitBase
 
                 arrowEnemyIndicator.SetActive(true);
 
+
+                turnsWithBuffOrDebuff--;
+                if (turnsWithBuffOrDebuff<=0)
+                {
+                    BuffbonusStateDamage = 0;
+                }
+
                 if (isMarked && FindObjectOfType<Monk>().debuffMark)
                 {
-
-                    BuffbonusStateDamage = -1;
+                    ApplyBuffOrDebuffdamage(this,-1,3);                   
                 }
 
                 //Añado esto para stunnear a los enemigos 
@@ -186,6 +192,7 @@ public class EnemyUnit : UnitBase
                     if (turnStunned <= 0)
                     {
                         isStunned = false;
+                        turnStunned = 0;
                     }
                     turnStunned--;
                     myCurrentEnemyState = enemyState.Ended;

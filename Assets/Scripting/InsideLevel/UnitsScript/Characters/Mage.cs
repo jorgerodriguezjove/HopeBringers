@@ -92,7 +92,8 @@ public class Mage : PlayerUnit
             }
             else if (FindObjectOfType<Monk>().healerMark2)
             {
-                BuffbonusStateDamage = 1;
+                ApplyBuffOrDebuffdamage(this, 1, 3);
+                
 
             }
 
@@ -298,7 +299,7 @@ public class Mage : PlayerUnit
     {
         GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
 
-        decoyToInstantiate.GetComponent<MageDecoy>().SetTile(myCurrentTile);
+       // decoyToInstantiate.GetComponent<MageDecoy>().InitializeUnitOnTile();
 
         //Pongo esta referencia para que el mage solo pueda cambiarse con sus decoys y para que pueda comprobar sus booleanos (para las habilidades)
         decoyToInstantiate.GetComponent<MageDecoy>().myMage = this;

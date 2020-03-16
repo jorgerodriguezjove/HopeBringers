@@ -77,7 +77,8 @@ public class EnWatcher : EnemyUnit
         {
             if (unitsInRange[i].GetComponent<PlayerUnit>())
             {
-                unitsInRange[i].BuffbonusStateDamage = attackDebuff;
+                ApplyBuffOrDebuffdamage(unitsInRange[i], attackDebuff, 3);
+               
 
                 if (myTierLevel == TierLevel.Level2)
                 {

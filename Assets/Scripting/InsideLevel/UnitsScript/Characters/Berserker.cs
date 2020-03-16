@@ -77,7 +77,8 @@ public class Berserker : PlayerUnit
             }
             else if (FindObjectOfType<Monk>().healerMark2)
             {
-                BuffbonusStateDamage = 1;
+                ApplyBuffOrDebuffdamage(this, 1, 3);
+               
 
             }
             UIM.RefreshTokens();
@@ -122,7 +123,7 @@ public class Berserker : PlayerUnit
         }
         else if (areaAttack)
         {
-            baseDamage += bonusDamageAreaAttack;
+            baseDamage = bonusDamageAreaAttack;
 
             if (currentFacingDirection == FacingDirection.North)
             {

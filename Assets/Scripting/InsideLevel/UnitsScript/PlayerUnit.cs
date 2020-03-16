@@ -164,11 +164,27 @@ public class PlayerUnit : UnitBase
         //Añado esto para stunnear a los enemigos 
         if (!isStunned)
         {
-            arrowIndicator.SetActive(true);
+            turnsWithBuffOrDebuff--;
+            if (turnsWithBuffOrDebuff <= 0)
+            {
+                BuffbonusStateDamage = 0;
+            }
+
+            if (arrowIndicator != null)
+            {
+                arrowIndicator.SetActive(true);
+            }            
             hasMoved = false;
-            movementTokenInGame.SetActive(true);
+            if (movementTokenInGame != null)
+            {
+                movementTokenInGame.SetActive(true);
+            }            
             hasAttacked = false;
-            attackTokenInGame.SetActive(true);
+            if (attackTokenInGame != null)
+            {
+                attackTokenInGame.SetActive(true);
+            }
+         
             //Refresco de los tokens para resetearlos en pantalla
             UIM.RefreshTokens();
             isMovingorRotating = false;
@@ -177,11 +193,26 @@ public class PlayerUnit : UnitBase
         }
         else
         {
-            arrowIndicator.SetActive(false);
+            turnsWithBuffOrDebuff--;
+            if (turnsWithBuffOrDebuff <= 0)
+            {
+                BuffbonusStateDamage = 0;
+            }
+            if (arrowIndicator != null)
+            {
+                arrowIndicator.SetActive(false);
+            }
             hasMoved = true;
-            movementTokenInGame.SetActive(false);
+
+            if (movementTokenInGame != null)
+            {
+                movementTokenInGame.SetActive(false);
+            }
             hasAttacked = true;
-            attackTokenInGame.SetActive(false);
+            if (attackTokenInGame != null)
+            {
+                attackTokenInGame.SetActive(false);
+            }
             //Refresco de los tokens para resetearlos en pantalla
             UIM.RefreshTokens();
             isMovingorRotating = false;
@@ -201,7 +232,11 @@ public class PlayerUnit : UnitBase
     //La unidad ha atacado y por tanto no puede hacer nada más.
     private void FinishMyActions()
     {
-        arrowIndicator.SetActive(false);
+        if (arrowIndicator != null)
+        {
+            arrowIndicator.SetActive(false);
+        }
+        
         //La unidad ha atacado
         hasAttacked = true;
 		hasMoved = true;

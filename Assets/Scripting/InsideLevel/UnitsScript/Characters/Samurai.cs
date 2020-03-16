@@ -204,7 +204,8 @@ public class Samurai : PlayerUnit
             }
             else if (FindObjectOfType<Monk>().healerMark2)
             {
-                BuffbonusStateDamage = 1;
+                ApplyBuffOrDebuffdamage(this, 1, 3);
+                
 
             }
 

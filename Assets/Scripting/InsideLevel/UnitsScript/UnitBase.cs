@@ -80,11 +80,11 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected int damageMadeByFall;
 
-    //Daño para añadir buff 
+    //Daño para añadir buff  (tambien lo usamos para los debuff)
     public int BuffbonusStateDamage;
-
-    //Daño para añadir buff 
-    public int DebuffbonusStateDamage;
+    [HideInInspector]
+    //Turnos que el buff o debuff tiene que estar aplicado
+    public int turnsWithBuffOrDebuff;
 
     [Header("LOGIC")]
 
@@ -748,4 +748,9 @@ public class UnitBase : MonoBehaviour
         unitToStun.turnStunned = turnsToStunned;
     }
 
+    public virtual void ApplyBuffOrDebuffdamage(UnitBase unitToApply, int damageAdded, int turnsAdded)
+    {
+        unitToApply.BuffbonusStateDamage = damageAdded;
+        unitToApply.turnsWithBuffOrDebuff = turnsAdded;
+    }
 }

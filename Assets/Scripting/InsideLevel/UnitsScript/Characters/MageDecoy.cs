@@ -16,24 +16,20 @@ public class MageDecoy : Mage
     {
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
-        LM.charactersOnTheBoard.Add(GetComponent<PlayerUnit>());
+        LM.charactersOnTheBoard.Add(this);
+        InitializeUnitOnTile();
         //Referencia al UIM 
         UIM = FindObjectOfType<UIManager>();
 
         //Inicializo componente animator
         myAnimator = GetComponent<Animator>();
-
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
-
         currentHealth = maxHealth;
-
     }
 
-    public void SetTile(IndividualTiles _myTile)
+   public override void InitializeUnitOnTile()
     {
-        myCurrentTile = _myTile;
-        myCurrentTile.unitOnTile = this;
-        myCurrentTile.WarnInmediateNeighbours();
+        base.InitializeUnitOnTile();
     }
 
     #endregion
