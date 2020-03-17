@@ -41,8 +41,7 @@ public class DamageTile : MonoBehaviour
 
     public  virtual void OnTriggerEnter(Collider unitOnTile)
     {
-
-        if (unitOnTile.GetComponent<Druid>().tileSustitute)
+        if (unitOnTile != null && unitOnTile.GetComponent<Druid>() && unitOnTile.GetComponent<Druid>().tileSustitute)
         {
             Instantiate(unitOnTile.GetComponent<Druid>().healerTilePref, transform.position, transform.rotation);
             Destroy(this.gameObject);
@@ -61,7 +60,7 @@ public class DamageTile : MonoBehaviour
 		//	}
 		//}
 
-        if (unitOnTile.GetComponent<UnitBase>())
+        if (unitOnTile != null && unitOnTile.GetComponent<UnitBase>())
         {
             unitToDoDamage = unitOnTile.gameObject;
             hasUnit = true;
@@ -70,7 +69,7 @@ public class DamageTile : MonoBehaviour
 
     public virtual void OnTriggerExit(Collider unitOnTile)
     {
-        if (unitOnTile.GetComponent<UnitBase>())
+        if (unitOnTile!= null && unitOnTile.GetComponent<UnitBase>())
         {
             unitToDoDamage = null;
             hasUnit = false;
@@ -85,7 +84,7 @@ public class DamageTile : MonoBehaviour
             {
                 
             }
-            else
+            else if (unitToDoDamage != null)
             {
                 Debug.Log(unitToDoDamage);
                 unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
@@ -93,8 +92,6 @@ public class DamageTile : MonoBehaviour
                 damageDone = true;
                 Debug.Log("DAMAGE DONE");
             }
-            
-
         }
     }
 

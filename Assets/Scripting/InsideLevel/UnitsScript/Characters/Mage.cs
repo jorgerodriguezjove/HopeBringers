@@ -221,19 +221,16 @@ public class Mage : PlayerUnit
     //Override especial del mago para que no instancie la partícula de ataque
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-       
-
-            if (!backDamageOff)
+        if (!backDamageOff)
         {
             CalculateDamage(unitToDealDamage);
         }
 
             //Añado este if para el count de honor del samurai
         if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
-       || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
-       || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
-       || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
-       )
+        ||  currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+        ||  currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+        ||  currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East)
         {           
                 LM.honorCount++;            
         }
@@ -243,6 +240,8 @@ public class Mage : PlayerUnit
     }
 
     #region MOVEMENT
+
+    IndividualTiles oldTile;
 
     //El LevelManager avisa a la unidad de que debe moverse.
     //Esta función tiene que ser override para que el mago pueda instanciar decoys.
@@ -264,23 +263,25 @@ public class Mage : PlayerUnit
             myCurrentPath.Add(pathReceived[i]);
         }
 
-       if (tileToMove != LM.selectedCharacter.myCurrentTile)
-        {
-            //Compruebo si tengo que instanciar decoy
-            CheckDecoy();
-        }
+        oldTile = myCurrentTile;
 
         StartCoroutine("MovingUnitAnimation");
 
         UpdateInformationAfterMovement(tileToMove);
+
+        if (tileToMove != oldTile)
+        {
+            //Compruebo si tengo que instanciar decoy
+            CheckDecoy(oldTile);
+        }
     }
 
-    public void CheckDecoy()
+    public void CheckDecoy(IndividualTiles tileForDecoy)
     {
         if (myDecoys.Count < maxDecoys)
         {
             //Instancio el decoy
-            InstantiateDecoy();
+            InstantiateDecoy(tileForDecoy);
         }
 
         else
@@ -288,14 +289,15 @@ public class Mage : PlayerUnit
             //Destruyo al decoy anterior
             GameObject decoyToDestroy = myDecoys[0];
             Destroy(decoyToDestroy);
+            LM.charactersOnTheBoard.Remove(decoyToDestroy.GetComponent<PlayerUnit>());
             myDecoys.Remove(decoyToDestroy);
 
             //Instancio el decoy
-            InstantiateDecoy();
+            InstantiateDecoy(tileForDecoy);
         }
     }
 
-    public void InstantiateDecoy()
+    public void InstantiateDecoy(IndividualTiles tileForDecoy)
     {
         GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
 
@@ -303,6 +305,7 @@ public class Mage : PlayerUnit
 
         //Pongo esta referencia para que el mage solo pueda cambiarse con sus decoys y para que pueda comprobar sus booleanos (para las habilidades)
         decoyToInstantiate.GetComponent<MageDecoy>().myMage = this;
+        decoyToInstantiate.GetComponent<MageDecoy>().UpdateInformationAfterMovement(tileForDecoy);
 
         myDecoys.Add(decoyToInstantiate);
     }

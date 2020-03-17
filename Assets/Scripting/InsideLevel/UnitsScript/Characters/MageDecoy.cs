@@ -17,7 +17,8 @@ public class MageDecoy : Mage
         //Referencia al LM y me incluyo en la lista de personajes del jugador
         LM = FindObjectOfType<LevelManager>();
         LM.charactersOnTheBoard.Add(this);
-        InitializeUnitOnTile();
+
+        InitializeHealth();
         //Referencia al UIM 
         UIM = FindObjectOfType<UIManager>();
 
@@ -28,9 +29,9 @@ public class MageDecoy : Mage
     }
 
    public override void InitializeUnitOnTile()
-    {
+   {
         base.InitializeUnitOnTile();
-    }
+   }
 
     #endregion
 
@@ -40,7 +41,6 @@ public class MageDecoy : Mage
     //Es virtual para el decoy del mago.
     protected override void OnMouseDown()
     {
-        
         if (LM.selectedCharacter != null)
         {
             if (LM.selectedCharacter == myMage && !myMage.hasMoved)
@@ -50,12 +50,8 @@ public class MageDecoy : Mage
             else
             {
                 LM.SelectUnitToAttack(GetComponent<UnitBase>());
-            }
-            
+            }   
         }
-
-     
-
     }
 
 
@@ -65,11 +61,6 @@ public class MageDecoy : Mage
         myAnimator.SetTrigger("Damage");
 
         currentHealth -= damageReceived;
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
 
         base.ReceiveDamage(damageReceived, unitAttacker);
     }
@@ -99,10 +90,9 @@ public class MageDecoy : Mage
             }
 
         }
-        
 
+        LM.charactersOnTheBoard.Remove(this);
         Destroy(gameObject);
-
     }
 
     //Es virtual para el decoy del mago.

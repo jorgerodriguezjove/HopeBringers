@@ -436,7 +436,16 @@ public class TileManager : MonoBehaviour
                             }
                         }
                         
-                        CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false, _shouldUseHeap);
+                        if (_shouldUseHeap)
+                        {
+                            CalculatePathForMovementCostWithHeap(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
+
+                        }
+                        else
+                        {
+                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
+                        }
+
 
                         if (tempCurrentPathCost <= movementUds)
                         {
@@ -480,8 +489,17 @@ public class TileManager : MonoBehaviour
                             }
 
                             //Compruebo si existe un camino hasta el tile
-                            CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false, _shouldUseHeap);
+                            if (_shouldUseHeap)
+                            {
+                                CalculatePathForMovementCostWithHeap(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
 
+                            }
+                            else
+                            {
+                                CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
+                            }
+
+                            //Debug.Log("El tile " + currentTileCheckingForMovement + "Cuesta " + tempCurrentPathCost);
 
                             if (tempCurrentPathCost <= movementUds)
                             {
@@ -509,9 +527,13 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    public void CalculatePathForMovementCost(int x, int z, bool _shouldIgnoreUnitsForRepath, bool _shouldUseHeap)
+    
+
+    public void CalculatePathForMovementCostWithHeap(int x, int z, bool _shouldIgnoreUnitsForRepath)
     {
-        openList.Clear();
+        //Stopwatch sw = new Stopwatch();
+        //sw.Start();
+
         //La variable se tiene que quedar aqui porque si no el Heap da error y pide que sea static.
         Heap<IndividualTiles> openHeap = new Heap<IndividualTiles>(MaxSize);
         closedHasSet.Clear();
@@ -520,45 +542,13 @@ public class TileManager : MonoBehaviour
         source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
         target = grid2DNode[x, z];
 
-        //Si no uso heap lo añado a la lista
-        if(!_shouldUseHeap)
-        {
-            openList.Add(source);
-        }
-
-        else
-        {
-            openHeap.Add(source);
-        }
-       
+        openHeap.Add(source);
 
         //Mientras que haya nodos que no hayan sido visitados...
-        while (openList.Count > 0)
+        while (openHeap.Count > 0)
         {
-            IndividualTiles currentNode;
-
-            //Esto solo es necesario si no uso heap
-            if (!_shouldUseHeap)
-            {
-                currentNode = openList[0];
-
-                for (int i = 0; i < openList.Count; i++)
-                {
-                    if (openList[i].CalculateFCost < currentNode.CalculateFCost ||
-                        openList[i].CalculateFCost == currentNode.CalculateFCost && openList[i].hCost < currentNode.hCost)
-                    {
-                        currentNode = openList[i];
-                    }
-                }
-
-                openList.Remove(currentNode);
-            }
-
-            //Empiezo el heap
-            else
-            {
-                currentNode = openHeap.RemoveFirst();
-            }
+            IndividualTiles currentNode = new IndividualTiles();
+            currentNode = openHeap.RemoveFirst();
 
             closedHasSet.Add(currentNode);
 
@@ -567,6 +557,7 @@ public class TileManager : MonoBehaviour
             //Si el nodo coincide con el objetivo, terminamos la busqueda.
             if (currentNode == target)
             {
+                //print(target + " fast " + sw.ElapsedMilliseconds);
                 LastPartOfPathfinding();
                 return;
             }
@@ -791,7 +782,326 @@ public class TileManager : MonoBehaviour
                     continue;
                 }
 
-                //El gigante se tiene en cuenta al no ponerle condiciones de tile vacio o tile obstaculo
+                #endregion
+
+                int newMovemntCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+
+                if (newMovemntCostToNeighbour < neighbour.gCost || !openHeap.Contains(neighbour))
+                {
+                    neighbour.gCost = newMovemntCostToNeighbour;
+                    neighbour.hCost = GetDistance(neighbour, target);
+
+                    if (neighbour.hCost > selectedCharacter.movementUds)
+                    {
+                        tempCurrentPathCost = Mathf.Infinity;
+                        return;
+                        //print("tile " + neighbour + "hcost " + neighbour.hCost);
+                    }
+                        
+
+                    neighbour.parent = currentNode;
+
+                    if (!openHeap.Contains(neighbour))
+                    {
+                        openHeap.Add(neighbour);
+                    }
+                }
+            }
+
+            //Si llega hasta aqui significa que no hay tiles a los que moverse por lo que el coste es infinito.
+            //NO PONER RETURN, puede darse el caso de que este llegando al ultimo tile de una fila y si estan todos los lados bloqueados menos el tile anterior,
+            //entraria aqui porque el tile anterior no puede revisitarlo, asi que cortariamos el proceso de seguir comprobando el resto de tiles de Open antes de tiempo.
+
+            if (openHeap.Count == 0)
+            {
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //ES MUY POSIBLE QUE ESTE SEGUNDO IF HAGA LO MISMO QUE EL RETURN Y ROMPA LO QUE PONGO EN EL COMENTARIO DE ARRIBA
+                if (!_shouldIgnoreUnitsForRepath && !recalculatePathAtTheEndOfTheFunction)
+                {
+                    recalculatePathAtTheEndOfTheFunction = true;
+                }
+
+                else if (_shouldIgnoreUnitsForRepath)
+                {
+                    recalculatePathAtTheEndOfTheFunction = false;
+                    tempCurrentPathCost = Mathf.Infinity;
+                }
+
+            }
+        }
+
+        if (recalculatePathAtTheEndOfTheFunction)
+        {
+            RecalculateUnreachablePath(x, z);
+        }
+    }
+
+    public void CalculatePathForMovementCost(int x, int z, bool _shouldIgnoreUnitsForRepath)
+    {
+        //Stopwatch sw = new Stopwatch();
+   
+        //sw.Start();
+
+        openList.Clear();
+        //La variable se tiene que quedar aqui porque si no el Heap da error y pide que sea static.
+        closedHasSet.Clear();
+
+        //Origen y target
+        source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
+        target = grid2DNode[x, z];
+
+        openList.Add(source);
+
+
+        //Mientras que haya nodos que no hayan sido visitados...
+        while (openList.Count > 0)
+        {
+            IndividualTiles currentNode = new IndividualTiles();
+
+            currentNode = openList[0];
+
+            for (int i = 0; i < openList.Count; i++)
+            {
+                if (openList[i].CalculateFCost < currentNode.CalculateFCost ||
+                    openList[i].CalculateFCost == currentNode.CalculateFCost && openList[i].hCost < currentNode.hCost)
+                {
+                    currentNode = openList[i];
+                }
+            }
+
+            openList.Remove(currentNode);
+            closedHasSet.Add(currentNode);
+
+            #region LAST_PART
+
+            //Si el nodo coincide con el objetivo, terminamos la busqueda.
+            if (currentNode == target)
+            {
+                //print(target + " SLOW " + sw.ElapsedMilliseconds);
+                LastPartOfPathfinding();
+                return;
+            }
+
+            #endregion
+
+            foreach (IndividualTiles neighbour in grid2DNode[currentNode.tileX, currentNode.tileZ].neighbours)
+            {
+
+                //No le he puesto !_shouldIgnoreUnitsForRepath. Solo está en el enemigo normal
+                #region DRAGON
+                //Dragón.
+                if (selectedCharacter.GetComponent<BossMultTile>())
+                {
+                    if (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
+                    {
+                        continue;
+                    }
+
+                    //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
+                    else if (neighbour != target && neighbour.unitOnTile != null || neighbour.unitOnTile != null && neighbour.unitOnTile.GetComponent<EnemyUnit>())
+                    {
+                        //Solo hago continue si la unidad no es el propio dragón,
+                        if (neighbour.unitOnTile != selectedCharacter)
+                        {
+                            continue;
+                        }
+                    }
+
+                    //Guardo la altura del tile para comprobar que los 8 tiles que le rodean tienen la misma altura
+                    currentDragonNeighbourCheckingHeight = neighbour.height;
+
+                    surroundingObstacles.Clear();
+                    shouldSkipSurroundingTile = false;
+                    targetFounInNeighbourTiles = false;
+                    noTargetInNeighbours = true;
+
+                    if (neighbour != target)
+                    {
+                        foreach (IndividualTiles surrTile in neighbour.surroundingNeighbours)
+                        {
+                            //Check 1 por si el tile no es valido
+                            if (surrTile == null || surrTile.isEmpty || surrTile.isObstacle || Mathf.Abs(surrTile.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
+                            {
+                                surroundingObstacles.Add(surrTile);
+                                //shouldSkipSurroundingTile = true;
+                                continue;
+                            }
+
+                            //Check 2 por si el tile no es valido para colocarse
+                            else if (surrTile != target && surrTile.unitOnTile != null || surrTile.unitOnTile != null && surrTile.unitOnTile.GetComponent<EnemyUnit>())
+                            {
+                                //Solo hago continue si la unidad no es el propio dragón,
+                                if (surrTile.unitOnTile != selectedCharacter)
+                                {
+                                    surroundingObstacles.Add(surrTile);
+                                    //shouldSkipSurroundingTile = true;
+                                    continue;
+                                }
+                            }
+
+                            numberOfNeighboursWithDifferentHeight = 0;
+
+                            #region HEIGHTS
+                            ////Si la altura del tile surrounding no coincide con el del neighbour cuenta como si fuese un obstáculo.
+                            //if (surrTile.height != currentDragonNeighbourCheckingHeight)
+                            //{
+                            //    //COMPROBAR SI ESTOS COMENTARIOS ESTÁ BIEN
+                            //    //En estos for funciona asi:
+                            //    //neighbour = tile al que se va a mover el centro del dragón.
+                            //    //neighbour.neighbours[i] es el primer tile con cambio de altura y que tiene 3 vecinos con su misma altura
+                            //    //neighbour.neighbours[i].neighbours[j] es cada uno de estos vecinos que tienen la misma altura
+                            //    //neighbour.neighbours[i].neighbours[j].surroundingNeighbours[k] cada uno de los tiles surrounding de estos vecinos con la misma altura 
+
+                            //    //Compruebo si el tile con diferente altura es adyacente al tile que estoy comprobando
+                            //    for (int i = 0; i < surrTile.neighbours.Count; i++)
+                            //    {
+                            //        //Sólo puede existir un vecino que sea igual al surrTile si son adyacentes
+                            //        if (surrTile.neighbours[i] == neighbour)
+                            //        {
+                            //            //Si es adyacente entonces paso a la siguiente fase.
+                            //            //Compruebo si este tile con diferente altura que es adyacente tiene 3 vecinos con su misma altura
+                            //            //Aunque este for sea igual que el anterior necesito volver a hacerlo ya que necesito saber en orden que es adyacente y luego si tiene 3 tiles a la misma altura.
+                            //            for (int j = 0; j < surrTile.neighbours.Count; j++)
+                            //            {
+                            //                //Comprobar si hay 3 a la misma altura
+                            //                if (surrTile.neighbours[j].height == currentDragonNeighbourCheckingHeight)
+                            //                {
+                            //                    continue;
+                            //                }
+
+                            //                else
+                            //                {
+                            //                    numberOfNeighboursWithDifferentHeight++;
+                            //                }
+                            //            }
+
+                            //            //Si únicamente hay 1 tile con diferente altura entonces paso a la siguiente fase
+                            //            if (numberOfNeighboursWithDifferentHeight == 1)
+                            //            {
+                            //                for (int j = 0; j < surrTile.neighbours.Count; j++)
+                            //                {
+                            //                    for (int k = 0; k < surrTile.neighbours[j].surroundingNeighbours.Count; k++)
+                            //                    {
+                            //                        if (surrTile.neighbours[j].surroundingNeighbours[k].height != surrTile.height)
+                            //                        {
+                            //                            shouldSkipSurroundingTile = true;
+
+                            //                            //Manual break;
+                            //                            j = 100;
+                            //                            break;
+                            //                        }
+                            //                    }
+
+                            //                    //Si llega aqui puede aceptar el tile
+                            //                    //Manual break
+                            //                    i = 100;
+                            //                    break;
+                            //                }
+                            //            }
+
+                            //            //Si hay más de uno entonces es un obstáculo y salgo del for
+                            //            else
+                            //            {
+                            //                break;
+                            //            }
+                            //        }
+                            //    }
+
+                            //    //Si sale del for significa que entonces no era adyacente y entonces cuenta como obstáculo sin mas.
+                            //    surroundingObstacles.Add(surrTile);
+
+                            //    //CREO QUE SOBRA Y JODE LA DETECCIÓN DEL TARGET
+                            //    //continue;
+                            //}
+                            #endregion
+
+                            for (int i = 0; i < neighbour.neighbours.Count; i++)
+                            {
+                                //Si el target se encuentra entre los tiles NEIGHBOUR NO SURROUNDING marco el bool para que la excepción de obstáculo vecino a target se tenga en cuenta.
+                                //Surrounding no puede ser porque la excepción solo se aplica en los tiles vecinos, no en las diagonales
+                                if (neighbour.neighbours[i] == target)
+                                {
+                                    targetFounInNeighbourTiles = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (targetFounInNeighbourTiles)
+                    {
+                        for (int i = 0; i < surroundingObstacles.Count; i++)
+                        {
+                            for (int j = 0; j < surroundingObstacles[i].neighbours.Count; j++)
+                            {
+                                //Si uno de los vecinos del tile con obstáculo es el target entonces no me impide colocarme en este tile y paso al siguiente.
+                                //Esto es porque solo pueden existir simultaneamente 2 tiles que sean vecinos del target y al mismo tiempo surrounding del tile que estoy comprobando
+                                //En ambos casos ninguno de estos tiles impide que me coloque para atacar al target
+                                if (surroundingObstacles[i].neighbours[j] == target)
+                                {
+                                    noTargetInNeighbours = false;
+                                    break;
+                                }
+                            }
+
+                            //Como al resetearlo lo pongo en verdadero, si no se ha puesto en falso significa que no ha encontrado vecino con target.
+                            if (noTargetInNeighbours)
+                            {
+                                //Si he encontrado un obstáculo que no es vecino del target significa que no puedo colocarme en este tile
+                                shouldSkipSurroundingTile = true;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        if (surroundingObstacles.Count > 0)
+                        {
+                            shouldSkipSurroundingTile = true;
+                        }
+                    }
+
+                    if (shouldSkipSurroundingTile)
+                    {
+                        continue;
+                    }
+                }
+
+                #endregion
+
+                #region ENEMIGOS_Y_JUGADOR
+
+                //Goblin Y  gigante.
+                //Importante que sea else if para que el dragón no entre en la condición
+                else if (selectedCharacter.GetComponent<EnemyUnit>())
+                {
+                    if (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || closedHasSet.Contains(neighbour) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove)
+                    {
+                        //if (neighbour.unitOnTile != null)
+                        //{
+                        //    Debug.Log( "First" + neighbour.unitOnTile.name);
+                        //}
+                        continue;
+                    }
+
+                    //Exceptuando el target que siempre va a tener una unidad, compruebo si los tiles para formar el path no están ocupados por enemigos
+                    else if (!_shouldIgnoreUnitsForRepath && (neighbour != target && neighbour.unitOnTile != null || neighbour.unitOnTile != null && neighbour.unitOnTile.GetComponent<EnemyUnit>()))
+                    {
+                        //if (neighbour.unitOnTile != null)
+                        //{
+                        //    Debug.Log("Second" + neighbour.unitOnTile.name);
+                        //}
+
+                        continue;
+                    }
+                }
+
+                //Player
+                if ((selectedCharacter.GetComponent<PlayerUnit>() && (neighbour == null || neighbour.isEmpty || neighbour.isObstacle || neighbour.unitOnTile != null)) || Mathf.Abs(neighbour.height - grid2DNode[currentNode.tileX, currentNode.tileZ].height) > selectedCharacter.maxHeightDifferenceToMove || closedHasSet.Contains(neighbour))
+                {
+                    continue;
+                }
 
                 #endregion
 
@@ -809,12 +1119,12 @@ public class TileManager : MonoBehaviour
                         openList.Add(neighbour);
                     }
                 }
+
             }
 
             //Si llega hasta aqui significa que no hay tiles a los que moverse por lo que el coste es infinito.
             //NO PONER RETURN, puede darse el caso de que este llegando al ultimo tile de una fila y si estan todos los lados bloqueados menos el tile anterior,
             //entraria aqui porque el tile anterior no puede revisitarlo, asi que cortariamos el proceso de seguir comprobando el resto de tiles de Open antes de tiempo.
-            
 
             if (openList.Count == 0)
             {
@@ -830,7 +1140,7 @@ public class TileManager : MonoBehaviour
                     recalculatePathAtTheEndOfTheFunction = false;
                     tempCurrentPathCost = Mathf.Infinity;
                 }
-              
+
             }
         }
 
@@ -838,22 +1148,22 @@ public class TileManager : MonoBehaviour
         {
             RecalculateUnreachablePath(x, z);
         }
-
     }
+
 
     //Este bool indica que el objetivo que busca el path es inalcanzable y que por tanto al final de la función tiene que llamar a recalcular el path sin tener en cuenta los enemigos
     private bool recalculatePathAtTheEndOfTheFunction;
 
     public void RecalculateUnreachablePath(int x, int z)
     {
-        CalculatePathForMovementCost(x, z, true, false);
+        CalculatePathForMovementCost(x, z, true);
 
         //Le resto 2 porque no quiero tener en cuenta el ultimo tile ya que es en el que esta el player y otro más porque count sin más se sale de la lista (ya que el último elemento es siempre count-1).
         for (int i = currentPath.Count-2; i > 0; i--)
         {
             if (currentPath[i].unitOnTile != null)
             {
-                CalculatePathForMovementCost(currentPath[i].tileX, currentPath[i].tileZ, false, false);
+                CalculatePathForMovementCost(currentPath[i].tileX, currentPath[i].tileZ, false);
                 return;
             }
         }
@@ -894,8 +1204,6 @@ public class TileManager : MonoBehaviour
 
         //Le damos la vuelta a la lista para que vaya desde el orgien hasta el objetivo.
         currentPath.Reverse();
-
-        //Debug.Log("REAL " + currentPath.Count);
 
         //Calcular coste del path
         for (int i = 0; i < currentPath.Count; i++)
@@ -946,7 +1254,7 @@ public class TileManager : MonoBehaviour
 
         for (int i = 0; i < playersOnTheBoard.Length; i++)
         {
-            CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ, false, false);
+            CalculatePathForMovementCost(playersOnTheBoard[i].myCurrentTile.tileX, playersOnTheBoard[i].myCurrentTile.tileZ, false);
 
             if (tempCurrentObjectiveCost == 0 || tempCurrentObjectiveCost >= tempCurrentPathCost)
             {

@@ -325,7 +325,6 @@ public class UIManager : MonoBehaviour
 
 	public void CheckActionsAvaliable()
 	{
-
 		numberOfCharactersFinished = 0;
 		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
@@ -341,9 +340,7 @@ public class UIManager : MonoBehaviour
 			else 
 			{
 				Debug.Log(LM.charactersOnTheBoard[i] + " Ha pasado ");
-				
 			}
-			
 		}
 
 		

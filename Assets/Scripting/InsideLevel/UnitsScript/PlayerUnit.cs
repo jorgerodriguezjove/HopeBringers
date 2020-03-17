@@ -600,8 +600,7 @@ public class PlayerUnit : UnitBase
         {
             damageReceived -= knightDef.shieldDef;
         }
-        
-
+       
         if (damageReceived < 0)
         {
             damageReceived = 0;
@@ -618,13 +617,12 @@ public class PlayerUnit : UnitBase
 
             }
         }
+
         else
         {
             currentHealth -= damageReceived;
         }
        
-
-
         Debug.Log("Soy " + name + " me han hecho daño");
 
         if (currentHealth <= 0)

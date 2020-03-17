@@ -923,7 +923,7 @@ public class LevelManager : MonoBehaviour
                     if (tileToMove == tilesAvailableForMovement[i] || tileToMove == selectedCharacter.myCurrentTile)
                     {
                         //Calculo el path de la unidad
-                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ, false, false);
+                        TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ, false);
                         selectedCharacter.myCurrentTile.ColorDeselect();
 
                         //Aviso a la unidad de que se tiene que mover
