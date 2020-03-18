@@ -198,6 +198,23 @@ public class EnemyUnit : UnitBase
                     myCurrentEnemyState = enemyState.Ended;
                 }
 
+                //Compruebo si los tiles de daño tienen que hacer daño. 
+                for (int i = 0; i < LM.damageTilesInBoard.Count; i++)
+                {
+                    if (LM.damageTilesInBoard[i].unitToDoDamage != null 
+                        && LM.damageTilesInBoard[i].unitToDoDamage.GetComponent<EnemyUnit>() != null
+                        && LM.damageTilesInBoard[i].unitToDoDamage.GetComponent<EnemyUnit>() == this)
+                    {
+                       
+
+                            LM.damageTilesInBoard[i].CheckHasToDoDamage();
+                            LM.damageTilesInBoard[i].damageDone = true;
+                            break;
+                        
+                        
+                    }
+                }
+
                 break;
 
             case (enemyState.Moving):

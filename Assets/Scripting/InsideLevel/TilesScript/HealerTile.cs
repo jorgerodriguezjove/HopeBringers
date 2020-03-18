@@ -69,7 +69,7 @@ public class HealerTile : DamageTile
     public override void CheckHasToDoDamage()
     {
 
-        //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
+        //Estas líneas las añado para comprobar si el druida tiene la mejora de la pasiva 1
         Druid druidUpgraded = FindObjectOfType<Druid>();
   
         if (hasUnit && !damageDone)
@@ -101,22 +101,12 @@ public class HealerTile : DamageTile
                 }
 
             }
-          
 
-           
-            
+
+
+            damageDone = true;
         }
     }
-
-    public override void Update()
-    {
-        if (LM.currentLevelState == LevelManager.LevelState.PlayerPhase)
-        {
-            damageDone = false;
-        }
-    }
-
-
     #region INTERACTION
 
     private void OnMouseEnter()

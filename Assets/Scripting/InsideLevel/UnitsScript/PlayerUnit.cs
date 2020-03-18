@@ -161,72 +161,91 @@ public class PlayerUnit : UnitBase
     //Reseteo las variables
     public void ResetUnitState()
     {
-        //Añado esto para stunnear a los enemigos 
-        if (!isStunned)
+
+        //Compruebo si los tiles de daño tienen que hacer daño. 
+        for (int i = 0; i < LM.damageTilesInBoard.Count; i++)
         {
-            turnsWithBuffOrDebuff--;
-            if (turnsWithBuffOrDebuff <= 0)
+            if (LM.damageTilesInBoard[i].unitToDoDamage != null 
+                && LM.damageTilesInBoard[i].unitToDoDamage.GetComponent<PlayerUnit>() != null 
+                && LM.damageTilesInBoard[i].unitToDoDamage.GetComponent<PlayerUnit>() == this)
             {
-                BuffbonusStateDamage = 0;
+                
+                LM.damageTilesInBoard[i].CheckHasToDoDamage();
+                LM.damageTilesInBoard[i].damageDone = true;
+                break;
             }
-
-            if (arrowIndicator != null)
-            {
-                arrowIndicator.SetActive(true);
-            }            
-            hasMoved = false;
-            if (movementTokenInGame != null)
-            {
-                movementTokenInGame.SetActive(true);
-            }            
-            hasAttacked = false;
-            if (attackTokenInGame != null)
-            {
-                attackTokenInGame.SetActive(true);
-            }
-         
-            //Refresco de los tokens para resetearlos en pantalla
-            UIM.RefreshTokens();
-            isMovingorRotating = false;
-            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
-            hasUsedExtraTurn = false;
         }
-        else
+        if (!isDead)
         {
-            turnsWithBuffOrDebuff--;
-            if (turnsWithBuffOrDebuff <= 0)
-            {
-                BuffbonusStateDamage = 0;
-            }
-            if (arrowIndicator != null)
-            {
-                arrowIndicator.SetActive(false);
-            }
-            hasMoved = true;
 
-            if (movementTokenInGame != null)
+            //Añado esto para stunnear a los enemigos 
+            if (!isStunned)
             {
-                movementTokenInGame.SetActive(false);
-            }
-            hasAttacked = true;
-            if (attackTokenInGame != null)
-            {
-                attackTokenInGame.SetActive(false);
-            }
-            //Refresco de los tokens para resetearlos en pantalla
-            UIM.RefreshTokens();
-            isMovingorRotating = false;
-            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
-            hasUsedExtraTurn = false;
+                turnsWithBuffOrDebuff--;
+                if (turnsWithBuffOrDebuff <= 0)
+                {
+                    BuffbonusStateDamage = 0;
+                }
 
-            if (turnStunned <= 0)
-            {
-                isStunned = false;
-                turnStunned = 0;
+                if (arrowIndicator != null)
+                {
+                    arrowIndicator.SetActive(true);
+                }
+                hasMoved = false;
+                if (movementTokenInGame != null)
+                {
+                    movementTokenInGame.SetActive(true);
+                }
+                hasAttacked = false;
+                if (attackTokenInGame != null)
+                {
+                    attackTokenInGame.SetActive(true);
+                }
+
+                //Refresco de los tokens para resetearlos en pantalla
+                UIM.RefreshTokens();
+                isMovingorRotating = false;
+                unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+                hasUsedExtraTurn = false;
             }
-            turnStunned--;
+            else
+            {
+                turnsWithBuffOrDebuff--;
+                if (turnsWithBuffOrDebuff <= 0)
+                {
+                    BuffbonusStateDamage = 0;
+                }
+                if (arrowIndicator != null)
+                {
+                    arrowIndicator.SetActive(false);
+                }
+                hasMoved = true;
+
+                if (movementTokenInGame != null)
+                {
+                    movementTokenInGame.SetActive(false);
+                }
+                hasAttacked = true;
+                if (attackTokenInGame != null)
+                {
+                    attackTokenInGame.SetActive(false);
+                }
+                //Refresco de los tokens para resetearlos en pantalla
+                UIM.RefreshTokens();
+                isMovingorRotating = false;
+                unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
+                hasUsedExtraTurn = false;
+
+                if (turnStunned <= 0)
+                {
+                    isStunned = false;
+                    turnStunned = 0;
+                }
+                turnStunned--;
+            }
+
         }
-      
+
     }
 
     //La unidad ha atacado y por tanto no puede hacer nada más.

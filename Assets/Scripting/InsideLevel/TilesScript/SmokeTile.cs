@@ -45,6 +45,7 @@ public class SmokeTile : DamageTile
     {
         if (unitOnTile.GetComponent<UnitBase>())
         {
+            unitToDoDamage.GetComponent<UnitBase>().isHidden = false;
             unitToDoDamage = null;
             hasUnit = false;
         }
@@ -56,12 +57,12 @@ public class SmokeTile : DamageTile
         {
             if (unitToDoDamage.GetComponent<Druid>())
             {
-
+                damageDone = true;
             }
             else
             {
                 Debug.Log(unitToDoDamage);
-                unitToDoDamage.GetComponent<UnitBase>().ReceiveDamage(damageToDo, null);
+                
 
                 damageDone = true;
                 Debug.Log("DAMAGE DONE");
@@ -71,12 +72,5 @@ public class SmokeTile : DamageTile
         }
     }
 
-    public override void Update()
-    {
-        if (LM.currentLevelState == LevelManager.LevelState.PlayerPhase)
-        {
-            damageDone = false;
-        }
-    }
 
 }

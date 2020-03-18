@@ -99,8 +99,9 @@ public class DamageTile : MonoBehaviour
 
 
 	public virtual void Update()
-	{
-		if (LM.currentLevelState == LevelManager.LevelState.PlayerPhase)
+	{  
+        if (LM.currentLevelState == LevelManager.LevelState.PlayerPhase
+            || LM.currentLevelState == LevelManager.LevelState.EnemyPhase)
 		{
 			damageDone = false;
 		}

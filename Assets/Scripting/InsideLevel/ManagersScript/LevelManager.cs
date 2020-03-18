@@ -1173,7 +1173,7 @@ public class LevelManager : MonoBehaviour
             {
                 charactersOnTheBoard[i].ResetUnitState();
 
-                if (charactersOnTheBoard[i].GetComponent<Berserker>())
+                if (charactersOnTheBoard[i] != null && charactersOnTheBoard[i].GetComponent<Berserker>() != null && charactersOnTheBoard[i].GetComponent<Berserker>())
                 {
                     charactersOnTheBoard[i].GetComponent<Berserker>().RageChecker();
                 }
@@ -1198,12 +1198,6 @@ public class LevelManager : MonoBehaviour
     {
         //Hago aparecer el botón de fast forward y desaparecer el de undo
         UIM.HideShowEnemyUi(true);
-
-        //Compruebro si los tiles de daño tienen que hacer daño. Lo añado aquí porque si no salía un bug al morir una unidad mediante un tile de daño, ya que la ordenaba y luego la intentaba buscar.
-        for (int i = 0; i < damageTilesInBoard.Count; i++)
-        {
-            damageTilesInBoard[i].CheckHasToDoDamage();
-        } 
 
         UpdateUnitsOrder();
 

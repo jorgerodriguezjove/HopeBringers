@@ -18,9 +18,13 @@ public class MageDecoy : Mage
         LM = FindObjectOfType<LevelManager>();
         LM.charactersOnTheBoard.Add(this);
 
+        StartCoroutine("WaitToSetTile");
+        
+
         InitializeHealth();
         //Referencia al UIM 
         UIM = FindObjectOfType<UIManager>();
+
 
         //Inicializo componente animator
         myAnimator = GetComponent<Animator>();
@@ -28,10 +32,13 @@ public class MageDecoy : Mage
         currentHealth = maxHealth;
     }
 
-   public override void InitializeUnitOnTile()
-   {
-        base.InitializeUnitOnTile();
-   }
+    IEnumerator WaitToSetTile()
+    {
+        yield return new WaitForSeconds(2f);
+
+        InitializeUnitOnTile();
+    }
+
 
     #endregion
 

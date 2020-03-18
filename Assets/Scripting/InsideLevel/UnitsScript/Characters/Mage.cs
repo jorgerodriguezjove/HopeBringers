@@ -301,11 +301,12 @@ public class Mage : PlayerUnit
     {
         GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
 
-       // decoyToInstantiate.GetComponent<MageDecoy>().InitializeUnitOnTile();
+        
 
         //Pongo esta referencia para que el mage solo pueda cambiarse con sus decoys y para que pueda comprobar sus booleanos (para las habilidades)
         decoyToInstantiate.GetComponent<MageDecoy>().myMage = this;
-        decoyToInstantiate.GetComponent<MageDecoy>().UpdateInformationAfterMovement(tileForDecoy);
+        //decoyToInstantiate.GetComponent<MageDecoy>().InitializeUnitOnTile();
+        //decoyToInstantiate.GetComponent<MageDecoy>().UpdateInformationAfterMovement(tileForDecoy);
 
         myDecoys.Add(decoyToInstantiate);
     }
