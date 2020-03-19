@@ -61,7 +61,8 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     public GameObject thisUnitOrder;
 
-    [HideInInspector]
+    //QUITAR SERIALIZE
+    [SerializeField]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Bool que sirve para que la corrutina solo se llame una vez (por tema de que el state machine esta en el update y si no lo haría varias veces)

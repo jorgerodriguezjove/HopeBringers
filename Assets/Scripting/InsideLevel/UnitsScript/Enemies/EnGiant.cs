@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -212,6 +212,14 @@ public class EnGiant : EnemyUnit
         {
             myCurrentEnemyState = enemyState.Moving;
         }
+
+        else if (hasMoved)
+        {
+            myCurrentEnemyState = enemyState.Ended;
+        }
+
+        Debug.Log("hasmoved " + hasMoved);
+        Debug.Log("hasattacked " + hasAttacked);
     }
 
     public override void MoveUnit()

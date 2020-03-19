@@ -1197,6 +1197,8 @@ public class TileManager : MonoBehaviour
                 }
 
                 Debug.Log(curr.name);
+
+                Debug.LogError("ERROR DE LOOP. TILES REPETIDOS EN EL CURRENTPATH");
                 break;
             }
         }
