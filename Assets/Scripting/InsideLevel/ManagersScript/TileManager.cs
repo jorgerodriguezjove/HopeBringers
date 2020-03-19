@@ -788,16 +788,15 @@ public class TileManager : MonoBehaviour
 
                 if (newMovemntCostToNeighbour < neighbour.gCost || !openHeap.Contains(neighbour))
                 {
-                    neighbour.gCost = newMovemntCostToNeighbour;
-                    neighbour.hCost = GetDistance(neighbour, target);
-
-                    if (neighbour.hCost > selectedCharacter.movementUds)
+                    if (newMovemntCostToNeighbour > selectedCharacter.movementUds)
                     {
                         tempCurrentPathCost = Mathf.Infinity;
                         return;
                         //print("tile " + neighbour + "hcost " + neighbour.hCost);
                     }
-                        
+
+                    neighbour.gCost = newMovemntCostToNeighbour;
+                    neighbour.hCost = GetDistance(neighbour, target);
 
                     neighbour.parent = currentNode;
 
@@ -1297,6 +1296,10 @@ public class TileManager : MonoBehaviour
             if (tilesInZ == 0)
             {
                 //Compruebo si existe un tile con esas coordenadas
+                Debug.Log(selectedUnit);
+                Debug.Log(selectedUnit.myCurrentTile);
+
+
                 if (selectedUnit.myCurrentTile.tileX + i < gridSizeX && selectedUnit.myCurrentTile.tileX + i >= 0 &&
                     selectedUnit.myCurrentTile.tileZ < gridSizeZ && selectedUnit.myCurrentTile.tileZ >= 0)
                 {

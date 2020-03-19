@@ -21,6 +21,12 @@ public class EnSkeleton : EnemyUnit
     //Indica el summoner de esta unidad para luego restarle a las unidades máximas al morir
     public EnSummoner whoIsMySummoner;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        FindAndSetFirstTile();
+    }
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
