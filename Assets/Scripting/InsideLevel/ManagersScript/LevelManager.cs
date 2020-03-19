@@ -436,6 +436,11 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
+            else if (hoverUnit.GetComponent<BossMultTile>() || hoverUnit.GetComponent<DarkLord>())
+            {
+                Debug.Log("hacer qeu aparezca interrogación");
+            }
+
             //Goblin, gigante, boss y demás
             else
             {
@@ -804,9 +809,10 @@ public class LevelManager : MonoBehaviour
         DeselectEnemy();
    
         selectedEnemy = _enemySelected;
-        CheckIfHoverShouldAppear(_enemySelected);
-        UIM.ShowUnitInfo(_unitInfo, _enemySelected);
 
+        CheckIfHoverShouldAppear(_enemySelected);
+
+        UIM.ShowUnitInfo(_unitInfo, _enemySelected);
         _enemySelected.SelectedFunctionality();
 		UIM.MoveScrollToEnemy(_enemySelected);
 	}
@@ -1213,11 +1219,9 @@ public class LevelManager : MonoBehaviour
 
             counterForEnemiesOrder = 0;
 
-            //Focus camera
-            
+            //Focus en enemigo si está despierto
             camRef.SetCameraMovable(false, true);
             camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
-
 
             //Turn Start
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
@@ -1241,9 +1245,11 @@ public class LevelManager : MonoBehaviour
             //Bajo la lista de scroll
             UIM.ScrollUpOnce();
 
-            //Empieza el turno enemigo
+            //Focus en enemigo si está despierto
             camRef.SetCameraMovable(false, true);
             camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+
+            //Empieza el turno del siguiente enemigo
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
     }

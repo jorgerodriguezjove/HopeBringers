@@ -18,25 +18,15 @@ public class MageDecoy : Mage
         LM = FindObjectOfType<LevelManager>();
         LM.charactersOnTheBoard.Add(this);
 
-        StartCoroutine("WaitToSetTile");
-        
+        InitializeUnitOnTile();
 
-        InitializeHealth();
         //Referencia al UIM 
         UIM = FindObjectOfType<UIManager>();
-
 
         //Inicializo componente animator
         myAnimator = GetComponent<Animator>();
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
         currentHealth = maxHealth;
-    }
-
-    IEnumerator WaitToSetTile()
-    {
-        yield return new WaitForSeconds(2f);
-
-        InitializeUnitOnTile();
     }
 
 
@@ -98,6 +88,7 @@ public class MageDecoy : Mage
 
         }
 
+        myMage.myDecoys.Remove(gameObject);
         LM.charactersOnTheBoard.Remove(this);
         Destroy(gameObject);
     }

@@ -17,7 +17,7 @@ public class Mage : PlayerUnit
 
     //Lista con decoys que tiene este mago.
     [SerializeField]
-    private List<GameObject> myDecoys = new List<GameObject>();
+    public List<GameObject> myDecoys = new List<GameObject>();
 
     //Número máximo de decoys que se pueden instanciar
     [SerializeField]
@@ -73,7 +73,6 @@ public class Mage : PlayerUnit
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
-
 
         if (unitToAttack.isMarked)
         {
@@ -141,8 +140,6 @@ public class Mage : PlayerUnit
 
 
             
-
-
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
@@ -300,8 +297,6 @@ public class Mage : PlayerUnit
     public void InstantiateDecoy(IndividualTiles tileForDecoy)
     {
         GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
-
-        
 
         //Pongo esta referencia para que el mage solo pueda cambiarse con sus decoys y para que pueda comprobar sus booleanos (para las habilidades)
         decoyToInstantiate.GetComponent<MageDecoy>().myMage = this;

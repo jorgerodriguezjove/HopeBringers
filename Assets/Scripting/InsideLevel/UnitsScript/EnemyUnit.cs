@@ -13,22 +13,25 @@ public class EnemyUnit : UnitBase
     public int rangeOfAction;
 
     //Tiempo antes de empezar a buscar, antes de empezar a moverse, antes de hacer la animación de ataque y antes de pasar al siguiente enemigo
+    //Estas variables solo guardan el valor en el editor para ponerselo a las variables current
     [SerializeField]
-    private float timeWaitingBeforeStarting;
+    protected float timeWaitingBeforeStarting;
     [SerializeField]
-    private float timeWaitingBeforeMovement;
+    protected float timeWaitingBeforeMovement;
     [SerializeField]
     protected float timeWaitingBeforeAttacking;
     [SerializeField]
-    private float timeWaitingBeforeEnding;
+    protected float timeWaitingBeforeEnding;
 
     //La variable de time for movement que esta en unitbase determina el tiempo que tarda por tile al moverse.
     //Esta variable sirve para que cuando le de al skip el tiempo pase a ser 0 para que vaya rápido
     protected float currentTimeForMovement;
 
-    //La variable timeWaitingAttacking ESTA MAL NOMBRADA y sirve de espera después de moverse haya atacado o no
-    //Rsta variable al igual que currentTimeForMovement sirve para acelerar el turno enemigo
-    protected float currentTimeWaitinAttacking;
+    //Estas variables son las que de verdad se usan en las funciones y pueden valer 0 por el skip o el valor de su version sin el current
+    protected float currentTimeWaitingBeforeStarting;
+    protected float currentTimeWaitinBeforeMovement;
+    protected float currentTimeWaitinBeforeAttacking;
+    protected float currentTimeWaitingBeforeEnding;
 
     //Estado actual del enemigo
     [SerializeField]
@@ -138,7 +141,12 @@ public class EnemyUnit : UnitBase
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         currentTimeForMovement = timeMovementAnimation;
-        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
+
+        Debug.Log(2);
+        currentTimeWaitingBeforeStarting = timeWaitingBeforeStarting;
+        currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
+        currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
+        currentTimeWaitingBeforeEnding = timeWaitingBeforeEnding;
     }
 
    
@@ -262,13 +270,14 @@ public class EnemyUnit : UnitBase
 
         if (myCurrentEnemyState == enemyState.Waiting)
         {
-            yield return new WaitForSeconds(timeWaitingBeforeStarting);
+            Debug.Log(3);
+            yield return new WaitForSeconds(currentTimeWaitingBeforeStarting);
             myCurrentEnemyState = enemyState.Searching;
         }
 
         if (myCurrentEnemyState == enemyState.Moving)
         {
-            yield return new WaitForSeconds(timeWaitingBeforeMovement);
+            yield return new WaitForSeconds(currentTimeWaitinBeforeMovement);
             MoveUnit();
         }
 
@@ -280,7 +289,7 @@ public class EnemyUnit : UnitBase
 
         else if (myCurrentEnemyState == enemyState.Ended)
         {
-            yield return new WaitForSeconds(timeWaitingBeforeEnding);
+            yield return new WaitForSeconds(currentTimeWaitingBeforeEnding);
             arrowEnemyIndicator.SetActive(false);
             FinishMyActions();
         }
@@ -329,6 +338,7 @@ public class EnemyUnit : UnitBase
     //Función que se encarga de hacer que el personaje este despierto/alerta
     public void AlertEnemy()
     {
+
         haveIBeenAlerted = true;
         Destroy(sleepParticle);
         rangeOfAction = 1000;
@@ -382,8 +392,13 @@ public class EnemyUnit : UnitBase
         myCurrentEnemyState = enemyState.Waiting;
 
         //Me aseguro de que el tiempo de movimiento vuelve a la normalidad por si le ha dado a acelerar
-        currentTimeForMovement = timeMovementAnimation;
-        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
+        //currentTimeForMovement = timeMovementAnimation;
+
+        Debug.Log(4);
+        //currentTimeWaitingBeforeStarting = timeWaitingBeforeStarting;
+        //currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
+        //currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
+        //currentTimeWaitingBeforeEnding = timeWaitingBeforeEnding;
 
         if (myPortrait != null)
         {
@@ -396,7 +411,13 @@ public class EnemyUnit : UnitBase
     public void SkipAnimation()
     {
         currentTimeForMovement = 0;
-        currentTimeWaitinAttacking = 0;
+
+        Debug.Log(5);
+        currentTimeWaitingBeforeStarting = 0;
+        currentTimeWaitinBeforeMovement = 0;
+        currentTimeWaitinBeforeAttacking = 0;
+        currentTimeWaitingBeforeEnding = 0;
+
     }
 
     #endregion
@@ -417,6 +438,7 @@ public class EnemyUnit : UnitBase
             {
                 if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                 {
+
                     LM.SelectEnemy(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
                 }
             }
@@ -705,7 +727,12 @@ public class EnemyUnit : UnitBase
 
         //Me aseguro de que el tiempo de movimiento vuelve a la normalidad por si le ha dado a acelerar
         currentTimeForMovement = timeMovementAnimation;
-        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
+
+        Debug.Log(6);
+        currentTimeWaitingBeforeStarting = timeWaitingBeforeStarting;
+        currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
+        currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
+        currentTimeWaitingBeforeEnding = timeWaitingBeforeEnding;
 
         if (myPortrait != null)
         {
@@ -869,8 +896,7 @@ public class EnemyUnit : UnitBase
     {
         //Debug.Log("waiting");
 
-
-        yield return new WaitForSeconds(timeWaitingBeforeAttacking);
+        yield return new WaitForSeconds(currentTimeWaitinBeforeAttacking);
         myAnimator.SetTrigger("Attack");
         Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
 

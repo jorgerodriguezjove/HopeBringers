@@ -82,7 +82,14 @@ public class DarkLord : EnemyUnit
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
         currentTimeForMovement = timeMovementAnimation;
-        currentTimeWaitinAttacking = timeWaitingBeforeAttacking;
+
+
+        Debug.Log(1);
+        currentTimeWaitingBeforeStarting = timeWaitingBeforeStarting;
+        currentTimeWaitinBeforeMovement  = timeWaitingBeforeMovement;
+        currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
+        currentTimeWaitingBeforeEnding   = timeWaitingBeforeEnding;
+
     }
 
     public void InitializeAfterPosesion(int _currentEnemyHealth)
