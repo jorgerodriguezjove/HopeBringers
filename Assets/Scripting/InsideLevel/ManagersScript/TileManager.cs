@@ -1506,6 +1506,80 @@ public class TileManager : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(new Vector3 (transform.position.x + gridWorldSize.x/2, transform.position.y + gridWorldSize.y / 2, transform.position.z + gridWorldSize.z / 2), new Vector3(gridWorldSize.x, gridWorldSize.y, gridWorldSize.z));
+    }
+
+
+    //Lista que guarda los tiles accesibles y que se tienen que pintar
+    HashSet<IndividualTiles> goodTiles = new HashSet<IndividualTiles>();
+
+    //Lista que guarda los tiles que se tienen que comprobar
+    HashSet<IndividualTiles> temporalTiles = new HashSet<IndividualTiles>();
+
+    //Lista intermedia que sirve para dar tiempo a borrar los tiles antiguos de temporal tiles para luego añadir los de esta lista.
+    HashSet<IndividualTiles> doubletemp = new HashSet<IndividualTiles>();
+
+    int currentMovementTileIndex;
+
+
+    public void CalculateAvailableTilesForHover(IndividualTiles _initialTile, int _range)
+    {
+        currentMovementTileIndex = 0;
+
+        temporalTiles.Add(_initialTile);
+        goodTiles.Add(_initialTile);
+
+
+        while (temporalTiles.Count > 0)
+        {
+            currentMovementTileIndex++;
+
+            if (_range > currentMovementTileIndex)
+            {
+                break;
+            }
+
+            else
+            {
+                foreach (IndividualTiles tile in temporalTiles)
+                {
+                    foreach (IndividualTiles neighbour in tile.neighbours)
+                    {
+                        if (!goodTiles.Contains(neighbour))
+                        {
+                            if (neighbour.isObstacle || neighbour.isEmpty || neighbour.unitOnTile != null || Mathf.Abs(neighbour.height - tile.height) > selectedCharacter.maxHeightDifferenceToMove)
+                            {
+                                continue;
+                            }
+
+                            else
+                            {
+                                goodTiles.Add(neighbour);
+                                doubletemp.Add(neighbour);
+                            }
+                        }
+                    }
+
+                    temporalTiles.Remove(tile);
+                }
+
+                foreach (IndividualTiles tile in doubletemp)
+                {
+                    temporalTiles.Add(tile);
+                }
+
+                doubletemp.Clear();
+            }
+        }
+
+        goodTiles.Remove(_initialTile);
+
+        foreach (IndividualTiles tile in goodTiles)
+        {
+            tile.ColorMovement();
+        }
+
+        Debug.Log("Done");
     }
 }

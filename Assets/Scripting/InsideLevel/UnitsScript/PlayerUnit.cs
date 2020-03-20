@@ -302,7 +302,9 @@ public class PlayerUnit : UnitBase
     //Es virtual para el decoy del mago.
     protected virtual void OnMouseEnter()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions) 
+        //LM.TM.CalculateAvailableTilesForHover(myCurrentTile, movementUds);
+
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
             if (LM.selectedEnemy == null)
             {
@@ -322,7 +324,7 @@ public class PlayerUnit : UnitBase
                     LM.ShowUnitHover(movementUds, this);
                 }
             }
-            else if(LM.selectedEnemy != null)
+            else if (LM.selectedEnemy != null)
             {
                 if (LM.selectedCharacter == null)
                 {

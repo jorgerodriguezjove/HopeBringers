@@ -43,8 +43,9 @@ public class LevelNode : MonoBehaviour
     [Header("NIVELES RELACIONADOS")]
 
     //Niveles que están conectados a este nivel. En el futuro servirá para el movimiento de la ficha
-    [SerializeField]
-    public List<LevelNode> surroundingLevels;
+    //[SerializeField]
+    //public List<LevelNode> surroundingLevels;
+
     //Niveles que se desbloquean al completarse este nivel
     [SerializeField]
     public List<LevelNode> unlockableLevels;
