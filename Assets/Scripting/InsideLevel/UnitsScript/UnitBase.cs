@@ -413,7 +413,7 @@ public class UnitBase : MonoBehaviour
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
         HealthBarOn_Off(true);
         shouldLockHealthBar = true;
-        RefreshHealth(false);
+        RefreshHealth(false, this);
         StartCoroutine("WaitBeforeHiding");
     }
 
@@ -648,29 +648,51 @@ public class UnitBase : MonoBehaviour
     }
 
     //Función que se encarga de actualizar la vida del personaje.
-    public void RefreshHealth(bool undoHealthDamage)
+    public void RefreshHealth(bool undoHealthDamage, UnitBase unitToReset)
     {
-        //Recorro la lista de tokens empezando por el final. 
-        //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
-        //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
-        for (int i = lifeTokensListInSceneHealthBar.Count - 1; i + 1 > currentHealth; i--)
-        {
-            if (i >= 0)
-            {
-                if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
-                {
-                    if (undoHealthDamage)
-                    {
-                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
-                    }
 
-                    else if (!lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().haveIFlipped)
-                    {
-                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
-                    }
+        for (int i = 0; i < unitToReset.maxHealth; i++)
+        {
+            if (i < unitToReset.currentHealth)
+            {
+
+                if (unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                {
+                    unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
+                }
+            }
+            else
+            {
+                if (unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                {
+                    unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
                 }
             }
         }
+
+
+
+        //Recorro la lista de tokens empezando por el final. 
+        //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
+        //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
+        //for (int i = lifeTokensListInSceneHealthBar.Count - 1; i + 1 > currentHealth; i--)
+        //{
+        //    if (i >= 0)
+        //    {
+        //        if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+        //        {
+        //            if (undoHealthDamage)
+        //            {
+        //                lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
+        //            }
+
+        //            else if (!lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().haveIFlipped)
+        //            {
+        //                lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     IEnumerator WaitBeforeHiding()
@@ -735,11 +757,13 @@ public class UnitBase : MonoBehaviour
 
         transform.DOMove(tileToMoveBack.transform.position, 0);
         UpdateInformationAfterMovement(tileToMoveBack);
+       
     }
 
     public virtual void UndoAttack(int previousHealth)
     {
         currentHealth = previousHealth;
+
     }
 
     public virtual void StunUnit(UnitBase unitToStun , int turnsToStunned)

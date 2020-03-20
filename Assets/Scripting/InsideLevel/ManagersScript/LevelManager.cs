@@ -1145,6 +1145,7 @@ public class LevelManager : MonoBehaviour
 
             //Comienza turno player
             UIM.PlayerTurnBanner(false);
+
             BeginPlayerPhase();
         }
     }
@@ -1174,15 +1175,20 @@ public class LevelManager : MonoBehaviour
             //Aparece cartel con turno del player
             UIM.RotateButtonStartPhase();
 			UIM.ResetActionsAvaliable();
+
+
             //Resetear todas las variables tipo bool y demás de los players
             for (int i = 0; i < charactersOnTheBoard.Count; i++)
             {
-                charactersOnTheBoard[i].ResetUnitState();
-
-                if (charactersOnTheBoard[i] != null && charactersOnTheBoard[i].GetComponent<Berserker>() != null && charactersOnTheBoard[i].GetComponent<Berserker>())
+                        
+                if (charactersOnTheBoard[i] != null && charactersOnTheBoard[i].GetComponent<Berserker>() != null)
                 {
-                    charactersOnTheBoard[i].GetComponent<Berserker>().RageChecker();
+                   charactersOnTheBoard[i].GetComponent<Berserker>().RageChecker();                        
                 }
+
+                charactersOnTheBoard[i].ResetUnitState();
+                CheckIfGameOver();
+
             }
 
             //Reaparecer el botón de endbutton

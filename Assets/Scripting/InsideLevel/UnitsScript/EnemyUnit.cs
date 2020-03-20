@@ -881,9 +881,9 @@ public class EnemyUnit : UnitBase
 
     public override void UndoAttack(int previousHealth)
     {
+       
         base.UndoAttack(previousHealth);
-
-        RefreshHealth(true);
+       
     }
 
 

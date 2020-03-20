@@ -26,5 +26,6 @@ public class PlayerHealthBar : MonoBehaviour
 	//{
 	//	healthBar.value = unit.currentHealth;
 	//}
+
 	#endregion
 }

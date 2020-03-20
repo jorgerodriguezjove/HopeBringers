@@ -36,7 +36,7 @@ public class Portraits : MonoBehaviour
 
     //Lista con los tokens de vida del jugador
     [HideInInspector]
-    private List<GameObject> lifeTokensList = new List<GameObject>();
+    public List<GameObject> lifeTokensList = new List<GameObject>();
 
     //Los tokens son listas por si en el futuro hay personajes que necesitan más tokens. (De ser así habría que hacer más cambios)
     [SerializeField]
@@ -222,25 +222,45 @@ public class Portraits : MonoBehaviour
         //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
         if (assignedPlayer != null)
         {
-
-
-            for (int i = lifeTokensList.Count - 1; i + 1 > assignedPlayer.currentHealth; i--)
+            for (int i = 0; i < assignedPlayer.maxHealth; i++)
             {
-                if (lifeTokensList[i].GetComponent<LifeToken>())
+                if (i < assignedPlayer.currentHealth)
                 {
-                    if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
+
+                    if (lifeTokensList[i].GetComponent<LifeToken>())
+                    {
+                        lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+                    }
+                }
+                else
+                {
+                    if (lifeTokensList[i].GetComponent<LifeToken>())
                     {
                         lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
-                        activatedTokens--;
                     }
-                    //else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
-                    //    && assignedPlayer.currentHealth > activatedTokens )
-                    //{
-                    //    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
-                    //    activatedTokens++;
-                    //}
                 }
             }
+            //for (int i = lifeTokensList.Count - 1; i + 1 > assignedPlayer.currentHealth; i--)
+            //{
+            //    if (lifeTokensList[i].GetComponent<LifeToken>())
+            //    {
+            //        if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
+            //        {
+            //            lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
+            //            activatedTokens--;
+            //        }
+            //        //else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
+            //        //    && assignedPlayer.currentHealth > activatedTokens )
+            //        //{
+            //        //    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+            //        //    activatedTokens++;
+            //        //}
+            //    }
+            //}
+
+
+
+
         }
         //Código antiguo con la barra de vida
         #region OldCode

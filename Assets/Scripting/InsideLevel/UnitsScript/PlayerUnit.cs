@@ -526,10 +526,11 @@ public class PlayerUnit : UnitBase
 
         //Resetear el material
         ResetColor();
+
        
         //Base (restaurar vida a nivel lógico)
         base.UndoAttack(previousHealth);
-
+        
         //Actualizar hud
         UIM.RefreshHealth();
         UIM.RefreshTokens();
