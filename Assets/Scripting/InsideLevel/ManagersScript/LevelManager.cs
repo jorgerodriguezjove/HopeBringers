@@ -137,12 +137,6 @@ public class LevelManager : MonoBehaviour
         camRef = FindObjectOfType<NewCameraController>();
         MapGenRef = FindObjectOfType<MapGenerator>();
 
-        //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
-        if (MapGenRef != null)
-        {
-            MapGenRef.Init();
-        }
-
         ///DEBUG!!!!
         ///ESTA IF SIRVE SI EN EDITOR SE HA ACTIVADO EL BOOL PARA JUGAR SIN PASAR POR EL LEVEL MANAGER
         ///Hace lo mismo que el StartGameplayAfterDialog pero sin colocar a las unidades
@@ -167,6 +161,12 @@ public class LevelManager : MonoBehaviour
             UIM.InitializeUI();
             currentLevelState = LevelState.PlayerPhase;
             camRef.SetCameraMovable(true, true);
+        }
+
+        //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
+        if (MapGenRef != null)
+        {
+            MapGenRef.Init();
         }
 
         //Se resetea la lista de comandos por si acaso tenía algún elemento dentro
