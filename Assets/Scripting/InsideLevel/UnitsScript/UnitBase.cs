@@ -655,7 +655,6 @@ public class UnitBase : MonoBehaviour
         {
             if (i < unitToReset.currentHealth)
             {
-
                 if (unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
                 {
                     unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();

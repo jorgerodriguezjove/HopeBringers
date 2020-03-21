@@ -143,7 +143,6 @@ public class EnemyUnit : UnitBase
 
         currentTimeForMovement = timeMovementAnimation;
 
-        Debug.Log(2);
         currentTimeWaitingBeforeStarting = timeWaitingBeforeStarting;
         currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
         currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
