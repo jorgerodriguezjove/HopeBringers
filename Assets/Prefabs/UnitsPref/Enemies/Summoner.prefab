@@ -3543,16 +3543,24 @@ MonoBehaviour:
   speed: 12
   maxHealth: 4
   currentHealth: 0
+  currentArmor: 0
   movementUds: 5
   attackRange: 10
   isMarked: 0
+  numberOfMarks: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 278474134447723243}
   unitMaterialModel: {fileID: 621543187964547105}
   myCurrentTile: {fileID: 0}
@@ -3592,10 +3600,10 @@ MonoBehaviour:
   tooltipImage: {fileID: 0}
   unitName: Summoner
   rangeOfAction: 10
+  timeWaitingBeforeStarting: 0
   timeWaitingBeforeMovement: 0
-  timeWaitAfterMovement: 0.5
-  timeWaitingAttacking: 0.5
-  timeWaitingEnded: 0.1
+  timeWaitingBeforeAttacking: 0
+  timeWaitingBeforeEnding: 0
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
@@ -3616,6 +3624,7 @@ MonoBehaviour:
   skeletonPrefab: {fileID: 1663521575290433708, guid: 9fc28a36f96162e468d2a45cdb2e02d5,
     type: 3}
   posToSpawn: {x: 0, y: 0, z: 0}
+  enemyBuff: 0
 --- !u!1 &7238120854583751231
 GameObject:
   m_ObjectHideFlags: 0
@@ -4929,7 +4938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4615360315754548, guid: 9984be23625843a48a44d88aae5669f2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4615360315754548, guid: 9984be23625843a48a44d88aae5669f2, type: 3}
       propertyPath: m_LocalPosition.z
