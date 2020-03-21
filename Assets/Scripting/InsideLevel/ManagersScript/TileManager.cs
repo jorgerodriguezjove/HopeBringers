@@ -1193,7 +1193,7 @@ public class TileManager : MonoBehaviour
 
                 for (int i = 0; i < currentPath.Count; i++)
                 {
-                    Debug.Log(currentPath[i].name);
+                    //Debug.Log(currentPath[i].name);
                 }
 
                 Debug.Log(curr.name);
@@ -1298,9 +1298,6 @@ public class TileManager : MonoBehaviour
             if (tilesInZ == 0)
             {
                 //Compruebo si existe un tile con esas coordenadas
-                Debug.Log(selectedUnit);
-                Debug.Log(selectedUnit.myCurrentTile);
-
 
                 if (selectedUnit.myCurrentTile.tileX + i < gridSizeX && selectedUnit.myCurrentTile.tileX + i >= 0 &&
                     selectedUnit.myCurrentTile.tileZ < gridSizeZ && selectedUnit.myCurrentTile.tileZ >= 0)
@@ -1520,22 +1517,31 @@ public class TileManager : MonoBehaviour
     //Lista intermedia que sirve para dar tiempo a borrar los tiles antiguos de temporal tiles para luego añadir los de esta lista.
     HashSet<IndividualTiles> doubletemp = new HashSet<IndividualTiles>();
 
+    //Como LM necesita una lista, almaceno el resultado del hasshet goodtiles qui
+    List<IndividualTiles> availableTilesToColorList = new List<IndividualTiles>();
+
+    //Coste de movimiento necesario para llegar a cada grupo de tiles. Es básicamente un contador y cuando es > que el movementUds de la unidad paro de buscar.
     int currentMovementTileIndex;
 
-
-    public void CalculateAvailableTilesForHover(IndividualTiles _initialTile, int _range)
+    //Función que se encarga de calcular los tiles que pintar para indicar el movimiento al hacer hover
+    public List<IndividualTiles> CalculateAvailableTilesForHover(IndividualTiles _initialTile, UnitBase _unitHover)
     {
+        //Reset
+        goodTiles.Clear();
+        temporalTiles.Clear();
+        doubletemp.Clear();
+        availableTilesToColorList.Clear();
         currentMovementTileIndex = 0;
 
+        //Añado el tile inicial
         temporalTiles.Add(_initialTile);
         goodTiles.Add(_initialTile);
-
 
         while (temporalTiles.Count > 0)
         {
             currentMovementTileIndex++;
 
-            if (_range > currentMovementTileIndex)
+            if (currentMovementTileIndex > _unitHover.movementUds)
             {
                 break;
             }
@@ -1548,7 +1554,7 @@ public class TileManager : MonoBehaviour
                     {
                         if (!goodTiles.Contains(neighbour))
                         {
-                            if (neighbour.isObstacle || neighbour.isEmpty || neighbour.unitOnTile != null || Mathf.Abs(neighbour.height - tile.height) > selectedCharacter.maxHeightDifferenceToMove)
+                            if (neighbour.isObstacle || neighbour.isEmpty || neighbour.unitOnTile != null || Mathf.Abs(neighbour.height - tile.height) > _unitHover.maxHeightDifferenceToMove)
                             {
                                 continue;
                             }
@@ -1560,9 +1566,9 @@ public class TileManager : MonoBehaviour
                             }
                         }
                     }
-
-                    temporalTiles.Remove(tile);
                 }
+
+                temporalTiles.Clear();
 
                 foreach (IndividualTiles tile in doubletemp)
                 {
@@ -1577,9 +1583,10 @@ public class TileManager : MonoBehaviour
 
         foreach (IndividualTiles tile in goodTiles)
         {
-            tile.ColorMovement();
+            availableTilesToColorList.Add(tile);
         }
 
-        Debug.Log("Done");
+
+        return availableTilesToColorList;
     }
 }

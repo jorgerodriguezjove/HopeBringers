@@ -271,12 +271,12 @@ public class LevelManager : MonoBehaviour
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
             UIM.ShowUnitInfo(hoverUnit.unitGeneralInfo, hoverUnit);
 
-
             //Pinto tiles de movimiento
             //Importante tienen que ir antes de pintar el rango de ataque
             if (hoverUnit.hasMoved == false)
             {
-                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, hoverUnit, true);
+                tilesAvailableForMovement = TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit);
+
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
                     tilesAvailableForMovement[i].ColorMovement();
@@ -384,7 +384,6 @@ public class LevelManager : MonoBehaviour
                 //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
-
                     IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
 
                     if (tileToMove != null)
@@ -418,21 +417,17 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
 
-
-
                     if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
                     {
                         hoverUnit.shaderHover.SetActive(true);
                         hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
                         hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
-
-
                     }
+
                 }
                 else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
-
                 }
             }
 
@@ -454,46 +449,26 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
                 }
 
-                tilesAvailableForMovementEnemies = TM.OptimizedCheckAvailableTilesForMovement(hoverUnit.movementUds, hoverUnit, true);
-
+                tilesAvailableForMovementEnemies = TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit);
 
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
                 {
-                    /*
-                    if (tilesAvailableForMovementEnemies[i].isObstacle
-                         || (tilesAvailableForMovementEnemies[i].isEmpty))
-                    {
-                        continue;
-                    }
-                    */
-
                     tilesAvailableForMovementEnemies[i].ColorMovement();
                 }
 
                 for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
                 {
-                    /*
-                    if (tilesAvailableForRangeEnemies[i].isObstacle
-                           || (tilesAvailableForRangeEnemies[i].isEmpty))
-                    {
-                        continue;
-                    }*/
                     tilesAvailableForRangeEnemies[i].ColorActionRange();
                 }
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
-
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
-
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
-
                 }
-
 
                 //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
                 hoverUnit.ColorAttackTile();
-
             }
         }
     }
