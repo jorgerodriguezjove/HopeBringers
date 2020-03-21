@@ -298,11 +298,14 @@ public class Mage : PlayerUnit
     {
         GameObject decoyToInstantiate = Instantiate(mageDecoyRefAsset, transform.position, transform.rotation);
 
-        //Pongo esta referencia para que el mage solo pueda cambiarse con sus decoys y para que pueda comprobar sus booleanos (para las habilidades)
+        //Inicializo mageDecoy. SI VUELVE A SALTAR ERROR POR EL TILE DEL MAGEDECOY NO TOCAR ESTO, HABLAR EL PROBLEMA PARA QUE SOLUCIONARLO ENTRE LOS DOS Y QUE NO VUELVA A SALIR
         decoyToInstantiate.GetComponent<MageDecoy>().myMage = this;
-        //decoyToInstantiate.GetComponent<MageDecoy>().InitializeUnitOnTile();
-        //decoyToInstantiate.GetComponent<MageDecoy>().UpdateInformationAfterMovement(tileForDecoy);
+        decoyToInstantiate.GetComponent<MageDecoy>().InitializeHealth();
+        decoyToInstantiate.GetComponent<MageDecoy>().myCurrentTile = tileForDecoy;
+        decoyToInstantiate.GetComponent<MageDecoy>().myCurrentTile.WarnInmediateNeighbours();
+        decoyToInstantiate.GetComponent<MageDecoy>().UpdateInformationAfterMovement(tileForDecoy);
 
+        //Pongo esta referencia para que el mage solo pueda cambiarse con sus decoys y para que pueda comprobar sus booleanos (para las habilidades)
         myDecoys.Add(decoyToInstantiate);
     }
 

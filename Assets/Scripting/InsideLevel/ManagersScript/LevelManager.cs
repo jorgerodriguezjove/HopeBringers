@@ -154,6 +154,13 @@ public class LevelManager : MonoBehaviour
                 charactersOnTheBoard[i].InitializeUnitOnTile();
             }
 
+            //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
+            //IMPORTANTE TIENE QUE IR DESPUÉS DE T.CREATEGRID Y ANTES DE FOR(enemiesOntheBoard)
+            if (MapGenRef != null)
+            {
+                MapGenRef.Init();
+            }
+
             for (int i = 0; i < enemiesOnTheBoard.Count; i++)
             {
                 enemiesOnTheBoard[i].InitializeUnitOnTile();
@@ -161,12 +168,6 @@ public class LevelManager : MonoBehaviour
             UIM.InitializeUI();
             currentLevelState = LevelState.PlayerPhase;
             camRef.SetCameraMovable(true, true);
-        }
-
-        //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
-        if (MapGenRef != null)
-        {
-            MapGenRef.Init();
         }
 
         //Se resetea la lista de comandos por si acaso tenía algún elemento dentro

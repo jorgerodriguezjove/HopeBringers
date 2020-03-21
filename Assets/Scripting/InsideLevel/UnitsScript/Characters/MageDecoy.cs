@@ -18,8 +18,6 @@ public class MageDecoy : Mage
         LM = FindObjectOfType<LevelManager>();
         LM.charactersOnTheBoard.Add(this);
 
-        InitializeUnitOnTile();
-
         //Referencia al UIM 
         UIM = FindObjectOfType<UIManager>();
 

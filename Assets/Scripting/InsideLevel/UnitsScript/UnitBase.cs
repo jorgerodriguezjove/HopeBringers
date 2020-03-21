@@ -650,7 +650,6 @@ public class UnitBase : MonoBehaviour
     //Función que se encarga de actualizar la vida del personaje.
     public void RefreshHealth(bool undoHealthDamage, UnitBase unitToReset)
     {
-
         for (int i = 0; i < unitToReset.maxHealth; i++)
         {
             if (i < unitToReset.currentHealth)
@@ -717,7 +716,6 @@ public class UnitBase : MonoBehaviour
         {
             myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();            
             myCurrentTile.unitOnTile = GetComponent<UnitBase>();
-            //Debug.Log(hit);
         }
 
     }
