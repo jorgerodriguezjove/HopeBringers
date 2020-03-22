@@ -271,21 +271,41 @@ public class Monk : PlayerUnit
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
             }
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (suplex)
             {
-                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null &&
-                   (myCurrentTile.tilesInLineDown[i] != null &&
-                    myCurrentTile.tilesInLineDown[i].unitOnTile == null &&
-                   !myCurrentTile.tilesInLineDown[i].isEmpty &&
-                   !myCurrentTile.tilesInLineDown[i].isObstacle) &&
-                   Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
-                   Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                    break;
+                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null &&
+                       (myCurrentTile.tilesInLineDown.Count > 0 &&
+                        myCurrentTile.tilesInLineDown[i] != null &&
+                        myCurrentTile.tilesInLineDown[i].unitOnTile == null &&
+                       !myCurrentTile.tilesInLineDown[i].isEmpty &&
+                       !myCurrentTile.tilesInLineDown[i].isObstacle) &&
+                       Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                       Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                        break;
+                    }
                 }
             }
+
+            else
+            {
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null &&
+                       Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                        break;
+                    }
+                }
+            }
+
+            
         }
 
         //Abajo
@@ -301,21 +321,42 @@ public class Monk : PlayerUnit
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
             }
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (suplex)
             {
-                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null &&
-                   (myCurrentTile.tilesInLineUp[i] != null &&
-                    myCurrentTile.tilesInLineUp[i].unitOnTile == null &&
-                   !myCurrentTile.tilesInLineUp[i].isEmpty &&
-                   !myCurrentTile.tilesInLineUp[i].isObstacle) &&
-                    Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
-                    Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                    break;
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null &&
+                       (myCurrentTile.tilesInLineUp.Count > 0 &&
+                       myCurrentTile.tilesInLineUp[i] != null &&
+                        myCurrentTile.tilesInLineUp[i].unitOnTile == null &&
+                       !myCurrentTile.tilesInLineUp[i].isEmpty &&
+                       !myCurrentTile.tilesInLineUp[i].isObstacle) &&
+                        Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                        Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                        break;
+                    }
                 }
             }
+
+            else
+
+            {
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null &&
+                        Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                        break;
+                    }
+                }
+            }
+
+         
         }
 
         //Derecha
@@ -331,21 +372,40 @@ public class Monk : PlayerUnit
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
             }
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (suplex)
             {
-                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null &&
-                   (myCurrentTile.tilesInLineLeft[i] != null &&
-                    myCurrentTile.tilesInLineLeft[i].unitOnTile == null &&
-                   !myCurrentTile.tilesInLineLeft[i].isEmpty &&
-                   !myCurrentTile.tilesInLineLeft[i].isObstacle) &&
-                    Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
-                    Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
-                    break;
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null &&
+                       (myCurrentTile.tilesInLineLeft.Count > 0 &&
+                       myCurrentTile.tilesInLineLeft[i] != null &&
+                        myCurrentTile.tilesInLineLeft[i].unitOnTile == null &&
+                       !myCurrentTile.tilesInLineLeft[i].isEmpty &&
+                       !myCurrentTile.tilesInLineLeft[i].isObstacle) &&
+                        Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                        Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        break;
+                    }
                 }
             }
+            else
+            {
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null &&
+                        Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                        break;
+                    }
+                }
+            }
+
+          
         }
 
         //Izquierda
@@ -361,19 +421,37 @@ public class Monk : PlayerUnit
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
             }
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (suplex)
             {
-                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null &&
-                   (myCurrentTile.tilesInLineRight[i] != null &&
-                    myCurrentTile.tilesInLineRight[i].unitOnTile == null &&
-                   !myCurrentTile.tilesInLineRight[i].isEmpty &&
-                   !myCurrentTile.tilesInLineRight[i].isObstacle) &&
-                    Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
-                    Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Almaceno la primera unidad en la lista de posibles unidades
-                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                    break;
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null &&
+                       (myCurrentTile.tilesInLineRight.Count > 0 &&
+                       myCurrentTile.tilesInLineRight[i] != null &&
+                        myCurrentTile.tilesInLineRight[i].unitOnTile == null &&
+                       !myCurrentTile.tilesInLineRight[i].isEmpty &&
+                       !myCurrentTile.tilesInLineRight[i].isObstacle) &&
+                        Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack &&
+                        Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                        break;
+                    }
+                }
+            }
+
+            else
+            {
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+                {
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null &&
+                        Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                        break;
+                    }
                 }
             }
         }
