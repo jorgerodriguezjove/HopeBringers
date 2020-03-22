@@ -21,6 +21,10 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	GameObject noMoreActionsPanel;
 
+    //Botón para acabar de colocar unidades y empezar el juego.
+    [SerializeField]
+    public GameObject finishUnitPlacement;
+
 	//Este int lo uso para saber cuantos personajes han acabado sus acciones. Al acabar todos, el panel ya tendría que salir.
 	int numberOfCharactersFinished;
 

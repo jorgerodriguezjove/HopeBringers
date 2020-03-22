@@ -595,17 +595,6 @@ public class LevelManager : MonoBehaviour
                     SustituteUnitsOnPlacementPhase(clickedUnit.myCurrentTile);
                 }
             }
-
-            //Finaliza de colocar players (temporal)
-            else
-            {
-                for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
-                {
-                    tilesForCharacterPlacement[i].ColorDeselect();
-                }
-
-                FinishPlacingUnits();
-            }
         }
 
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
@@ -898,6 +887,14 @@ public class LevelManager : MonoBehaviour
                 else if(tileToMove.isAvailableForCharacterColocation)
                 {
                     SustituteUnitsOnPlacementPhase(tileToMove);
+                }
+
+
+                if (charactersAlreadyPlaced.Count == GameManager.Instance.maxUnitsInThisLevel)
+                {
+                    Debug.Log("elese");
+                    //Aparece el botón
+                    UIM.finishUnitPlacement.SetActive(true);
                 }
             }
         }
@@ -1215,7 +1212,6 @@ public class LevelManager : MonoBehaviour
             //Turn Start
             enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
         }
-
     }
 
     //Cuando el enemigo acaba sus acciones avisa al LM para que la siguiente unidad haga sus acciones.
@@ -1244,8 +1240,13 @@ public class LevelManager : MonoBehaviour
     }
 
     //Función que se llama cuando se termina de colocar unidades
-    private void FinishPlacingUnits()
+    public void FinishPlacingUnits()
     {
+        for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
+        {
+            tilesForCharacterPlacement[i].ColorDeselect();
+        }
+
         characterSelectionBox.SetActive(false);
 
         for (int i = 0; i < charactersAlreadyPlaced.Count; i++)
@@ -1267,6 +1268,8 @@ public class LevelManager : MonoBehaviour
         UpdateUnitsOrder();
 
         counterForEnemiesOrder = 0;
+
+        UIM.finishUnitPlacement.SetActive(false);
     }
 
     //Función que llaman el gigante y el goblin para determinar la distancia hasta los enmigos
