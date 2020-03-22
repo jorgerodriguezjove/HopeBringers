@@ -769,9 +769,11 @@ MonoBehaviour:
   speed: 15
   maxHealth: 20
   currentHealth: 0
+  currentArmor: 0
   movementUds: 3
   attackRange: 1
   isMarked: 0
+  numberOfMarks: 0
   hasFear: 0
   turnsWithFear: 0
   isStunned: 0
@@ -784,7 +786,7 @@ MonoBehaviour:
   damageMadeByPush: 1
   damageMadeByFall: 1
   BuffbonusStateDamage: 0
-  DebuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 812720015327976743}
   unitMaterialModel: {fileID: 8025675287679305071}
   myCurrentTile: {fileID: 0}
@@ -3044,6 +3046,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4569660890401836, guid: 7bcb29445a037e844aa28192f4a736a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95782492782072420, guid: 7bcb29445a037e844aa28192f4a736a5,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
