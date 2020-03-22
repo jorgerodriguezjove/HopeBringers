@@ -3127,16 +3127,24 @@ MonoBehaviour:
   speed: 3
   maxHealth: 4
   currentHealth: 0
+  currentArmor: 0
   movementUds: 1
   attackRange: 1
   isMarked: 0
+  numberOfMarks: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 2
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 3818421881985988117}
   unitMaterialModel: {fileID: 7078063224788289771}
   myCurrentTile: {fileID: 0}
@@ -3176,10 +3184,10 @@ MonoBehaviour:
   tooltipImage: {fileID: 0}
   unitName: Giant
   rangeOfAction: 5
+  timeWaitingBeforeStarting: 0
   timeWaitingBeforeMovement: 0
-  timeWaitAfterMovement: 0.5
-  timeWaitingAttacking: 0.5
-  timeWaitingEnded: 0.5
+  timeWaitingBeforeAttacking: 0
+  timeWaitingBeforeEnding: 0
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
@@ -5489,7 +5497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4373196678005266, guid: 2250a4a4fc528684c85ba955eb992ec6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4373196678005266, guid: 2250a4a4fc528684c85ba955eb992ec6, type: 3}
       propertyPath: m_LocalPosition.z
