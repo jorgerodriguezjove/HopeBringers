@@ -67,10 +67,6 @@ public class BossMultTile : EnemyUnit
         }
     }
 
-   
-
-
-
     #region COPIA_GOBLIN
 
     //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
@@ -109,7 +105,6 @@ public class BossMultTile : EnemyUnit
 
                 //El check no se usa ya que se llama al final para comprobar si tiene que cargar el ataque
                 //Importante no poner isBeamOrMeteoriteCharged = false; porque eso se llama al final para determinar si tiene que hacer la carga o no si ya ha disparado.
-
 
                 //Salgo de la comprobación de acciones para volver a empezar
                 CallWaitCoroutine();

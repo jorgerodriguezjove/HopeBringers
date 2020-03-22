@@ -17,6 +17,9 @@ public class MechaBoss : EnemyUnit
     [HideInInspector]
     private List<UnitBase> unitsInRange = new List<UnitBase>();
 
+    [SerializeField]
+    GameObject particleShield;
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -29,6 +32,7 @@ public class MechaBoss : EnemyUnit
             return;
         }
 
+
         if (!haveIBeenAlerted)
         {
             //Comprobar las unidades que hay en mi rango de acción
@@ -39,190 +43,200 @@ public class MechaBoss : EnemyUnit
             {
                 if (unitsInRange[i].GetComponent<PlayerUnit>())
                 {
-                    myCurrentEnemyState = enemyState.Attacking;
+                    AlertEnemy();
+                    myCurrentEnemyState = enemyState.Searching;
                     return;
                 }
             }
 
             //Si llega hasta aqui significa que no había personajes en rango y termina
-            myCurrentEnemyState = enemyState.Ended;
+            myCurrentEnemyState = enemyState.Attacking;
+        }
+
+        else if (hasMoved)
+        {
+            myCurrentEnemyState = enemyState.Attacking;
         }
 
         else
         {
-            //Determinamos el enemigo más cercano.
-            currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
-
-            //Si no hay enemigos termina su turno
-            if (currentUnitsAvailableToAttack.Count == 0)
+            if (isCharging)
             {
-                myCurrentEnemyState = enemyState.Ended;
+                myCurrentEnemyState = enemyState.Attacking;
             }
 
-            else if (currentUnitsAvailableToAttack.Count > 0)
+            else
             {
-                if (currentUnitsAvailableToAttack.Count == 1)
-                {
-                    base.SearchingObjectivesToAttack();
+                //Determinamos el enemigo más cercano.
+                currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
 
-                    if (currentUnitsAvailableToAttack.Count == 1)
-                    {
-                        myCurrentObjective = currentUnitsAvailableToAttack[0];
-                        myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
-                    }
+                //Si no hay enemigos termina su turno
+                if (currentUnitsAvailableToAttack.Count == 0)
+                {
+                    myCurrentEnemyState = enemyState.Ended;
                 }
 
-                //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
-                else if (currentUnitsAvailableToAttack.Count > 1)
+                else if (currentUnitsAvailableToAttack.Count > 0)
                 {
-                    //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
-                    currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                    if (currentUnitsAvailableToAttack.Count == 1)
                     {
-                        return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
-                    });
+                        base.SearchingObjectivesToAttack();
 
-                    //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
-                    for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
-                    {
-                        if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                        if (currentUnitsAvailableToAttack.Count == 1)
                         {
-                            currentUnitsAvailableToAttack.RemoveAt(i);
+                            myCurrentObjective = currentUnitsAvailableToAttack[0];
+                            myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                         }
                     }
 
-                    //Si sigue habiendo varios enemigos los ordeno segun la vida
-                    if (currentUnitsAvailableToAttack.Count > 1)
+                    //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
+                    else if (currentUnitsAvailableToAttack.Count > 1)
                     {
-                        //Añado esto para eliminar a los personajes ocultos
-                        base.SearchingObjectivesToAttack();
-
-                        //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                        //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
                         currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
                         {
-                            return (a.currentHealth).CompareTo(b.currentHealth);
-
+                            return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
                         });
+
+                        //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
+                        for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
+                        {
+                            if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                            {
+                                currentUnitsAvailableToAttack.RemoveAt(i);
+                            }
+                        }
+
+                        //Si sigue habiendo varios enemigos los ordeno segun la vida
+                        if (currentUnitsAvailableToAttack.Count > 1)
+                        {
+                            //Añado esto para eliminar a los personajes ocultos
+                            base.SearchingObjectivesToAttack();
+
+                            //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                            currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                            {
+                                return (a.currentHealth).CompareTo(b.currentHealth);
+
+                            });
+                        }
+
+                        myCurrentObjective = currentUnitsAvailableToAttack[0];
+                        myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
                     }
 
-                    myCurrentObjective = currentUnitsAvailableToAttack[0];
-                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    //CAMBIAR ESTO (lm.tm)
+                    LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+
+                    //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+                    //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+                    for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                    {
+                        pathToObjective.Add(LM.TM.currentPath[i]);
+                    }
+
+
+                    myCurrentEnemyState = enemyState.Moving;
                 }
-
-                //CAMBIAR ESTO (lm.tm)
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
-
-                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
-                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-                for (int i = 0; i < LM.TM.currentPath.Count; i++)
-                {
-                    pathToObjective.Add(LM.TM.currentPath[i]);
-                }
-
-
-                myCurrentEnemyState = enemyState.Attacking;
             }
         }
     }
 
     public override void Attack()
     {
-        Debug.Log("Llamada a función de ataque");
-        //Si es Tier 2 Alerta a los enemigos en el área
-        if (myTierLevel == TierLevel.Level2)
-        {
-            if (!haveIBeenAlerted)
-            {
-                //Le pido al TileManager los enemigos dentro de mi rango
-                unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
-
-                //Alerto a los enemigos a mi alcance
-                for (int i = 0; i < unitsInRange.Count; i++)
-                {
-                    if (unitsInRange[i].GetComponent<EnemyUnit>())
-                    {
-                        unitsInRange[i].GetComponent<EnemyUnit>().AlertEnemy();
-                    }
-                }
-            }
-        }
-
-        //Si no he sido alertado, activo mi estado de alerta.
-        //Al alertarme salo del void de ataque para hacer la busqueda normal de jugadores.
-        if (!haveIBeenAlerted)
-        {
-            AlertEnemy();
-            myCurrentEnemyState = enemyState.Searching;
-            return;
-        }
         base.Attack();
 
-        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        if (isCharging)
         {
-            //Si mi objetivo es adyacente a mi le ataco
-            if (myCurrentTile.neighbours[i].unitOnTile != null && currentUnitsAvailableToAttack.Count > 0 && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0] && Mathf.Abs(myCurrentTile.height - myCurrentTile.neighbours[i].height) <= maxHeightDifferenceToAttack)
+            Debug.Log("disparo");
+            ShootBeam();
+            isCharging = false;
+            myCurrentEnemyState = enemyState.Ended;
+            particleShield.SetActive(true);
+            return;
+
+        }
+
+        else
+        {
+            isCharging = true;
+            Debug.Log("cargo");
+            CheckTilesForBeam();
+            myCurrentEnemyState = enemyState.Ended;
+            particleShield.SetActive(false);
+            return;
+        }
+    }
+
+    bool isCharging;
+
+    List<IndividualTiles> middleLineTilesInFront = new List<IndividualTiles>();
+    List<IndividualTiles> lateralMidLineTiles = new List<IndividualTiles>();
+    List<IndividualTiles> beamTiles = new List<IndividualTiles>();
+
+    //Este check es diferente al resto, no comprueba si se puede hacer el ataque, si no cuales son los tiles que cargar (ya que este ataque no necesita que haya
+    //tiles o condiciones concretas para realizarse a parte de estar cargado)
+    private void CheckTilesForBeam()
+    {
+        middleLineTilesInFront.Clear();
+        lateralMidLineTiles.Clear();
+        beamTiles.Clear();
+        currentUnitsAvailableToAttack.Clear();
+
+        middleLineTilesInFront = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, 60);
+
+        for (int i = 0; i < middleLineTilesInFront.Count; i++)
+        {
+            beamTiles.Add(middleLineTilesInFront[i]);
+            middleLineTilesInFront[i].ColorAttack();
+
+
+            lateralMidLineTiles.Clear();
+
+            lateralMidLineTiles = middleLineTilesInFront[i].GetLateralTilesBasedOnDirection(currentFacingDirection, 1);
+
+            for (int j = 0; j < lateralMidLineTiles.Count; j++)
             {
-                //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el goblin
-                if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
-                {
-                    //Arriba
-                    if (myCurrentObjectiveTile.tileZ > myCurrentTile.tileZ)
-                    {
-                        RotateLogic(FacingDirection.North);
-                    }
-                    //Abajo
-                    else
-                    {
-                        RotateLogic(FacingDirection.South);
-                    }
+                beamTiles.Add(lateralMidLineTiles[j]);
 
-                    ColorAttackTile();
-
-                    //Atacar al enemigo
-                    DoDamage(currentUnitsAvailableToAttack[0]);
-                }
-                //Izquierda o derecha
-                else
-                {
-                    //Arriba
-                    if (myCurrentObjectiveTile.tileX > myCurrentTile.tileX)
-                    {
-                        RotateLogic(FacingDirection.East);
-                    }
-                    //Abajo
-                    else
-                    {
-                        RotateLogic(FacingDirection.West);
-                    }
-
-                    ColorAttackTile();
-
-                    //Atacar al enemigo
-                    DoDamage(currentUnitsAvailableToAttack[0]);
-                }
-
-                //Animación de ataque
-                hasAttacked = true;
-                ExecuteAnimationAttack();
-                //Se tiene que poner en wait hasta que acabe la animación de ataque
-                myCurrentEnemyState = enemyState.Waiting;
-
-                //Me pongo en waiting porque al salir del for va a entrar en la corrutina abajo.
-                //myCurrentEnemyState = enemyState.Waiting;
-                break;
+                lateralMidLineTiles[j].ColorAttack();
             }
         }
 
-        if (!hasMoved && !hasAttacked)
-        {
-            myCurrentEnemyState = enemyState.Moving;
-        }
+        myCurrentEnemyState = enemyState.Waiting;
+    }
 
-        //Si llega hasta aqui significa que ya se ha movido y no puede atacar
-        if (hasMoved && !hasAttacked)
+    private void ShootBeam()
+    {
+        for (int i = 0; i < beamTiles.Count; i++)
         {
-            myCurrentEnemyState = enemyState.Ended;
+            if (beamTiles[i].unitOnTile != null && beamTiles[i].unitOnTile.GetComponent<PlayerUnit>())
+            {
+                DoDamage(beamTiles[i].unitOnTile);
+            }
+
+            beamTiles[i].ColorDesAttack();
         }
     }
+
+    public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
+    {
+        if (isCharging)
+        {
+            base.ReceiveDamage(damageReceived, unitAttacker);
+        }
+
+        else
+        {
+            Debug.Log("Inmune");
+        }
+    }
+
+
+
+
+
+
 
 
     int limitantNumberOfTilesToMove;
@@ -270,7 +284,7 @@ public class MechaBoss : EnemyUnit
 
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
-            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
+            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation);
 
             //Espera entre casillas
             yield return new WaitForSeconds(currentTimeForMovement);
