@@ -241,7 +241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 267636537148215698}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2443000505120960904}
@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: 7971535968995598525}
   - component: {fileID: 8984964606919559384}
   m_Layer: 14
-  m_Name: Balista
+  m_Name: Tronco
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,9 +1180,11 @@ MonoBehaviour:
   speed: 10
   maxHealth: 3
   currentHealth: 0
+  currentArmor: 0
   movementUds: 1
   attackRange: 1
   isMarked: 0
+  numberOfMarks: 0
   hasFear: 0
   turnsWithFear: 0
   isStunned: 0
@@ -1195,7 +1197,7 @@ MonoBehaviour:
   damageMadeByPush: 1
   damageMadeByFall: 1
   BuffbonusStateDamage: 0
-  DebuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 267636537148215698}
   unitMaterialModel: {fileID: 2444741754030437646}
   myCurrentTile: {fileID: 0}
@@ -1235,10 +1237,10 @@ MonoBehaviour:
   tooltipImage: {fileID: 0}
   unitName: Stump
   rangeOfAction: 90
+  timeWaitingBeforeStarting: 0
   timeWaitingBeforeMovement: 0.5
-  timeWaitAfterMovement: 0
-  timeWaitingAttacking: 0.5
-  timeWaitingEnded: 0.5
+  timeWaitingBeforeAttacking: 0
+  timeWaitingBeforeEnding: 0
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
