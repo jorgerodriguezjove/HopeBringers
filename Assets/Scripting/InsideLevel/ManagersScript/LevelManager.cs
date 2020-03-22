@@ -1321,6 +1321,14 @@ public class LevelManager : MonoBehaviour
     }
     #endregion
 
+    public void InstaWin()
+    {
+        for (int i = 0; i < enemiesOnTheBoard.Count; i++)
+        {
+            enemiesOnTheBoard[i].ReceiveDamage(999, null);
+        }
 
+        UIM.EndTurn();
+    }
 }
 
