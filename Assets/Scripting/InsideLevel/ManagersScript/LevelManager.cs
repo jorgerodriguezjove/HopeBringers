@@ -186,6 +186,11 @@ public class LevelManager : MonoBehaviour
             charactersOnTheBoard[i].InitializeUnitOnTile();
         }
 
+        if (MapGenRef != null)
+        {
+            MapGenRef.Init();
+        }
+
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
         {
             enemiesOnTheBoard[i].InitializeUnitOnTile();
