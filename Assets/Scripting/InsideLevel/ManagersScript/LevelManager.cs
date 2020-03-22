@@ -212,6 +212,8 @@ public class LevelManager : MonoBehaviour
             GameObject unitInstantiated = Instantiate(GameManager.Instance.characterDataForCurrentLevel[i].GetComponent<CharacterData>().myUnit.gameObject, initialCharacterDataPosition[i]);
             unitInstantiated.transform.position = initialCharacterDataPosition[i].position;
             unitInstantiated.transform.localScale = Vector3.one;
+
+            unitInstantiated.GetComponent<UnitBase>().InitializeHealth();
         }
     }
 

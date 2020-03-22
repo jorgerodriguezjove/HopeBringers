@@ -639,16 +639,24 @@ MonoBehaviour:
   speed: 0
   maxHealth: 5
   currentHealth: 0
+  currentArmor: 0
   movementUds: 4
   attackRange: 1
   isMarked: 0
+  numberOfMarks: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 832030941297992800}
   unitMaterialModel: {fileID: 7662328123885435911}
   myCurrentTile: {fileID: 0}
@@ -687,6 +695,7 @@ MonoBehaviour:
   characterImage: {fileID: 21300000, guid: 1a8332aba279f5042b817756654ee71e, type: 3}
   tooltipImage: {fileID: 21300000, guid: 1a8332aba279f5042b817756654ee71e, type: 3}
   unitName: 
+  initialPosInBox: {fileID: 0}
   hasMoved: 0
   hasAttacked: 0
   isMovingorRotating: 0
@@ -711,6 +720,16 @@ MonoBehaviour:
   actionAvaliablePanel: {fileID: 1683627653943443089}
   LM: {fileID: 0}
   UIM: {fileID: 0}
+  TM: {fileID: 0}
+  fMovementUds: 0
+  rotatorTime: 0
+  rotatorTime2: 0
+  suplex: 0
+  suplex2: 0
+  debuffMark: 0
+  debuffMark2: 0
+  healerBonus: 0
+  healerMark2: 0
 --- !u!1 &1683627653943443089
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,7 +2364,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7643635266564285563}
-  m_LocalRotation: {x: 0, y: 0.9914449, z: 0, w: 0.13052626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2355,7 +2374,7 @@ RectTransform:
   - {fileID: 6912517989029908143}
   m_Father: {fileID: 1616910321147216879}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 165, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 3.5}

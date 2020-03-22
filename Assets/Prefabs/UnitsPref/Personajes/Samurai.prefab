@@ -271,16 +271,24 @@ MonoBehaviour:
   speed: 0
   maxHealth: 4
   currentHealth: 0
+  currentArmor: 0
   movementUds: 4
   attackRange: 1
   isMarked: 0
+  numberOfMarks: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 1310081760457348471}
   unitMaterialModel: {fileID: 2809104714989858402}
   myCurrentTile: {fileID: 0}
@@ -319,6 +327,7 @@ MonoBehaviour:
   characterImage: {fileID: 21300000, guid: 96b23c9d99778bb459fb745a21b8a814, type: 3}
   tooltipImage: {fileID: 0}
   unitName: 
+  initialPosInBox: {fileID: 0}
   hasMoved: 0
   hasAttacked: 0
   isMovingorRotating: 0
@@ -343,7 +352,19 @@ MonoBehaviour:
   actionAvaliablePanel: {fileID: 93933977355417964}
   LM: {fileID: 0}
   UIM: {fileID: 0}
+  TM: {fileID: 0}
+  fMovementUds: 0
   samuraiFrontAttack: 1
+  parryOn: 0
+  parryOn2: 0
+  unitToParry: {fileID: 0}
+  doubleAttack: 0
+  timesDoubleAttackRepeats: 0
+  itsForHonorTime: 0
+  itsForHonorTime2: 0
+  buffLonelyArea: 0
+  isLonelyLikeMe: 0
+  lonelyAreaDamage: 0
 --- !u!1 &1310081760457348471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,7 +2670,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8578849603321775845}
-  m_LocalRotation: {x: 0, y: 0.9914449, z: 0, w: 0.13052626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2659,7 +2680,7 @@ RectTransform:
   - {fileID: 5441737509416770249}
   m_Father: {fileID: 1141034198284415736}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 165, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 3.5}

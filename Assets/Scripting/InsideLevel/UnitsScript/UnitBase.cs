@@ -413,7 +413,7 @@ public class UnitBase : MonoBehaviour
         //Lo pongo en unit base para que sea genérico entre unidades y no tener que hacer la comprobación todo el rato.
         HealthBarOn_Off(true);
         shouldLockHealthBar = true;
-        RefreshHealth(false, this);
+        RefreshHealth(false);
         StartCoroutine("WaitBeforeHiding");
     }
 
@@ -648,22 +648,22 @@ public class UnitBase : MonoBehaviour
     }
 
     //Función que se encarga de actualizar la vida del personaje.
-    public void RefreshHealth(bool undoHealthDamage, UnitBase unitToReset)
+    public void RefreshHealth(bool undoHealthDamage)
     {
-        for (int i = 0; i < unitToReset.maxHealth; i++)
+        for (int i = 0; i < maxHealth; i++)
         {
-            if (i < unitToReset.currentHealth)
+            if (i < currentHealth)
             {
-                if (unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
                 {
-                    unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
+                    lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
                 }
             }
             else
             {
-                if (unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
                 {
-                    unitToReset.lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
+                    lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
                 }
             }
         }
