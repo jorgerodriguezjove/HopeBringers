@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.5176471}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3462,16 +3462,24 @@ MonoBehaviour:
   speed: 12
   maxHealth: 1
   currentHealth: 0
+  currentArmor: 0
   movementUds: 2
   attackRange: 5
   isMarked: 0
+  numberOfMarks: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 2043032311261633995}
   unitMaterialModel: {fileID: 1707733839813034154}
   myCurrentTile: {fileID: 0}
@@ -3511,10 +3519,10 @@ MonoBehaviour:
   tooltipImage: {fileID: 0}
   unitName: Grabber
   rangeOfAction: 10
+  timeWaitingBeforeStarting: 0
   timeWaitingBeforeMovement: 0
-  timeWaitAfterMovement: 0.5
-  timeWaitingAttacking: 0.5
-  timeWaitingEnded: 0.1
+  timeWaitingBeforeAttacking: 0
+  timeWaitingBeforeEnding: 0
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
@@ -3530,6 +3538,7 @@ MonoBehaviour:
   myLineRenderer: {fileID: 2073410402773213086}
   shaderHover: {fileID: 3004217804321805967}
   sleepParticle: {fileID: 631109317099777206}
+  turn2StunEnemy: 0
 --- !u!1 &5023113127412805537
 GameObject:
   m_ObjectHideFlags: 0

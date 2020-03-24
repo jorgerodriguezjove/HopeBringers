@@ -260,7 +260,7 @@ public class Monk : PlayerUnit
         }
 
         //Arriba
-        if (myCurrentTile.tilesInLineUp.Count > 1)
+        if (myCurrentTile.tilesInLineUp.Count > 0)
         {
             if (attackRange <= myCurrentTile.tilesInLineUp.Count)
             {
@@ -310,7 +310,7 @@ public class Monk : PlayerUnit
 
         //Abajo
 
-        if (myCurrentTile.tilesInLineDown.Count > 1)
+        if (myCurrentTile.tilesInLineDown.Count > 0)
         {
             if (attackRange <= myCurrentTile.tilesInLineDown.Count)
             {
@@ -361,7 +361,7 @@ public class Monk : PlayerUnit
 
         //Derecha
 
-        if (myCurrentTile.tilesInLineRight.Count > 1)
+        if (myCurrentTile.tilesInLineRight.Count > 0)
         {
             if (attackRange <= myCurrentTile.tilesInLineRight.Count)
             {
@@ -410,7 +410,7 @@ public class Monk : PlayerUnit
 
         //Izquierda
 
-        if (myCurrentTile.tilesInLineLeft.Count > 1)
+        if (myCurrentTile.tilesInLineLeft.Count > 0)
         {
             if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
             {

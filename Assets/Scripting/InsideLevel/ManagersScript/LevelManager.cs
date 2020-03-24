@@ -320,7 +320,7 @@ public class LevelManager : MonoBehaviour
                     if (hoverUnit.currentUnitsAvailableToAttack[i] != null)
                     {
                         hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
-                        hoverUnit.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesAttack();
+                        hoverUnit.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesCharge();
                         hoverUnit.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
                         hoverUnit.currentUnitsAvailableToAttack[i].DisableCanvasHover();
 
@@ -334,7 +334,7 @@ public class LevelManager : MonoBehaviour
             {
                 for (int i = 0; i < hoverUnit.currentTilesInRangeForAttack.Count; i++)
                 {
-                    hoverUnit.currentTilesInRangeForAttack[i].ColorDesAttack();
+                    hoverUnit.currentTilesInRangeForAttack[i].ColorDesCharge();
                 }
             }
 
@@ -643,7 +643,6 @@ public class LevelManager : MonoBehaviour
 					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipMoveorAttack();
-                      
                     }
 
 					SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
@@ -904,6 +903,8 @@ public class LevelManager : MonoBehaviour
             //Movimiento de la unidad
             if (selectedCharacter != null && !selectedCharacter.hasAttacked)
             {
+                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter, true);
+
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
                     if (tileToMove == tilesAvailableForMovement[i] || tileToMove == selectedCharacter.myCurrentTile)

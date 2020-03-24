@@ -239,7 +239,7 @@ public class EnBalista : EnemyUnit
             }
             else
             {
-                tilesToShoot[i].ColorDesAttack();
+                tilesToShoot[i].ColorDesCharge();
             }
         }
     }

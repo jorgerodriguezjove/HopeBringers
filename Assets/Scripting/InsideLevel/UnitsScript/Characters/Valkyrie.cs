@@ -90,6 +90,10 @@ public class Valkyrie : PlayerUnit
             }
 
 
+            //Hago daño antes de que se produzca el intercambio
+            DoDamage(unitToAttack);
+
+            //Intercambio
             previousTile = unitToAttack.myCurrentTile;
 
             currentTileVectorToMove = unitToAttack.myCurrentTile.transform.position;
@@ -102,21 +106,12 @@ public class Valkyrie : PlayerUnit
             UpdateInformationAfterMovement(previousTile);
             unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
 
-            
-            
-            
-            
-            
-            //Hago daño
-            DoDamage(unitToAttack);
             //Hay que cambiarlo
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
-
-
         }
+
         else if (armorMode)
         {
             //Animación de ataque
@@ -125,23 +120,10 @@ public class Valkyrie : PlayerUnit
             //Quito el color del tile
             myCurrentTile.ColorDeselect();
 
-            previousTile = unitToAttack.myCurrentTile;
-
-            currentTileVectorToMove = unitToAttack.myCurrentTile.transform.position;
-            transform.DOMove(currentTileVectorToMove, 1);
-
-
-            currentTileVectorToMove = myCurrentTile.transform.position;
-            unitToAttack.transform.DOMove(currentTileVectorToMove, 1);
-
-            unitToAttack.UpdateInformationAfterMovement(myCurrentTile);
-            UpdateInformationAfterMovement(previousTile);
-            unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
-
             //TENEMOS QUE HABLAR SI LA ARMADURA DEPENDE DE LA currentHealth QUE TIENE O DE LA MAXHEALTH
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
-                
+
                 if (armorMode2)
                 {
                     currentArmor += numberOfArmorAdded;
@@ -163,7 +145,22 @@ public class Valkyrie : PlayerUnit
                 DoDamage(unitToAttack);
 
             }
-            
+
+            //Intercambio
+            previousTile = unitToAttack.myCurrentTile;
+
+            currentTileVectorToMove = unitToAttack.myCurrentTile.transform.position;
+            transform.DOMove(currentTileVectorToMove, 1);
+
+
+            currentTileVectorToMove = myCurrentTile.transform.position;
+            unitToAttack.transform.DOMove(currentTileVectorToMove, 1);
+
+            unitToAttack.UpdateInformationAfterMovement(myCurrentTile);
+            UpdateInformationAfterMovement(previousTile);
+            unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
+
+          
             //Hay que cambiarlo
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
@@ -180,19 +177,6 @@ public class Valkyrie : PlayerUnit
             //Quito el color del tile
             myCurrentTile.ColorDeselect();
 
-            previousTile = unitToAttack.myCurrentTile;
-
-            currentTileVectorToMove = unitToAttack.myCurrentTile.transform.position;
-            transform.DOMove(currentTileVectorToMove, 1);
-
-
-            currentTileVectorToMove = myCurrentTile.transform.position;
-            unitToAttack.transform.DOMove(currentTileVectorToMove, 1);
-
-            unitToAttack.UpdateInformationAfterMovement(myCurrentTile);
-            UpdateInformationAfterMovement(previousTile);
-            unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
-
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
 
@@ -204,15 +188,26 @@ public class Valkyrie : PlayerUnit
                 DoDamage(unitToAttack);
 
             }
+
+            //Intercambio
+            previousTile = unitToAttack.myCurrentTile;
+
+            currentTileVectorToMove = unitToAttack.myCurrentTile.transform.position;
+            transform.DOMove(currentTileVectorToMove, 1);
+
+            currentTileVectorToMove = myCurrentTile.transform.position;
+            unitToAttack.transform.DOMove(currentTileVectorToMove, 1);
+
+            unitToAttack.UpdateInformationAfterMovement(myCurrentTile);
+            UpdateInformationAfterMovement(previousTile);
+            unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
+
+           
             //Hay que cambiarlo
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
-
         }
-
-
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)

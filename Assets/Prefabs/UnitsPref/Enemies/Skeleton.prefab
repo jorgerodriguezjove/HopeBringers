@@ -3170,16 +3170,24 @@ MonoBehaviour:
   speed: 10
   maxHealth: 1
   currentHealth: 0
+  currentArmor: 0
   movementUds: 5
   attackRange: 1
   isMarked: 0
+  numberOfMarks: 0
+  hasFear: 0
+  turnsWithFear: 0
+  isStunned: 0
+  turnStunned: 0
+  isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
   bonusDamageMoreHeight: 1
   penalizatorDamageLessHeight: 1
   damageMadeByPush: 1
   damageMadeByFall: 1
-  bonusStateDamage: 0
+  BuffbonusStateDamage: 0
+  turnsWithBuffOrDebuff: 0
   unitModel: {fileID: 3933345328762338312}
   unitMaterialModel: {fileID: 4282871797784524899}
   myCurrentTile: {fileID: 0}
@@ -3219,10 +3227,10 @@ MonoBehaviour:
   tooltipImage: {fileID: 0}
   unitName: Skeleton
   rangeOfAction: 4
+  timeWaitingBeforeStarting: 0
   timeWaitingBeforeMovement: 0
-  timeWaitAfterMovement: 0
-  timeWaitingAttacking: 0.5
-  timeWaitingEnded: 1
+  timeWaitingBeforeAttacking: 0
+  timeWaitingBeforeEnding: 0
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
@@ -3472,7 +3480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.5176471}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

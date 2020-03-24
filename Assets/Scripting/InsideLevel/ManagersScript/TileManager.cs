@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TileManager : MonoBehaviour
-
 {
     #region VARIABLES
 
@@ -15,7 +14,6 @@ public class TileManager : MonoBehaviour
 
     [SerializeField]
     private LayerMask startignTileMask;
-
 
     //Tamaño del área dónde va a haber tiles
     public Vector3 gridWorldSize;
@@ -527,8 +525,6 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    
-
     public void CalculatePathForMovementCostWithHeap(int x, int z, bool _shouldIgnoreUnitsForRepath)
     {
         //Stopwatch sw = new Stopwatch();
@@ -825,7 +821,6 @@ public class TileManager : MonoBehaviour
                     recalculatePathAtTheEndOfTheFunction = false;
                     tempCurrentPathCost = Mathf.Infinity;
                 }
-
             }
         }
 
@@ -850,7 +845,6 @@ public class TileManager : MonoBehaviour
         target = grid2DNode[x, z];
 
         openList.Add(source);
-
 
         //Mientras que haya nodos que no hayan sido visitados...
         while (openList.Count > 0)
@@ -1170,7 +1164,6 @@ public class TileManager : MonoBehaviour
         tempCurrentPathCost = Mathf.Infinity;
     }
 
-
     private void LastPartOfPathfinding()
     {
         currentPath.Clear();
@@ -1224,7 +1217,6 @@ public class TileManager : MonoBehaviour
             }
         }
     }
-
 
     int GetDistance(IndividualTiles nodeA, IndividualTiles nodeB)
     {
@@ -1354,7 +1346,6 @@ public class TileManager : MonoBehaviour
 
             for (int j = tilesInZ; j >= -tilesInZ; j--)
             {
-
                 //Compruebo si existe un tile con esas coordenadas
                 if (selectedUnit.myCurrentTile.tileX + i < gridSizeX && selectedUnit.myCurrentTile.tileX + i >= 0 &&
                     selectedUnit.myCurrentTile.tileZ + j < gridSizeZ && selectedUnit.myCurrentTile.tileZ + j >= 0)
@@ -1370,7 +1361,6 @@ public class TileManager : MonoBehaviour
         return tilesAvailableForEnemyAction;
     }
     #endregion
-
 
     //Esta función se usa para calcular áreas de tiles (básicamente un rombo de tiles)
     //No mira si hay obstáculos o está vacío, únicamente si hay tiles
@@ -1393,7 +1383,6 @@ public class TileManager : MonoBehaviour
                 if (rhombusCenter.tileX + i < gridSizeX && rhombusCenter.tileX + i >= 0 &&
                     rhombusCenter.tileZ < gridSizeZ && rhombusCenter.tileZ >= 0)
                 {
-
                     //currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
 
                     rhombusTiles.Add(grid2DNode[rhombusCenter.tileX + i, rhombusCenter.tileZ]);
@@ -1479,7 +1468,6 @@ public class TileManager : MonoBehaviour
         return surroundingTiles;
     }
 
-
     public List<IndividualTiles> coneTiles = new List<IndividualTiles>();
     int coneIndex;
 
@@ -1506,7 +1494,6 @@ public class TileManager : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(new Vector3 (transform.position.x + gridWorldSize.x/2, transform.position.y + gridWorldSize.y / 2, transform.position.z + gridWorldSize.z / 2), new Vector3(gridWorldSize.x, gridWorldSize.y, gridWorldSize.z));
     }
-
 
     //Lista que guarda los tiles accesibles y que se tienen que pintar
     HashSet<IndividualTiles> goodTiles = new HashSet<IndividualTiles>();
@@ -1585,7 +1572,6 @@ public class TileManager : MonoBehaviour
         {
             availableTilesToColorList.Add(tile);
         }
-
 
         return availableTilesToColorList;
     }

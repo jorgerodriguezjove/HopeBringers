@@ -343,11 +343,8 @@ public class Rogue : PlayerUnit
 
             if (unitsCanJump >= 1)
             {
-
                 hasAttacked = false;                
                 CheckUnitsAndTilesInRangeToAttack();
-
-               
 
                 hasMoved = true;
                 LM.DeSelectUnit();
@@ -357,7 +354,6 @@ public class Rogue : PlayerUnit
                 for (int i = 0; i < unitsAttacked.Count; i++)
                 {
                     currentUnitsAvailableToAttack.Remove(unitsAttacked[i]);
-
                 }
 
             }
@@ -471,11 +467,7 @@ public class Rogue : PlayerUnit
             {
                 //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
                 base.Attack(unitToAttack);
-                
-
             }
-
-
         }
         else
         {
@@ -555,17 +547,12 @@ public class Rogue : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-            
-
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
 
         }
-        
-
-       
     }
 
     //Función genérica que comprueba la nueva dirección a la que debe mirar el pícaro tras saltar.
