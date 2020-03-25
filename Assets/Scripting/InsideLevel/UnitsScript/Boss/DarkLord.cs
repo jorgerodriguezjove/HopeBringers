@@ -884,7 +884,7 @@ public class DarkLord : EnemyUnit
                         if ((pathToObjective[i]) == currentUnitsAvailableToAttack[0].myCurrentTile)
                         {
 
-                            CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1]);
+                            //CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1]);
                         }
                         else
                         {

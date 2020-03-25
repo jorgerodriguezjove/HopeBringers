@@ -23,9 +23,6 @@ public class EnWatcher : EnemyUnit
     //Debuff de movimient que mete a las unidades que están dentro de su alcance en el Tier 2
     public int movementDebuff;
 
-    
-
-
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;

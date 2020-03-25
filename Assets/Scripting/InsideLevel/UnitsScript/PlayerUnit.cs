@@ -368,6 +368,13 @@ public class PlayerUnit : UnitBase
                 ResetColor();
             }
         }
+
+        //Quito el healthbar de los objetivos a los que puedo atacar al salir del hover
+        //Aunque lo desactivo en el hover exit, se activan en el CheckUnits en vez de en el hover enter
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
+        }
     }
 
     #endregion

@@ -358,7 +358,7 @@ public class UnitBase : MonoBehaviour
     }
 
     //Prueba para calcular damages en el hover
-    public virtual void CalculateDamagePreviousAttack(UnitBase unitToDealDamage, UnitBase unitAttacking, IndividualTiles tileAttack)
+    public virtual void CalculateDamagePreviousAttack(UnitBase unitToDealDamage, UnitBase unitAttacking, IndividualTiles tileAttack, FacingDirection endFacingDirection)
     {
         //Reseteo la variable de daño a realizar
         unitAttacking.damageWithMultipliersApplied = unitAttacking.baseDamage;
@@ -376,13 +376,25 @@ public class UnitBase : MonoBehaviour
         }
 
         //Si le ataco por la espalda hago más daño
-        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+        if (unitToDealDamage.currentFacingDirection == endFacingDirection)
         {
             //Ataque por la espalda
             unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageBackAttack;
         }
 
         unitAttacking.damageWithMultipliersApplied += unitAttacking.BuffbonusStateDamage;
+
+        if (unitToDealDamage.GetComponent<Knight>() && (
+               endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+            || endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+            || endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+            || endFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East))
+        {
+            Debug.Log("Block");
+            unitAttacking.damageWithMultipliersApplied = 0;
+        }
+
+        Debug.Log(endFacingDirection);
     }
 
     //Aplico el daño a la unidad elegida

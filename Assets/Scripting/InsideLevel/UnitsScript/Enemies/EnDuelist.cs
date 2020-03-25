@@ -239,7 +239,7 @@ public class EnDuelist : EnemyUnit
         }
 
         //Compruebo la dirección en la que se mueve para girar a la unidad
-        CheckTileDirection(pathToObjective[pathToObjective.Count - 1]);
+        CheckTileDirection(myCurrentTile, pathToObjective[pathToObjective.Count - 1], true);
 
         myCurrentEnemyState = enemyState.Waiting;
 
@@ -268,9 +268,8 @@ public class EnDuelist : EnemyUnit
 
         hasMoved = true;
 
-
         //Compruebo la dirección en la que se mueve para girar a la unidad
-        CheckTileDirection(pathToObjective[pathToObjective.Count - 1]);
+        CheckTileDirection(myCurrentTile,pathToObjective[pathToObjective.Count - 1], true);
         myCurrentEnemyState = enemyState.Searching;
 
         movementParticle.SetActive(false);
@@ -278,74 +277,6 @@ public class EnDuelist : EnemyUnit
         HideActionPathfinding();
         //ShowActionPathFinding(false);
 
-    }
-
-    //MEJORAR ESTO. PROBABLEMENTE NO NECESITO DOS FUNCIONES  PARA ESTO Y ADEMÁS SE REPITE EN EL PLAYER UNIT
-
-    //Decidir rotación al moverse por los tiles.
-    public void CheckTileDirection(IndividualTiles tileToCheck)
-    {
-        //Arriba o abajo
-        if (tileToCheck.tileX == myCurrentTile.tileX)
-        {
-            //Arriba
-            if (tileToCheck.tileZ > myCurrentTile.tileZ)
-            {
-                unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.North;
-            }
-            //Abajo
-            else
-            {
-                unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.South;
-            }
-        }
-        //Izquierda o derecha
-        else
-        {
-            //Derecha
-            if (tileToCheck.tileX > myCurrentTile.tileX)
-            {
-                unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.East;
-            }
-            //Izquierda
-            else
-            {
-                unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.West;
-            }
-        }
-    }
-
-    //Decidir rotación al terminar de moverse para atacar
-    private void RotateLogic(FacingDirection newDirection)
-    {
-        //Roto al duelist
-        if (newDirection == FacingDirection.North)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.North;
-        }
-
-        else if (newDirection == FacingDirection.South)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.South;
-        }
-
-        else if (newDirection == FacingDirection.East)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.East;
-        }
-
-        else if (newDirection == FacingDirection.West)
-        {
-            unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.West;
-        }
     }
 
     //Esta función muestra la acción del enemigo.

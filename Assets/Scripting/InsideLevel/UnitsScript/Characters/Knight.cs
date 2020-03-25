@@ -237,8 +237,6 @@ public class Knight : PlayerUnit
 
             if (currentFacingDirection == FacingDirection.North)
             {              
-                
-
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)

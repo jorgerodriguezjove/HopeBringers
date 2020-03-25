@@ -243,7 +243,7 @@ public class EnGiant : EnemyUnit
         StartCoroutine("MovementWait");
 
         movementParticle.SetActive(false);
-        CheckTileDirection(tileToMove);
+        CheckTileDirection(myCurrentTile, tileToMove,  true);
         myCurrentEnemyState = enemyState.Searching;
 
         //Actualizo las variables de los tiles
@@ -258,72 +258,6 @@ public class EnGiant : EnemyUnit
         yield return new WaitForSeconds(currentTimeForMovement);
         HideActionPathfinding();
     }
-
-    //Decidir rotación al moverse por los tiles.
-    public void CheckTileDirection(IndividualTiles tileToCheck)
-    {
-        //Arriba o abajo
-        if (tileToCheck.tileX == myCurrentTile.tileX)
-        {
-            //Arriba
-            if (tileToCheck.tileZ > myCurrentTile.tileZ)
-            {
-                unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.North;
-            }
-            //Abajo
-            else
-            {
-                unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.South;
-            }
-        }
-        //Izquierda o derecha
-        else
-        {
-            //Derecha
-            if (tileToCheck.tileX > myCurrentTile.tileX)
-            {
-                unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.East;
-            }
-            //Izquierda
-            else
-            {
-                unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.West;
-            }
-        }
-    }
-
-    private void RotateLogic(FacingDirection newDirection)
-    {
-        //Roto al gigante
-        if (newDirection == FacingDirection.North)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.North;
-        }
-
-        else if (newDirection == FacingDirection.South)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.South;
-        }
-
-        else if (newDirection == FacingDirection.East)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.East;
-        }
-
-        else if (newDirection == FacingDirection.West)
-        {
-            unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-            currentFacingDirection = FacingDirection.West;
-        }
-    }
-
    
     //Muestra la sombra y el line renderer
     public override void ShowActionPathFinding(bool _shouldRecalculate)
@@ -370,18 +304,18 @@ public class EnGiant : EnemyUnit
 
                 Vector3 spawnPoint = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[1].transform.position.z);
                 shaderHover.transform.position = spawnPoint;
-               
-                
+
+
                 if ((pathToObjective[2]) == currentUnitsAvailableToAttack[0].myCurrentTile)
                 {
-                    
-                    CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1]);
+                    Debug.Log(name + " " + currentUnitsAvailableToAttack[0].name);
+                    CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1], CheckTileDirection(pathToObjective[1], pathToObjective[2], false));
                 }
                 else
                 {
-                    
                     damageWithMultipliersApplied = -999;
                 }
+
                 Vector3 unitDirection = new Vector3(pathToObjective[2].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[2].transform.position.z);
 
                 shaderHover.transform.DOLookAt(unitDirection, 0f, AxisConstraint.Y);

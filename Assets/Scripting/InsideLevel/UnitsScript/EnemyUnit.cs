@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyUnit : UnitBase
 {
@@ -627,8 +628,6 @@ public class EnemyUnit : UnitBase
     {
         LM.HideEnemyHover(this);
 
-        
-
         if (LM.selectedEnemy == null)
         {
             LM.UIM.HideUnitInfo("");
@@ -639,11 +638,8 @@ public class EnemyUnit : UnitBase
                 LM.HideHover(this);
                 HealthBarOn_Off(false);
             }
-
-
-          
-
         }
+
         else
         {
             if (LM.selectedEnemy != this)
@@ -662,8 +658,6 @@ public class EnemyUnit : UnitBase
         //LM.UIM.HideCharacterInfo("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
-		
-        
 		//LM.UIM.HideCharacterInfo("");
 		if (LM.selectedCharacter == null)
 		{
@@ -688,7 +682,13 @@ public class EnemyUnit : UnitBase
             LM.HideHover(this);
             HealthBarOn_Off(false);
         }
-		
+
+        //Quito el healthbar de los objetivos a los que puedo atacar al salir del hover
+        //Aunque lo desactivo en el hover exit, se activan en el CheckUnits en vez de en el hover enter
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
+        }
 
         myPortrait.UnHighlightMyself();
     }
@@ -912,30 +912,84 @@ public class EnemyUnit : UnitBase
     }
 
 
+    #region GOBLIN_SHARED_FUNCTIONALITY
 
+    protected Vector3 tempVector3Rotation;
+    protected FacingDirection tempFacingDirection; 
 
-    //public void ChangeDirectionAfterBeingSpawnedRandom(FacingDirection newFacingDirection)
-    //{
-    //    currentFacingDirection = newFacingDirection;
+    //Decidir rotación al moverse por los tiles.
+    public FacingDirection CheckTileDirection(IndividualTiles referenceTile, IndividualTiles tileToCheck, bool _shouldRotateToo)
+    {
+        //Arriba o abajo
+        if (tileToCheck.tileX == referenceTile.tileX)
+        {
+            //Arriba
+            if (tileToCheck.tileZ > referenceTile.tileZ)
+            {
+                tempVector3Rotation = new Vector3(0, 0, 0);
+                tempFacingDirection = FacingDirection.North;
+            }
+            //Abajo
+            else
+            {
+                tempVector3Rotation = new Vector3(0, 180, 0);
+                tempFacingDirection = FacingDirection.South;
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+            //Derecha
+            if (tileToCheck.tileX > referenceTile.tileX)
+            {
+                tempVector3Rotation = new Vector3(0, 90, 0);
+                tempFacingDirection = FacingDirection.East;
+            }
+            //Izquierda
+            else
+            {
+                tempVector3Rotation = new Vector3(0, -90, 0);
+                tempFacingDirection = FacingDirection.West;
+            }
+        }
 
-    //    if (currentFacingDirection == FacingDirection.North)
-    //    {
-    //        unitModel.
-    //    }
+        if (_shouldRotateToo)
+        {
+            unitModel.transform.DORotate(tempVector3Rotation, timeDurationRotation);
+            currentFacingDirection = tempFacingDirection;
+        }
 
-    //    else if (currentFacingDirection == FacingDirection.East)
-    //    {
+        return tempFacingDirection;
+    }
 
-    //    }
+    //Decidir rotación al terminar de moverse para atacar
+    protected void RotateLogic(FacingDirection newDirection)
+    {
+        //Roto al gigante
+        if (newDirection == FacingDirection.North)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.North;
+        }
 
-    //    else if (currentFacingDirection == FacingDirection.South)
-    //    {
+        else if (newDirection == FacingDirection.South)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.South;
+        }
 
-    //    }
+        else if (newDirection == FacingDirection.East)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.East;
+        }
 
-    //    else if (currentFacingDirection == FacingDirection.West)
-    //    {
+        else if (newDirection == FacingDirection.West)
+        {
+            unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+            currentFacingDirection = FacingDirection.West;
+        }
+    }
 
-    //    }
-    //}
+    #endregion
 }

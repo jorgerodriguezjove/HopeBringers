@@ -203,7 +203,6 @@ public class EnBalista : EnemyUnit
 
         base.FinishMyActions();
     }
-
     
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
