@@ -349,15 +349,9 @@ public class UnitBase : MonoBehaviour
             {
                 //Ataque por la espalda
                 damageWithMultipliersApplied += bonusDamageBackAttack;
-
             }
-            
         }
-
-        
         damageWithMultipliersApplied += BuffbonusStateDamage;
-
-       
     }
 
     //Prueba para calcular damages en el hover
@@ -612,7 +606,6 @@ public class UnitBase : MonoBehaviour
     {
         if (!isDead )
         {
-
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
 
             if (damageCalculated >= 0)
@@ -636,6 +629,7 @@ public class UnitBase : MonoBehaviour
     public void DisableCanvasHover()
     {
         canvasUnit.SetActive(false);
+        previsualizeAttackIcon.SetActive(false);
     }
 
     //El segundo bool sirve para hacer que el healthbar no desaparezca si se quita el ratón

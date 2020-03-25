@@ -491,20 +491,34 @@ public class LevelManager : MonoBehaviour
 
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
+                    Debug.Log("0");
                     hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(false);
                 }
 
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
+                    Debug.Log("1");
+
                     IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
                     if (tileToMove != null)
                     {
+                        Debug.Log("2");
+
                         hoverUnit.shaderHover.SetActive(false);
                         tileToMove.ColorDeselect();
                         hoverUnit.myLineRenderer.enabled = false;
                     }
-
                 }
+
+
+                //Desmarco las unidades disponibles para atacar
+                for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                {
+                    hoverUnit.currentUnitsAvailableToAttack[i].DisableCanvasHover();
+                    hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
+                    hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
+                }
+
             }
             else if (hoverUnit.GetComponent<EnCharger>())
 
@@ -521,6 +535,14 @@ public class LevelManager : MonoBehaviour
 
                 }
 
+
+                //Desmarco las unidades disponibles para atacar
+                for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                {
+                    hoverUnit.currentUnitsAvailableToAttack[i].DisableCanvasHover();
+                    hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
+                    hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
+                }
             }
 
             //Goblin, gigante, boss y demás
