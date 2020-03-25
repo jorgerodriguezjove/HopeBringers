@@ -148,6 +148,12 @@ public class EnemyUnit : UnitBase
         currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
         currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
         currentTimeWaitingBeforeEnding = timeWaitingBeforeEnding;
+
+		if(characterImage != null)
+		{
+			inGamePortrait.sprite = characterImage;
+		}
+		
     }
 
    

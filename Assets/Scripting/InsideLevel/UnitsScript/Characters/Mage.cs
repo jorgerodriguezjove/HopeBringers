@@ -247,7 +247,6 @@ public class Mage : PlayerUnit
         //Compruebo la dirección en la que se mueve para girar a la unidad
         //   CheckTileDirection(tileToMove);
         hasMoved = true;
-        movementTokenInGame.SetActive(false);
         //Refresco los tokens para reflejar el movimiento
         UIM.RefreshTokens();
 

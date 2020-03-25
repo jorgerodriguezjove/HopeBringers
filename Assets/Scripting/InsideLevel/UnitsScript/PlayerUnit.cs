@@ -73,20 +73,22 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private GameObject arrowIndicator;
 
-    [SerializeField]
     protected GameObject movementTokenInGame;
 
-    [SerializeField]
     private GameObject attackTokenInGame;
 
     [HideInInspector]
     public GameObject myPanelPortrait;
+
     [SerializeField]
 	public Sprite portraitImage;
 
 	[SerializeField]
 	public GameObject actionAvaliablePanel;
-	
+
+	[SerializeField]
+	private Image inGamePortrait2;
+
 
 	//Para el tooltip de ataque
 
@@ -123,6 +125,14 @@ public class PlayerUnit : UnitBase
         movementParticle.SetActive(false);
 
         fMovementUds = movementUds;
+
+		//Asigno a la imagen dentro del juego el retrato del personaje
+		if(characterImage != null)
+		{
+			inGamePortrait.sprite = characterImage;
+			inGamePortrait2.sprite = characterImage;
+		}
+		
 
 
     //if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
@@ -387,7 +397,6 @@ public class PlayerUnit : UnitBase
         //Compruebo la dirección en la que se mueve para girar a la unidad
         //   CheckTileDirection(tileToMove);
         hasMoved = true;
-        movementTokenInGame.SetActive(false);
         //Refresco los tokens para reflejar el movimiento
         UIM.RefreshTokens();
 
@@ -552,7 +561,7 @@ public class PlayerUnit : UnitBase
     //Función de ataque que se hace override en cada clase
     public virtual void Attack(UnitBase unitToAttack)
     {
-        attackTokenInGame.SetActive(false);
+        
 
         //El daño y la animación no lo pongo aquí porque tiene que ser lo primero que se calcule.
 
@@ -803,6 +812,20 @@ public class PlayerUnit : UnitBase
         unitToHide.downToUpDamageIcon.SetActive(false);
         unitToHide.upToDownDamageIcon.SetActive(false);
         unitToHide.backStabIcon.SetActive(false);
+	}
+
+	public override void HealthBarOn_Off(bool isOn)
+	{
+		if (shouldLockHealthBar && isOn)
+		{
+			healthBar.SetActive(isOn);
+			arrowIndicator.SetActive(!isOn);
+		}
+		else if (!shouldLockHealthBar)
+		{
+			healthBar.SetActive(isOn);
+			arrowIndicator.SetActive(!isOn);
+		}
 	}
 
 	#endregion

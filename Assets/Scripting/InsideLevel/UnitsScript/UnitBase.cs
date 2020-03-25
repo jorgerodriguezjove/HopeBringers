@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
@@ -180,7 +181,7 @@ public class UnitBase : MonoBehaviour
     public GameObject healthBar;
 
     //Bool que indica si el healthbar puede desaparecer o no
-    private bool shouldLockHealthBar;
+    protected bool shouldLockHealthBar;
 
     //Referncia al token de vida que se instancia
     [SerializeField]
@@ -213,8 +214,7 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     private GameObject canvasUnit;
 
-
-    [Header("INFO")]
+	[Header("INFO")]
 
     [SerializeField]
     [@TextAreaAttribute(15, 20)]
@@ -228,25 +228,28 @@ public class UnitBase : MonoBehaviour
 	[SerializeField]
 	public string unitName;
 
-    //¿SE PUEDE BORRAR?
-    //Texto que describe a la unidad.
-    //[SerializeField]
-    //public string characterDescription;
+	[SerializeField]
+	protected Image inGamePortrait;
 
-    //LO COMENTO PORQUE AHORA MISMO NO ESTÁ EN USO
-    //Icono que aparece en la lista de turnos.
-    //[SerializeField]
-    //public Sprite unitIcon;
+	//¿SE PUEDE BORRAR?
+	//Texto que describe a la unidad.
+	//[SerializeField]
+	//public string characterDescription;
 
-    //¿SE PUEDE BORRAR?
-    //Canvas que muestra la vida de la unidad
-    //[SerializeField]
-    //protected Canvas myCanvasHealthbar;
+	//LO COMENTO PORQUE AHORA MISMO NO ESTÁ EN USO
+	//Icono que aparece en la lista de turnos.
+	//[SerializeField]
+	//public Sprite unitIcon;
 
-    #endregion
+	//¿SE PUEDE BORRAR?
+	//Canvas que muestra la vida de la unidad
+	//[SerializeField]
+	//protected Canvas myCanvasHealthbar;
 
-    //El level manager llama a esta función sustituyendo al start
-    public virtual void InitializeUnitOnTile()
+	#endregion
+
+	//El level manager llama a esta función sustituyendo al start
+	public virtual void InitializeUnitOnTile()
     {
         FindAndSetFirstTile();
         myCurrentTile.unitOnTile = this;
@@ -636,7 +639,7 @@ public class UnitBase : MonoBehaviour
     }
 
     //El segundo bool sirve para hacer que el healthbar no desaparezca si se quita el ratón
-	public void HealthBarOn_Off(bool isOn)
+	public virtual void HealthBarOn_Off(bool isOn)
 	{
         if (shouldLockHealthBar && isOn)
         {
