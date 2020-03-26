@@ -116,6 +116,20 @@ public class LevelManager : MonoBehaviour
     //int con el honor acumulador
     public int honorCount;
 
+	[Header("TUTORIALES")]
+
+	[SerializeField]
+	public bool tutorialLevel1;
+	[SerializeField]
+	public bool tutorialLevel2;
+	[SerializeField]
+	public bool tutorialLevel3;
+	[SerializeField]
+	public bool tutorialLevel4;
+
+	[SerializeField]
+	public GameObject tutorialGameObject;
+
     #endregion
 
     #region INIT
@@ -709,11 +723,11 @@ public class LevelManager : MonoBehaviour
                     
                     if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
-						UIM.TooltipAttack();
+						//UIM.TooltipAttack();
 					}
 					else
 					{
-						UIM.TooltipNoAttackable();
+						//UIM.TooltipNoAttackable();
 					}
 
                     SoundManager.Instance.PlaySound(AppSounds.PLAYER_SELECTION);
@@ -951,6 +965,7 @@ public class LevelManager : MonoBehaviour
                             //Hacer que aparezcan los botones de rotación
                             selectedCharacter.isMovingorRotating = true;
                             selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(true);
+							
 
                             #region DEPRECATED_ALTURA_FLECHAS_ROTACION
                             //offsetHeightArrow = 0.5f;
@@ -989,9 +1004,10 @@ public class LevelManager : MonoBehaviour
                             //Coloco las flechas de rotación
                             Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + offsetHeightArrow, tileToMove.transform.position.z);
                             selectedCharacter.canvasWithRotationArrows.gameObject.transform.position = positionToSpawn;
+							UIM.TooltipRotate();
 
-                            //Desmarco las unidades que antes estaban disponibles para ser atacadas
-                            if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && tileToMove != selectedCharacter.myCurrentTile)
+							//Desmarco las unidades que antes estaban disponibles para ser atacadas
+							if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && tileToMove != selectedCharacter.myCurrentTile)
                             {
                                 for (int j = 0; j < selectedCharacter.currentTilesInRangeForAttack.Count; j++)
                                 {
@@ -1156,8 +1172,12 @@ public class LevelManager : MonoBehaviour
 
             //Comienza turno player
             UIM.PlayerTurnBanner(false);
+			if (tutorialLevel2 || tutorialLevel3 || tutorialLevel4)
+			{
+				tutorialGameObject.SetActive(true);
+			}
 
-            BeginPlayerPhase();
+			BeginPlayerPhase();
         }
     }
 

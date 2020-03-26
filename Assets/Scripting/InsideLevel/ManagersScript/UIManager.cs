@@ -165,6 +165,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject hideDuringUnitPlacement3DHud;
 
+	[Header("TUTORIAL")]
+
+	bool firstTimeAction, secondTimeAction, thirdTimeAction, fourthTimeAction, secondUnit; 
+
 
     #endregion
 
@@ -361,6 +365,7 @@ public class UIManager : MonoBehaviour
 		{
 			endTurnButton.GetComponent<MeshRenderer>().material = noMoreActionMaterial;
 			noMoreActionsPanel.SetActive(true);
+			UndoTooltip();
 		}
 		Debug.Log("Después de " + numberOfCharactersFinished);
 	}
@@ -698,21 +703,64 @@ public class UIManager : MonoBehaviour
     public void TooltipMove()
 	{
 		tooltipAccionesText.text = "Mueve la unidad";
+		if (LM.tutorialLevel1 && !firstTimeAction)
+		{
+			LM.tutorialGameObject.SetActive(true);
+			firstTimeAction = true;
+		}
 	}
 	public void TooltipAttack()
 	{
 		tooltipAccionesText.text = "Ataca a una unidad";
 		hasCharacterUnitInRange = true;
+		if (LM.tutorialLevel1 && !thirdTimeAction)
+		{
+			LM.tutorialGameObject.SetActive(true);
+			thirdTimeAction = true;
+			secondUnit = true;
+			return;
+		}
+		if (LM.tutorialLevel1 && !fourthTimeAction && secondUnit)
+		{
+			LM.tutorialGameObject.SetActive(true);
+			fourthTimeAction = true;
+		}
 	}
 	public void TooltipNoAttackable()
 	{
 		tooltipAccionesText.text = "Esta unidad no tiene ningún enemigo a rango";
 		hasCharacterUnitInRange = false;
 		CheckActionsAvaliable();
+		if (LM.tutorialLevel1 && !thirdTimeAction)
+		{
+			LM.tutorialGameObject.SetActive(true);
+			thirdTimeAction = true;
+			secondUnit = true;
+			return;
+		}
+		if (LM.tutorialLevel1 && !fourthTimeAction && secondUnit)
+		{
+			LM.tutorialGameObject.SetActive(true);
+			fourthTimeAction = true;
+		}
 	}
 	public void TooltipRotate()
 	{
 		tooltipAccionesText.text = "Selecciona la rotación de la unidad";
+		//if(LM.tutorialLevel1 && !secondTimeAction)
+		//{
+		//	LM.tutorialGameObject.SetActive(true);
+		//	secondTimeAction = true;
+		//}
+
+	}
+	public void UndoTooltip()
+	{
+		if(LM.tutorialLevel2 && !secondTimeAction)
+		{
+			LM.tutorialGameObject.SetActive(true);
+			secondTimeAction = true;
+		}
 	}
 	public void TooltipDefault()
 	{
