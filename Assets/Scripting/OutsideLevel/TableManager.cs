@@ -58,7 +58,6 @@ public class TableManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(GameManager.Instance);
         //La primera vez que se abre el juego añado las unidades iniciales.
         if (GameManager.Instance._isFirstTimeLoadingGame)
         {

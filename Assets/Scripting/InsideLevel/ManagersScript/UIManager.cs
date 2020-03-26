@@ -160,6 +160,10 @@ public class UIManager : MonoBehaviour
     GameObject hud3DInDialog;
     [SerializeField]
     GameObject hud3DUnitPlacement;
+    [SerializeField]
+    GameObject hideDuringUnitPlacementHud;
+    [SerializeField]
+    GameObject hideDuringUnitPlacement3DHud;
 
 
     #endregion
@@ -175,6 +179,8 @@ public class UIManager : MonoBehaviour
     {
         hud3DInDialog.SetActive(false);
         hud3DUnitPlacement.SetActive(true);
+        hideDuringUnitPlacementHud.SetActive(false);
+        hideDuringUnitPlacement3DHud.SetActive(false);
     }
 
     //Lo pongo en una variable en vez de en el start para que lo pueda llamar el Level Manager
@@ -182,6 +188,9 @@ public class UIManager : MonoBehaviour
     {
         hudParentObject.SetActive(true);
         hud3DInGame.SetActive(true);
+        hideDuringUnitPlacementHud.SetActive(true);
+        hideDuringUnitPlacement3DHud.SetActive(true);
+
         hud3DInDialog.SetActive(false);
         hud3DUnitPlacement.SetActive(false);
 
