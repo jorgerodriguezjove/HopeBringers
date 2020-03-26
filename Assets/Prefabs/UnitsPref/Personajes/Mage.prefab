@@ -2674,6 +2674,7 @@ GameObject:
   - component: {fileID: 991361816915093137}
   - component: {fileID: 7807776403615987861}
   - component: {fileID: 1321902887390729176}
+  - component: {fileID: 4367832088230450804}
   m_Layer: 13
   m_Name: TokenRot (2)
   m_TagString: Untagged
@@ -2755,6 +2756,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 2.32, z: 0.85}
   m_Center: {x: -0.0000019073486, y: 0.00000047683716, z: 0}
+--- !u!114 &4367832088230450804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 265876301498365943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newDirection: 0
 --- !u!1 &1136375811828607047
 GameObject:
   m_ObjectHideFlags: 0
@@ -2767,7 +2781,6 @@ GameObject:
   - component: {fileID: 7652848540055957680}
   - component: {fileID: 6771597180991628784}
   - component: {fileID: 7737813166812585962}
-  - component: {fileID: 2170307563319743806}
   m_Layer: 13
   m_Name: East
   m_TagString: Untagged
@@ -2838,7 +2851,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136375811828607047}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -2874,7 +2887,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2170307563319743806}
+      - m_Target: {fileID: 0}
         m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
@@ -2885,19 +2898,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2170307563319743806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1136375811828607047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  newDirection: 1
 --- !u!1 &2030700651756800624
 GameObject:
   m_ObjectHideFlags: 0
@@ -3023,6 +3023,7 @@ GameObject:
   - component: {fileID: 5224677177001488945}
   - component: {fileID: 6428247352406717176}
   - component: {fileID: 7388892580802755197}
+  - component: {fileID: 5323410260333982118}
   m_Layer: 13
   m_Name: TokenRot (3)
   m_TagString: Untagged
@@ -3104,6 +3105,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 2.32, z: 0.85}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5323410260333982118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3472079005006991487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newDirection: 2
 --- !u!1 &3782855633052450891
 GameObject:
   m_ObjectHideFlags: 0
@@ -3218,7 +3232,6 @@ GameObject:
   - component: {fileID: 2546545789520744706}
   - component: {fileID: 5134467003541612764}
   - component: {fileID: 5652473589785445847}
-  - component: {fileID: 9057949678571384333}
   m_Layer: 13
   m_Name: West
   m_TagString: Untagged
@@ -3289,7 +3302,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4437089326062903122}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -3325,7 +3338,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9057949678571384333}
+      - m_Target: {fileID: 0}
         m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
@@ -3336,19 +3349,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &9057949678571384333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4437089326062903122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  newDirection: 3
 --- !u!1 &4471143071938656072
 GameObject:
   m_ObjectHideFlags: 0
@@ -3361,6 +3361,7 @@ GameObject:
   - component: {fileID: 5468455688854095162}
   - component: {fileID: 2192296164550881776}
   - component: {fileID: 5182685266525794328}
+  - component: {fileID: 566479876931626606}
   m_Layer: 13
   m_Name: TokenRot (1)
   m_TagString: Untagged
@@ -3442,6 +3443,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 2.32, z: 0.85}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &566479876931626606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4471143071938656072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newDirection: 1
 --- !u!1 &4727297925739996120
 GameObject:
   m_ObjectHideFlags: 0
@@ -3804,6 +3818,7 @@ MonoBehaviour:
     type: 2}
   previsualizeAttackIcon: {fileID: 2148751208685607138}
   notAttackX: {fileID: 1103145764187233996}
+  monkMark: {fileID: 0}
   backStabIcon: {fileID: 8391444560214134064}
   upToDownDamageIcon: {fileID: 2001128053037735434}
   downToUpDamageIcon: {fileID: 7777520636721902605}
@@ -3839,6 +3854,7 @@ MonoBehaviour:
   portraitImage: {fileID: 21300000, guid: e1011742f2024fd4986a96d4421e85dc, type: 3}
   actionAvaliablePanel: {fileID: 0}
   inGamePortrait2: {fileID: 2497299890503442813}
+  insideGameInfoObject: {fileID: 7422481941314982989}
   LM: {fileID: 0}
   UIM: {fileID: 0}
   TM: {fileID: 0}
@@ -3875,6 +3891,7 @@ GameObject:
   - component: {fileID: 772649732382629655}
   - component: {fileID: 8164946418032573695}
   - component: {fileID: 3031184802417038326}
+  - component: {fileID: 679249792070249913}
   m_Layer: 13
   m_Name: TokenRot
   m_TagString: Untagged
@@ -3956,6 +3973,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 2.32, z: 0.85}
   m_Center: {x: 0, y: -0.00000023841858, z: 0}
+--- !u!114 &679249792070249913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7243158948432361694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newDirection: 3
 --- !u!1 &8482559691643106695
 GameObject:
   m_ObjectHideFlags: 0
@@ -3968,7 +3998,6 @@ GameObject:
   - component: {fileID: 3028860207363726038}
   - component: {fileID: 8565034493057499818}
   - component: {fileID: 1562953630464905875}
-  - component: {fileID: 4859476204424845336}
   m_Layer: 13
   m_Name: North
   m_TagString: Untagged
@@ -4039,7 +4068,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8482559691643106695}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -4075,7 +4104,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4859476204424845336}
+      - m_Target: {fileID: 0}
         m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
@@ -4086,19 +4115,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4859476204424845336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8482559691643106695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  newDirection: 0
 --- !u!1 &8815882962567161432
 GameObject:
   m_ObjectHideFlags: 0
@@ -4111,7 +4127,6 @@ GameObject:
   - component: {fileID: 3922780252051654456}
   - component: {fileID: 8572188541558195044}
   - component: {fileID: 54746912855719}
-  - component: {fileID: 1523153314772964463}
   m_Layer: 13
   m_Name: South
   m_TagString: Untagged
@@ -4182,7 +4197,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8815882962567161432}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -4218,7 +4233,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1523153314772964463}
+      - m_Target: {fileID: 0}
         m_MethodName: UiManagerChangeDirection
         m_Mode: 1
         m_Arguments:
@@ -4229,19 +4244,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1523153314772964463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8815882962567161432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82415e5c7fa437c4381bfaf4020b0f86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  newDirection: 2
 --- !u!1 &9101451302427103071
 GameObject:
   m_ObjectHideFlags: 0
@@ -4576,6 +4578,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 269dd722d4e920f4e98ee2b4b9aadcd5, type: 3}
+--- !u!1 &7422481941314982989 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5324547870424089507, guid: 269dd722d4e920f4e98ee2b4b9aadcd5,
+    type: 3}
+  m_PrefabInstance: {fileID: 3379225757604911086}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6400882153453416428 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8516847354922301442, guid: 269dd722d4e920f4e98ee2b4b9aadcd5,

@@ -155,7 +155,8 @@ public class EnGoblin : EnemyUnit
             myCurrentEnemyState = enemyState.Searching;
             return;
         }
-        base.Attack();        
+
+        //base.Attack();
 
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
@@ -200,6 +201,8 @@ public class EnGoblin : EnemyUnit
                     //Atacar al enemigo
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
+
+                base.Attack();
 
                 //Animación de ataque
                 hasAttacked = true;

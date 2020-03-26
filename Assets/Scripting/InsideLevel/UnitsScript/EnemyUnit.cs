@@ -277,7 +277,6 @@ public class EnemyUnit : UnitBase
 
         if (myCurrentEnemyState == enemyState.Waiting)
         {
-            Debug.Log(3);
             yield return new WaitForSeconds(currentTimeWaitingBeforeStarting);
             myCurrentEnemyState = enemyState.Searching;
         }
@@ -337,7 +336,9 @@ public class EnemyUnit : UnitBase
        
         if(currentUnitsAvailableToAttack.Count > 0)
         {
+            Debug.Log("AQUI");
             CalculateDamage(currentUnitsAvailableToAttack[0]);
+
             currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
         }
     }
@@ -401,7 +402,6 @@ public class EnemyUnit : UnitBase
         //Me aseguro de que el tiempo de movimiento vuelve a la normalidad por si le ha dado a acelerar
         //currentTimeForMovement = timeMovementAnimation;
 
-        Debug.Log(4);
         //currentTimeWaitingBeforeStarting = timeWaitingBeforeStarting;
         //currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
         //currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;

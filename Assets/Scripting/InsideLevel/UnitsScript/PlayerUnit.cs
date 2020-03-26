@@ -89,6 +89,10 @@ public class PlayerUnit : UnitBase
 	[SerializeField]
 	private Image inGamePortrait2;
 
+    //Objeto que sirve de padre para todo el hud in game del personaje
+    [SerializeField]
+    public GameObject insideGameInfoObject;
+
 
 	//Para el tooltip de ataque
 
@@ -516,6 +520,8 @@ public class PlayerUnit : UnitBase
 
     public void RotateUnitFromButton(FacingDirection newDirection, IndividualTiles _tileToMove, List<IndividualTiles> _currentPath)
     {
+        hasMoved = true;
+
         //Arriba o abajo
         if (newDirection == FacingDirection.North)
         {

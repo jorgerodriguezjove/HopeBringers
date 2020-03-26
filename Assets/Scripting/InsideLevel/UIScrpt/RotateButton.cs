@@ -15,8 +15,14 @@ public class RotateButton : MonoBehaviour
         UIM = FindObjectOfType<UIManager>();
     }
 
+    private void OnMouseDown()
+    {
+        UIM.RotatePlayerInNewDirection(newDirection);
+    }
+
     public void UiManagerChangeDirection()
     {
+        Debug.Log("Funciono");
         UIM.RotatePlayerInNewDirection(newDirection);
     }
 

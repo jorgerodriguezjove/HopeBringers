@@ -669,7 +669,7 @@ public class EnGrabber : EnemyUnit
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
-            
+
         }
     }
 }

@@ -215,6 +215,7 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
         {
             GameObject unitInstantiated = Instantiate(GameManager.Instance.characterDataForCurrentLevel[i].GetComponent<CharacterData>().myUnit.gameObject, initialCharacterDataPosition[i]);
+            unitInstantiated.GetComponent<PlayerUnit>().insideGameInfoObject.SetActive(false);
             unitInstantiated.transform.position = initialCharacterDataPosition[i].position;
             unitInstantiated.transform.localScale = Vector3.one;
 
@@ -597,15 +598,15 @@ public class LevelManager : MonoBehaviour
                 //Coger personaje para moverlo a tile inicial
                 if (clickedUnit.GetComponent<PlayerUnit>().myCurrentTile == null)
                 {
+                    Debug.Log("First");
                     currentCharacterPlacing = clickedUnit;
                     currentCharacterPlacing.GetComponent<PlayerUnit>().initialPosInBox = currentCharacterPlacing.transform.parent;
-
-                    Debug.Log(clickedUnit.name + " clickado");
                 }
 
                 //Quitar personaje de un tile
                 else if (currentCharacterPlacing == null)
                 {
+                    Debug.Log("null");
                     currentCharacterPlacing = clickedUnit;
                     clickedUnit.myCurrentTile.unitOnTile = null;
                     clickedUnit.myCurrentTile.WarnInmediateNeighbours();
@@ -614,8 +615,11 @@ public class LevelManager : MonoBehaviour
 
                 else
                 {
+                    Debug.Log("Sustitute");
                     SustituteUnitsOnPlacementPhase(clickedUnit.myCurrentTile);
                 }
+
+                Debug.Log("---------");
             }
         }
 
@@ -900,7 +904,6 @@ public class LevelManager : MonoBehaviour
                     currentCharacterPlacing.transform.position = tileToMove.transform.position;
                     currentCharacterPlacing.GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
 
-
                     //Le quito el padre y le pongo en la escala correcta
                     currentCharacterPlacing.transform.parent = null;
                     currentCharacterPlacing.transform.localScale = Vector3.one;
@@ -928,7 +931,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             //Movimiento de la unidad
-            if (selectedCharacter != null && !selectedCharacter.hasAttacked)
+            if (selectedCharacter != null && !selectedCharacter.hasAttacked && !selectedCharacter.hasMoved)
             {
                 tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter, true);
 
@@ -1281,11 +1284,13 @@ public class LevelManager : MonoBehaviour
         {
             //Añado las unidades que han quedado al final colocadas en la lista de unidades en el tablero.
             charactersOnTheBoard.Add(charactersAlreadyPlaced[i]);
+            charactersAlreadyPlaced[i].insideGameInfoObject.SetActive(true);
         }
 
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
         {
             GameManager.Instance.characterDataForCurrentLevel[i].UpdateMyUnitStatsForTheLevel();
+            
         }
 
         currentLevelState = LevelState.PlayerPhase;
@@ -1354,6 +1359,7 @@ public class LevelManager : MonoBehaviour
         {
             DeSelectUnit();
         }
+
     }
     #endregion
 
