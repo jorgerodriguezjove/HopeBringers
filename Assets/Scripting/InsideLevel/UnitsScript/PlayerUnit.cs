@@ -484,7 +484,6 @@ public class PlayerUnit : UnitBase
 
             //Desactivo el trail de partículas de movimiento
             movementParticle.SetActive(false);
-
         }
 
         //Arriba o abajo
