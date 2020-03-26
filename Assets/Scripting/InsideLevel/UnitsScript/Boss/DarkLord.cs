@@ -581,7 +581,7 @@ public class DarkLord : EnemyUnit
                 }
             }
 
-            currentUnitsAvailableToAttack[i].CalculatePushPosition(1, tilesListToPull, damageMadeByPush, damageMadeByFall);
+            currentUnitsAvailableToAttack[i].ExecutePush(1, tilesListToPull, damageMadeByPush, damageMadeByFall);
 
             #endregion
 

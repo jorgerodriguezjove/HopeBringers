@@ -326,27 +326,22 @@ public class PlayerUnit : UnitBase
             {
                 if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
+                    //LLAMAR AL LM.CALCULARACCIONSOMBRAPLAYER. mario
+
+
                     Druid druidRef = FindObjectOfType<Druid>();
                     Rogue ninjaRef = FindObjectOfType<Rogue>();
                     if (druidRef != null && LM.selectedCharacter == druidRef )
                     {
                        // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                       druidRef.previsualizeAttackIcon.SetActive(true);
+                        druidRef.previsualizeAttackIcon.SetActive(true);
                         druidRef.canvasUnit.SetActive(true);
                         druidRef.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("-1" );
                         canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
-                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                        
                     }
-                    else if (ninjaRef != null && LM.selectedCharacter == ninjaRef)
-                    {
 
-                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                    }
-                    else
-                    {
-                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                    }
-                   
+                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 }
 
                 if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
@@ -868,15 +863,21 @@ public class PlayerUnit : UnitBase
 		}
 	}
 
-	#endregion
+    //Función que llama el LevelManager al hacer hover sobre un objetivo al que poder atacar
+    public virtual void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+        //Cada personaje hace una cosa distinta
+    }
 
-	#region CHECKS
+    #endregion
 
-	//En caso de querer generalizar la comprobación de en que dirección está un tile en comparación a mi posición, lo que se puede hacer es que la función no sea un void, si no que 
-	//devuelva un valor de un enum como el de la rotación del personaje, de tal forma que los 4 ifs solo se ponen una vez y siempre devuelven una dirección
+    #region CHECKS
 
-	//De momento esta función simplemente sirve para girar al personaje.
-	public void CheckTileDirection(IndividualTiles tileToCheck)
+    //En caso de querer generalizar la comprobación de en que dirección está un tile en comparación a mi posición, lo que se puede hacer es que la función no sea un void, si no que 
+    //devuelva un valor de un enum como el de la rotación del personaje, de tal forma que los 4 ifs solo se ponen una vez y siempre devuelven una dirección
+
+    //De momento esta función simplemente sirve para girar al personaje.
+    public void CheckTileDirection(IndividualTiles tileToCheck)
     {
         //Arriba o abajo
         if (tileToCheck.tileX == myCurrentTile.tileX)

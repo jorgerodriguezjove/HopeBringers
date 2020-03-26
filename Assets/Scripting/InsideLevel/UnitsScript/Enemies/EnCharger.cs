@@ -177,22 +177,22 @@ public class EnCharger : EnemyUnit
 
         if (currentFacingDirection == FacingDirection.North)
         {
-            currentUnitsAvailableToAttack[0].CalculatePushPosition(1, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
+            currentUnitsAvailableToAttack[0].ExecutePush(1, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
         }
 
         else if (currentFacingDirection == FacingDirection.South)
         {
-            currentUnitsAvailableToAttack[0].CalculatePushPosition(1, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
+            currentUnitsAvailableToAttack[0].ExecutePush(1, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
         }
 
         else if (currentFacingDirection == FacingDirection.East)
         {
-            currentUnitsAvailableToAttack[0].CalculatePushPosition(1, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
+            currentUnitsAvailableToAttack[0].ExecutePush(1, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
         }
 
         else if (currentFacingDirection == FacingDirection.West)
         {
-            currentUnitsAvailableToAttack[0].CalculatePushPosition(1, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+            currentUnitsAvailableToAttack[0].ExecutePush(1, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
         }
         myCurrentEnemyState = enemyState.Ended;
     }

@@ -180,8 +180,6 @@ public class EnemyUnit : UnitBase
                 LM.damageTilesInBoard[i].CheckHasToDoDamage();
                 LM.damageTilesInBoard[i].damageDone = true;
                 break;
-
-
             }
         }
 
@@ -534,21 +532,12 @@ public class EnemyUnit : UnitBase
             {
                 if (!isDead)
                 {
-                    Rogue ninjaRef = FindObjectOfType<Rogue>();
-                    if (ninjaRef != null && LM.selectedCharacter == ninjaRef)
-                    {
-                        
-                        
-                      
-                    }
-                    else
-                    {
-                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                        LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
-                        LM.CheckIfHoverShouldAppear(this);
-                        HealthBarOn_Off(true);
-                    }
-                    
+                    //LLAMAR AL LM.CALCULARACCIONSOMBRAPLAYER. mario
+
+                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                    LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
+                    LM.CheckIfHoverShouldAppear(this);
+                    HealthBarOn_Off(true);
                 }
             }
             else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))

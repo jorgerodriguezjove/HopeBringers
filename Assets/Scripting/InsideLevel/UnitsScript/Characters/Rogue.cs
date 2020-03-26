@@ -472,78 +472,15 @@ public class Rogue : PlayerUnit
         }
         else
         {
+            //Importante esta llamada sea la primera
+            CalculateAttackLogic(unitToAttack, true);
 
-            if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)
-            {
-                //Arriba
-                if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
-                {
-                    //Quito el color del tile
-                    myCurrentTile.ColorDeselect();
+            //Quito el color del tile
+            myCurrentTile.ColorDeselect();
+            transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
-                    //Muevo al pícaro
-                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
-                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
-
-                    //Cambio la rotación
-                    NewRotationAfterJump(unitToAttack.myCurrentTile);
-
-                    //Actualizo los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[1]);
-                }
-                //Abajo
-                else
-                {
-                    //Quito el color del tile
-                    myCurrentTile.ColorDeselect();
-
-                    //Muevo al pícaro
-                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
-                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
-
-                    //Cambio la rotación
-                    NewRotationAfterJump(unitToAttack.myCurrentTile);
-
-                    //Actualizo los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[1]);
-                }
-            }
-            //Izquierda o derecha
-            else
-            {
-                //Derecha
-                if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
-                {
-                    //Quito el color del tile
-                    myCurrentTile.ColorDeselect();
-
-                    //Muevo al pícaro
-                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
-                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
-
-                    //Cambio la rotación
-                    NewRotationAfterJump(unitToAttack.myCurrentTile);
-
-                    //Actualizo los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[1]);
-                }
-                //Izquierda
-                else
-                {
-                    //Quito el color del tile
-                    myCurrentTile.ColorDeselect();
-
-                    //Muevo al pícaro
-                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
-                    transform.DOJump(currentTileVectorToMove, 1, 1, 1);
-
-                    //Cambio la rotación
-                    NewRotationAfterJump(unitToAttack.myCurrentTile);
-
-                    //Actualizo los tiles
-                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[1]);
-                }
-            }
+            //Cambio la rotación
+            NewRotationAfterJump(unitToAttack.myCurrentTile);
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -556,13 +493,74 @@ public class Rogue : PlayerUnit
         }
     }
 
+    private void CalculateAttackLogic(UnitBase unitToAttack, bool _shouldUpdateInfoAfterMovement)
+    {
+        if (unitToAttack.myCurrentTile.tileX == myCurrentTile.tileX)
+        {
+            //Arriba
+            if (unitToAttack.myCurrentTile.tileZ > myCurrentTile.tileZ)
+            {
+                //Muevo al pícaro
+                currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
+
+                if (_shouldUpdateInfoAfterMovement)
+                {
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[1]);
+                }  
+            }
+            //Abajo
+            else
+            {
+                //Muevo al pícaro
+                currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
+
+                if (_shouldUpdateInfoAfterMovement)
+                {
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[1]);
+                }
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+            //Derecha
+            if (unitToAttack.myCurrentTile.tileX > myCurrentTile.tileX)
+            {
+                //Muevo al pícaro
+                currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
+
+                if (_shouldUpdateInfoAfterMovement)
+                {
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[1]);
+                }
+            }
+            //Izquierda
+            else
+            {
+                //Muevo al pícaro
+                currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
+
+                if (_shouldUpdateInfoAfterMovement)
+                {
+                    //Actualizo los tiles
+                    UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[1]);
+                }      
+            }
+        }
+    }
+
     //Función genérica que comprueba la nueva dirección a la que debe mirar el pícaro tras saltar.
     public void NewRotationAfterJump(IndividualTiles tileWithEnemyAttacked)
     {
+        Debug.Log("1");
         if (tileWithEnemyAttacked.tileX == myCurrentTile.tileX)
         {
+            Debug.Log("2");
             //Arriba
-            if (tileWithEnemyAttacked.tileZ > myCurrentTile.tileZ)
+            if (tileWithEnemyAttacked.tileZ < myCurrentTile.tileZ)
             {
                 unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.South;
@@ -578,14 +576,17 @@ public class Rogue : PlayerUnit
         else
         {
             //Derecha
-            if (tileWithEnemyAttacked.tileX > myCurrentTile.tileX)
+            if (tileWithEnemyAttacked.tileX < myCurrentTile.tileX)
             {
+                Debug.Log("izq");
+
                 unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.West;
             }
             //Izquierda
             else
             {
+                Debug.Log("der");
                 unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
                 currentFacingDirection = FacingDirection.East;
             }
@@ -683,5 +684,13 @@ public class Rogue : PlayerUnit
         {
             Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
         }
+    }
+
+
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+        CalculateAttackLogic(_unitToAttack, false);
+
+        //Mostrar sombra en tile calculado. mario.
     }
 }
