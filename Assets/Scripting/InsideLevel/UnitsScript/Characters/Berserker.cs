@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using TMPro;
+using UnityEngine.UI;
+
 public class Berserker : PlayerUnit
 {
     #region VARIABLES
@@ -10,8 +13,12 @@ public class Berserker : PlayerUnit
     //Indica si el berserker está en Rage
     private bool isInRage;
 
-    
- 
+    public GameObject isInRageIcon;
+
+  
+
+
+
     //Al llegar a 0, el rage se quita
     private int turnsLeftToRageOff;
     [SerializeField]
@@ -23,7 +30,7 @@ public class Berserker : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
-    [Header("Activas")]
+    //[Header("Activas")]
     //ACTIVAS
     public bool circularAttack;
     //Esta variable tiene que cambiar en la mejora 2 de este ataque
@@ -64,6 +71,7 @@ public class Berserker : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
+            unitToAttack.monkMark.SetActive(false);
             currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
             unitToAttack.numberOfMarks = 0;
 
@@ -264,10 +272,13 @@ public class Berserker : PlayerUnit
 
         //Activo el rage
         isInRage = true;
-
+        isInRageIcon.SetActive(true);
+        
         //La primera vez que entra en rage inicializo los turnos que puede estar en rage.
+        turnsLeftToRageOff = maxNumberOfTurnsInRage - 1;
+        myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.enabled = true;
+        myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.text = turnsLeftToRageOff.ToString();
         turnsLeftToRageOff = maxNumberOfTurnsInRage;
-
         //Cambiar material
         RageColor();
 
@@ -281,10 +292,17 @@ public class Berserker : PlayerUnit
         {
             turnsLeftToRageOff--;
 
+            myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.enabled = true;
+            myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.text = turnsLeftToRageOff.ToString();
+          
+
             if (turnsLeftToRageOff <= 0)
             {
                 isInRage = false;
+                isInRageIcon.SetActive(false);
                 turnsLeftToRageOff = maxNumberOfTurnsInRage;
+                myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.enabled = false;
+                
                 RageColor();
             }
         }

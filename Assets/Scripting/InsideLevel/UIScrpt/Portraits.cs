@@ -59,7 +59,9 @@ public class Portraits : MonoBehaviour
     //Bool que indica a los retratos si están clickados
     public bool isClicked;
 
-	
+    //Numero para el rage del berserker
+    [SerializeField]
+    public TextMeshProUGUI rageTurnsLeft;
 
     #endregion
 

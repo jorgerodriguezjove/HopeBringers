@@ -204,6 +204,7 @@ public class Rogue : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
+            unitToAttack.monkMark.SetActive(false);
             currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
             unitToAttack.numberOfMarks = 0;
 

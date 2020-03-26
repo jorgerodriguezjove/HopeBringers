@@ -273,6 +273,7 @@ public class PlayerUnit : UnitBase
 		UIM.RefreshTokens();
 		//Aviso al LM que deseleccione la unidad
 		LM.DeSelectUnit();
+		LM.DeSelectUnit();
         UIM.ActivateDeActivateEndButton();
         //Doy feedback de que esa unidad no puede hacer nada
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
@@ -293,6 +294,8 @@ public class PlayerUnit : UnitBase
         else
         {
             Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+            
+
             if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved && valkyrieRef.changePositions)
             {
                 if (currentHealth <= valkyrieRef.numberCanChange)
@@ -301,6 +304,7 @@ public class PlayerUnit : UnitBase
                 }
  
             }
+           
             else
             {
                 LM.SelectUnit(movementUds, this);
@@ -318,8 +322,29 @@ public class PlayerUnit : UnitBase
             {
                 if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                    Druid druidRef = FindObjectOfType<Druid>();
+                    Rogue ninjaRef = FindObjectOfType<Rogue>();
+                    if (druidRef != null && LM.selectedCharacter == druidRef )
+                    {
+                       // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                       druidRef.previsualizeAttackIcon.SetActive(true);
+                        druidRef.canvasUnit.SetActive(true);
+                        druidRef.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("-1" );
+                        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
+                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                    }
+                    else if (ninjaRef != null && LM.selectedCharacter == ninjaRef)
+                    {
+
+                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                    }
+                    else
+                    {
+                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                    }
+                   
                 }
+
                 if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
                     myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
@@ -376,6 +401,15 @@ public class PlayerUnit : UnitBase
                 myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
 
                 ResetColor();
+            }
+
+            Druid druidRef = FindObjectOfType<Druid>();
+            if (druidRef != null && LM.selectedCharacter == druidRef)
+            {
+                // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                druidRef.previsualizeAttackIcon.SetActive(false);
+                druidRef.canvasUnit.SetActive(false);
+               
             }
         }
 

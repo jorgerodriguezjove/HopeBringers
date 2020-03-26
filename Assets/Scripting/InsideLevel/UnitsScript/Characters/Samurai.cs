@@ -9,6 +9,8 @@ public class Samurai : PlayerUnit
     [SerializeField]
     private int samuraiFrontAttack;
 
+
+
     [Header("MEJORAS DE PERSONAJE")]
 
     [Header("Activas")]
@@ -67,6 +69,9 @@ public class Samurai : PlayerUnit
                 {
                     if (myCurrentTile.tilesInLineUp[i].unitOnTile.currentFacingDirection == FacingDirection.North)
                     {
+                        myCurrentTile.tilesInLineUp[i].unitOnTile.previsualizeAttackIcon.SetActive(true);
+                        myCurrentTile.tilesInLineUp[i].unitOnTile.notAttackX.SetActive(true);
+
                         break;
                     }
                     else
@@ -191,6 +196,7 @@ public class Samurai : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
+            unitToAttack.monkMark.SetActive(false);
             currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
             unitToAttack.numberOfMarks = 0;
 

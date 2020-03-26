@@ -662,6 +662,7 @@ public class LevelManager : MonoBehaviour
                     }
 
                     selectedCharacter.CheckUnitsAndTilesInRangeToAttack();
+
 					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
 						UIM.TooltipMoveorAttack();
@@ -746,6 +747,9 @@ public class LevelManager : MonoBehaviour
             }
 
 			selectedCharacter.HealthBarOn_Off(false);
+            selectedCharacter.previsualizeAttackIcon.SetActive(false);
+            selectedCharacter.canvasUnit.SetActive(false);
+            selectedCharacter.notAttackX.SetActive(false);
             selectedCharacter.myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
             selectedCharacter.myPanelPortrait.GetComponent<Portraits>().isClicked = false;
             UIM.TooltipDefault();
@@ -760,6 +764,7 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
                     selectedCharacter.currentUnitsAvailableToAttack[i].DisableCanvasHover();
                     selectedCharacter.currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
+                    selectedCharacter.currentUnitsAvailableToAttack[i].notAttackX.SetActive(false);
                 }
             }
 

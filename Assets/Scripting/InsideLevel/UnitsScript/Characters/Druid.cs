@@ -62,6 +62,7 @@ public class Druid : PlayerUnit
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
+            unitToAttack.monkMark.SetActive(false);
             currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
             unitToAttack.numberOfMarks = 0;
 
@@ -408,7 +409,20 @@ public class Druid : PlayerUnit
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            if (currentUnitsAvailableToAttack[i].GetComponent<PlayerUnit>())
+            {
+
+                currentUnitsAvailableToAttack[i].canvasUnit.SetActive(true);
+                currentUnitsAvailableToAttack[i].canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife.ToString());
+                currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(true);
+                
+                
+            }
+            else
+            {
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            }
+            
             
             currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
         }

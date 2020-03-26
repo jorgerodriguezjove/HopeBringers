@@ -203,6 +203,12 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public GameObject previsualizeAttackIcon;
 
+    //Se una para indicar que el samurai no puede atacar a una unidad
+    public GameObject notAttackX;
+
+    //Se una para indicar las marcas del monk
+    public GameObject monkMark;
+
     [SerializeField]
     public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
 
@@ -212,7 +218,7 @@ public class UnitBase : MonoBehaviour
 
     //Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
     [SerializeField]
-    private GameObject canvasUnit;
+    public GameObject canvasUnit;
 
 	[Header("INFO")]
 

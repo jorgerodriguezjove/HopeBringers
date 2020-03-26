@@ -56,6 +56,7 @@ public class Monk : PlayerUnit
             myAnimator.SetTrigger("Attack");
 
             unitToAttack.isMarked = true;
+            unitToAttack.monkMark.SetActive(true);
             unitToAttack.numberOfMarks = 1;
 
             //PREGUNTAR SI LA ROTACIÓN TIENE QUE IR ANTES O DESPÚES DE HACER DAÑO
@@ -91,6 +92,7 @@ public class Monk : PlayerUnit
                 if (unitToAttack.isMarked)
                 {
                     unitToAttack.isMarked = false;
+                    unitToAttack.monkMark.SetActive(false);
                     currentHealth += healerBonus;
 
                     //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
@@ -109,6 +111,7 @@ public class Monk : PlayerUnit
                             {
 
                                 TM.surroundingTiles[i].unitOnTile.isMarked = true;
+                                TM.surroundingTiles[i].unitOnTile.monkMark.SetActive(true);
                             }
                         }
                     }
@@ -182,6 +185,7 @@ public class Monk : PlayerUnit
             myAnimator.SetTrigger("Attack");
 
             unitToAttack.isMarked = true;
+            unitToAttack.monkMark.SetActive(true);
 
             if (suplex2 && unitToAttack.numberOfMarks == 1)
             {
@@ -213,6 +217,7 @@ public class Monk : PlayerUnit
             myAnimator.SetTrigger("Attack");
 
             unitToAttack.isMarked = true;
+            unitToAttack.monkMark.SetActive(true);
             unitToAttack.numberOfMarks = 1;
 
             //Hago daño

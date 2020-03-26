@@ -534,10 +534,21 @@ public class EnemyUnit : UnitBase
             {
                 if (!isDead)
                 {
-                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-					LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
-                    LM.CheckIfHoverShouldAppear(this);
-                    HealthBarOn_Off(true);
+                    Rogue ninjaRef = FindObjectOfType<Rogue>();
+                    if (ninjaRef != null && LM.selectedCharacter == ninjaRef)
+                    {
+                        
+                        
+                      
+                    }
+                    else
+                    {
+                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                        LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
+                        LM.CheckIfHoverShouldAppear(this);
+                        HealthBarOn_Off(true);
+                    }
+                    
                 }
             }
             else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
