@@ -439,10 +439,95 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
+
+
     #region PUSH
+    //Esta función solo calcula el tile en el que acaba la unidad empujada. SIRVE PARA MOSTRAR EFECTO DE ATAQUE CABALLERO.
+    public IndividualTiles CalculatePushLogic(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
+    {
+        if (!isDead)
+        {
+            if (tilesToCheckForCollision.Count <= 1)
+            {
+                Debug.Log("borde");
+                //No calculo nada
+                return null;
+            }
+
+            //Si hay tiles en la lista me empujan contra tiles que no son bordes 
+            else
+            {
+                for (int i = 1; i <= numberOfTilesMoved; i++)
+                {
+                    //El tile al que empujo está más alto (pared)
+                    if (tilesToCheckForCollision[i].height > myCurrentTile.height)
+                    {
+                        Debug.Log("pared");
+                        return tilesToCheckForCollision[i - 1];
+                    }
+
+                    //El tile al que empujo está más bajo (caída)
+                    else if (Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
+                    {
+                        Debug.Log("caída");
+
+                        //Compruebo si hay otra unidad
+                        if (tilesToCheckForCollision[i].unitOnTile != null)
+                        {
+                            if (tilesToCheckForCollision[i].unitOnTile.currentHealth > currentHealth)
+                            {
+                                //Muere la unidad que cae
+                            }
+
+                            else
+                            {
+                                //Muere la unidad de abajo
+                            }
+                        }
+
+                        else
+                        {
+                            //Caída sin más
+                        }
+
+                        return tilesToCheckForCollision[i];
+                    }
+
+                    //Si la altura del tile al que empujo y la mía son iguales compruebo si el tile está vacío, es un obstáculo o tiene una unidad.
+                    else
+                    {
+                        //Es tile vacío u obstáculo
+                        if (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle)
+                        {
+                            Debug.Log("vacío");
+
+                            return tilesToCheckForCollision[i - 1];
+                        }
+
+                        //Es tile con unidad
+                        else if (tilesToCheckForCollision[i].unitOnTile != null)
+                        {
+                            Debug.Log("otra unidad");
+                            return tilesToCheckForCollision[i - 1];
+                        }
+                    }
+                }
+
+                //Si sale del for entonces es que todos los tiles que tiene que comprobar son normales y simplemente lo muevo al último tile
+
+                if (numberOfTilesMoved > 0)
+                {
+                    return tilesToCheckForCollision[numberOfTilesMoved];
+                }
+            }
+        }
+
+        return null;
+    }
+
     //Función genérica que sirve para calcular a que tile debe ser empujada una unidad
     //La función pide tanto el daño por caída como el daño de empujón de la unidad atacante ya que pueden existir mejoras que modifiquen estos valores.
-    public void CalculatePushPosition(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
+    public void ExecutePush(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
     {
         Debug.Log("Empuje");
 

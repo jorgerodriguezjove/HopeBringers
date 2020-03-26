@@ -420,7 +420,7 @@ public class BossMultTile : EnemyUnit
                     continue;
                 }
 
-                currentUnitsAvailableToAttack[i].CalculatePushPosition(1, tilesListToPull, damageMadeByPush, damageMadeByFall);  
+                currentUnitsAvailableToAttack[i].ExecutePush(1, tilesListToPull, damageMadeByPush, damageMadeByFall);  
 
                 #endregion
             }
