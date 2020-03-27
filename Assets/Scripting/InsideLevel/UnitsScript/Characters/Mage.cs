@@ -67,6 +67,11 @@ public class Mage : PlayerUnit
     {
         lightningChain = _lightningChain1;
         areaAttack = _crossAreaAttack1;
+
+        if (areaAttack)
+        {
+            areaRange = 1;
+        }
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.

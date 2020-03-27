@@ -56,6 +56,16 @@ public class Knight : PlayerUnit
     {
         pushFarther = _pushFarther;
         pushWider = _pushWider;
+
+        if (pushFarther)
+        {
+            tilesToPush = 2;
+        }
+
+        if (pushFarther2)
+        {
+            tilesToPush = 3;
+        }
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
@@ -95,7 +105,6 @@ public class Knight : PlayerUnit
             if (pushFarther2)
             {
                 //Hay que cambiarlo/quitarlo después si se quiere aumentar más
-                tilesToPush = 3;
                 myAnimator.SetTrigger("Attack");
 
 

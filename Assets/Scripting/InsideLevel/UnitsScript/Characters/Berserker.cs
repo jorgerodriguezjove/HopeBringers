@@ -58,9 +58,13 @@ public class Berserker : PlayerUnit
 
     public void SetSpecificStats(bool _areaAttack, bool _circularAttack1)
     {
-
         areaAttack = _areaAttack;
         circularAttack = _circularAttack1;
+
+        if (areaAttack)
+        {
+            bonusDamageAreaAttack = 2;
+        }
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
