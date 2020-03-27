@@ -731,15 +731,17 @@ public class UnitBase : MonoBehaviour
     //El segundo bool sirve para hacer que el healthbar no desaparezca si se quita el ratón
 	public virtual void HealthBarOn_Off(bool isOn)
 	{
-        if (shouldLockHealthBar && isOn)
+        if (!isDead)
         {
-            healthBar.SetActive(isOn);
-        }
-        else if (!shouldLockHealthBar)
-        {
-            healthBar.SetActive(isOn);
-        }
-        
+            if (shouldLockHealthBar && isOn)
+            {
+                healthBar.SetActive(isOn);
+            }
+            else if (!shouldLockHealthBar)
+            {
+                healthBar.SetActive(isOn);
+            }
+        } 
     }
 
     //Función que instancia los puntos de vida en la barra de vida
