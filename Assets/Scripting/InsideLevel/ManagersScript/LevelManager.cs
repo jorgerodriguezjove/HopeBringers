@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
     public EnemyUnit selectedEnemy;
 
     //Tiles que actualmente están disponibles para el movimiento de la unidad seleccionada
-    [HideInInspector]
+    [SerializeField]
     public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
     //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
@@ -935,7 +935,9 @@ public class LevelManager : MonoBehaviour
                     SustituteUnitsOnPlacementPhase(tileToMove);
                 }
 
-
+                Debug.Log(charactersAlreadyPlaced.Count);
+                Debug.Log(GameManager.Instance.maxUnitsInThisLevel);
+                Debug.Log("----");
                 if (charactersAlreadyPlaced.Count == GameManager.Instance.maxUnitsInThisLevel)
                 {
                     Debug.Log("elese");
@@ -1139,7 +1141,6 @@ public class LevelManager : MonoBehaviour
         enemiesOnTheBoard[counterForEnemiesOrder].SkipAnimation();
     }
 
-
     #region TURN_STATE
 
     public void ChangePhase()
@@ -1148,7 +1149,6 @@ public class LevelManager : MonoBehaviour
 
         currentLevelState = LevelState.EnemyPhase;
     }
-
 
     IEnumerator ChangePhaseWait()
     {
@@ -1313,7 +1313,6 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)
         {
             GameManager.Instance.characterDataForCurrentLevel[i].UpdateMyUnitStatsForTheLevel();
-            
         }
 
         currentLevelState = LevelState.PlayerPhase;
@@ -1355,7 +1354,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         switch (currentLevelState)
@@ -1383,6 +1381,15 @@ public class LevelManager : MonoBehaviour
             DeSelectUnit();
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100.0f))
+            {
+                Debug.Log("You selected the " + hit.transform.name); // ensure you picked right object
+            }
+        }
     }
     #endregion
 

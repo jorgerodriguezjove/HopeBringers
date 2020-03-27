@@ -184,6 +184,7 @@ public class UIManager : MonoBehaviour
         hud3DInDialog.SetActive(false);
         hud3DUnitPlacement.SetActive(true);
         hideDuringUnitPlacementHud.SetActive(false);
+        hudParentObject.SetActive(true);
         hideDuringUnitPlacement3DHud.SetActive(false);
     }
 

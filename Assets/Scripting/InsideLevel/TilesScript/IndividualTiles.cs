@@ -215,11 +215,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Hover enter
     void OnMouseEnter()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.Initializing && isAvailableForCharacterColocation)
-        {
-            //HACER QUE SE PINTE EL TILE Y APAREZCA LA UNIDAD QUE SE VA A COLOCAR
-        }
-
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null && !LM.selectedCharacter.hasMoved)
         {
             //Cambio el cursor
