@@ -884,17 +884,32 @@ public class PlayerUnit : UnitBase
 
 	public override void HealthBarOn_Off(bool isOn)
 	{
-		if (shouldLockHealthBar && isOn)
-		{
-			healthBar.SetActive(isOn);
-			arrowIndicator.SetActive(!isOn);
-		}
-		else if (!shouldLockHealthBar)
-		{
-			healthBar.SetActive(isOn);
-			arrowIndicator.SetActive(!isOn);
-		}
-	}
+
+        if (shouldLockHealthBar && isOn)
+        {
+            if (healthBar != null)
+            {
+                healthBar.SetActive(isOn);
+            }
+
+            if (arrowIndicator != null)
+            {
+                arrowIndicator.SetActive(!isOn);
+            }
+        }
+        else if (!shouldLockHealthBar)
+        {
+            if (healthBar != null)
+            {
+                healthBar.SetActive(isOn);
+            }
+
+            if (arrowIndicator != null)
+            {
+                arrowIndicator.SetActive(!isOn);
+            }
+        }
+    }
 
     //Función que llama el LevelManager al hacer hover sobre un objetivo al que poder atacar
     public virtual void ShowAttackEffect(UnitBase _unitToAttack)

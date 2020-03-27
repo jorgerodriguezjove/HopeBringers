@@ -558,7 +558,7 @@ public class Mage : PlayerUnit
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-            tilesInEnemyHover[i].ColorAttack();
+            tilesInEnemyHover[i].ColorActionRange();
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
