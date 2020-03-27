@@ -206,6 +206,11 @@ public class UnitBase : MonoBehaviour
     //Se una para indicar que el samurai no puede atacar a una unidad
     public GameObject notAttackX;
 
+    //Referencia al gameobject que actua como hover de los enemigos.
+    //La cambio aquí para que el playerunit también lo use.
+    [SerializeField]
+    public GameObject shaderHover;
+
     //Se una para indicar las marcas del monk
     public GameObject monkMark;
 

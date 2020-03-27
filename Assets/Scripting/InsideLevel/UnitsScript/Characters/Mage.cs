@@ -543,4 +543,30 @@ public class Mage : PlayerUnit
             myDecoys.RemoveAt(myDecoys.Count - 1);
         }
     }
+
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+        tilesInEnemyHover.Clear();
+
+        TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, areaRange, true, false);
+      
+        //Hago daño a las unidades adyacentes
+        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+        {         
+                tilesInEnemyHover.Add(TM.surroundingTiles[i]);       
+        }
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(-1);
+            }
+        }
+
+
+
+    }
 }

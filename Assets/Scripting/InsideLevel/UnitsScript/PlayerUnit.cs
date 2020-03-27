@@ -34,6 +34,11 @@ public class PlayerUnit : UnitBase
     [HideInInspector]
     public List<IndividualTiles> currentTilesInRangeForAttack;
 
+
+    //Lista de tiles al hacer hover en enemigos
+    [HideInInspector]
+    public List<IndividualTiles> tilesInEnemyHover;
+
     //Solo lo uso para el Rogue
     [HideInInspector]
     public bool hasUsedExtraTurn;
@@ -326,8 +331,8 @@ public class PlayerUnit : UnitBase
             {
                 if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-                    //LLAMAR AL LM.CALCULARACCIONSOMBRAPLAYER. mario
-
+                    
+                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
 
                     Druid druidRef = FindObjectOfType<Druid>();
                     Rogue ninjaRef = FindObjectOfType<Rogue>();
@@ -396,13 +401,42 @@ public class PlayerUnit : UnitBase
 
             else if (LM.selectedCharacter != GetComponent<PlayerUnit>())
             {
+               
                 LM.HideUnitHover(this);
                 myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
 
                 ResetColor();
             }
 
+            if (LM.selectedCharacter != null && LM.selectedCharacter.shaderHover != null)
+            {
+                LM.selectedCharacter.shaderHover.SetActive(false);
+
+                if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
+                {
+
+                    for (int i = 0; i < LM.selectedCharacter.tilesInEnemyHover.Count; i++)
+                    {
+                        LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+
+                        if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
+                        {
+                            LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
+                        }
+                    }
+
+                    LM.selectedCharacter.tilesInEnemyHover.Clear();
+                }
+                
+
+            }
+
+            if (shaderHover != null)
+            {
+                shaderHover.SetActive(false);
+            }
             Druid druidRef = FindObjectOfType<Druid>();
+
             if (druidRef != null && LM.selectedCharacter == druidRef)
             {
                 // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);

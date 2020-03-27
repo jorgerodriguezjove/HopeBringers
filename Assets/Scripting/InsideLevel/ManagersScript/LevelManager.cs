@@ -596,10 +596,13 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-   
+   public void CalculatePreviousActionPlayer(PlayerUnit playerToDo, UnitBase unitToDO)
+    {
+        playerToDo.ShowAttackEffect(unitToDO);
+    }
     #endregion
 
-        #region SELECT_&_DESELECT
+    #region SELECT_&_DESELECT
 
     //Al clickar sobre una unidad del jugador se llama a esta función
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)

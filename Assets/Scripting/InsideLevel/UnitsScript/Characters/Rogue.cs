@@ -503,6 +503,9 @@ public class Rogue : PlayerUnit
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineUp[1].transform.position;  //new Vector3(myCurrentTile.tilesInLineUp[1].tileX, myCurrentTile.tilesInLineUp[1].height, myCurrentTile.tilesInLineUp[1].tileZ);
 
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[1]);
+
                 if (_shouldUpdateInfoAfterMovement)
                 {
                     //Actualizo los tiles
@@ -514,6 +517,9 @@ public class Rogue : PlayerUnit
             {
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineDown[1].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[1].tileX, myCurrentTile.tilesInLineDown[1].height, myCurrentTile.tilesInLineDown[1].tileZ);
+
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[1]);
 
                 if (_shouldUpdateInfoAfterMovement)
                 {
@@ -531,6 +537,9 @@ public class Rogue : PlayerUnit
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineRight[1].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[1].tileX, myCurrentTile.tilesInLineRight[1].height, myCurrentTile.tilesInLineRight[1].tileZ);
 
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineRight[1]);
+
                 if (_shouldUpdateInfoAfterMovement)
                 {
                     //Actualizo los tiles
@@ -542,6 +551,9 @@ public class Rogue : PlayerUnit
             {
                 //Muevo al pícaro
                 currentTileVectorToMove = myCurrentTile.tilesInLineLeft[1].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[1].tileX, myCurrentTile.tilesInLineLeft[1].height, myCurrentTile.tilesInLineLeft[1].tileZ);
+
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[1]);
 
                 if (_shouldUpdateInfoAfterMovement)
                 {
@@ -689,8 +701,18 @@ public class Rogue : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        tilesInEnemyHover.Clear();
         CalculateAttackLogic(_unitToAttack, false);
+        shaderHover.SetActive(true);
 
-        //Mostrar sombra en tile calculado. mario.
+        shaderHover.transform.position = currentTileVectorToMove;
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorAttack();
+        }
+       
+
+
     }
 }

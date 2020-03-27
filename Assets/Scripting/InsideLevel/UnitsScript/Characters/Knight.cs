@@ -82,7 +82,7 @@ public class Knight : PlayerUnit
             else if (FindObjectOfType<Monk>().healerMark2)
             {
                 ApplyBuffOrDebuffdamage(this, 1, 3);
-                
+
 
             }
             UIM.RefreshTokens();
@@ -98,7 +98,7 @@ public class Knight : PlayerUnit
                 tilesToPush = 3;
                 myAnimator.SetTrigger("Attack");
 
-               
+
                 if (currentFacingDirection == FacingDirection.North)
                 {
                     unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush + 1]);
@@ -161,18 +161,18 @@ public class Knight : PlayerUnit
 
                 else if (currentFacingDirection == FacingDirection.West)
                 {
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush+1]);
+                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush + 1]);
 
-                    for (int i = 0; i-1 < tilesToPush; i++)
+                    for (int i = 0; i - 1 < tilesToPush; i++)
                     {
-                       
+
                         if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                         {
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                             if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
-                            {                                
-                                    myCurrentTile.tilesInLineLeft[i].unitOnTile.MoveToTilePushed(myCurrentTile.tilesInLineLeft[i].unitOnTile.myCurrentTile.tilesInLineRight[0]);                                
+                            {
+                                myCurrentTile.tilesInLineLeft[i].unitOnTile.MoveToTilePushed(myCurrentTile.tilesInLineLeft[i].unitOnTile.myCurrentTile.tilesInLineRight[0]);
                             }
                         }
                     }
@@ -186,10 +186,7 @@ public class Knight : PlayerUnit
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
             }
             else
-            {
-
-                //Hay que cambiarlo/quitarlo después si se quiere aumentar más
-                tilesToPush = 2;
+            {               
                 //Animación de ataque
                 myAnimator.SetTrigger("Attack");
 
@@ -218,7 +215,7 @@ public class Knight : PlayerUnit
 
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
             }
-            
+
 
         }
 
@@ -237,22 +234,22 @@ public class Knight : PlayerUnit
 
 
             if (currentFacingDirection == FacingDirection.North)
-            {              
+            {
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                       
+
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile, 1);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
-                   
+
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                     {
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineUp, damageMadeByPush, damageMadeByFall);
-                      
+
                     }
                 }
 
@@ -261,7 +258,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                     StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile,1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile, 1);
                     }
 
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
@@ -297,7 +294,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile,1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile, 1);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
 
@@ -307,7 +304,7 @@ public class Knight : PlayerUnit
                     }
                 }
 
-               
+
 
                 unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
             }
@@ -319,13 +316,13 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                       StunUnit( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile,1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile, 1);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                     {
-                     currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall);
                     }
                 }
 
@@ -334,20 +331,20 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                       StunUnit( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile,1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile, 1);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                     {
-                     currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall);
                     }
-                }              
+                }
                 unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
-                
+
             }
 
-            else if (currentFacingDirection == FacingDirection.West)            
+            else if (currentFacingDirection == FacingDirection.West)
             {
 
                 if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
@@ -355,7 +352,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                       StunUnit( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile,1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile, 1);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
@@ -370,7 +367,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile,1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile, 1);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
@@ -379,7 +376,7 @@ public class Knight : PlayerUnit
                     }
                 }
 
-                unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);           
+                unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
             }
 
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
@@ -415,7 +412,7 @@ public class Knight : PlayerUnit
 
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
-                
+
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }
@@ -436,7 +433,7 @@ public class Knight : PlayerUnit
             else if (lateralBlock)
             {
                 //Este if sirve para comprobar en que dirección atacan los enemigos y en que dirección está el knight
-                if ((currentFacingDirection == FacingDirection.North || currentFacingDirection == FacingDirection.South) 
+                if ((currentFacingDirection == FacingDirection.North || currentFacingDirection == FacingDirection.South)
                     && (unitAttacker.currentFacingDirection == FacingDirection.West || unitAttacker.currentFacingDirection == FacingDirection.East)
                     ||
                     (currentFacingDirection == FacingDirection.East || currentFacingDirection == FacingDirection.West)
@@ -498,5 +495,187 @@ public class Knight : PlayerUnit
             LM.honorCount++;
         }
         base.DoDamage(unitToDealDamage);
+    }
+
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+        if (pushWider)
+        {
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                if (_unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+                    }
+                }
+
+                if (_unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {
+
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+
+                    }
+                }
+                _unitToAttack.shaderHover.SetActive(true);
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+
+
+
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+                if (_unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                {
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+                    }
+                }
+
+                if (_unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                {
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+
+                    }
+                }
+
+
+                _unitToAttack.shaderHover.SetActive(true);
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+
+               
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                if (_unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+
+
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
+
+                    }
+                }
+
+                if (_unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+
+
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
+
+                    }
+                }
+
+                _unitToAttack.shaderHover.SetActive(true);
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
+
+
+               
+
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+
+                if (_unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                {
+
+
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
+
+                    }
+                }
+
+                if (_unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                {
+
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                    {
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.SetActive(true);
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
+
+                    }
+                }
+
+                _unitToAttack.shaderHover.SetActive(true);
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
+
+
+                
+            }
+            
+
+        }
+
+        else
+        {
+            tilesInEnemyHover.Clear();
+
+            _unitToAttack.shaderHover.SetActive(true);
+
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall));
+
+                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).ColorAttack();
+                
+                
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall));
+
+                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).ColorAttack();
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
+
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall));
+
+                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).ColorAttack();
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+                _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
+
+                //Añado esta línea para luego pintar el tile al que se va a mover
+                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall));
+
+                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).ColorAttack();
+            }
+
+
+        }
     }
 }

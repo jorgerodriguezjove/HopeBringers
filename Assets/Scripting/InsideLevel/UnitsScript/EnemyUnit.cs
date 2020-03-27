@@ -107,9 +107,7 @@ public class EnemyUnit : UnitBase
     protected List<bool> wereTilesAlreadyUnderAttack = new List<bool>();
     protected List<IndividualTiles> tilesAlreadyUnderAttack = new List<IndividualTiles>();
 
-    //Referencia al gameobject que actua como hover de los enemigos.
-    [SerializeField]
-    public GameObject shaderHover;
+   
 
     [SerializeField]
     private GameObject sleepParticle;
@@ -532,7 +530,8 @@ public class EnemyUnit : UnitBase
             {
                 if (!isDead)
                 {
-                    //LLAMAR AL LM.CALCULARACCIONSOMBRAPLAYER. mario
+                    
+                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
 
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                     LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
@@ -612,16 +611,18 @@ public class EnemyUnit : UnitBase
         {
             if (LM.selectedEnemy == null)
             {
+                
                 OnHoverExitFunctionality();
             }
 
             else if (LM.selectedEnemy != null && LM.selectedEnemy != this)
             {
+
                 ResetColor();
                 HealthBarOn_Off(false);
                 LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
                 //LM.UIM.HideUnitInfo("");
-
+                shaderHover.SetActive(false);
                 myPortrait.UnHighlightMyself();
 
             }
@@ -633,12 +634,56 @@ public class EnemyUnit : UnitBase
     public void OnHoverExitFunctionality()
     {
         LM.HideEnemyHover(this);
+        shaderHover.SetActive(false);
+        if (LM.selectedCharacter != null && LM.selectedCharacter.shaderHover != null)
+        {
+            LM.selectedCharacter.shaderHover.SetActive(false);
 
+            if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
+            {
+
+                for (int i = 0; i < LM.selectedCharacter.tilesInEnemyHover.Count; i++)
+                {
+                    LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+
+                    if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
+                    {
+                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
+                    }
+                }
+
+                LM.selectedCharacter.tilesInEnemyHover.Clear();
+            }
+        }
+        if(LM.selectedCharacter != null) 
+        {
+            if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
+            {
+
+                for (int i = 0; i < LM.selectedCharacter.tilesInEnemyHover.Count; i++)
+                {
+                    LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+
+                    if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
+                    {
+                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
+                    }
+                }
+
+                LM.selectedCharacter.tilesInEnemyHover.Clear();
+            }
+        }
+        
         if (LM.selectedEnemy == null)
         {
             LM.UIM.HideUnitInfo("");
             if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
+                shaderHover.SetActive(false);
+               
+
+               
+               
                 ResetColor();
                 myPortrait.UnHighlightMyself();
                 LM.HideHover(this);

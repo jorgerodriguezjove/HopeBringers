@@ -67,6 +67,7 @@ public class Berserker : PlayerUnit
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
+        tilesInEnemyHover.Clear();
 
         if (unitToAttack.isMarked)
         {
@@ -192,6 +193,16 @@ public class Berserker : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                tilesInEnemyHover[i].ColorDesAttack();
+
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    tilesInEnemyHover[i].unitOnTile.ResetColor();
+                }
+            }
+            tilesInEnemyHover.Clear();
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
             
@@ -308,9 +319,94 @@ public class Berserker : PlayerUnit
         }
     }
 
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+        tilesInEnemyHover.Clear();
+
+        if (areaAttack)
+        {
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
+
+                }
+
+                if ( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
+
+
+                }
+
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
+
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                if ( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
+
+                }
+
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
+
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
+
+                }
+
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
+
+                }
+            }
+
+
+        }
+
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(-1);
+            }
+        }
+
+
+
+    }
+
     #region COLORS
 
-    
+
     public virtual void RageColor()
     {
         if (!isDead)
