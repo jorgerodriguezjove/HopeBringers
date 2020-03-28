@@ -13,7 +13,10 @@ public class TileManager : MonoBehaviour
     private LayerMask noTileHereMask;
 
     [SerializeField]
-    private LayerMask startignTileMask;
+    private LayerMask startingTileMask;
+
+    [SerializeField]
+    private LayerMask finishingTileMask;
 
     //Tamaño del área dónde va a haber tiles
     public Vector3 gridWorldSize;
@@ -155,14 +158,20 @@ public class TileManager : MonoBehaviour
                     bool empty = false;
                     bool noTileInThisColumn = false;
                     bool startingTile = false;
+                    bool finishingTile = false;
 
                     //Si es la primera fila (el suelo vamos) únicamente compruebo obstáculos
                     if (y == 0)
                     {
                         //Compruebo si es un tile en el que se puede colocar a un personaje
-                        if (Physics.CheckSphere(worldPoint, nodeRadius, startignTileMask))
+                        if (Physics.CheckSphere(worldPoint, nodeRadius, startingTileMask))
                         {
                             startingTile = true;
+                        }
+
+                        else if (Physics.CheckSphere(worldPoint, nodeRadius, finishingTileMask))
+                        {
+                            finishingTile = true;
                         }
 
                         else if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
@@ -184,10 +193,17 @@ public class TileManager : MonoBehaviour
                     else
                     {
                         //Compruebo si es un tile en el que se puede colocar a un personaje
-                        if (Physics.CheckSphere(worldPoint, nodeRadius, startignTileMask))
+                        if (Physics.CheckSphere(worldPoint, nodeRadius, startingTileMask))
                         {
                             startingTile = true;
                         }
+
+                        //Compruebo si es un tile en el que se puede colocar a un personaje
+                        else if (Physics.CheckSphere(worldPoint, nodeRadius, finishingTileMask))
+                        {
+                            startingTile = true;
+                        }
+
 
                         //Compruebo si hay obstáculos
                         else if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
@@ -231,7 +247,7 @@ public class TileManager : MonoBehaviour
 
                     gridObject[x, y, z] = Instantiate(tilePref, new Vector3(worldPoint.x, worldPoint.y - 0.5f, worldPoint.z), Quaternion.identity);
 
-                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn, startingTile, worldPoint, x, y, z, tilePref, LM);
+                    gridObject[x, y, z].GetComponent<IndividualTiles>().SetVariables(isObstacle, empty, noTileInThisColumn, startingTile, finishingTile, worldPoint, x, y, z, tilePref, LM);
 
                     grid3DNode[x, y, z] = gridObject[x, y, z].GetComponent<IndividualTiles>();
                 }

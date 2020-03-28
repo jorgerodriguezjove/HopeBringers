@@ -128,7 +128,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject topScrollUp, topScrollDown, buttonUp, buttonDown, buttonUpHighlight, buttonDownHighlight;
 
-	[Header("TUTORIAL")]
+    [Header("TURN")]
+    [SerializeField]
+    TextMeshProUGUI currentTurn;
+    [SerializeField]
+    TextMeshProUGUI turnLimit;
+
+    [Header("TUTORIAL")]
 	int turnNumber = 1;
 	[SerializeField]
 	bool tutorialLevel;
@@ -239,6 +245,12 @@ public class UIManager : MonoBehaviour
         //He cambiado esta parte para que el end turn también borre los tiles pintados
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
+            if (LM.CheckIfFinishingTilesReached())
+            {
+                LM.InstaWin();
+                return;
+            }
+
             if (LM.selectedCharacter == null)
             {
                 if (LM.selectedEnemy != null)
@@ -820,4 +832,10 @@ public class UIManager : MonoBehaviour
         enemyBanner.SetActive(_isActivate);
     }
     #endregion
+
+    public void UpdateTurnNumber(int _currentTurn, int _turnLimit)
+    {
+        currentTurn.SetText(_currentTurn.ToString());
+        turnLimit.SetText(_turnLimit.ToString());
+    }
 }

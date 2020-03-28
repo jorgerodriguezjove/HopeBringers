@@ -15,6 +15,9 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public bool isAvailableForCharacterColocation;
 
+    [SerializeField]
+    public bool isFinishingTile;
+
     //Por defecto todos los tiles tienen un coste de 1 unidad de movimiento.
     //En principio esto no debería cambiar nunca.
     [HideInInspector]
@@ -70,7 +73,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     [SerializeField]
     public List<IndividualTiles> tilesInLineLeft = new List<IndividualTiles>();
 
-
     //Lista con los tiles a ambos lados del tile según la dirección que se le ha pasado. Es privada porque para comprobarla se llama a la función
     private List<IndividualTiles> translatedLateralTiles = new List<IndividualTiles>();
 
@@ -78,13 +80,11 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     private List<IndividualTiles> translatedTilesInFront = new List<IndividualTiles>();
 
     [Header("FEEDBACK")]
-
     //Estas son las variables locales. LOS MATERIALES SE SETEAN EN EL TILE MANAGER
     [SerializeField]
     public Material moveInteriorColor;
     [SerializeField]
     public Material moveBorderColor;
-
 
     [SerializeField]
     public Material hoverTileBorderColor;
@@ -154,7 +154,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     #region INIT
 
     //Constructor
-    public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn, bool _startingTile,
+    public void SetVariables(bool _isObstacle, bool _empty, bool _noTilesInThisColumn, bool _startingTile, bool _finishingTile,
                              Vector3 _worldPos, int xPos, int yPos, int zPos, 
                              GameObject tilePref, LevelManager LMRef)
     {
@@ -164,6 +164,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         noTilesInThisColumn = _noTilesInThisColumn;
         worldPosition = _worldPos;
         isAvailableForCharacterColocation = _startingTile;
+        isFinishingTile = _finishingTile;
 
         //Coordenadas del tile
         tileX = xPos;
@@ -195,11 +196,21 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         //Aviso a los vecinos de la ocupación del tile
         UpdateNeighboursOccupied();
 
-        if (LM.currentLevelState == LevelManager.LevelState.Initializing && isAvailableForCharacterColocation)
+        if (LM.currentLevelState == LevelManager.LevelState.Initializing)
         {
-            //Cambio el color del tile
-            LM.tilesForCharacterPlacement.Add(GetComponent<IndividualTiles>());
-            ColorCurrentTileHover();
+            if (isAvailableForCharacterColocation)
+            {
+                //Cambio el color del tile
+                LM.tilesForCharacterPlacement.Add(GetComponent<IndividualTiles>());
+                ColorCurrentTileHover();
+            }
+           
+            else if (isFinishingTile)
+            {
+                LM.tilesForFinishingPlayers.Add(GetComponent<IndividualTiles>());
+
+                Debug.Log("FALTA COLOREAR TILES DE ACABAR");
+            }
         }
     }
 

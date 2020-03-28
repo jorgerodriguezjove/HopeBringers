@@ -16,6 +16,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject characterSelectionBox;
 
+    [Header("CONDICIONES DE DERROTA")]
+    [SerializeField]
+    private int turnLimit;
+    //Int que lleva la cuenta del turno actual
+    private int currentTurn = 0;
+
     [Header("INTERACCIÓN CON UNIDADES")]
 
     //Personaje actualmente seleccionado.
@@ -27,7 +33,7 @@ public class LevelManager : MonoBehaviour
     public EnemyUnit selectedEnemy;
 
     //Tiles que actualmente están disponibles para el movimiento de la unidad seleccionada
-    [SerializeField]
+    [HideInInspector]
     public List<IndividualTiles> tilesAvailableForMovement = new List<IndividualTiles>();
 
     //De momento se guarda aquí pero se podría contemplar que cada personaje tuviese un tiempo distinto.
@@ -68,8 +74,11 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public List<IndividualTiles> tilesForCharacterPlacement = new List<IndividualTiles>();
 
-    //Int que lleva la cuenta del turno actual
-    private int currentTurn = 0;
+    //Lista con los tiles disponibles para colocar personajes. Me sirve para limpiar el color de los tiles al terminar.
+    [HideInInspector]
+    public List<IndividualTiles> tilesForFinishingPlayers = new List<IndividualTiles>();
+
+
 
     //Cada unidad se encarga desde su script de incluirse en la lista
     //Lista con todas las unidades del jugador en el tablero
@@ -935,12 +944,8 @@ public class LevelManager : MonoBehaviour
                     SustituteUnitsOnPlacementPhase(tileToMove);
                 }
 
-                Debug.Log(charactersAlreadyPlaced.Count);
-                Debug.Log(GameManager.Instance.maxUnitsInThisLevel);
-                Debug.Log("----");
                 if (charactersAlreadyPlaced.Count == GameManager.Instance.maxUnitsInThisLevel)
                 {
-                    Debug.Log("elese");
                     //Aparece el botón
                     UIM.finishUnitPlacement.SetActive(true);
                 }
@@ -1228,14 +1233,20 @@ public class LevelManager : MonoBehaviour
             //Reaparecer el botón de endbutton
             UIM.ActivateDeActivateEndButton();
 
+            Debug.Log(currentTurn);
             currentTurn++;
+            Debug.Log(currentTurn);
+            UIM.UpdateTurnNumber(currentTurn, turnLimit);
             selectedCharacter = null;
             currentLevelState = LevelState.ProcessingPlayerActions;
+
+            CheckIfGameOver();
         }
 
         else
         {
             currentTurn = 1;
+            UIM.UpdateTurnNumber(currentTurn, turnLimit);
         }
     }
 
@@ -1345,7 +1356,7 @@ public class LevelManager : MonoBehaviour
             GameManager.Instance.VictoryAchieved();
         }
 
-        if (charactersOnTheBoard.Count == 0)
+        if (charactersOnTheBoard.Count == 0 || currentTurn > turnLimit)
         {
             Debug.Log("Game Over");
             defeatPanel.SetActive(true);
@@ -1401,6 +1412,26 @@ public class LevelManager : MonoBehaviour
         }
 
         UIM.EndTurn();
+    }
+
+
+    //PROBLEAM ES EL DECOY.
+    public bool CheckIfFinishingTilesReached()
+    {
+        Debug.Log("ow");
+        for (int i = 0; i < charactersOnTheBoard.Count; i++)
+        {
+            Debug.Log(charactersOnTheBoard[i].myCurrentTile);
+            
+            if (!charactersOnTheBoard[i].myCurrentTile.isFinishingTile)
+            {
+                Debug.Log(charactersOnTheBoard[i].myCurrentTile.isFinishingTile);
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
