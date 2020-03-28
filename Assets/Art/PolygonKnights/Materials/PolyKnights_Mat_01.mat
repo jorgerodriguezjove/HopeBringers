@@ -22,8 +22,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: PolyKnights_Mat_01
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: N_F_CLD_ON N_F_EAL_ON N_F_GLO_ON N_F_O_ON N_F_SS_ON _ALPHABASECUTOUT_ON
-    _ENVIRONMENTREFLECTIONS_OFF _LIGHTAFFECTRIMLIGHTCOLOR_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_EAL_ON N_F_SS_ON _ENVIRONMENTREFLECTIONS_OFF _LIGHTAFFECTRIMLIGHTCOLOR_ON
+    _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -102,7 +102,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 370214d29559d094bbd95faa22ad92b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -138,7 +138,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AlphaBaseCutout: 1
+    - _AlphaBaseCutout: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BottomFoamThreshold: 0.505
@@ -146,7 +146,7 @@ Material:
     - _Compa: 8
     - _Cull: 2
     - _CustomLightDirectionFollowObjectRotation: 0
-    - _CustomLightDirectionIntensity: 0.104
+    - _CustomLightDirectionIntensity: 0
     - _Cutoff: 0.5
     - _Cutout: 0
     - _DetailNormalMapScale: 1
@@ -164,21 +164,21 @@ Material:
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0
     - _GlossColorPower: 10
-    - _GlossIntensity: 0.1
+    - _GlossIntensity: 0.334
     - _GlossMapScale: 0
     - _GlossSoftness: 0
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.2
+    - _Glossiness: 0
     - _GlossyReflections: 0
     - _HighlightColorPower: 1
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 1
     - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 0.146
+    - _LightFalloffSoftness: 1
     - _LightIntensity: -1
     - _MCIALO: 0
     - _MCapIntensity: 1
@@ -187,19 +187,19 @@ Material:
     - _MixMainTexToOutline: 0
     - _Mode: 0
     - _N_F_CA: 0
-    - _N_F_CLD: 1
+    - _N_F_CLD: 0
     - _N_F_CO: 0
     - _N_F_DCS: 0
     - _N_F_EAL: 1
     - _N_F_FR: 0
-    - _N_F_GLO: 1
+    - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
     - _N_F_MC: 0
     - _N_F_NLASOBF: 0
     - _N_F_NM: 0
-    - _N_F_O: 1
+    - _N_F_O: 0
     - _N_F_PT: 0
     - _N_F_R: 0
     - _N_F_RL: 0
@@ -210,12 +210,12 @@ Material:
     - _N_F_ST: 0
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
-    - _NoisyOutlineIntensity: 0.25
+    - _NoisyOutlineIntensity: 0
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
     - _Oper: 8
     - _OutlineExtrudeMethod: 0
-    - _OutlineWidth: 1
+    - _OutlineWidth: 7
     - _OutlineWidthAffectedByViewDistance: 0
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
@@ -241,11 +241,11 @@ Material:
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 0.806
+    - _SelfShadowRealtimeShadowIntensity: 0.8
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 0
+    - _SelfShadowThreshold: 0.85
     - _ShadowColorTexturePower: 0
-    - _ShadowHardness: 0.871
+    - _ShadowHardness: 1
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
     - _ShadowTIntensity: 1
@@ -254,7 +254,7 @@ Material:
     - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
-    - _SmoothObjectNormal: 0
+    - _SmoothObjectNormal: 0.01
     - _Smoothness: 0.2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -277,7 +277,7 @@ Material:
     - _ColorBottomLight: {r: 1, g: 1, b: 1, a: 1}
     - _ColorTopDark: {r: 0.4339623, g: 0.16990031, b: 0.16990031, a: 1}
     - _ColorTopLight: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
-    - _CustomLightDirection: {r: -4.67, g: -12.48, b: 10, a: 0}
+    - _CustomLightDirection: {r: 0, g: 0, b: 10, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
