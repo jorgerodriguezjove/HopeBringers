@@ -9,13 +9,14 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: body
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: L_F_SS_ON N_F_EAL_ON N_F_O_ON N_F_RL_ON N_F_SCT_ON N_F_SS_ON
-    N_F_STIAL_ON N_F_STIS_ON N_F_ST_ON _AFFECTLIGHTDIRECTIONALLIGHTONLY_ON _AFFECTSHADOW_ON
-    _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON _ENABLELIGHTFALLOFF_ON
-    _FRESNELONLIGHT_ON _GIFLATSHADE_ON _HARDEDGEFRESNEL_ON _MAINTEXTURECOLORAO_ON
-    _MAINTEXTURECOLORSHADOWT_ON _MAINTEXTURECOLORSHADOW_ON _MAINTEXTURECOLORSMIXSHADOWCOLOR_ON
-    _RIMLIGHTINLIGHT_ON _SELFSHADOWMASKFRESNEL_ON _SHOWAOONAMBIENTLIGHT_ON _SHOWSHADOWTONAMBIENTLIGHT_ON
-    _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSELFSHADOW_ON _SHOWSHADOWTONSHADOW_ON _USEGILIGHTING_ON
+  m_ShaderKeywords: L_F_SS_ON N_F_EAL_ON N_F_GLO_ON N_F_O_ON N_F_RL_ON N_F_SCT_ON
+    N_F_SS_ON N_F_STIAL_ON N_F_STIS_ON N_F_ST_ON _AFFECTLIGHTDIRECTIONALLIGHTONLY_ON
+    _AFFECTSHADOW_ON _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON
+    _ENABLELIGHTFALLOFF_ON _FRESNELONLIGHT_ON _GIFLATSHADE_ON _HARDEDGEFRESNEL_ON
+    _LIGHTAFFECTSHADOW_ON _MAINTEXTURECOLORAO_ON _MAINTEXTURECOLORSHADOWT_ON _MAINTEXTURECOLORSHADOW_ON
+    _MAINTEXTURECOLORSMIXSHADOWCOLOR_ON _RIMLIGHTINLIGHT_ON _SELFSHADOWMASKFRESNEL_ON
+    _SHOWAOONAMBIENTLIGHT_ON _SHOWSHADOWTONAMBIENTLIGHT_ON _SHOWSHADOWTONLIGHT_ON
+    _SHOWSHADOWTONSELFSHADOW_ON _SHOWSHADOWTONSHADOW_ON _USEGILIGHTING_ON
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -181,15 +182,15 @@ Material:
     - _GIFlatShade: 1
     - _GIShadeSize: 1
     - _GIShadeThreshold: 1
-    - _GlossColorPower: 10
-    - _GlossIntensity: 0.24
+    - _GlossColorPower: 2
+    - _GlossIntensity: 1
     - _GlossSoftness: 0
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureIntensity: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.604
+    - _Glossiness: 0.2
     - _HardEdgeFresnel: 1
     - _HighlightColorPower: 1
     - _InvFade: 1
@@ -209,7 +210,7 @@ Material:
     - _L_F_UOAL: 0
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
-    - _LightAffectShadow: 0
+    - _LightAffectShadow: 1
     - _LightFalloffAffectShadowT: 0
     - _LightFalloffSoftness: 1
     - _LightIntensity: -1
@@ -234,7 +235,7 @@ Material:
     - _N_F_DCS: 0
     - _N_F_EAL: 1
     - _N_F_FR: 0
-    - _N_F_GLO: 0
+    - _N_F_GLO: 1
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
@@ -333,7 +334,7 @@ Material:
     - _ShowShadowTonLight: 1
     - _ShowShadowTonSelfShadow: 0
     - _ShowShadowTonShadow: 1
-    - _SmoothObjectNormal: 0
+    - _SmoothObjectNormal: 0.046
     - _SoftGloss: 0
     - _SpecularPower: 20
     - _TexturePatternStyle: 0

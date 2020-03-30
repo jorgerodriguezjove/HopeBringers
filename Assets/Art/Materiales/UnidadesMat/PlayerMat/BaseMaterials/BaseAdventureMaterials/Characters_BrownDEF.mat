@@ -7,22 +7,25 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PolyVikings_Material_01
-  m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: L_F_O_ON L_F_SS_ON N_F_HDLS_ON N_F_O_ON N_F_SL_ON N_F_SON_ON
-    N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON _ENVIRONMENTREFLECTIONS_OFF _LIGHTAFFECTRIMLIGHTCOLOR_ON
-    _LIGHTAFFECTSHADOW_ON _MCIALO_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON _SELFLITHIGHCONTRAST_ON
+  m_Name: Characters_BrownDEF
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: _ENVIRONMENTREFLECTIONS_OFF
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2050
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_917F18E1:
+        m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 0e16611dc4905bc40b3602e5077d5d94, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -62,7 +65,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b8f889a91be35174bbbb38d1057b6493, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskFReflection:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
@@ -94,7 +101,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PTexture:
-        m_Texture: {fileID: 2800000, guid: d69b7e239be4778409a3f8013825ceef, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -107,8 +114,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ShadowColorTexture:
         m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 6.26, y: 3.91}
+        m_Offset: {x: 3.38, y: 0}
     - _ShadowT:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -117,7 +124,13 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_DD07A267_Out:
+        m_Texture: {fileID: 2800000, guid: 930f5ddb96b6b3b4b969b0280273645e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_21294735: 2
+    - Vector1_C6534EC7: 0.5
     - _AlphaBaseCutout: 1
     - _AlphaClip: 0
     - _Blend: 0
@@ -138,11 +151,13 @@ Material:
     - _EnableTextureTransparent: 0
     - _EnvironmentReflections: 0
     - _EnvironmentalLightingIntensity: 1
+    - _FReflectionIntensity: 0
+    - _FReflectionRoughtness: 0
     - _FarDistanceMaxWidth: 1
     - _GIFlatShade: 0
-    - _GIShadeThreshold: 1
+    - _GIShadeThreshold: 0.633
     - _GlossColorPower: 10
-    - _GlossIntensity: 0.857
+    - _GlossIntensity: 1
     - _GlossMapScale: 0
     - _GlossSoftness: 0
     - _GlossTextureFollowLight: 0
@@ -151,13 +166,29 @@ Material:
     - _GlossTextureSoftness: 0
     - _Glossiness: 0.2
     - _GlossyReflections: 0
-    - _HighlightColorPower: 8
+    - _HighlightColorPower: 1
+    - _L_F_CLD: 0
+    - _L_F_FR: 0
+    - _L_F_GLO: 0
+    - _L_F_GLOT: 0
+    - _L_F_HPSS: 0
+    - _L_F_MC: 0
+    - _L_F_NM: 0
+    - _L_F_O: 1
+    - _L_F_PT: 0
+    - _L_F_RL: 0
+    - _L_F_SCT: 0
+    - _L_F_SL: 0
+    - _L_F_SON: 0
+    - _L_F_SS: 1
+    - _L_F_ST: 0
+    - _L_F_UOAL: 0
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 1
-    - _LightAffectShadow: 1
+    - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 1
-    - _LightIntensity: 1
+    - _LightFalloffSoftness: 0.2
+    - _LightIntensity: 0
     - _MCIALO: 1
     - _MCapIntensity: 1
     - _MVCOL: 0
@@ -168,9 +199,9 @@ Material:
     - _N_F_CLD: 0
     - _N_F_CO: 0
     - _N_F_DCS: 0
-    - _N_F_EAL: 0
+    - _N_F_EAL: 1
     - _N_F_FR: 0
-    - _N_F_GLO: 0
+    - _N_F_GLO: 1
     - _N_F_GLOT: 0
     - _N_F_HDLS: 1
     - _N_F_HPSS: 0
@@ -179,8 +210,8 @@ Material:
     - _N_F_NM: 0
     - _N_F_O: 1
     - _N_F_PT: 0
-    - _N_F_R: 0
-    - _N_F_RL: 0
+    - _N_F_R: 1
+    - _N_F_RL: 1
     - _N_F_SCT: 0
     - _N_F_SL: 1
     - _N_F_SON: 1
@@ -193,31 +224,35 @@ Material:
     - _OcclusionStrength: 1
     - _Oper: 8
     - _OutlineExtrudeMethod: 1
-    - _OutlineWidth: 0.8
+    - _OutlineWidth: 1
     - _OutlineWidthAffectedByViewDistance: 1
     - _OutlineZPostionInCamera: 0
-    - _OverallShadowColorPower: 1.28
-    - _PTexturePower: 20.1
+    - _OverallShadowColorPower: 1
+    - _PTexturePower: 1
     - _Parallax: 0.02
+    - _PointLightSVD: 0
     - _PointSpotlightIntensity: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ReduceShadowPointLight: 0
     - _ReduceShadowSpotDirectionalLight: 10
-    - _RefMetallic: 0.151
+    - _RefMetallic: 0.391
     - _RefVal: 0
-    - _ReflectionIntensity: 0.78
+    - _ReflectionIntensity: 0.2
     - _ReflectionRoughtness: 1
-    - _RimLightColorPower: 0.5
+    - _RimAmount: 0.716
+    - _RimLightColorPower: 0.25
     - _RimLightInLight: 0
     - _RimLightSoftness: 0
     - _RimLightUnfill: 4
+    - _RimThreshold: 0.1
     - _STIL: 0
     - _SampleGI: 0
     - _Saturation: 1
     - _SelfLitHighContrast: 1
     - _SelfLitIntensity: 0.1
     - _SelfLitPower: 2
-    - _SelfShadowAffectedByLightShadowStrength: 0
+    - _SelfShadowAffectedByLightShadowStrength: 1
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
     - _SelfShadowRealtimeShadowIntensity: 0.4
@@ -227,18 +262,23 @@ Material:
     - _ShadowHardness: 0
     - _ShadowTColorPower: 10
     - _ShadowTHardness: 1
-    - _ShadowTIntensity: 0.5
+    - _ShadowTIntensity: 1
     - _ShadowTLightThreshold: 50
     - _ShadowTShadowThreshold: 0
+    - _Shininess: 0.078125
     - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
     - _SmoothObjectNormal: 0.1
-    - _Smoothness: 0.25
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _TessellationFar: 1
+    - _TessellationNear: 1
+    - _TessellationSmoothness: 0.5
+    - _TessellationTransition: 0.8
     - _TexturePatternStyle: 0
     - _UVSec: 0
     - _UseSecondaryCutout: 0
@@ -250,6 +290,10 @@ Material:
     - _XYZHardness: 14
     - _ZWrite: 1
     m_Colors:
+    - Color_6EA3B1FB: {r: 1, g: 0.9225849, b: 0, a: 0}
+    - Color_891DB37F: {r: 1, g: 1, b: 1, a: 0}
+    - Vector2_280CC75: {r: 1, g: 5, b: 0, a: 0}
+    - _AmbientColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CustomLightDirection: {r: 0, g: 0, b: 10, a: 0}
@@ -257,17 +301,19 @@ Material:
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MainColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
     - _OutlineColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _SpecularColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
     - _XYZPosition: {r: 2, g: 0, b: -2, a: 0}
---- !u!114 &3116417221282498099
+--- !u!114 &9166471644672845055
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

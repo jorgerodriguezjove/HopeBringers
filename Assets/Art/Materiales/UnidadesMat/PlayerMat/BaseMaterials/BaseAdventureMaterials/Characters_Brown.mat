@@ -9,10 +9,10 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Characters_Brown
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: L_F_O_ON L_F_SS_ON N_F_EAL_ON N_F_GLO_ON N_F_HDLS_ON N_F_O_ON
-    N_F_RL_ON N_F_R_ON N_F_SL_ON N_F_SON_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON
-    _ENVIRONMENTREFLECTIONS_OFF _LIGHTAFFECTRIMLIGHTCOLOR_ON _MCIALO_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON
-    _SELFLITHIGHCONTRAST_ON _SELFSHADOWAFFECTEDBYLIGHTSHADOWSTRENGTH_ON
+  m_ShaderKeywords: L_F_O_ON L_F_SS_ON N_F_GLO_ON N_F_HDLS_ON N_F_O_ON N_F_RL_ON
+    N_F_R_ON N_F_SL_ON N_F_SON_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON _ENVIRONMENTREFLECTIONS_OFF
+    _LIGHTAFFECTRIMLIGHTCOLOR_ON _LIGHTAFFECTSHADOW_ON _MCIALO_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON
+    _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -103,9 +103,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 2800000, guid: d69b7e239be4778409a3f8013825ceef, type: 3}
+        m_Scale: {x: 6.1, y: 1}
+        m_Offset: {x: 3.11, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -116,7 +116,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ShadowColorTexture:
         m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
-        m_Scale: {x: 6.26, y: 3.91}
+        m_Scale: {x: 12.18, y: 3.91}
         m_Offset: {x: 3.38, y: 0}
     - _ShadowT:
         m_Texture: {fileID: 0}
@@ -157,8 +157,8 @@ Material:
     - _FReflectionRoughtness: 0
     - _FarDistanceMaxWidth: 1
     - _GIFlatShade: 0
-    - _GIShadeThreshold: 0.633
-    - _GlossColorPower: 10
+    - _GIShadeThreshold: 1
+    - _GlossColorPower: 4
     - _GlossIntensity: 1
     - _GlossMapScale: 0
     - _GlossSoftness: 0
@@ -187,10 +187,10 @@ Material:
     - _L_F_UOAL: 0
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 1
-    - _LightAffectShadow: 0
+    - _LightAffectShadow: 1
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 0.2
-    - _LightIntensity: 0
+    - _LightFalloffSoftness: 1
+    - _LightIntensity: 1
     - _MCIALO: 1
     - _MCapIntensity: 1
     - _MVCOL: 0
@@ -201,7 +201,7 @@ Material:
     - _N_F_CLD: 0
     - _N_F_CO: 0
     - _N_F_DCS: 0
-    - _N_F_EAL: 1
+    - _N_F_EAL: 0
     - _N_F_FR: 0
     - _N_F_GLO: 1
     - _N_F_GLOT: 0
@@ -226,11 +226,11 @@ Material:
     - _OcclusionStrength: 1
     - _Oper: 8
     - _OutlineExtrudeMethod: 1
-    - _OutlineWidth: 1
+    - _OutlineWidth: 0.2
     - _OutlineWidthAffectedByViewDistance: 1
     - _OutlineZPostionInCamera: 0
-    - _OverallShadowColorPower: 1
-    - _PTexturePower: 1
+    - _OverallShadowColorPower: 1.28
+    - _PTexturePower: 20.1
     - _Parallax: 0.02
     - _PointLightSVD: 0
     - _PointSpotlightIntensity: 1
@@ -243,7 +243,7 @@ Material:
     - _ReflectionIntensity: 0.2
     - _ReflectionRoughtness: 1
     - _RimAmount: 0.716
-    - _RimLightColorPower: 0.25
+    - _RimLightColorPower: 0.5
     - _RimLightInLight: 0
     - _RimLightSoftness: 0
     - _RimLightUnfill: 4
@@ -254,7 +254,7 @@ Material:
     - _SelfLitHighContrast: 1
     - _SelfLitIntensity: 0.1
     - _SelfLitPower: 2
-    - _SelfShadowAffectedByLightShadowStrength: 1
+    - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
     - _SelfShadowRealtimeShadowIntensity: 0.4
@@ -264,7 +264,7 @@ Material:
     - _ShadowHardness: 0
     - _ShadowTColorPower: 10
     - _ShadowTHardness: 1
-    - _ShadowTIntensity: 1
+    - _ShadowTIntensity: 0.5
     - _ShadowTLightThreshold: 50
     - _ShadowTShadowThreshold: 0
     - _Shininess: 0.078125
