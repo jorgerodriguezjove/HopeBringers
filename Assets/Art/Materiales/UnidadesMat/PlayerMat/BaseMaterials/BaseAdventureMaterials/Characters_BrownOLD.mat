@@ -7,12 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Characters_Black
+  m_Name: Characters_BrownOLD
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
   m_ShaderKeywords: L_F_O_ON L_F_SS_ON N_F_EAL_ON N_F_GLO_ON N_F_HDLS_ON N_F_O_ON
-    N_F_RL_ON N_F_R_ON N_F_SL_ON N_F_SON_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON
-    _ENVIRONMENTREFLECTIONS_OFF _LIGHTAFFECTRIMLIGHTCOLOR_ON _MCIALO_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON
-    _SELFLITHIGHCONTRAST_ON _SELFSHADOWAFFECTEDBYLIGHTSHADOWSTRENGTH_ON
+    N_F_RL_ON N_F_SL_ON N_F_SS_ON _ALPHABASECUTOUT_ON _ENVIRONMENTREFLECTIONS_OFF
+    _MCIALO_ON _SELFLITHIGHCONTRAST_ON _SELFSHADOWAFFECTEDBYLIGHTSHADOWSTRENGTH_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -22,8 +21,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_917F18E1:
+        m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: d4f03acc8970b2845b1d4c3c26627b72, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -63,7 +66,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d4f03acc8970b2845b1d4c3c26627b72, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskFReflection:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
@@ -107,9 +114,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShadowColorTexture:
-        m_Texture: {fileID: 2800000, guid: 9783d6c3e21d186478e2a4424271ac8e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 6.26, y: 3.91}
+        m_Offset: {x: 3.38, y: 0}
     - _ShadowT:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -118,16 +125,17 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_DD07A267_Out:
+        m_Texture: {fileID: 2800000, guid: 930f5ddb96b6b3b4b969b0280273645e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_21294735: 2
+    - Vector1_C6534EC7: 0.5
     - _AlphaBaseCutout: 1
     - _AlphaClip: 0
     - _Blend: 0
-    - _BlendOp: 0
     - _BumpScale: 1
-    - _CameraFadingEnabled: 0
-    - _CameraFarFadeDistance: 2
-    - _CameraNearFadeDistance: 1
-    - _ColorMode: 0
     - _Compa: 8
     - _Cull: 2
     - _CustomLightDirectionFollowObjectRotation: 0
@@ -136,10 +144,6 @@ Material:
     - _Cutout: 1
     - _DetailNormalMapScale: 1
     - _DirectionalLightIntensity: 0
-    - _DistortionBlend: 0.5
-    - _DistortionEnabled: 0
-    - _DistortionStrength: 1
-    - _DistortionStrengthScaled: 0.1
     - _DoubleSided: 2
     - _DoubleSidedOutline: 1
     - _DstBlend: 0
@@ -148,9 +152,9 @@ Material:
     - _EnableTextureTransparent: 0
     - _EnvironmentReflections: 0
     - _EnvironmentalLightingIntensity: 1
-    - _FarDistanceMaxWidth: 1
-    - _FlipbookBlending: 0
-    - _FlipbookMode: 0
+    - _FReflectionIntensity: 0
+    - _FReflectionRoughtness: 0
+    - _FarDistanceMaxWidth: 10
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0.633
     - _GlossColorPower: 10
@@ -164,8 +168,24 @@ Material:
     - _Glossiness: 0.2
     - _GlossyReflections: 0
     - _HighlightColorPower: 1
+    - _L_F_CLD: 0
+    - _L_F_FR: 0
+    - _L_F_GLO: 0
+    - _L_F_GLOT: 0
+    - _L_F_HPSS: 0
+    - _L_F_MC: 0
+    - _L_F_NM: 0
+    - _L_F_O: 1
+    - _L_F_PT: 0
+    - _L_F_RL: 0
+    - _L_F_SCT: 0
+    - _L_F_SL: 0
+    - _L_F_SON: 0
+    - _L_F_SS: 1
+    - _L_F_ST: 0
+    - _L_F_UOAL: 0
     - _LightAffectOutlineColor: 0
-    - _LightAffectRimLightColor: 1
+    - _LightAffectRimLightColor: 0
     - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
     - _LightFalloffSoftness: 0.2
@@ -191,41 +211,44 @@ Material:
     - _N_F_NM: 0
     - _N_F_O: 1
     - _N_F_PT: 0
-    - _N_F_R: 1
+    - _N_F_R: 0
     - _N_F_RL: 1
     - _N_F_SCT: 0
     - _N_F_SL: 1
-    - _N_F_SON: 1
+    - _N_F_SON: 0
     - _N_F_SS: 1
-    - _N_F_ST: 1
+    - _N_F_ST: 0
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
     - _NoisyOutlineIntensity: 0.5
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
     - _Oper: 8
-    - _OutlineExtrudeMethod: 1
+    - _OutlineExtrudeMethod: 0
     - _OutlineWidth: 1
-    - _OutlineWidthAffectedByViewDistance: 1
+    - _OutlineWidthAffectedByViewDistance: 0
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 1
     - _Parallax: 0.02
+    - _PointLightSVD: 0
     - _PointSpotlightIntensity: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ReduceShadowPointLight: 0
     - _ReduceShadowSpotDirectionalLight: 10
     - _RefMetallic: 0.391
     - _RefVal: 0
-    - _ReflectionIntensity: 0.2
+    - _ReflectionIntensity: 0
     - _ReflectionRoughtness: 1
     - _RimAmount: 0.716
     - _RimLightColorPower: 0.25
     - _RimLightInLight: 0
-    - _RimLightSoftness: 0
+    - _RimLightSoftness: 0.2
     - _RimLightUnfill: 4
     - _RimThreshold: 0.1
     - _STIL: 0
+    - _SampleGI: 0
     - _Saturation: 1
     - _SelfLitHighContrast: 1
     - _SelfLitIntensity: 0.1
@@ -233,28 +256,30 @@ Material:
     - _SelfShadowAffectedByLightShadowStrength: 1
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 0.4
+    - _SelfShadowRealtimeShadowIntensity: 1
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 1
-    - _ShadowColorTexturePower: 1
+    - _SelfShadowThreshold: 0.85
+    - _ShadowColorTexturePower: 0
     - _ShadowHardness: 0
-    - _ShadowTColorPower: 10
+    - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
     - _ShadowTIntensity: 1
     - _ShadowTLightThreshold: 50
     - _ShadowTShadowThreshold: 0
+    - _Shininess: 0.078125
     - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
-    - _SmoothObjectNormal: 0.1
+    - _SmoothObjectNormal: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SoftParticlesEnabled: 0
-    - _SoftParticlesFarFadeDistance: 1
-    - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _TessellationFar: 1
+    - _TessellationNear: 1
+    - _TessellationSmoothness: 0.5
+    - _TessellationTransition: 0.8
     - _TexturePatternStyle: 0
     - _UVSec: 0
     - _UseSecondaryCutout: 0
@@ -266,10 +291,11 @@ Material:
     - _XYZHardness: 14
     - _ZWrite: 1
     m_Colors:
+    - Color_6EA3B1FB: {r: 1, g: 0.9225849, b: 0, a: 0}
+    - Color_891DB37F: {r: 1, g: 1, b: 1, a: 0}
+    - Vector2_280CC75: {r: 1, g: 5, b: 0, a: 0}
     - _AmbientColor: {r: 0.4, g: 0.4, b: 0.4, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
-    - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CustomLightDirection: {r: 0, g: 0, b: 10, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
@@ -277,7 +303,7 @@ Material:
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _MainColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
-    - _OutlineColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
@@ -285,11 +311,10 @@ Material:
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfShadowRealTimeShadowColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
-    - _XYZPosition: {r: 2, g: 0, b: -2, a: 0}
---- !u!114 &1579324194748889691
+    - _XYZPosition: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &9166471644672845055
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

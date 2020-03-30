@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: PolyKnights_Mat_Variation_04
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_GLO_ON N_F_SS_ON _ALPHABASECUTOUT_ON _ENVIRONMENTREFLECTIONS_OFF
-    _LIGHTAFFECTRIMLIGHTCOLOR_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_EAL_ON N_F_SS_ON _ENVIRONMENTREFLECTIONS_OFF _LIGHTAFFECTRIMLIGHTCOLOR_ON
+    _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -81,7 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 370214d29559d094bbd95faa22ad92b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -117,7 +117,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AlphaBaseCutout: 1
+    - _AlphaBaseCutout: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -141,14 +141,14 @@ Material:
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0
     - _GlossColorPower: 10
-    - _GlossIntensity: 0.1
+    - _GlossIntensity: 0.334
     - _GlossMapScale: 0
     - _GlossSoftness: 0
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.2
+    - _Glossiness: 0
     - _GlossyReflections: 0
     - _HighlightColorPower: 1
     - _LightAffectOutlineColor: 0
@@ -169,7 +169,7 @@ Material:
     - _N_F_DCS: 0
     - _N_F_EAL: 1
     - _N_F_FR: 0
-    - _N_F_GLO: 1
+    - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
@@ -218,11 +218,11 @@ Material:
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 1
+    - _SelfShadowRealtimeShadowIntensity: 0.8
     - _SelfShadowShadowTAtViewDirection: 0
     - _SelfShadowThreshold: 0.85
     - _ShadowColorTexturePower: 0
-    - _ShadowHardness: 0
+    - _ShadowHardness: 1
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
     - _ShadowTIntensity: 1
@@ -231,7 +231,7 @@ Material:
     - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
-    - _SmoothObjectNormal: 0
+    - _SmoothObjectNormal: 0.01
     - _Smoothness: 0.2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
