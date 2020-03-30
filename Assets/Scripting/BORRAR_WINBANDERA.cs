@@ -14,7 +14,7 @@ public class BORRAR_WINBANDERA : MonoBehaviour
 
     IEnumerator CorrutinaToGuapa()
     {
-        FindObjectOfType<LevelManager>().InstaWin();
+        FindObjectOfType<LevelManager>().InstaWin(true);
         yield return new WaitForSecondsRealtime(1f);
         FindObjectOfType<UIManager>().EndTurn();
     }

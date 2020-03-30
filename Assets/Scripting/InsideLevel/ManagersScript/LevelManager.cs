@@ -22,6 +22,12 @@ public class LevelManager : MonoBehaviour
     //Int que lleva la cuenta del turno actual
     private int currentTurn = 0;
 
+    [SerializeField]
+    bool isObjectiveKillSpecificEnemies;
+
+    [SerializeField]
+    List<UnitBase> enemiesNecessaryToWin = new List<UnitBase>();
+
     [Header("INTERACCIÓN CON UNIDADES")]
 
     //Personaje actualmente seleccionado.
@@ -77,8 +83,6 @@ public class LevelManager : MonoBehaviour
     //Lista con los tiles disponibles para colocar personajes. Me sirve para limpiar el color de los tiles al terminar.
     [HideInInspector]
     public List<IndividualTiles> tilesForFinishingPlayers = new List<IndividualTiles>();
-
-
 
     //Cada unidad se encarga desde su script de incluirse en la lista
     //Lista con todas las unidades del jugador en el tablero
@@ -895,7 +899,10 @@ public class LevelManager : MonoBehaviour
         {
             selectedEnemy.HealthBarOn_Off(false);
             selectedEnemy.ResetColor();
-            selectedEnemy.myPortrait.UnHighlightMyself();
+
+            if (selectedEnemy.myPortrait != null)
+                selectedEnemy.myPortrait.UnHighlightMyself();
+
             HideEnemyHover(selectedEnemy);
 
 
@@ -1347,6 +1354,33 @@ public class LevelManager : MonoBehaviour
 
     public void CheckIfGameOver()
     {
+        //Derrota
+        if (charactersOnTheBoard.Count == 0 || currentTurn > turnLimit)
+        {
+            Debug.Log("Game Over");
+            defeatPanel.SetActive(true);
+            UIM.optionsButton.SetActive(false);
+            GameManager.Instance.LevelLost();
+        }
+
+
+        //Victoria
+        if (isObjectiveKillSpecificEnemies)
+        {
+            for (int i = 0; i < enemiesNecessaryToWin.Count; i++)
+            {
+                if (!enemiesNecessaryToWin[i].isDead)
+                {
+                    return;
+                }
+            }
+
+            Debug.Log("Victory by killing specific enemies");
+            victoryPanel.SetActive(true);
+            UIM.optionsButton.SetActive(false);
+            GameManager.Instance.VictoryAchieved();
+        }
+
         if (enemiesOnTheBoard.Count == 0 ||
             enemiesOnTheBoard.Count == 1 && enemiesOnTheBoard[0].isDead)
         {
@@ -1354,14 +1388,6 @@ public class LevelManager : MonoBehaviour
             victoryPanel.SetActive(true);
             UIM.optionsButton.SetActive(false);
             GameManager.Instance.VictoryAchieved();
-        }
-
-        if (charactersOnTheBoard.Count == 0 || currentTurn > turnLimit)
-        {
-            Debug.Log("Game Over");
-            defeatPanel.SetActive(true);
-            UIM.optionsButton.SetActive(false);
-            GameManager.Instance.LevelLost();
         }
     }
 
@@ -1404,28 +1430,32 @@ public class LevelManager : MonoBehaviour
     }
     #endregion
 
-    public void InstaWin()
+    public void InstaWin(bool _shouldEndTurn)
     {
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
         {
             enemiesOnTheBoard[i].ReceiveDamage(999, null);
         }
 
-        UIM.EndTurn();
+        if (_shouldEndTurn)
+        {
+            UIM.EndTurn();
+        }
+       
     }
 
 
     //PROBLEAM ES EL DECOY.
     public bool CheckIfFinishingTilesReached()
     {
-        Debug.Log("ow");
         for (int i = 0; i < charactersOnTheBoard.Count; i++)
-        {
-            Debug.Log(charactersOnTheBoard[i].myCurrentTile);
-            
+        {   
             if (!charactersOnTheBoard[i].myCurrentTile.isFinishingTile)
             {
-                Debug.Log(charactersOnTheBoard[i].myCurrentTile.isFinishingTile);
+                if (charactersOnTheBoard[i].GetComponent<MageDecoy>())
+                {
+                    continue;
+                }
 
                 return false;
             }

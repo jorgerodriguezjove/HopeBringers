@@ -196,7 +196,7 @@ public class UnitBase : MonoBehaviour
     private List<GameObject> lifeTokensListInSceneHealthBar = new List<GameObject>();
 
     [SerializeField]
-    private Material AvailableToBeAttackedColor;
+    protected Material AvailableToBeAttackedColor;
 
 
     //Este icono lo utilizo para poner la espada encima de los posibles enemigos. 
@@ -698,7 +698,7 @@ public class UnitBase : MonoBehaviour
     }
 
     //Cambiar a color que indica que puede ser atacado
-    public void ColorAvailableToBeAttacked(float damageCalculated)
+    public virtual void ColorAvailableToBeAttacked(float damageCalculated)
     {
         if (!isDead )
         {
@@ -818,9 +818,11 @@ public class UnitBase : MonoBehaviour
     protected virtual void FindAndSetFirstTile()
     {
         Debug.DrawRay(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
+        
 
         if (Physics.Raycast(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), out hit))
         {
+            Debug.Log(hit.collider.gameObject);
             myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();            
             myCurrentTile.unitOnTile = GetComponent<UnitBase>();
         }

@@ -163,18 +163,6 @@ public class GameManager : PersistentSingleton<GameManager>
 
     #region DIALOG
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log("debug dialog");
-            inkManRef = FindObjectOfType<InkManager>();
-            dialogManRef = FindObjectOfType<DialogManager>();
-            currentLevelStartDialog = inkManRef.debugDialog;
-            StartDialog(true);
-        }
-    }
-
     public void EndDialog()
     {
         //Termino el diálogo

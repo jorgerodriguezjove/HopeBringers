@@ -93,7 +93,7 @@ public class EnemyUnit : UnitBase
     private GameObject arrowEnemyIndicator;
 
     [SerializeField]
-    private Material selectedMaterial;
+    protected Material selectedMaterial;
 
     //Referencia al retrato en la lista
     [HideInInspector]
@@ -315,7 +315,8 @@ public class EnemyUnit : UnitBase
         //Actualizo el panel de dormido de mi retrato en la lista de enemigos
         if (haveIBeenAlerted)
         {
-            myPortrait.UpdateSleepState(true);
+            if (myPortrait != null)
+                myPortrait.UpdateSleepState(true);
         }
     }
 
@@ -504,7 +505,9 @@ public class EnemyUnit : UnitBase
 
                 LM.CheckIfHoverShouldAppear(GetComponent<EnemyUnit>());
                 LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
-                myPortrait.HighlightMyself();
+
+                if (myPortrait != null)
+                    myPortrait.HighlightMyself();
 
                 //Activo la barra de vida
                 HealthBarOn_Off(true);
@@ -543,16 +546,11 @@ public class EnemyUnit : UnitBase
             {
                 if (!isDead)
                 {
-                    //Llamo a LevelManager para activar hover				
-                    //LM.UIM.ShowUnitInfo(this.unitInfo, this);
-
-                    //LM.UIM.ShowCharacterInfo(unitInfo, this); 
                     HealthBarOn_Off(true);
-                    //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
-                    myPortrait.HighlightMyself();
+                    if (myPortrait != null)
+                        myPortrait.HighlightMyself();
 
-                    //Cambio el color del personaje
                     SelectedColor();
                 }
             }
@@ -567,7 +565,8 @@ public class EnemyUnit : UnitBase
                     HealthBarOn_Off(true);
                     //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
-                    myPortrait.HighlightMyself();
+                    if (myPortrait != null)
+                        myPortrait.HighlightMyself();
 
                     //Cambio el color del personaje
                     SelectedColor();
@@ -577,7 +576,7 @@ public class EnemyUnit : UnitBase
     }
 
     //Creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
-    public void OnHoverEnterFunctionality()
+    public virtual void OnHoverEnterFunctionality()
     {
         //Muestro el rango de acción del personaje.
         if (!haveIBeenAlerted)
@@ -599,7 +598,8 @@ public class EnemyUnit : UnitBase
 		HealthBarOn_Off(true);
         //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
 
-        myPortrait.HighlightMyself();
+        if (myPortrait != null)
+            myPortrait.HighlightMyself();
 
         //Cambio el color del personaje
         SelectedColor();
@@ -623,7 +623,9 @@ public class EnemyUnit : UnitBase
                 LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
                 //LM.UIM.HideUnitInfo("");
                 shaderHover.SetActive(false);
-                myPortrait.UnHighlightMyself();
+
+                if (myPortrait != null)
+                    myPortrait.UnHighlightMyself();
 
             }
 
@@ -631,7 +633,7 @@ public class EnemyUnit : UnitBase
     }
 
     //Al igual que con enter creo una función con todo lo que tiene que ocurrir el hover para que también se pueda usar en el hover del retrato.
-    public void OnHoverExitFunctionality()
+    public virtual void OnHoverExitFunctionality()
     {
         LM.HideEnemyHover(this);
         shaderHover.SetActive(false);
@@ -680,14 +682,17 @@ public class EnemyUnit : UnitBase
             if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
                 shaderHover.SetActive(false);
-               
 
-               
-               
                 ResetColor();
+
+                if (myPortrait != null)
+                    myPortrait.UnHighlightMyself();
+
                 myPortrait.UnHighlightMyself();
                 LM.HideHover(this);
                 HealthBarOn_Off(false);
+
+               
             }
         }
 
@@ -741,10 +746,11 @@ public class EnemyUnit : UnitBase
             currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
         }
 
-        myPortrait.UnHighlightMyself();
+        if(myPortrait != null)
+            myPortrait.UnHighlightMyself();
     }
 
-    public void SelectedColor()
+    public virtual void SelectedColor()
     {
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = selectedMaterial;
     }
