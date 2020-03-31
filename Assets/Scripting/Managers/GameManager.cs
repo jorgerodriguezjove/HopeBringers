@@ -71,6 +71,11 @@ public class GameManager : PersistentSingleton<GameManager>
 
     #region INIT
 
+    private void Start()
+    {
+        gameObject.name = "GameManager";
+    }
+
     //Añado la función a la carga de escenas
     private void OnEnable()
     {
@@ -206,5 +211,4 @@ public class GameManager : PersistentSingleton<GameManager>
     }
 
     #endregion
-
 }
