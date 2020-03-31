@@ -67,6 +67,8 @@ public class LevelManager : MonoBehaviour
     //[HideInInspector]
     public List<DamageTile> damageTilesInBoard = new List<DamageTile>();
 
+    private List<UnitBase> unitsToEnableCollider = new List<UnitBase>();
+
     [Header("TURNOS Y FASES")]
 
     //Bool que sirve para que se pueda probar un nivel sin necesidad de haber elegido personajes antes
@@ -654,13 +656,11 @@ public class LevelManager : MonoBehaviour
         }
 
         //Si es el turno del player compruebo si puedo hacer algo con la unidad.
-        if (currentLevelState == LevelState.ProcessingPlayerActions)
+        if (currentLevelState == LevelState.ProcessingPlayerActions && !GameManager.Instance.isGamePaused)
         {
-          
             //Si no hay unidad seleccionada significa que está seleccionando una unidad
-            if (selectedCharacter == null )
+            if (selectedCharacter == null)
             {
-                
 				//Si no se ha movido significa que la puedo mover y doy feedback de sus casillas de movimiento
 				if (!clickedUnit.hasAttacked && !clickedUnit.hasMoved)
                 {
@@ -770,7 +770,7 @@ public class LevelManager : MonoBehaviour
 
     public void DeSelectUnit()
     {
-        if (selectedCharacter != null)
+        if (selectedCharacter != null && !GameManager.Instance.isGamePaused)
         {
             if (selectedCharacter.isMovingorRotating)
             {
@@ -827,26 +827,35 @@ public class LevelManager : MonoBehaviour
             selectedCharacter.myCurrentTile.ColorDeselect();
             selectedCharacter = null;
 
+            //Reactivo el collider de las unidades que se les ha quitado al seleccionar tile para rotar.
+            for (int j = 0; j < unitsToEnableCollider.Count; j++)
+            {
+                unitsToEnableCollider[j].EnableUnableCollider(true);
+            }
 
+            unitsToEnableCollider.Clear();
         }
+
         else if(selectedEnemy !=null)
         {
-
             DeselectEnemy();
         }
     }
 
     public void SelectEnemy(string _unitInfo, EnemyUnit _enemySelected)
     {
-        DeselectEnemy();
-   
-        selectedEnemy = _enemySelected;
+        if (!GameManager.Instance.isGamePaused)
+        {
+            DeselectEnemy();
 
-        CheckIfHoverShouldAppear(_enemySelected);
+            selectedEnemy = _enemySelected;
 
-        UIM.ShowUnitInfo(_unitInfo, _enemySelected);
-        _enemySelected.SelectedFunctionality();
-		UIM.MoveScrollToEnemy(_enemySelected);
+            CheckIfHoverShouldAppear(_enemySelected);
+
+            UIM.ShowUnitInfo(_unitInfo, _enemySelected);
+            _enemySelected.SelectedFunctionality();
+            UIM.MoveScrollToEnemy(_enemySelected);
+        }
 	}
 
     //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
@@ -916,8 +925,9 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
-        #region TILE_&_PACEMENT
+    #region TILE_&_PACEMENT
 
+    
     //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
     public void TileClicked(IndividualTiles tileToMove)
     {
@@ -943,6 +953,8 @@ public class LevelManager : MonoBehaviour
 
                     //Variable a null
                     currentCharacterPlacing = null;
+
+                    UIM.UpdateUnitsPlaced(charactersAlreadyPlaced.Count);
                 }
 
                 //Si no está vacío sustituyo la unidad
@@ -959,12 +971,30 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        else
+        else if (!GameManager.Instance.isGamePaused)
         {
             //Movimiento de la unidad
             if (selectedCharacter != null && !selectedCharacter.hasAttacked && !selectedCharacter.hasMoved)
             {
                 tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter, true);
+
+                //Reactivo el collider de las unidades que se les ha quitado antes. Esto es por si hace click en otro tile sin haber rotado.
+                for (int j = 0; j < unitsToEnableCollider.Count; j++)
+                {
+                    unitsToEnableCollider[j].EnableUnableCollider(true);
+                }
+
+                unitsToEnableCollider.Clear();
+
+                //Desactivo collider de unidades que rodean al tile clickado
+                for (int j = 0; j < tileToMove.neighbours.Count; j++)
+                {
+                    if (tileToMove.neighbours[j].unitOnTile != null)
+                    {
+                        tileToMove.neighbours[j].unitOnTile.EnableUnableCollider(false);
+                        unitsToEnableCollider.Add(tileToMove.neighbours[j].unitOnTile);
+                    }
+                }
 
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
@@ -982,7 +1012,6 @@ public class LevelManager : MonoBehaviour
                             //Hacer que aparezcan los botones de rotación
                             selectedCharacter.isMovingorRotating = true;
                             selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(true);
-							
 
                             #region DEPRECATED_ALTURA_FLECHAS_ROTACION
                             //offsetHeightArrow = 0.5f;
@@ -1041,6 +1070,7 @@ public class LevelManager : MonoBehaviour
                                     }
                                 }
                             }
+
                         }
                     }  
                 }
@@ -1111,8 +1141,6 @@ public class LevelManager : MonoBehaviour
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
     public void UnitHasFinishedMovementAndRotation()
     {
-        //UIM.ActivateDeActivateEndButton();+
-
         //Al terminar de moverse se despintan los tiles 
         for (int j = 0; j < tilesAvailableForMovement.Count; j++)
         {
@@ -1137,6 +1165,11 @@ public class LevelManager : MonoBehaviour
             {
                 selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
             }
+        }
+
+        for (int j = 0; j < unitsToEnableCollider.Count; j++)
+        {
+            unitsToEnableCollider[j].EnableUnableCollider(true);
         }
     }
 
@@ -1198,6 +1231,12 @@ public class LevelManager : MonoBehaviour
 
     private void BeginPlayerPhase()
     {
+        //POR SI ACASO, reactivo los colliders de los personajes que se les desactivo antes.
+        for (int j = 0; j < unitsToEnableCollider.Count; j++)
+        {
+            unitsToEnableCollider[j].EnableUnableCollider(true);
+        }
+
         //Recoloco la lista de enemigos donde estaba al inicio.
         UIM.ResetScrollPosition();
 
@@ -1427,6 +1466,16 @@ public class LevelManager : MonoBehaviour
                 Debug.Log("You selected the " + hit.transform.name); // ensure you picked right object
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Time.timeScale = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Time.timeScale = 1;
+        }
     }
     #endregion
 
@@ -1462,6 +1511,12 @@ public class LevelManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    //Esta función esta en el level manager porque tengo que pasarsela manualmente al botón de cerrar el tutorial y si estuviese en el gamemanager no podría pasar la referencia desde el editor.
+    public void UnPauseGame()
+    {
+        GameManager.Instance.isGamePaused = false;
     }
 }
 

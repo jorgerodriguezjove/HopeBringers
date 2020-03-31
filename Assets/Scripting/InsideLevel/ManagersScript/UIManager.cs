@@ -134,6 +134,14 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI turnLimit;
 
+    [Header("UNIT PLACEMENT")]
+    [SerializeField]
+    GameObject unitsToPlaceParent;
+    [SerializeField]
+    TextMeshProUGUI currentUnitsPlaced;
+    [SerializeField]
+    TextMeshProUGUI maxUnitsToPlace;
+
     [Header("TUTORIAL")]
 	int turnNumber = 1;
 	[SerializeField]
@@ -192,6 +200,14 @@ public class UIManager : MonoBehaviour
         hideDuringUnitPlacementHud.SetActive(false);
         hudParentObject.SetActive(true);
         hideDuringUnitPlacement3DHud.SetActive(false);
+
+        unitsToPlaceParent.SetActive(true);
+        maxUnitsToPlace.SetText(GameManager.Instance.maxUnitsInThisLevel.ToString());
+    }
+
+    public void UpdateUnitsPlaced(int _currentUnitsPlaced)
+    {
+        currentUnitsPlaced.SetText(_currentUnitsPlaced.ToString());
     }
 
     //Lo pongo en una variable en vez de en el start para que lo pueda llamar el Level Manager
@@ -205,6 +221,8 @@ public class UIManager : MonoBehaviour
         hud3DInDialog.SetActive(false);
         hud3DUnitPlacement.SetActive(false);
 
+        unitsToPlaceParent.SetActive(false);
+
         characterInfoOriginalPosition = characterInfo.transform.position;
 		endTurnBttnInitMaterial = endTurnButton.GetComponent<MeshRenderer>().material;
         //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
@@ -216,6 +234,7 @@ public class UIManager : MonoBehaviour
             {
                 panelTutorial.SetActive(true);
                 textTutorial.text = tutorialText1;
+                GameManager.Instance.isGamePaused = true;
             }
 		}
 
@@ -794,6 +813,7 @@ public class UIManager : MonoBehaviour
 	{
 		optionsScreen.SetActive(isActivated);
 		optionsButton.SetActive(!isActivated);
+        GameManager.Instance.isGamePaused = isActivated;
 	}
     #endregion
 
