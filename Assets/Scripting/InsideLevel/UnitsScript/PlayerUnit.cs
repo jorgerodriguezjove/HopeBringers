@@ -27,7 +27,7 @@ public class PlayerUnit : UnitBase
     public bool canHover;
 
     //Lista de posibles unidades a las que atacar
-    [HideInInspector]
+    [SerializeField]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Lista de posibles unidades a las que atacar

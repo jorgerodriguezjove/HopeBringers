@@ -7,7 +7,10 @@ public class BossMultTile : EnemyUnit
 {
     int coneRange = 5;
 
-    [Header("ATTACKS")]
+    [Header("CRISTALES")]
+    public List<Crystal> crystalList = new List<Crystal>();
+
+    [Header("ATAQUES")]
     [SerializeField]
     private bool isPhase2;
 
@@ -64,6 +67,18 @@ public class BossMultTile : EnemyUnit
         for (int i = 0; i < LM.TM.GetSurroundingTiles(myCurrentTile, 2, true, true).Count; i++)
         {
             exteriorTiles.Add(LM.TM.GetSurroundingTiles(myCurrentTile, 2, true, true)[i]);
+        }
+    }
+    
+    public void RemoveCrystal(Crystal _crystal)
+    {
+        crystalList.Remove(_crystal);
+
+        Debug.Log(crystalList.Count);
+
+        if (crystalList.Count == 0)
+        {
+            LM.InstaWin(true);
         }
     }
 

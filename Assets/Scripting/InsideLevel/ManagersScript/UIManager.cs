@@ -160,7 +160,22 @@ public class UIManager : MonoBehaviour
 	[@TextAreaAttribute(5, 10)]
 	string tutorialText3;
 
-	[Header("REFERENCIAS")]
+    [Header("VICTORIA")]
+    [SerializeField]
+    GameObject victoryPanel;
+
+    [SerializeField]
+    TextMeshProUGUI baseXp;
+    [SerializeField]
+    TextMeshProUGUI bonusXpTotal;
+    [SerializeField]
+    TextMeshProUGUI turnsLeftXp;
+    [SerializeField]
+    TextMeshProUGUI charactersAliveXp;
+    [SerializeField]
+    TextMeshProUGUI totalXp;
+
+    [Header("REFERENCIAS")]
 
     //Level Manager
 	[HideInInspector]
@@ -858,6 +873,27 @@ public class UIManager : MonoBehaviour
     {
         enemyBanner.SetActive(_isActivate);
     }
+    #endregion
+
+    #region VICTORY
+
+    public void Victory(int _baseXp, int _charactersAlifeXp, int _turnsLeftXp)
+    {
+        victoryPanel.SetActive(true);
+        baseXp.SetText(_baseXp.ToString());
+        charactersAliveXp.SetText(_charactersAlifeXp.ToString());
+        turnsLeftXp.SetText(_turnsLeftXp.ToString());
+
+        int bonus = _charactersAlifeXp + _turnsLeftXp;
+
+        bonusXpTotal.SetText(bonus.ToString());
+
+        int total = bonus + _baseXp;
+
+        totalXp.SetText(total.ToString());
+
+    }
+
     #endregion
 
     public void UpdateTurnNumber(int _currentTurn, int _turnLimit)

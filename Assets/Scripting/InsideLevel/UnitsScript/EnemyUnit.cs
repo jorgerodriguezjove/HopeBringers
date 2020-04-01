@@ -145,7 +145,7 @@ public class EnemyUnit : UnitBase
         currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
         currentTimeWaitingBeforeEnding = timeWaitingBeforeEnding;
 
-		if(characterImage != null)
+		if(characterImage != null && inGamePortrait != null)
 		{
 			inGamePortrait.sprite = characterImage;
 		}
@@ -431,6 +431,7 @@ public class EnemyUnit : UnitBase
     {
         if (LM.selectedCharacter != null)
         {
+            Debug.Log("Ataqie");
             LM.SelectUnitToAttack(GetComponent<UnitBase>());
         }
         
@@ -466,7 +467,7 @@ public class EnemyUnit : UnitBase
     }
 
     //Función que guarda todo lo que ocurre cuando se selecciona un personaje. Esta función sirve para no repetir codigo y además para poder llamarla desde el Level Manager.
-    public void SelectedFunctionality()
+    public virtual void SelectedFunctionality()
     {
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
