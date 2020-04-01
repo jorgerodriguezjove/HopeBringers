@@ -327,7 +327,7 @@ public class PlayerUnit : UnitBase
     //Es virtual para el decoy del mago.
     protected virtual void OnMouseEnter()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && !GameManager.Instance.isGamePaused)
         {
             if (LM.selectedEnemy == null)
             {

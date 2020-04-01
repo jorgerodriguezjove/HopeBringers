@@ -372,4 +372,11 @@ public class NewCameraController : MonoBehaviour
         characterToFocus = _enemyToFocus;
         FocusCameraOnCharacter(characterToFocus);
     }
+
+    public void StopResumeCameraCompletely(bool _shouldStop)
+    {
+        canMoveCamera = _shouldStop;
+        canRotateCamera = _shouldStop;
+        canZoomCamera = _shouldStop;
+    }
 }

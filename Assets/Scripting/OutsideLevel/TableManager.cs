@@ -44,6 +44,9 @@ public class TableManager : MonoBehaviour
     [HideInInspector]
     public string currentClickedSceneName;
 
+    [SerializeField]
+    List<LevelNode> allLevelNodesInGame = new List<LevelNode>();
+
     [Header("REFERENCIAS")]
     [SerializeField]
     private UITableManager UITM;
@@ -80,8 +83,24 @@ public class TableManager : MonoBehaviour
 
         //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
         //Hacer que se quede el último seleccioando!!!!!!!!!!!!!!!!!!!!!
-        level1.SelectLevel();
 
+        if (GameManager.Instance.currentLevelNode == 0)
+        {
+            Debug.Log("acac");
+            level1.SelectLevel();
+        }
+        else
+        {
+            Debug.Log("torototoc");
+
+            for (int i = 0; i < allLevelNodesInGame.Count; i++)
+            {
+                if (allLevelNodesInGame[i].idLevel == GameManager.Instance.currentLevelNode)
+                {
+                    allLevelNodesInGame[i].SelectLevel();
+                }
+            }
+        }
     }
 
     #endregion

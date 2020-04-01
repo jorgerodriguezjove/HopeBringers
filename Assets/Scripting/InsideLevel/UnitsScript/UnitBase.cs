@@ -53,8 +53,6 @@ public class UnitBase : MonoBehaviour
     //Bool para poder ocultar a las unidades
     public bool isHidden;
 
-   
-
     [Header("DAMAGE")]
 
     //Daño de la unidad
@@ -444,8 +442,6 @@ public class UnitBase : MonoBehaviour
 
     #endregion
 
-
-
     #region PUSH
     //Esta función solo calcula el tile en el que acaba la unidad empujada. SIRVE PARA MOSTRAR EFECTO DE ATAQUE CABALLERO.
     public IndividualTiles CalculatePushLogic(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
@@ -819,14 +815,12 @@ public class UnitBase : MonoBehaviour
     {
         Debug.DrawRay(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
         
-
         if (Physics.Raycast(new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z), transform.TransformDirection(Vector3.down), out hit))
         {
             Debug.Log(hit.collider.gameObject);
             myCurrentTile = hit.collider.gameObject.GetComponent<IndividualTiles>();            
             myCurrentTile.unitOnTile = GetComponent<UnitBase>();
         }
-
     }
 
     #endregion
@@ -882,5 +876,10 @@ public class UnitBase : MonoBehaviour
     {
         unitToApply.BuffbonusStateDamage = damageAdded;
         unitToApply.turnsWithBuffOrDebuff = turnsAdded;
+    }
+
+    public void EnableUnableCollider(bool _shouldEnableCollider)
+    {
+        GetComponent<Collider>().enabled = _shouldEnableCollider;
     }
 }

@@ -107,8 +107,6 @@ public class EnemyUnit : UnitBase
     protected List<bool> wereTilesAlreadyUnderAttack = new List<bool>();
     protected List<IndividualTiles> tilesAlreadyUnderAttack = new List<IndividualTiles>();
 
-   
-
     [SerializeField]
     private GameObject sleepParticle;
 
@@ -520,7 +518,7 @@ public class EnemyUnit : UnitBase
 
     private void OnMouseEnter()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && !GameManager.Instance.isGamePaused)
         {
             if (LM.selectedEnemy == null && LM.selectedCharacter == null)
             {

@@ -134,7 +134,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Esto era antes el diccioanrio de prev de tileManger. Ahora el propio tile almacena el tile anterior del path.
     public IndividualTiles parent;
 
-
     int heapIndex;
 
     ////Este bool sirve para saber si el tile estaba con feedback de ataque antes para volver a ponerse
@@ -226,7 +225,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Hover enter
     void OnMouseEnter()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null && !LM.selectedCharacter.hasMoved)
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null && !LM.selectedCharacter.hasMoved && !GameManager.Instance.isGamePaused)
         {
             //Cambio el cursor
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);

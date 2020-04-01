@@ -67,9 +67,30 @@ public class GameManager : PersistentSingleton<GameManager>
 
     private LevelManager LM;
 
+    public bool isGamePaused
+    {
+        get
+        {
+            return _isGamePaused;
+        }
+
+        set
+        {
+            _isGamePaused = value;
+            FindObjectOfType<NewCameraController>().StopResumeCameraCompletely(!value);
+        }
+    }
+
+    [SerializeField]
+    private bool _isGamePaused;
     #endregion
 
     #region INIT
+
+    private void Start()
+    {
+        gameObject.name = "GameManager";
+    }
 
     //Añado la función a la carga de escenas
     private void OnEnable()
@@ -206,5 +227,4 @@ public class GameManager : PersistentSingleton<GameManager>
     }
 
     #endregion
-
 }
