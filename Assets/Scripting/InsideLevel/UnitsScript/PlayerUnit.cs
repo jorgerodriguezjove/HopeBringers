@@ -223,6 +223,7 @@ public class PlayerUnit : UnitBase
 
                 //Refresco de los tokens para resetearlos en pantalla
                 UIM.RefreshTokens();
+                CheckWhatToDoWithSpecialToken();
                 isMovingorRotating = false;
                 unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
                 hasUsedExtraTurn = false;
@@ -251,6 +252,7 @@ public class PlayerUnit : UnitBase
                 }
                 //Refresco de los tokens para resetearlos en pantalla
                 UIM.RefreshTokens();
+                CheckWhatToDoWithSpecialToken();
                 isMovingorRotating = false;
                 unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
                 hasUsedExtraTurn = false;
@@ -1108,5 +1110,11 @@ public class PlayerUnit : UnitBase
         }
     }
 
+    public virtual void CheckWhatToDoWithSpecialToken()
+    {
+        //Cada character realiza su comprobación
+
+
+    }
     
 }

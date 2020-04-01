@@ -55,7 +55,6 @@ public class Berserker : PlayerUnit
 
 
     #endregion
-
     public void SetSpecificStats(bool _areaAttack, bool _circularAttack1)
     {
         areaAttack = _areaAttack;
@@ -65,13 +64,21 @@ public class Berserker : PlayerUnit
         {
             bonusDamageAreaAttack = 2;
         }
+
+       
+    }
+
+    public override void CheckWhatToDoWithSpecialToken()
+    {
+        myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
+
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
-        tilesInEnemyHover.Clear();
+        
 
         if (unitToAttack.isMarked)
         {
@@ -197,16 +204,7 @@ public class Berserker : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-            for (int i = 0; i < tilesInEnemyHover.Count; i++)
-            {
-                tilesInEnemyHover[i].ColorDesAttack();
-
-                if (tilesInEnemyHover[i].unitOnTile != null)
-                {
-                    tilesInEnemyHover[i].unitOnTile.ResetColor();
-                }
-            }
-            tilesInEnemyHover.Clear();
+           
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
             
@@ -223,7 +221,19 @@ public class Berserker : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
-        
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorDesAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ResetColor();
+            }
+        }
+
+        tilesInEnemyHover.Clear();
+
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)
@@ -291,8 +301,8 @@ public class Berserker : PlayerUnit
         
         //La primera vez que entra en rage inicializo los turnos que puede estar en rage.
         turnsLeftToRageOff = maxNumberOfTurnsInRage - 1;
-        myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.enabled = true;
-        myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.text = turnsLeftToRageOff.ToString();
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = turnsLeftToRageOff.ToString();
         turnsLeftToRageOff = maxNumberOfTurnsInRage;
         //Cambiar material
         RageColor();
@@ -307,8 +317,8 @@ public class Berserker : PlayerUnit
         {
             turnsLeftToRageOff--;
 
-            myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.enabled = true;
-            myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.text = turnsLeftToRageOff.ToString();
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = turnsLeftToRageOff.ToString();
           
 
             if (turnsLeftToRageOff <= 0)
@@ -316,7 +326,7 @@ public class Berserker : PlayerUnit
                 isInRage = false;
                 isInRageIcon.SetActive(false);
                 turnsLeftToRageOff = maxNumberOfTurnsInRage;
-                myPanelPortrait.GetComponent<Portraits>().rageTurnsLeft.enabled = false;
+                myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = false;
                 
                 RageColor();
             }
@@ -337,7 +347,7 @@ public class Berserker : PlayerUnit
 
                 }
 
-                if ( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
                 }
@@ -361,7 +371,7 @@ public class Berserker : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.East)
             {
-                if ( currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
 
@@ -389,8 +399,31 @@ public class Berserker : PlayerUnit
 
                 }
             }
+        }
 
+        else if (circularAttack)
+        {                           
+                if (myCurrentTile.tilesInLineUp[0] != null)
+                {
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[0]);
+               
+                }
 
+                if (myCurrentTile.tilesInLineDown[0]!= null)
+                {
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[0]);
+                }
+
+                if (myCurrentTile.tilesInLineRight[0] != null)
+                {
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineRight[0]);
+
+                }
+
+                if (myCurrentTile.tilesInLineLeft[0] != null)
+                {
+                tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[0]);
+                }                          
         }
 
 

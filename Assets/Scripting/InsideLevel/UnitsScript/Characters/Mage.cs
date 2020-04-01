@@ -23,10 +23,7 @@ public class Mage : PlayerUnit
     [SerializeField]
     private int maxDecoys;
 
-    //Este bool sirve para decidir si el ataque en concreto hace daño por la espalda o no
-    [HideInInspector]
-    public bool backDamageOff;
-
+    
     [Header("MEJORAS DE PERSONAJE")]
 
     [Header("Activas")]
@@ -39,6 +36,8 @@ public class Mage : PlayerUnit
 
     public bool lightningChain;
     public int timeElectricityAttackExpands;
+    //Este int para que vuelva a su estado principal
+    public int fTimeElectricityAttackExpands = 3;
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
 
@@ -124,8 +123,7 @@ public class Mage : PlayerUnit
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
             //myAnimator.SetTrigger("Attack");
-
-            backDamageOff = true;
+           
 
             //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                 TM.surroundingTiles.Clear();
@@ -151,9 +149,9 @@ public class Mage : PlayerUnit
         }
         else if (lightningChain)
         {
-            backDamageOff = true;
-            
-            if(lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
+            unitsAttacked.Clear();
+
+            if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
             {
 
             }
@@ -173,7 +171,7 @@ public class Mage : PlayerUnit
                     timeElectricityAttackExpands--;
                     limitantAttackBonus--;
                     
-                    for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; ++k)
+                    for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; k++)
                     {
 
                         if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile)
@@ -220,14 +218,32 @@ public class Mage : PlayerUnit
             base.Attack(unitToAttack);
         }
     }
-        
+
+    //Override especial del mago para anlar ventajas por altura y daño por la espalda
+    public override void CalculateDamage(UnitBase unitToDealDamage)
+    {
+        //Reseteo la variable de daño a realizar
+        damageWithMultipliersApplied = baseDamage;
+
+        //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null && samuraiUpgraded.itsForHonorTime2)
+        {
+            damageWithMultipliersApplied += LM.honorCount;
+
+        }
+
+        damageWithMultipliersApplied += BuffbonusStateDamage;
+
+        Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
+    }
     //Override especial del mago para que no instancie la partícula de ataque
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-        if (!backDamageOff)
-        {
+        
             CalculateDamage(unitToDealDamage);
-        }
+        
 
             //Añado este if para el count de honor del samurai
         if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
@@ -553,13 +569,71 @@ public class Mage : PlayerUnit
     {
         tilesInEnemyHover.Clear();
 
-        TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, areaRange, true, false);
-      
-        //Hago daño a las unidades adyacentes
-        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
-        {         
-                tilesInEnemyHover.Add(TM.surroundingTiles[i]);       
+        if (areaAttack)
+        {
+            TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, areaRange, true, false);
+
+            //Hago daño a las unidades adyacentes
+            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+            {
+                tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+            }
+
+            
+
+
         }
+        else if (lightningChain)
+        {
+            unitsAttacked.Clear();
+            unitsAttacked.Add(_unitToAttack);
+
+            for (int j = 0; j < unitsAttacked.Count; j++)
+            {
+
+                if (timeElectricityAttackExpands > 0)
+                {
+                    timeElectricityAttackExpands--;
+                    limitantAttackBonus--;
+
+                    for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; k++)
+                    {
+
+                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile)
+                            && unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this)
+                        {
+                            if (lightningChain2 && _unitToAttack.GetComponent<PlayerUnit>())
+                            {
+
+                            }
+                            else
+                            {
+                                if (limitantAttackBonus <= 0 && lightningChain2)
+                                {
+
+                                }
+                                else if (lightningChain2)
+                                {
+                                    baseDamage++;
+                                }
+                            }
+
+                            unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+                            tilesInEnemyHover.Add(unitsAttacked[j].myCurrentTile.neighbours[k]);
+
+                        }
+                    }
+
+
+                }
+            }
+
+            
+        }
+        limitantAttackBonus = fLimitantAttackBonus;
+        timeElectricityAttackExpands = fTimeElectricityAttackExpands;
+        unitsAttacked.Clear();
+
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
@@ -567,11 +641,8 @@ public class Mage : PlayerUnit
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(-1);
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
             }
         }
-
-
-
     }
 }

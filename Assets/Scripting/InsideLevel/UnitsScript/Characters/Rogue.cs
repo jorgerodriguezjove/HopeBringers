@@ -15,6 +15,8 @@ public class Rogue : PlayerUnit
     //ACTIVAS
     public bool checkersAttack;
     public int unitsCanJump;
+    //Esto se hace para que al empezar nuevo turno se reseteen los saltos. Hay que poner el mismo número que la variable de arriba
+    public int fUnitsCanJump;
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
@@ -46,8 +48,33 @@ public class Rogue : PlayerUnit
     {
         checkersAttack = _multiJumpAttack1;
         extraTurnAttackAfterKill = _extraTurnAfterKill1;
+
+
     }
 
+    public override void CheckWhatToDoWithSpecialToken()
+    {
+
+        if (extraTurnAttackAfterKill)
+        {
+            myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
+            //Cambiar el número si va a tener más de un turno
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = "1";
+        }
+        else if (checkersAttack)
+        {
+            unitsCanJump = fUnitsCanJump;
+            myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
+            //Cambiar el número si va a tener más de un turno
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();
+            
+
+
+        }
+
+    }
     public override void CheckUnitsAndTilesInRangeToAttack()
     {
         currentUnitsAvailableToAttack.Clear();
@@ -308,6 +335,8 @@ public class Rogue : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();
+
             if (afterKillBonus)
             {
                 if (unitToAttack.isDead)
@@ -453,6 +482,8 @@ public class Rogue : PlayerUnit
                 UIM.RefreshTokens();
                 LM.DeSelectUnit();
                 hasUsedExtraTurn = true;
+
+                myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = "0";
 
                 //Lo hago aquí para que cuando se seleccione nuevamente ya esté bien calculado.
                 LM.tilesAvailableForMovement = LM.TM.OptimizedCheckAvailableTilesForMovement(movementUds, this, false);

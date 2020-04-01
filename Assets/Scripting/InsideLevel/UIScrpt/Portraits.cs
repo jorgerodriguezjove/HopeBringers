@@ -59,9 +59,12 @@ public class Portraits : MonoBehaviour
     //Bool que indica a los retratos si están clickados
     public bool isClicked;
 
-    //Numero para el rage del berserker
+    //Numero para los contadores de las habilidades de cada personaje
     [SerializeField]
-    public TextMeshProUGUI rageTurnsLeft;
+    public TextMeshProUGUI specialSkillTurnsLeft;
+
+    //Token especial de los personajes
+    public GameObject specialToken;
 
     #endregion
 

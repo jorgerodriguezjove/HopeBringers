@@ -230,9 +230,14 @@ public class UIManager : MonoBehaviour
             //Actualizamos las barras de vida
             panelesPJ[i].GetComponent<Portraits>().InitializeHealth();
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
-        }
+
+			//Línea para comprobar lo que tiene que hacer el special token en cada unidad
+			panelesPJ[i].GetComponent<Portraits>().assignedPlayer.CheckWhatToDoWithSpecialToken();
+
+		}
 
         tooltipAccionesText.text = "Selecciona una unidad";
+
     }
 
     #endregion
