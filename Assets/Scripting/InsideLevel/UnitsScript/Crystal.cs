@@ -27,7 +27,10 @@ public class Crystal : EnemyUnit
         //Esto puede ser null por el nivel de los cristales sin el dragón
         dragReference = FindObjectOfType<BossMultTile>();
 
-        dragReference.crystalList.Add(this);
+        if (dragReference != null)
+        {
+            dragReference.crystalList.Add(this);
+        }
     }
 
     public override void MoveToTilePushed(IndividualTiles newTile)

@@ -14,10 +14,6 @@ public class EnSkeleton : EnemyUnit
     [HideInInspector]
     private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
-    //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
-    [HideInInspector]
-    private List<UnitBase> unitsInRange = new List<UnitBase>();
-
     //Indica el summoner de esta unidad para luego restarle a las unidades máximas al morir
     public EnSummoner whoIsMySummoner;
 

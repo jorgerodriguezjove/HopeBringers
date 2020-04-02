@@ -44,7 +44,6 @@ public class EnemyTooltip : MonoBehaviour
 			if (mouseDelta.x == 0 && mouseDelta.y == 0)
 			{
 				timeToShowTooltipTimer -= Time.deltaTime;
-				Debug.Log("Timer");
 				if (timeToShowTooltipTimer <= 0)
 				{
 					tooltipPanel.SetActive(true);
@@ -76,16 +75,12 @@ public class EnemyTooltip : MonoBehaviour
 						}
 						
 					}
-					//Mostrar el tooltip
-					Debug.Log("Tooltip Aparece");
 				}
 			}
 			else
 			{
 				timeToShowTooltipTimer = timeToShowTooltip;
 				tooltipPanel.SetActive(false);
-				//Tooltip desaparece
-				Debug.Log("Tooltip Desaparece");
 			}
 			lastMouseCoordinate = Input.mousePosition;
 		}

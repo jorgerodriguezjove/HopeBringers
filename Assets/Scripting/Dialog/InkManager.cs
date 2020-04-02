@@ -137,7 +137,6 @@ public class InkManager : MonoBehaviour
 
                         }
 
-
                         GameManager.Instance.EndDialog();
 
                         Destroy(text.gameObject);
