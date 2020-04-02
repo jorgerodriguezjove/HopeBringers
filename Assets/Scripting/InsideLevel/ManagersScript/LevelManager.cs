@@ -279,11 +279,28 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
+            //Ordenar por velocidad
             enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
             {
                 return (b.GetComponent<EnemyUnit>().speed).CompareTo(a.GetComponent<EnemyUnit>().speed);
 
             });
+
+            //Ordenar por despierto
+            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
+            {
+                return (b.GetComponent<EnemyUnit>().haveIBeenAlerted).CompareTo(a.GetComponent<EnemyUnit>().haveIBeenAlerted);
+
+            });
+
+            //Ordenar por alerta
+            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
+            {
+                return (b.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn).CompareTo(a.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn);
+
+            });
+
+            Debug.Log("orden updated");
         }
 
 		UIM.SetEnemyOrder();
@@ -406,7 +423,7 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false);
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                 {
@@ -445,7 +462,7 @@ public class LevelManager : MonoBehaviour
 
             else if (hoverUnit.GetComponent<EnCharger>())
             {
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false);
 
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
@@ -518,7 +535,7 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(true);
 
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
@@ -555,7 +572,7 @@ public class LevelManager : MonoBehaviour
 
             {
                 hoverUnit.shaderHover.SetActive(false);
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false);
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
@@ -1394,7 +1411,6 @@ public class LevelManager : MonoBehaviour
 
         if (enemiesOnTheBoard.Count > 0)
         {
-           
             //Desaparece botón de end turn
             UIM.ActivateDeActivateEndButton();
 
@@ -1404,12 +1420,21 @@ public class LevelManager : MonoBehaviour
 
             counterForEnemiesOrder = 0;
 
-            //Focus en enemigo si está despierto
-            camRef.SetCameraMovable(false, true);
-            camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            {
+                //Focus en enemigo si está despierto
+                camRef.SetCameraMovable(false, true);
+                camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
 
-            //Turn Start
-            enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                //Turn Start
+                enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+            }
+
+            else
+            {
+                counterForEnemiesOrder = 0;
+                currentLevelState = LevelState.PlayerPhase;
+            }
         }
     }
 
@@ -1426,15 +1451,24 @@ public class LevelManager : MonoBehaviour
         {
             counterForEnemiesOrder++;
 
-            //Bajo la lista de scroll
-            UIM.ScrollUpOnce();
+            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            {
+                //Bajo la lista de scroll
+                UIM.ScrollUpOnce();
 
-            //Focus en enemigo si está despierto
-            camRef.SetCameraMovable(false, true);
-            camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+                //Focus en enemigo si está despierto
+                camRef.SetCameraMovable(false, true);
+                camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
 
-            //Empieza el turno del siguiente enemigo
-            enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                //Empieza el turno del siguiente enemigo
+                enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+            }
+
+            else
+            {
+                counterForEnemiesOrder = 0;
+                currentLevelState = LevelState.PlayerPhase;
+            }
         }
     }
 
@@ -1479,6 +1513,9 @@ public class LevelManager : MonoBehaviour
         //return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck.GetComponent<EnemyUnit>());
     }
 
+    int xpTurns;
+    int xpCharacters;
+
     public void CheckIfGameOver()
     {
         //Derrota
@@ -1488,16 +1525,18 @@ public class LevelManager : MonoBehaviour
             defeatPanel.SetActive(true);
             UIM.optionsButton.SetActive(false);
             GameManager.Instance.LevelLost();
+
+            return;
         }
 
         //Calculo xp por turnos
         int xpPerTurn = 5;
-        int xpTurns;
+        
         xpTurns = (turnLimit - currentTurn) * xpPerTurn;
 
         //Calculo xp por characters
         int xpPerCharacter = 10;
-        int xpCharacters;
+        
         xpCharacters = charactersOnTheBoard.Count * xpPerCharacter;
 
         //Victoria
@@ -1512,9 +1551,7 @@ public class LevelManager : MonoBehaviour
             }
 
             Debug.Log("Victory by killing specific enemies");
-
-            UIM.Victory(GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon, xpCharacters, xpTurns);
-            UIM.optionsButton.SetActive(false);
+            UIM.HideGameHud();
             GameManager.Instance.VictoryAchieved();
         }
 
@@ -1522,10 +1559,14 @@ public class LevelManager : MonoBehaviour
             enemiesOnTheBoard.Count == 1 && enemiesOnTheBoard[0].isDead)
         {
             Debug.Log("Victory");
-            UIM.Victory(GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon, xpCharacters, xpTurns);
-            UIM.optionsButton.SetActive(false);
+            UIM.HideGameHud();
             GameManager.Instance.VictoryAchieved();
         }
+    }
+
+    public void VictoryScreen()
+    {
+        UIM.Victory(GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon, xpCharacters, xpTurns);
     }
 
     private void Update()
@@ -1567,13 +1608,9 @@ public class LevelManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Time.timeScale = 0;
+            AlertEnemiesOfPlayerMovement();
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Time.timeScale = 1;
-        }
     }
     #endregion
 
@@ -1616,5 +1653,45 @@ public class LevelManager : MonoBehaviour
     {
         GameManager.Instance.isGamePaused = false;
     }
+
+
+    //Usar lista para pasar al player los enemigos que se han activado y desactivar al hacer undo
+    //public List<EnemyUnit> enemiesAlertedByCharacter = new List<EnemyUnit>();
+
+    public void AlertEnemiesOfPlayerMovement()
+    {
+        for (int i = 0; i < enemiesOnTheBoard.Count; i++)
+        {
+            if (!enemiesOnTheBoard[i].isDead)
+            {
+                //Balista y charger tienen check diferente
+                if (enemiesOnTheBoard[i].GetComponent<EnBalista>() || enemiesOnTheBoard[i].GetComponent<EnCharger>())
+                {
+                    enemiesOnTheBoard[i].CheckCharactersInLine(false);
+                }
+
+                //Resto de enemigos
+                else
+                {
+                    enemiesOnTheBoard[i].SearchingObjectivesToAttackShowActionPathFinding();
+                }
+
+                if (enemiesOnTheBoard[i].currentUnitsAvailableToAttack.Count > 0)
+                {
+                    enemiesOnTheBoard[i].EnemyIsGoingToBeAlerted();
+                    Debug.Log(enemiesOnTheBoard[i].name + "Va a ser alertado");
+                    Debug.Log("---");
+                    continue;
+                }
+
+                Debug.Log(enemiesOnTheBoard[i].name + "Sigue dormido");
+                Debug.Log("---");
+            }
+        }
+
+        //Al acabar for updateo lista de enemigos
+        UpdateUnitsOrder();
+    }
+
 }
 

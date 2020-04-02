@@ -13,10 +13,6 @@ public class EnGrabber : EnemyUnit
     [HideInInspector]
     private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
-    //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
-    [HideInInspector]
-    private List<UnitBase> unitsInRange = new List<UnitBase>();
-
     public int turn2StunEnemy;
 
     public override void SearchingObjectivesToAttack()

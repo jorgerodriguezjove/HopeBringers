@@ -13,10 +13,6 @@ public class EnSummoner : EnemyUnit
     [HideInInspector]
     private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
-    //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
-    [HideInInspector]
-    private List<UnitBase> unitsInRange = new List<UnitBase>();
-
     //El número máximo de unidades que se pueden invocar
     public int maxUnitsSummoned;
     //El número actual de unidades invocadas

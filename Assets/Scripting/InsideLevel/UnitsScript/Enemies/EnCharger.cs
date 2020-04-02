@@ -22,11 +22,8 @@ public class EnCharger : EnemyUnit
             return;
         }
 
-        //Aggro de unidades hacer cuando tengamos la pasiva del caballero
-        //
-
         //Busca enemigos en sus lineas
-        CheckCharactersInLine();
+        CheckCharactersInLine(false);
 
         //Si coincide que hay varios personajes a la misma distancia, me quedo con el que tiene menos vida
         if (currentUnitsAvailableToAttack.Count > 1)
@@ -201,8 +198,6 @@ public class EnCharger : EnemyUnit
     {
         base.FinishMyActions();
     }
-
-
 
     //Función que pinta o despinta los tiles a los que está atcando la ballesta
     public void FeedbackTilesToAttack(bool shouldColorTiles)
@@ -465,7 +460,8 @@ public class EnCharger : EnemyUnit
 
     }
 
-    public override void CheckCharactersInLine()
+    //El bool es solo para la balista pero comparte la funcion con el charger y tiene que tenerlo
+    public override void CheckCharactersInLine(bool _NoUsarEsteBooleano)
     {
         if (!isDead)
         {

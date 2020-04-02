@@ -63,14 +63,23 @@ public class EnemyUnit : UnitBase
     public GameObject thisUnitOrder;
 
     //QUITAR SERIALIZE
-    [SerializeField]
+    [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
+
+    //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
+    //LA USAN TODOS LOS ENEMIGOS MENOS EL CHARGER Y LA BALISTA
+    [HideInInspector]
+    public List<UnitBase> unitsInRange = new List<UnitBase>();
 
     //Bool que sirve para que la corrutina solo se llame una vez (por tema de que el state machine esta en el update y si no lo haría varias veces)
     private bool corroutineDone;
 
-    //Bool que indica si el enemigo ha sido despertado o si solo tiene que comprobar su rango inicial.
+    //Bool que indica si el enemigo va a ser despertado cuando llegue el turno enemigo. 
     [HideInInspector]
+    public bool isGoingToBeAlertedOnEnemyTurn = false;
+
+    //Bool que indica si el enemigo ha sido despertado o si solo tiene que comprobar su rango inicial.
+    [SerializeField]
     public bool haveIBeenAlerted = false;
 
     [Header("REFERENCIAS")]
@@ -110,8 +119,11 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     private GameObject sleepParticle;
 
-	//Variables del doble click
-	int clicked;
+    [SerializeField]
+    private GameObject exclamationIcon;
+
+    //Variables del doble click
+    int clicked;
 	float clickTime;
 	float clickDelay = 0.5f;
 
@@ -341,7 +353,7 @@ public class EnemyUnit : UnitBase
     //Función que se encarga de hacer que el personaje este despierto/alerta
     public void AlertEnemy()
     {
-
+        DesAlertEnemy();
         haveIBeenAlerted = true;
         Destroy(sleepParticle);
         rangeOfAction = 1000;
@@ -886,7 +898,7 @@ public class EnemyUnit : UnitBase
     #region CHECKS
 
     //Esta función es el equivalente al chequeo de objetivos del jugador.Charger y balista usan versiones diferentes por eso el virtual. Es distinta de la del player y en principio no se puede reutilizar la misma debido a estas diferencias.
-    public virtual void CheckCharactersInLine()
+    public virtual void CheckCharactersInLine(bool _shouldWarnTilesForBalistaColoring)
     {
         
     }
@@ -972,6 +984,46 @@ public class EnemyUnit : UnitBase
         //por lo que es como si no hubiese habido ninguna pausa realmente.
     }
 
+
+    public void EnemyIsGoingToBeAlerted()
+    {
+        //Aparece exclamación
+        if (exclamationIcon != null)
+        {
+            exclamationIcon.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("FALTA SETEAR EL ICONO DE EXCLAMACIÓN");
+        }
+
+
+        //Quito particulas dormido
+        if (sleepParticle != null)
+        {
+            sleepParticle.SetActive(false);
+        }
+        //El retrato se cambia solo con el UImanager en SetEnemyOrder
+
+        //Updateo el bool
+        isGoingToBeAlertedOnEnemyTurn = true;
+    }
+
+    public void DesAlertEnemy()
+    {
+        //Desaparece exclamación
+        if (exclamationIcon != null)
+        {
+            exclamationIcon.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("FALTA SETEAR EL ICONO DE EXCLAMACIÓN");
+        }
+
+
+        isGoingToBeAlertedOnEnemyTurn = false;
+    }
 
     #region GOBLIN_SHARED_FUNCTIONALITY
 

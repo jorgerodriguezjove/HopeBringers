@@ -492,6 +492,9 @@ public class PlayerUnit : UnitBase
             LM.UnitHasFinishedMovementAndRotation();
             UpdateInformationAfterMovement(myCurrentTile);
         }
+
+        //Al acabar al movimiento aviso a levelManager de que avise a los enemigos para ver si serán alertados.
+        LM.AlertEnemiesOfPlayerMovement();
     }
 
     IEnumerator MovingUnitAnimation()

@@ -274,6 +274,15 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void HideGameHud()
+    {
+        //hudParentObject.SetActive(false);
+        //hud3DInGame.SetActive(false);
+        //hideDuringUnitPlacementHud.SetActive(false);
+        //hideDuringUnitPlacement3DHud.SetActive(false);
+        //optionsButton.SetActive(false);
+    }
+
     #endregion
 
     #region END_TURN
@@ -598,7 +607,7 @@ public class UIManager : MonoBehaviour
 				panelesEnemigos[panelesEnemigos.Count-1].GetComponent<EnemyPortraits>().enemyPortraitSprite = LM.enemiesOnTheBoard[i].characterImage;
 
                 //Número y estado dormido/despierto
-                panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>().UpdateOrder(i+1, LM.enemiesOnTheBoard[i].haveIBeenAlerted);
+                panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>().UpdateOrder(i+1, LM.enemiesOnTheBoard[i].haveIBeenAlerted, LM.enemiesOnTheBoard[i].isGoingToBeAlertedOnEnemyTurn);
 
                 //Asigo el tooltip
                 panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyTooltip>().tooltipAssignedEnemy = LM.enemiesOnTheBoard[i];
