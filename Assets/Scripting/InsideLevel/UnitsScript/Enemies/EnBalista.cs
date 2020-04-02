@@ -41,7 +41,7 @@ public class EnBalista : EnemyUnit
             else
             {
                 //Buscas los enemigos en la línea de visión
-                CheckCharactersInLine();
+                CheckCharactersInLine(true);
 
                 //Si encuentra enemigos ataca
                 if (currentUnitsAvailableToAttack.Count > 0)
@@ -152,7 +152,7 @@ public class EnBalista : EnemyUnit
     IEnumerator AttackCorroutine()
     {
         tilesToShoot.Clear();
-        CheckCharactersInLine();
+        CheckCharactersInLine(true);
 
         Debug.Log(tilesToShoot.Count);
         for (int i = 0; i < tilesToShoot.Count; i++)
@@ -245,7 +245,7 @@ public class EnBalista : EnemyUnit
 
     //Pongo público para acceder a la hora de hacer hover
     //ESTA FUNCIÓN NO PUEDE CAMBIAR EL CURRENTSTATE DEL ENEMIGO, se llama fuera del turno enemigo.
-    public override void CheckCharactersInLine()
+    public override void CheckCharactersInLine(bool _shouldWarnTilesForBalistaColoring)
     {
         if (!isDead)
         {
@@ -438,8 +438,11 @@ public class EnBalista : EnemyUnit
                 }
             }
 
-            //Aviso a los tiles de que tienen que buscar al caballero.
-            WarnOrResetTilesToShoot(true);
+            if (_shouldWarnTilesForBalistaColoring)
+            {
+                //Aviso a los tiles de que tienen que buscar al caballero.
+                WarnOrResetTilesToShoot(true);
+            }
         }
     }
 
@@ -481,7 +484,7 @@ public class EnBalista : EnemyUnit
         WarnOrResetTilesToShoot(false);
 
         //Vuelvo a buscar los tiles a disparar
-        CheckCharactersInLine();
+        CheckCharactersInLine(true);
 
         //Pinto los nuevos tiles
         if (isAttackPrepared)
@@ -812,7 +815,7 @@ public class EnBalista : EnemyUnit
         {
             FeedbackTilesToAttack(false);
             tilesToShoot.Clear();
-            CheckCharactersInLine();
+            CheckCharactersInLine(true);
             FeedbackTilesToAttack(true);
         }
     }

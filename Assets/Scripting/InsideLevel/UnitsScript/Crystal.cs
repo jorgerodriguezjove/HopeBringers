@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Crystal : EnemyUnit
 {
+    BossMultTile dragReference;
+
     protected override void Awake()
     {
         //Le digo al enemigo cual es el LevelManager del nivel actual
@@ -22,7 +24,13 @@ public class Crystal : EnemyUnit
 
         initMaterial = unitMaterialModel.GetComponent<MeshRenderer>().material;
 
-        
+        //Esto puede ser null por el nivel de los cristales sin el dragón
+        dragReference = FindObjectOfType<BossMultTile>();
+
+        if (dragReference != null)
+        {
+            dragReference.crystalList.Add(this);
+        }
     }
 
     public override void MoveToTilePushed(IndividualTiles newTile)
@@ -36,6 +44,7 @@ public class Crystal : EnemyUnit
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            Debug.Log("inisializaso");
             InitializeUnitOnTile();
         }
     }
@@ -51,6 +60,41 @@ public class Crystal : EnemyUnit
 
         //Cambio el color del personaje
         SelectedColor();
+    }
+
+    public override void SelectedFunctionality()
+    {
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            if (LM.selectedEnemy != null && LM.selectedEnemy != GetComponent<EnemyUnit>())
+            {
+                LM.HideEnemyHover(LM.selectedEnemy);
+                //Llamo a LevelManager para desactivar hover
+                if (LM.selectedCharacter != null)
+                {
+                    LM.selectedCharacter.HideDamageIcons(this);
+                }
+                LM.HideHover(LM.selectedEnemy);
+                LM.selectedEnemy.HealthBarOn_Off(false);
+                LM.UIM.HideUnitInfo("");
+                //LM.UIM.HideCharacterInfo("");
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            }
+
+            else
+            {
+                LM.DeSelectUnit();
+                LM.selectedEnemy = GetComponent<EnemyUnit>();
+
+                LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
+
+                //Activo la barra de vida
+                HealthBarOn_Off(true);
+
+                //Cambio el color del personaje
+                SelectedColor();
+            }
+        }
     }
 
     #region COLOR_OVERRIDE_MESH_RENDERER
@@ -136,5 +180,43 @@ public class Crystal : EnemyUnit
             LM.HideHover(this);
             HealthBarOn_Off(false);
         }
+    }
+
+
+
+    public override void Die()
+    {
+        //En caso de que sea el ultimo nivel
+        if (dragReference != null)
+        {
+            dragReference.RemoveCrystal(this);
+        }
+
+
+        //BASE MODIFICADA DEL DIE ENEMIGO
+        Debug.Log("Soy " + gameObject.name + " y he muerto");
+        //Animación, sonido y partículas de muerte
+        SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
+        Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
+
+        //Cambios en UI
+        LM.HideHover(this);
+        HealthBarOn_Off(false);
+        LM.UIM.HideTileInfo();
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+        //Cambios en la lógica para indicar que ha muerto
+        myCurrentTile.unitOnTile = null;
+        myCurrentTile.WarnInmediateNeighbours();
+
+        //Hago que visualmente desaparezca aunque no lo destryuo todavía.
+        unitModel.SetActive(false);
+        GetComponent<Collider>().enabled = false;
+
+        //Aviso de que el enemigo está muerto
+        isDead = true;
+
+        //Estas dos llamadas tienen que ir despues del bool de isdead = true
+        LM.UIM.SetEnemyOrder();
     }
 }

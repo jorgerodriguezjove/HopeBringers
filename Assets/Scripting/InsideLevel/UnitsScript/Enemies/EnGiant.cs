@@ -13,10 +13,6 @@ public class EnGiant : EnemyUnit
     [HideInInspector]
     private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
-    // Copia de la lista del goblin que en este caso uso para que la acción del gigante solo aparezca cuando hay players a su alrededor
-    [HideInInspector]
-    private List<UnitBase> unitsInRange = new List<UnitBase>();
-
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;

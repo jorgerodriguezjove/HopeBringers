@@ -7,7 +7,10 @@ public class BossMultTile : EnemyUnit
 {
     int coneRange = 5;
 
-    [Header("ATTACKS")]
+    [Header("CRISTALES")]
+    public List<Crystal> crystalList = new List<Crystal>();
+
+    [Header("ATAQUES")]
     [SerializeField]
     private bool isPhase2;
 
@@ -66,6 +69,18 @@ public class BossMultTile : EnemyUnit
             exteriorTiles.Add(LM.TM.GetSurroundingTiles(myCurrentTile, 2, true, true)[i]);
         }
     }
+    
+    public void RemoveCrystal(Crystal _crystal)
+    {
+        crystalList.Remove(_crystal);
+
+        Debug.Log(crystalList.Count);
+
+        if (crystalList.Count == 0)
+        {
+            LM.InstaWin(true);
+        }
+    }
 
     #region COPIA_GOBLIN
 
@@ -76,10 +91,6 @@ public class BossMultTile : EnemyUnit
     //Path de tiles a seguir hasta el objetivo
     [HideInInspector]
     private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
-
-    //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
-    [HideInInspector]
-    private List<UnitBase> unitsInRange = new List<UnitBase>();
 
     public override void SearchingObjectivesToAttack()
     {

@@ -93,6 +93,10 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     public Material attackBorderColor;
 
     [SerializeField]
+    public Material healBorderColor;
+
+
+    [SerializeField]
     public Material chargingAttackInteriorColor;
     [SerializeField]
     public Material chargingAttackBorderColor;
@@ -366,6 +370,14 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         tileBorder.material = attackBorderColor;
 
         isUnderAttack = true;
+    }
+
+    public void ColorHeal()
+    {
+        tileBorder.enabled = true;
+        tileBorder.material = healBorderColor;
+
+       
     }
 
     //Cambiar el color a ataque

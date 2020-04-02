@@ -121,10 +121,6 @@ public class LevelManager : MonoBehaviour
 
     //Referencia momentanea para el playtesting
     [SerializeField]
-    private GameObject victoryPanel;
-
-    //Referencia momentanea para el playtesting
-    [SerializeField]
     private GameObject defeatPanel;
 
     //Lo añado al LevelManager porque quiero que solo exista un count global para todos los personajes
@@ -246,6 +242,10 @@ public class LevelManager : MonoBehaviour
             GameObject unitInstantiated = Instantiate(GameManager.Instance.characterDataForCurrentLevel[i].GetComponent<CharacterData>().myUnit.gameObject, initialCharacterDataPosition[i]);
             unitInstantiated.GetComponent<PlayerUnit>().insideGameInfoObject.SetActive(false);
             unitInstantiated.transform.position = initialCharacterDataPosition[i].position;
+
+            //Guardo posición inicial en caja
+            unitInstantiated.GetComponent<PlayerUnit>().initialPosInBox = initialCharacterDataPosition[i];
+
             unitInstantiated.transform.localScale = Vector3.one;
 
             unitInstantiated.GetComponent<UnitBase>().InitializeHealth();
@@ -279,11 +279,28 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
+            //Ordenar por velocidad
             enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
             {
                 return (b.GetComponent<EnemyUnit>().speed).CompareTo(a.GetComponent<EnemyUnit>().speed);
 
             });
+
+            //Ordenar por despierto
+            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
+            {
+                return (b.GetComponent<EnemyUnit>().haveIBeenAlerted).CompareTo(a.GetComponent<EnemyUnit>().haveIBeenAlerted);
+
+            });
+
+            //Ordenar por alerta
+            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
+            {
+                return (b.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn).CompareTo(a.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn);
+
+            });
+
+            Debug.Log("orden updated");
         }
 
 		UIM.SetEnemyOrder();
@@ -293,6 +310,7 @@ public class LevelManager : MonoBehaviour
 
     #region UNIT_INTERACTION
 
+    [SerializeField]
     PlayerUnit currentCharacterPlacing;
     [SerializeField]
     List<PlayerUnit> charactersAlreadyPlaced = new List<PlayerUnit>();
@@ -405,7 +423,7 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false);
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                 {
@@ -444,7 +462,7 @@ public class LevelManager : MonoBehaviour
 
             else if (hoverUnit.GetComponent<EnCharger>())
             {
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false);
 
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
@@ -517,7 +535,7 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(true);
 
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
@@ -554,7 +572,7 @@ public class LevelManager : MonoBehaviour
 
             {
                 hoverUnit.shaderHover.SetActive(false);
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine();
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false);
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
@@ -615,6 +633,7 @@ public class LevelManager : MonoBehaviour
     {
         playerToDo.ShowAttackEffect(unitToDO);
     }
+
     #endregion
 
     #region SELECT_&_DESELECT
@@ -625,30 +644,55 @@ public class LevelManager : MonoBehaviour
         //Si es el comienzo del nivel y estoy recolocando las unidades
         if (currentLevelState == LevelState.Initializing)
         {
-            if (charactersAlreadyPlaced.Count < GameManager.Instance.maxUnitsInThisLevel)
+            if (charactersAlreadyPlaced.Count <= GameManager.Instance.maxUnitsInThisLevel)
             {
-                //Coger personaje para moverlo a tile inicial
+                //Si clicko en unidad sin tile es que esta en la caja
                 if (clickedUnit.GetComponent<PlayerUnit>().myCurrentTile == null)
                 {
-                    Debug.Log("First");
-                    currentCharacterPlacing = clickedUnit;
-                    currentCharacterPlacing.GetComponent<PlayerUnit>().initialPosInBox = currentCharacterPlacing.transform.parent;
+                    //Si no tenia ninguna otra unidad seleccionada simplemente selecciono la unidad clickada
+                    if (currentCharacterPlacing == null)
+                    {
+                        Debug.Log("First caja");
+                        currentCharacterPlacing = clickedUnit;
+                    }
+
+                    //Si ya tenia una unidad clickada y esta tiene tile, significa que quiero intercambiar una unidad de tablero con una de la caja
+                    else if (currentCharacterPlacing.myCurrentTile != null)
+                    {
+                        Debug.Log("Sustitute caja");
+                        SustituteUnitsOnPlacementPhase(currentCharacterPlacing.myCurrentTile, clickedUnit);
+                    }
+
+                    //Si no el personaje clickado estaba en la caja y lo único que hago es cambiar la selección.
+                    else
+                    {
+                        Debug.Log("Second caja");
+                        currentCharacterPlacing = clickedUnit;
+                    }
                 }
 
-                //Quitar personaje de un tile
-                else if (currentCharacterPlacing == null)
-                {
-                    Debug.Log("null");
-                    currentCharacterPlacing = clickedUnit;
-                    clickedUnit.myCurrentTile.unitOnTile = null;
-                    clickedUnit.myCurrentTile.WarnInmediateNeighbours();
-                    clickedUnit.myCurrentTile = null;
-                }
-
+                //Si clicko una unidad del tablero
                 else
                 {
-                    Debug.Log("Sustitute");
-                    SustituteUnitsOnPlacementPhase(clickedUnit.myCurrentTile);
+                    if (currentCharacterPlacing == null)
+                    {
+                        Debug.Log("First tablero");
+                        currentCharacterPlacing = clickedUnit;
+                    }
+
+                    //Intercambio unidad entre tablero.
+                    else if (currentCharacterPlacing.myCurrentTile != null)
+                    {
+                        Debug.Log("Sustitute manual tablero");
+                        SustituteUnitsOnPlacementPhase(clickedUnit.myCurrentTile, clickedUnit);
+                    }
+
+                    //Intercambio con unidad en caja
+                    else
+                    {
+                        Debug.Log("SUSTITUTE Con personaje tablero");
+                        SustituteUnitsOnPlacementPhase(clickedUnit.myCurrentTile, clickedUnit);
+                    }
                 }
 
                 Debug.Log("---------");
@@ -755,9 +799,7 @@ public class LevelManager : MonoBehaviour
             {
                 if (selectedEnemy != null)
                 {
-                    DeselectEnemy();
-
-                    
+                    DeselectEnemy();   
                 }
                 if (!selectedCharacter.isMovingorRotating)
                 {
@@ -927,14 +969,13 @@ public class LevelManager : MonoBehaviour
 
     #region TILE_&_PACEMENT
 
-    
     //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
     public void TileClicked(IndividualTiles tileToMove)
     {
         //Si es el comienzo del nivel
         if (currentLevelState == LevelState.Initializing)
         {
-            if (currentCharacterPlacing != null)
+            if (currentCharacterPlacing != null && charactersAlreadyPlaced.Count < GameManager.Instance.maxUnitsInThisLevel)
             {
                 //Coloco el personaje si el tile está pensado para colocar personajes y está vacío
                 if (tileToMove.isAvailableForCharacterColocation && tileToMove.unitOnTile == null)
@@ -955,12 +996,6 @@ public class LevelManager : MonoBehaviour
                     currentCharacterPlacing = null;
 
                     UIM.UpdateUnitsPlaced(charactersAlreadyPlaced.Count);
-                }
-
-                //Si no está vacío sustituyo la unidad
-                else if(tileToMove.isAvailableForCharacterColocation)
-                {
-                    SustituteUnitsOnPlacementPhase(tileToMove);
                 }
 
                 if (charactersAlreadyPlaced.Count == GameManager.Instance.maxUnitsInThisLevel)
@@ -1079,38 +1114,108 @@ public class LevelManager : MonoBehaviour
     }
 
     //Si hago click en una unidad en la caja y luego a otra en escena, devuelve la de escena a la caja y coloca la clickada en el tile en el que estaba la anterior.
-    private void SustituteUnitsOnPlacementPhase(IndividualTiles tileToMove)
+    private void SustituteUnitsOnPlacementPhase(IndividualTiles _tileToMove, PlayerUnit _playerClicked)
     {
-        PlayerUnit previousUnit = tileToMove.GetComponent<IndividualTiles>().unitOnTile.GetComponent<PlayerUnit>();
+        //Basicamente estos dos ifs hacen lo mismo pero a la inversa. Uno colocael personaje clickado en el tablero y devuelve el ya seleccionado a la caja y el otro lo contrario.
 
-        //Quitar de la listas de unidades en el tablero
-        charactersAlreadyPlaced.Remove(previousUnit);
+        //Personaje ya seleccionado anteriormente estaba en tablero y es el que vuelve a la caja
 
-        //Quitar tile y avisar
-        previousUnit.myCurrentTile.unitOnTile = null;
-        previousUnit.myCurrentTile.WarnInmediateNeighbours();
-        previousUnit.myCurrentTile = null;
+        if (_playerClicked.myCurrentTile != null && currentCharacterPlacing.myCurrentTile != null)
+        {
+            IndividualTiles otherUnitTile = currentCharacterPlacing.myCurrentTile;
 
-        //Devolver a la caja, padre y tamaño
-        previousUnit.transform.parent = previousUnit.initialPosInBox;
-        previousUnit.transform.localScale = Vector3.one;
-        previousUnit.transform.localPosition = Vector3.zero;
+            //Quito unidad anteriormente seleccionada de su tile
+            currentCharacterPlacing.myCurrentTile.unitOnTile = null;
+            currentCharacterPlacing.myCurrentTile.WarnInmediateNeighbours();
+            currentCharacterPlacing.myCurrentTile = null;
 
-        Debug.Log(currentCharacterPlacing);
+            //La muevo a al nuevo tile
+            currentCharacterPlacing.transform.position = _tileToMove.transform.position;
+            currentCharacterPlacing.UpdateInformationAfterMovement(_tileToMove);
 
-        //Coloco a la nueva Unidad
 
-        //Le coloco en el tile
-        charactersAlreadyPlaced.Add(currentCharacterPlacing);
-        currentCharacterPlacing.transform.position = tileToMove.transform.position;
-        currentCharacterPlacing.GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
 
-        //Le quito el padre y le pongo en la escala correcta
-        currentCharacterPlacing.transform.parent = null;
-        currentCharacterPlacing.transform.localScale = Vector3.one;
+            //Quito unidad anteriormente seleccionada de su tile
+            _playerClicked.myCurrentTile.unitOnTile = null;
+            _playerClicked.myCurrentTile.WarnInmediateNeighbours();
+            _playerClicked.myCurrentTile = null;
 
-        //Variable a null
-        currentCharacterPlacing = null;
+            //La muevo a al nuevo tile
+            _playerClicked.transform.position = otherUnitTile.transform.position;
+            _playerClicked.UpdateInformationAfterMovement(otherUnitTile);
+
+
+            //Variable a null
+            currentCharacterPlacing = null;
+        }
+
+        else
+        {
+            if (currentCharacterPlacing.myCurrentTile != null)
+            {
+                //QUITAR UNIDAD EN TABLERO
+                //Quitar de la listas de unidades en el tablero
+                charactersAlreadyPlaced.Remove(currentCharacterPlacing);
+
+                //Quitar tile y avisar
+                currentCharacterPlacing.myCurrentTile.unitOnTile = null;
+                currentCharacterPlacing.myCurrentTile.WarnInmediateNeighbours();
+                currentCharacterPlacing.myCurrentTile = null;
+
+                //Devolver a la caja, padre y tamaño
+                currentCharacterPlacing.transform.parent = currentCharacterPlacing.initialPosInBox;
+                currentCharacterPlacing.transform.localScale = Vector3.one;
+                currentCharacterPlacing.transform.localPosition = Vector3.zero;
+
+
+                //PONER UNIDAD EN TABLERO
+
+                //Le coloco en el tile
+                charactersAlreadyPlaced.Add(_playerClicked);
+                _playerClicked.transform.position = _tileToMove.transform.position;
+                _playerClicked.UpdateInformationAfterMovement(_tileToMove);
+
+                //Le pongo en la escala correcta
+                _playerClicked.transform.parent = null;
+                _playerClicked.transform.localScale = Vector3.one;
+
+                //Variable a null
+                currentCharacterPlacing = null;
+            }
+
+            //Personaje clickado es el que esta en el tablero y es el que vuelve a la caja
+            else
+            {
+                //QUITAR UNIDAD EN TABLERO
+                //Quitar de la listas de unidades en el tablero
+                charactersAlreadyPlaced.Remove(_playerClicked);
+
+                //Quitar tile y avisar
+                _playerClicked.myCurrentTile.unitOnTile = null;
+                _playerClicked.myCurrentTile.WarnInmediateNeighbours();
+                _playerClicked.myCurrentTile = null;
+
+                //Devolver a la caja, padre y tamaño
+                _playerClicked.transform.parent = _playerClicked.initialPosInBox;
+                _playerClicked.transform.localScale = Vector3.one;
+                _playerClicked.transform.localPosition = Vector3.zero;
+
+                //PONER UNIDAD EN TABLERO
+
+                //Le coloco en el tile
+                charactersAlreadyPlaced.Add(currentCharacterPlacing);
+                currentCharacterPlacing.transform.position = _tileToMove.transform.position;
+                currentCharacterPlacing.GetComponent<PlayerUnit>().UpdateInformationAfterMovement(_tileToMove);
+
+                //Le pongo en la escala correcta
+                currentCharacterPlacing.transform.parent = null;
+                currentCharacterPlacing.transform.localScale = Vector3.one;
+
+                //Variable a null
+                currentCharacterPlacing = null;
+            }
+
+        }
     }
 
         #endregion
@@ -1306,7 +1411,6 @@ public class LevelManager : MonoBehaviour
 
         if (enemiesOnTheBoard.Count > 0)
         {
-           
             //Desaparece botón de end turn
             UIM.ActivateDeActivateEndButton();
 
@@ -1316,12 +1420,21 @@ public class LevelManager : MonoBehaviour
 
             counterForEnemiesOrder = 0;
 
-            //Focus en enemigo si está despierto
-            camRef.SetCameraMovable(false, true);
-            camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            {
+                //Focus en enemigo si está despierto
+                camRef.SetCameraMovable(false, true);
+                camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
 
-            //Turn Start
-            enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                //Turn Start
+                enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+            }
+
+            else
+            {
+                counterForEnemiesOrder = 0;
+                currentLevelState = LevelState.PlayerPhase;
+            }
         }
     }
 
@@ -1338,15 +1451,24 @@ public class LevelManager : MonoBehaviour
         {
             counterForEnemiesOrder++;
 
-            //Bajo la lista de scroll
-            UIM.ScrollUpOnce();
+            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            {
+                //Bajo la lista de scroll
+                UIM.ScrollUpOnce();
 
-            //Focus en enemigo si está despierto
-            camRef.SetCameraMovable(false, true);
-            camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+                //Focus en enemigo si está despierto
+                camRef.SetCameraMovable(false, true);
+                camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
 
-            //Empieza el turno del siguiente enemigo
-            enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                //Empieza el turno del siguiente enemigo
+                enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+            }
+
+            else
+            {
+                counterForEnemiesOrder = 0;
+                currentLevelState = LevelState.PlayerPhase;
+            }
         }
     }
 
@@ -1391,6 +1513,9 @@ public class LevelManager : MonoBehaviour
         //return TM.checkAvailableCharactersForAttack(range, enemyUnitToCheck.GetComponent<EnemyUnit>());
     }
 
+    int xpTurns;
+    int xpCharacters;
+
     public void CheckIfGameOver()
     {
         //Derrota
@@ -1400,8 +1525,19 @@ public class LevelManager : MonoBehaviour
             defeatPanel.SetActive(true);
             UIM.optionsButton.SetActive(false);
             GameManager.Instance.LevelLost();
+
+            return;
         }
 
+        //Calculo xp por turnos
+        int xpPerTurn = 5;
+        
+        xpTurns = (turnLimit - currentTurn) * xpPerTurn;
+
+        //Calculo xp por characters
+        int xpPerCharacter = 10;
+        
+        xpCharacters = charactersOnTheBoard.Count * xpPerCharacter;
 
         //Victoria
         if (isObjectiveKillSpecificEnemies)
@@ -1415,8 +1551,7 @@ public class LevelManager : MonoBehaviour
             }
 
             Debug.Log("Victory by killing specific enemies");
-            victoryPanel.SetActive(true);
-            UIM.optionsButton.SetActive(false);
+            UIM.HideGameHud();
             GameManager.Instance.VictoryAchieved();
         }
 
@@ -1424,10 +1559,14 @@ public class LevelManager : MonoBehaviour
             enemiesOnTheBoard.Count == 1 && enemiesOnTheBoard[0].isDead)
         {
             Debug.Log("Victory");
-            victoryPanel.SetActive(true);
-            UIM.optionsButton.SetActive(false);
+            UIM.HideGameHud();
             GameManager.Instance.VictoryAchieved();
         }
+    }
+
+    public void VictoryScreen()
+    {
+        UIM.Victory(GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon, xpCharacters, xpTurns);
     }
 
     private void Update()
@@ -1469,13 +1608,9 @@ public class LevelManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Time.timeScale = 0;
+            AlertEnemiesOfPlayerMovement();
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Time.timeScale = 1;
-        }
     }
     #endregion
 
@@ -1518,5 +1653,45 @@ public class LevelManager : MonoBehaviour
     {
         GameManager.Instance.isGamePaused = false;
     }
+
+
+    //Usar lista para pasar al player los enemigos que se han activado y desactivar al hacer undo
+    //public List<EnemyUnit> enemiesAlertedByCharacter = new List<EnemyUnit>();
+
+    public void AlertEnemiesOfPlayerMovement()
+    {
+        for (int i = 0; i < enemiesOnTheBoard.Count; i++)
+        {
+            if (!enemiesOnTheBoard[i].isDead)
+            {
+                //Balista y charger tienen check diferente
+                if (enemiesOnTheBoard[i].GetComponent<EnBalista>() || enemiesOnTheBoard[i].GetComponent<EnCharger>())
+                {
+                    enemiesOnTheBoard[i].CheckCharactersInLine(false);
+                }
+
+                //Resto de enemigos
+                else
+                {
+                    enemiesOnTheBoard[i].SearchingObjectivesToAttackShowActionPathFinding();
+                }
+
+                if (enemiesOnTheBoard[i].currentUnitsAvailableToAttack.Count > 0)
+                {
+                    enemiesOnTheBoard[i].EnemyIsGoingToBeAlerted();
+                    Debug.Log(enemiesOnTheBoard[i].name + "Va a ser alertado");
+                    Debug.Log("---");
+                    continue;
+                }
+
+                Debug.Log(enemiesOnTheBoard[i].name + "Sigue dormido");
+                Debug.Log("---");
+            }
+        }
+
+        //Al acabar for updateo lista de enemigos
+        UpdateUnitsOrder();
+    }
+
 }
 

@@ -36,6 +36,9 @@ public class GameManager : PersistentSingleton<GameManager>
 
     string dialogInitializer = "reactions.InReac";
 
+    //Bool para saber si al acabar el diálogo saco la caja de colocación de unidades o no
+    private bool isCurrentDialogStart = true;
+
     //HACER QUE ESTA VARIABLE NO SE PUEDA SETEAR DESDE OTROS SCRIPTS
     [HideInInspector]
     public bool _isFirstTimeLoadingGame = true;
@@ -173,6 +176,16 @@ public class GameManager : PersistentSingleton<GameManager>
         levelIDsUnlocked.Add(currentLevelNode);
 
         currentExp += possibleXpToGainIfCurrentLevelIsWon;
+
+        if (currentLevelEndDialog != null)
+        {
+            StartDialog(false);
+        }
+
+        else
+        {
+            LM.VictoryScreen();
+        }
     }
 
     public void LevelLost()
@@ -192,14 +205,27 @@ public class GameManager : PersistentSingleton<GameManager>
         Debug.Log("dialog ended");
         //SoundManager.Instance.PlaySound(AppSounds.ENDDIALOG_SFX);
 
-        //Comienza el juego
-        LM = FindObjectOfType<LevelManager>();
-        LM.StartGameplayAfterDialog();
+
+        if (isCurrentDialogStart)
+        {
+            //Comienza el juego
+            LM = FindObjectOfType<LevelManager>();
+            LM.StartGameplayAfterDialog();
+        }
+
+        else
+        {
+            //Avisar de que salga ventana de victoria
+            LM.VictoryScreen();
+        }
+
+      
     }
 
     public void StartDialog(bool _isStartDialog) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/
     {
         dialogTime = true;
+        isCurrentDialogStart = _isStartDialog;
 
         //Si es startDialog cargo el dialogo de start y si no cargo el de end
         if (_isStartDialog)

@@ -27,7 +27,7 @@ public class PlayerUnit : UnitBase
     public bool canHover;
 
     //Lista de posibles unidades a las que atacar
-    [HideInInspector]
+    [SerializeField]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Lista de posibles unidades a las que atacar
@@ -345,7 +345,8 @@ public class PlayerUnit : UnitBase
                         druidRef.canvasUnit.SetActive(true);
                         druidRef.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("-1" );
                         canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
-                        
+                        ColorAvailableToBeHealed();
+
                     }
 
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
@@ -426,12 +427,13 @@ public class PlayerUnit : UnitBase
                             LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
                         }
                     }
-
+                    
                     LM.selectedCharacter.tilesInEnemyHover.Clear();
                 }
-                
 
+                LM.selectedCharacter.HideAttackEffect(this);
             }
+
 
             if (shaderHover != null)
             {
@@ -444,6 +446,7 @@ public class PlayerUnit : UnitBase
                 // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 druidRef.previsualizeAttackIcon.SetActive(false);
                 druidRef.canvasUnit.SetActive(false);
+
                
             }
         }
@@ -489,6 +492,9 @@ public class PlayerUnit : UnitBase
             LM.UnitHasFinishedMovementAndRotation();
             UpdateInformationAfterMovement(myCurrentTile);
         }
+
+        //Al acabar al movimiento aviso a levelManager de que avise a los enemigos para ver si serán alertados.
+        LM.AlertEnemiesOfPlayerMovement();
     }
 
     IEnumerator MovingUnitAnimation()
@@ -917,6 +923,13 @@ public class PlayerUnit : UnitBase
     public virtual void ShowAttackEffect(UnitBase _unitToAttack)
     {
         //Cada personaje hace una cosa distinta
+    }
+
+    public virtual void HideAttackEffect(UnitBase _unitToAttack)
+    {
+
+        //Cada personaje hace una cosa distinta
+
     }
 
     #endregion
