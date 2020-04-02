@@ -428,4 +428,73 @@ public class Druid : PlayerUnit
         }
     }
     #endregion
+
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+
+        if (areaHealer)
+        {
+
+            TM.surroundingTiles.Clear();
+
+            TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
+            
+            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+            {
+                if (TM.surroundingTiles[i] != null)
+                {
+                    tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+                    
+                }
+            }
+
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                tilesInEnemyHover[i].ColorHeal();
+
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeHealed();
+                }
+            }
+
+        }
+        else
+        {
+
+            if (_unitToAttack !=null && _unitToAttack.GetComponent<PlayerUnit>())
+            {
+                _unitToAttack.ColorAvailableToBeHealed();
+                _unitToAttack.myCurrentTile.ColorHeal();
+            }
+            else if(_unitToAttack != null)
+            {
+                _unitToAttack.ColorAvailableToBeAttacked(-1);
+                _unitToAttack.myCurrentTile.ColorAttack();
+
+            }
+
+        }
+      
+       
+           
+    }
+    
+
+    public override void HideAttackEffect(UnitBase _unitToAttack)
+    {
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorDesAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ResetColor();
+            }
+        }
+        tilesInEnemyHover.Clear();
+
+        _unitToAttack.ResetColor();
+        _unitToAttack.myCurrentTile.ColorDesAttack();
+    }
 }

@@ -534,6 +534,7 @@ public class EnemyUnit : UnitBase
                 {
                     
                     LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
+                   
 
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                     LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
@@ -640,6 +641,7 @@ public class EnemyUnit : UnitBase
         {
             LM.selectedCharacter.shaderHover.SetActive(false);
 
+
             if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
             {
 
@@ -654,7 +656,10 @@ public class EnemyUnit : UnitBase
                 }
 
                 LM.selectedCharacter.tilesInEnemyHover.Clear();
+               
+
             }
+            LM.selectedCharacter.HideAttackEffect(this);
         }
         if(LM.selectedCharacter != null) 
         {

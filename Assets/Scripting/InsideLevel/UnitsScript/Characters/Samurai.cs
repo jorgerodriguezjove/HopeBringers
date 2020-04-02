@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Samurai : PlayerUnit
 {
@@ -19,6 +20,8 @@ public class Samurai : PlayerUnit
     //bool para la activa 1
     public bool parryOn;
 
+    public GameObject parryIcon;
+
     //bool para la mejora de la activa 1
     public bool parryOn2;
 
@@ -26,8 +29,11 @@ public class Samurai : PlayerUnit
 
     //bool para la activa 2
     public bool doubleAttack;
+
     //int que  indica el número de veces que el samurai ataca
     public int timesDoubleAttackRepeats;
+
+    public TextMeshProUGUI timesRepeatNumber;
 
     [Header("Pasivas")]
     //PASIVAS
@@ -177,6 +183,20 @@ public class Samurai : PlayerUnit
 
         }
 
+        if (currentUnitsAvailableToAttack.Count > 0)
+        {
+
+
+            if (currentFacingDirection == FacingDirection.North && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.South
+              || currentFacingDirection == FacingDirection.South && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.North
+              || currentFacingDirection == FacingDirection.East && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.West
+              || currentFacingDirection == FacingDirection.West && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.East
+              )
+            {
+                backStabIcon.SetActive(true);
+            }
+        }
+
         //Marco las unidades disponibles para atacar de color rojo
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
@@ -222,7 +242,7 @@ public class Samurai : PlayerUnit
         if (parryOn)
         {
             unitToParry = unitToAttack;
-
+            parryIcon.SetActive(true);
             //Animación de preparar el parry            
             myAnimator.SetTrigger("Attack");
 
@@ -280,8 +300,9 @@ public class Samurai : PlayerUnit
 
             //Añado el daño de ataque frontal
             damageWithMultipliersApplied += samuraiFrontAttack;
+            backStabIcon.SetActive(false);
 
-            
+
 
         }
         else
@@ -354,6 +375,7 @@ public class Samurai : PlayerUnit
                     unitToParry.currentHealth -= unitAttacker.baseDamage;
                     UIM.RefreshHealth();
                     unitToParry = null;
+                    parryIcon.SetActive(false);
                 }
                 else if (unitToParry != null)
                 {
@@ -368,6 +390,7 @@ public class Samurai : PlayerUnit
                         unitToParry.currentHealth -= unitAttacker.baseDamage;
                         UIM.RefreshHealth();
                         unitToParry = null;
+                        parryIcon.SetActive(false);
 
                     }
                   
@@ -381,6 +404,7 @@ public class Samurai : PlayerUnit
                 unitToParry.currentHealth -= unitAttacker.baseDamage;
                 UIM.RefreshHealth();
                 unitToParry = null;
+                parryIcon.SetActive(false);
 
             }
             
@@ -390,5 +414,21 @@ public class Samurai : PlayerUnit
             base.ReceiveDamage(damageReceived, unitAttacker);
         }
         
+    }
+
+
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+        timesRepeatNumber.enabled = true;
+        timesRepeatNumber.text = ( "X" + timesDoubleAttackRepeats.ToString());
+
+        Vector3 vector2Spawn = new Vector3(_unitToAttack.transform.position.x, timesRepeatNumber.transform.position.y, _unitToAttack.transform.position.z);
+        timesRepeatNumber.transform.position = vector2Spawn;
+
+    }
+
+    public override void HideAttackEffect(UnitBase _unitToAttack)
+    {
+        timesRepeatNumber.enabled = false;
     }
 }

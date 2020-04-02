@@ -196,6 +196,9 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected Material AvailableToBeAttackedColor;
 
+    [SerializeField]
+    protected Material AvailableToBeHealedColor;
+
 
     //Este icono lo utilizo para poner la espada encima de los posibles enemigos. 
     [SerializeField]
@@ -706,6 +709,15 @@ public class UnitBase : MonoBehaviour
                 EnableCanvasHover(damageCalculated);
             }
         }        
+    }
+
+    public virtual void ColorAvailableToBeHealed()
+    {
+        if (!isDead)
+        {
+            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeHealedColor;
+
+        }
     }
 
     #endregion
