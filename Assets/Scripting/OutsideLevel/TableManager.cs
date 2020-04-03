@@ -108,7 +108,7 @@ public class TableManager : MonoBehaviour
     #region CAMERA_MOVEMENT
 
     //Al seleccionar un nivel se setea todo para que aparezca la parte de selección de unidades
-    public void OnLevelClicked(LevelNode levelClicked, int _idLevel, int _xpToWin, int _maxUnits ,TextAsset _startDialog, TextAsset _endDialog)
+    public void OnLevelClicked(LevelNode levelClicked, int _idLevel, int _xpToWin, int _xpPerTurn, int _xpPerCharacter,int _maxUnits ,TextAsset _startDialog, TextAsset _endDialog)
     {
         //Se mueve el indicador del nivel
         levelIndicator.transform.position = new Vector3(levelClicked.transform.position.x, levelIndicator.transform.position.y , levelClicked.transform.position.z);
@@ -116,6 +116,8 @@ public class TableManager : MonoBehaviour
         //Cargo la información en el GameManager
         GameManager.Instance.currentLevelNode = _idLevel;
         GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = _xpToWin;
+        GameManager.Instance.xpPerTurnThisLevel = _xpPerTurn;
+        GameManager.Instance.xpPerCharacterThisLevel = _xpPerCharacter;
         GameManager.Instance.maxUnitsInThisLevel = _maxUnits;
         GameManager.Instance.currentLevelStartDialog = _startDialog;
         GameManager.Instance.currentLevelEndDialog = _endDialog;

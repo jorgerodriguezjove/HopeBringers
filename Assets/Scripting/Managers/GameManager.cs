@@ -22,8 +22,15 @@ public class GameManager : PersistentSingleton<GameManager>
 
     //Referencia al nodo del nivel que ha sido empezado
     public int currentLevelNode;
+
     //Experiencia que obtiene el jugador si completa el nivel
     public int possibleXpToGainIfCurrentLevelIsWon;
+
+    //Experiencia que obtiene el jugador si completa el nivel
+    public int xpPerTurnThisLevel;
+
+    //Experiencia que obtiene el jugador si completa el nivel
+    public int xpPerCharacterThisLevel;
 
     [SerializeField]
     public int maxUnitsInThisLevel;
@@ -169,13 +176,13 @@ public class GameManager : PersistentSingleton<GameManager>
     #region LEVEL_END
 
     //Al completar un nivel el levelManager avisa de que en la escena de mapa va a tener que desbloquear niveles.
-    public void VictoryAchieved()
+    public void VictoryAchieved(int _totalXp)
     {
         Debug.Log("Experiencia al ganar el nivel: " + possibleXpToGainIfCurrentLevelIsWon);
 
         levelIDsUnlocked.Add(currentLevelNode);
 
-        currentExp += possibleXpToGainIfCurrentLevelIsWon;
+        currentExp += _totalXp;
 
         if (currentLevelEndDialog != null)
         {
