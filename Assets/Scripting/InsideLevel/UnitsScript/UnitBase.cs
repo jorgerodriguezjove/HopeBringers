@@ -705,8 +705,17 @@ public class UnitBase : MonoBehaviour
 
             if (damageCalculated >= 0)
             {
-                previsualizeAttackIcon.SetActive(true);
-                EnableCanvasHover(damageCalculated);
+                if(damageCalculated == 0 && GetComponent<Knight>())
+                {
+                    GetComponent<Knight>().shieldBlockDamage.SetActive(true);
+
+                }
+                else
+                {
+                    previsualizeAttackIcon.SetActive(true);
+                    EnableCanvasHover(damageCalculated);
+                }
+               
             }
         }        
     }

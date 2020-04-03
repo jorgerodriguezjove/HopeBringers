@@ -225,16 +225,49 @@ public class Portraits : MonoBehaviour
         //Recorro la lista de tokens empezando por el final. 
         //El -1 en el count es porque la lista empieza en el 0 y por tanto es demasiado grande
         //Sin embargo tengo que sumarle 1 en la i porque si no la current health al principio no entra
+
+        //for (int i = lifeTokensList.Count - 1; i + 1 > assignedPlayer.currentHealth; i--)
+        //{
+        //    if (lifeTokensList[i].GetComponent<LifeToken>())
+        //    {
+        //        if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
+        //        {
+        //            lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
+        //            activatedTokens--;
+        //        }
+        //        //else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
+        //        //    && assignedPlayer.currentHealth > activatedTokens )
+        //        //{
+        //        //    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+        //        //    activatedTokens++;
+        //        //}
+        //    }
+        //}
+
+
         if (assignedPlayer != null)
         {
             for (int i = 0; i < assignedPlayer.maxHealth; i++)
             {
                 if (i < assignedPlayer.currentHealth)
-                {
-
-                    if (lifeTokensList[i].GetComponent<LifeToken>())
+                {                  
+                    if (i < assignedPlayer.currentArmor)
                     {
-                        lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+                        if (lifeTokensList[i].GetComponent<LifeToken>())
+                        {
+                            
+                            lifeTokensList[i].GetComponent<LifeToken>().ArmoredToken();
+                        }
+
+                    }
+                    else
+                    {
+                        if (lifeTokensList[i].GetComponent<LifeToken>())
+                        {
+                            lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
+                        }
+
+
                     }
                 }
                 else
@@ -245,23 +278,7 @@ public class Portraits : MonoBehaviour
                     }
                 }
             }
-            //for (int i = lifeTokensList.Count - 1; i + 1 > assignedPlayer.currentHealth; i--)
-            //{
-            //    if (lifeTokensList[i].GetComponent<LifeToken>())
-            //    {
-            //        if (!lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped)
-            //        {
-            //            lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
-            //            activatedTokens--;
-            //        }
-            //        //else if(lifeTokensList[i].GetComponent<LifeToken>().haveIFlipped
-            //        //    && assignedPlayer.currentHealth > activatedTokens )
-            //        //{
-            //        //    lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
-            //        //    activatedTokens++;
-            //        //}
-            //    }
-            //}
+           
 
 
 

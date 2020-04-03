@@ -419,12 +419,14 @@ public class Samurai : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
-        timesRepeatNumber.enabled = true;
-        timesRepeatNumber.text = ( "X" + timesDoubleAttackRepeats.ToString());
+        if (doubleAttack) 
+        {
+            timesRepeatNumber.enabled = true;
+            timesRepeatNumber.text = ("X" + timesDoubleAttackRepeats.ToString());
 
-        Vector3 vector2Spawn = new Vector3(_unitToAttack.transform.position.x, timesRepeatNumber.transform.position.y, _unitToAttack.transform.position.z);
-        timesRepeatNumber.transform.position = vector2Spawn;
-
+            Vector3 vector2Spawn = new Vector3(_unitToAttack.transform.position.x, timesRepeatNumber.transform.position.y, _unitToAttack.transform.position.z);
+            timesRepeatNumber.transform.position = vector2Spawn;
+        }
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)

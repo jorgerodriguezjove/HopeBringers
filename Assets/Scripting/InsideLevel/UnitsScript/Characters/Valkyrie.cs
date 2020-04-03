@@ -7,6 +7,8 @@ public class Valkyrie : PlayerUnit
 {
     public IndividualTiles previousTile;
 
+    public GameObject changePosArrows;
+
     [Header("MEJORAS DE PERSONAJE")]
 
     [Header("Activas")]
@@ -121,7 +123,6 @@ public class Valkyrie : PlayerUnit
             //Quito el color del tile
             myCurrentTile.ColorDeselect();
 
-            //TENEMOS QUE HABLAR SI LA ARMADURA DEPENDE DE LA currentHealth QUE TIENE O DE LA MAXHEALTH
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
 
@@ -161,7 +162,8 @@ public class Valkyrie : PlayerUnit
             UpdateInformationAfterMovement(previousTile);
             unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
 
-          
+
+            UIM.RefreshHealth();
             //Hay que cambiarlo
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
@@ -473,4 +475,73 @@ public class Valkyrie : PlayerUnit
         hasMoved = true;
         LM.UnitHasFinishedMovementAndRotation();
     }
+
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+
+        shaderHover.SetActive(true);
+        Vector3 vector2Spawn = new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z);
+        shaderHover.transform.position = vector2Spawn;
+
+        _unitToAttack.shaderHover.SetActive(true);
+        Vector3 vector2SpawnEnemy = new Vector3(_unitToAttack.transform.position.x, transform.position.y + 2.5f, _unitToAttack.transform.position.z);
+        _unitToAttack.shaderHover.transform.position = vector2SpawnEnemy;
+
+        changePosArrows.SetActive(true);
+        changePosArrows.transform.position = Vector3.Lerp (vector2Spawn, vector2SpawnEnemy, 0.5f);
+        changePosArrows.transform.position = new Vector3(changePosArrows.transform.position.x, transform.position.y + 4.5f, changePosArrows.transform.position.z);
+
+
+        if (armorMode)
+        {            
+            if (_unitToAttack.GetComponent<PlayerUnit>())
+            {
+                if (armorMode2)
+                {
+                    if (currentArmor > currentHealth)
+                    {
+                       
+                    }
+                    else
+                    {
+                        canvasUnit.SetActive(true);
+                        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                    }                    
+                }
+               
+                if (_unitToAttack.currentArmor > _unitToAttack.currentHealth)
+                {                
+                }
+                else
+                {
+                    _unitToAttack.canvasUnit.SetActive(true);
+                    _unitToAttack.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                }
+            }           
+        }
+    }
+
+    public override void HideAttackEffect(UnitBase _unitToAttack)
+    {
+        shaderHover.SetActive(false);
+        _unitToAttack.shaderHover.SetActive(false);
+        changePosArrows.SetActive(false);
+
+
+        if (armorMode)
+        {
+            if (_unitToAttack.GetComponent<PlayerUnit>())
+            {
+                if (armorMode2)
+                {                    
+                  canvasUnit.SetActive(false);                    
+                }
+                    _unitToAttack.canvasUnit.SetActive(false);
+                }
+            }
+        
+    }
+    
 }
+
+

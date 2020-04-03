@@ -664,6 +664,7 @@ public class EnemyUnit : UnitBase
                     if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                     {
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
+                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
                     }
                 }
 
@@ -685,6 +686,7 @@ public class EnemyUnit : UnitBase
                     if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                     {
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
+                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
                     }
                 }
 
@@ -725,6 +727,8 @@ public class EnemyUnit : UnitBase
             LM.selectedCharacter.HideDamageIcons(this);
             myCurrentTile.ColorDesAttack();
             previsualizeAttackIcon.SetActive(false);
+
+          
         }
         
         //LM.UIM.HideCharacterInfo("");
@@ -763,7 +767,18 @@ public class EnemyUnit : UnitBase
         }
 
         if(myPortrait != null)
+        {
             myPortrait.UnHighlightMyself();
+
+        }
+
+        Knight knightRef = FindObjectOfType<Knight>();
+        if (knightRef != null)
+        {
+
+            knightRef.HideAttackEffect(this);
+        }
+
     }
 
     public virtual void SelectedColor()

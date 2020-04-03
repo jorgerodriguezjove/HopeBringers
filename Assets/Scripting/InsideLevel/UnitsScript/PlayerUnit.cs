@@ -425,6 +425,8 @@ public class PlayerUnit : UnitBase
                         if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                         {
                             LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
+                            LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
+
                         }
                     }
                     

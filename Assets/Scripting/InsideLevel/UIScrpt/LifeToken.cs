@@ -25,4 +25,10 @@ public class LifeToken : MonoBehaviour
         GetComponent<Animator>().Play("LifeTokenReset");
     }
 
+    public void ArmoredToken()
+    {
+        GetComponent<Animator>().Play("ArmoredToken");
+
+    }
+
 }
