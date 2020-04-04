@@ -63,6 +63,10 @@ public class Portraits : MonoBehaviour
     [SerializeField]
     public TextMeshProUGUI specialSkillTurnsLeft;
 
+    //Numero para el contador del ninja
+    [SerializeField]
+    public TextMeshProUGUI ninjaBuffDamage;
+
     //Token especial de los personajes
     public GameObject specialToken;
 

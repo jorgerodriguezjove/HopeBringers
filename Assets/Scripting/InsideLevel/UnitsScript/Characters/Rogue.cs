@@ -68,11 +68,15 @@ public class Rogue : PlayerUnit
             myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
             //Cambiar el número si va a tener más de un turno
-            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();
-            
-
-
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();           
         }
+        if (afterKillBonus)
+        {
+            myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.enabled = true;
+            myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.text = baseDamage.ToString();
+        }
+        
+        
 
     }
     public override void CheckUnitsAndTilesInRangeToAttack()

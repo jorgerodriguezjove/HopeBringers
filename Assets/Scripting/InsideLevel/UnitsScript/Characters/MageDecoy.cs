@@ -98,17 +98,24 @@ public class MageDecoy : Mage
         {
             if (LM.selectedEnemy == null)
             {
-                if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+                if (LM.selectedCharacter != null && LM.selectedCharacter == myMage && !myMage.hasMoved)
+                {
+                    ShowAttackEffect(this);
+
+                }
+                else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 }
-                if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-                {                   
+
+                else 
+                {
+                    if (!hasAttacked)
+                    {
+                        LM.ShowUnitHover(movementUds, this);
+                    }
                 }
-                if (!hasAttacked)
-                {              
-                    LM.ShowUnitHover(movementUds, this);
-                }
+                
             }
         }
     }
@@ -132,6 +139,8 @@ public class MageDecoy : Mage
             ResetColor();
 
         }
+
+        HideAttackEffect(this);
     }
 
     #endregion
@@ -366,6 +375,7 @@ public class MageDecoy : Mage
         UpdateInformationAfterMovement(magePreviousTile);
         mage2Move.hasMoved = true;
         LM.UnitHasFinishedMovementAndRotation();
+        UIM.RefreshTokens();
 
         if (mage2Move.isDecoyBomb2)
         {
@@ -381,5 +391,44 @@ public class MageDecoy : Mage
 
 
         }
+    }
+
+    public void ChangePositionIconFeedback(bool has2Show)
+    {
+        if (has2Show)
+        {
+            if(myMage != null)
+            {
+                myMage.changePositionIcon.SetActive(true);
+
+            }
+            changePositionIcon.SetActive(true);
+
+        }
+        else
+        {
+            if (myMage != null)
+            {
+                myMage.changePositionIcon.SetActive(false);
+
+            }
+            changePositionIcon.SetActive(false);
+
+        }
+
+    }
+    //En este caso lo uso para ver lo que hace el decoy cuando el mago lee hace hover
+    public override void ShowAttackEffect(UnitBase _unitToAttack)
+    {
+        Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
+        ChangePositionIconFeedback(true);
+
+    }
+    public override void HideAttackEffect(UnitBase _unitToAttack)
+    {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        ChangePositionIconFeedback(false);
+
+
     }
 }

@@ -19,6 +19,9 @@ public class Mage : PlayerUnit
     [SerializeField]
     public List<GameObject> myDecoys = new List<GameObject>();
 
+    //Icono que aparece encima para dar feedback de que se puede intercambiar con el decoy
+    public GameObject changePositionIcon;
+
     //Número máximo de decoys que se pueden instanciar
     [SerializeField]
     private int maxDecoys;
