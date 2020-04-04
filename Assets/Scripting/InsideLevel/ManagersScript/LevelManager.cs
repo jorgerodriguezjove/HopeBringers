@@ -26,6 +26,9 @@ public class LevelManager : MonoBehaviour
     bool isObjectiveKillSpecificEnemies;
 
     [SerializeField]
+    bool isObjectiveWaitForTurnLimit;
+
+    [SerializeField]
     List<UnitBase> enemiesNecessaryToWin = new List<UnitBase>();
 
     [Header("INTERACCIÓN CON UNIDADES")]
@@ -179,6 +182,7 @@ public class LevelManager : MonoBehaviour
                 charactersOnTheBoard[i].InitializeUnitOnTile();
             }
 
+
             //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
             //IMPORTANTE TIENE QUE IR DESPUÉS DE T.CREATEGRID Y ANTES DE FOR(enemiesOntheBoard)
             if (MapGenRef != null)
@@ -189,6 +193,12 @@ public class LevelManager : MonoBehaviour
             for (int i = 0; i < enemiesOnTheBoard.Count; i++)
             {
                 enemiesOnTheBoard[i].InitializeUnitOnTile();
+
+                if (enemiesOnTheBoard[i].GetComponent<Crystal>())
+                {
+                    enemiesOnTheBoard.RemoveAt(i);
+                    i--;
+                }
             }
             UIM.InitializeUI();
             currentLevelState = LevelState.PlayerPhase;
@@ -219,15 +229,22 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
         {
             enemiesOnTheBoard[i].InitializeUnitOnTile();
+
+            if (enemiesOnTheBoard[i].GetComponent<Crystal>())
+            {
+                enemiesOnTheBoard.RemoveAt(i);
+                i--;
+            }
         }
 
         //Se activa la cámara
         camRef.SetCameraMovable(true, true);
 
         //Comienza la fase de colocación de unidades
+        //El Hud se inicializa al terminar la colocación de unidades
         InitializeCharacters();
 
-        //El Hud se inicializa al terminar la colocación de unidades
+        
     }
 
     //Crea a los personajes del jugador correspondientes
@@ -279,17 +296,17 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-            //Ordenar por velocidad
-            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
-            {
-                return (b.GetComponent<EnemyUnit>().speed).CompareTo(a.GetComponent<EnemyUnit>().speed);
-
-            });
-
             //Ordenar por despierto
             enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
             {
                 return (b.GetComponent<EnemyUnit>().haveIBeenAlerted).CompareTo(a.GetComponent<EnemyUnit>().haveIBeenAlerted);
+
+            });
+
+            //Ordenar por velocidad
+            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
+            {
+                return (b.GetComponent<EnemyUnit>().speed).CompareTo(a.GetComponent<EnemyUnit>().speed);
 
             });
 
@@ -311,7 +328,7 @@ public class LevelManager : MonoBehaviour
     #region UNIT_INTERACTION
 
     [SerializeField]
-    PlayerUnit currentCharacterPlacing;
+    public PlayerUnit currentCharacterPlacing;
     [SerializeField]
     List<PlayerUnit> charactersAlreadyPlaced = new List<PlayerUnit>();
 
@@ -667,6 +684,7 @@ public class LevelManager : MonoBehaviour
                     else
                     {
                         Debug.Log("Second caja");
+                        currentCharacterPlacing.ResetColor();
                         currentCharacterPlacing = clickedUnit;
                     }
                 }
@@ -1133,7 +1151,7 @@ public class LevelManager : MonoBehaviour
             currentCharacterPlacing.transform.position = _tileToMove.transform.position;
             currentCharacterPlacing.UpdateInformationAfterMovement(_tileToMove);
 
-
+            currentCharacterPlacing.ResetColor();
 
             //Quito unidad anteriormente seleccionada de su tile
             _playerClicked.myCurrentTile.unitOnTile = null;
@@ -1143,7 +1161,6 @@ public class LevelManager : MonoBehaviour
             //La muevo a al nuevo tile
             _playerClicked.transform.position = otherUnitTile.transform.position;
             _playerClicked.UpdateInformationAfterMovement(otherUnitTile);
-
 
             //Variable a null
             currentCharacterPlacing = null;
@@ -1167,6 +1184,7 @@ public class LevelManager : MonoBehaviour
                 currentCharacterPlacing.transform.localScale = Vector3.one;
                 currentCharacterPlacing.transform.localPosition = Vector3.zero;
 
+                currentCharacterPlacing.ResetColor();
 
                 //PONER UNIDAD EN TABLERO
 
@@ -1398,6 +1416,7 @@ public class LevelManager : MonoBehaviour
         {
             currentTurn = 1;
             UIM.UpdateTurnNumber(currentTurn, turnLimit);
+            AlertEnemiesOfPlayerMovement();
         }
     }
 
@@ -1516,10 +1535,12 @@ public class LevelManager : MonoBehaviour
     int xpTurns;
     int xpCharacters;
 
+    int totalXp;
+
     public void CheckIfGameOver()
     {
         //Derrota
-        if (charactersOnTheBoard.Count == 0 || currentTurn > turnLimit)
+        if (charactersOnTheBoard.Count == 0 || (!isObjectiveWaitForTurnLimit && currentTurn > turnLimit))
         {
             Debug.Log("Game Over");
             defeatPanel.SetActive(true);
@@ -1530,17 +1551,33 @@ public class LevelManager : MonoBehaviour
         }
 
         //Calculo xp por turnos
-        int xpPerTurn = 5;
-        
-        xpTurns = (turnLimit - currentTurn) * xpPerTurn;
+        xpTurns = (turnLimit - currentTurn) * GameManager.Instance.xpPerTurnThisLevel;
+
+        if (xpTurns < 0)
+        {
+            xpTurns = 0;
+        }
 
         //Calculo xp por characters
-        int xpPerCharacter = 10;
-        
-        xpCharacters = charactersOnTheBoard.Count * xpPerCharacter;
+        xpCharacters = charactersOnTheBoard.Count * GameManager.Instance.xpPerCharacterThisLevel;
+
+        if (xpCharacters < 0)
+        {
+            xpCharacters = 0;
+        }
+
+
+        totalXp = xpCharacters + xpTurns + GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon;
+
+        if (isObjectiveWaitForTurnLimit && currentTurn > turnLimit)
+        {
+            Debug.Log("Victory");
+            UIM.HideGameHud();
+            GameManager.Instance.VictoryAchieved(totalXp);
+        }
 
         //Victoria
-        if (isObjectiveKillSpecificEnemies)
+        else if (isObjectiveKillSpecificEnemies)
         {
             for (int i = 0; i < enemiesNecessaryToWin.Count; i++)
             {
@@ -1552,15 +1589,15 @@ public class LevelManager : MonoBehaviour
 
             Debug.Log("Victory by killing specific enemies");
             UIM.HideGameHud();
-            GameManager.Instance.VictoryAchieved();
+            GameManager.Instance.VictoryAchieved(totalXp);
         }
 
-        if (enemiesOnTheBoard.Count == 0 ||
+        else if (enemiesOnTheBoard.Count == 0 ||
             enemiesOnTheBoard.Count == 1 && enemiesOnTheBoard[0].isDead)
         {
             Debug.Log("Victory");
             UIM.HideGameHud();
-            GameManager.Instance.VictoryAchieved();
+            GameManager.Instance.VictoryAchieved(totalXp);
         }
     }
 
@@ -1629,7 +1666,7 @@ public class LevelManager : MonoBehaviour
     }
 
 
-    //PROBLEAM ES EL DECOY.
+    //Para ver si todas las unidades del jugador estan en un tile de acabar la partida
     public bool CheckIfFinishingTilesReached()
     {
         for (int i = 0; i < charactersOnTheBoard.Count; i++)
@@ -1662,7 +1699,8 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
         {
-            if (!enemiesOnTheBoard[i].isDead)
+            //Si esta muerto, ya esta despierto o va a ser alertado no hace falta que compruebe nada.
+            if (!enemiesOnTheBoard[i].isDead && !enemiesOnTheBoard[i].haveIBeenAlerted && !enemiesOnTheBoard[i].isGoingToBeAlertedOnEnemyTurn)
             {
                 //Balista y charger tienen check diferente
                 if (enemiesOnTheBoard[i].GetComponent<EnBalista>() || enemiesOnTheBoard[i].GetComponent<EnCharger>())
@@ -1679,13 +1717,8 @@ public class LevelManager : MonoBehaviour
                 if (enemiesOnTheBoard[i].currentUnitsAvailableToAttack.Count > 0)
                 {
                     enemiesOnTheBoard[i].EnemyIsGoingToBeAlerted();
-                    Debug.Log(enemiesOnTheBoard[i].name + "Va a ser alertado");
-                    Debug.Log("---");
                     continue;
                 }
-
-                Debug.Log(enemiesOnTheBoard[i].name + "Sigue dormido");
-                Debug.Log("---");
             }
         }
 

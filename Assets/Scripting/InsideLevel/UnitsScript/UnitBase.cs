@@ -733,7 +733,7 @@ public class UnitBase : MonoBehaviour
 
     #region UI_HOVER
 
-    public void EnableCanvasHover(float damageReceived)
+    public virtual void EnableCanvasHover(float damageReceived)
     {
         canvasUnit.SetActive(true);
         canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText( "-" + damageReceived.ToString());

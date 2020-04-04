@@ -302,6 +302,7 @@ public class PlayerUnit : UnitBase
         {
             LM.TileClicked(this.myCurrentTile);
         }
+
         else
         {
             Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
@@ -327,7 +328,12 @@ public class PlayerUnit : UnitBase
     //Es virtual para el decoy del mago.
     protected virtual void OnMouseEnter()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && !GameManager.Instance.isGamePaused)
+        if ( LM.currentLevelState == LevelManager.LevelState.Initializing)
+        {
+            SelectedColor();
+        }
+
+        else if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && !GameManager.Instance.isGamePaused)
         {
             if (LM.selectedEnemy == null)
             {
@@ -382,7 +388,15 @@ public class PlayerUnit : UnitBase
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
-        if (LM.currentLevelState != LevelManager.LevelState.Initializing)
+        if (LM.currentLevelState == LevelManager.LevelState.Initializing)
+        {
+            if (LM.currentCharacterPlacing != GetComponent<UnitBase>())
+            {
+                ResetColor();
+            }
+        }
+
+        else if (LM.currentLevelState != LevelManager.LevelState.Initializing)
         {
             if (LM.selectedCharacter == null)
             {
@@ -448,8 +462,6 @@ public class PlayerUnit : UnitBase
                 // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 druidRef.previsualizeAttackIcon.SetActive(false);
                 druidRef.canvasUnit.SetActive(false);
-
-               
             }
         }
 
@@ -497,6 +509,7 @@ public class PlayerUnit : UnitBase
 
         //Al acabar al movimiento aviso a levelManager de que avise a los enemigos para ver si serán alertados.
         LM.AlertEnemiesOfPlayerMovement();
+        Debug.Log(myCurrentTile);
     }
 
     IEnumerator MovingUnitAnimation()

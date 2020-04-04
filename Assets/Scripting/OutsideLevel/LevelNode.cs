@@ -22,6 +22,13 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public int xpToWin;
 
+    [Header("BONUS XP")]
+    [SerializeField]
+    public int xpPerTurn;
+
+    [SerializeField]
+    public int xpPerCharacter;
+
     public enum PossibleCharactersToUnlock { none, Berserker, Mage, Ninja, Valkyrie, Druid, Monk, Samurai };
 
     [SerializeField]
@@ -143,7 +150,7 @@ public class LevelNode : MonoBehaviour
 		//Avisar al TM de que se ha pulsado un nivel
 		if (isUnlocked)
 		{
-			TM.OnLevelClicked(GetComponent<LevelNode>(), idLevel, xpToWin, maxNumberOfUnits ,startDialog, endDialog);
+			TM.OnLevelClicked(GetComponent<LevelNode>(), idLevel, xpToWin, xpPerTurn, xpPerCharacter ,maxNumberOfUnits ,startDialog, endDialog);
         }
 	}
 

@@ -74,11 +74,14 @@ public class BossMultTile : EnemyUnit
     {
         crystalList.Remove(_crystal);
 
-        Debug.Log(crystalList.Count);
-
         if (crystalList.Count == 0)
         {
             LM.InstaWin(true);
+        }
+
+        else
+        {
+            crystalList[0].isCrystalActive = true;
         }
     }
 

@@ -6,6 +6,9 @@ public class Crystal : EnemyUnit
 {
     BossMultTile dragReference;
 
+    [SerializeField]
+    public bool isCrystalActive = false;
+
     protected override void Awake()
     {
         //Le digo al enemigo cual es el LevelManager del nivel actual
@@ -13,6 +16,9 @@ public class Crystal : EnemyUnit
 
         //Referencia al LM y me incluyo en la lista de enemiogos
         LM = LevelManagerRef.GetComponent<LevelManager>();
+
+        //SE AÑADE AQUI ÚNICAMENTE PARA SER INICIALIZADO. EN EL LEVEL MANAGER SALE DE LA LISTA
+        LM.enemiesOnTheBoard.Add(this);
 
         initMaterial = unitMaterialModel.GetComponent<MeshRenderer>().material;
 
@@ -30,6 +36,21 @@ public class Crystal : EnemyUnit
         if (dragReference != null)
         {
             dragReference.crystalList.Add(this);
+
+            if (dragReference.crystalList.Count == 1)
+            {
+                isCrystalActive = true;
+            }
+
+            else
+            {
+                isCrystalActive = false;
+            }
+        }
+
+        else
+        {
+            isCrystalActive = true;
         }
     }
 
@@ -131,13 +152,6 @@ public class Crystal : EnemyUnit
 
     public override void OnHoverExitFunctionality()
     {
-        if (LM.selectedCharacter != null && LM.selectedCharacter.shaderHover != null)
-        {
-        }
-        if (LM.selectedCharacter != null)
-        {
-        }
-
         if (LM.selectedEnemy == null)
         {
             LM.UIM.HideUnitInfo("");
@@ -218,5 +232,26 @@ public class Crystal : EnemyUnit
 
         //Estas dos llamadas tienen que ir despues del bool de isdead = true
         LM.UIM.SetEnemyOrder();
+    }
+
+    public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
+    {
+        if (!isCrystalActive)
+        {
+            damageReceived = 0;
+        }
+       
+
+        base.ReceiveDamage(damageReceived, unitAttacker);
+    }
+
+    public override void EnableCanvasHover(float damageReceived)
+    {
+        if (!isCrystalActive)
+        {
+            damageReceived = 0;
+        }
+
+        base.EnableCanvasHover(damageReceived);
     }
 }

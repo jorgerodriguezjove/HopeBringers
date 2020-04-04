@@ -205,7 +205,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             {
                 //Cambio el color del tile
                 LM.tilesForCharacterPlacement.Add(GetComponent<IndividualTiles>());
-                ColorCurrentTileHover();
+                ColorMovement();
             }
            
             else if (isFinishingTile)
@@ -229,7 +229,19 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Hover enter
     void OnMouseEnter()
     {
-        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null && !LM.selectedCharacter.hasMoved && !GameManager.Instance.isGamePaused)
+        if (LM.currentLevelState == LevelManager.LevelState.Initializing)
+        {
+            if (isAvailableForCharacterColocation && LM.currentCharacterPlacing != null && unitOnTile == null)
+            {
+                //Cambio el cursor
+                Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
+
+                //Cambio el color del tile
+                ColorCurrentTileHover();
+            }
+        }
+
+        if ( LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null && !LM.selectedCharacter.hasMoved && !GameManager.Instance.isGamePaused)
         {
             //Cambio el cursor
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
@@ -255,14 +267,22 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         //LM.UIM.HideTileInfo();
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
-        if (isMovementTile)
+        if (LM.currentLevelState == LevelManager.LevelState.Initializing && isAvailableForCharacterColocation)
         {
             ColorMovement();
         }
 
-        else if (isUnderAttack)
+        else
         {
-            ColorAttack();
+            if (isMovementTile)
+            {
+                ColorMovement();
+            }
+
+            else if (isUnderAttack)
+            {
+                ColorAttack();
+            }
         }
     }
 
