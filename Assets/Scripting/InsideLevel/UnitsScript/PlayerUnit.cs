@@ -53,14 +53,20 @@ public class PlayerUnit : UnitBase
     protected float timeWaitAfterAttack;
 
 	[Header("INFO")]
-	[@TextAreaAttribute(15, 20)]
-	public string activeSkillInfo;
-	[SerializeField]
-	public Sprite attackTooltipImage;
-	[@TextAreaAttribute(15, 20)]
-	public string pasiveSkillInfo;
-	[SerializeField]
+	
+    [HideInInspector]
+	public string activeSkillInfo = "Info ataque";
+    [HideInInspector]
+	public string pasiveSkillInfo = "Info pasiva";
+
+
+    [SerializeField]
+    public Sprite attackTooltipImage;
+    [SerializeField]
 	public Sprite pasiveTooltipImage;
+
+
+    //COMPROBAR QUE ES ESTO
 	public string attackInfo;
 
 	[Header("FEEDBACK")]

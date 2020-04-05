@@ -59,14 +59,28 @@ public class Knight : PlayerUnit
         pushFarther = _pushFarther;
         pushWider = _pushWider;
 
-        if (pushFarther)
-        {
-            tilesToPush = 2;
-        }
+        //Lo primero que hago es poner el texto genérico, de tal forma que si no hay mejoras se quedará este texto.
+        activeSkillInfo = AppKnightUpgrades.genericAttackText;
 
+        //Hay que hacer que la mejora mas avanzada se compruebe primero y que compruebe su versión anterior con else if.
+        //Esto es por que siempre que compre la segunda mejora, la primera va a estar en true siempre.
         if (pushFarther2)
         {
             tilesToPush = 3;
+        }
+
+        else if (pushFarther)
+        {
+            tilesToPush = 2;
+
+            activeSkillInfo = AppKnightUpgrades.pusFurther1Text;
+        }
+
+      
+
+        if (pushWider)
+        {
+            activeSkillInfo = AppKnightUpgrades.pushWider1Text;
         }
     }
 

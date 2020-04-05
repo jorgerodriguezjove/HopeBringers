@@ -85,8 +85,11 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	public GameObject tooltipPanel;
 	[SerializeField]
-	public TextMeshProUGUI textPanel;
-	[SerializeField]
+	public TextMeshProUGUI attackInfoTextInTooltip;
+    [SerializeField]
+    public TextMeshProUGUI pasiveInfoTextInTooltip;
+
+    [SerializeField]
 	public Image imagePanel;
 
 	[Header("CURSORES")]
@@ -535,6 +538,7 @@ public class UIManager : MonoBehaviour
         {
             //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
             characterInfoText.text = generalInfoText;
+
             if (unitTooltipImage.tooltipImage != null)
             {
                 explanationImage.gameObject.SetActive(true);

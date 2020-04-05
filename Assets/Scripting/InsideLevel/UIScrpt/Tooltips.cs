@@ -19,13 +19,6 @@ public class Tooltips : MonoBehaviour
 	bool startTooltip = false;
 
 	private UIManager UIM;
-	[SerializeField]
-	bool activeSkill;
-	[SerializeField]
-	bool pasiveSkill;
-	[SerializeField]
-	GameObject fatherTooltip;
-
 
 	#region INIT
 	private void Awake()
@@ -37,7 +30,9 @@ public class Tooltips : MonoBehaviour
 		timeToShowTooltipTimer = timeToShowTooltip;
 	}
 	#endregion
+
 	#region UPDATE
+
 	private void Update()
 	{
 		if (startTooltip)
@@ -46,59 +41,33 @@ public class Tooltips : MonoBehaviour
 			if (mouseDelta.x == 0 && mouseDelta.y == 0)
 			{
 				timeToShowTooltipTimer -= Time.deltaTime;
-				Debug.Log("Timer");
+				
 				if (timeToShowTooltipTimer <= 0)
 				{
 					UIM.tooltipPanel.SetActive(true);
-					if (activeSkill)
-					{
-						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.activeSkillInfo;
-						if(fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.attackTooltipImage != null)
-						{
-							UIM.imagePanel.gameObject.SetActive(true);
-							UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.attackTooltipImage;
-						}
-						else
-						{
-							UIM.imagePanel.gameObject.SetActive(false);
-						}
-						
-					}
-					else if (pasiveSkill)
-					{
-						UIM.textPanel.text = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.pasiveSkillInfo;
-						if (fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.attackTooltipImage != null)
-						{
-							UIM.imagePanel.gameObject.SetActive(true);
-							UIM.imagePanel.sprite = fatherTooltip.GetComponent<Tooltips>().tooltipAssignedPlayer.pasiveTooltipImage;
-						}
-						else
-						{
-							UIM.imagePanel.gameObject.SetActive(false);
-						}
-					}
-					else
-					{
-						UIM.textPanel.text = tooltipAssignedPlayer.unitGeneralInfo;
-						if (tooltipAssignedPlayer.attackTooltipImage != null)
-						{
-							UIM.imagePanel.gameObject.SetActive(true);
-							UIM.imagePanel.sprite = tooltipAssignedPlayer.attackTooltipImage;
-						}
-						else
-						{
-							UIM.imagePanel.gameObject.SetActive(false);
-						}
-						
-					}				
+
+                    UIM.attackInfoTextInTooltip.SetText(tooltipAssignedPlayer.activeSkillInfo);
+                    UIM.pasiveInfoTextInTooltip.SetText(tooltipAssignedPlayer.pasiveSkillInfo);
+
+                    if (tooltipAssignedPlayer.attackTooltipImage != null)
+                    {
+                        UIM.imagePanel.gameObject.SetActive(true);
+                        UIM.imagePanel.sprite = tooltipAssignedPlayer.attackTooltipImage;
+                    }
+                    else
+                    {
+                        UIM.imagePanel.gameObject.SetActive(false);
+                    }
+
 					//Mostrar el tooltip
-					Debug.Log("Tooltip Aparece");
+					Debug.Log(gameObject.name);
 				}
 			}
 			else
 			{
 				timeToShowTooltipTimer = timeToShowTooltip;
 				UIM.tooltipPanel.SetActive(false);
+
 				//Tooltip desaparece
 				Debug.Log("Tooltip Desaparece");
 			}

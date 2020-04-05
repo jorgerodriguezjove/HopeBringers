@@ -33,6 +33,15 @@ public class AppKnightUpgrades
     public static readonly string pushFurther1 = "pushFurther1";
     public static readonly string pushWider1 = "pushWider1";
 
+
+
+    //Textos de mejoras activas
+    public static readonly string genericAttackText = "El caballero hace daño a su objetivo y le empuja una casilla";
+
+    public static readonly string pusFurther1Text = "El caballero es capaz de empujar a sus objetivos a dos casillas de distancia";
+    public static readonly string pushWider1Text = "El caballero es capaz de empujar a los enemigos laterales de su objetivo";
+    //Textos de mejoras pasivas
+
 }
 
 public class AppMageUpgrades
