@@ -29,6 +29,8 @@ public class GameManager : PersistentSingleton<GameManager>
     //Referencia al nodo del nivel que ha sido empezado
     public int currentLevelNode;
 
+    public string currentLevelToLoad;
+
     //Experiencia que obtiene el jugador si completa el nivel
     public int possibleXpToGainIfCurrentLevelIsWon;
 
@@ -169,12 +171,16 @@ public class GameManager : PersistentSingleton<GameManager>
     //Cargar el nivel
     public void CheckStartLevel(string _levelName)
     {
-        SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
+        currentLevelToLoad = _levelName;
+
+        SceneManager.LoadScene(AppScenes.LOAD_SCENE);
+
+        //SceneManager.LoadScene(_levelName, LoadSceneMode.Single);
     }
 
     private void WaitForLevelEndChargingToStartDialog(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != AppScenes.MAP_SCENE)
+        if (scene.name != AppScenes.MAP_SCENE && scene.name != AppScenes.LOAD_SCENE)
         {
             inkManRef = FindObjectOfType<InkManager>();
             dialogManRef = FindObjectOfType<DialogManager>();
@@ -298,7 +304,6 @@ public class GameManager : PersistentSingleton<GameManager>
             //Aqui se hace lo contrario que en el CreateSaveGameObject. Se toman las variables del save y se aplican esos valores a las variables que se usan en código
             currentExp = save.s_currentXp;
 
-            print(Application.persistentDataPath);
 
             characterDataForCurrentLevel.Clear();
 
@@ -425,6 +430,7 @@ public class GameManager : PersistentSingleton<GameManager>
 
             SaveGame();
         }
+        print(Application.persistentDataPath);
     }
 
     //Esta función se usa únicamente en el SaveGame. La he separado para que quede más claro la información que se guarda en cada archivo

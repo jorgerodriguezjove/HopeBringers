@@ -68,6 +68,7 @@ public class AppBerserkUpgrades
 public class AppScenes
 {
     public static readonly string MENU_SCENE = "MainMenu";
+    public static readonly string LOAD_SCENE = "LoadingScene";
     public static readonly string GAME_SCENE = "GameScene";
     public static readonly string CREDITS_SCENE = "Credits";
     public static readonly string MAP_SCENE = "LevelSelection";
