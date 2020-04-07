@@ -76,6 +76,11 @@ public class NewCameraController : MonoBehaviour
     [SerializeField]
     bool deactivateBorderMovement;
 
+    [Header("Raycast")]
+
+    public List<GameObject> objects2Transparent = new List <GameObject>();
+    public int raycastDist = 1;
+
     #endregion
 
     private void Start()
@@ -217,6 +222,48 @@ public class NewCameraController : MonoBehaviour
 
     private void Update()
     {
+        //Parte de raycast para poner invvisible los objetos       
+        int layerMask = 1 << 0;
+
+        
+        RaycastHit hit;
+       
+
+        if ((Physics.Raycast(myCamera.transform.position, myCamera.transform.TransformDirection(Vector3.forward), out hit, raycastDist, layerMask))
+            || (Physics.Raycast(myCamera.transform.position, myCamera.transform.TransformDirection(Vector3.back), out hit, raycastDist, layerMask))
+            || (Physics.Raycast(myCamera.transform.position, myCamera.transform.TransformDirection(Vector3.right), out hit, raycastDist, layerMask))
+            || (Physics.Raycast(myCamera.transform.position, myCamera.transform.TransformDirection(Vector3.left), out hit, raycastDist, layerMask))
+            || (Physics.Raycast(myCamera.transform.position, myCamera.transform.TransformDirection(Vector3.up), out hit, raycastDist, layerMask))
+            || (Physics.Raycast(myCamera.transform.position, myCamera.transform.TransformDirection(Vector3.down), out hit, raycastDist, layerMask)))
+        {
+            
+            for (int i = 0; i < hit.transform.parent.childCount; i++)
+            {
+                if (objects2Transparent.Contains(hit.transform.parent.GetChild(i).gameObject))
+                {
+                }
+                else
+                {
+                    objects2Transparent.Add(hit.transform.parent.GetChild(i).gameObject);
+                }
+            }
+            for (int i = 0; i < objects2Transparent.Count; i++)
+            {
+                objects2Transparent[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
+            }            
+        }     
+        else
+        {
+            if (objects2Transparent.Count > 0)
+            {
+                for (int i = 0; i < objects2Transparent.Count; i++)
+                {
+                    objects2Transparent[i].gameObject.GetComponent<MeshRenderer>().enabled = true;
+                }
+                objects2Transparent.Clear();
+            }            
+        }
+
         //La cámara siempre mira hacia el focusPoint
         myCamera.transform.LookAt(gameObject.transform);
 
@@ -284,6 +331,9 @@ public class NewCameraController : MonoBehaviour
                 transform.position = new Vector3(characterToFocus.transform.position.x, transform.transform.position.y, characterToFocus.transform.position.z);
             }
         }
+
+       
+            
     }
 
     private void LateUpdate()
@@ -378,5 +428,5 @@ public class NewCameraController : MonoBehaviour
         canMoveCamera = _shouldStop;
         canRotateCamera = _shouldStop;
         canZoomCamera = _shouldStop;
-    }
+    } 
 }
