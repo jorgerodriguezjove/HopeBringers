@@ -11,6 +11,10 @@ public class CharacterData : MonoBehaviour
     [SerializeField]
     public PlayerUnit myUnit;
 
+    //Id para poder guardar los personajes que se han desbloqueado
+    [SerializeField]
+    public int idCharacter;
+
     //La referencia a mi unidad dentro del nivel. (No puedo usar myUnit porque es  una referencia al prefab).
     //Cada personaje en su data se encarga de inicializarlo
     protected PlayerUnit myUnitReferenceOnLevel;

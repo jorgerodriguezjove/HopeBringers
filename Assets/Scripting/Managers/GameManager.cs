@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class GameManager : PersistentSingleton<GameManager>
 {
@@ -11,13 +13,17 @@ public class GameManager : PersistentSingleton<GameManager>
     //Este bool avisa al level manager de que el nivel ha sido cargado y el diálogo ha terminado
     public bool canGameplayLevelStart = false;
 
+    //Todos los personajes del juego esten o no desbloqueados
+    [SerializeField]
+    CharacterData[] allCharacters;
+
     [Header("VARIBLES NIVEL SELECCIONADO")]
     //Lista de character data que se tienen que cargar en el nivel
     [SerializeField]
     public List<CharacterData> characterDataForCurrentLevel = new List<CharacterData>();
 
     //Bool que indica si al cargar el level selection debería desbloquear un nuevo personaje
-    [HideInInspector]
+    [SerializeField]
     public GameObject newCharacterToUnlock;
 
     //Referencia al nodo del nivel que ha sido empezado
@@ -55,9 +61,6 @@ public class GameManager : PersistentSingleton<GameManager>
     [SerializeField]
     public int currentExp;
 
-    //Lista que va a guardar todos los objetos que tengan el componente Character Data
-    CharacterData[] oldCharacterDataList;
-
     //Array con todos los niveles del juego.
     [HideInInspector]
     public LevelNode[] allLevelNodes;
@@ -68,6 +71,9 @@ public class GameManager : PersistentSingleton<GameManager>
 
     [Header("REFERENCIAS")]
 
+    //Lista que va a guardar todos los objetos que tengan el componente Character Data
+    CharacterData[] oldCharacterDataList;
+
     //Variable que avisa al InkManager de que se ha inicializado
     public bool dialogTime;
 
@@ -76,6 +82,8 @@ public class GameManager : PersistentSingleton<GameManager>
     private DialogManager dialogManRef;
 
     private LevelManager LM;
+
+
 
     public bool isGamePaused
     {
@@ -100,6 +108,10 @@ public class GameManager : PersistentSingleton<GameManager>
     private void Start()
     {
         gameObject.name = "GameManager";
+
+        allCharacters = FindObjectsOfType<CharacterData>();
+
+        LoadGame();
     }
 
     //Añado la función a la carga de escenas
@@ -226,7 +238,7 @@ public class GameManager : PersistentSingleton<GameManager>
             LM.VictoryScreen();
         }
 
-      
+
     }
 
     public void StartDialog(bool _isStartDialog) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/
@@ -252,10 +264,298 @@ public class GameManager : PersistentSingleton<GameManager>
         inkManRef.RefreshView();
 
         //dialogManRef.SetVariables(dialogToReproduce, portraitNPC);
-        dialogManRef.OpenDialogWindow();    
+        dialogManRef.OpenDialogWindow();
         ///SoundManager.Instance.PlaySound(AppSounds.ENTERDIALOG_SFX);
         ///npcEndsound = npcData.finalAudio;
+    }
 
+    #endregion
+
+    #region SAVE_&_LOAD
+
+    public void SaveGame()
+    {
+        Save save = CreateSaveGameObject();
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/gamesave.save");
+        bf.Serialize(file, save);
+        file.Close();
+
+        Debug.Log("File Saved");
+        Debug.Log("-----");
+    }
+
+    public void LoadGame()
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
+            Save save = (Save)bf.Deserialize(file);
+            file.Close();
+
+            //Aqui se hace lo contrario que en el CreateSaveGameObject. Se toman las variables del save y se aplican esos valores a las variables que se usan en código
+            currentExp = save.s_currentXp;
+
+            print(Application.persistentDataPath);
+
+            characterDataForCurrentLevel.Clear();
+
+            for (int i = 0; i < allCharacters.Length; i++)
+            {
+                if (save.s_charactersUnlocked.Contains(allCharacters[i].idCharacter))
+                {
+                    characterDataForCurrentLevel.Add(allCharacters[i]);
+                    allCharacters[i].isCharacterUnlocked = true;
+                    allCharacters[i].HideShowMeshCharacterData(true);
+                }
+            }
+
+
+            allLevelNodes = FindObjectsOfType<LevelNode>();
+            for (int i = 0; i < allLevelNodes.Length; i++)
+            {
+                if (save.s_levelIDsUnlocked.Contains(allLevelNodes[i].idLevel))
+                {
+                    allLevelNodes[i].UnlockConnectedLevels();
+                    levelIDsUnlocked.Add(allLevelNodes[i].idLevel);
+                }
+            }
+
+            #region Characters
+
+            KnightData _knight = FindObjectOfType<KnightData>();
+
+            _knight.unitPowerLevel = save.s_KnightPowerLevel;
+            if (_knight.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_KnightSkillsIds.Count; i++)
+                {
+                    _knight.idSkillsBought.Add(save.s_KnightSkillsIds[i]);
+                }
+            }
+
+            RogueData _rogue = FindObjectOfType<RogueData>();
+
+            _rogue.unitPowerLevel = save.s_RoguePowerLevel;
+            if (_rogue.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_RogueSkillsIds.Count; i++)
+                {
+                    _rogue.idSkillsBought.Add(save.s_RogueSkillsIds[i]);
+                }
+            }
+
+            MageData _mage = FindObjectOfType<MageData>();
+
+            _mage.unitPowerLevel = save.s_MagePowerLevel;
+            if (_mage.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_MageSkillsIds.Count; i++)
+                {
+                    _mage.idSkillsBought.Add(save.s_MageSkillsIds[i]);
+                }
+            }
+
+            BerserkerData _berserker = FindObjectOfType<BerserkerData>();
+
+            _berserker.unitPowerLevel = save.s_BerserkerPowerLevel;
+            if (_berserker.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_BerserkerSkillsIds.Count; i++)
+                {
+                    _berserker.idSkillsBought.Add(save.s_BerserkerSkillsIds[i]);
+                }
+            }
+
+            ValkyrieData _valkyrie = FindObjectOfType<ValkyrieData>();
+
+            _valkyrie.unitPowerLevel = save.s_ValkyriePowerLevel;
+            if (_valkyrie.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_ValkyrieSkillsIds.Count; i++)
+                {
+                    _valkyrie.idSkillsBought.Add(save.s_ValkyrieSkillsIds[i]);
+                }
+            }
+
+            DruidData _druid = FindObjectOfType<DruidData>();
+
+            _druid.unitPowerLevel = save.s_DruidPowerLevel;
+            if (_druid.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_DruidSkillsIds.Count; i++)
+                {
+                    _druid.idSkillsBought.Add(save.s_DruidSkillsIds[i]);
+                }
+            }
+
+            MonkData _monk = FindObjectOfType<MonkData>();
+
+            _monk.unitPowerLevel = save.s_MonkPowerLevel;
+            if (_monk.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_MonkSkillsIds.Count; i++)
+                {
+                    _monk.idSkillsBought.Add(save.s_MonkSkillsIds[i]);
+                }
+            }
+
+            SamuraiData _samurai = FindObjectOfType<SamuraiData>();
+
+            _samurai.unitPowerLevel = save.s_SamuraiPowerLevel;
+            if (_samurai.isCharacterUnlocked)
+            {
+                for (int i = 0; i < save.s_SamuraiSkillsIds.Count; i++)
+                {
+                    _samurai.idSkillsBought.Add(save.s_SamuraiSkillsIds[i]);
+                }
+            }
+
+            #endregion
+
+            Debug.Log("File Load");
+            Debug.Log("-----");
+        }
+
+        else
+        {
+            Debug.LogError("IGNORE CUSTOM ERROR: Se ha intentado cargar y no existe archivo de guardado");
+
+            SaveGame();
+        }
+    }
+
+    //Esta función se usa únicamente en el SaveGame. La he separado para que quede más claro la información que se guarda en cada archivo
+    private Save CreateSaveGameObject()
+    {
+        //Construyo archivo de guardado e inicializo todas las variables en el save
+        Save save = new Save();
+
+        save.s_currentXp = currentExp;
+
+        for (int i = 0; i < characterDataForCurrentLevel.Count; i++)
+        {
+            save.s_charactersUnlocked.Add(characterDataForCurrentLevel[i].idCharacter);
+        }
+
+        for (int i = 0; i < levelIDsUnlocked.Count; i++)
+        {
+            save.s_levelIDsUnlocked.Add(levelIDsUnlocked[i]);
+        }
+
+
+        #region Characters
+        KnightData _knight = FindObjectOfType<KnightData>();
+
+        save.s_KnightPowerLevel = _knight.unitPowerLevel;
+        if (_knight.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _knight.idSkillsBought.Count; i++)
+            {
+                save.s_KnightSkillsIds.Add(_knight.idSkillsBought[i]);
+            }
+        }
+
+        RogueData _rogue = FindObjectOfType<RogueData>();
+
+        save.s_RoguePowerLevel = _rogue.unitPowerLevel;
+        if (_rogue.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _rogue.idSkillsBought.Count; i++)
+            {
+                save.s_RogueSkillsIds.Add(_rogue.idSkillsBought[i]);
+            }
+        }
+
+        MageData _mage = FindObjectOfType<MageData>();
+
+        save.s_MagePowerLevel = _mage.unitPowerLevel;
+        if (_mage.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _mage.idSkillsBought.Count; i++)
+            {
+                save.s_MageSkillsIds.Add(_mage.idSkillsBought[i]);
+            }
+        }
+
+        BerserkerData _berserker = FindObjectOfType<BerserkerData>();
+
+        save.s_BerserkerPowerLevel = _berserker.unitPowerLevel;
+        if (_berserker.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _berserker.idSkillsBought.Count; i++)
+            {
+                save.s_BerserkerSkillsIds.Add(_berserker.idSkillsBought[i]);
+            }
+        }
+
+        ValkyrieData _valkyrie = FindObjectOfType<ValkyrieData>();
+
+        save.s_ValkyriePowerLevel = _valkyrie.unitPowerLevel;
+        if (_valkyrie.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _valkyrie.idSkillsBought.Count; i++)
+            {
+                save.s_ValkyrieSkillsIds.Add(_valkyrie.idSkillsBought[i]);
+            }
+        }
+
+        DruidData _druid = FindObjectOfType<DruidData>();
+
+        save.s_DruidPowerLevel = _druid.unitPowerLevel;
+        if (_druid.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _druid.idSkillsBought.Count; i++)
+            {
+                save.s_DruidSkillsIds.Add(_druid.idSkillsBought[i]);
+            }
+        }
+
+        MonkData _monk = FindObjectOfType<MonkData>();
+
+        save.s_MonkPowerLevel = _monk.unitPowerLevel;
+        if (_monk.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _monk.idSkillsBought.Count; i++)
+            {
+                save.s_MonkSkillsIds.Add(_monk.idSkillsBought[i]);
+            }
+        }
+
+        SamuraiData _samurai = FindObjectOfType<SamuraiData>();
+
+        save.s_SamuraiPowerLevel = _samurai.unitPowerLevel;
+        if (_samurai.isCharacterUnlocked)
+        {
+            for (int i = 0; i < _samurai.idSkillsBought.Count; i++)
+            {
+                save.s_SamuraiSkillsIds.Add(_samurai.idSkillsBought[i]);
+            }
+        }
+
+        #endregion
+
+        return save;
+    }
+
+    //DEBUG SAVE LOAD
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SaveGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadGame();
+        }
+    }
+
+    private void ResetSaveFile()
+    {
 
     }
 

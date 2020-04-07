@@ -29,13 +29,9 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public int xpPerCharacter;
 
-    public enum PossibleCharactersToUnlock { none, Berserker, Mage, Ninja, Valkyrie, Druid, Monk, Samurai };
-
-    [SerializeField]
-    public PossibleCharactersToUnlock characterToUnlock;
-
     //En caso de que al completar este nivel se desbloquee un personaje se guarda en esta variable
-    [HideInInspector]
+    //SE SETEA EN EDITOR DIRECTAMENTE EL OBJETO
+    [SerializeField]
     public GameObject newCharacterToUnlock;
 
     ///BUSCAR FORMA MEJOR DE PASAR EL NIVEL QUE CON STRINGS. 
@@ -91,54 +87,6 @@ public class LevelNode : MonoBehaviour
     [Header("REFERENCIAS")]
     [SerializeField]
     private TableManager TM;
-
-    #endregion
-
-    #region INIT
-
-    private void Start()
-    {
-        if (characterToUnlock == PossibleCharactersToUnlock.none)
-        {
-            newCharacterToUnlock = null;
-        }
-
-        else if (characterToUnlock == PossibleCharactersToUnlock.Berserker)
-        {
-            newCharacterToUnlock = FindObjectOfType<BerserkerData>().gameObject;
-        }
-
-        else if (characterToUnlock == PossibleCharactersToUnlock.Mage)
-        {
-            newCharacterToUnlock = FindObjectOfType<MageData>().gameObject;
-        }
-
-        else if (characterToUnlock == PossibleCharactersToUnlock.Ninja)
-        {
-            newCharacterToUnlock = FindObjectOfType<RogueData>().gameObject;
-        }
-
-        //else if (characterEnum == PossibleCharactersToUnlock.Druid)
-        //{
-        //    newCharacterToUnlock = FindObjectOfType<DruidData>().gameObject;
-        //}
-
-        //else if (characterEnum == PossibleCharactersToUnlock.Monk)
-        //{
-        //    newCharacterToUnlock = FindObjectOfType<MonkData>().gameObject;
-        //}
-
-        //else if (characterEnum == PossibleCharactersToUnlock.Valkyrie)
-        //{
-        //    newCharacterToUnlock = FindObjectOfType<ValkyrieData>().gameObject;
-        //}
-
-        //else if (characterEnum == PossibleCharactersToUnlock.Samurai)
-        //{
-        //    newCharacterToUnlock = FindObjectOfType<SamuraiData>().gameObject;
-        //}
-
-    }
 
     #endregion
 

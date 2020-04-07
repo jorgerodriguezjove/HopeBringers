@@ -192,25 +192,17 @@ public class UITableManager : MonoBehaviour
         {
             upgrades[i].GetComponent<UpgradeNode>().TM = TM;
             upgrades[i].GetComponent<UpgradeNode>().myUnit = unitClicked;
-
-            if (ids.Count == 0)
-            {
-                upgrades[i].GetComponent<UpgradeNode>().idUpgrade = i;
-            }
+            upgrades[i].GetComponent<UpgradeNode>().idUpgrade = i;
         }
 
         Debug.Log(ids.Count);
 
-        //Si las ids no son 0 entonces es que no es la primera vez que se setea el árbol y no tengo que volver a setear los ids
-        if (ids.Count != 0)
+        //Por cada mejora compruebo si existe en ids compradas un valor en la lista que coincida el id
+        for (int i = 0; i < upgrades.Count; i++)
         {
-            //Por cada mejora compruebo si existe en ids compradas un valor en la lista que coincida el id
-            for (int i = 0; i < upgrades.Count; i++)
+            if (ids.Contains(upgrades[i].idUpgrade))
             {
-                if (ids.Contains(upgrades[i].idUpgrade))
-                {
-                    upgrades[i].UpgradeBought();
-                }
+                upgrades[i].UpgradeBought();
             }
         }
     }
