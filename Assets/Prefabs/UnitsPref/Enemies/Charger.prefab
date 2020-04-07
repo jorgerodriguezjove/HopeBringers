@@ -3518,6 +3518,8 @@ MonoBehaviour:
   orderToShow: 0
   thisUnitOrder: {fileID: 219784646}
   currentUnitsAvailableToAttack: []
+  unitsInRange: []
+  isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 0
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
@@ -3527,6 +3529,7 @@ MonoBehaviour:
   myPortrait: {fileID: 0}
   myLineRenderer: {fileID: 9216746686890741761}
   sleepParticle: {fileID: 0}
+  exclamationIcon: {fileID: 0}
   tileDamageRef: {fileID: 8175071015859014743, guid: eb42a29c25ab678449a250f554b9b092,
     type: 3}
   pathToObjective: []
@@ -4079,6 +4082,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InsideGameInfoEnemies
+      objectReference: {fileID: 0}
+    - target: {fileID: 5324547870424089507, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8516847354922301442, guid: c605a28176437894184420fd82351069,
         type: 3}
