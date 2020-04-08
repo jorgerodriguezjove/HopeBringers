@@ -36,10 +36,6 @@ public class TableManager : MonoBehaviour
     [HideInInspector]
     public LevelNode lastLevelClicked;
 
-    //En caso de que al completar este nivel se desbloquee un personaje se guarda en esta variable
-    [SerializeField]
-    public GameObject newCharacterToUnlock;
-
     //Nombre del nivel actual que hay que cargar si el jugador le da a ready
     [HideInInspector]
     public string currentClickedSceneName;
@@ -78,6 +74,7 @@ public class TableManager : MonoBehaviour
         //TIENE QUE IR ANTES QUE level1.SelectLevel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (GameManager.Instance.newCharacterToUnlock != null)
         {
+            Debug.Log("HERE");
             UnlockNewCharacter();
         }
 
@@ -123,15 +120,17 @@ public class TableManager : MonoBehaviour
         GameManager.Instance.currentLevelEndDialog = _endDialog;
 
         //Personaje a desbloquear
-        if (newCharacterToUnlock != null)
+        if (levelClicked.newCharacterToUnlock  != null)
         {
-            GameManager.Instance.newCharacterToUnlock = newCharacterToUnlock;
+            GameManager.Instance.newCharacterToUnlock = levelClicked.newCharacterToUnlock;
+           
         }
         else
         {
             GameManager.Instance.newCharacterToUnlock = null;
         }
 
+        Debug.Log(levelClicked.newCharacterToUnlock);
         Debug.Log("Xp to win in this level " + _xpToWin);
 
         //El UI Manager se encarga de actualizar la info del nivel

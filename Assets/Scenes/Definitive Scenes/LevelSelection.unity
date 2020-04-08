@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -369,7 +369,6 @@ MonoBehaviour:
   xpToWin: 1100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel10
   isUnlocked: 0
@@ -644,7 +643,6 @@ MonoBehaviour:
   xpToWin: 2100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Proc3
   isUnlocked: 0
@@ -1303,8 +1301,7 @@ MonoBehaviour:
   xpToWin: 100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
-  newCharacterToUnlock: {fileID: 0}
+  newCharacterToUnlock: {fileID: 1916360241}
   sceneName: Nivel_Tutorial1
   isUnlocked: 1
   unlockableLevels:
@@ -3263,7 +3260,6 @@ MonoBehaviour:
   xpToWin: 1700
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel15
   isUnlocked: 0
@@ -3398,7 +3394,6 @@ MonoBehaviour:
   xpToWin: 1500
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel_Sauron
   isUnlocked: 0
@@ -7961,7 +7956,6 @@ MonoBehaviour:
   xpToWin: 1200
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel11
   isUnlocked: 0
@@ -8161,6 +8155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 2483112472126393236, guid: eb9afffb689128f4a867cdfcaf0fdbd7, type: 3}
+  idCharacter: 0
   skillTreePrefab: {fileID: 8181931123407298899, guid: caaed6cb16282014e90ea1da504f1045,
     type: 3}
   unitPowerLevel: 100
@@ -8311,7 +8306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &591400520
 Transform:
   m_ObjectHideFlags: 0
@@ -8320,7 +8315,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 591400519}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -4.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 766426223}
@@ -10926,7 +10921,6 @@ MonoBehaviour:
   xpToWin: 600
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Proc1
   isUnlocked: 0
@@ -11163,7 +11157,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &789823955
 Transform:
   m_ObjectHideFlags: 0
@@ -11599,7 +11593,6 @@ MonoBehaviour:
   xpToWin: 2600
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel_Dragon
   isUnlocked: 0
@@ -13193,7 +13186,6 @@ MonoBehaviour:
   xpToWin: 100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel_Tutorial5
   isUnlocked: 0
@@ -14055,7 +14047,6 @@ MonoBehaviour:
   xpToWin: 900
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel8
   isUnlocked: 0
@@ -14562,7 +14553,6 @@ MonoBehaviour:
   xpToWin: 1600
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel14
   isUnlocked: 0
@@ -15864,7 +15854,6 @@ MonoBehaviour:
   xpToWin: 1300
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel12
   isUnlocked: 0
@@ -16151,7 +16140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1138736246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16165,6 +16154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 7811819996263406960, guid: 0dd2fbc72c39e0049966c725ff8064ca, type: 3}
+  idCharacter: 1
   skillTreePrefab: {fileID: 8181931123407298899, guid: a118e8245e763e042a3bd18a213cb69e,
     type: 3}
   unitPowerLevel: 100
@@ -16172,7 +16162,7 @@ MonoBehaviour:
   initialized: 0
   unitModel: {fileID: 591400519}
   initialPosition: {x: 0, y: 0, z: 0}
-  isCharacterUnlocked: 1
+  isCharacterUnlocked: 0
   panelOfTheBookImIn: {fileID: 0}
 --- !u!136 &1138736247
 CapsuleCollider:
@@ -16183,7 +16173,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1138736245}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.58684915
   m_Height: 2.833274
   m_Direction: 1
@@ -16884,7 +16874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1203661243
 Transform:
   m_ObjectHideFlags: 0
@@ -18047,7 +18037,6 @@ MonoBehaviour:
   xpToWin: 2000
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel18
   isUnlocked: 0
@@ -18183,7 +18172,6 @@ MonoBehaviour:
   xpToWin: 2200
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel19
   isUnlocked: 0
@@ -18350,6 +18338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 3696733763687805787, guid: dcc6032a5e09ac946949e5ed8ce82340, type: 3}
+  idCharacter: 5
   skillTreePrefab: {fileID: 8181931123407298899, guid: 5d5362828f6df764788ebb547d6b5570,
     type: 3}
   unitPowerLevel: 100
@@ -19527,7 +19516,6 @@ MonoBehaviour:
   xpToWin: 2300
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel20
   isUnlocked: 0
@@ -19640,7 +19628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1394380318
 Transform:
   m_ObjectHideFlags: 0
@@ -19948,7 +19936,6 @@ MonoBehaviour:
   xpToWin: 100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel_Tutorial_6(Mecha)
   isUnlocked: 0
@@ -20547,7 +20534,6 @@ MonoBehaviour:
   xpToWin: 100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel_Tutorial3
   isUnlocked: 0
@@ -22016,7 +22002,6 @@ MonoBehaviour:
   xpToWin: 100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel_Tutorial_2
   isUnlocked: 0
@@ -23014,6 +22999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 2705016127421101446, guid: 18e97fb18235dea439a1b34ab496d60e, type: 3}
+  idCharacter: 2
   skillTreePrefab: {fileID: 8181931123407298899, guid: ec4d61df3e5f6ba4f8817576891a5049,
     type: 3}
   unitPowerLevel: 100
@@ -23908,7 +23894,6 @@ MonoBehaviour:
   xpToWin: 100
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel_Tutorial4
   isUnlocked: 0
@@ -24118,7 +24103,6 @@ MonoBehaviour:
   xpToWin: 1000
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel9
   isUnlocked: 0
@@ -25039,6 +25023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 1610800354654958008, guid: 442d2ce396f87a24595829f771d8735e, type: 3}
+  idCharacter: 7
   skillTreePrefab: {fileID: 8181931123407298899, guid: a118e8245e763e042a3bd18a213cb69e,
     type: 3}
   unitPowerLevel: 100
@@ -26487,7 +26472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1916360242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26501,6 +26486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 3975290934960406147, guid: bf8b117acdbf3e34f88db8774fb57e29, type: 3}
+  idCharacter: 4
   skillTreePrefab: {fileID: 8181931123407298899, guid: a118e8245e763e042a3bd18a213cb69e,
     type: 3}
   unitPowerLevel: 100
@@ -26519,7 +26505,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1916360241}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.58684915
   m_Height: 2.833274
   m_Direction: 1
@@ -27316,7 +27302,6 @@ MonoBehaviour:
   xpToWin: 1900
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel17
   isUnlocked: 0
@@ -28064,7 +28049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1978693779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28078,6 +28063,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 8587184056428026795, guid: cc7b38856c82d6a4aa9c528e7cd0ee21, type: 3}
+  idCharacter: 3
   skillTreePrefab: {fileID: 8181931123407298899, guid: a118e8245e763e042a3bd18a213cb69e,
     type: 3}
   unitPowerLevel: 100
@@ -28085,7 +28071,7 @@ MonoBehaviour:
   initialized: 0
   unitModel: {fileID: 1203661242}
   initialPosition: {x: 0, y: 0, z: 0}
-  isCharacterUnlocked: 1
+  isCharacterUnlocked: 0
   panelOfTheBookImIn: {fileID: 0}
 --- !u!136 &1978693780
 CapsuleCollider:
@@ -28096,7 +28082,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1978693778}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.58684915
   m_Height: 2.833274
   m_Direction: 1
@@ -28117,7 +28103,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978693778}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 44.16, y: 3.5, z: 54.81}
+  m_LocalPosition: {x: 38.36, y: 3.5, z: 47.36}
   m_LocalScale: {x: 3.072002, y: 3.0720003, z: 3.072002}
   m_Children:
   - {fileID: 1203661243}
@@ -28240,7 +28226,6 @@ MonoBehaviour:
   xpToWin: 1800
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel16
   isUnlocked: 0
@@ -28423,7 +28408,6 @@ MonoBehaviour:
   xpToWin: 800
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel7
   isUnlocked: 0
@@ -28637,7 +28621,6 @@ MonoBehaviour:
   xpToWin: 2400
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel21
   isUnlocked: 0
@@ -29266,7 +29249,6 @@ MonoBehaviour:
   xpToWin: 2500
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Nivel22
   isUnlocked: 0
@@ -29432,7 +29414,6 @@ MonoBehaviour:
   xpToWin: 1400
   xpPerTurn: 5
   xpPerCharacter: 10
-  characterToUnlock: 0
   newCharacterToUnlock: {fileID: 0}
   sceneName: Proc2
   isUnlocked: 0
@@ -30577,7 +30558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2110349799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30591,6 +30572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myUnit: {fileID: 6981163264014439210, guid: 6c6cc574785832242a3b64a8b9b4707b, type: 3}
+  idCharacter: 6
   skillTreePrefab: {fileID: 8181931123407298899, guid: a118e8245e763e042a3bd18a213cb69e,
     type: 3}
   unitPowerLevel: 100
@@ -30609,7 +30591,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 2110349798}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.58684915
   m_Height: 2.833274
   m_Direction: 1
