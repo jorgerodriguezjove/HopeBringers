@@ -536,6 +536,7 @@ public class LevelManager : MonoBehaviour
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
+                    hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count -1]);
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
                 }

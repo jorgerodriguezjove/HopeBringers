@@ -708,26 +708,28 @@ public class UnitBase : MonoBehaviour
     //Cambiar a color que indica que puede ser atacado
     public virtual void ColorAvailableToBeAttacked(float damageCalculated)
     {
-        if (!isDead )
+        if (!isDead)
         {
             unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
 
             if (damageCalculated >= 0)
             {
-                if(damageCalculated == 0 && GetComponent<Knight>())
-                {
-                    GetComponent<Knight>().shieldBlockAllDamage.SetActive(true);
-
-                }
-                else
-                {
-                    previsualizeAttackIcon.SetActive(true);
-                    EnableCanvasHover(damageCalculated);
-                }
-               
+                previsualizeAttackIcon.SetActive(true);
+                EnableCanvasHover(damageCalculated);
             }
         }        
     }
+
+    //Esta función se usa para mostrar el escudo encima de los personajes. Puede aparecer al hacer hover sobre enemigo y mostrar ataque o justo en la animación de ataque.
+    public void CalculateDirectionOfAttackReceivedToShowShield(IndividualTiles tileWhereEnemyFinishMovement)
+    {
+        if (GetComponent<Knight>())
+        {
+
+            GetComponent<Knight>().shieldBlockAllDamage.SetActive(true);
+        }
+    }
+
 
     public virtual void ColorAvailableToBeHealed()
     {

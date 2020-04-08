@@ -1412,7 +1412,7 @@ public class TileManager : MonoBehaviour
     public List<IndividualTiles> surroundingTiles = new List<IndividualTiles>();
 
     //Obtener los vecinos + las diagonales de un tile
-    //Si radius es igual a uno se obtienen los 8 tiles que rodean al tile (neighbours + diagonales)
+    //Si radius es igual a uno se obtienen los 8 tiles que rodean al tile (neighbours + diagonales) 
     //Si radius es 2 se ignoran estos 8 tiles y se obtienen los 14 tiles que rodean a estos 8. Básicamente lo uso para saber los tiles a los que puede atacar el dragón.
     public List<IndividualTiles> GetSurroundingTiles(IndividualTiles centerTile, int radius, bool shouldIAddCorners, bool shouldAddOnlyBorder)
     {

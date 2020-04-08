@@ -140,7 +140,7 @@ public class GameManager : PersistentSingleton<GameManager>
 
         allCharacters = FindObjectsOfType<CharacterData>();
 
-        LoadGame();
+        //LoadGame();
     }
 
     //Añado la función a la carga de escenas
@@ -584,25 +584,6 @@ public class GameManager : PersistentSingleton<GameManager>
         save.s_randomLevelsCompleted = randomLevelsCompleted;
 
         return save;
-    }
-
-    //DEBUG SAVE LOAD
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SaveGame();
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            LoadGame();
-        }
-    }
-
-    private void ResetSaveFile()
-    {
-
     }
 
     #endregion

@@ -97,6 +97,11 @@ public class EnemyUnit : UnitBase
 	public Sprite enemyTierImage;
 
 	[Header("FEEDBACK")]
+
+    //Path de tiles a seguir hasta el objetivo
+    [HideInInspector]
+    public List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
+
     //Flecha que indica que enemigo está realizando su acción.
     [SerializeField]
     private GameObject arrowEnemyIndicator;

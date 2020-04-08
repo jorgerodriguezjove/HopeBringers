@@ -10,10 +10,6 @@ public class EnGoblin : EnemyUnit
     private UnitBase myCurrentObjective;
     private IndividualTiles myCurrentObjectiveTile;
 
-    //Path de tiles a seguir hasta el objetivo
-    [HideInInspector]
-    private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
-
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
