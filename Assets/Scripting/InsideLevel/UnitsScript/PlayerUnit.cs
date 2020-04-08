@@ -762,6 +762,13 @@ public class PlayerUnit : UnitBase
 
         if (currentHealth <= 0)
         {
+            //Logro matar aliado
+            if (unitAttacker.GetComponent<PlayerUnit>())
+            {
+                
+                GameManager.Instance.UnlockAchievement(0);
+            }
+
             Die();
             return;
         }
@@ -770,6 +777,7 @@ public class PlayerUnit : UnitBase
         UIM.RefreshHealth();
 
         base.ReceiveDamage(damageReceived,unitAttacker);
+
     }
 
     public override void Die()

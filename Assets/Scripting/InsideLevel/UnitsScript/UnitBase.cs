@@ -427,6 +427,13 @@ public class UnitBase : MonoBehaviour
         {
             Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
         }
+
+
+        //Logro hacer 0 daño
+        if (GetComponent<PlayerUnit>() && damageWithMultipliersApplied == 0)
+        {
+            GameManager.Instance.UnlockAchievement(0);
+        }
     }
 
     //Función para recibir daño
