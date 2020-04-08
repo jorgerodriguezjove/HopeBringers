@@ -69,26 +69,50 @@ public class MageDecoy : Mage
 
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
 
-        myCurrentTile.unitOnTile = null;
-        myCurrentTile.WarnInmediateNeighbours();
+        //myCurrentTile.unitOnTile = null;
+        //myCurrentTile.WarnInmediateNeighbours();
 
         if (myMage.isDecoyBomb)
-        {
+        {            
             TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-            //Hago daño a las unidades adyacentes(3x3)
-            for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; ++i)
-            {
-                if (myCurrentTile.surroundingNeighbours[i].unitOnTile != null)
+           
+                //Hago daño a las unidades adyacentes
+                for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                 {
-                    DoDamage(myCurrentTile.surroundingNeighbours[i].unitOnTile);
+                    if (TM.surroundingTiles[i] != null)
+                    {
+                        tilesInEnemyHover[i].ColorAttack();
+                       
+                    }
                 }
-            }
+
+            StartCoroutine("WaitToDamageSurrounding");
 
         }
 
         myMage.myDecoys.Remove(gameObject);
         LM.charactersOnTheBoard.Remove(this);
         Destroy(gameObject);
+    }
+
+
+    IEnumerator WaitToDamageSurrounding()
+    {
+        yield return new WaitForSeconds(2f);
+
+        //Hago daño a las unidades adyacentes(3x3)
+        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+        {
+            if (TM.surroundingTiles[i] != null)
+            {
+                tilesInEnemyHover[i].ColorDesAttack();                
+            }
+            if (TM.surroundingTiles[i].unitOnTile != null)
+            {
+                DoDamage(TM.surroundingTiles[i].unitOnTile);
+            }
+        }
+
     }
 
     //Es virtual para el decoy del mago.
@@ -344,23 +368,29 @@ public class MageDecoy : Mage
 
         }
 
-        if (myMage.mirrorDecoy)
+        if (myMage.mirrorDecoy && LM.selectedCharacter == myMage)
         {
-            if (myMage.mirrorDecoy2)
+            if (currentUnitsAvailableToAttack.Count > 0)
             {
-                for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+                if (myMage.mirrorDecoy2)
                 {
-                    if (currentUnitsAvailableToAttack[i] != null)
+                    for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
                     {
-                        DoDamage(currentUnitsAvailableToAttack[i]);
+                        if (currentUnitsAvailableToAttack[i] != null)
+                        {
+                            DoDamage(currentUnitsAvailableToAttack[i]);
+
+                        }
 
                     }
-
                 }
-            }else if (currentUnitsAvailableToAttack[0] != null)
-            {
-                DoDamage(currentUnitsAvailableToAttack[0]);
+                else if (currentUnitsAvailableToAttack[0] != null)
+                {
+                    DoDamage(currentUnitsAvailableToAttack[0]);
+                }
+
             }
+            
 
         }
        
@@ -391,6 +421,8 @@ public class MageDecoy : Mage
 
 
         }
+
+        HideAttackEffect(null);
     }
 
     public void ChangePositionIconFeedback(bool has2Show)
@@ -404,6 +436,7 @@ public class MageDecoy : Mage
             }
             changePositionIcon.SetActive(true);
 
+            
         }
         else
         {
@@ -417,17 +450,295 @@ public class MageDecoy : Mage
         }
 
     }
-    //En este caso lo uso para ver lo que hace el decoy cuando el mago lee hace hover
-    public override void ShowAttackEffect(UnitBase _unitToAttack)
+
+
+    public  void CheckUnitsAndTilesToColorAtHover()
+    {
+       
+        currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
+        previousTileHeight = 0;
+
+        if (currentFacingDirection == FacingDirection.North)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineUp.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                //Guardo la altura mas alta en esta linea de tiles
+                if (myCurrentTile.tilesInLineUp[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineUp[i].height;
+                }
+
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                {
+                    //Si no hay obstáculo marco el tile para indicar el rango
+                    if (!myCurrentTile.tilesInLineUp[i].isEmpty && !myCurrentTile.tilesInLineUp[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.South)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineDown.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                //Guardo la altura mas alta en esta linea de tiles
+                if (myCurrentTile.tilesInLineDown[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineDown[i].height;
+                }
+
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                {
+                    if (!myCurrentTile.tilesInLineDown[i].isEmpty && !myCurrentTile.tilesInLineDown[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
+                    }
+
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.East)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineRight.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                //Guardo la altura mas alta en esta linea de tiles
+                if (myCurrentTile.tilesInLineRight[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineRight[i].height;
+                }
+
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                {
+                    if (!myCurrentTile.tilesInLineRight[i].isEmpty && !myCurrentTile.tilesInLineRight[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.West)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                //Guardo la altura mas alta en esta linea de tiles
+                if (myCurrentTile.tilesInLineLeft[i].height > previousTileHeight)
+                {
+                    previousTileHeight = myCurrentTile.tilesInLineLeft[i].height;
+                }
+
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                {
+                    if (!myCurrentTile.tilesInLineLeft[i].isEmpty && !myCurrentTile.tilesInLineLeft[i].isObstacle)
+                    {
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
+                    }
+
+                    else
+                    {
+                        break;
+                    }                 
+                }
+            }
+
+        }
+
+        if (myMage.mirrorDecoy)
+        {
+            
+            if (myMage.mirrorDecoy2)
+            {
+                for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+                {
+                    if (currentTilesInRangeForAttack[i] != null)
+                    {
+                        currentTilesInRangeForAttack[i].ColorAttack();
+
+                        if(currentTilesInRangeForAttack[i].unitOnTile != null)
+                        {
+                            CalculateDamage(currentTilesInRangeForAttack[i].unitOnTile);
+                            currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+                        }                      
+                    }
+                }
+            }
+            else if (currentTilesInRangeForAttack[0] != null)
+            {
+                for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+                {
+                    if (currentTilesInRangeForAttack[i].unitOnTile != null)
+                    {
+                        CalculateDamage(currentTilesInRangeForAttack[i].unitOnTile);
+                        currentTilesInRangeForAttack[i].ColorAttack();
+                        currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+                        break;
+                    }
+                }
+              
+            }
+
+        }
+
+    
+
+
+}
+
+
+//En este caso lo uso para ver lo que hace el decoy cuando el mago lee hace hover
+public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
         ChangePositionIconFeedback(true);
 
+        if (LM.selectedCharacter != null)
+        {
+            if (myMage.isDecoyBomb2)
+            {
+
+                TM.surroundingTiles.Clear();
+
+                TM.GetSurroundingTiles(myMage.myCurrentTile, 1, true, false);
+
+                //Hago daño a las unidades adyacentes
+                for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                {
+                    if (TM.surroundingTiles[i] != null)
+                    {
+                        tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+                    }
+                }
+
+            }
+        }
+        //Hasta aqui no llega porque no puede darse el caso de que el selectedCharacter sea null tras entrar en esta función
+        //else
+        //{
+        //    if (myMage.isDecoyBomb)
+        //    {
+
+        //        TM.surroundingTiles.Clear();
+
+        //        TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+
+        //        //Hago daño a las unidades adyacentes
+        //        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+        //        {
+        //            if (TM.surroundingTiles[i] != null)
+        //            {
+                        
+        //                tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+        //            }
+        //        }
+
+        //    }
+
+        //}
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            }
+        }
     }
-    public override void HideAttackEffect(UnitBase _unitToAttack)
+public override void HideAttackEffect(UnitBase _unitToAttack)
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         ChangePositionIconFeedback(false);
+
+
+        if (myMage.mirrorDecoy)
+        {
+
+            for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+            {
+                if (currentTilesInRangeForAttack[i] != null)
+                {
+                    currentTilesInRangeForAttack[i].ColorDesAttack();
+
+                    if (currentTilesInRangeForAttack[i].unitOnTile != null)
+                    {
+                        currentTilesInRangeForAttack[i].unitOnTile.ResetColor();
+                    }
+                }
+            }
+
+            currentTilesInRangeForAttack.Clear();
+        }
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorDesAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ResetColor();
+            }
+        }
 
 
     }

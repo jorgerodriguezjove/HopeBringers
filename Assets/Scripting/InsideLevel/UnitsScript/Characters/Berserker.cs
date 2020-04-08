@@ -15,10 +15,6 @@ public class Berserker : PlayerUnit
 
     public GameObject isInRageIcon;
 
-  
-
-
-
     //Al llegar a 0, el rage se quita
     private int turnsLeftToRageOff;
     [SerializeField]
@@ -48,10 +44,13 @@ public class Berserker : PlayerUnit
     //Este es el int que hay que cambiar para que el rage haga más daño
     private int rageDamagePlus;
 
+    [SerializeField]
     private bool rageFear;
     [SerializeField]
     //Este es el int que hay que cambiar para que el el berserker meta más turnos de miedo
     private int fearTurnBonus;
+
+    
 
 
     #endregion
@@ -258,6 +257,13 @@ public class Berserker : PlayerUnit
                 unitToDealDamage.hasFear = true;
                 unitToDealDamage.turnsWithFear += fearTurnBonus;
 
+                if (unitToDealDamage.fearIcon != null)
+                {
+                    unitToDealDamage.fearIcon.SetActive(true);
+                }
+             
+              
+
             }
 
 
@@ -426,6 +432,12 @@ public class Berserker : PlayerUnit
                 }                          
         }
 
+        if (rageFear)
+        {
+
+            _unitToAttack.fearIcon.SetActive(true);
+
+        }
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
@@ -441,6 +453,15 @@ public class Berserker : PlayerUnit
 
     }
 
+    public override void HideAttackEffect(UnitBase _unitToAttack)
+    {
+        if (rageFear)
+        {
+
+            _unitToAttack.fearIcon.SetActive(false);
+
+        }
+    }
     #region COLORS
 
 

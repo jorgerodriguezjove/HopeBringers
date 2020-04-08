@@ -3143,6 +3143,7 @@ MonoBehaviour:
   numberOfMarks: 0
   hasFear: 0
   turnsWithFear: 0
+  fearIcon: {fileID: 0}
   isStunned: 0
   turnStunned: 0
   isHidden: 0
@@ -3184,6 +3185,7 @@ MonoBehaviour:
   lifeContainer: {fileID: 1058698730028273371}
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 138a6284f26a7d6488028cc22d37c737,
     type: 2}
+  AvailableToBeHealedColor: {fileID: 0}
   previsualizeAttackIcon: {fileID: 7878367721440175594}
   notAttackX: {fileID: 8044604153733497516}
   shaderHover: {fileID: 567574155072517479}
@@ -3207,6 +3209,8 @@ MonoBehaviour:
   orderToShow: 0
   thisUnitOrder: {fileID: 0}
   currentUnitsAvailableToAttack: []
+  unitsInRange: []
+  isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 0
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
@@ -3216,6 +3220,8 @@ MonoBehaviour:
   myPortrait: {fileID: 0}
   myLineRenderer: {fileID: 3645512459767184502}
   sleepParticle: {fileID: 2779683138633240414}
+  exclamationIcon: {fileID: 0}
+  isCrystalActive: 0
 --- !u!1 &1892094559473089331
 GameObject:
   m_ObjectHideFlags: 0

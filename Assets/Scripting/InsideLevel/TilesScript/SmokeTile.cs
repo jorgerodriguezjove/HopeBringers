@@ -26,6 +26,8 @@ public class SmokeTile : DamageTile
             }
             else if (unitOnTile.GetComponent<PlayerUnit>())
             {
+                unitToDoDamage = unitOnTile.gameObject;
+
                 unitToDoDamage.GetComponent<UnitBase>().isHidden = true;
                 hasUnit = true;
 
@@ -34,6 +36,7 @@ public class SmokeTile : DamageTile
         }
         else if(unitOnTile.GetComponent<PlayerUnit>())
             {
+            unitToDoDamage = unitOnTile.gameObject;
             unitToDoDamage.GetComponent<UnitBase>().isHidden = true;
             hasUnit = true;
         

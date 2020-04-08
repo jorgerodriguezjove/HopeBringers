@@ -43,6 +43,8 @@ public class UnitBase : MonoBehaviour
     public bool hasFear;
     //Añado esto para acumular el número de turnos que la unidad tiene miedo
     public int turnsWithFear;
+    //Icono que muestra que la unidad  tiene miedo
+    public GameObject fearIcon;
 
     //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
     //Bool que indica si está stuneado o no 
@@ -707,7 +709,7 @@ public class UnitBase : MonoBehaviour
             {
                 if(damageCalculated == 0 && GetComponent<Knight>())
                 {
-                    GetComponent<Knight>().shieldBlockDamage.SetActive(true);
+                    GetComponent<Knight>().shieldBlockAllDamage.SetActive(true);
 
                 }
                 else

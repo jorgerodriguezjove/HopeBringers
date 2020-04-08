@@ -580,11 +580,7 @@ public class Mage : PlayerUnit
             for (int i = 0; i < TM.surroundingTiles.Count; ++i)
             {
                 tilesInEnemyHover.Add(TM.surroundingTiles[i]);
-            }
-
-            
-
-
+            }            
         }
         else if (lightningChain)
         {
@@ -633,10 +629,19 @@ public class Mage : PlayerUnit
 
             
         }
+
         limitantAttackBonus = fLimitantAttackBonus;
         timeElectricityAttackExpands = fTimeElectricityAttackExpands;
         unitsAttacked.Clear();
 
+        if (mirrorDecoy)
+        {
+            for (int i = 0; i < myDecoys.Count; i++)
+            {
+                myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesToColorAtHover();
+            }
+
+        }
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
@@ -648,4 +653,17 @@ public class Mage : PlayerUnit
             }
         }
     }
+
+    public override void HideAttackEffect(UnitBase _unitToAttack)
+    {
+        if (mirrorDecoy)
+        {
+            for (int i = 0; i < myDecoys.Count; i++)
+            {
+                myDecoys[i].GetComponent<MageDecoy>().HideAttackEffect(null);
+            }
+
+        }
+    }
+
 }

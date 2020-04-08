@@ -11,7 +11,13 @@ public class Knight : PlayerUnit
     [SerializeField]
     public int tilesToPush;
 
+    //Escudo que bloquea el daño completo
+    public GameObject shieldBlockAllDamage;
+
+    //Escudo que no bloquea el daño completo
     public GameObject shieldBlockDamage;
+
+
 
     [Header("MEJORAS DE PERSONAJE")]
 
@@ -770,6 +776,6 @@ public class Knight : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
-        shieldBlockDamage.SetActive(false);
+        shieldBlockAllDamage.SetActive(false);
     }
 }

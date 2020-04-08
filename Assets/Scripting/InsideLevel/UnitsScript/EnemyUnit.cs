@@ -264,6 +264,12 @@ public class EnemyUnit : UnitBase
                         if (turnsWithFear<=0)
                         {
                             hasFear = false;
+
+                            if (fearIcon != null)
+                            {
+                               fearIcon.SetActive(false);
+                            }
+                            
                         }
                     }
                     StartCoroutine("WaitBeforeNextState");
@@ -668,11 +674,12 @@ public class EnemyUnit : UnitBase
                     }
                 }
 
-                LM.selectedCharacter.tilesInEnemyHover.Clear();
+                
                
 
             }
             LM.selectedCharacter.HideAttackEffect(this);
+            LM.selectedCharacter.tilesInEnemyHover.Clear();
         }
         if(LM.selectedCharacter != null) 
         {
@@ -689,7 +696,7 @@ public class EnemyUnit : UnitBase
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
                     }
                 }
-
+                LM.selectedCharacter.HideAttackEffect(this);
                 LM.selectedCharacter.tilesInEnemyHover.Clear();
             }
         }

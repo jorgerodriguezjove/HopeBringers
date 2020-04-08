@@ -38,9 +38,17 @@ public class Rogue : PlayerUnit
     //Comprobar si tiene la habilidad comprada
     public bool smokeBomb;
     public GameObject smokeBombPref;
+
+    public GameObject smokeBombShadow;
+
+    [HideInInspector]
+    public List<GameObject> bombsSpawned;
+
+    FacingDirection previousFacingDirection;
+
     //Pasuva mejorada
     public bool smokeBomb2;
-    public GameObject smokeBombPref2;
+   
 
     #endregion
 
@@ -70,6 +78,8 @@ public class Rogue : PlayerUnit
             //Cambiar el número si va a tener más de un turno
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();           
         }
+
+
         if (afterKillBonus)
         {
             myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.enabled = true;
@@ -362,13 +372,22 @@ public class Rogue : PlayerUnit
                 {
                     if (smokeBomb2)
                     {
-                        Instantiate(smokeBombPref2);
+                        TM.surroundingTiles.Clear();
+                        TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+                        GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                        //Hago daño a las unidades adyacentes
+                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                        {
+                            if (TM.surroundingTiles[i] != null)
+                            {
+                                GameObject smokeBombRef = Instantiate(smokeBombPref , TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);                                
+                            }
+                        }                       
                     }
                     else
                     {
-                        Instantiate(smokeBombPref);
-
-                    }                   
+                        GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                    }
                 }               
             }
             
@@ -476,7 +495,47 @@ public class Rogue : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-           
+            if (afterKillBonus)
+            {
+                if (unitToAttack.isDead)
+                {
+                    if (afterKillBonus2)
+                    {
+                        baseDamage += bonusAttackAfterKill;
+                    }
+                    else if (maxbonusAttackAfterKill > 0)
+                    {
+                        baseDamage += bonusAttackAfterKill;
+                        maxbonusAttackAfterKill--;
+                    }
+                }
+            }
+            else if (smokeBomb)
+            {
+                if (unitToAttack.isDead)
+                {
+                    if (smokeBomb2)
+                    {
+                        TM.surroundingTiles.Clear();
+                        TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+                        GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                        //Hago daño a las unidades adyacentes
+                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                        {
+                            if (TM.surroundingTiles[i] != null)
+                            {
+                                GameObject smokeBombRef = Instantiate(smokeBombPref, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                    }
+                }
+            }
+
+
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
             if (unitToAttack.isDead && !hasUsedExtraTurn)
@@ -519,6 +578,47 @@ public class Rogue : PlayerUnit
 
             //Hago daño
             DoDamage(unitToAttack);
+
+            if (afterKillBonus)
+            {
+                if (unitToAttack.isDead)
+                {
+                    if (afterKillBonus2)
+                    {
+                        baseDamage += bonusAttackAfterKill;
+                    }
+                    else if (maxbonusAttackAfterKill > 0)
+                    {
+                        baseDamage += bonusAttackAfterKill;
+                        maxbonusAttackAfterKill--;
+                    }
+                }
+            }
+            else if (smokeBomb)
+            {
+                if (unitToAttack.isDead)
+                {
+                    if (smokeBomb2)
+                    {
+                        TM.surroundingTiles.Clear();
+                        TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+                        GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+
+                        //Hago daño a las unidades adyacentes
+                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                        {
+                            if (TM.surroundingTiles[i] != null)
+                            {
+                                GameObject smokeBombRef = Instantiate(smokeBombPref, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                    }
+                }
+            }
 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
@@ -677,7 +777,7 @@ public class Rogue : PlayerUnit
         }
     }
 
-    //Función que se encarga de realizar el calculod e daño como tal. Simplemente es para no repetir el mismo código todo el rato
+    //Función que se encarga de realizar el calculo e daño como tal. Simplemente es para no repetir el mismo código todo el rato
     private void CalculteDamageLogic(UnitBase unitToDealDamage, IndividualTiles tileLineToCheck, FacingDirection directionForBackAttack)
     {
         //Si estoy en desventaja de altura hago menos daño
@@ -734,13 +834,100 @@ public class Rogue : PlayerUnit
     }
 
 
+    
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         tilesInEnemyHover.Clear();
         CalculateAttackLogic(_unitToAttack, false);
         shaderHover.SetActive(true);
-
         shaderHover.transform.position = currentTileVectorToMove;
+
+        
+        if (smokeBomb)
+        {
+            
+            if (_unitToAttack.myCurrentTile.tileX == tilesInEnemyHover[0].tileX)
+            {
+                if (_unitToAttack.myCurrentTile.tileZ < tilesInEnemyHover[0].tileZ)
+                {
+                    previousFacingDirection = FacingDirection.South;
+                    shaderHover.transform.DORotate(new Vector3(0, 180, 0), 0);
+                }
+                else
+                {
+                    previousFacingDirection = FacingDirection.North;
+                    shaderHover.transform.DORotate(new Vector3(0, 0, 0), 0);
+
+
+                }
+            }
+            else
+            {
+                if (_unitToAttack.myCurrentTile.tileX < tilesInEnemyHover[0].tileX)
+                {
+                    previousFacingDirection = FacingDirection.West;
+                    shaderHover.transform.DORotate(new Vector3(0, -90, 0), 0);
+
+                }
+                else
+                {
+                    previousFacingDirection = FacingDirection.East;
+                    shaderHover.transform.DORotate(new Vector3(0, 90, 0), 0);
+
+                }
+            }
+
+            CalculateDamagePreviousAttack(_unitToAttack, this, tilesInEnemyHover[0], previousFacingDirection);
+
+            if (_unitToAttack.currentHealth - damageWithMultipliersApplied <= 0)
+            {
+                if (smokeBomb2)
+                {
+                    TM.surroundingTiles.Clear();
+
+                    TM.GetSurroundingTiles(tilesInEnemyHover[0], 1, true, false);
+
+                     Vector3 spawnBombShadow = new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 2, shaderHover.transform.position.z);
+                    GameObject smokeBombShadowRef1 = Instantiate(smokeBombShadow, spawnBombShadow, shaderHover.transform.rotation);
+                    bombsSpawned.Add(smokeBombShadowRef1);
+
+                    //Hago daño a las unidades adyacentes
+                    for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                    {
+                        if (TM.surroundingTiles[i] != null)
+                        {
+                           
+                            Vector3 spawnBombShadow2 = new Vector3(TM.surroundingTiles[i].transform.position.x, TM.surroundingTiles[i].transform.position.y + 2, TM.surroundingTiles[i].transform.position.z);
+
+                            if (TM.surroundingTiles[i].unitOnTile != null)
+                            {
+                                GameObject smokeBombShadowRef2 = Instantiate(smokeBombShadow, spawnBombShadow2, TM.surroundingTiles[i].transform.rotation);
+                                bombsSpawned.Add(smokeBombShadowRef2);
+
+                            }
+                            else
+                            {
+                                GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
+                                bombsSpawned.Add(smokeBombShadowRef);
+
+                            }
+                           
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    Vector3 spawnBombShadow = new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 2, shaderHover.transform.position.z);
+                    //Enseñar sombra bomba de humo
+                    GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, spawnBombShadow, shaderHover.transform.rotation);
+                    bombsSpawned.Add(smokeBombShadowRef);
+
+
+                }
+            }
+        }
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
@@ -749,5 +936,19 @@ public class Rogue : PlayerUnit
        
 
 
+    }
+
+    public override void HideAttackEffect(UnitBase _unitToAttack)
+    {
+        if (smokeBomb)
+        {
+            for (int i = 0; i < bombsSpawned.Count; i++)
+            {
+                Destroy(bombsSpawned[i].gameObject);
+            }
+
+            bombsSpawned.Clear();
+        }
+       
     }
 }
