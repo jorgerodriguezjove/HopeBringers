@@ -27,7 +27,7 @@ public class GameManager : PersistentSingleton<GameManager>
     public GameObject newCharacterToUnlock;
 
     //Referencia al nodo del nivel que ha sido empezado
-    public int currentLevelNode;
+    public int currentLevelNodeID;
 
     public string currentLevelToLoad;
 
@@ -71,6 +71,35 @@ public class GameManager : PersistentSingleton<GameManager>
     [HideInInspector]
     public List<int> levelIDsUnlocked = new List<int>();
 
+    [Header("ACHIEVEMENTS")]
+
+    //Enemigos matados
+    public int enemiesKilled;
+    private int firsTierEnemiesKilled = 25;
+    private int secondTierEnemiesKilled = 50;
+    private int thirdTierEnemiesKilled = 100;
+
+    //Niveles  completados
+    private int firsTierLevelsCompleted = 6;
+    private int secondTierLevelsCompleted = 13;
+    private int thirdTierLevelsCompleted = 19;
+    private int fourthTierLevelsCompleted = 23;
+
+    //Niveles Random
+    public int randomLevelsCompleted;
+    private int firstTierRandomLevels = 10;
+    private int secondTierRandomLevels = 20;
+    private int thirdTierRandomLevels = 30;
+
+    //Mejoras de personaje
+    public int upgradesBought;
+    public int charactersFullyUpgraded;
+
+
+
+    //Especificos
+
+
     [Header("REFERENCIAS")]
 
     //Lista que va a guardar todos los objetos que tengan el componente Character Data
@@ -84,8 +113,6 @@ public class GameManager : PersistentSingleton<GameManager>
     private DialogManager dialogManRef;
 
     private LevelManager LM;
-
-
 
     public bool isGamePaused
     {
@@ -198,7 +225,7 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         Debug.Log("Experiencia al ganar el nivel: " + possibleXpToGainIfCurrentLevelIsWon);
 
-        levelIDsUnlocked.Add(currentLevelNode);
+        levelIDsUnlocked.Add(currentLevelNodeID);
 
         currentExp += _totalXp;
 
@@ -210,6 +237,14 @@ public class GameManager : PersistentSingleton<GameManager>
         else
         {
             LM.VictoryScreen();
+        }
+
+        CheckLevelCompleted(currentLevelNodeID);
+
+        //Si es mayor que 23 significa que es un nivel random
+        if (currentLevelNodeID >23)
+        {
+            CheckRandomLevelsCompleted();
         }
     }
 
@@ -420,6 +455,9 @@ public class GameManager : PersistentSingleton<GameManager>
 
             #endregion
 
+            enemiesKilled = save.s_enemiesKilled;
+            randomLevelsCompleted = save.s_randomLevelsCompleted;
+
             Debug.Log("File Load");
             Debug.Log("-----");
         }
@@ -450,7 +488,6 @@ public class GameManager : PersistentSingleton<GameManager>
         {
             save.s_levelIDsUnlocked.Add(levelIDsUnlocked[i]);
         }
-
 
         #region Characters
         KnightData _knight = FindObjectOfType<KnightData>();
@@ -543,6 +580,9 @@ public class GameManager : PersistentSingleton<GameManager>
 
         #endregion
 
+        save.s_enemiesKilled = enemiesKilled;
+        save.s_randomLevelsCompleted = randomLevelsCompleted;
+
         return save;
     }
 
@@ -566,4 +606,123 @@ public class GameManager : PersistentSingleton<GameManager>
     }
 
     #endregion
+
+
+    #region ACHIEVEMENTS
+
+    public void EnemyKilled()
+    {
+        enemiesKilled++;
+
+        if (enemiesKilled >= thirdTierEnemiesKilled)
+        {
+            //Desbloquear logro 3 Enemies
+        }
+
+        else if (enemiesKilled >= secondTierEnemiesKilled)
+        {
+            //Desbloquear logro 2 Enemies
+        }
+
+        else if (enemiesKilled >= firsTierEnemiesKilled)
+        {
+            //Desbloquear logro 1 Enemies
+        }
+    }
+
+
+    public void CheckLevelCompleted(int _levelId)
+    {
+        if (_levelId == firsTierLevelsCompleted)
+        {
+            //Desbloquear logro 1 Level
+        }
+
+        else if (_levelId == secondTierLevelsCompleted)
+        {
+            //Desbloquear logro 2 Level
+        }
+
+        else if (_levelId == thirdTierLevelsCompleted)
+        {
+
+            //Desbloquear logro 3 Level
+        }
+
+        else if (_levelId == fourthTierLevelsCompleted)
+        {
+
+            //Desbloquear logro 4 Level
+        }
+    }
+
+    public void CheckRandomLevelsCompleted()
+    {
+        randomLevelsCompleted++;
+
+        if (randomLevelsCompleted >= thirdTierRandomLevels)
+        {
+            //Desbloquear logro 3 random levels
+        }
+
+        else if (randomLevelsCompleted >= secondTierRandomLevels)
+        {
+            //Desbloquear logro 2 random levels
+        }
+
+        else if (randomLevelsCompleted >= firstTierRandomLevels)
+        {
+            //Desbloquear logro 1 random levels
+        }
+
+    }
+
+    //Esta función la creo para poder buscar facilmente todos los sitios donde he puesoto desbloquear achievements específicos.
+    //EN TODOS LOS CASOS FALTA PONER EL NÚMERO CONCRETO
+    public void UnlockAchievement(int _achievementId)
+    {
+        //Desbloquear logro especifico que toque
+    }
+
+    
+
+    public void CheckUpgradeAchievements()
+    {
+        charactersFullyUpgraded = 0;
+        upgradesBought = 0;
+
+        for (int i = 0; i < allCharacters.Length; i++)
+        {
+            if (allCharacters[i].idSkillsBought.Count == 4)
+            {
+                //Logro mejorar un personaje al máximo
+                UnlockAchievement(0);
+                charactersFullyUpgraded++;
+            }
+
+            upgradesBought += allCharacters[i].idSkillsBought.Count;
+        }
+
+        if (upgradesBought == 1)
+        {
+            //Logro mejorar la primera vez
+            UnlockAchievement(0);
+        }
+
+        if (charactersFullyUpgraded == 8)
+        {
+            //Logro mejorar todos los personajes al máximo
+            UnlockAchievement(0);
+        }
+
+        else if (charactersFullyUpgraded == 4)
+        {
+            //Logro mejorar 4 personajes al máximo
+            UnlockAchievement(0);
+        }
+       
+    }
+
+    #endregion
+
 }

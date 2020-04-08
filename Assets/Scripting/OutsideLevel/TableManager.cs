@@ -81,7 +81,7 @@ public class TableManager : MonoBehaviour
         //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
         //Hacer que se quede el último seleccioando!!!!!!!!!!!!!!!!!!!!!
 
-        if (GameManager.Instance.currentLevelNode == 0)
+        if (GameManager.Instance.currentLevelNodeID == 0)
         {
             Debug.Log("acac");
             level1.SelectLevel();
@@ -92,7 +92,7 @@ public class TableManager : MonoBehaviour
 
             for (int i = 0; i < allLevelNodesInGame.Count; i++)
             {
-                if (allLevelNodesInGame[i].idLevel == GameManager.Instance.currentLevelNode)
+                if (allLevelNodesInGame[i].idLevel == GameManager.Instance.currentLevelNodeID)
                 {
                     allLevelNodesInGame[i].SelectLevel();
                 }
@@ -111,7 +111,7 @@ public class TableManager : MonoBehaviour
         levelIndicator.transform.position = new Vector3(levelClicked.transform.position.x, levelIndicator.transform.position.y , levelClicked.transform.position.z);
 
         //Cargo la información en el GameManager
-        GameManager.Instance.currentLevelNode = _idLevel;
+        GameManager.Instance.currentLevelNodeID = _idLevel;
         GameManager.Instance.possibleXpToGainIfCurrentLevelIsWon = _xpToWin;
         GameManager.Instance.xpPerTurnThisLevel = _xpPerTurn;
         GameManager.Instance.xpPerCharacterThisLevel = _xpPerCharacter;
@@ -217,6 +217,9 @@ public class TableManager : MonoBehaviour
             currentCharacterUpgrading.UpgradeAcquired(upgradeClicked.upgradeCost, upgradeClicked.idUpgrade);
 
             UITM.UpdateProgresionBook(currentCharacterUpgrading);
+
+            //Comprobar logros
+            GameManager.Instance.CheckUpgradeAchievements();
         }
 
         else

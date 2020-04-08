@@ -8,6 +8,7 @@ public class Save
 {
     #region BASE
 
+    //Xp
     public int s_currentXp;
 
     //Progresión de niveles
@@ -52,9 +53,13 @@ public class Save
 
     #endregion
 
-
     #region ACHIEVEMENTS
 
+    public int s_enemiesKilled;
+
+    public int s_randomLevelsCompleted;
+
+    //GUARDAR TODOS LOS LOGROS PARA QUE NO SALTEN TODO EL RATO
 
     #endregion
 }

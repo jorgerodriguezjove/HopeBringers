@@ -38,7 +38,7 @@ public class UpgradeNode : MonoBehaviour
 
     //Se usa para comprobar que nodos han sido comprados al recargar el árbol de habilidades. NO SE USA PARA SABER A QUE MEJORA SE APLICA
     //Estos ids se setean automáticamente desde el UITableManager la primera vez que se setea el árbol.
-    [SerializeField]
+    [HideInInspector]
     public int idUpgrade;
 
     //[SerializeField]

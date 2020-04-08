@@ -872,6 +872,31 @@ public class EnemyUnit : UnitBase
 
         if (currentHealth <= 0)
         {
+            //Logro balista mata enemigo
+            if (unitAttacker.GetComponent<EnBalista>())
+            {
+                GameManager.Instance.UnlockAchievement(0);
+            }
+
+            //Logro gigante mata enemigo
+            else if (unitAttacker.GetComponent<EnGiant>())
+            {
+                GameManager.Instance.UnlockAchievement(0);
+            }
+
+
+            //Logro matar enemigo en ventaja altura
+            if (unitAttacker.myCurrentTile.height > myCurrentTile.height)
+            {
+                GameManager.Instance.UnlockAchievement(0);
+            }
+
+            //Logro matar enemigo en desventaja altura
+            if (unitAttacker.myCurrentTile.height < myCurrentTile.height)
+            {
+                GameManager.Instance.UnlockAchievement(0);
+            }
+
             Die();
         }
 
@@ -910,6 +935,9 @@ public class EnemyUnit : UnitBase
 
         //Estas dos llamadas tienen que ir despues del bool de isdead = true
         LM.UIM.SetEnemyOrder();
+
+        //Contador de enemigos para logro
+        GameManager.Instance.EnemyKilled();
 
         //No uso FinishMyActions porque no me interesa que pase turno, sólo que se quede en waiting por si acaso se muere en su turno.
         myCurrentEnemyState = enemyState.Waiting;
