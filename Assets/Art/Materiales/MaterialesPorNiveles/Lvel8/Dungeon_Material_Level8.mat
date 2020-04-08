@@ -22,8 +22,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Dungeon_Material_Level8
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_SS_ON _ALPHABASECUTOUT_ON _EMISSION _LIGHTAFFECTSHADOW_ON
-    _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON _EMISSION
+    _LIGHTAFFECTSHADOW_ON _LIGHTFALLOFFAFFECTSHADOWT_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON
+    _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -179,7 +180,7 @@ Material:
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
     - _LightAffectShadow: 1
-    - _LightFalloffAffectShadowT: 0
+    - _LightFalloffAffectShadowT: 1
     - _LightFalloffSoftness: 0.3
     - _LightIntensity: -1
     - _MCIALO: 0
@@ -209,7 +210,7 @@ Material:
     - _N_F_SL: 0
     - _N_F_SON: 0
     - _N_F_SS: 1
-    - _N_F_ST: 0
+    - _N_F_ST: 1
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
     - _NoisyOutlineIntensity: 0.5
@@ -250,8 +251,8 @@ Material:
     - _ShadowHardness: 1
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
-    - _ShadowTIntensity: 1
-    - _ShadowTLightThreshold: 50
+    - _ShadowTIntensity: 0.75
+    - _ShadowTLightThreshold: 35
     - _ShadowTShadowThreshold: 0
     - _Shininess: 0
     - _ShowInAmbientLightShadowIntensity: 1
