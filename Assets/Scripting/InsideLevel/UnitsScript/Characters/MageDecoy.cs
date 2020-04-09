@@ -416,21 +416,41 @@ public class MageDecoy : Mage
         if (mage2Move.isDecoyBomb2)
         {
             TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-            //Hago daño a las unidades adyacentes(3x3)
-            for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; ++i)
+            
+            //Hago daño a las unidades adyacentes
+            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
             {
-                if (myCurrentTile.surroundingNeighbours[i].unitOnTile != null)
+                if (TM.surroundingTiles[i] != null)
                 {
-                    DoDamage(myCurrentTile.surroundingNeighbours[i].unitOnTile);
+                    TM.surroundingTiles[i].ColorAttack();
                 }
             }
 
+            StartCoroutine("WaitToDamageSurroundingAfterChangePos");
 
         }
 
         HideAttackEffect(null);
     }
 
+    IEnumerator WaitToDamageSurroundingAfterChangePos()
+    {
+        yield return new WaitForSeconds(2f);
+
+        //Hago daño a las unidades adyacentes(3x3)
+        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+        {
+            if (TM.surroundingTiles[i] != null)
+            {
+                TM.surroundingTiles[i].ColorDesAttack();
+            }
+            if (TM.surroundingTiles[i].unitOnTile != null)
+            {
+                DoDamage(TM.surroundingTiles[i].unitOnTile);
+            }
+        }
+
+    }
     public void ChangePositionIconFeedback(bool has2Show)
     {
         if (has2Show)
@@ -653,11 +673,13 @@ public class MageDecoy : Mage
     //En este caso lo uso para ver lo que hace el decoy cuando el mago lee hace hover
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
-        Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
-        ChangePositionIconFeedback(true);
+        
 
         if (LM.selectedCharacter != null)
         {
+            Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
+            ChangePositionIconFeedback(true);
+
             if (myMage.isDecoyBomb2)
             {
                 TM.GetSurroundingTiles(myMage.myCurrentTile, 1, true, false);
@@ -672,11 +694,11 @@ public class MageDecoy : Mage
                 }
 
             }
-
-            //Hasta aqui no llega porque no puede darse el caso de que el selectedCharacter sea null tras entrar en esta función
+        }
+        else
+        {
             if (myMage.isDecoyBomb)
             {
-
                 TM.surroundingTiles.Clear();
 
                 TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
@@ -692,6 +714,8 @@ public class MageDecoy : Mage
                 }
 
             }
+           
+
         }
 
        
@@ -709,6 +733,7 @@ public class MageDecoy : Mage
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         ChangePositionIconFeedback(false);
 
@@ -740,5 +765,6 @@ public class MageDecoy : Mage
                 tilesInEnemyHover[i].unitOnTile.ResetColor();
             }
         }
+        tilesInEnemyHover.Clear();
     }
 }

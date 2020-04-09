@@ -37,6 +37,9 @@ public class Druid : PlayerUnit
     //bool pasiva 1
     public bool tileTransformer;
 
+    [HideInInspector]
+    public List<GameObject> tilesSpawned;
+
     //bool mejora de la pasiva 1
     public bool tileTransformer2;
 
@@ -50,6 +53,8 @@ public class Druid : PlayerUnit
     public int bonusOnTile;
 
     public GameObject healerTilePref;
+
+    public GameObject shadowHealerTilePref;
 
     #endregion
 
@@ -120,7 +125,17 @@ public class Druid : PlayerUnit
                     TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
                 }
             }
-          
+
+            if (tilesSpawned.Count > 0)
+            {
+                for (int i = 0; i < tilesSpawned.Count; i++)
+                {
+                    Destroy(tilesSpawned[i].gameObject);
+                }
+
+                tilesSpawned.Clear();
+            }
+
         }
         else
         {
@@ -140,6 +155,18 @@ public class Druid : PlayerUnit
                     Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
                 }
+
+                if (tilesSpawned.Count > 0)
+                {
+                    for (int i = 0; i < tilesSpawned.Count; i++)
+                    {
+                        Destroy(tilesSpawned[i].gameObject);
+                    }
+
+                    tilesSpawned.Clear();
+                }
+                
+
                 unitToAttack.currentHealth += healedLife;
                 currentHealth -= 1;
                 UIM.RefreshTokens();
@@ -438,19 +465,25 @@ public class Druid : PlayerUnit
             TM.surroundingTiles.Clear();
 
             TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
-            
+
             for (int i = 0; i < TM.surroundingTiles.Count; ++i)
             {
                 if (TM.surroundingTiles[i] != null)
                 {
                     tilesInEnemyHover.Add(TM.surroundingTiles[i]);
-                    
+
                 }
             }
 
             for (int i = 0; i < tilesInEnemyHover.Count; i++)
             {
                 tilesInEnemyHover[i].ColorHeal();
+
+                if (tileTransformer)
+                {
+                    GameObject shadowTile = Instantiate(shadowHealerTilePref, tilesInEnemyHover[i].transform.position, tilesInEnemyHover[i].transform.rotation);
+                    tilesSpawned.Add(shadowTile);
+                }
 
                 if (tilesInEnemyHover[i].unitOnTile != null)
                 {
@@ -462,12 +495,18 @@ public class Druid : PlayerUnit
         else
         {
 
-            if (_unitToAttack !=null && _unitToAttack.GetComponent<PlayerUnit>())
+            if (_unitToAttack != null && _unitToAttack.GetComponent<PlayerUnit>())
             {
+                if (tileTransformer)
+                {
+                    GameObject shadowTile = Instantiate(shadowHealerTilePref, _unitToAttack.transform.position, _unitToAttack.transform.rotation);
+                    tilesSpawned.Add(shadowTile);
+                }
+              
                 _unitToAttack.ColorAvailableToBeHealed();
                 _unitToAttack.myCurrentTile.ColorHeal();
             }
-            else if(_unitToAttack != null)
+            else if (_unitToAttack != null)
             {
                 _unitToAttack.ColorAvailableToBeAttacked(-1);
                 _unitToAttack.myCurrentTile.ColorAttack();
@@ -475,14 +514,24 @@ public class Druid : PlayerUnit
             }
 
         }
-      
-       
-           
+
     }
-    
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        if (tileTransformer)
+        {
+            if (tilesSpawned.Count > 0)
+            {
+                for (int i = 0; i < tilesSpawned.Count; i++)
+                {
+                    Destroy(tilesSpawned[i].gameObject);
+                }
+
+                tilesSpawned.Clear();
+            }
+        }
+
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
             tilesInEnemyHover[i].ColorDesAttack();

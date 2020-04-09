@@ -18,7 +18,7 @@ public class HealerTile : DamageTile
     {
         base.OnTriggerEnter(unitOnTile);
 
-        if (unitOnTile.GetComponent<Druid>().tileSustitute2)
+        if (unitOnTile.GetComponent<Druid>() != null && unitOnTile.GetComponent<Druid>().tileSustitute2)
         {
             if (unitOnTile.GetComponent<Druid>())
             {

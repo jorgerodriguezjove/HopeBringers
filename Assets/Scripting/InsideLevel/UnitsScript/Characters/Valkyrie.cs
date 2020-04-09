@@ -476,69 +476,120 @@ public class Valkyrie : PlayerUnit
         LM.UnitHasFinishedMovementAndRotation();
     }
 
+    public void ChangePositionIconFeedback(bool has2Show, UnitBase otherUnit)
+    {
+        if (has2Show)
+        {
+            if (otherUnit != null)
+            {
+                otherUnit.changePositionIcon.SetActive(true);
+            }
+            changePositionIcon.SetActive(true);
+        }
+        else
+        {
+            if (otherUnit != null)
+            {
+                otherUnit.changePositionIcon.SetActive(false);
+            }
+            changePositionIcon.SetActive(false);
+        }
+
+    }
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
-
-        shaderHover.SetActive(true);
-        Vector3 vector2Spawn = new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z);
-        shaderHover.transform.position = vector2Spawn;
-
-        _unitToAttack.shaderHover.SetActive(true);
-        Vector3 vector2SpawnEnemy = new Vector3(_unitToAttack.transform.position.x, transform.position.y + 2.5f, _unitToAttack.transform.position.z);
-        _unitToAttack.shaderHover.transform.position = vector2SpawnEnemy;
-
-        changePosArrows.SetActive(true);
-        changePosArrows.transform.position = Vector3.Lerp (vector2Spawn, vector2SpawnEnemy, 0.5f);
-        changePosArrows.transform.position = new Vector3(changePosArrows.transform.position.x, transform.position.y + 4.5f, changePosArrows.transform.position.z);
-
-
-        if (armorMode)
-        {            
-            if (_unitToAttack.GetComponent<PlayerUnit>())
+        if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
+        {         
+            if ( LM.selectedCharacter == this && !hasMoved && changePositions)
             {
-                if (armorMode2)
+                if (currentHealth <= numberCanChange)
                 {
-                    if (currentArmor > currentHealth)
+                    ChangePositionIconFeedback(true, _unitToAttack);
+                    Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
+                }
+            }
+          
+        }
+        else
+        {
+            shaderHover.SetActive(true);
+            Vector3 vector2Spawn = new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z);
+            shaderHover.transform.position = vector2Spawn;
+
+            _unitToAttack.shaderHover.SetActive(true);
+            Vector3 vector2SpawnEnemy = new Vector3(_unitToAttack.transform.position.x, transform.position.y + 2.5f, _unitToAttack.transform.position.z);
+            _unitToAttack.shaderHover.transform.position = vector2SpawnEnemy;
+
+            changePosArrows.SetActive(true);
+            changePosArrows.transform.position = Vector3.Lerp(vector2Spawn, vector2SpawnEnemy, 0.5f);
+            changePosArrows.transform.position = new Vector3(changePosArrows.transform.position.x, transform.position.y + 4.5f, changePosArrows.transform.position.z);
+
+
+            if (armorMode)
+            {
+                if (_unitToAttack.GetComponent<PlayerUnit>())
+                {
+                    if (armorMode2)
                     {
-                       
+                        if (currentArmor > currentHealth)
+                        {
+
+                        }
+                        else
+                        {
+                            canvasUnit.SetActive(true);
+                            canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                        }
+                    }
+
+                    if (_unitToAttack.currentArmor > _unitToAttack.currentHealth)
+                    {
                     }
                     else
                     {
-                        canvasUnit.SetActive(true);
-                        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
-                    }                    
+                        _unitToAttack.canvasUnit.SetActive(true);
+                        _unitToAttack.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                    }
                 }
-               
-                if (_unitToAttack.currentArmor > _unitToAttack.currentHealth)
-                {                
-                }
-                else
-                {
-                    _unitToAttack.canvasUnit.SetActive(true);
-                    _unitToAttack.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
-                }
-            }           
+            }
+
         }
+        
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+
+        if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
+        {
+
+            ChangePositionIconFeedback(false, _unitToAttack);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
+
+        }
+        else
+        {
+
+            if (armorMode)
+            {
+                if (_unitToAttack.GetComponent<PlayerUnit>())
+                {
+                    if (armorMode2)
+                    {
+                        canvasUnit.SetActive(false);
+                    }
+                    _unitToAttack.canvasUnit.SetActive(false);
+                }
+            }
+
+
+        }
         shaderHover.SetActive(false);
         _unitToAttack.shaderHover.SetActive(false);
         changePosArrows.SetActive(false);
 
 
-        if (armorMode)
-        {
-            if (_unitToAttack.GetComponent<PlayerUnit>())
-            {
-                if (armorMode2)
-                {                    
-                  canvasUnit.SetActive(false);                    
-                }
-                    _unitToAttack.canvasUnit.SetActive(false);
-                }
-            }
         
     }
     

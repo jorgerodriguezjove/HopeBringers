@@ -228,7 +228,12 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public GameObject canvasUnit;
 
-	[Header("INFO")]
+
+    //Icono que aparece encima para dar feedback de que se puede intercambiar con el decoy u otras unidades en el caso de la valquiria
+    //Lo pongo en unitbase porque si no hay funciones que no van
+    public GameObject changePositionIcon;
+
+    [Header("INFO")]
 
     [SerializeField]
     [@TextAreaAttribute(15, 20)]

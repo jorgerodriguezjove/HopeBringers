@@ -10,8 +10,6 @@ public class Samurai : PlayerUnit
     [SerializeField]
     private int samuraiFrontAttack;
 
-
-
     [Header("MEJORAS DE PERSONAJE")]
 
     [Header("Activas")]
@@ -51,11 +49,29 @@ public class Samurai : PlayerUnit
     //int que añade daño si el samurai no tiene aliados en un área de 3x3
     public int lonelyAreaDamage;
 
+    public GameObject isLonelyIcon;
+
+    public GameObject lonelyBox;
+
     #endregion
 
+    public override void CheckWhatToDoWithSpecialToken()
+    {
+        if (buffLonelyArea)
+        { 
+            lonelyBox.SetActive(true);
+        }
+        CheckIfIsLonely();
+        myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
+        //Cambiar el número si va a tener más de un turno
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = LM.honorCount.ToString();              
+    }
 
     public override void CheckUnitsAndTilesInRangeToAttack()
     {
+        CheckIfIsLonely();
+
         currentUnitsAvailableToAttack.Clear();
 
         if (currentFacingDirection == FacingDirection.North)
@@ -312,36 +328,11 @@ public class Samurai : PlayerUnit
            
         }
 
-        if (buffLonelyArea)
+        CheckIfIsLonely();
+        if (isLonelyLikeMe)
         {
-            TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-            //Hago daño a las unidades adyacentes(3x3)
-            for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; ++i)
-            {
-                if (myCurrentTile.surroundingNeighbours[i].unitOnTile != null)
-                {
-                    if (myCurrentTile.surroundingNeighbours[i].unitOnTile.GetComponent<PlayerUnit>())
-                    {
-                        isLonelyLikeMe = false;
-                        break;
-                    }
-                    else
-                    {
-                        isLonelyLikeMe = true;
-                    }
-                }              
-                else 
-                {
-                    isLonelyLikeMe = true;
-                   
-                }
-            }
-            if (isLonelyLikeMe)
-            {
-                //Añado el daño de area solitaria
-                damageWithMultipliersApplied += lonelyAreaDamage;
-
-            }
+            //Añado el daño de area solitaria
+            damageWithMultipliersApplied += lonelyAreaDamage;
 
         }
 
@@ -416,9 +407,47 @@ public class Samurai : PlayerUnit
         
     }
 
+    public void CheckIfIsLonely()
+    {
+        if (buffLonelyArea)
+        {
+            TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+            //Hago daño a las unidades adyacentes(3x3)
+            for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; ++i)
+            {
+                if (myCurrentTile.surroundingNeighbours[i].unitOnTile != null)
+                {
+                    if (myCurrentTile.surroundingNeighbours[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        isLonelyIcon.SetActive(false);
+                        isLonelyLikeMe = false;
+                        break;
+                    }
+                    else
+                    {
+                        isLonelyIcon.SetActive(true);
+                        isLonelyLikeMe = true;
+                    }
+                }
+                else
+                {
+                    isLonelyIcon.SetActive(true);
+                    isLonelyLikeMe = true;
 
+                }
+            }
+            if (isLonelyLikeMe)
+            {
+                isLonelyIcon.SetActive(true);
+
+            }
+
+        }
+
+    }
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+
         if (doubleAttack) 
         {
             timesRepeatNumber.enabled = true;

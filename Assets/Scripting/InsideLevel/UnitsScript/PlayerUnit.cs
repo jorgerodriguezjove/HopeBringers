@@ -104,10 +104,9 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     public GameObject insideGameInfoObject;
 
+    //Para el tooltip de ataque
 
-	//Para el tooltip de ataque
-
-	[Header("REFERENCIAS")]
+    [Header("REFERENCIAS")]
 
     [HideInInspector]
     public LevelManager LM;
