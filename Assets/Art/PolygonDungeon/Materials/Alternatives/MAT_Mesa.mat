@@ -9,8 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_Mesa
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_GLO_ON N_F_O_ON N_F_SS_ON _ALPHABASECUTOUT_ON
-    _EMISSION _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_RL_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON
+    _EMISSION _METALLICSPECGLOSSMAP _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -124,11 +124,11 @@ Material:
     - _Compa: 8
     - _Cull: 2
     - _CustomLightDirectionFollowObjectRotation: 0
-    - _CustomLightDirectionIntensity: 0
+    - _CustomLightDirectionIntensity: 0.742
     - _Cutoff: 0.5
     - _Cutout: 0
     - _DetailNormalMapScale: 1
-    - _DirectionalLightIntensity: 0
+    - _DirectionalLightIntensity: -2
     - _DoubleSided: 2
     - _DoubleSidedOutline: 1
     - _DstBlend: 0
@@ -136,27 +136,27 @@ Material:
     - _EmissionScaleUI: 1
     - _EnableTextureTransparent: 0
     - _EnvironmentReflections: 1
-    - _EnvironmentalLightingIntensity: 1
-    - _FarDistanceMaxWidth: 10
+    - _EnvironmentalLightingIntensity: 0
+    - _FarDistanceMaxWidth: 1.5
     - _GIFlatShade: 0
     - _GIShadeThreshold: 0
-    - _GlossColorPower: 20
-    - _GlossIntensity: 1
+    - _GlossColorPower: 6
+    - _GlossIntensity: 0.8
     - _GlossMapScale: 1
     - _GlossSoftness: 0.8
     - _GlossTextureFollowLight: 0
     - _GlossTextureFollowObjectRotation: 0
     - _GlossTextureRotate: 0
     - _GlossTextureSoftness: 0
-    - _Glossiness: 0.25
+    - _Glossiness: 0.2
     - _GlossyReflections: 1
-    - _HighlightColorPower: 1
+    - _HighlightColorPower: 0.5
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
     - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 1
-    - _LightIntensity: -1
+    - _LightFalloffSoftness: 0.043
+    - _LightIntensity: 0
     - _MCIALO: 0
     - _MCapIntensity: 1
     - _MVCOL: 0
@@ -169,7 +169,7 @@ Material:
     - _N_F_DCS: 0
     - _N_F_EAL: 1
     - _N_F_FR: 0
-    - _N_F_GLO: 1
+    - _N_F_GLO: 0
     - _N_F_GLOT: 0
     - _N_F_HDLS: 0
     - _N_F_HPSS: 0
@@ -179,54 +179,54 @@ Material:
     - _N_F_O: 1
     - _N_F_PT: 0
     - _N_F_R: 0
-    - _N_F_RL: 0
+    - _N_F_RL: 1
     - _N_F_SCT: 0
     - _N_F_SL: 0
     - _N_F_SON: 0
     - _N_F_SS: 1
-    - _N_F_ST: 0
+    - _N_F_ST: 1
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
-    - _NoisyOutlineIntensity: 0
+    - _NoisyOutlineIntensity: 0.5
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
     - _Oper: 8
     - _OutlineExtrudeMethod: 0
-    - _OutlineWidth: 0.5
+    - _OutlineWidth: 0.75
     - _OutlineWidthAffectedByViewDistance: 0
-    - _OutlineZPostionInCamera: 0
+    - _OutlineZPostionInCamera: 0.5
     - _OverallShadowColorPower: 1
     - _PTexturePower: 1
     - _Parallax: 0.02
     - _PointSpotlightIntensity: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ReduceShadowSpotDirectionalLight: 0.5
+    - _ReduceShadowSpotDirectionalLight: 0.55
     - _RefMetallic: 0
     - _RefVal: 0
     - _ReflectionIntensity: 0
     - _ReflectionRoughtness: 0
-    - _RimLightColorPower: 10
+    - _RimLightColorPower: 1
     - _RimLightInLight: 1
-    - _RimLightSoftness: 1
-    - _RimLightUnfill: 1.5
+    - _RimLightSoftness: 0.289
+    - _RimLightUnfill: 3
     - _STIL: 0
     - _Saturation: 1
     - _SelfLitHighContrast: 1
-    - _SelfLitIntensity: 0
+    - _SelfLitIntensity: 0.948
     - _SelfLitPower: 2
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 1
+    - _SelfShadowRealtimeShadowIntensity: 0.653
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 0.85
+    - _SelfShadowThreshold: 0.94
     - _ShadowColorTexturePower: 0
-    - _ShadowHardness: 0
+    - _ShadowHardness: 1
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
-    - _ShadowTIntensity: 1
-    - _ShadowTLightThreshold: 50
+    - _ShadowTIntensity: 0.75
+    - _ShadowTLightThreshold: 33.21
     - _ShadowTShadowThreshold: 0
     - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
@@ -250,14 +250,14 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _CustomLightDirection: {r: 0, g: 0, b: 10, a: 0}
+    - _CustomLightDirection: {r: 9.1, g: 4.02, b: 10, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.2156863, g: 0.2156863, b: 0.2156863, a: 1}
+    - _MainColor: {r: 0.7924528, g: 0.66909933, b: 0.66909933, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineOffset: {r: 0, g: 0.25, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimLightColor: {r: 1, g: 1, b: 1, a: 1}
     - _SelfLitColor: {r: 1, g: 1, b: 1, a: 1}
