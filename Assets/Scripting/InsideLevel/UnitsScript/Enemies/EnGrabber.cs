@@ -5,14 +5,6 @@ using DG.Tweening;
 
 public class EnGrabber : EnemyUnit
 {
-    //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
-    private UnitBase myCurrentObjective;
-    private IndividualTiles myCurrentObjectiveTile;
-
-    //Path de tiles a seguir hasta el objetivo
-    [HideInInspector]
-    private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
-
     public int turn2StunEnemy;
 
     public override void SearchingObjectivesToAttack()
@@ -220,8 +212,6 @@ public class EnGrabber : EnemyUnit
         }
     }
 
-    int limitantNumberOfTilesToMove;
-
     public override void MoveUnit()
     {
         limitantNumberOfTilesToMove = 0;
@@ -252,37 +242,6 @@ public class EnGrabber : EnemyUnit
         UpdateInformationAfterMovement(pathToObjective[limitantNumberOfTilesToMove]);
 
         StartCoroutine("MovingUnitAnimation");
-    }
-
-    IEnumerator MovingUnitAnimation()
-    {
-        //Animación de movimiento
-        //Es -1 ya que no me interesa que se mueva hasta el tile en el que está la otra unidad
-        for (int j = 1; j <= limitantNumberOfTilesToMove; j++)
-        {
-            //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = pathToObjective[j].transform.position;  //new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);
-
-            //Muevo y roto a la unidad
-            transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
-            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
-
-            //Espera entre casillas
-            yield return new WaitForSeconds(currentTimeForMovement);
-        }
-
-        hasMoved = true;
-
-
-        //Compruebo la dirección en la que se mueve para girar a la unidad
-        CheckTileDirection(myCurrentTile, pathToObjective[pathToObjective.Count - 1], true);
-        myCurrentEnemyState = enemyState.Searching;
-
-        movementParticle.SetActive(false);
-
-        HideActionPathfinding();
-        //ShowActionPathFinding(false);
-
     }
 
     //Esta función muestra la acción del enemigo.
@@ -363,23 +322,6 @@ public class EnGrabber : EnemyUnit
             }
         }
     }
-
-    //Se llama desde el LevelManager. Al final del showAction se encarga de mostrar el tile al que va a atacar
-    public override void ColorAttackTile()
-    {
-        //El +2 es porque pathToObjective tiene en cuenta tanto el tile inicial (ocupado por goblin) como el final (ocupado por player)
-        if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds + 2 && myCurrentObjective != null)
-        {
-            wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
-
-            tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile);
-
-            myCurrentObjectiveTile.ColorAttack();
-        }
-    }
-
-    //Bool que indica si almenos una de las unidades encontradas en rango de acción es un player
-    bool keepSearching;
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()

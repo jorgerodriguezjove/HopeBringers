@@ -209,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4122368960967281066}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1556511933795451499}
@@ -462,7 +462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4926793531634623092}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5375602702132423567}
@@ -608,24 +608,26 @@ MonoBehaviour:
   upToDownDamageIcon: {fileID: 6266795216208802749}
   downToUpDamageIcon: {fileID: 2797302272743709114}
   canvasUnit: {fileID: 4926793532846385754}
+  changePositionIcon: {fileID: 0}
   unitGeneralInfo: 
   characterImage: {fileID: 21300000, guid: f6094d9ac30c0df43882ba643602c1e3, type: 3}
   tooltipImage: {fileID: 0}
   unitName: Watcher
   inGamePortrait: {fileID: 8040472707122875594}
   rangeOfAction: 4
-  timeWaitingBeforeStarting: 0
-  timeWaitingBeforeMovement: 0.5
-  timeWaitingBeforeAttacking: 0
-  timeWaitingBeforeEnding: 0
+  timeWaitingBeforeStarting: 0.5
+  timeWaitingBeforeMovement: 0.2
+  timeWaitingBeforeAttacking: 0.2
+  timeWaitingBeforeEnding: 0.5
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 0}
   currentUnitsAvailableToAttack: []
-  unitsInRange: []
   isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 0
+  pathToObjective: []
+  unitsInRange: []
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
   enemyTierImage: {fileID: 0}

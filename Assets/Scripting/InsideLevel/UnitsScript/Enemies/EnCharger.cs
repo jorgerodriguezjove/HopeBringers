@@ -9,10 +9,6 @@ public class EnCharger : EnemyUnit
     [SerializeField]
     public GameObject tileDamageRef;
 
-    //Path de tiles a seguir hasta el objetivo
-    [SerializeField]
-    public List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
-
     public override void SearchingObjectivesToAttack()
     {
         if (isDead || hasAttacked)
@@ -134,7 +130,9 @@ public class EnCharger : EnemyUnit
         }
     }
 
-    IEnumerator MovingUnitAnimation()
+    //ESTE ES DIFERENTE AL DEL ENEMY UNIT PORQUE HABRÍA QUE CAMBIAR VARIAS COSAS DE LA LÓGICA PARA QUE FUNCIONASE EL OTRO.
+    //La balista y el charger al ser de los primeros y ser bastante distintos voy a intentar no tocarlos mucho.
+    new IEnumerator MovingUnitAnimation()
     {
         myCurrentEnemyState = enemyState.Waiting;
 

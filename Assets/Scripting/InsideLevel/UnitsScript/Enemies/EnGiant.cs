@@ -5,10 +5,6 @@ using DG.Tweening;
 
 public class EnGiant : EnemyUnit
 {
-    //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
-    private UnitBase myCurrentObjective;
-    private IndividualTiles myCurrentObjectiveTile;
-
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -123,12 +119,15 @@ public class EnGiant : EnemyUnit
             myCurrentEnemyState = enemyState.Searching;
             return;
         }
-        base.Attack();
+        //base.Attack();
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
 
-            if (myCurrentTile.neighbours[i].unitOnTile != null && myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0] && Mathf.Abs(myCurrentTile.height - myCurrentTile.neighbours[i].height) <= maxHeightDifferenceToAttack)
+            if (myCurrentTile.neighbours[i].unitOnTile != null && 
+                currentUnitsAvailableToAttack.Count > 0 &&
+                myCurrentTile.neighbours[i].unitOnTile == currentUnitsAvailableToAttack[0] && 
+                Mathf.Abs(myCurrentTile.height - myCurrentTile.neighbours[i].height) <= maxHeightDifferenceToAttack)
             {
                 //Las comprobaciones para atacar arriba y abajo son iguales. Salvo por la dirección en la que tiene que girar el gigante
                 if (myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
@@ -191,6 +190,8 @@ public class EnGiant : EnemyUnit
                     }
                 }
 
+                base.Attack();
+
                 hasAttacked = true;
                 ExecuteAnimationAttack();
                 //Se tiene que poner en wait hasta que acabe la animación de ataque
@@ -214,117 +215,128 @@ public class EnGiant : EnemyUnit
         Debug.Log("hasattacked " + hasAttacked);
     }
 
-    public override void MoveUnit()
-    {
-        //ShowActionPathFinding(true);
-        movementParticle.SetActive(true);
+    #region DEPRECATED_GIANT
+    //public override void MoveUnit()
+    //{
+    //    //ShowActionPathFinding(true);
+    //    movementParticle.SetActive(true);
 
-        ShowActionPathFinding(false);
+    //    ShowActionPathFinding(false);
 
-        //Como solo se mueve un tile no hay que hacer ninguna comprobacion
-        currentTileVectorToMove = pathToObjective[1].transform.position;
-        MovementLogic(pathToObjective[1]);
-    }
+    //    //Como solo se mueve un tile no hay que hacer ninguna comprobacion
+    //    currentTileVectorToMove = pathToObjective[1].transform.position;
+    //    MovementLogic(pathToObjective[1]);
+    //}
 
-    //Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
-    private void MovementLogic(IndividualTiles tileToMove)
-    {
-        //Muevo al gigante
-        transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
+    ////Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
+    //private void MovementLogic(IndividualTiles tileToMove)
+    //{
+    //    //Muevo al gigante
+    //    transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
 
-        StartCoroutine("MovementWait");
+    //    StartCoroutine("MovementWait");
 
-        movementParticle.SetActive(false);
-        CheckTileDirection(myCurrentTile, tileToMove,  true);
-        myCurrentEnemyState = enemyState.Searching;
+    //    movementParticle.SetActive(false);
+    //    CheckTileDirection(myCurrentTile, tileToMove,  true);
+    //    myCurrentEnemyState = enemyState.Searching;
 
-        //Actualizo las variables de los tiles
-        UpdateInformationAfterMovement(tileToMove);
+    //    //Actualizo las variables de los tiles
+    //    UpdateInformationAfterMovement(tileToMove);
 
-        //Aviso de que se ha movido
-        hasMoved = true;
-    }
+    //    //Aviso de que se ha movido
+    //    hasMoved = true;
+    //}
 
-    IEnumerator MovementWait()
-    {
-        yield return new WaitForSeconds(currentTimeForMovement);
-        HideActionPathfinding();
-    }
-   
-    //Muestra la sombra y el line renderer
-    public override void ShowActionPathFinding(bool _shouldRecalculate)
-    {
-        //Si se tiene que mostrar la acción por el hover calculamos el enemigo
-        if ( _shouldRecalculate)
-        {
-            pathToObjective.Clear();
-
-            //Si no es el turno enemigo (es decir hay que pintar la acción por hacer hover) calculo la unidad más cercana
-            SearchingObjectivesToAttackShowActionPathFinding();
-            if (myCurrentObjectiveTile != null)
-            {
-                //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
-
-                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
-                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-                for (int i = 0; i < LM.TM.currentPath.Count; i++)
-                {
-                    pathToObjective.Add(LM.TM.currentPath[i]);
-                }
-            }
-        }
-
-        if (myCurrentObjectiveTile != null)
-        {
-            myLineRenderer.enabled = true;
-
-            //El 2 es porque son los tiles que tiene cuando es adyacente a un enemigo.
-            if (pathToObjective.Count > 2)
-            {
-                if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-                {
-                    shaderHover.SetActive(true);
-                }
-
-                Vector3 iniPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-
-                myLineRenderer.SetPosition(0, iniPosition);
-
-                Vector3 pointPosition = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.5f, pathToObjective[1].transform.position.z);
-                myLineRenderer.SetPosition(1, pointPosition);
-
-                Vector3 spawnPoint = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[1].transform.position.z);
-                shaderHover.transform.position = spawnPoint;
+    //IEnumerator MovementWait()
+    //{
+    //    yield return new WaitForSeconds(currentTimeForMovement);
+    //    HideActionPathfinding();
+    //}
 
 
-                if ((pathToObjective[2]) == currentUnitsAvailableToAttack[0].myCurrentTile)
-                {
-                    Debug.Log(name + " " + currentUnitsAvailableToAttack[0].name);
-                    CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1], CheckTileDirection(pathToObjective[1], pathToObjective[2], false));
-                }
-                else
-                {
-                    damageWithMultipliersApplied = -999;
-                }
+    ////Muestra la sombra y el line renderer
+    //public override void ShowActionPathFinding(bool _shouldRecalculate)
+    //{
+    //    //Si se tiene que mostrar la acción por el hover calculamos el enemigo
+    //    if ( _shouldRecalculate)
+    //    {
+    //        pathToObjective.Clear();
 
-                Vector3 unitDirection = new Vector3(pathToObjective[2].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[2].transform.position.z);
+    //        //Si no es el turno enemigo (es decir hay que pintar la acción por hacer hover) calculo la unidad más cercana
+    //        SearchingObjectivesToAttackShowActionPathFinding();
+    //        if (myCurrentObjectiveTile != null)
+    //        {
+    //            //Cada enemigo realiza su propio path
+    //            LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
 
-                shaderHover.transform.DOLookAt(unitDirection, 0f, AxisConstraint.Y);
-            }
-            else
-            {
-                myLineRenderer.enabled = false;
-            }
+    //            //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+    //            //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+    //            for (int i = 0; i < LM.TM.currentPath.Count; i++)
+    //            {
+    //                pathToObjective.Add(LM.TM.currentPath[i]);
+    //            }
+    //        }
+    //    }
 
-            //IMPORTANTE: EN EL CASO DEL GIGANTE, EL COLOR SE TIENE QUE PINTAR DESPUÉS DE HABER MOVIDO A LA SOMBRA.
-            //La sombra se usa de referencia para calcular los tiles que hay que pintar de rojo
-            if (!_shouldRecalculate)
-            {
-                ColorAttackTile();
-            }
-        }
-    }
+    //    if (myCurrentObjectiveTile != null)
+    //    {
+    //        myLineRenderer.enabled = true;
+
+    //        //El 2 es porque son los tiles que tiene cuando es adyacente a un enemigo.
+    //        if (pathToObjective.Count > 2)
+    //        {
+    //            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+    //            {
+    //                shaderHover.SetActive(true);
+    //            }
+
+    //            Vector3 iniPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+
+    //            myLineRenderer.SetPosition(0, iniPosition);
+
+    //            Vector3 pointPosition = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.5f, pathToObjective[1].transform.position.z);
+    //            myLineRenderer.SetPosition(1, pointPosition);
+
+    //            Vector3 spawnPoint = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[1].transform.position.z);
+    //            shaderHover.transform.position = spawnPoint;
+
+
+    //            if ((pathToObjective[2]) == currentUnitsAvailableToAttack[0].myCurrentTile)
+    //            {
+    //                Debug.Log(name + " " + currentUnitsAvailableToAttack[0].name);
+    //                CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1], CheckTileDirection(pathToObjective[1], pathToObjective[2], false));
+    //            }
+    //            else
+    //            {
+    //                damageWithMultipliersApplied = -999;
+    //            }
+
+    //            Vector3 unitDirection = new Vector3(pathToObjective[2].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[2].transform.position.z);
+
+    //            shaderHover.transform.DOLookAt(unitDirection, 0f, AxisConstraint.Y);
+    //        }
+    //        else
+    //        {
+    //            myLineRenderer.enabled = false;
+    //        }
+
+    //        //IMPORTANTE: EN EL CASO DEL GIGANTE, EL COLOR SE TIENE QUE PINTAR DESPUÉS DE HABER MOVIDO A LA SOMBRA.
+    //        //La sombra se usa de referencia para calcular los tiles que hay que pintar de rojo
+    //        if (!_shouldRecalculate)
+    //        {
+    //            ColorAttackTile();
+    //        }
+    //    }
+    //}
+
+
+    #endregion
+
+    //PARA MOVEUNIT SE USA LA BASE DEL ENEMIGO (Que es la lógica del goblin).
+    //PASA LO MISMO CON ShowActionPathFinding(bool _shouldRecalculate) QUE MUESTRA LA ACCIÓN DEL ENEMIGO;
+
+        //Quizás HAY QUE CAMBIAR ShowActionPathFinding PARA VER QUE HACER CON PINTAR ENEMIGOS ADYACENTES
+        //O QUIZÁS ES CAMBIAR EL COLOR ATTACK TILE NO LO SE
 
     //Hit y tile en el que esta la sombra del show action
     RaycastHit hit;
@@ -343,11 +355,7 @@ public class EnGiant : EnemyUnit
         if (pathToObjective.Count > 0 &&  pathToObjective.Count <= movementUds + 2 && myCurrentObjectiveTile != null)
         {
             //Compruebo si tile al que voy a atacar estaba bajo ataque
-            wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
-
-            tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile);
-
-            myCurrentObjectiveTile.ColorAttack();
+            base.ColorAttackTile();
 
             //Esto significa que el enemigo está adyacente del player (son el tile del gigante y el del player vamos)
             if (pathToObjective.Count > 2)
@@ -414,8 +422,6 @@ public class EnGiant : EnemyUnit
             }
         }
     }
-
-    bool keepSearching;
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()

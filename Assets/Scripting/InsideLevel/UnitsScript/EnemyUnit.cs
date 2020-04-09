@@ -62,14 +62,8 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     public GameObject thisUnitOrder;
 
-    //QUITAR SERIALIZE
     [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
-
-    //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
-    //LA USAN TODOS LOS ENEMIGOS MENOS EL CHARGER Y LA BALISTA
-    [HideInInspector]
-    public List<UnitBase> unitsInRange = new List<UnitBase>();
 
     //Bool que sirve para que la corrutina solo se llame una vez (por tema de que el state machine esta en el update y si no lo haría varias veces)
     private bool corroutineDone;
@@ -81,6 +75,27 @@ public class EnemyUnit : UnitBase
     //Bool que indica si el enemigo ha sido despertado o si solo tiene que comprobar su rango inicial.
     [SerializeField]
     public bool haveIBeenAlerted = false;
+
+    [Header ("GOBLIN COMMON VARIABLES")]
+
+    //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
+    protected UnitBase myCurrentObjective;
+    protected IndividualTiles myCurrentObjectiveTile;
+
+    //Path de tiles a seguir hasta el objetivo
+    [HideInInspector]
+    public List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
+
+    //Lista que guarda los enmeigos y personajes que están dentro del rango de alerta del personaje (ya sea para comprobar personajes o alertar a enemigos)
+    //LA USAN TODOS LOS ENEMIGOS MENOS EL CHARGER Y LA BALISTA
+    [HideInInspector]
+    public List<UnitBase> unitsInRange = new List<UnitBase>();
+
+    //Se usa para moverse el número de tiles que toque (si el máximo o menos debido a obstaculos u otras cosas.
+    protected int limitantNumberOfTilesToMove;
+
+    //Bool que indica si almenos una de las unidades encontradas en rango de acción es un player
+    protected bool keepSearching;
 
     [Header("REFERENCIAS")]
 
@@ -97,10 +112,6 @@ public class EnemyUnit : UnitBase
 	public Sprite enemyTierImage;
 
 	[Header("FEEDBACK")]
-
-    //Path de tiles a seguir hasta el objetivo
-    [HideInInspector]
-    public List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
 
     //Flecha que indica que enemigo está realizando su acción.
     [SerializeField]
@@ -341,26 +352,6 @@ public class EnemyUnit : UnitBase
         }
     }
 
-
-    public virtual void MoveUnit()
-    {
-       //Acordarse de que cada enemigo debe actualizar al moverse los tiles (vacíar el tile anterior y setear el nuevo tile y la unidad del nuevo tile)
-    }
-
-
-    public virtual void Attack()
-    {
-        //Cada enemigo realiza su propio ataque
-       
-        if(currentUnitsAvailableToAttack.Count > 0)
-        {
-            Debug.Log("AQUI");
-            CalculateDamage(currentUnitsAvailableToAttack[0]);
-
-            currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
-        }
-    }
-
     //Función que se encarga de hacer que el personaje este despierto/alerta
     public void AlertEnemy()
     {
@@ -371,9 +362,93 @@ public class EnemyUnit : UnitBase
     }
 
     //Función que se encarga de pintar el line renderer y el tile de ataque
-    public virtual void ShowActionPathFinding(bool shouldRecalculate)
+    public virtual void ShowActionPathFinding(bool _shouldRecalculate)
     {
         //Cada enemigo realiza su propio path
+
+        //AL IGUAL QUE CON EL MOVIMIENTO ESTO ES LA LÓGICA DEL GOBLIN QUE SE USA DE BASE
+        //Si se tiene que mostrar la acción por el hover calculamos el enemigo
+        if (_shouldRecalculate)
+        {
+            pathToObjective.Clear();
+
+            SearchingObjectivesToAttackShowActionPathFinding();
+            if (myCurrentObjectiveTile != null)
+            {
+                //Cada enemigo realiza su propio path
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+
+                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+                for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                {
+                    pathToObjective.Add(LM.TM.currentPath[i]);
+                }
+            }
+        }
+
+        //Si se va a mostrar la acción en el turno enemigo entonces no recalculo y directamente enseño la acción.
+        //Esta parte es común para cuando se hace desde el hover como cuando se hace en turno enemigo.
+        if (myCurrentObjectiveTile != null)
+        {
+            myLineRenderer.positionCount = 0;
+
+            if (pathToObjective.Count - 2 > movementUds)
+            {
+                limitantNumberOfTilesToMove = movementUds;
+            }
+            else
+            {
+                limitantNumberOfTilesToMove = pathToObjective.Count - 2;
+            }
+
+            myLineRenderer.enabled = true;
+
+            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
+            {
+                shaderHover.SetActive(true);
+            }
+
+            //Coge
+            myLineRenderer.positionCount += (limitantNumberOfTilesToMove + 1);
+
+            for (int i = 0; i < limitantNumberOfTilesToMove + 1; i++)
+            {
+                Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
+
+                if (i < pathToObjective.Count - 1)
+                {
+                    myLineRenderer.SetPosition(i, pointPosition);
+
+                    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+                    {
+                        shaderHover.transform.position = pointPosition;
+
+                        if ((pathToObjective[limitantNumberOfTilesToMove + 1]) == currentUnitsAvailableToAttack[0].myCurrentTile)
+                        {
+                            Debug.Log(name + " " + currentUnitsAvailableToAttack[0].name);
+                            CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[limitantNumberOfTilesToMove], CheckTileDirection(pathToObjective[limitantNumberOfTilesToMove], pathToObjective[limitantNumberOfTilesToMove + 1], false));
+                        }
+                        else
+                        {
+                            damageWithMultipliersApplied = -999;
+                        }
+
+                        Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
+                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+                    }
+                }
+            }
+
+            ///En el gigante es importante que esta función vaya después de colocar la sombra. Por si acaso asegurarse de que este if nunca se pone antes que el reposicionamiento de la sombra
+
+            //A pesar de que ya se llama a esta función desde el levelManager en caso de hover, si se tiene que mostrar porque el goblin está atacando se tiene que llamar desde aqui (ya que no pasa por el level manager)
+            //Tiene que ser en falso porque si no pongo la condicion la función se cree que el tileya estaba pintado de antes
+            if (!_shouldRecalculate)
+            {
+                ColorAttackTile();
+            }
+        }
     }
 
     public void HideActionPathfinding()
@@ -398,15 +473,99 @@ public class EnemyUnit : UnitBase
         tilesAlreadyUnderAttack.Clear();
     }
 
+    //Se llama desde el LevelManager. Al final del showAction se encarga de mostrar el tile al que va a atacar
     public virtual void ColorAttackTile()
     {
-        //El goblin y el gigante lo usan para pintar el tile al que van a atacar al mostrar show action
+        //El goblin y el gigante lo usan para pintar el tile al que van a atacar al mostrar show 
+        //Esta base es común para unos cuantos enemigos, el gigante técnicamente es también común pero necesita acceder al if por lo que no usa la base.
+
+        if (pathToObjective.Count > 0 && pathToObjective.Count <= movementUds + 2 && myCurrentObjective != null)
+        {
+            wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.isUnderAttack);
+            tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile);
+            myCurrentObjectiveTile.ColorAttack();
+        }
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public virtual void SearchingObjectivesToAttackShowActionPathFinding()
     {
-        //Cada enemigo realiza su propioa búsqueda
+        //ESTA BASE ES LA LÓGICA DEL GOBLIN
+        myCurrentObjective = null;
+        myCurrentObjectiveTile = null;
+
+        //Si no ha sido alertado compruebo si hay players al alcance que van a hacer que se despierte y se mueva
+        if (!haveIBeenAlerted)
+        {
+            //Comprobar las unidades que hay en mi rango de acción
+            unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
+
+            for (int i = 0; i < unitsInRange.Count; i++)
+            {
+                if (unitsInRange[i].GetComponent<PlayerUnit>())
+                {
+                    keepSearching = true;
+                    currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
+                    break;
+                }
+            }
+        }
+
+        //Si ha sido alertado compruebo simplemente hacia donde se va a mover
+        else
+        {
+            //Determinamos el enemigo más cercano.
+            //currentUnitsAvailableToAttack = LM.TM.OnlyCheckClosestPathToPlayer();
+            currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
+            //Debug.Log("Line 435 " + currentUnitsAvailableToAttack.Count);
+
+            keepSearching = true;
+        }
+
+        if (keepSearching)
+        {
+            if (currentUnitsAvailableToAttack.Count == 1)
+            {
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+            }
+
+            //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
+            else if (currentUnitsAvailableToAttack.Count > 1)
+            {
+                //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
+                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                {
+                    return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
+                });
+
+                //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
+                for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
+                {
+                    if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
+                    {
+                        currentUnitsAvailableToAttack.RemoveAt(i);
+                    }
+                }
+
+                //Si sigue habiendo varios enemigos los ordeno segun la vida
+                if (currentUnitsAvailableToAttack.Count > 1)
+                {
+
+                    //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                    currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                    {
+                        return (a.currentHealth).CompareTo(b.currentHealth);
+
+                    });
+                }
+
+                myCurrentObjective = currentUnitsAvailableToAttack[0];
+                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+            }
+        }
+
+        keepSearching = false;
     }
 
     //Para acabar el turno de la unnidad
@@ -1082,8 +1241,75 @@ public class EnemyUnit : UnitBase
 
     #region GOBLIN_SHARED_FUNCTIONALITY
 
+    //Función de movimiento que se llama al cambiar al state Moving.
+    //Acordarse de que cada enemigo debe actualizar al moverse los tiles (vacíar el tile anterior y setear el nuevo tile y la unidad del nuevo tile)
+    public virtual void MoveUnit()
+    {
+        //ESTA ES LA BASE DEL GOBLIN Y QUE SE REUTILIZA PARA OTROS ENEMIGOS:
+        //Gigante,
+        //
+        limitantNumberOfTilesToMove = 0;
+        movementParticle.SetActive(true);
+        ShowActionPathFinding(false);
+
+        //Como el path guarda el tile en el que esta el enemigo yel tile en el que esta el personaje del jugador resto 2.
+        //Si esta resta se pasa del número de unidades que me puedo mover entonces solo voy a recorrer el número de tiles máximo que puedo llegar.
+        if (pathToObjective.Count - 2 > movementUds)
+        {
+            limitantNumberOfTilesToMove = movementUds;
+        }
+
+        //Si esta resta por el contrario es menor o igual a movementUds significa que me voy mover el máximo o menos tiles.
+        else
+        {
+            limitantNumberOfTilesToMove = pathToObjective.Count - 2;
+        }
+
+        //Compruebo la dirección en la que se mueve para girar a la unidad
+        CheckTileDirection(myCurrentTile, pathToObjective[pathToObjective.Count - 1], true);
+
+        myCurrentEnemyState = enemyState.Waiting;
+
+        //Actualizo info de los tiles
+        UpdateInformationAfterMovement(pathToObjective[limitantNumberOfTilesToMove]);
+
+        StartCoroutine("MovingUnitAnimation");
+    }
+
+
+    //Corrutina de movimiento
+    //De los enemigos que se mueven los que no la usan son el charger y la balista
+    protected IEnumerator MovingUnitAnimation()
+    {
+        //Animación de movimiento
+        //Es -1 ya que no me interesa que se mueva hasta el tile en el que está la otra unidad
+        for (int j = 1; j <= limitantNumberOfTilesToMove; j++)
+        {
+            //Calcula el vector al que se tiene que mover.
+            currentTileVectorToMove = pathToObjective[j].transform.position;  //new Vector3(pathToObjective[j].transform.position.x, pathToObjective[j].transform.position.y, pathToObjective[j].transform.position.z);
+
+            //Muevo y roto a la unidad
+            transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
+            unitModel.transform.DOLookAt(currentTileVectorToMove, timeDurationRotation, AxisConstraint.Y);
+
+            //Espera entre casillas
+            yield return new WaitForSeconds(currentTimeForMovement);
+        }
+
+        hasMoved = true;
+
+        //Compruebo la dirección en la que se mueve para girar a la unidad
+        CheckTileDirection(myCurrentTile, pathToObjective[pathToObjective.Count - 1], true);
+        myCurrentEnemyState = enemyState.Searching;
+
+        movementParticle.SetActive(false);
+
+        HideActionPathfinding();
+        //ShowActionPathFinding(false);
+    }
+
     protected Vector3 tempVector3Rotation;
-    protected FacingDirection tempFacingDirection; 
+    protected FacingDirection tempFacingDirection;
 
     //Decidir rotación al moverse por los tiles.
     public FacingDirection CheckTileDirection(IndividualTiles referenceTile, IndividualTiles tileToCheck, bool _shouldRotateToo)
@@ -1156,6 +1382,20 @@ public class EnemyUnit : UnitBase
         {
             unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
             currentFacingDirection = FacingDirection.West;
+        }
+    }
+
+
+    public virtual void Attack()
+    {
+        //Cada enemigo realiza su propio ataque
+
+        if (currentUnitsAvailableToAttack.Count > 0)
+        {
+            Debug.Log("AQUI");
+            CalculateDamage(currentUnitsAvailableToAttack[0]);
+
+            currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
         }
     }
 

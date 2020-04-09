@@ -5,14 +5,6 @@ using DG.Tweening;
 
 public class EnSummoner : EnemyUnit
 {
-    //Guardo la primera unidad en la lista de currentUnitAvailbleToAttack para  no estar llamandola constantemente
-    private UnitBase myCurrentObjective;
-    private IndividualTiles myCurrentObjectiveTile;
-
-    //Path de tiles a seguir hasta el objetivo
-    [HideInInspector]
-    private List<IndividualTiles> pathToObjective = new List<IndividualTiles>();
-
     //El número máximo de unidades que se pueden invocar
     public int maxUnitsSummoned;
     //El número actual de unidades invocadas
