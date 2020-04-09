@@ -13,7 +13,6 @@ public class EnCharger : EnemyUnit
     {
         if (isDead || hasAttacked)
         {
-            Debug.Log("dead");
             myCurrentEnemyState = enemyState.Ended;
             return;
         }
@@ -56,78 +55,18 @@ public class EnCharger : EnemyUnit
         {
             AlertEnemy();
         }
-        base.Attack();
+
         movementParticle.SetActive(true);
+
+        //Importante este clear no puede ir dentro de SpecialCheckRotation();
         pathToObjective.Clear();
+        SpecialCheckRotation(myCurrentTile, true);
 
-        //Arriba o abajo
-        if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == myCurrentTile.tileX)
-        {
-            //Arriba
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > myCurrentTile.tileZ)
-            {
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                {
-                    pathToObjective.Add(myCurrentTile.tilesInLineUp[i]);
-                }
+        //Seteo la rotación decidida en SpecialCheckRotation();
+        unitModel.transform.DORotate(rotationChosenAfterMovement, timeDurationRotation);
+        currentFacingDirection = facingDirectionAfterMovement;
 
-                //Roto al charger
-                unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.North;
-
-                StartCoroutine("MovingUnitAnimation");
-            }
-            //Abajo
-            else
-            {
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                {
-                    pathToObjective.Add(myCurrentTile.tilesInLineDown[i]);
-                }
-
-                //Roto al charger
-
-                unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.South;
-
-                StartCoroutine("MovingUnitAnimation");
-            }
-        }
-        //Izquierda o derecha
-        else
-        {
-            //Derecha
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > myCurrentTile.tileX)
-            {
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                {
-                    pathToObjective.Add(myCurrentTile.tilesInLineRight[i]);
-                }
-
-                //Roto al charger
-
-                unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.East;
-
-                StartCoroutine("MovingUnitAnimation");
-            }
-            //Izquierda
-            else
-            {
-                for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                {
-                    pathToObjective.Add(myCurrentTile.tilesInLineLeft[i]);
-                }
-
-                //Roto al charger
-
-                unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-                currentFacingDirection = FacingDirection.West;
-
-                StartCoroutine("MovingUnitAnimation");
-
-            }
-        }
+        StartCoroutine("MovingUnitAnimation");
     }
 
     //ESTE ES DIFERENTE AL DEL ENEMY UNIT PORQUE HABRÍA QUE CAMBIAR VARIAS COSAS DE LA LÓGICA PARA QUE FUNCIONASE EL OTRO.
@@ -158,6 +97,8 @@ public class EnCharger : EnemyUnit
             }
         }
 
+        base.Attack();
+
         //Actualizo toda la información al terminar de moverme
         hasMoved = true;
         movementParticle.SetActive(false);
@@ -170,6 +111,7 @@ public class EnCharger : EnemyUnit
         //Hago daño a la unidad
         DoDamage(currentUnitsAvailableToAttack[0]);
 
+        //Push
         if (currentFacingDirection == FacingDirection.North)
         {
             currentUnitsAvailableToAttack[0].ExecutePush(1, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall);
@@ -189,8 +131,95 @@ public class EnCharger : EnemyUnit
         {
             currentUnitsAvailableToAttack[0].ExecutePush(1, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
         }
+
+
         myCurrentEnemyState = enemyState.Ended;
     }
+
+    Vector3 rotationChosenAfterMovement;
+    FacingDirection facingDirectionAfterMovement;
+
+    //Esta función es única del charger y sirve para saber a donde va a mirar al acabar de moverse.
+    //Principalmente es una función para poder usarla en el levelmanager al hacer hover sobre el enemigo y que use la dirección para llamar a la funcion CalculateDamagePreviousAttack();
+    public FacingDirection SpecialCheckRotation(IndividualTiles _tileToComparePosition, bool _DoAll)
+    {
+        //Arriba o abajo
+        if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == _tileToComparePosition.tileX)
+        {
+            //Arriba
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > _tileToComparePosition.tileZ)
+            {
+                if (_DoAll)
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineUp[i]);
+                    }
+                }
+
+                //Roto al charger
+                rotationChosenAfterMovement = new Vector3(0, 0, 0);
+                facingDirectionAfterMovement = FacingDirection.North;
+            }
+            //Abajo
+            else
+            {
+                if (_DoAll)
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineDown[i]);
+                    }
+                }
+                   
+
+                //Roto al charger
+                rotationChosenAfterMovement = new Vector3(0, 180, 0);
+                facingDirectionAfterMovement = FacingDirection.South;
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+
+            //Derecha
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > _tileToComparePosition.tileX)
+            {
+                if (_DoAll)
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineRight[i]);
+                    }
+                }
+                   
+
+                //Roto al charger
+                rotationChosenAfterMovement =new Vector3(0, 90, 0);
+                facingDirectionAfterMovement = FacingDirection.East;
+            }
+            //Izquierda
+            else
+            {
+                if (_DoAll)
+                {
+
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineLeft[i]);
+                    }
+                }
+
+
+                //Roto al charger
+                rotationChosenAfterMovement = new Vector3(0, -90, 0);
+                facingDirectionAfterMovement = FacingDirection.West;
+            }
+        }
+
+        return facingDirectionAfterMovement;
+    }
+
 
     public override void FinishMyActions()
     {
@@ -645,6 +674,5 @@ public class EnCharger : EnemyUnit
                 
             }
         }
-
     }
 }

@@ -388,11 +388,8 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.currentUnitsAvailableToAttack[i].myCurrentTile.ColorDesCharge();
                         hoverUnit.currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(false);
                         hoverUnit.currentUnitsAvailableToAttack[i].DisableCanvasHover();
-
                     }
                 }
-
-
             }
 
             if (hoverUnit.currentTilesInRangeForAttack.Count > 0)
@@ -452,7 +449,6 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
                     }
 
-
                     //Marco las unidades disponibles para atacar de color rojo
                     for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
                     {
@@ -461,6 +457,7 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
                     }
                 }
+
                 //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
@@ -479,14 +476,15 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.myLineRenderer.SetPosition(0, positionToSpawnLineRenderer);
                         hoverUnit.myLineRenderer.SetPosition(1, positionToSpawn);
                     }
-
-
                 }
             }
 
             else if (hoverUnit.GetComponent<EnCharger>())
             {
                 hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false);
+
+                //Muestro la acción que va a realizar el enemigo 
+                hoverUnit.ShowActionPathFinding(true);
 
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
@@ -497,10 +495,14 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
                     }
 
-
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
 
-                    hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[0]);
+                    //hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[0]);
+
+                    //ESTO DE ABAJO FUNCIONA, SOLO FALTA PODER PASARLE BIEN LA DIRECCIÓN EN LA QUE ACABA MIRANDO
+                    hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[0], hoverUnit, hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count-1], hoverUnit.GetComponent<EnCharger>().SpecialCheckRotation(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1], false));
+
+                    hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
 
@@ -512,6 +514,7 @@ public class LevelManager : MonoBehaviour
                     }
 
                 }
+
                 else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
@@ -551,11 +554,11 @@ public class LevelManager : MonoBehaviour
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
 
-                 //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
-                 if(hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
-                 {
-                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                 }
+                    //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
+                    if(hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
+                    {
+                           hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                    }
 
                     hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count -1]);
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);

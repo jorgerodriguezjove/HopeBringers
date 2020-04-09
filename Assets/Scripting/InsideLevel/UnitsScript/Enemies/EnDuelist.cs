@@ -53,8 +53,13 @@ public class EnDuelist : EnemyUnit
             {
                 if (currentUnitsAvailableToAttack.Count == 1)
                 {
-                    myCurrentObjective = currentUnitsAvailableToAttack[0];
-                    myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    base.SearchingObjectivesToAttack();
+
+                    if (currentUnitsAvailableToAttack.Count == 1)
+                    {
+                        myCurrentObjective = currentUnitsAvailableToAttack[0];
+                        myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
+                    }
                 }
 
                 //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
@@ -78,6 +83,8 @@ public class EnDuelist : EnemyUnit
                     //Si sigue habiendo varios enemigos los ordeno segun la vida
                     if (currentUnitsAvailableToAttack.Count > 1)
                     {
+                        //Añado esto para eliminar a los personajes ocultos
+                        base.SearchingObjectivesToAttack();
 
                         //Ordeno la lista de posibles objetivos de menor a mayor vida actual
                         currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
@@ -101,6 +108,7 @@ public class EnDuelist : EnemyUnit
                     pathToObjective.Add(LM.TM.currentPath[i]);
                 }
 
+
                 myCurrentEnemyState = enemyState.Attacking;
             }
         }
@@ -116,7 +124,7 @@ public class EnDuelist : EnemyUnit
             myCurrentEnemyState = enemyState.Searching;
             return;
         }
-        base.Attack();
+       
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {
             //Si mi objetivo es adyacente a mi le ataco
@@ -185,6 +193,7 @@ public class EnDuelist : EnemyUnit
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
 
+                base.Attack();
 
                 //Animación de ataque
                 ExecuteAnimationAttack();
@@ -202,194 +211,4 @@ public class EnDuelist : EnemyUnit
         }
     }
 
-    public override void MoveUnit()
-    {
-        limitantNumberOfTilesToMove = 0;
-
-        movementParticle.SetActive(true);
-
-        ShowActionPathFinding(false);
-
-        //Como el path guarda el tile en el que esta el enemigo yel tile en el que esta el personaje del jugador resto 2.
-        //Si esta resta se pasa del número de unidades que me puedo mover entonces solo voy a recorrer el número de tiles máximo que puedo llegar.
-        if (pathToObjective.Count - 2 > movementUds)
-        {
-            limitantNumberOfTilesToMove = movementUds;
-        }
-
-        //Si esta resta por el contrario es menor o igual a movementUds significa que me voy mover el máximo o menos tiles.
-        else
-        {
-            limitantNumberOfTilesToMove = pathToObjective.Count - 2;
-        }
-
-        //Compruebo la dirección en la que se mueve para girar a la unidad
-        CheckTileDirection(myCurrentTile, pathToObjective[pathToObjective.Count - 1], true);
-
-        myCurrentEnemyState = enemyState.Waiting;
-
-        //Actualizo info de los tiles
-        UpdateInformationAfterMovement(pathToObjective[limitantNumberOfTilesToMove]);
-
-        StartCoroutine("MovingUnitAnimation");
-    }
-
-    //Esta función muestra la acción del enemigo.
-    //Para esconderla hay otra función (esta en el EnemyUnit)
-    public override void ShowActionPathFinding(bool _shouldRecalculate)
-    {
-        //Si se tiene que mostrar la acción por el hover calculamos el enemigo
-        if (_shouldRecalculate)
-        {
-            pathToObjective.Clear();
-
-            SearchingObjectivesToAttackShowActionPathFinding();
-            if (myCurrentObjectiveTile != null)
-            {
-                //Cada enemigo realiza su propio path
-                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
-
-                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
-                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-                for (int i = 0; i < LM.TM.currentPath.Count; i++)
-                {
-                    pathToObjective.Add(LM.TM.currentPath[i]);
-                }
-            }
-        }
-
-        //Si se va a mostrar la acción en el turno enemigo entonces no recalculo y directamente enseño la acción.
-        //Esta parte es común para cuando se hace desde el hover como cuando se hace en turno enemigo.
-        if (myCurrentObjectiveTile != null)
-        {
-            myLineRenderer.positionCount = 0;
-
-            if (pathToObjective.Count - 2 > movementUds)
-            {
-                limitantNumberOfTilesToMove = movementUds;
-            }
-            else
-            {
-                limitantNumberOfTilesToMove = pathToObjective.Count - 2;
-            }
-
-            myLineRenderer.enabled = true;
-
-            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
-            {
-                shaderHover.SetActive(true);
-            }
-
-            //Coge
-            myLineRenderer.positionCount += (limitantNumberOfTilesToMove + 1);
-
-            //myLineRenderer.SetVertexCount(LM.TM.currentPath.Count);
-
-            for (int i = 0; i < limitantNumberOfTilesToMove + 1; i++)
-            {
-                Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
-
-                if (i < pathToObjective.Count - 1)
-                {
-                    myLineRenderer.SetPosition(i, pointPosition);
-
-                    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-                    {
-                        shaderHover.transform.position = pointPosition;
-                        Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
-                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
-                    }
-                }
-            }
-
-            ///En el gigante es importante que esta función vaya después de colocar la sombra. Por si acaso asegurarse de que este if nunca se pone antes que el reposicionamiento de la sombra
-
-            //A pesar de que ya se llama a esta función desde el levelManager en caso de hover, si se tiene que mostrar porque el goblin está atacando se tiene que llamar desde aqui (ya que no pasa por el level manager)
-            //Tiene que ser en falso porque si no pongo la condicion la función se cree que el tileya estaba pintado de antes
-            if (!_shouldRecalculate)
-            {
-                ColorAttackTile();
-            }
-        }
-    }
-
-    //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
-    public override void SearchingObjectivesToAttackShowActionPathFinding()
-    {
-        myCurrentObjective = null;
-        myCurrentObjectiveTile = null;
-
-        //Si no ha sido alertado compruebo si hay players al alcance que van a hacer que se despierte y se mueva
-        if (!haveIBeenAlerted)
-        {
-            //Comprobar las unidades que hay en mi rango de acción
-            unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
-
-            for (int i = 0; i < unitsInRange.Count; i++)
-            {
-                if (unitsInRange[i].GetComponent<PlayerUnit>())
-                {
-                    keepSearching = true;
-                    currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
-                    break;
-                }
-            }
-        }
-
-        //Si ha sido alertado compruebo simplemente hacia donde se va a mover
-        else
-        {
-            //Determinamos el enemigo más cercano.
-            //currentUnitsAvailableToAttack = LM.TM.OnlyCheckClosestPathToPlayer();
-            currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
-            //Debug.Log("Line 435 " + currentUnitsAvailableToAttack.Count);
-
-            keepSearching = true;
-        }
-
-        if (keepSearching)
-        {
-            if (currentUnitsAvailableToAttack.Count == 1)
-            {
-                myCurrentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
-            }
-
-            //Si hay varios enemigos a la misma distancia, se queda con el que tenga más unidades adyacentes
-            else if (currentUnitsAvailableToAttack.Count > 1)
-            {
-                //Ordeno la lista de posibles objetivos según el número de unidades dyacentes
-                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
-                {
-                    return (b.myCurrentTile.neighboursOcuppied).CompareTo(a.myCurrentTile.neighboursOcuppied);
-                });
-
-                //Elimino a todos los objetivos de la lista que no tengan el mayor número de enemigos adyacentes
-                for (int i = currentUnitsAvailableToAttack.Count - 1; i > 0; i--)
-                {
-                    if (currentUnitsAvailableToAttack[0].myCurrentTile.neighboursOcuppied > currentUnitsAvailableToAttack[i].myCurrentTile.neighboursOcuppied)
-                    {
-                        currentUnitsAvailableToAttack.RemoveAt(i);
-                    }
-                }
-
-                //Si sigue habiendo varios enemigos los ordeno segun la vida
-                if (currentUnitsAvailableToAttack.Count > 1)
-                {
-
-                    //Ordeno la lista de posibles objetivos de menor a mayor vida actual
-                    currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
-                    {
-                        return (a.currentHealth).CompareTo(b.currentHealth);
-
-                    });
-                }
-
-                myCurrentObjective = currentUnitsAvailableToAttack[0];
-                myCurrentObjectiveTile = myCurrentObjective.myCurrentTile;
-            }
-        }
-
-        keepSearching = false;
-    }
 }

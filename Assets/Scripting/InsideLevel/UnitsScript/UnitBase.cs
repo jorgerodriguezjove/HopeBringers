@@ -730,7 +730,6 @@ public class UnitBase : MonoBehaviour
     {
         if (GetComponent<Knight>())
         {
-
             GetComponent<Knight>().shieldBlockAllDamage.SetActive(true);
         }
     }

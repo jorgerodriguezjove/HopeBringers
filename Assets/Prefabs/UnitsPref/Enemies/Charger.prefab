@@ -3453,6 +3453,7 @@ MonoBehaviour:
   numberOfMarks: 0
   hasFear: 0
   turnsWithFear: 0
+  fearIcon: {fileID: 0}
   isStunned: 0
   turnStunned: 0
   isHidden: 0
@@ -3503,24 +3504,26 @@ MonoBehaviour:
   upToDownDamageIcon: {fileID: 4559745729329223679}
   downToUpDamageIcon: {fileID: 5723329685164916216}
   canvasUnit: {fileID: 8699764388687533050}
+  changePositionIcon: {fileID: 0}
   unitGeneralInfo: 
   characterImage: {fileID: 21300000, guid: 11dab93b33d6c0341a6722f319b09863, type: 3}
   tooltipImage: {fileID: 0}
   unitName: Charger
   inGamePortrait: {fileID: 444210177151051912}
   rangeOfAction: 10
-  timeWaitingBeforeStarting: 0
-  timeWaitingBeforeMovement: 0
-  timeWaitingBeforeAttacking: 0
-  timeWaitingBeforeEnding: 0
+  timeWaitingBeforeStarting: 0.5
+  timeWaitingBeforeMovement: 0.2
+  timeWaitingBeforeAttacking: 0.2
+  timeWaitingBeforeEnding: 0.5
   myCurrentEnemyState: 0
   myTierLevel: 0
   orderToShow: 0
   thisUnitOrder: {fileID: 219784646}
   currentUnitsAvailableToAttack: []
-  unitsInRange: []
   isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 0
+  pathToObjective: []
+  unitsInRange: []
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
   enemyTierImage: {fileID: 0}
@@ -3532,7 +3535,6 @@ MonoBehaviour:
   exclamationIcon: {fileID: 0}
   tileDamageRef: {fileID: 8175071015859014743, guid: eb42a29c25ab678449a250f554b9b092,
     type: 3}
-  pathToObjective: []
 --- !u!114 &5407212886593100264
 MonoBehaviour:
   m_ObjectHideFlags: 0

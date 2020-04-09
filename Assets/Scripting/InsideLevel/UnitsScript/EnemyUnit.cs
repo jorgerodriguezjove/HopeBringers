@@ -713,11 +713,9 @@ public class EnemyUnit : UnitBase
             else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
                 if (!isDead)
-                {
-                    
+                { 
                     LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
                    
-
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                     LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
                     LM.CheckIfHoverShouldAppear(this);

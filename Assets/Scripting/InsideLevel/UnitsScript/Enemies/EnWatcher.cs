@@ -57,8 +57,6 @@ public class EnWatcher : EnemyUnit
                 }
             }
         }
-
         myCurrentEnemyState = enemyState.Ended;
     }
-
 }

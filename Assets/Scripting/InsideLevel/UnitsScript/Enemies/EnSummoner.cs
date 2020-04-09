@@ -14,7 +14,6 @@ public class EnSummoner : EnemyUnit
     public GameObject skeletonPrefab;
 
     public Vector3 posToSpawn;
-
   
     //Número de bufo que aplica a las unidades
     public int enemyBuff;
@@ -45,23 +44,20 @@ public class EnSummoner : EnemyUnit
                     
                 }
             }
-           
         }
         
         //Si hay personajes del jugador en mi rango de acción paso a attacking donde me alerto y hago mi accion
         for (int i = 0; i < unitsInRange.Count; i++)
+        {
+            if (unitsInRange[i].GetComponent<PlayerUnit>())
             {
-
-                if (unitsInRange[i].GetComponent<PlayerUnit>())
-                {
-                    myCurrentEnemyState = enemyState.Attacking;
-                    return;
-                }
+                myCurrentEnemyState = enemyState.Attacking;
+                return;
             }
+        }
 
-            //Si llega hasta aqui significa que no había personajes en rango y termina
-            myCurrentEnemyState = enemyState.Ended;
-         
+        //Si llega hasta aqui significa que no había personajes en rango y termina
+        myCurrentEnemyState = enemyState.Ended; 
     }
 
     public override void Attack()
@@ -70,7 +66,6 @@ public class EnSummoner : EnemyUnit
 
         if (currentUnitsSummoned <= maxUnitsSummoned)
         {
-            
             for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
             {
                 if (myCurrentTile.neighbours[i].unitOnTile == null)
@@ -85,7 +80,6 @@ public class EnSummoner : EnemyUnit
                     break;
                 }
             }
-
 
             if (!hasAttacked)
             {
