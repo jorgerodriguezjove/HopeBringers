@@ -22,8 +22,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: TableroMaterial
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: N_F_DCS_ON N_F_HDLS_ON N_F_HPSS_ON N_F_NLASOBF_ON N_F_O_ON N_F_RL_ON
-    N_F_SS_ON _ALPHABASECUTOUT_ON _GIFLATSHADE_ON _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_DCS_ON N_F_EAL_ON N_F_HDLS_ON N_F_HPSS_ON N_F_NLASOBF_ON
+    N_F_O_ON N_F_SON_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON _GIFLATSHADE_ON _LIGHTAFFECTSHADOW_ON
+    _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -125,7 +126,7 @@ Material:
     - _CustomLightDirectionIntensity: 0.406
     - _Cutoff: 0.5
     - _Cutout: 0
-    - _DirectionalLightIntensity: 0
+    - _DirectionalLightIntensity: -2
     - _DoubleSided: 2
     - _DoubleSidedOutline: 1
     - _DstBlend: 0
@@ -149,10 +150,10 @@ Material:
     - _HighlightColorPower: 2
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
-    - _LightAffectShadow: 0
+    - _LightAffectShadow: 1
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 1
-    - _LightIntensity: -1
+    - _LightFalloffSoftness: 0.075
+    - _LightIntensity: -20
     - _MCIALO: 0
     - _MCapIntensity: 1
     - _MVCOL: 0
@@ -162,7 +163,7 @@ Material:
     - _N_F_CLD: 0
     - _N_F_CO: 0
     - _N_F_DCS: 1
-    - _N_F_EAL: 0
+    - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
@@ -174,12 +175,12 @@ Material:
     - _N_F_O: 1
     - _N_F_PT: 0
     - _N_F_R: 0
-    - _N_F_RL: 1
+    - _N_F_RL: 0
     - _N_F_SCT: 0
     - _N_F_SL: 0
-    - _N_F_SON: 0
+    - _N_F_SON: 1
     - _N_F_SS: 1
-    - _N_F_ST: 0
+    - _N_F_ST: 1
     - _N_F_STIAL: 0
     - _N_F_STIS: 0
     - _NoisyOutlineIntensity: 0
@@ -192,7 +193,7 @@ Material:
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
     - _PTexturePower: 1
-    - _PointSpotlightIntensity: 0
+    - _PointSpotlightIntensity: 2
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ReduceShadowSpotDirectionalLight: 0.5
@@ -212,20 +213,20 @@ Material:
     - _SelfShadowAffectedByLightShadowStrength: 0
     - _SelfShadowHardness: 1
     - _SelfShadowRealTimeShadowColorPower: 1
-    - _SelfShadowRealtimeShadowIntensity: 0.8
+    - _SelfShadowRealtimeShadowIntensity: 1
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 0.971
+    - _SelfShadowThreshold: 0.952
     - _ShadowColorTexturePower: 0
     - _ShadowHardness: 0
     - _ShadowTColorPower: 1
     - _ShadowTHardness: 1
     - _ShadowTIntensity: 1
-    - _ShadowTLightThreshold: 50
-    - _ShadowTShadowThreshold: 0
+    - _ShadowTLightThreshold: 27.74
+    - _ShadowTShadowThreshold: 0.05
     - _ShowInAmbientLightShadowIntensity: 1
     - _ShowInAmbientLightShadowThreshold: 0.4
     - _ShowNormal: 0
-    - _SmoothObjectNormal: 0.004
+    - _SmoothObjectNormal: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -247,7 +248,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.3490566, g: 0.0965845, b: 0.031283367, a: 1}
+    - _MainColor: {r: 0.39607844, g: 0.19803922, b: 0.1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}

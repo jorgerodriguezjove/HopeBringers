@@ -23,8 +23,8 @@ Material:
   m_Name: Polygonal Wolf Brown
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
   m_ShaderKeywords: L_F_O_ON L_F_SS_ON N_F_EAL_ON N_F_GLO_ON N_F_HDLS_ON N_F_O_ON
-    N_F_RL_ON N_F_R_ON N_F_SL_ON N_F_SON_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON
-    _ENVIRONMENTREFLECTIONS_OFF _LIGHTAFFECTRIMLIGHTCOLOR_ON _MCIALO_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON
+    N_F_RL_ON N_F_SL_ON N_F_SON_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON _ENVIRONMENTREFLECTIONS_OFF
+    _LIGHTAFFECTRIMLIGHTCOLOR_ON _LIGHTAFFECTSHADOW_ON _MCIALO_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON
     _SELFLITHIGHCONTRAST_ON _SELFSHADOWAFFECTEDBYLIGHTSHADOWSTRENGTH_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -76,7 +76,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 44d8a772cd8a76d46b15cb2c5ebab163, type: 3}
+        m_Texture: {fileID: 2800000, guid: d1e94ef0c63511848a951597a2f80704, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
@@ -167,10 +167,10 @@ Material:
     - _HighlightColorPower: 1
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 1
-    - _LightAffectShadow: 0
+    - _LightAffectShadow: 1
     - _LightFalloffAffectShadowT: 0
     - _LightFalloffSoftness: 0.2
-    - _LightIntensity: 0
+    - _LightIntensity: -1.1
     - _MCIALO: 1
     - _MCapIntensity: 1
     - _MVCOL: 0
@@ -192,7 +192,7 @@ Material:
     - _N_F_NM: 0
     - _N_F_O: 1
     - _N_F_PT: 0
-    - _N_F_R: 1
+    - _N_F_R: 0
     - _N_F_RL: 1
     - _N_F_SCT: 0
     - _N_F_SL: 1
@@ -206,7 +206,7 @@ Material:
     - _OcclusionStrength: 1
     - _Oper: 8
     - _OutlineExtrudeMethod: 1
-    - _OutlineWidth: 1
+    - _OutlineWidth: 0.2
     - _OutlineWidthAffectedByViewDistance: 1
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
@@ -268,7 +268,7 @@ Material:
     - _EmissionColor: {r: 1.2, g: 0.62068963, b: 0, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
