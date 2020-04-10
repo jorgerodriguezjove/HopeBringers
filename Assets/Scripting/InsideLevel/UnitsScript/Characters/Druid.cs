@@ -447,7 +447,7 @@ public class Druid : PlayerUnit
             }
             else
             {
-                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             }
             
             
@@ -508,7 +508,7 @@ public class Druid : PlayerUnit
             }
             else if (_unitToAttack != null)
             {
-                _unitToAttack.ColorAvailableToBeAttacked(-1);
+                _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(-1);
                 _unitToAttack.myCurrentTile.ColorAttack();
 
             }

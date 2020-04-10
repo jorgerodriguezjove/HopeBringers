@@ -472,7 +472,7 @@ public class Monk : PlayerUnit
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
             currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
         }
@@ -547,7 +547,7 @@ public class Monk : PlayerUnit
 
                 if (tilesInEnemyHover[i].unitOnTile != null)
                 {
-                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(-1);
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(-1);
                 }
             }
         }

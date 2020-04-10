@@ -445,7 +445,7 @@ public class Berserker : PlayerUnit
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(-1);
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(-1);
             }
         }
 

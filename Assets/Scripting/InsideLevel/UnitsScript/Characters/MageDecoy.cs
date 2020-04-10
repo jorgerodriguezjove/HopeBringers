@@ -643,7 +643,7 @@ public class MageDecoy : Mage
                         if(currentTilesInRangeForAttack[i].unitOnTile != null)
                         {
                             CalculateDamage(currentTilesInRangeForAttack[i].unitOnTile);
-                            currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+                            currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                         }                      
                     }
                 }
@@ -656,7 +656,7 @@ public class MageDecoy : Mage
                     {
                         CalculateDamage(currentTilesInRangeForAttack[i].unitOnTile);
                         currentTilesInRangeForAttack[i].ColorAttack();
-                        currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+                        currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                         break;
                     }
                 }
@@ -726,7 +726,7 @@ public class MageDecoy : Mage
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             }
         }
     }

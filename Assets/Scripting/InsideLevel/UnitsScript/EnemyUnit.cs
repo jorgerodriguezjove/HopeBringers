@@ -361,7 +361,7 @@ public class EnemyUnit : UnitBase
         rangeOfAction = 1000;
     }
 
-    //Función que se encarga de pintar el line renderer y el tile de ataque
+    //Función que se encarga de pintar el line renderer + sombra y el número de daño
     public virtual void ShowActionPathFinding(bool _shouldRecalculate)
     {
         //Cada enemigo realiza su propio path
@@ -1393,7 +1393,7 @@ public class EnemyUnit : UnitBase
             Debug.Log("AQUI");
             CalculateDamage(currentUnitsAvailableToAttack[0]);
 
-            currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
         }
     }
 

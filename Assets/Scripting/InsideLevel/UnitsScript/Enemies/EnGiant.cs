@@ -375,53 +375,142 @@ public class EnGiant : EnemyUnit
                 tileToUseBetweenShadowOrMine = myCurrentTile;
             }
 
+            //Pinto tile izq y derecha
             if (pathToObjective.Count > 2 && myCurrentObjectiveTile.tileX == shadowHoverTile.tileX
                 || pathToObjective.Count == 2 && myCurrentObjectiveTile.tileX == myCurrentTile.tileX)
             {
-                //Hago lo mismo con los tiles laterales, compruebo si hay que pintarlos en rojo y de ser así lo guarto en la lista de bools
+                //Hago lo mismo con los tiles laterales, los pinto de rojo y los guardo en la lista de bools
 
-                if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null && Mathf.Abs(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].height - tileToUseBetweenShadowOrMine.height) <= maxHeightDifferenceToAttack)
-                {
-                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0].isUnderAttack);
+                //Tile lateral der
+                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0].isUnderAttack);
+                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0]);
+                myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
 
-                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0]);
-
-                    myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
-                }
-
-                if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null && Mathf.Abs(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].height - tileToUseBetweenShadowOrMine.height) <= maxHeightDifferenceToAttack)
-                {
-                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0].isUnderAttack);
-
-                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0]);
-
-                    myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
-                }
+                //Tile lateral izq
+                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0].isUnderAttack);
+                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0]);
+                myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
             }
 
+            //O pinto tile arriba y debajo, depende de dirección
             else if (pathToObjective.Count > 2 && myCurrentObjectiveTile.tileZ == shadowHoverTile.tileZ || pathToObjective.Count == 2 && myCurrentObjectiveTile.tileZ == myCurrentTile.tileZ)
             {
-                //Comprobar si a sus lados hay unidades
-                if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null && Mathf.Abs(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].height - tileToUseBetweenShadowOrMine.height) <= maxHeightDifferenceToAttack)
-                {
-                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0].isUnderAttack);
+                //Tile lateral arriba
+                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0].isUnderAttack);
+                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0]);
+                myCurrentObjectiveTile.tilesInLineUp[0].ColorAttack();
 
-                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0]);
-
-                    myCurrentObjectiveTile.tilesInLineUp[0].ColorAttack();
-                }
-
-                if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null && Mathf.Abs(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].height - tileToUseBetweenShadowOrMine.height) <= maxHeightDifferenceToAttack)
-                {
-                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0].isUnderAttack);
-
-                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0]);
-
-                    myCurrentObjectiveTile.tilesInLineDown[0].ColorAttack();
-                }
+                //Tile lateral abajo
+                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0].isUnderAttack);
+                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0]);
+                myCurrentObjectiveTile.tilesInLineDown[0].ColorAttack();
             }
         }
     }
+
+    [HideInInspector]
+    public List<IndividualTiles> tempLateralTilesToFutureObjective = new List<IndividualTiles>();
+
+    public void SaveLateralUnitsForNumberAttackInLevelManager()
+    {
+        tempLateralTilesToFutureObjective.Clear();
+
+        tempLateralTilesToFutureObjective = pathToObjective[limitantNumberOfTilesToMove + 1].GetLateralTilesBasedOnDirection(CheckTileDirection(pathToObjective[limitantNumberOfTilesToMove], pathToObjective[limitantNumberOfTilesToMove + 1], false), 1);
+    }
+
+    //Esta función se llama únicamente en el hover
+    public void CalculateDamagePreviousAttackLateralEnemies(UnitBase unitAttacked)
+    {
+        CalculateDamagePreviousAttack(unitAttacked, this, pathToObjective[limitantNumberOfTilesToMove], CheckTileDirection(pathToObjective[limitantNumberOfTilesToMove], pathToObjective[limitantNumberOfTilesToMove + 1], false));
+    }
+
+    //Override a función encargada de pintar el line renderer + sombra y el número de daño.
+    public override void ShowActionPathFinding(bool _shouldRecalculate)
+    {
+        //Recalcular pathToObjective solo si es necesario
+        if (_shouldRecalculate)
+        {
+            pathToObjective.Clear();
+
+            SearchingObjectivesToAttackShowActionPathFinding();
+            if (myCurrentObjectiveTile != null)
+            {
+                //Cada enemigo realiza su propio path
+                LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
+
+                //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
+                //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
+                for (int i = 0; i < LM.TM.currentPath.Count; i++)
+                {
+                    pathToObjective.Add(LM.TM.currentPath[i]);
+                }
+            }
+        }
+
+        //Si se va a mostrar la acción en el turno enemigo entonces no recalculo y directamente enseño la acción.
+        //Esta parte es común para cuando se hace desde el hover como cuando se hace en turno enemigo.
+        if (myCurrentObjectiveTile != null)
+        {
+            myLineRenderer.positionCount = 0;
+
+            if (pathToObjective.Count - 2 > movementUds)
+            {
+                limitantNumberOfTilesToMove = movementUds;
+            }
+            else
+            {
+                limitantNumberOfTilesToMove = pathToObjective.Count - 2;
+            }
+
+            myLineRenderer.enabled = true;
+
+            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
+            {
+                shaderHover.SetActive(true);
+            }
+
+            myLineRenderer.positionCount += (limitantNumberOfTilesToMove + 1);
+
+
+            for (int i = 0; i < limitantNumberOfTilesToMove + 1; i++)
+            {
+                Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
+
+                if (i < pathToObjective.Count - 1)
+                {
+                    myLineRenderer.SetPosition(i, pointPosition);
+
+                    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+                    {
+                        shaderHover.transform.position = pointPosition;
+
+                        if ((pathToObjective[limitantNumberOfTilesToMove + 1]) == currentUnitsAvailableToAttack[0].myCurrentTile)
+                        {
+                            Debug.Log(name + " " + currentUnitsAvailableToAttack[0].name);
+                            CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[limitantNumberOfTilesToMove], CheckTileDirection(pathToObjective[limitantNumberOfTilesToMove], pathToObjective[limitantNumberOfTilesToMove + 1], false));
+                        }
+                        else
+                        {
+                            damageWithMultipliersApplied = -999;
+                        }
+
+                        Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
+                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+                    }
+                }
+            }
+
+            ///En el gigante es importante que esta función vaya después de colocar la sombra. Por si acaso asegurarse de que este if nunca se pone antes que el reposicionamiento de la sombra
+
+            //A pesar de que ya se llama a esta función desde el levelManager en caso de hover, si se tiene que mostrar porque el goblin está atacando se tiene que llamar desde aqui (ya que no pasa por el level manager)
+            //Tiene que ser en falso porque si no pongo la condicion la función se cree que el tileya estaba pintado de antes
+            if (!_shouldRecalculate)
+            {
+                ColorAttackTile();
+            }
+        }
+    }
+
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()

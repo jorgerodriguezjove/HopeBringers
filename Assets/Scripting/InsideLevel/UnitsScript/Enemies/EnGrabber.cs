@@ -412,7 +412,7 @@ public class EnGrabber : EnemyUnit
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
         }
     }

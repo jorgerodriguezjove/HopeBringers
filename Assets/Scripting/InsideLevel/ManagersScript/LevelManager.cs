@@ -453,7 +453,7 @@ public class LevelManager : MonoBehaviour
                     for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
                     {
                         hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
-                        hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+                        hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                         hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
                     }
                 }
@@ -503,7 +503,7 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[0], hoverUnit, hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count-1], hoverUnit.GetComponent<EnCharger>().SpecialCheckRotation(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1], false));
 
                     hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
-                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
 
                     if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
@@ -553,16 +553,43 @@ public class LevelManager : MonoBehaviour
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
-
-                    //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
+                    //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
                     if(hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
                     {
-                           hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
                     }
 
                     hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count -1]);
-                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttacked(hoverUnit.damageWithMultipliersApplied);
+                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+                    //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
+                    if (hoverUnit.GetComponent<EnGiant>())
+                    {
+                        hoverUnit.GetComponent<EnGiant>().SaveLateralUnitsForNumberAttackInLevelManager();
+
+                        for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
+                        {
+                            if (hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile != null)
+                            {
+                                UnitBase tempLateralUnitGiant = hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile;
+
+                                //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
+                                if (tempLateralUnitGiant.GetComponent<MageDecoy>())
+                                {
+                                    tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                                }
+
+
+                                hoverUnit.GetComponent<EnGiant>().CalculateDamagePreviousAttackLateralEnemies(tempLateralUnitGiant);
+
+                                tempLateralUnitGiant.CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                                tempLateralUnitGiant.ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                                tempLateralUnitGiant.HealthBarOn_Off(true);
+
+                            }
+                        }
+                    }
                 }
 
                 //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
@@ -679,6 +706,23 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.currentUnitsAvailableToAttack[0].ResetColor();
                         hoverUnit.currentUnitsAvailableToAttack[0].previsualizeAttackIcon.SetActive(false);
                         hoverUnit.currentUnitsAvailableToAttack[0].DisableCanvasHover();
+                    }
+                }
+
+                //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
+                if (hoverUnit.GetComponent<EnGiant>())
+                {
+                    for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
+                    {
+                        if (hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile != null)
+                        {
+                            UnitBase tempLateralUnitGiant = hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile;
+
+                            tempLateralUnitGiant.ResetColor();
+                            tempLateralUnitGiant.previsualizeAttackIcon.SetActive(false);
+                            tempLateralUnitGiant.DisableCanvasHover();
+
+                        }
                     }
                 }
             }

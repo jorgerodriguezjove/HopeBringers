@@ -711,7 +711,7 @@ public class UnitBase : MonoBehaviour
     }
 
     //Cambiar a color que indica que puede ser atacado
-    public virtual void ColorAvailableToBeAttacked(float damageCalculated)
+    public virtual void ColorAvailableToBeAttackedAndNumberDamage(float damageCalculated)
     {
         if (!isDead)
         {

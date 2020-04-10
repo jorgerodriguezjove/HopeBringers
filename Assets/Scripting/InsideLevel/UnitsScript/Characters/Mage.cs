@@ -539,7 +539,7 @@ public class Mage : PlayerUnit
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
             currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
 
@@ -648,7 +648,7 @@ public class Mage : PlayerUnit
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttacked(damageWithMultipliersApplied);
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             }
         }
     }

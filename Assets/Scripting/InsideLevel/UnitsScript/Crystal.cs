@@ -133,7 +133,7 @@ public class Crystal : EnemyUnit
         }
     }
 
-    public override void ColorAvailableToBeAttacked(float damageCalculated)
+    public override void ColorAvailableToBeAttackedAndNumberDamage(float damageCalculated)
     {
         if (!isDead)
         {
