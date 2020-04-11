@@ -978,6 +978,16 @@ public class LevelManager : MonoBehaviour
             }
 
             unitsToEnableCollider.Clear();
+
+            //Estas líneas las añado para comprobar si el halo de la valquiria tiene que salir
+            Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+            if (valkyrieRef!=null)
+            {
+                valkyrieRef.CheckValkyrieHalo();
+
+            }
+
+
         }
 
         else if(selectedEnemy !=null)

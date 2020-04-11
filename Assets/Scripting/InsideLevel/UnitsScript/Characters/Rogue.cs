@@ -35,6 +35,9 @@ public class Rogue : PlayerUnit
     //Pasiva mejorada (supongo que no tiene limitante de maxBonus)
     public bool afterKillBonus2;
 
+    //Partícula que se instancia al bufarse el daño
+    public GameObject bonusAttackParticle;
+
     //Comprobar si tiene la habilidad comprada
     public bool smokeBomb;
     public GameObject smokeBombPref;
@@ -236,6 +239,62 @@ public class Rogue : PlayerUnit
         }
     }
 
+
+    public void CheckPasiveUpgrades(UnitBase _unitToAttack)
+    {
+
+        if (afterKillBonus)
+        {
+            if (_unitToAttack.isDead)
+            {
+                if (afterKillBonus2)
+                {
+                    baseDamage += bonusAttackAfterKill;
+                    StartCoroutine("ParticleWait");
+                }
+                else if (maxbonusAttackAfterKill > 0)
+                {
+                    baseDamage += bonusAttackAfterKill;
+                    StartCoroutine("ParticleWait");
+                    maxbonusAttackAfterKill--;
+                }
+            }
+        }
+        else if (smokeBomb)
+        {
+            if (_unitToAttack.isDead)
+            {
+                if (smokeBomb2)
+                {
+                    TM.surroundingTiles.Clear();
+                    TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+                    GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                    //Hago daño a las unidades adyacentes
+                    for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                    {
+                        if (TM.surroundingTiles[i] != null)
+                        {
+                            GameObject smokeBombRef = Instantiate(smokeBombPref, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
+                        }
+                    }
+                }
+                else
+                {
+                    GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                }
+            }
+        }
+
+
+    }
+
+    IEnumerator ParticleWait()
+    {
+        yield return new WaitForSeconds(2);
+        Instantiate(bonusAttackParticle, transform.position, bonusAttackParticle.transform.rotation);
+
+    }
+
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
@@ -349,48 +408,10 @@ public class Rogue : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
+            CheckPasiveUpgrades(unitToAttack);
+
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();
 
-            if (afterKillBonus)
-            {
-                if (unitToAttack.isDead)
-                {
-                    if (afterKillBonus2)
-                    {
-                        baseDamage += bonusAttackAfterKill;
-                    }
-                    else if (maxbonusAttackAfterKill > 0)
-                    {
-                        baseDamage += bonusAttackAfterKill;
-                        maxbonusAttackAfterKill--;
-                    }                    
-                }
-            }
-            else if(smokeBomb)            
-            {
-                if (unitToAttack.isDead)
-                {
-                    if (smokeBomb2)
-                    {
-                        TM.surroundingTiles.Clear();
-                        TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-                        GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
-                        //Hago daño a las unidades adyacentes
-                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
-                        {
-                            if (TM.surroundingTiles[i] != null)
-                            {
-                                GameObject smokeBombRef = Instantiate(smokeBombPref , TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);                                
-                            }
-                        }                       
-                    }
-                    else
-                    {
-                        GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
-                    }
-                }               
-            }
-            
                 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
@@ -495,45 +516,7 @@ public class Rogue : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-            if (afterKillBonus)
-            {
-                if (unitToAttack.isDead)
-                {
-                    if (afterKillBonus2)
-                    {
-                        baseDamage += bonusAttackAfterKill;
-                    }
-                    else if (maxbonusAttackAfterKill > 0)
-                    {
-                        baseDamage += bonusAttackAfterKill;
-                        maxbonusAttackAfterKill--;
-                    }
-                }
-            }
-            else if (smokeBomb)
-            {
-                if (unitToAttack.isDead)
-                {
-                    if (smokeBomb2)
-                    {
-                        TM.surroundingTiles.Clear();
-                        TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-                        GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
-                        //Hago daño a las unidades adyacentes
-                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
-                        {
-                            if (TM.surroundingTiles[i] != null)
-                            {
-                                GameObject smokeBombRef = Instantiate(smokeBombPref, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
-                    }
-                }
-            }
+            CheckPasiveUpgrades(unitToAttack);
 
 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
@@ -579,46 +562,7 @@ public class Rogue : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-            if (afterKillBonus)
-            {
-                if (unitToAttack.isDead)
-                {
-                    if (afterKillBonus2)
-                    {
-                        baseDamage += bonusAttackAfterKill;
-                    }
-                    else if (maxbonusAttackAfterKill > 0)
-                    {
-                        baseDamage += bonusAttackAfterKill;
-                        maxbonusAttackAfterKill--;
-                    }
-                }
-            }
-            else if (smokeBomb)
-            {
-                if (unitToAttack.isDead)
-                {
-                    if (smokeBomb2)
-                    {
-                        TM.surroundingTiles.Clear();
-                        TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-                        GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
-
-                        //Hago daño a las unidades adyacentes
-                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
-                        {
-                            if (TM.surroundingTiles[i] != null)
-                            {
-                                GameObject smokeBombRef = Instantiate(smokeBombPref, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
-                    }
-                }
-            }
+            CheckPasiveUpgrades(unitToAttack);
 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 

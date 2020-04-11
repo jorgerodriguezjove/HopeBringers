@@ -38,7 +38,27 @@ public class Valkyrie : PlayerUnit
     //El número de vida la unidad al que deja la valquiria cambiarse por dicha unidad
     public int numberCanChange;
 
+    //Estas son las partículas que salen cuando le queda poca vida a la unidad
+    public GameObject valkHalo;
+    public GameObject unitHalo;
 
+    //Estas son las partículas que salen cuando la valquiria está seleccionada
+    public GameObject valkHalo2;
+    public GameObject unitHalo2;
+
+    
+    [SerializeField]
+    public List<PlayerUnit> myHaloUnits = new List<PlayerUnit>();
+
+    [SerializeField]
+    public List<GameObject> myHaloInstancies = new List<GameObject>();
+
+    protected override void OnMouseDown()
+    {
+        base.OnMouseDown();
+
+        CheckValkyrieHalo();
+    }
 
     public override void Attack(UnitBase unitToAttack)
     {
@@ -499,10 +519,11 @@ public class Valkyrie : PlayerUnit
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
-        {         
+        {
+            Debug.Log("ha entrado");
             if ( LM.selectedCharacter == this && !hasMoved && changePositions)
             {
-                if (currentHealth <= numberCanChange)
+                if (_unitToAttack.currentHealth <= numberCanChange)
                 {
                     ChangePositionIconFeedback(true, _unitToAttack);
                     Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
@@ -512,6 +533,7 @@ public class Valkyrie : PlayerUnit
         }
         else
         {
+            Debug.Log("No ha entrado");
             shaderHover.SetActive(true);
             Vector3 vector2Spawn = new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z);
             shaderHover.transform.position = vector2Spawn;
@@ -592,7 +614,66 @@ public class Valkyrie : PlayerUnit
 
         
     }
+
+
+    public void CheckValkyrieHalo()
+    {
+        if (LM.selectedCharacter == this)
+        {
+
+            valkHalo2.SetActive(true);
+            valkHalo.SetActive(false);
+
+             if (myHaloInstancies.Count > 0)
+             {
+                 for (int i = 0; i < myHaloInstancies.Count; i++)
+                 {
+                     Destroy(myHaloInstancies[i]);
+                 }
+                 myHaloInstancies.Clear();
+             }
+             
+             if (myHaloUnits.Count>0)
+             {
+                 for (int i = 0; i < myHaloUnits.Count; i++)
+                 {
+                     if(myHaloUnits[i].currentHealth <= numberCanChange)
+                     {
+                     GameObject unitHaloRef = Instantiate(unitHalo2, myHaloUnits[i].transform.position, unitHalo2.transform.rotation);
+                     myHaloInstancies.Add(unitHaloRef);
+                     }                   
+                 }
+             }
+                     
+        }
+        else
+        {
+            valkHalo.SetActive(true);
+            valkHalo2.SetActive(false);
+
+            if (myHaloInstancies.Count > 0)
+            {
+                for (int i = 0; i < myHaloInstancies.Count; i++)
+                {
+                    Destroy(myHaloInstancies[i]);
+                }
+                myHaloInstancies.Clear();
+            }
+
+            if (myHaloUnits.Count > 0)
+            {
+                for (int i = 0; i < myHaloUnits.Count; i++)
+                {
+                    if (myHaloUnits[i].currentHealth <= numberCanChange)
+                    {
+                        GameObject unitHaloRef = Instantiate(unitHalo, myHaloUnits[i].transform.position, unitHalo.transform.rotation);
+                        myHaloInstancies.Add(unitHaloRef);
+                    }
+                }
+            }
+    }
     
+}
 }
 
 

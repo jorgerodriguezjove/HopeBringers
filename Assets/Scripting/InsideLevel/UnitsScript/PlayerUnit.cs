@@ -344,17 +344,17 @@ public class PlayerUnit : UnitBase
             {
                 if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-                    
+
                     LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
 
                     Druid druidRef = FindObjectOfType<Druid>();
                     Rogue ninjaRef = FindObjectOfType<Rogue>();
-                    if (druidRef != null && LM.selectedCharacter == druidRef )
+                    if (druidRef != null && LM.selectedCharacter == druidRef)
                     {
-                       // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                        // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                         druidRef.previsualizeAttackIcon.SetActive(true);
                         druidRef.canvasUnit.SetActive(true);
-                        druidRef.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("-1" );
+                        druidRef.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("-1");
                         canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
                         ColorAvailableToBeHealed();
 
@@ -362,11 +362,24 @@ public class PlayerUnit : UnitBase
 
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 }
-
-                if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+                else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-                    myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+                  
+                    Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+                    if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef)
+                    {
+                        LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
+
+                    }
+
+
                 }
+
+
+                    if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+                    {
+                    myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+                    }
 
                 if (!hasAttacked)
                 {
@@ -727,11 +740,11 @@ public class PlayerUnit : UnitBase
 
         //Estas líneas las añado para comprobar si el caballero tiene que defender
         Knight knightDef = FindObjectOfType<Knight>();
-
-        CheckIfKnightIsDefending(knightDef, unitAttacker);
+ 
         
         if (knightDef != null)
         {
+            CheckIfKnightIsDefending(knightDef, unitAttacker);
             damageReceived -= knightDef.shieldDef;
         }
        
@@ -774,6 +787,25 @@ public class PlayerUnit : UnitBase
 
         //Cuando me hacen daño refresco la información en la interfaz
         UIM.RefreshHealth();
+
+
+        //Estas líneas las añado para comprobar si el halo de la valquiria tiene que salir
+        Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+        if (valkyrieRef != null)
+        {
+            if(currentHealth <= valkyrieRef.numberCanChange)
+            {
+                valkyrieRef.myHaloUnits.Add(this);
+                valkyrieRef.CheckValkyrieHalo();
+
+            }else if (valkyrieRef.myHaloUnits.Contains(this))
+            {
+                valkyrieRef.myHaloUnits.Remove(this);
+            }
+            
+        }
+        
+
 
         base.ReceiveDamage(damageReceived,unitAttacker);
 
