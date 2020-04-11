@@ -839,6 +839,11 @@ public class UnitBase : MonoBehaviour
         HealthBarOn_Off(false);
     }
 
+    public void ShowHideFear (bool _shouldShow)
+    {
+        fearIcon.SetActive(_shouldShow);
+    }
+
 
     #endregion
 

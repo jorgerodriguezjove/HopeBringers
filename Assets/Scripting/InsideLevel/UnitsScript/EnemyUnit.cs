@@ -283,7 +283,7 @@ public class EnemyUnit : UnitBase
 
                             if (fearIcon != null)
                             {
-                               fearIcon.SetActive(false);
+                                ShowHideFear(false);
                             }
                             
                         }
@@ -1170,7 +1170,6 @@ public class EnemyUnit : UnitBase
        
     }
 
-
     public void ExecuteAnimationAttack()
     {
         //Debug.Log("Corruitna ataque");
@@ -1195,8 +1194,7 @@ public class EnemyUnit : UnitBase
         //El problema básicamnet es que aunque aqui se llama a una corrutina para esperar a la animación, el codigo en el propio enemigo sigue funcionando,
         //por lo que es como si no hubiese habido ninguna pausa realmente.
     }
-
-
+    
     public void EnemyIsGoingToBeAlerted()
     {
         //Aparece exclamación
