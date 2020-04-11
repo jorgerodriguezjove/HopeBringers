@@ -5,6 +5,9 @@ using DG.Tweening;
 
 public class EnDuelist : EnemyUnit
 {
+    //Flecha que sale encima de la unidad a la que va a girar
+    public GameObject rotatorFeedbackArrow;
+
     public bool hasTier2;
 
     public override void SearchingObjectivesToAttack()
@@ -211,4 +214,19 @@ public class EnDuelist : EnemyUnit
         }
     }
 
+    public void ShowArrowsOnEnemies(bool _shouldShowArrow)
+    {
+        if(_shouldShowArrow)
+        {
+            rotatorFeedbackArrow.SetActive(true);
+            Vector3 spawnRotatorArrow = new Vector3(currentUnitsAvailableToAttack[0].transform.position.x, currentUnitsAvailableToAttack[0].transform.position.y + 1, currentUnitsAvailableToAttack[0].transform.position.z);
+            rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
+
+        }
+
+        else
+        {
+            rotatorFeedbackArrow.SetActive(false);
+        } 
+    } 
 }

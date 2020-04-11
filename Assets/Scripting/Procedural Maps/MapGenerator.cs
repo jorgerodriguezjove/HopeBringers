@@ -235,6 +235,8 @@ public class MapGenerator : MonoBehaviour
     GameObject obstacleInstantiated;
     LayerMask obstacleLayer;
 
+
+    int randomPos;
     public void CreateObstacle()
     {
         //Setear layer?? o viene con obstáculo??
@@ -283,7 +285,8 @@ public class MapGenerator : MonoBehaviour
                         currentsecondObstacleChecking = nearbySpawns[Random.Range(0, nearbySpawns.Count)];
 
                         //Instancio el obstáculo
-                        obstacleInstantiated = Instantiate(twoTileObstacleConfig[Random.Range(0, twoTileObstacleConfig.Count)].obstacleAsset, (currentObstacleChecking.transform.position + currentsecondObstacleChecking.transform.position) / 2, Quaternion.identity);
+                        randomPos = Random.Range(0, twoTileObstacleConfig.Count);
+                        obstacleInstantiated = Instantiate(twoTileObstacleConfig[randomPos].obstacleAsset, (currentObstacleChecking.transform.position + currentsecondObstacleChecking.transform.position) / 2, twoTileObstacleConfig[randomPos].obstacleAsset.transform.rotation);
 
                         //Recoloco la rotación del obstáculo 
                         if (currentObstacleChecking.transform.position.z != currentsecondObstacleChecking.transform.position.z)
@@ -299,7 +302,8 @@ public class MapGenerator : MonoBehaviour
                     else
                     {
                         //Si no hay obstáculos cercanos instancio un obstáculo de 1 tile
-                        obstacleInstantiated = Instantiate(oneTileObstacleConfig[Random.Range(0, oneTileObstacleConfig.Count)].obstacleAsset, currentObstacleChecking.transform.position, Quaternion.identity);
+                        randomPos = Random.Range(0, oneTileObstacleConfig.Count);
+                        obstacleInstantiated = Instantiate(oneTileObstacleConfig[randomPos].obstacleAsset, currentObstacleChecking.transform.position, oneTileObstacleConfig[randomPos].obstacleAsset.transform.rotation);
 
                         //Elimino el spawn de obstáculos ocupado de la lista
                         obstacleSpawns.Remove(currentObstacleChecking);
@@ -310,7 +314,8 @@ public class MapGenerator : MonoBehaviour
                 else
                 {
                     //Si no hay obstáculos cercanos instancio un obstáculo de 1 tile
-                    obstacleInstantiated = Instantiate(oneTileObstacleConfig[Random.Range(0, oneTileObstacleConfig.Count)].obstacleAsset, currentObstacleChecking.transform.position, Quaternion.identity);
+                    randomPos = Random.Range(0, oneTileObstacleConfig.Count);
+                    obstacleInstantiated = Instantiate(oneTileObstacleConfig[randomPos].obstacleAsset, currentObstacleChecking.transform.position, oneTileObstacleConfig[randomPos].obstacleAsset.transform.rotation);
 
                     //Elimino el spawn de obstáculos ocupado de la lista
                     obstacleSpawns.Remove(currentObstacleChecking);

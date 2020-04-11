@@ -172,6 +172,13 @@ public class LevelManager : MonoBehaviour
 
         if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
         {
+            //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
+            //IMPORTANTE TIENE QUE IR DESPUÉS DE T.CREATEGRID Y ANTES DE FOR(enemiesOntheBoard)
+            if (MapGenRef != null)
+            {
+                MapGenRef.Init();
+            }
+
             TM.CreateGrid();
 
             characterSelectionBox.SetActive(false);
@@ -180,14 +187,6 @@ public class LevelManager : MonoBehaviour
             {
                 charactersOnTheBoard.Add(FindObjectsOfType<PlayerUnit>()[i]);
                 charactersOnTheBoard[i].InitializeUnitOnTile();
-            }
-
-
-            //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
-            //IMPORTANTE TIENE QUE IR DESPUÉS DE T.CREATEGRID Y ANTES DE FOR(enemiesOntheBoard)
-            if (MapGenRef != null)
-            {
-                MapGenRef.Init();
             }
 
             for (int i = 0; i < enemiesOnTheBoard.Count; i++)
@@ -212,6 +211,11 @@ public class LevelManager : MonoBehaviour
     //Una vez ha terminado el diálogo, el GameManager avisa a esta función de que comience el nivel
     public void StartGameplayAfterDialog()
     {
+        if (MapGenRef != null)
+        {
+            MapGenRef.Init();
+        }
+
         //Se crea el grid
         TM.CreateGrid();
 
@@ -219,11 +223,6 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < charactersOnTheBoard.Count; i++)
         {
             charactersOnTheBoard[i].InitializeUnitOnTile();
-        }
-
-        if (MapGenRef != null)
-        {
-            MapGenRef.Init();
         }
 
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
@@ -526,6 +525,26 @@ public class LevelManager : MonoBehaviour
                 Debug.Log("hacer qeu aparezca interrogación");
             }
 
+            else if (hoverUnit.GetComponent<EnWatcher>())
+            {
+                //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
+                for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
+                {
+                    hoverUnit.unitsInRange[i].ShowHideFear(true);
+                    //Pongo -1 para que no pinte nada
+                    hoverUnit.unitsInRange[i].ColorAvailableToBeAttackedAndNumberDamage(-1);
+                }
+
+                //Rango de acción
+                tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
+
+                //Rango despertar y miedo
+                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
+                {
+                    tilesAvailableForRangeEnemies[i].ColorActionRange();
+                }
+            }
+
             //Goblin, gigante, boss y demás
             else
             {
@@ -563,8 +582,13 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
 
+                    if (hoverUnit.GetComponent<EnDuelist>())
+                    {
+                        hoverUnit.GetComponent<EnDuelist>().ShowArrowsOnEnemies(true);
+                    }
+
                     //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
-                    if (hoverUnit.GetComponent<EnGiant>())
+                    else if (hoverUnit.GetComponent<EnGiant>())
                     {
                         hoverUnit.GetComponent<EnGiant>().SaveLateralUnitsForNumberAttackInLevelManager();
 
@@ -642,6 +666,7 @@ public class LevelManager : MonoBehaviour
                 }
 
             }
+
             else if (hoverUnit.GetComponent<EnCharger>())
 
             {
@@ -670,6 +695,24 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
                     hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
                 }
+            }
+
+            else if (hoverUnit.GetComponent<EnWatcher>())
+            {
+                //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
+                for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
+                {
+                    hoverUnit.unitsInRange[i].ShowHideFear(false);
+                    hoverUnit.unitsInRange[i].ResetColor();
+                    hoverUnit.unitsInRange[i].DisableCanvasHover();
+                }
+
+                //Rango despertar y miedo
+                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
+                {
+                    tilesAvailableForRangeEnemies[i].ColorDeselect();
+                }
+                tilesAvailableForRangeEnemies.Clear();
             }
 
             //Goblin, gigante, boss y demás
@@ -709,8 +752,14 @@ public class LevelManager : MonoBehaviour
                     }
                 }
 
+
+                if (hoverUnit.GetComponent<EnDuelist>())
+                {
+                    hoverUnit.GetComponent<EnDuelist>().ShowArrowsOnEnemies(false);
+                }
+
                 //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
-                if (hoverUnit.GetComponent<EnGiant>())
+                else if (hoverUnit.GetComponent<EnGiant>())
                 {
                     for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
                     {
@@ -1351,8 +1400,6 @@ public class LevelManager : MonoBehaviour
         UIM.HideUnitInfo("");
     }
 
-
-
         #endregion
 
     //Cuando el jugador elige la rotación de la unidad se avisa para que reaparezca el botón de end turn.
@@ -1755,10 +1802,8 @@ public class LevelManager : MonoBehaviour
         if (_shouldEndTurn)
         {
             UIM.EndTurn();
-        }
-       
+        }       
     }
-
 
     //Para ver si todas las unidades del jugador estan en un tile de acabar la partida
     public bool CheckIfFinishingTilesReached()
@@ -1784,7 +1829,6 @@ public class LevelManager : MonoBehaviour
     {
         GameManager.Instance.isGamePaused = false;
     }
-
 
     //Usar lista para pasar al player los enemigos que se han activado y desactivar al hacer undo
     //public List<EnemyUnit> enemiesAlertedByCharacter = new List<EnemyUnit>();
@@ -1819,6 +1863,5 @@ public class LevelManager : MonoBehaviour
         //Al acabar for updateo lista de enemigos
         UpdateUnitsOrder();
     }
-
 }
 

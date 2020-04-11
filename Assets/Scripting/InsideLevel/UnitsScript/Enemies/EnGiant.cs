@@ -511,7 +511,6 @@ public class EnGiant : EnemyUnit
         }
     }
 
-
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
     {

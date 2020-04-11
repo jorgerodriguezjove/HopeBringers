@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class Berserker : PlayerUnit
 {
     #region VARIABLES
-
     [Header("STATS DE CLASE")]
     //Indica si el berserker está en Rage
     private bool isInRage;
@@ -36,10 +35,8 @@ public class Berserker : PlayerUnit
     //Esta variable tiene que cambiar en la mejora 2 de este ataque
     public int bonusDamageAreaAttack;
 
-
     [Header("Pasivas")]
     //PASIVAS
-
     [SerializeField]
     //Este es el int que hay que cambiar para que el rage haga más daño
     private int rageDamagePlus;
@@ -49,11 +46,8 @@ public class Berserker : PlayerUnit
     [SerializeField]
     //Este es el int que hay que cambiar para que el el berserker meta más turnos de miedo
     private int fearTurnBonus;
-
-    
-
-
     #endregion
+
     public void SetSpecificStats(bool _areaAttack, bool _circularAttack1)
     {
         areaAttack = _areaAttack;
@@ -63,14 +57,11 @@ public class Berserker : PlayerUnit
         {
             bonusDamageAreaAttack = 2;
         }
-
-       
     }
 
     public override void CheckWhatToDoWithSpecialToken()
     {
         myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
-
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
@@ -78,7 +69,6 @@ public class Berserker : PlayerUnit
     {
         hasAttacked = true;
         
-
         if (unitToAttack.isMarked)
         {
             unitToAttack.isMarked = false;
@@ -97,11 +87,8 @@ public class Berserker : PlayerUnit
             else if (FindObjectOfType<Monk>().healerMark2)
             {
                 ApplyBuffOrDebuffdamage(this, 1, 3);
-               
-
             }
             UIM.RefreshTokens();
-
         }
 
         if (circularAttack)
@@ -138,8 +125,8 @@ public class Berserker : PlayerUnit
                 //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
                 base.Attack(unitToAttack);
             }
-           
         }
+
         else if (areaAttack)
         {
             baseDamage = bonusDamageAreaAttack;
@@ -203,12 +190,11 @@ public class Berserker : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-           
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-            
 
         }
+
         else
         {
             //Animación de ataque
@@ -232,7 +218,6 @@ public class Berserker : PlayerUnit
         }
 
         tilesInEnemyHover.Clear();
-
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)
@@ -259,15 +244,11 @@ public class Berserker : PlayerUnit
 
                 if (unitToDealDamage.fearIcon != null)
                 {
-                    unitToDealDamage.fearIcon.SetActive(true);
+                    unitToDealDamage.ShowHideFear(true);
                 }
-             
-              
-
             }
-
-
         }
+
         else
         {
             CalculateDamage(unitToDealDamage);
@@ -434,9 +415,7 @@ public class Berserker : PlayerUnit
 
         if (rageFear)
         {
-
-            _unitToAttack.fearIcon.SetActive(true);
-
+            _unitToAttack.ShowHideFear(true);
         }
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
@@ -448,18 +427,13 @@ public class Berserker : PlayerUnit
                 tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(-1);
             }
         }
-
-
-
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
         if (rageFear)
         {
-
-            _unitToAttack.fearIcon.SetActive(false);
-
+            _unitToAttack.ShowHideFear(false);
         }
     }
     #region COLORS
