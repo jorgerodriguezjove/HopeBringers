@@ -18,7 +18,7 @@ public class EnCharger : EnemyUnit
         }
 
         //Busca enemigos en sus lineas
-        CheckCharactersInLine(false);
+        CheckCharactersInLine(false, null);
 
         //Si coincide que hay varios personajes a la misma distancia, me quedo con el que tiene menos vida
         if (currentUnitsAvailableToAttack.Count > 1)
@@ -44,7 +44,6 @@ public class EnCharger : EnemyUnit
             myCurrentEnemyState = enemyState.Ended;
         }
     }
-
 
     //HACER COMO EN LA BALISTA Y OPTIMIZAR EL CHECK PARA QUE GUARDE LOS TILES QUE AFECTA EN UNA LISTA EN VEZ DE ESTAR BUSCANDO EN TILES EN LINEA TODO EL RATO.
     //JORGE RECUERDA MIRAR ESTO----------------------------------------------------------------------------------------------
@@ -219,7 +218,6 @@ public class EnCharger : EnemyUnit
 
         return facingDirectionAfterMovement;
     }
-
 
     public override void FinishMyActions()
     {
@@ -487,11 +485,17 @@ public class EnCharger : EnemyUnit
 
     }
 
-    //El bool es solo para la balista pero comparte la funcion con el charger y tiene que tenerlo
-    public override void CheckCharactersInLine(bool _NoUsarEsteBooleano)
+    public List<IndividualTiles> tilesBehindObjective = new List<IndividualTiles>();
+
+    //Esta dirección no se aplica al charger a nivel lógico, simplemente me sirve para saber en que dirección esta el objetivo.
+    FacingDirection temporalFacingDirectionWhileHover;
+
+    //El bool y el tile es solo para la balista pero comparte la funcion con el charger y tiene que tenerlo
+    public override void CheckCharactersInLine(bool _NoUsarEsteBooleano, IndividualTiles _noUsarEsteTile)
     {
         if (!isDead)
         {
+            tilesBehindObjective.Clear();
             currentUnitsAvailableToAttack.Clear();
 
             //Busco objetivos en los tiles de arriba
@@ -523,6 +527,14 @@ public class EnCharger : EnemyUnit
                     //Almaceno la primera unidad en la lista de posibles unidades.
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
                     furthestAvailableUnitDistance = i;
+
+                    if (i+1 < myCurrentTile.tilesInLineUp.Count)
+                    {
+                        tilesBehindObjective.Add(myCurrentTile.tilesInLineUp[i+1]);
+                    }
+
+
+                    temporalFacingDirectionWhileHover = FacingDirection.North;
 
                     //Break ya que sólo me interesa la primera unidad de la linea
                     break;
@@ -565,6 +577,13 @@ public class EnCharger : EnemyUnit
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
                     }
 
+                    if (i + 1 < myCurrentTile.tilesInLineRight.Count)
+                    {
+                        tilesBehindObjective.Add(myCurrentTile.tilesInLineRight[i + 1]);
+                    }
+
+                    temporalFacingDirectionWhileHover = FacingDirection.East;
+
                     //Break ya que sólo me interesa la primera unidad de la linea
                     break;
                 }
@@ -605,6 +624,13 @@ public class EnCharger : EnemyUnit
                     {
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
                     }
+
+                    if (i + 1 < myCurrentTile.tilesInLineDown.Count)
+                    {
+                        tilesBehindObjective.Add(myCurrentTile.tilesInLineDown[i + 1]);
+                    }
+
+                    temporalFacingDirectionWhileHover = FacingDirection.South;
 
                     //Break ya que sólo me interesa la primera unidad de la linea
                     break;
@@ -647,11 +673,74 @@ public class EnCharger : EnemyUnit
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                     }
 
+                    if (i + 1 < myCurrentTile.tilesInLineLeft.Count)
+                    {
+                        tilesBehindObjective.Add(myCurrentTile.tilesInLineLeft[i + 1]);
+                    }
+
+                    temporalFacingDirectionWhileHover = FacingDirection.West;
+
                     //Break ya que sólo me interesa la primera unidad de la linea
                     break;
                 }
             }
+
+            //Si coincide que hay varios personajes a la misma distancia, me quedo con el que tiene menos vida
+            if (currentUnitsAvailableToAttack.Count > 1)
+            {
+                //Ordeno la lista de posibles objetivos de menor a mayor vida actual
+                currentUnitsAvailableToAttack.Sort(delegate (UnitBase a, UnitBase b)
+                {
+                    return (a.currentHealth).CompareTo(b.currentHealth);
+
+                });
+            }
         }
+    }
+
+    IndividualTiles tileWhereObjectiveShadowWillEnd;
+
+    public void ShowPushResult()
+    {
+        currentUnitsAvailableToAttack[0].shaderHover.SetActive(true);
+
+        if (temporalFacingDirectionWhileHover == FacingDirection.North)
+        {
+            tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineUp, damageMadeByPush, damageMadeByFall);
+
+            currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+
+            tileWhereObjectiveShadowWillEnd.ColorAttack();
+        }
+
+        else if (temporalFacingDirectionWhileHover == FacingDirection.South)
+        {
+            tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineDown, damageMadeByPush, damageMadeByFall);
+
+             currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+
+             tileWhereObjectiveShadowWillEnd.ColorAttack();
+        }
+
+        else if (temporalFacingDirectionWhileHover == FacingDirection.East)
+        {
+            tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineRight, damageMadeByPush, damageMadeByFall);
+            currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+            tileWhereObjectiveShadowWillEnd.ColorAttack();
+        }
+
+        else if (temporalFacingDirectionWhileHover == FacingDirection.West)
+        {
+            tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+            currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+            tileWhereObjectiveShadowWillEnd.ColorAttack();
+        }
+    }
+
+    public void HideShowResult()
+    {
+        currentUnitsAvailableToAttack[0].shaderHover.SetActive(false);
+        tileWhereObjectiveShadowWillEnd.ColorDesAttack();
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

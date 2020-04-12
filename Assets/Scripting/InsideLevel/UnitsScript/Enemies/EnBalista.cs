@@ -41,7 +41,7 @@ public class EnBalista : EnemyUnit
             else
             {
                 //Buscas los enemigos en la línea de visión
-                CheckCharactersInLine(true);
+                CheckCharactersInLine(true, myCurrentTile);
 
                 //Si encuentra enemigos ataca
                 if (currentUnitsAvailableToAttack.Count > 0)
@@ -152,7 +152,7 @@ public class EnBalista : EnemyUnit
     IEnumerator AttackCorroutine()
     {
         tilesToShoot.Clear();
-        CheckCharactersInLine(true);
+        CheckCharactersInLine(true, myCurrentTile);
 
         Debug.Log(tilesToShoot.Count);
         for (int i = 0; i < tilesToShoot.Count; i++)
@@ -245,7 +245,8 @@ public class EnBalista : EnemyUnit
 
     //Pongo público para acceder a la hora de hacer hover
     //ESTA FUNCIÓN NO PUEDE CAMBIAR EL CURRENTSTATE DEL ENEMIGO, se llama fuera del turno enemigo.
-    public override void CheckCharactersInLine(bool _shouldWarnTilesForBalistaColoring)
+    //El referenceTile sirve porque está función la uso también cuando se va a mover para comprobar si va a atacar después de moverse o no.
+    public override void CheckCharactersInLine(bool _shouldWarnTilesForBalistaColoring, IndividualTiles _referenceTile)
     {
         if (!isDead)
         {
@@ -254,43 +255,43 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.North)
             {
-                if (rangeOfAction <= myCurrentTile.tilesInLineUp.Count)
+                if (rangeOfAction <= _referenceTile.tilesInLineUp.Count)
                 {
                     rangeVSTilesInLineLimitant = rangeOfAction;
                 }
                 else
                 {
-                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineUp.Count;
                 }
 
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     //Si hay un obstáculo paro de comprobar
-                    if (myCurrentTile.tilesInLineUp[i].isObstacle || myCurrentTile.tilesInLineUp[i] == null)
+                    if (_referenceTile.tilesInLineUp[i].isObstacle || _referenceTile.tilesInLineUp[i] == null)
                     {
                         break;
                     }
 
                     //Si el tile no es un obstáculo lo añado a la lista de tiles a los que disparar y compruebo si tiene una unidad.
-                    else if (!myCurrentTile.tilesInLineUp[i].isObstacle)
+                    else if (!_referenceTile.tilesInLineUp[i].isObstacle)
                     {
                         //Si la diferencia de altura supera la que puede tener el personaje paro de buscar
-                        if (i> 0 && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToAttack)
+                        if (i> 0 && Mathf.Abs(_referenceTile.tilesInLineUp[i].height - _referenceTile.tilesInLineUp[i - 1].height) > maxHeightDifferenceToAttack)
                         {
                             break;
                         }
 
-                        tilesToShoot.Add(myCurrentTile.tilesInLineUp[i]);
+                        tilesToShoot.Add(_referenceTile.tilesInLineUp[i]);
 
-                        if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
+                        if (_referenceTile.tilesInLineUp[i].unitOnTile != null && _referenceTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineUp[i].unitOnTile);
 
                             //Si el personaje es un caballero mi disparo acaba aqui
-                            if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
+                            if (_referenceTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>())
                             {
-                                if (myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.South)
+                                if (_referenceTile.tilesInLineUp[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.South)
                                 {
                                     break;
                                 }
@@ -302,41 +303,41 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.East)
             {
-                if (rangeOfAction <= myCurrentTile.tilesInLineRight.Count)
+                if (rangeOfAction <= _referenceTile.tilesInLineRight.Count)
                 {
                     rangeVSTilesInLineLimitant = rangeOfAction;
                 }
                 else
                 {
-                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineRight.Count;
                 }
 
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                    if (myCurrentTile.tilesInLineRight[i].isObstacle || myCurrentTile.tilesInLineRight[i] == null)
+                    if (_referenceTile.tilesInLineRight[i].isObstacle || _referenceTile.tilesInLineRight[i] == null)
                     {
                         break;
                     }
 
-                    else if (!myCurrentTile.tilesInLineRight[i].isObstacle)
+                    else if (!_referenceTile.tilesInLineRight[i].isObstacle)
                     {
-                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToAttack)
+                        if (i > 0 && Mathf.Abs(_referenceTile.tilesInLineRight[i].height - _referenceTile.tilesInLineRight[i - 1].height) > maxHeightDifferenceToAttack)
                         {
                             break;
                         }
 
-                        tilesToShoot.Add(myCurrentTile.tilesInLineRight[i]);
+                        tilesToShoot.Add(_referenceTile.tilesInLineRight[i]);
 
-                        if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
+                        if (_referenceTile.tilesInLineRight[i].unitOnTile != null && _referenceTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineRight[i].unitOnTile);
 
                             //Si el personaje es un caballero mi disparo acaba aqui
-                            if (myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<Knight>())
+                            if (_referenceTile.tilesInLineRight[i].unitOnTile.GetComponent<Knight>())
                             {
-                                if (myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.West)
+                                if (_referenceTile.tilesInLineRight[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.West)
                                 {
                                     break;
                                 }
@@ -348,41 +349,41 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.South)
             {
-                if (rangeOfAction <= myCurrentTile.tilesInLineDown.Count)
+                if (rangeOfAction <= _referenceTile.tilesInLineDown.Count)
                 {
                     rangeVSTilesInLineLimitant = rangeOfAction;
                 }
                 else
                 {
-                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineDown.Count;
                 }
 
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     
-                    if (myCurrentTile.tilesInLineDown[i].isObstacle || myCurrentTile.tilesInLineDown[i] == null)
+                    if (_referenceTile.tilesInLineDown[i].isObstacle || _referenceTile.tilesInLineDown[i] == null)
                     {
                         break;
                     }
 
-                    else if (!myCurrentTile.tilesInLineDown[i].isObstacle)
+                    else if (!_referenceTile.tilesInLineDown[i].isObstacle)
                     {
-                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToAttack)
+                        if (i > 0 && Mathf.Abs(_referenceTile.tilesInLineDown[i].height - _referenceTile.tilesInLineDown[i - 1].height) > maxHeightDifferenceToAttack)
                         {
                             break;
                         }
 
-                        tilesToShoot.Add(myCurrentTile.tilesInLineDown[i]);
+                        tilesToShoot.Add(_referenceTile.tilesInLineDown[i]);
 
-                        if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
+                        if (_referenceTile.tilesInLineDown[i].unitOnTile != null && _referenceTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineDown[i].unitOnTile);
 
                             //Si el personaje es un caballero mi disparo acaba aqui
-                            if (myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<Knight>())
+                            if (_referenceTile.tilesInLineDown[i].unitOnTile.GetComponent<Knight>())
                             {
-                                if (myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.North)
+                                if (_referenceTile.tilesInLineDown[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.North)
                                 {
                                     break;
                                 }
@@ -394,41 +395,41 @@ public class EnBalista : EnemyUnit
 
             if (currentFacingDirection == FacingDirection.West)
             {
-                if (rangeOfAction <= myCurrentTile.tilesInLineLeft.Count)
+                if (rangeOfAction <= _referenceTile.tilesInLineLeft.Count)
                 {
                     rangeVSTilesInLineLimitant = rangeOfAction;
                 }
                 else
                 {
-                    rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineLeft.Count;
                 }
 
                 for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
                     //Tanto la balista cómo el charger detiene su comprobación si hay un obstáculo
-                    if (myCurrentTile.tilesInLineLeft[i].isObstacle || myCurrentTile.tilesInLineLeft[i] == null)
+                    if (_referenceTile.tilesInLineLeft[i].isObstacle || _referenceTile.tilesInLineLeft[i] == null)
                     {
                         break;
                     }
 
-                    else if (!myCurrentTile.tilesInLineLeft[i].isObstacle)
+                    else if (!_referenceTile.tilesInLineLeft[i].isObstacle)
                     {
-                        if (i > 0 && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToAttack)
+                        if (i > 0 && Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - _referenceTile.tilesInLineLeft[i - 1].height) > maxHeightDifferenceToAttack)
                         {
                             break;
                         }
 
-                        tilesToShoot.Add(myCurrentTile.tilesInLineLeft[i]);
+                        tilesToShoot.Add(_referenceTile.tilesInLineLeft[i]);
 
-                        if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
+                        if (_referenceTile.tilesInLineLeft[i].unitOnTile != null && _referenceTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
                         {
                             //Almaceno la primera unidad en la lista de posibles unidades.
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineLeft[i].unitOnTile);
 
                             //Si el personaje es un caballero mi disparo acaba aqui
-                            if (myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<Knight>())
+                            if (_referenceTile.tilesInLineLeft[i].unitOnTile.GetComponent<Knight>())
                             {
-                                if (myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.East)
+                                if (_referenceTile.tilesInLineLeft[i].unitOnTile.GetComponent<Knight>().currentFacingDirection == FacingDirection.East)
                                 {
                                     break;
                                 }
@@ -484,7 +485,7 @@ public class EnBalista : EnemyUnit
         WarnOrResetTilesToShoot(false);
 
         //Vuelvo a buscar los tiles a disparar
-        CheckCharactersInLine(true);
+        CheckCharactersInLine(true, myCurrentTile);
 
         //Pinto los nuevos tiles
         if (isAttackPrepared)
@@ -492,7 +493,6 @@ public class EnBalista : EnemyUnit
             FeedbackTilesToAttack(true);
         }
     }
-
 
     //Esta función calcula el tile al que se tiene que mover. Sirve tanto para moverse como para mostrar la acción de la balista
     public IndividualTiles GetTileToMove()
@@ -815,7 +815,7 @@ public class EnBalista : EnemyUnit
         {
             FeedbackTilesToAttack(false);
             tilesToShoot.Clear();
-            CheckCharactersInLine(true);
+            CheckCharactersInLine(true, myCurrentTile);
             FeedbackTilesToAttack(true);
         }
     }

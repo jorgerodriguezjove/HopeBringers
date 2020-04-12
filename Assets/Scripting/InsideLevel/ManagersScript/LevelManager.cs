@@ -436,7 +436,7 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false);
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, hoverUnit.myCurrentTile);
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                 {
@@ -457,7 +457,7 @@ public class LevelManager : MonoBehaviour
                     }
                 }
 
-                //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea
+                //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea antes de moverse
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
                     IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
@@ -475,12 +475,34 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.myLineRenderer.SetPosition(0, positionToSpawnLineRenderer);
                         hoverUnit.myLineRenderer.SetPosition(1, positionToSpawn);
                     }
+
+                    //Compruebo si después de moverse tiene objetivos que atacar
+                    hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, tileToMove);
+                    //Dibuja el ataque que va a preparar si las unidades se quedan ahí
+                    if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
+                    {
+                        hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
+
+                        //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
+                        if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
+                        {
+                            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                        }
+
+                        //Marco las unidades disponibles para atacar de color rojo
+                        for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
+                        {
+                            hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
+                            hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                            hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                        }
+                    }
                 }
             }
 
             else if (hoverUnit.GetComponent<EnCharger>())
             {
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false);
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false, null);
 
                 //Muestro la acción que va a realizar el enemigo 
                 hoverUnit.ShowActionPathFinding(true);
@@ -496,9 +518,7 @@ public class LevelManager : MonoBehaviour
 
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
 
-                    //hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[0]);
-
-                    //ESTO DE ABAJO FUNCIONA, SOLO FALTA PODER PASARLE BIEN LA DIRECCIÓN EN LA QUE ACABA MIRANDO
+                    //Calculo el daño que le hace al llegar al tile anterior
                     hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[0], hoverUnit, hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count-1], hoverUnit.GetComponent<EnCharger>().SpecialCheckRotation(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1], false));
 
                     hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
@@ -511,6 +531,8 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
                         hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
                     }
+
+                    hoverUnit.GetComponent<EnCharger>().ShowPushResult();
 
                 }
 
@@ -543,6 +565,23 @@ public class LevelManager : MonoBehaviour
                 {
                     tilesAvailableForRangeEnemies[i].ColorActionRange();
                 }
+            }
+
+            else if (hoverUnit.GetComponent<EnSummoner>())
+            {
+                if (!hoverUnit.haveIBeenAlerted)
+                {
+                    //Rango de acción
+                    tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
+
+                    //Rango despertar y miedo
+                    for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
+                    {
+                        tilesAvailableForRangeEnemies[i].ColorActionRange();
+                    }
+                }
+
+                hoverUnit.GetComponent<EnSummoner>().HideShowFeedbackSpawnPosition(true);
             }
 
             //Goblin, gigante, boss y demás
@@ -628,7 +667,7 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(true);
+                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(true, hoverUnit.myCurrentTile);
 
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
@@ -637,25 +676,27 @@ public class LevelManager : MonoBehaviour
                     {
                         hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().HideAttackEffect(hoverUnit);
                     }
-                    Debug.Log("0");
                     hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(false);
                 }
 
                 else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
-                    Debug.Log("1");
-
                     IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
                     if (tileToMove != null)
                     {
-                        Debug.Log("2");
+                        hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(true, tileToMove);
 
                         hoverUnit.shaderHover.SetActive(false);
                         tileToMove.ColorDeselect();
                         hoverUnit.myLineRenderer.enabled = false;
+
+                        if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
+                        {
+                            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().HideAttackEffect(hoverUnit);
+                        }
+                        hoverUnit.GetComponent<EnBalista>().FeedbackTilesToAttack(false);
                     }
                 }
-
 
                 //Desmarco las unidades disponibles para atacar
                 for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
@@ -671,7 +712,7 @@ public class LevelManager : MonoBehaviour
 
             {
                 hoverUnit.shaderHover.SetActive(false);
-                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false);
+                hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false, null);
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
                 {
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
@@ -695,6 +736,8 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
                     hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
                 }
+
+                hoverUnit.GetComponent<EnCharger>().HideShowResult();
             }
 
             else if (hoverUnit.GetComponent<EnWatcher>())
@@ -713,6 +756,18 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForRangeEnemies[i].ColorDeselect();
                 }
                 tilesAvailableForRangeEnemies.Clear();
+            }
+
+            else if (hoverUnit.GetComponent<EnSummoner>())
+            {
+                //Rango despertar y miedo
+                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
+                {
+                    tilesAvailableForRangeEnemies[i].ColorDeselect();
+                }
+                tilesAvailableForRangeEnemies.Clear();
+
+                hoverUnit.GetComponent<EnSummoner>().HideShowFeedbackSpawnPosition(false);
             }
 
             //Goblin, gigante, boss y demás
@@ -1783,12 +1838,6 @@ public class LevelManager : MonoBehaviour
                 Debug.Log("You selected the " + hit.transform.name); // ensure you picked right object
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            AlertEnemiesOfPlayerMovement();
-        }
-
     }
     #endregion
 
@@ -1832,7 +1881,6 @@ public class LevelManager : MonoBehaviour
 
     //Usar lista para pasar al player los enemigos que se han activado y desactivar al hacer undo
     //public List<EnemyUnit> enemiesAlertedByCharacter = new List<EnemyUnit>();
-
     public void AlertEnemiesOfPlayerMovement()
     {
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
@@ -1841,9 +1889,15 @@ public class LevelManager : MonoBehaviour
             if (!enemiesOnTheBoard[i].isDead && !enemiesOnTheBoard[i].haveIBeenAlerted && !enemiesOnTheBoard[i].isGoingToBeAlertedOnEnemyTurn)
             {
                 //Balista y charger tienen check diferente
-                if (enemiesOnTheBoard[i].GetComponent<EnBalista>() || enemiesOnTheBoard[i].GetComponent<EnCharger>())
+                if (enemiesOnTheBoard[i].GetComponent<EnBalista>())
                 {
-                    enemiesOnTheBoard[i].CheckCharactersInLine(false);
+                    //Comprobar si tiene que ser false o true
+                    enemiesOnTheBoard[i].CheckCharactersInLine(false, enemiesOnTheBoard[i].myCurrentTile);
+                }
+
+                else if (enemiesOnTheBoard[i].GetComponent<EnCharger>())
+                {
+                    enemiesOnTheBoard[i].CheckCharactersInLine(false, null);
                 }
 
                 //Resto de enemigos
