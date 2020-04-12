@@ -13,10 +13,14 @@ public class EnSummoner : EnemyUnit
     //Prefab que el summoner va a invocar
     public GameObject skeletonPrefab;
 
+    //Posición en vector para instanciar el prefab del enemigo.
     public Vector3 posToSpawn;
   
     //Número de bufo que aplica a las unidades
     public int enemyBuff;
+
+    [SerializeField]
+    private GameObject spawnFeedback;
 
     public override void SearchingObjectivesToAttack()
     {
@@ -66,20 +70,7 @@ public class EnSummoner : EnemyUnit
 
         if (currentUnitsSummoned <= maxUnitsSummoned)
         {
-            for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
-            {
-                if (myCurrentTile.neighbours[i].unitOnTile == null)
-                {
-                    Debug.Log("MaxPasado2");
-                    posToSpawn = new Vector3(myCurrentTile.neighbours[i].transform.position.x, myCurrentTile.neighbours[i].transform.position.y , myCurrentTile.neighbours[i].transform.position.z );
-                    
-                    Instantiate(skeletonPrefab, posToSpawn, myCurrentTile.neighbours[i].transform.rotation);
-                    skeletonPrefab.GetComponent<EnSkeleton>().UpdateInformationAfterMovement(myCurrentTile.neighbours[i]);
-                    skeletonPrefab.GetComponent<EnSkeleton>().whoIsMySummoner = this;                 
-                    currentUnitsSummoned++;
-                    break;
-                }
-            }
+            DetermineSpawnPosition(true);
 
             if (!hasAttacked)
             {
@@ -96,6 +87,45 @@ public class EnSummoner : EnemyUnit
         {
             myCurrentEnemyState = enemyState.Ended;
         }
+    }
+
+    public void DetermineSpawnPosition(bool _shouldSpawn)
+    {
+        for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
+        {
+            if (myCurrentTile.neighbours[i].unitOnTile == null)
+            {
+                Debug.Log("MaxPasado2");
+                posToSpawn = new Vector3(myCurrentTile.neighbours[i].transform.position.x, myCurrentTile.neighbours[i].transform.position.y, myCurrentTile.neighbours[i].transform.position.z);
+                
+                if (_shouldSpawn)
+                {
+                    Instantiate(skeletonPrefab, posToSpawn, myCurrentTile.neighbours[i].transform.rotation);
+                    skeletonPrefab.GetComponent<EnSkeleton>().UpdateInformationAfterMovement(myCurrentTile.neighbours[i]);
+                    skeletonPrefab.GetComponent<EnSkeleton>().whoIsMySummoner = this;
+                    currentUnitsSummoned++;
+                    break;
+                }
+
+                break;
+            }
+        }
+    }
+
+    public void HideShowFeedbackSpawnPosition(bool _shouldShow)
+    {
+        if (_shouldShow)
+        {
+            DetermineSpawnPosition(false);
+            spawnFeedback.SetActive(true);
+            spawnFeedback.transform.position = posToSpawn;
+        }
+
+        else
+        {
+            spawnFeedback.SetActive(false);
+        }
+       
     }
 }
 

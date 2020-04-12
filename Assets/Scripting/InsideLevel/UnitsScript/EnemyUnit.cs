@@ -1114,7 +1114,7 @@ public class EnemyUnit : UnitBase
     #region CHECKS
 
     //Esta función es el equivalente al chequeo de objetivos del jugador.Charger y balista usan versiones diferentes por eso el virtual. Es distinta de la del player y en principio no se puede reutilizar la misma debido a estas diferencias.
-    public virtual void CheckCharactersInLine(bool _shouldWarnTilesForBalistaColoring)
+    public virtual void CheckCharactersInLine(bool _shouldWarnTilesForBalistaColoring, IndividualTiles _referenceTile)
     {
         
     }
