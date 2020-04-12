@@ -39,7 +39,9 @@ public class Monk : PlayerUnit
     //bool para la mejora de la pasiva 1
     public bool debuffMark2;
 
-    //no hace falta bool de pasiva porque con cambiar este int ya cambia en los personajes
+    //bool para pasiva 2
+    public bool healerMark;
+    //Hay que cambiar este número 
     public int healerBonus;
 
     //se necesita este bool para comprobar si tiene la mejora de la pasiva 2
@@ -48,6 +50,62 @@ public class Monk : PlayerUnit
 
     #endregion
 
+    public void PutQuitMark(UnitBase unitToMark, bool haveToPut, bool haveToShow)
+    {         
+        if (haveToPut)
+        {
+            unitToMark.isMarked = true;
+        }
+        else
+        {
+            unitToMark.isMarked = false;
+        }
+
+
+        if (debuffMark)
+        {
+            if (haveToShow)
+            {
+                unitToMark.monkMark2.SetActive(true);
+
+            }
+            else
+            {
+                unitToMark.monkMark2.SetActive(false);
+
+            }
+
+        }
+        else if (healerMark)
+        {
+            if (haveToShow)
+            {
+                unitToMark.monkMark3.SetActive(true);
+
+            }
+            else
+            {
+                unitToMark.monkMark3.SetActive(false);
+
+            }
+
+        }
+        else
+        {
+            if (haveToShow)
+            {
+                unitToMark.monkMark.SetActive(true);
+
+            }
+            else
+            {
+                unitToMark.monkMark.SetActive(false);
+
+            }
+
+        }
+
+    }
 
     public override void Attack(UnitBase unitToAttack)
     {
@@ -58,8 +116,8 @@ public class Monk : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
-            unitToAttack.isMarked = true;
-            unitToAttack.monkMark.SetActive(true);
+            PutQuitMark(unitToAttack, true, true);
+           
             unitToAttack.numberOfMarks = 1;
 
             //PREGUNTAR SI LA ROTACIÓN TIENE QUE IR ANTES O DESPÚES DE HACER DAÑO
@@ -94,8 +152,8 @@ public class Monk : PlayerUnit
             {
                 if (unitToAttack.isMarked)
                 {
-                    unitToAttack.isMarked = false;
-                    unitToAttack.monkMark.SetActive(false);
+                    PutQuitMark(unitToAttack, false, false);
+                    
                     currentHealth += healerBonus;
 
                     //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
@@ -112,9 +170,8 @@ public class Monk : PlayerUnit
                             if(TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
                                 && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
                             {
+                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, true, true);
 
-                                TM.surroundingTiles[i].unitOnTile.isMarked = true;
-                                TM.surroundingTiles[i].unitOnTile.monkMark.SetActive(true);
                             }
                         }
                     }
@@ -188,8 +245,8 @@ public class Monk : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
-            unitToAttack.isMarked = true;
-            unitToAttack.monkMark.SetActive(true);
+            PutQuitMark(unitToAttack, true, true);
+           
 
             if (suplex2 && unitToAttack.numberOfMarks == 1)
             {
@@ -220,8 +277,7 @@ public class Monk : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
-            unitToAttack.isMarked = true;
-            unitToAttack.monkMark.SetActive(true);
+            PutQuitMark(unitToAttack, true, true);
             unitToAttack.numberOfMarks = 1;
 
             //Hago daño
@@ -551,6 +607,8 @@ public class Monk : PlayerUnit
                 }
             }
         }
+
+        PutQuitMark(_unitToAttack, false, true);
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
@@ -566,5 +624,7 @@ public class Monk : PlayerUnit
 
             _unitToAttack.shaderHover.SetActive(false);
         }
+
+        PutQuitMark(_unitToAttack, false, false);
     }
 }

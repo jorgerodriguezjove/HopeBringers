@@ -71,8 +71,8 @@ public class Berserker : PlayerUnit
         
         if (unitToAttack.isMarked)
         {
-            unitToAttack.isMarked = false;
-            unitToAttack.monkMark.SetActive(false);
+            unitToAttack.QuitMarks();
+            
             currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
             unitToAttack.numberOfMarks = 0;
 
@@ -244,7 +244,7 @@ public class Berserker : PlayerUnit
 
                 if (unitToDealDamage.fearIcon != null)
                 {
-                    unitToDealDamage.ShowHideFear(true);
+                    unitToDealDamage.ShowHideFear(true, fearTurnBonus);
                 }
             }
         }
@@ -415,7 +415,7 @@ public class Berserker : PlayerUnit
 
         if (rageFear)
         {
-            _unitToAttack.ShowHideFear(true);
+            _unitToAttack.ShowHideFear(true, fearTurnBonus);
         }
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
@@ -433,7 +433,7 @@ public class Berserker : PlayerUnit
     {
         if (rageFear)
         {
-            _unitToAttack.ShowHideFear(false);
+            _unitToAttack.ShowHideFear(false, fearTurnBonus);
         }
     }
     #region COLORS

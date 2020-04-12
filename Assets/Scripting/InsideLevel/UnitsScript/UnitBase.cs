@@ -46,9 +46,12 @@ public class UnitBase : MonoBehaviour
     //Icono que muestra que la unidad  tiene miedo
     public GameObject fearIcon;
 
-    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
-    //Bool que indica si está stuneado o no 
-    public bool isStunned;
+    [SerializeField]
+    TextMeshProUGUI turnsWithFearInHUD;
+
+//Una vez que el feedback esté implementado, hay que esconderlo en el inspector
+//Bool que indica si está stuneado o no 
+public bool isStunned;
     //Añado esto por si los stuns se puede acumular
     public int turnStunned;
 
@@ -214,8 +217,15 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public GameObject shaderHover;
 
-    //Se una para indicar las marcas del monk
+    //Se usa para indicar las marcas del monk
     public GameObject monkMark;
+
+    //Se usa para indicar las marcas del monk con la pasiva 1
+    public GameObject monkMark2;
+
+    //Se usa para indicar las marcas del monk con la pasiva 2
+    public GameObject monkMark3;
+
 
     [SerializeField]
     public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
@@ -839,9 +849,10 @@ public class UnitBase : MonoBehaviour
         HealthBarOn_Off(false);
     }
 
-    public void ShowHideFear (bool _shouldShow)
+    public void ShowHideFear (bool _shouldShow, int turnsWithFear)
     {
-        fearIcon.SetActive(_shouldShow);
+       fearIcon.SetActive(_shouldShow);     
+       turnsWithFearInHUD.text = turnsWithFear.ToString();
     }
 
 
@@ -922,5 +933,13 @@ public class UnitBase : MonoBehaviour
     public void EnableUnableCollider(bool _shouldEnableCollider)
     {
         GetComponent<Collider>().enabled = _shouldEnableCollider;
+    }
+
+    public void QuitMarks()
+    {
+        isMarked = false;
+        monkMark.SetActive(false);
+        monkMark2.SetActive(false);
+        monkMark3.SetActive(false);
     }
 }

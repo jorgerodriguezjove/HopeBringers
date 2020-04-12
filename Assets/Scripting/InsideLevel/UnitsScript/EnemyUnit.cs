@@ -277,13 +277,17 @@ public class EnemyUnit : UnitBase
                     if (hasFear)
                     {
                         turnsWithFear--;
+                        if (fearIcon != null)
+                        {
+                            ShowHideFear(true, turnsWithFear);
+                        }
                         if (turnsWithFear<=0)
                         {
                             hasFear = false;
 
                             if (fearIcon != null)
                             {
-                                ShowHideFear(false);
+                                ShowHideFear(false, turnsWithFear);
                             }
                             
                         }

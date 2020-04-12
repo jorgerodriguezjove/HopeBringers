@@ -530,7 +530,7 @@ public class LevelManager : MonoBehaviour
                 //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                 {
-                    hoverUnit.unitsInRange[i].ShowHideFear(true);
+                    hoverUnit.unitsInRange[i].ShowHideFear(true, hoverUnit.unitsInRange[i].turnsWithFear);
                     //Pongo -1 para que no pinte nada
                     hoverUnit.unitsInRange[i].ColorAvailableToBeAttackedAndNumberDamage(-1);
                 }
@@ -702,7 +702,7 @@ public class LevelManager : MonoBehaviour
                 //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                 {
-                    hoverUnit.unitsInRange[i].ShowHideFear(false);
+                    hoverUnit.unitsInRange[i].ShowHideFear(false, hoverUnit.unitsInRange[i].turnsWithFear);
                     hoverUnit.unitsInRange[i].ResetColor();
                     hoverUnit.unitsInRange[i].DisableCanvasHover();
                 }

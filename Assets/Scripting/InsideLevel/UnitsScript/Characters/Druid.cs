@@ -66,8 +66,8 @@ public class Druid : PlayerUnit
 
         if (unitToAttack.isMarked)
         {
-            unitToAttack.isMarked = false;
-            unitToAttack.monkMark.SetActive(false);
+
+            unitToAttack.QuitMarks();
             currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
             unitToAttack.numberOfMarks = 0;
 
