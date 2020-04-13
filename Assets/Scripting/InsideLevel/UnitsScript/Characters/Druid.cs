@@ -12,6 +12,9 @@ public class Druid : PlayerUnit
     [SerializeField]
     public  int healedLife;
 
+   
+    public int buffHeal;
+
     [Header("Activas")]
     //ACTIVAS
 
@@ -82,7 +85,7 @@ public class Druid : PlayerUnit
             else if (FindObjectOfType<Monk>().healerMark2)
             {
                 ApplyBuffOrDebuffdamage(this, 1, 3);
-              
+               
 
             }
 

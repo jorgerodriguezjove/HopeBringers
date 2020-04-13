@@ -202,13 +202,21 @@ public class PlayerUnit : UnitBase
         if (!isDead)
         {
 
-            //Añado esto para stunnear a los enemigos 
+            //Añado esto para stunnear a las unidades 
             if (!isStunned)
             {
                 turnsWithBuffOrDebuff--;
                 if (turnsWithBuffOrDebuff <= 0)
                 {
-                    BuffbonusStateDamage = 0;
+                    if (GetComponent<Druid>())
+                    {
+                        GetComponent<Druid>().healedLife -= GetComponent<Druid>().buffHeal;
+                    }
+                    else
+                    {
+                        BuffbonusStateDamage = 0;
+                    }
+                    
                 }
 
                 if (arrowIndicator != null)

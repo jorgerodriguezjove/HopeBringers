@@ -228,7 +228,7 @@ public bool isStunned;
 
 
     [SerializeField]
-    public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon;
+    public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon, buffIcon, debuffIcon;
 
 
     //Material inicial y al ser seleccionado
@@ -926,10 +926,39 @@ public bool isStunned;
 
     public virtual void ApplyBuffOrDebuffdamage(UnitBase unitToApply, int damageAdded, int turnsAdded)
     {
-        unitToApply.BuffbonusStateDamage = damageAdded;
-        unitToApply.turnsWithBuffOrDebuff = turnsAdded;
+        if (unitToApply.GetComponent<Druid>())
+        {
+            unitToApply.GetComponent<Druid>().healedLife += unitToApply.GetComponent<Druid>().buffHeal;
+            unitToApply.turnsWithBuffOrDebuff = turnsAdded;
+        }
+        else
+        {
+            unitToApply.BuffbonusStateDamage = damageAdded;
+            unitToApply.turnsWithBuffOrDebuff = turnsAdded;
+        }
+
+        SetBuffDebuffIcon(damageAdded, unitToApply);
     }
 
+    public void SetBuffDebuffIcon(int numToCheck, UnitBase unitToApply)
+    {
+        if (numToCheck > 0)
+        {
+            unitToApply.buffIcon.SetActive(true);
+            unitToApply.debuffIcon.SetActive(false);
+
+        }
+        else if(numToCheck < 0)
+        {
+            unitToApply.buffIcon.SetActive(false);
+            unitToApply.debuffIcon.SetActive(true);
+        }
+        else
+        {
+            unitToApply.buffIcon.SetActive(false);
+            unitToApply.debuffIcon.SetActive(false);
+        }
+    }
     public void EnableUnableCollider(bool _shouldEnableCollider)
     {
         GetComponent<Collider>().enabled = _shouldEnableCollider;
