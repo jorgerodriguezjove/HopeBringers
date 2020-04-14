@@ -41,6 +41,9 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Bool que sirve para saber si el tile estaba con feedback de movimiento antes para volver a ponerse
     private bool isMovementTile;
 
+    //Bool para indicar si estoy mostrando el rango en el tile.
+    private bool isRangeBorderTile;
+
     //Bool que indica si el tile tiene que avisar a la balista del movimiento del caballero
     [HideInInspector]
     public bool lookingForKnightToWarnBalista;
@@ -327,9 +330,18 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             tileInterior.enabled = true;
             tileInterior.material = moveInteriorColor;
 
-            tileBorder.enabled = true;
-            tileBorder.material = moveBorderColor;
+            if (!isRangeBorderTile)
+            {
+                tileBorder.enabled = true;
+                tileBorder.material = moveBorderColor;
+            }
 
+            else
+            {
+                tileBorder.enabled = true;
+                tileBorder.material = chargingAttackBorderColor;
+            }
+            
             isMovementTile = true;
         }
 
@@ -380,6 +392,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         }
+
+        isRangeBorderTile = false;
     }
 
     
@@ -403,6 +417,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Cambiar el color a ataque
     public void ColorBorderRed()
     {
+        isRangeBorderTile = true;
+
         if (!isUnderAttack)
         {
             tileBorder.enabled = true;
@@ -411,6 +427,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
         else
         {
+            isRangeBorderTile = false;
             ColorAttack();
         }
     }

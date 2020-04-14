@@ -65,6 +65,9 @@ public class EnemyUnit : UnitBase
     [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
+    //Tile donde se coloca la sombra y que uso de referencia para pintar el rango del enemigo si se mueve desde la somra.
+    protected IndividualTiles shadowTile;
+
     //Bool que sirve para que la corrutina solo se llame una vez (por tema de que el state machine esta en el update y si no lo haría varias veces)
     private bool corroutineDone;
 
@@ -418,6 +421,8 @@ public class EnemyUnit : UnitBase
 
             for (int i = 0; i < limitantNumberOfTilesToMove + 1; i++)
             {
+                shadowTile = pathToObjective[i];
+
                 Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
 
                 if (i < pathToObjective.Count - 1)
@@ -443,6 +448,8 @@ public class EnemyUnit : UnitBase
                     }
                 }
             }
+
+            CheckTilesInRange(shadowTile, SpecialCheckRotation(shadowTile, false));
 
             ///En el gigante es importante que esta función vaya después de colocar la sombra. Por si acaso asegurarse de que este if nunca se pone antes que el reposicionamiento de la sombra
 
@@ -1238,6 +1245,214 @@ public class EnemyUnit : UnitBase
 
         isGoingToBeAlertedOnEnemyTurn = false;
     }
+
+    //Sirve para pintar el rango de ataque de los personajes en naranja
+    public virtual void CheckTilesInRange(IndividualTiles _referenceTile, FacingDirection _referenceDirection)
+    {
+        currentTilesInRangeForAttack.Clear();
+
+        if (_referenceDirection == FacingDirection.North)
+        {
+            if (attackRange <= _referenceTile.tilesInLineUp.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineUp.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineUp[i].isEmpty && !_referenceTile.tilesInLineUp[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineUp[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineUp[i]);
+                }
+
+                if (_referenceTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineUp[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (_referenceDirection == FacingDirection.South)
+        {
+            if (attackRange <= _referenceTile.tilesInLineDown.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineDown.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineDown[i].isEmpty && !_referenceTile.tilesInLineDown[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineDown[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineDown[i]);
+                }
+
+                if (_referenceTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineDown[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (_referenceDirection == FacingDirection.East)
+        {
+            if (attackRange <= _referenceTile.tilesInLineRight.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineRight.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineRight[i].isEmpty && !_referenceTile.tilesInLineRight[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineRight[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineRight[i]);
+                }
+
+                if (_referenceTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineRight[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (_referenceDirection == FacingDirection.West)
+        {
+            if (attackRange <= _referenceTile.tilesInLineLeft.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineLeft.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineLeft[i].isEmpty && !_referenceTile.tilesInLineLeft[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineLeft[i]);
+                }
+
+                if (_referenceTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
+        }
+    }
+
+    public void ClearRange()
+    {
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorDesAttack();
+        }
+
+        currentTilesInRangeForAttack.Clear();
+    }
+
+
+    protected Vector3 rotationChosenAfterMovement;
+    protected FacingDirection facingDirectionAfterMovement;
+
+    //Esta función se usa para saber la dirección en la que va a acabar el personaje al acabar de moverse
+    //Principalmente es una función para poder usarla en el levelmanager al hacer hover sobre el enemigo y que use la dirección para llamar a la funcion CalculateDamagePreviousAttack() o pintar tiles de rango;
+    //El bool solo se usa cuando se llama durante el turno enemigo
+    public FacingDirection SpecialCheckRotation(IndividualTiles _tileToComparePosition, bool _DoAll)
+    {
+        //Arriba o abajo
+        if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == _tileToComparePosition.tileX)
+        {
+            //Arriba
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > _tileToComparePosition.tileZ)
+            {
+                if (_DoAll)
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineUp[i]);
+                    }
+                }
+
+                //Roto al charger
+                rotationChosenAfterMovement = new Vector3(0, 0, 0);
+                facingDirectionAfterMovement = FacingDirection.North;
+            }
+            //Abajo
+            else
+            {
+                if (_DoAll)
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineDown[i]);
+                    }
+                }
+
+
+                //Roto al charger
+                rotationChosenAfterMovement = new Vector3(0, 180, 0);
+                facingDirectionAfterMovement = FacingDirection.South;
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+
+            //Derecha
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > _tileToComparePosition.tileX)
+            {
+                if (_DoAll)
+                {
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineRight[i]);
+                    }
+                }
+
+
+                //Roto al charger
+                rotationChosenAfterMovement = new Vector3(0, 90, 0);
+                facingDirectionAfterMovement = FacingDirection.East;
+            }
+            //Izquierda
+            else
+            {
+                if (_DoAll)
+                {
+
+                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    {
+                        pathToObjective.Add(_tileToComparePosition.tilesInLineLeft[i]);
+                    }
+                }
+
+
+                //Roto al charger
+                rotationChosenAfterMovement = new Vector3(0, -90, 0);
+                facingDirectionAfterMovement = FacingDirection.West;
+            }
+        }
+
+        return facingDirectionAfterMovement;
+    }
+
 
     #region GOBLIN_SHARED_FUNCTIONALITY
 

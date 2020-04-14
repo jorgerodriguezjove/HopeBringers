@@ -617,7 +617,12 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
                     }
 
-                    hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count -1]);
+                    //Pinto sombra
+                    if (hoverUnit.pathToObjective.Count >0)
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                    }
+
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
 
@@ -643,7 +648,6 @@ public class LevelManager : MonoBehaviour
                                     tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
                                 }
 
-
                                 hoverUnit.GetComponent<EnGiant>().CalculateDamagePreviousAttackLateralEnemies(tempLateralUnitGiant);
 
                                 tempLateralUnitGiant.CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
@@ -654,6 +658,14 @@ public class LevelManager : MonoBehaviour
                         }
                     }
                 }
+
+                //Pinto rango de acción desde el enemigo si no se mueve.
+                //Si por el contrario se mueve, pinto el rango desde la función ShowActionPathFinding
+                else
+                {
+                    hoverUnit.CheckTilesInRange(hoverUnit.myCurrentTile, hoverUnit.currentFacingDirection);
+                }
+
 
                 //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
                 hoverUnit.ColorAttackTile();
@@ -690,7 +702,7 @@ public class LevelManager : MonoBehaviour
                         tileToMove.ColorDeselect();
                         hoverUnit.myLineRenderer.enabled = false;
 
-                        if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
+                        if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 && hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
                         {
                             hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().HideAttackEffect(hoverUnit);
                         }
@@ -716,7 +728,7 @@ public class LevelManager : MonoBehaviour
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
                 {
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
-                    if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
+                    if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 && hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
                     {
                         hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().HideAttackEffect(hoverUnit);
                     }
@@ -829,6 +841,8 @@ public class LevelManager : MonoBehaviour
                         }
                     }
                 }
+
+                hoverUnit.ClearRange();
             }
 
         }

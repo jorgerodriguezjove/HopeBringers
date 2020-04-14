@@ -135,90 +135,6 @@ public class EnCharger : EnemyUnit
         myCurrentEnemyState = enemyState.Ended;
     }
 
-    Vector3 rotationChosenAfterMovement;
-    FacingDirection facingDirectionAfterMovement;
-
-    //Esta función es única del charger y sirve para saber a donde va a mirar al acabar de moverse.
-    //Principalmente es una función para poder usarla en el levelmanager al hacer hover sobre el enemigo y que use la dirección para llamar a la funcion CalculateDamagePreviousAttack();
-    public FacingDirection SpecialCheckRotation(IndividualTiles _tileToComparePosition, bool _DoAll)
-    {
-        //Arriba o abajo
-        if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == _tileToComparePosition.tileX)
-        {
-            //Arriba
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > _tileToComparePosition.tileZ)
-            {
-                if (_DoAll)
-                {
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                    {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineUp[i]);
-                    }
-                }
-
-                //Roto al charger
-                rotationChosenAfterMovement = new Vector3(0, 0, 0);
-                facingDirectionAfterMovement = FacingDirection.North;
-            }
-            //Abajo
-            else
-            {
-                if (_DoAll)
-                {
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                    {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineDown[i]);
-                    }
-                }
-                   
-
-                //Roto al charger
-                rotationChosenAfterMovement = new Vector3(0, 180, 0);
-                facingDirectionAfterMovement = FacingDirection.South;
-            }
-        }
-        //Izquierda o derecha
-        else
-        {
-
-            //Derecha
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > _tileToComparePosition.tileX)
-            {
-                if (_DoAll)
-                {
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                    {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineRight[i]);
-                    }
-                }
-                   
-
-                //Roto al charger
-                rotationChosenAfterMovement =new Vector3(0, 90, 0);
-                facingDirectionAfterMovement = FacingDirection.East;
-            }
-            //Izquierda
-            else
-            {
-                if (_DoAll)
-                {
-
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                    {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineLeft[i]);
-                    }
-                }
-
-
-                //Roto al charger
-                rotationChosenAfterMovement = new Vector3(0, -90, 0);
-                facingDirectionAfterMovement = FacingDirection.West;
-            }
-        }
-
-        return facingDirectionAfterMovement;
-    }
-
     public override void FinishMyActions()
     {
         base.FinishMyActions();
@@ -739,8 +655,11 @@ public class EnCharger : EnemyUnit
 
     public void HideShowResult()
     {
-        currentUnitsAvailableToAttack[0].shaderHover.SetActive(false);
-        tileWhereObjectiveShadowWillEnd.ColorDesAttack();
+        if (currentUnitsAvailableToAttack.Count >0 )
+        {
+            currentUnitsAvailableToAttack[0].shaderHover.SetActive(false);
+            tileWhereObjectiveShadowWillEnd.ColorDesAttack();
+        }
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

@@ -215,123 +215,6 @@ public class EnGiant : EnemyUnit
         Debug.Log("hasattacked " + hasAttacked);
     }
 
-    #region DEPRECATED_GIANT
-    //public override void MoveUnit()
-    //{
-    //    //ShowActionPathFinding(true);
-    //    movementParticle.SetActive(true);
-
-    //    ShowActionPathFinding(false);
-
-    //    //Como solo se mueve un tile no hay que hacer ninguna comprobacion
-    //    currentTileVectorToMove = pathToObjective[1].transform.position;
-    //    MovementLogic(pathToObjective[1]);
-    //}
-
-    ////Lógica actual del movimiento. Básicamente es el encargado de mover al modelo y setear las cosas
-    //private void MovementLogic(IndividualTiles tileToMove)
-    //{
-    //    //Muevo al gigante
-    //    transform.DOMove(currentTileVectorToMove, currentTimeForMovement);
-
-    //    StartCoroutine("MovementWait");
-
-    //    movementParticle.SetActive(false);
-    //    CheckTileDirection(myCurrentTile, tileToMove,  true);
-    //    myCurrentEnemyState = enemyState.Searching;
-
-    //    //Actualizo las variables de los tiles
-    //    UpdateInformationAfterMovement(tileToMove);
-
-    //    //Aviso de que se ha movido
-    //    hasMoved = true;
-    //}
-
-    //IEnumerator MovementWait()
-    //{
-    //    yield return new WaitForSeconds(currentTimeForMovement);
-    //    HideActionPathfinding();
-    //}
-
-
-    ////Muestra la sombra y el line renderer
-    //public override void ShowActionPathFinding(bool _shouldRecalculate)
-    //{
-    //    //Si se tiene que mostrar la acción por el hover calculamos el enemigo
-    //    if ( _shouldRecalculate)
-    //    {
-    //        pathToObjective.Clear();
-
-    //        //Si no es el turno enemigo (es decir hay que pintar la acción por hacer hover) calculo la unidad más cercana
-    //        SearchingObjectivesToAttackShowActionPathFinding();
-    //        if (myCurrentObjectiveTile != null)
-    //        {
-    //            //Cada enemigo realiza su propio path
-    //            LM.TM.CalculatePathForMovementCost(myCurrentObjectiveTile.tileX, myCurrentObjectiveTile.tileZ, false);
-
-    //            //No vale con igualar pathToObjective= LM.TM.currentPath porque entonces toma una referencia de la variable no de los valores.
-    //            //Esto significa que si LM.TM.currentPath cambia de valor también lo hace pathToObjective
-    //            for (int i = 0; i < LM.TM.currentPath.Count; i++)
-    //            {
-    //                pathToObjective.Add(LM.TM.currentPath[i]);
-    //            }
-    //        }
-    //    }
-
-    //    if (myCurrentObjectiveTile != null)
-    //    {
-    //        myLineRenderer.enabled = true;
-
-    //        //El 2 es porque son los tiles que tiene cuando es adyacente a un enemigo.
-    //        if (pathToObjective.Count > 2)
-    //        {
-    //            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-    //            {
-    //                shaderHover.SetActive(true);
-    //            }
-
-    //            Vector3 iniPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-
-    //            myLineRenderer.SetPosition(0, iniPosition);
-
-    //            Vector3 pointPosition = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.5f, pathToObjective[1].transform.position.z);
-    //            myLineRenderer.SetPosition(1, pointPosition);
-
-    //            Vector3 spawnPoint = new Vector3(pathToObjective[1].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[1].transform.position.z);
-    //            shaderHover.transform.position = spawnPoint;
-
-
-    //            if ((pathToObjective[2]) == currentUnitsAvailableToAttack[0].myCurrentTile)
-    //            {
-    //                Debug.Log(name + " " + currentUnitsAvailableToAttack[0].name);
-    //                CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], this, pathToObjective[1], CheckTileDirection(pathToObjective[1], pathToObjective[2], false));
-    //            }
-    //            else
-    //            {
-    //                damageWithMultipliersApplied = -999;
-    //            }
-
-    //            Vector3 unitDirection = new Vector3(pathToObjective[2].transform.position.x, pathToObjective[1].transform.position.y + 0.25f, pathToObjective[2].transform.position.z);
-
-    //            shaderHover.transform.DOLookAt(unitDirection, 0f, AxisConstraint.Y);
-    //        }
-    //        else
-    //        {
-    //            myLineRenderer.enabled = false;
-    //        }
-
-    //        //IMPORTANTE: EN EL CASO DEL GIGANTE, EL COLOR SE TIENE QUE PINTAR DESPUÉS DE HABER MOVIDO A LA SOMBRA.
-    //        //La sombra se usa de referencia para calcular los tiles que hay que pintar de rojo
-    //        if (!_shouldRecalculate)
-    //        {
-    //            ColorAttackTile();
-    //        }
-    //    }
-    //}
-
-
-    #endregion
-
     //PARA MOVEUNIT SE USA LA BASE DEL ENEMIGO (Que es la lógica del goblin).
     //PASA LO MISMO CON ShowActionPathFinding(bool _shouldRecalculate) QUE MUESTRA LA ACCIÓN DEL ENEMIGO;
 
@@ -415,7 +298,10 @@ public class EnGiant : EnemyUnit
     {
         tempLateralTilesToFutureObjective.Clear();
 
-        tempLateralTilesToFutureObjective = pathToObjective[limitantNumberOfTilesToMove + 1].GetLateralTilesBasedOnDirection(CheckTileDirection(pathToObjective[limitantNumberOfTilesToMove], pathToObjective[limitantNumberOfTilesToMove + 1], false), 1);
+        if (pathToObjective.Count > 0)
+        {
+            tempLateralTilesToFutureObjective = pathToObjective[limitantNumberOfTilesToMove + 1].GetLateralTilesBasedOnDirection(CheckTileDirection(pathToObjective[limitantNumberOfTilesToMove], pathToObjective[limitantNumberOfTilesToMove + 1], false), 1);
+        }
     }
 
     //Esta función se llama únicamente en el hover
@@ -475,6 +361,8 @@ public class EnGiant : EnemyUnit
             for (int i = 0; i < limitantNumberOfTilesToMove + 1; i++)
             {
                 Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
+                shadowTile = pathToObjective[i];
+                Debug.Log(shadowTile.name);
 
                 if (i < pathToObjective.Count - 1)
                 {
@@ -483,6 +371,7 @@ public class EnGiant : EnemyUnit
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
                         shaderHover.transform.position = pointPosition;
+
 
                         if ((pathToObjective[limitantNumberOfTilesToMove + 1]) == currentUnitsAvailableToAttack[0].myCurrentTile)
                         {
@@ -500,6 +389,8 @@ public class EnGiant : EnemyUnit
                 }
             }
 
+            CheckTilesInRange(shadowTile, SpecialCheckRotation(shadowTile, false));
+            Debug.Log(shadowTile.name);
             ///En el gigante es importante que esta función vaya después de colocar la sombra. Por si acaso asegurarse de que este if nunca se pone antes que el reposicionamiento de la sombra
 
             //A pesar de que ya se llama a esta función desde el levelManager en caso de hover, si se tiene que mostrar porque el goblin está atacando se tiene que llamar desde aqui (ya que no pasa por el level manager)
@@ -508,6 +399,141 @@ public class EnGiant : EnemyUnit
             {
                 ColorAttackTile();
             }
+        }
+    }
+
+    public override void CheckTilesInRange(IndividualTiles _referenceTile, FacingDirection _referenceDirection)
+    {
+        currentTilesInRangeForAttack.Clear();
+
+        Debug.Log(_referenceTile);
+        Debug.Log(_referenceDirection);
+
+        if (_referenceDirection == FacingDirection.North)
+        {
+            if (attackRange <= _referenceTile.tilesInLineUp.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineUp.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineUp[i].isEmpty && !_referenceTile.tilesInLineUp[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineUp[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineUp[i]);
+
+                    for (int j = 0; j < _referenceTile.tilesInLineUp[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1).Count; j++)
+                    {
+                        currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineUp[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1)[j]);
+                    }
+                }
+
+                if (_referenceTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineUp[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (_referenceDirection == FacingDirection.South)
+        {
+            if (attackRange <= _referenceTile.tilesInLineDown.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineDown.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineDown[i].isEmpty && !_referenceTile.tilesInLineDown[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineDown[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineDown[i]);
+
+
+                    for (int j = 0; j < _referenceTile.tilesInLineDown[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1).Count; j++)
+                    {
+                        currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineDown[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1)[j]);
+                    }
+                }
+
+                if (_referenceTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineDown[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (_referenceDirection == FacingDirection.East)
+        {
+            if (attackRange <= _referenceTile.tilesInLineRight.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineRight.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineRight[i].isEmpty && !_referenceTile.tilesInLineRight[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineRight[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineRight[i]);
+
+                    for (int j = 0; j < _referenceTile.tilesInLineRight[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1).Count; j++)
+                    {
+                        currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineRight[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1)[j]);
+                        Debug.Log("Tile lateral " + _referenceTile.tilesInLineRight[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1)[j].name);
+                    }
+                }
+
+                if (_referenceTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineRight[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (_referenceDirection == FacingDirection.West)
+        {
+            if (attackRange <= _referenceTile.tilesInLineLeft.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineLeft.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!_referenceTile.tilesInLineLeft[i].isEmpty && !_referenceTile.tilesInLineLeft[i].isObstacle && Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineLeft[i]);
+
+                    for (int j = 0; j < _referenceTile.tilesInLineLeft[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1).Count; j++)
+                    {
+                        currentTilesInRangeForAttack.Add(_referenceTile.tilesInLineLeft[i].GetLateralTilesBasedOnDirection(_referenceDirection, 1)[j]);
+                    }
+                }
+
+                if (_referenceTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
         }
     }
 

@@ -30,11 +30,6 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
-    //Lista de posibles unidades a las que atacar
-    [HideInInspector]
-    public List<IndividualTiles> currentTilesInRangeForAttack;
-
-
     //Lista de tiles al hacer hover en enemigos
     [HideInInspector]
     public List<IndividualTiles> tilesInEnemyHover;
@@ -320,7 +315,6 @@ public class PlayerUnit : UnitBase
         {
             Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
             
-
             if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved && valkyrieRef.changePositions)
             {
                 if (currentHealth <= valkyrieRef.numberCanChange)
@@ -333,8 +327,7 @@ public class PlayerUnit : UnitBase
             else
             {
                 LM.SelectUnit(movementUds, this);
-            }
-           
+            }  
         }
     }
 
@@ -365,7 +358,6 @@ public class PlayerUnit : UnitBase
                         druidRef.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("-1");
                         canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
                         ColorAvailableToBeHealed();
-
                     }
 
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
@@ -379,15 +371,12 @@ public class PlayerUnit : UnitBase
                         LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
 
                     }
-
-
                 }
 
-
-                    if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
-                    {
-                    myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
-                    }
+                if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
+                {
+                myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+                }
 
                 if (!hasAttacked)
                 {
@@ -404,7 +393,6 @@ public class PlayerUnit : UnitBase
                     myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
                     SelectedColor();
                 }
-            
             }
         }
     }
@@ -1074,7 +1062,6 @@ public class PlayerUnit : UnitBase
                 {
                     //Almaceno la primera unidad en la lista de posibles unidades
                     currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                    //tilesInRangeForAttack.Add();
                     break;
                 }
             }
@@ -1175,7 +1162,6 @@ public class PlayerUnit : UnitBase
         {
             currentTilesInRangeForAttack[i].ColorBorderRed();
         }
-
 
     }
 

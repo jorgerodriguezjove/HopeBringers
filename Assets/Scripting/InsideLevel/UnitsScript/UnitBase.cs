@@ -135,6 +135,11 @@ public bool isStunned;
     [SerializeField]
     float timeToWaitBeforeHidingHealthbar;
 
+    //Lista de posibles unidades a las que atacar
+    [HideInInspector]
+    public List<IndividualTiles> currentTilesInRangeForAttack;
+
+
     [Header("ATAQUE")]
 
     //Variable en la que guardo el daño a realizar
