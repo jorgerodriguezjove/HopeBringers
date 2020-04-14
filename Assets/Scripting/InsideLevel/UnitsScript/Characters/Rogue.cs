@@ -21,7 +21,12 @@ public class Rogue : PlayerUnit
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
 
+    
     public bool extraTurnAttackAfterKill;
+    //int para saber uantos turnos extra tiene
+    public int extraTurnCount;
+    //Esto se hace para que al empezar nuevo turno se reseteen los turnos. Hay que poner el mismo número que la variable de arriba
+    public int fextraTurnCount;
 
     [Header("Pasivas")]
     //PASIVAS
@@ -71,7 +76,7 @@ public class Rogue : PlayerUnit
             myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
             //Cambiar el número si va a tener más de un turno
-            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = "1";
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = extraTurnCount.ToString() ;
         }
         else if (checkersAttack)
         {
@@ -520,13 +525,14 @@ public class Rogue : PlayerUnit
 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
-            if (unitToAttack.isDead && !hasUsedExtraTurn)
+            if (unitToAttack.isDead && extraTurnCount > 0)
             {
+                extraTurnCount--;
                 hasAttacked = false;
                 hasMoved = false;               
                 UIM.RefreshTokens();
                 LM.DeSelectUnit();
-                hasUsedExtraTurn = true;
+               
 
                 myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = "0";
 

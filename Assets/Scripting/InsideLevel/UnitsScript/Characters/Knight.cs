@@ -709,11 +709,18 @@ public class Knight : PlayerUnit
 
             for (int i = 0; i < tilesInEnemyHover.Count; i++)
             {
+                
                 tilesInEnemyHover[i].ColorAttack();
 
                 if (tilesInEnemyHover[i].unitOnTile != null)
                 {
                     tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(-1);
+                    if (pushWider2)
+                    {
+                        tilesInEnemyHover[i].unitOnTile.stunIcon.SetActive(true);
+                        //Descomentar si se quiere cambiar el sitio donde aparece
+                      //  tilesInEnemyHover[i].unitOnTile.stunIcon.transform.position = tilesInEnemyHover[i].unitOnTile.shaderHover.transform.position;
+                    }
                 }
             }
 
@@ -776,5 +783,22 @@ public class Knight : PlayerUnit
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
         shieldBlockAllDamage.SetActive(false);
+
+
+        if (tilesInEnemyHover.Count > 0)
+        {
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    if (pushWider2)
+                    {
+                        tilesInEnemyHover[i].unitOnTile.stunIcon.SetActive(false);
+
+                    }
+                }
+            }
+        }
+        
     }
 }

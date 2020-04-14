@@ -250,6 +250,7 @@ public class EnemyUnit : UnitBase
                     {
                         isStunned = false;
                         turnStunned = 0;
+                        stunIcon.SetActive(false);
                     }
                     turnStunned--;
                     myCurrentEnemyState = enemyState.Ended;

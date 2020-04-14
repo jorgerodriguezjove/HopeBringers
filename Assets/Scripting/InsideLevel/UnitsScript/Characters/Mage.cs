@@ -32,9 +32,9 @@ public class Mage : PlayerUnit
     //ACTIVAS
 
     public bool areaAttack;
-    //Esta es la variable que hay que cambiar para la mejora
     public int areaRange;
-    
+
+    public bool areaAttack2;
 
     public bool lightningChain;
     public int timeElectricityAttackExpands;
@@ -121,12 +121,33 @@ public class Mage : PlayerUnit
 
         if (areaAttack)
         {
-            //Animación de ataque 
-            //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
-            //myAnimator.SetTrigger("Attack");
-           
+            if (areaAttack2)
+            {
+                TM.rhombusTiles.Clear();
 
-            //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
+                TM.GetRhombusTiles(unitToAttack.myCurrentTile, areaRange);
+
+                //Hago daño
+                DoDamage(unitToAttack);
+
+                //Hago daño a las unidades adyacentes
+                for (int i = 0; i < TM.rhombusTiles.Count; ++i)
+                {
+                    if (TM.rhombusTiles[i].unitOnTile != null)
+                    {
+                        DoDamage(TM.rhombusTiles[i].unitOnTile);
+                    }
+                }
+
+            }
+            else
+            {
+                //Animación de ataque 
+                //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
+                //myAnimator.SetTrigger("Attack");
+
+
+                //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                 TM.surroundingTiles.Clear();
 
                 TM.GetSurroundingTiles(unitToAttack.myCurrentTile, areaRange, true, false);
@@ -143,8 +164,7 @@ public class Mage : PlayerUnit
                     }
                 }
 
-
-            
+            }                      
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
@@ -572,13 +592,31 @@ public class Mage : PlayerUnit
 
         if (areaAttack)
         {
-            TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, areaRange, true, false);
-
-            //Hago daño a las unidades adyacentes
-            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+            if (areaAttack2)
             {
-                tilesInEnemyHover.Add(TM.surroundingTiles[i]);
-            }            
+                
+                TM.GetRhombusTiles(_unitToAttack.myCurrentTile, areaRange);
+
+             
+                for (int i = 0; i < TM.rhombusTiles.Count; ++i)
+                {
+                    if (TM.rhombusTiles[i] != null)
+                    {
+                        tilesInEnemyHover.Add(TM.rhombusTiles[i]);
+                    }
+                }
+
+            }
+            else
+            {
+                TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, areaRange, true, false);
+
+                for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                {
+                    tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+                }
+            }
+                       
         }
         else if (lightningChain)
         {

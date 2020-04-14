@@ -49,11 +49,13 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI turnsWithFearInHUD;
 
-//Una vez que el feedback esté implementado, hay que esconderlo en el inspector
-//Bool que indica si está stuneado o no 
-public bool isStunned;
+    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
+    //Bool que indica si está stuneado o no 
+    public bool isStunned;
     //Añado esto por si los stuns se puede acumular
     public int turnStunned;
+    //Icono que muestra que la unidad está stunneada
+    public GameObject stunIcon;
 
     //Bool para poder ocultar a las unidades
     public bool isHidden;
@@ -927,6 +929,7 @@ public bool isStunned;
     {
         unitToStun.isStunned = true;
         unitToStun.turnStunned = turnsToStunned;
+        unitToStun.stunIcon.SetActive(true);
     }
 
     public virtual void ApplyBuffOrDebuffdamage(UnitBase unitToApply, int damageAdded, int turnsAdded)

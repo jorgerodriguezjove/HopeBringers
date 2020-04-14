@@ -34,9 +34,7 @@ public class PlayerUnit : UnitBase
     [HideInInspector]
     public List<IndividualTiles> tilesInEnemyHover;
 
-    //Solo lo uso para el Rogue
-    [HideInInspector]
-    public bool hasUsedExtraTurn;
+   
 
     [Header("MOVIMIENTO")]
 
@@ -234,7 +232,7 @@ public class PlayerUnit : UnitBase
                 CheckWhatToDoWithSpecialToken();
                 isMovingorRotating = false;
                 unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
-                hasUsedExtraTurn = false;
+                ResetSpecificVariables();
             }
             else
             {
@@ -263,12 +261,13 @@ public class PlayerUnit : UnitBase
                 CheckWhatToDoWithSpecialToken();
                 isMovingorRotating = false;
                 unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
-                hasUsedExtraTurn = false;
+                ResetSpecificVariables();
 
                 if (turnStunned <= 0)
                 {
                     isStunned = false;
                     turnStunned = 0;
+                    stunIcon.SetActive(false);
                 }
                 turnStunned--;
             }
@@ -298,6 +297,10 @@ public class PlayerUnit : UnitBase
         unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
     }
 
+    public virtual void ResetSpecificVariables()
+    {
+        //Cada unidad reseta si tiene variables específicas
+    }
     #endregion
 
     #region INTERACTION
