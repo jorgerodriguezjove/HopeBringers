@@ -710,6 +710,7 @@ MonoBehaviour:
   upToDownDamageIcon: {fileID: 7862275774872807882}
   downToUpDamageIcon: {fileID: 2104949840634299341}
   canvasUnit: {fileID: 9141236477566366306}
+  changePositionIcon: {fileID: 0}
   unitGeneralInfo: 
   characterImage: {fileID: 21300000, guid: 6e45d05b55b98ec4b921462a4dba0d7a, type: 3}
   tooltipImage: {fileID: 0}
@@ -725,9 +726,10 @@ MonoBehaviour:
   orderToShow: 0
   thisUnitOrder: {fileID: 954751877}
   currentUnitsAvailableToAttack: []
-  unitsInRange: []
   isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 1
+  pathToObjective: []
+  unitsInRange: []
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
   enemyTierImage: {fileID: 0}
@@ -1583,7 +1585,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b23a989f15f6b074c84e748159e67eb6, type: 2}
+      objectReference: {fileID: 2100000, guid: 5da6e68adcd75d7408534dfa37690aa3, type: 2}
     - target: {fileID: 2341580078844879043, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_IsActive

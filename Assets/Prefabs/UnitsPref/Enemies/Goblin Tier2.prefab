@@ -26821,7 +26821,7 @@ MonoBehaviour:
   healthBar: {fileID: 6833462993921089019}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
     type: 3}
-  lifeContainer: {fileID: 0}
+  lifeContainer: {fileID: 3551520324045950633}
   AvailableToBeAttackedColor: {fileID: 2100000, guid: 138a6284f26a7d6488028cc22d37c737,
     type: 2}
   AvailableToBeHealedColor: {fileID: 2100000, guid: b72dd6e47799b2c4aa545a1d5badd55d,
@@ -26834,6 +26834,7 @@ MonoBehaviour:
   upToDownDamageIcon: {fileID: 8365029453438377204}
   downToUpDamageIcon: {fileID: 305311721699538675}
   canvasUnit: {fileID: 1314037412225096986}
+  changePositionIcon: {fileID: 0}
   unitGeneralInfo: 
   characterImage: {fileID: 21300000, guid: 8cc7887feb8561a469e8f016c419e8ec, type: 3}
   tooltipImage: {fileID: 0}
@@ -26849,9 +26850,10 @@ MonoBehaviour:
   orderToShow: 0
   thisUnitOrder: {fileID: 1314037411751265287}
   currentUnitsAvailableToAttack: []
-  unitsInRange: []
   isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 0
+  pathToObjective: []
+  unitsInRange: []
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
   enemyTierImage: {fileID: 0}
@@ -38054,6 +38056,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3551520324045950633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8106199699013180345, guid: c605a28176437894184420fd82351069,
+    type: 3}
+  m_PrefabInstance: {fileID: 4699094201346413840}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6194555192087553854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38233,15 +38241,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c85daeb87f06e6d409aee4ee1bd7ca5a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34507e1fd74c1a546b1db9430839d10d, type: 3}
---- !u!4 &6327257549678315881 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3230074991513143138, guid: 34507e1fd74c1a546b1db9430839d10d,
-    type: 3}
-  m_PrefabInstance: {fileID: 8871360230441586187}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6330792959632907559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3226294251348890412, guid: 34507e1fd74c1a546b1db9430839d10d,
+    type: 3}
+  m_PrefabInstance: {fileID: 8871360230441586187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6327257549678315881 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3230074991513143138, guid: 34507e1fd74c1a546b1db9430839d10d,
     type: 3}
   m_PrefabInstance: {fileID: 8871360230441586187}
   m_PrefabAsset: {fileID: 0}
