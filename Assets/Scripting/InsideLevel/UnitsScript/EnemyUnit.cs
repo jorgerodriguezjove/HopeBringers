@@ -66,7 +66,7 @@ public class EnemyUnit : UnitBase
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Tile donde se coloca la sombra y que uso de referencia para pintar el rango del enemigo si se mueve desde la somra.
-    protected IndividualTiles shadowTile;
+    public IndividualTiles shadowTile;
 
     //Bool que sirve para que la corrutina solo se llame una vez (por tema de que el state machine esta en el update y si no lo haría varias veces)
     private bool corroutineDone;
@@ -1277,7 +1277,7 @@ public class EnemyUnit : UnitBase
             }
         }
 
-        if (_referenceDirection == FacingDirection.South)
+        else if (_referenceDirection == FacingDirection.South)
         {
             if (attackRange <= _referenceTile.tilesInLineDown.Count)
             {
@@ -1302,7 +1302,7 @@ public class EnemyUnit : UnitBase
             }
         }
 
-        if (_referenceDirection == FacingDirection.East)
+        else if (_referenceDirection == FacingDirection.East)
         {
             if (attackRange <= _referenceTile.tilesInLineRight.Count)
             {
@@ -1327,7 +1327,7 @@ public class EnemyUnit : UnitBase
             }
         }
 
-        if (_referenceDirection == FacingDirection.West)
+        else if (_referenceDirection == FacingDirection.West)
         {
             if (attackRange <= _referenceTile.tilesInLineLeft.Count)
             {
@@ -1377,81 +1377,84 @@ public class EnemyUnit : UnitBase
     //El bool solo se usa cuando se llama durante el turno enemigo
     public FacingDirection SpecialCheckRotation(IndividualTiles _tileToComparePosition, bool _DoAll)
     {
-        //Arriba o abajo
-        if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == _tileToComparePosition.tileX)
+        if (currentUnitsAvailableToAttack.Count > 0)
         {
-            //Arriba
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > _tileToComparePosition.tileZ)
+            //Arriba o abajo
+            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == _tileToComparePosition.tileX)
             {
-                if (_DoAll)
+                //Arriba
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tileZ > _tileToComparePosition.tileZ)
                 {
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    if (_DoAll)
                     {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineUp[i]);
+                        for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                        {
+                            pathToObjective.Add(_tileToComparePosition.tilesInLineUp[i]);
+                        }
                     }
-                }
 
-                //Roto al charger
-                rotationChosenAfterMovement = new Vector3(0, 0, 0);
-                facingDirectionAfterMovement = FacingDirection.North;
+                    //Roto al charger
+                    rotationChosenAfterMovement = new Vector3(0, 0, 0);
+                    facingDirectionAfterMovement = FacingDirection.North;
+                }
+                //Abajo
+                else
+                {
+                    if (_DoAll)
+                    {
+                        for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                        {
+                            pathToObjective.Add(_tileToComparePosition.tilesInLineDown[i]);
+                        }
+                    }
+
+
+                    //Roto al charger
+                    rotationChosenAfterMovement = new Vector3(0, 180, 0);
+                    facingDirectionAfterMovement = FacingDirection.South;
+                }
             }
-            //Abajo
+            //Izquierda o derecha
             else
             {
-                if (_DoAll)
+
+                //Derecha
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > _tileToComparePosition.tileX)
                 {
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    if (_DoAll)
                     {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineDown[i]);
+                        for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                        {
+                            pathToObjective.Add(_tileToComparePosition.tilesInLineRight[i]);
+                        }
                     }
+
+
+                    //Roto al charger
+                    rotationChosenAfterMovement = new Vector3(0, 90, 0);
+                    facingDirectionAfterMovement = FacingDirection.East;
                 }
-
-
-                //Roto al charger
-                rotationChosenAfterMovement = new Vector3(0, 180, 0);
-                facingDirectionAfterMovement = FacingDirection.South;
-            }
-        }
-        //Izquierda o derecha
-        else
-        {
-
-            //Derecha
-            if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX > _tileToComparePosition.tileX)
-            {
-                if (_DoAll)
+                //Izquierda
+                else
                 {
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                    if (_DoAll)
                     {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineRight[i]);
+
+                        for (int i = 0; i <= furthestAvailableUnitDistance; i++)
+                        {
+                            pathToObjective.Add(_tileToComparePosition.tilesInLineLeft[i]);
+                        }
                     }
+
+
+                    //Roto al charger
+                    rotationChosenAfterMovement = new Vector3(0, -90, 0);
+                    facingDirectionAfterMovement = FacingDirection.West;
                 }
-
-
-                //Roto al charger
-                rotationChosenAfterMovement = new Vector3(0, 90, 0);
-                facingDirectionAfterMovement = FacingDirection.East;
-            }
-            //Izquierda
-            else
-            {
-                if (_DoAll)
-                {
-
-                    for (int i = 0; i <= furthestAvailableUnitDistance; i++)
-                    {
-                        pathToObjective.Add(_tileToComparePosition.tilesInLineLeft[i]);
-                    }
-                }
-
-
-                //Roto al charger
-                rotationChosenAfterMovement = new Vector3(0, -90, 0);
-                facingDirectionAfterMovement = FacingDirection.West;
             }
         }
 
-        return facingDirectionAfterMovement;
+        return facingDirectionAfterMovement; 
     }
 
 

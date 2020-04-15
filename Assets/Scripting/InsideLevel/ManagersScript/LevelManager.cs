@@ -172,16 +172,16 @@ public class LevelManager : MonoBehaviour
 
         if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
         {
+            TM.CreateGrid();
+
+            characterSelectionBox.SetActive(false);
+
             //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
             //IMPORTANTE TIENE QUE IR DESPUÉS DE T.CREATEGRID Y ANTES DE FOR(enemiesOntheBoard)
             if (MapGenRef != null)
             {
                 MapGenRef.Init();
             }
-
-            TM.CreateGrid();
-
-            characterSelectionBox.SetActive(false);
 
             for (int i = 0; i < FindObjectsOfType<PlayerUnit>().Length; i++)
             {
@@ -210,14 +210,14 @@ public class LevelManager : MonoBehaviour
 
     //Una vez ha terminado el diálogo, el GameManager avisa a esta función de que comience el nivel
     public void StartGameplayAfterDialog()
-    {
+    {       
+        //Se crea el grid
+        TM.CreateGrid();
+
         if (MapGenRef != null)
         {
             MapGenRef.Init();
         }
-
-        //Se crea el grid
-        TM.CreateGrid();
 
         //Se inicializan todas las unidades
         for (int i = 0; i < charactersOnTheBoard.Count; i++)
@@ -584,7 +584,96 @@ public class LevelManager : MonoBehaviour
                 hoverUnit.GetComponent<EnSummoner>().HideShowFeedbackSpawnPosition(true);
             }
 
-            //Goblin, gigante, boss y demás
+            else if (hoverUnit.GetComponent<EnGrabber>())
+            {
+                hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.myCurrentTile);
+
+                if (hoverUnit.currentUnitsAvailableToAttack.Count == 0)
+                {
+                    hoverUnit.ShowActionPathFinding(true);
+                    hoverUnit.GetComponent<EnGrabber>().CalculateDamageForEnemiesGrabbedAfterMovement();
+                    hoverUnit.GetComponent<EnGrabber>().ShowGrabShadow(hoverUnit.shadowTile, hoverUnit.SpecialCheckRotation(hoverUnit.shadowTile, false));
+                }
+                else
+                {
+                    Debug.Log("No me muevo pero si ataco");
+                    hoverUnit.GetComponent<EnGrabber>().ShowGrabShadow(hoverUnit.myCurrentTile, hoverUnit.currentFacingDirection);
+                }
+
+                //¡¡MUY IMPORTANTE!! hoverUnit.ShowActionPathFinding(true); TIENE QUE IR ANTES QUE ESTOS ifs
+                if (!hoverUnit.haveIBeenAlerted)
+                {
+                    //Rango de acción sólo se pinta si no ha sido alertado
+                    tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
+                }
+
+                tilesAvailableForMovementEnemies = TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit);
+
+                for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
+                {
+                    tilesAvailableForMovementEnemies[i].ColorMovement();
+                }
+
+                for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
+                {
+                    tilesAvailableForRangeEnemies[i].ColorActionRange();
+                }
+
+
+                hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.myCurrentTile);
+
+                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                {
+                    //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
+                    if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                    }
+
+                    if (hoverUnit.pathToObjective.Count > 0)
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                    }
+
+                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+                }
+
+                //Pinto rango de acción desde el enemigo si no se mueve.
+                //Si por el contrario se mueve, pinto el rango desde la función ShowActionPathFinding
+                else
+                {
+                    hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.shadowTile);
+                    if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                    {
+                        //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
+                        if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
+                        {
+                            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                        }
+
+                        if (hoverUnit.pathToObjective.Count > 0)
+                        {
+                            hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                        }
+
+                        hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                        hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+                    }
+
+                    else
+                    {
+                        hoverUnit.CheckTilesInRange(hoverUnit.myCurrentTile, hoverUnit.currentFacingDirection);
+                    }  
+                }
+
+                //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
+                hoverUnit.ColorAttackTile();
+            }
+
+            //Goblin, gigante, esqueleto, duelista
             else
             {
                 //Muestro la acción que va a realizar el enemigo 
@@ -819,10 +908,14 @@ public class LevelManager : MonoBehaviour
                     }
                 }
 
-
                 if (hoverUnit.GetComponent<EnDuelist>())
                 {
                     hoverUnit.GetComponent<EnDuelist>().ShowArrowsOnEnemies(false);
+                }
+
+                else if (hoverUnit.GetComponent<EnGrabber>())
+                {
+                    hoverUnit.GetComponent<EnGrabber>().HideGrabShadow();
                 }
 
                 //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
