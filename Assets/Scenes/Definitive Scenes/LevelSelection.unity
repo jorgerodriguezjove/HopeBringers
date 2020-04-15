@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1308,8 +1308,8 @@ MonoBehaviour:
   - {fileID: 1546985796}
   LevelTitle: Level 1
   descriptionText: Kill all enemies
-  startDialog: {fileID: 4900000, guid: 98baa62577be9244d9618ff11e87d6c0, type: 3}
-  endDialog: {fileID: 4900000, guid: 98baa62577be9244d9618ff11e87d6c0, type: 3}
+  startDialog: {fileID: 4900000, guid: 5261860697c709c45ae6bfc5a8cf8714, type: 3}
+  endDialog: {fileID: 0}
   unlockedLevel: {fileID: 21300000, guid: c17d3de0eedfff343a78d97718ad4406, type: 3}
   completedLevel: {fileID: 21300000, guid: c717ac9029a2b0644a0f37327c940b6a, type: 3}
   dottedLinePath: {fileID: 0}
@@ -4848,6 +4848,7 @@ GameObject:
   - component: {fileID: 366631853}
   - component: {fileID: 366631852}
   - component: {fileID: 366631854}
+  - component: {fileID: 366631855}
   m_Layer: 0
   m_Name: Upgrades Camera
   m_TagString: MainCamera
@@ -4948,6 +4949,37 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 198203914}
+--- !u!114 &366631855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366631851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &369523222
 GameObject:
   m_ObjectHideFlags: 0
@@ -16680,6 +16712,7 @@ GameObject:
   - component: {fileID: 1180221212}
   - component: {fileID: 1180221211}
   - component: {fileID: 1180221210}
+  - component: {fileID: 1180221213}
   m_Layer: 0
   m_Name: Selection Camera
   m_TagString: MainCamera
@@ -16780,6 +16813,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 74.177, y: 0, z: 0}
+--- !u!114 &1180221213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180221209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1182365129
 GameObject:
   m_ObjectHideFlags: 0
@@ -20541,7 +20605,7 @@ MonoBehaviour:
   - {fileID: 1717982489}
   LevelTitle: Level 3
   descriptionText: Do something
-  startDialog: {fileID: 4900000, guid: 98baa62577be9244d9618ff11e87d6c0, type: 3}
+  startDialog: {fileID: 4900000, guid: 7839a14912780a34f82b29858b76beb0, type: 3}
   endDialog: {fileID: 0}
   unlockedLevel: {fileID: 21300000, guid: c17d3de0eedfff343a78d97718ad4406, type: 3}
   completedLevel: {fileID: 21300000, guid: c717ac9029a2b0644a0f37327c940b6a, type: 3}
@@ -22009,7 +22073,7 @@ MonoBehaviour:
   - {fileID: 1453754982}
   LevelTitle: Level 2
   descriptionText: Complete the level
-  startDialog: {fileID: 4900000, guid: 98baa62577be9244d9618ff11e87d6c0, type: 3}
+  startDialog: {fileID: 4900000, guid: 4741acd7390fd4b4e89610db84d04566, type: 3}
   endDialog: {fileID: 0}
   unlockedLevel: {fileID: 21300000, guid: c17d3de0eedfff343a78d97718ad4406, type: 3}
   completedLevel: {fileID: 21300000, guid: c717ac9029a2b0644a0f37327c940b6a, type: 3}
@@ -23294,6 +23358,7 @@ GameObject:
   - component: {fileID: 1676574988}
   - component: {fileID: 1676574987}
   - component: {fileID: 1676574986}
+  - component: {fileID: 1676574989}
   m_Layer: 0
   m_Name: Progresion Camera
   m_TagString: MainCamera
@@ -23394,6 +23459,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 74.177, y: 0, z: 0}
+--- !u!114 &1676574989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676574985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1681991176
 GameObject:
   m_ObjectHideFlags: 0
