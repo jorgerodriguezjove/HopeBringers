@@ -115,6 +115,7 @@ public class Mage : PlayerUnit
             }
 
         }
+
         Instantiate(chargingParticle, gameObject.transform.position, chargingParticle.transform.rotation);
 
         Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
@@ -138,8 +139,8 @@ public class Mage : PlayerUnit
                         DoDamage(TM.rhombusTiles[i].unitOnTile);
                     }
                 }
-
             }
+
             else
             {
                 //Animación de ataque 
@@ -168,6 +169,7 @@ public class Mage : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
+
         else if (lightningChain)
         {
             unitsAttacked.Clear();
@@ -186,17 +188,17 @@ public class Mage : PlayerUnit
 
             for (int j = 0; j < unitsAttacked.Count; j++)
             {
-                
                 if (timeElectricityAttackExpands > 0)
                 {
                     timeElectricityAttackExpands--;
-                    limitantAttackBonus--;
+                    //limitantAttackBonus--;
                     
                     for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; k++)
                     {
+                        //&& unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this
 
-                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile)
-                            && unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this)
+                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null &&
+                            !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile))
                         {
                             if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
                             {
@@ -204,14 +206,15 @@ public class Mage : PlayerUnit
                             }
                             else
                             {
-                                if (limitantAttackBonus<= 0 && lightningChain2)
-                                {
+                                //if (limitantAttackBonus<= 0 && lightningChain2)
+                                //{
                                     
-                                }
-                                else if(lightningChain2)
-                                {
-                                    baseDamage++;
-                                }
+                                //}
+                                //else if(lightningChain2)
+                                //{
+                                //    baseDamage++;
+                                //}
+
                                 DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
                             }
                             

@@ -64,7 +64,7 @@ public class Rogue : PlayerUnit
     {
         checkersAttack = _multiJumpAttack1;
         extraTurnAttackAfterKill = _extraTurnAfterKill1;
-
+        //fUnitsCanJump = unitsCanJump;
 
     }
 

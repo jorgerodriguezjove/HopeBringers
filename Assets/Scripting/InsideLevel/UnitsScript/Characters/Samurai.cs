@@ -362,7 +362,7 @@ public class Samurai : PlayerUnit
                 if (unitAttacker == unitToParry)
                 {
                     damageReceived = 0;
-                    unitToParry.currentHealth -= unitAttacker.baseDamage;
+                    DoDamage(unitToParry);
                     UIM.RefreshHealth();
                     unitToParry = null;
                     parryIcon.SetActive(false);
@@ -377,7 +377,7 @@ public class Samurai : PlayerUnit
                     {
 
                         damageReceived = 0;
-                        unitToParry.currentHealth -= unitAttacker.baseDamage;
+                        DoDamage(unitToParry);
                         UIM.RefreshHealth();
                         unitToParry = null;
                         parryIcon.SetActive(false);
@@ -391,7 +391,7 @@ public class Samurai : PlayerUnit
             else if(unitAttacker == unitToParry)
             {
                 damageReceived = 0;
-                unitToParry.currentHealth -= unitAttacker.baseDamage;
+                DoDamage(unitToParry);
                 UIM.RefreshHealth();
                 unitToParry = null;
                 parryIcon.SetActive(false);

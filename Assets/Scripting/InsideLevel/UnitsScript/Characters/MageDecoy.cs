@@ -101,6 +101,15 @@ public class MageDecoy : Mage
 
     IEnumerator WaitToDamageSurrounding()
     {
+        //Hago daño a las unidades adyacentes(3x3)
+        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+        {
+            if (TM.surroundingTiles[i].unitOnTile != null)
+            {
+                DoDamage(TM.surroundingTiles[i].unitOnTile);
+            }
+        }
+
         yield return new WaitForSeconds(2f);
 
         //Hago daño a las unidades adyacentes(3x3)
@@ -109,10 +118,6 @@ public class MageDecoy : Mage
             if (TM.surroundingTiles[i] != null)
             {
                 TM.surroundingTiles[i].ColorDesAttack();                
-            }
-            if (TM.surroundingTiles[i].unitOnTile != null)
-            {
-                DoDamage(TM.surroundingTiles[i].unitOnTile);
             }
         }
 
@@ -394,12 +399,8 @@ public class MageDecoy : Mage
                 {
                     DoDamage(currentUnitsAvailableToAttack[0]);
                 }
-
             }
-            
-
         }
-       
     }
 
     public void ChangePosition(Mage mage2Move)
@@ -435,18 +436,23 @@ public class MageDecoy : Mage
 
     IEnumerator WaitToDamageSurroundingAfterChangePos()
     {
+        //Hago daño a las unidades adyacentes(3x3)
+        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+        {
+            if (TM.surroundingTiles[i].unitOnTile != null)
+            {
+                DoDamage(TM.surroundingTiles[i].unitOnTile);
+            }
+        }
+
         yield return new WaitForSeconds(2f);
 
-        //Hago daño a las unidades adyacentes(3x3)
+        //Despinto los tiles
         for (int i = 0; i < TM.surroundingTiles.Count; ++i)
         {
             if (TM.surroundingTiles[i] != null)
             {
                 TM.surroundingTiles[i].ColorDesAttack();
-            }
-            if (TM.surroundingTiles[i].unitOnTile != null)
-            {
-                DoDamage(TM.surroundingTiles[i].unitOnTile);
             }
         }
 
@@ -673,8 +679,6 @@ public class MageDecoy : Mage
     //En este caso lo uso para ver lo que hace el decoy cuando el mago lee hace hover
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
-        
-
         if (LM.selectedCharacter != null)
         {
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
