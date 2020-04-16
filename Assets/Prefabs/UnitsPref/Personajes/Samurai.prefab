@@ -176,8 +176,12 @@ MonoBehaviour:
   notAttackX: {fileID: 9163062249358752397}
   shaderHover: {fileID: 3738734064854569619}
   monkMark: {fileID: 0}
+  monkMarkText: {fileID: 0}
   monkMark2: {fileID: 0}
+  monkMark2Text: {fileID: 0}
   monkMark3: {fileID: 0}
+  monkMark3Text: {fileID: 0}
+  timesRepeatNumber: {fileID: 3081924560598790438}
   backStabIcon: {fileID: 6877744215951305902}
   upToDownDamageIcon: {fileID: 3513844471829036948}
   downToUpDamageIcon: {fileID: 4677424158330639763}
@@ -197,7 +201,6 @@ MonoBehaviour:
   canHover: 0
   currentUnitsAvailableToAttack: []
   tilesInEnemyHover: []
-  hasUsedExtraTurn: 0
   timeWaitAfterAttack: 1
   activeSkillInfo: 
   pasiveSkillInfo: 
@@ -224,7 +227,6 @@ MonoBehaviour:
   unitToParry: {fileID: 0}
   doubleAttack: 1
   timesDoubleAttackRepeats: 0
-  timesRepeatNumber: {fileID: 3081924560598790438}
   itsForHonorTime: 0
   itsForHonorTime2: 0
   buffLonelyArea: 0
@@ -1902,7 +1904,7 @@ GameObject:
   - component: {fileID: 3081924560598790438}
   - component: {fileID: 4432035740957683224}
   m_Layer: 14
-  m_Name: SamuraiText
+  m_Name: RepeatsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2022,13 +2024,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 3081924560598790438}
-    characterCount: 0
+    characterCount: 2
     spriteCount: 0
     spaceCount: 0
-    wordCount: 0
+    wordCount: 1
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0

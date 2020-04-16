@@ -31,7 +31,7 @@ public class Samurai : PlayerUnit
     //int que  indica el número de veces que el samurai ataca
     public int timesDoubleAttackRepeats;
 
-    public TextMeshProUGUI timesRepeatNumber;
+    
 
     [Header("Pasivas")]
     //PASIVAS
@@ -446,19 +446,37 @@ public class Samurai : PlayerUnit
     }
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
-
-        if (doubleAttack) 
+        if(parryOn)
         {
-            timesRepeatNumber.enabled = true;
-            timesRepeatNumber.text = ("X" + timesDoubleAttackRepeats.ToString());
+            parryIcon.SetActive(true);
 
-            Vector3 vector2Spawn = new Vector3(_unitToAttack.transform.position.x, timesRepeatNumber.transform.position.y, _unitToAttack.transform.position.z);
-            timesRepeatNumber.transform.position = vector2Spawn;
         }
+        else
+        {
+            if (doubleAttack)
+            {
+                _unitToAttack.timesRepeatNumber.enabled = true;
+                _unitToAttack.timesRepeatNumber.text = ("X" + timesDoubleAttackRepeats.ToString());
+
+            }
+
+        }
+       
+
+
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
-        timesRepeatNumber.enabled = false;
+        if (parryOn)
+        {
+            parryIcon.SetActive(false);
+
+        }
+        else
+        {
+            _unitToAttack.timesRepeatNumber.enabled = false;
+
+        }
     }
 }

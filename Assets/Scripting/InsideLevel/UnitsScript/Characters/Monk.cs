@@ -68,10 +68,19 @@ public class Monk : PlayerUnit
             {
                 unitToMark.monkMark2.SetActive(true);
 
+                if (suplex2 && unitToMark.numberOfMarks == 2)
+                {
+
+                    unitToMark.monkMark2Text.enabled = true;
+                    unitToMark.monkMark2Text.text = "++";
+
+                }
             }
             else
             {
                 unitToMark.monkMark2.SetActive(false);
+
+                unitToMark.monkMark2Text.enabled = false;
 
             }
 
@@ -82,10 +91,20 @@ public class Monk : PlayerUnit
             {
                 unitToMark.monkMark3.SetActive(true);
 
+                if (suplex2 && unitToMark.numberOfMarks == 2)
+                {
+
+                    unitToMark.monkMark3Text.enabled = true;
+                    unitToMark.monkMark3Text.text = "++";
+
+                }
+
             }
             else
             {
                 unitToMark.monkMark3.SetActive(false);
+
+                unitToMark.monkMark3Text.enabled = false;
 
             }
 
@@ -96,10 +115,19 @@ public class Monk : PlayerUnit
             {
                 unitToMark.monkMark.SetActive(true);
 
+                if (suplex2 && unitToMark.numberOfMarks == 2)
+                {
+
+                    unitToMark.monkMarkText.enabled = true;
+                    unitToMark.monkMarkText.text = "++";
+
+                }
             }
             else
             {
                 unitToMark.monkMark.SetActive(false);
+
+                unitToMark.monkMarkText.enabled = false;
 
             }
 
@@ -245,9 +273,6 @@ public class Monk : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
-            PutQuitMark(unitToAttack, true, true);
-           
-
             if (suplex2 && unitToAttack.numberOfMarks == 1)
             {
 
@@ -259,6 +284,11 @@ public class Monk : PlayerUnit
                 unitToAttack.numberOfMarks = 1;
 
             }
+
+            PutQuitMark(unitToAttack, true, true);
+           
+
+            
 
 
             //Hago daño
@@ -543,9 +573,43 @@ public class Monk : PlayerUnit
     {
         if (rotatorTime)
         {
-            rotatorFeedbackArrow.SetActive(true);
-             Vector3 spawnRotatorArrow = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 1, _unitToAttack.transform.position.z);
-            rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
+            if (rotatorTime2)
+            {
+                if (_unitToAttack.isMarked)
+                {
+                    PutQuitMark(_unitToAttack, true, false);
+                    
+                    //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
+                    TM.surroundingTiles.Clear();
+
+                    TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
+
+
+                    //Marco a las unidades adyacentes si no están marcadas
+                    for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                    {
+                        if (TM.surroundingTiles[i].unitOnTile != null)
+                        {
+                            if (TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
+                                && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
+                            {
+                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, true);
+
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                rotatorFeedbackArrow.SetActive(true);
+                Vector3 spawnRotatorArrow = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 1, _unitToAttack.transform.position.z);
+                rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
+                PutQuitMark(_unitToAttack, false, true);
+
+            }
+
+
 
         }
         else if (suplex)
@@ -606,16 +670,54 @@ public class Monk : PlayerUnit
                     tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(-1);
                 }
             }
+
+            PutQuitMark(_unitToAttack, false, true);
+        }
+        else
+        {
+            PutQuitMark(_unitToAttack, false, true);
+
         }
 
-        PutQuitMark(_unitToAttack, false, true);
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
         if (rotatorTime)
         {
-            rotatorFeedbackArrow.SetActive(false);
+            if (rotatorTime2)
+            {
+                if (_unitToAttack.isMarked)
+                {
+                    PutQuitMark(_unitToAttack, true, true);
+
+                    //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
+                    TM.surroundingTiles.Clear();
+
+                    TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
+
+
+                    //Marco a las unidades adyacentes si no están marcadas
+                    for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                    {
+                        if (TM.surroundingTiles[i].unitOnTile != null)
+                        {
+                            if (TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
+                                && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
+                            {
+                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, false);
+
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                PutQuitMark(_unitToAttack, false, false);
+                rotatorFeedbackArrow.SetActive(false);
+            }
+
 
 
         }
@@ -623,8 +725,14 @@ public class Monk : PlayerUnit
         {
 
             _unitToAttack.shaderHover.SetActive(false);
+            PutQuitMark(_unitToAttack, false, false);
+
+        }
+        else
+        {
+            PutQuitMark(_unitToAttack, false, false);
+
         }
 
-        PutQuitMark(_unitToAttack, false, false);
     }
 }

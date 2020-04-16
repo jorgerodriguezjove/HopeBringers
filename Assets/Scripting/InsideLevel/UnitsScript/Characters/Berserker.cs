@@ -29,7 +29,7 @@ public class Berserker : PlayerUnit
     //ACTIVAS
     public bool circularAttack;
     //Esta variable tiene que cambiar en la mejora 2 de este ataque
-    public int timeCircularAttackrepeats;
+    public int timesCircularAttackRepeats;
 
     public bool areaAttack;
     //Esta variable tiene que cambiar en la mejora 2 de este ataque
@@ -96,7 +96,7 @@ public class Berserker : PlayerUnit
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
             myAnimator.SetTrigger("Attack");
-            for (int i = 0; i < timeCircularAttackrepeats; i++)
+            for (int i = 0; i < timesCircularAttackRepeats; i++)
             {
                 currentFacingDirection = FacingDirection.North;
                 if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
@@ -392,8 +392,10 @@ public class Berserker : PlayerUnit
         {                           
                 if (myCurrentTile.tilesInLineUp[0] != null)
                 {
+
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[0]);
                
+
                 }
 
                 if (myCurrentTile.tilesInLineDown[0]!= null)
@@ -410,13 +412,13 @@ public class Berserker : PlayerUnit
                 if (myCurrentTile.tilesInLineLeft[0] != null)
                 {
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[0]);
-                }                          
+                }
+
+          
         }
 
-        if (rageFear)
-        {
-            _unitToAttack.ShowHideFear(true, fearTurnBonus);
-        }
+        tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+      
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
@@ -424,18 +426,60 @@ public class Berserker : PlayerUnit
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(-1);
+                if (rageFear)
+                {
+                    tilesInEnemyHover[i].unitOnTile.ShowHideFear(true, fearTurnBonus);
+                }
+
+                if (circularAttack)
+                {
+                    if (timesCircularAttackRepeats >= 2)
+                    {
+                        tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.enabled = true;
+                        tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.text = ("X" + timesCircularAttackRepeats.ToString());
+
+                    }
+
+                }
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied + bonusDamageAreaAttack);
             }
         }
+
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
-        if (rageFear)
+
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-            _unitToAttack.ShowHideFear(false, fearTurnBonus);
+            tilesInEnemyHover[i].ColorDesAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                if (rageFear)
+                {
+                    tilesInEnemyHover[i].unitOnTile.ShowHideFear(false, fearTurnBonus);
+                }
+
+                if (circularAttack)
+                {
+                    if (timesCircularAttackRepeats >= 2)
+                    {
+                        tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.enabled = false;
+
+                    }
+
+                }
+                tilesInEnemyHover[i].unitOnTile.ResetColor();
+                tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
+            }
         }
+
+
+        tilesInEnemyHover.Clear();
     }
+
     #region COLORS
 
 

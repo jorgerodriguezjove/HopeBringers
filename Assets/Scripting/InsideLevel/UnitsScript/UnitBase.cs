@@ -226,12 +226,18 @@ public class UnitBase : MonoBehaviour
 
     //Se usa para indicar las marcas del monk
     public GameObject monkMark;
+    public TextMeshProUGUI monkMarkText;
 
     //Se usa para indicar las marcas del monk con la pasiva 1
     public GameObject monkMark2;
+    public TextMeshProUGUI monkMark2Text;
 
     //Se usa para indicar las marcas del monk con la pasiva 2
     public GameObject monkMark3;
+    public TextMeshProUGUI monkMark3Text;
+
+    //Se usa para el ataque del samurai y el ataque del berserker
+    public TextMeshProUGUI timesRepeatNumber;
 
 
     [SerializeField]

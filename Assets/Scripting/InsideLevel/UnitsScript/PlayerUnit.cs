@@ -353,6 +353,7 @@ public class PlayerUnit : UnitBase
 
                     Druid druidRef = FindObjectOfType<Druid>();
                     Rogue ninjaRef = FindObjectOfType<Rogue>();
+
                     if (druidRef != null && LM.selectedCharacter == druidRef)
                     {
                         // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
