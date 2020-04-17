@@ -16,21 +16,17 @@ public class HealerTile : DamageTile
 
     public override void OnTriggerEnter(Collider unitOnTile)
     {
-        base.OnTriggerEnter(unitOnTile);
-
         if (unitOnTile.GetComponent<Druid>() != null && unitOnTile.GetComponent<Druid>().tileSustitute2)
         {
             if (unitOnTile.GetComponent<Druid>())
             {
                 unitOnTile.GetComponent<Druid>().healedLife += unitOnTile.GetComponent<Druid>().bonusOnTile;
-
             }
+
             else
             {
-
                 unitOnTile.GetComponent<UnitBase>().BuffbonusStateDamage = 1;
             }
-
         }
     }
     public override void OnTriggerStay(Collider unitOnTile)
@@ -45,20 +41,24 @@ public class HealerTile : DamageTile
 
     public override void OnTriggerExit(Collider unitOnTile)
     {
-        if (unitOnTile.GetComponent<Druid>().tileSustitute2)
+        if (unitOnTile.GetComponent<Druid>())
         {
-            if (unitOnTile.GetComponent<Druid>())
+            if (unitOnTile.GetComponent<Druid>().tileSustitute2)
             {
                 unitOnTile.GetComponent<Druid>().healedLife -= unitOnTile.GetComponent<Druid>().bonusOnTile;
-
             }
-            else
-            {
-
-                unitOnTile.GetComponent<UnitBase>().BuffbonusStateDamage = 0;
-            }
-
         }
+
+        else
+        {
+            //AQUI HAY QUE USAR LA VARIABLE GUARDAD EN EL LEVEL MANAGER
+            if (FindObjectOfType<Druid>().tileSustitute2)
+            {
+                //No poner a 0. Restar al BuffbonusStateDamage el bonus ganado por entrar (por si entra con un bufo/debufo de antes que no lo pierda)
+                unitOnTile.GetComponent<UnitBase>().BuffbonusStateDamage = 0;
+            } 
+        }
+
         if (unitOnTile.GetComponent<UnitBase>())
         {
             unitToDoDamage = null;

@@ -113,11 +113,8 @@ public class Knight : PlayerUnit
             else if (FindObjectOfType<Monk>().healerMark2)
             {
                 ApplyBuffOrDebuffdamage(this, 1, 3);
-
-
             }
             UIM.RefreshTokens();
-
         }
 
         //Este primer if  lo pongo de momento para seguir la misma estructura que con los otros personajes y por si hay que cambiar algo específico como la animación, el sonido...
@@ -623,7 +620,6 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
-
                     }
                 }
 

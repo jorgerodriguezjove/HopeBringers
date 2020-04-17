@@ -88,7 +88,8 @@ public class UnitBase : MonoBehaviour
 
     //Daño para añadir buff  (tambien lo usamos para los debuff)
     public int BuffbonusStateDamage;
-    [HideInInspector]
+
+    [SerializeField]
     //Turnos que el buff o debuff tiene que estar aplicado
     public int turnsWithBuffOrDebuff;
 

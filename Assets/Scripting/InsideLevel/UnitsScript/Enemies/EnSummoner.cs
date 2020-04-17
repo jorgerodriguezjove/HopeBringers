@@ -68,7 +68,7 @@ public class EnSummoner : EnemyUnit
     {
         hasAttacked = true;
 
-        if (currentUnitsSummoned <= maxUnitsSummoned)
+        if (currentUnitsSummoned < maxUnitsSummoned)
         {
             DetermineSpawnPosition(true);
 

@@ -552,7 +552,8 @@ public class LevelManager : MonoBehaviour
                 //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                 {
-                    hoverUnit.unitsInRange[i].ShowHideFear(true, hoverUnit.unitsInRange[i].turnsWithFear);
+                    //El -1 es para que aparezca bien el número en el icono pero luego a nivel logico no se reste
+                    hoverUnit.unitsInRange[i].ShowHideFear(true, hoverUnit.GetComponent<EnWatcher>().turnDurationDebuffs-1);
                     //Pongo -1 para que no pinte nada
                     hoverUnit.unitsInRange[i].ColorAvailableToBeAttackedAndNumberDamage(-1);
                 }
@@ -874,7 +875,7 @@ public class LevelManager : MonoBehaviour
             //Goblin, gigante, boss y demás
             else
             {
-                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 && hoverUnit.currentUnitsAvailableToAttack[0] != null)
                 {
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
                     if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())

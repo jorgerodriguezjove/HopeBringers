@@ -241,17 +241,14 @@ public class Samurai : PlayerUnit
                 {
                     StunUnit(unitToAttack, 1);
                 }
-
             }
+
             else if (FindObjectOfType<Monk>().healerMark2)
             {
                 ApplyBuffOrDebuffdamage(this, 1, 3);
-                
-
             }
 
             UIM.RefreshTokens();
-
         }
 
         if (parryOn)

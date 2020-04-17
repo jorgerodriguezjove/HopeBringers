@@ -51,7 +51,9 @@ public class Monk : PlayerUnit
     #endregion
 
     public void PutQuitMark(UnitBase unitToMark, bool haveToPut, bool haveToShow)
-    {         
+    {
+        Debug.Log("PutQuitMark");
+
         if (haveToPut)
         {
             unitToMark.isMarked = true;
@@ -60,7 +62,6 @@ public class Monk : PlayerUnit
         {
             unitToMark.isMarked = false;
         }
-
 
         if (debuffMark)
         {
@@ -109,6 +110,7 @@ public class Monk : PlayerUnit
             }
 
         }
+
         else
         {
             if (haveToShow)
@@ -128,9 +130,7 @@ public class Monk : PlayerUnit
                 unitToMark.monkMark.SetActive(false);
 
                 unitToMark.monkMarkText.enabled = false;
-
             }
-
         }
 
     }
@@ -218,9 +218,9 @@ public class Monk : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
+
         else if (suplex)
         {
-
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (myCurrentTile.tilesInLineDown[0].unitOnTile == null)
@@ -229,7 +229,7 @@ public class Monk : PlayerUnit
                     unitToAttack.transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                     //Actualizo los tiles
-                    UpdateInformationAfterMovement(unitToAttack.myCurrentTile.tilesInLineDown[0]);
+                    unitToAttack.UpdateInformationAfterMovement(myCurrentTile.tilesInLineDown[0]);
                 }
             }
 
@@ -241,7 +241,7 @@ public class Monk : PlayerUnit
                     unitToAttack.transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                     //Actualizo los tiles
-                    UpdateInformationAfterMovement(unitToAttack.myCurrentTile.tilesInLineUp[0]);
+                    unitToAttack.UpdateInformationAfterMovement(myCurrentTile.tilesInLineUp[0]);
                 }
             }
 
@@ -254,7 +254,7 @@ public class Monk : PlayerUnit
                     unitToAttack.transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                     //Actualizo los tiles
-                    UpdateInformationAfterMovement(unitToAttack.myCurrentTile.tilesInLineLeft[0]);
+                    unitToAttack.UpdateInformationAfterMovement(myCurrentTile.tilesInLineLeft[0]);
                 }
             }
 
@@ -266,7 +266,7 @@ public class Monk : PlayerUnit
                     unitToAttack.transform.DOJump(currentTileVectorToMove, 1, 1, 1);
 
                     //Actualizo los tiles
-                    UpdateInformationAfterMovement(unitToAttack.myCurrentTile.tilesInLineRight[0]);
+                    unitToAttack.UpdateInformationAfterMovement(myCurrentTile.tilesInLineRight[0]);
                 }
             }
 
@@ -275,33 +275,26 @@ public class Monk : PlayerUnit
 
             if (suplex2 && unitToAttack.numberOfMarks == 1)
             {
-
                 unitToAttack.numberOfMarks = 2;
-
             }
+
             else
             {
                 unitToAttack.numberOfMarks = 1;
-
             }
 
             PutQuitMark(unitToAttack, true, true);
            
-
-            
-
-
             //Hago daño
             DoDamage(unitToAttack);
 
             //Meter sonido Monk
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
 
-
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
         }
+
         else
         {
             //Animación de ataque
@@ -316,13 +309,9 @@ public class Monk : PlayerUnit
             //Meter sonido Monk
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
 
-
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
-        }
-
-      
+        }      
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)
@@ -705,34 +694,43 @@ public class Monk : PlayerUnit
                             if (TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
                                 && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
                             {
-                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, false);
-
+                                if (!hasAttacked)
+                                {
+                                    PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, false);
+                                }
+                                   
                             }
                         }
                     }
                 }
             }
+
             else
             {
-                PutQuitMark(_unitToAttack, false, false);
+                if (!hasAttacked)
+                {
+                    PutQuitMark(_unitToAttack, false, false);
+                }
                 rotatorFeedbackArrow.SetActive(false);
             }
-
-
-
         }
+
         else if (suplex)
         {
-
             _unitToAttack.shaderHover.SetActive(false);
-            PutQuitMark(_unitToAttack, false, false);
 
+            if (!hasAttacked)
+            {
+                PutQuitMark(_unitToAttack, false, false);
+            }
         }
+
         else
         {
-            PutQuitMark(_unitToAttack, false, false);
-
+            if (!hasAttacked)
+            {
+                PutQuitMark(_unitToAttack, false, false);
+            } 
         }
-
     }
 }

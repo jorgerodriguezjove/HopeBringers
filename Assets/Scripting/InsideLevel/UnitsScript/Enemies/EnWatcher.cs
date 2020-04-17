@@ -11,6 +11,8 @@ public class EnWatcher : EnemyUnit
     //Debuff de movimient que mete a las unidades que están dentro de su alcance en el Tier 2
     public int movementDebuff;
 
+    public int turnDurationDebuffs;
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -49,7 +51,7 @@ public class EnWatcher : EnemyUnit
         {
             if (unitsInRange[i].GetComponent<PlayerUnit>())
             {
-                ApplyBuffOrDebuffdamage(unitsInRange[i], attackDebuff, 3);
+                ApplyBuffOrDebuffdamage(unitsInRange[i], attackDebuff, turnDurationDebuffs);
                
                 
                 if (myTierLevel == TierLevel.Level2)

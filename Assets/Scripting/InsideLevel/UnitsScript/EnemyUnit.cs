@@ -847,11 +847,8 @@ public class EnemyUnit : UnitBase
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
                     }
                 }
-
-                
-               
-
             }
+
             LM.selectedCharacter.HideAttackEffect(this);
             LM.selectedCharacter.tilesInEnemyHover.Clear();
         }
