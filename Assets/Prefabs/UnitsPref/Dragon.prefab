@@ -776,8 +776,11 @@ MonoBehaviour:
   numberOfMarks: 0
   hasFear: 0
   turnsWithFear: 0
+  fearIcon: {fileID: 0}
+  turnsWithFearInHUD: {fileID: 0}
   isStunned: 0
   turnStunned: 0
+  stunIcon: {fileID: 0}
   isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
@@ -796,6 +799,7 @@ MonoBehaviour:
   timeMovementAnimation: 0.2
   timeDurationRotation: 0.2
   timeToWaitBeforeHidingHealthbar: 1
+  currentTilesInRangeForAttack: []
   damageWithMultipliersApplied: 0
   maxHeightDifferenceToAttack: 1
   previousTileHeight: 0
@@ -822,10 +826,15 @@ MonoBehaviour:
   notAttackX: {fileID: 0}
   shaderHover: {fileID: 8512296912233093262}
   monkMark: {fileID: 0}
+  monkMark2: {fileID: 0}
+  monkMark3: {fileID: 0}
   backStabIcon: {fileID: 0}
   upToDownDamageIcon: {fileID: 0}
   downToUpDamageIcon: {fileID: 0}
+  buffIcon: {fileID: 0}
+  debuffIcon: {fileID: 0}
   canvasUnit: {fileID: 7958651517046312001}
+  changePositionIcon: {fileID: 0}
   unitGeneralInfo: 
   characterImage: {fileID: 21300000, guid: aa3ce8612d60160468799b75006009da, type: 3}
   tooltipImage: {fileID: 0}
@@ -841,9 +850,10 @@ MonoBehaviour:
   orderToShow: 0
   thisUnitOrder: {fileID: 0}
   currentUnitsAvailableToAttack: []
-  unitsInRange: []
   isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 1
+  pathToObjective: []
+  unitsInRange: []
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
   enemyTierImage: {fileID: 0}
@@ -2588,6 +2598,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1921070230477391036, guid: dc00342af2d46e64099fd8092644a09c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5da6e68adcd75d7408534dfa37690aa3, type: 2}
     - target: {fileID: 2341580078844879043, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_IsActive
