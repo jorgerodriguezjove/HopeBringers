@@ -250,5 +250,80 @@ public class UITableManager : MonoBehaviour
         }
     }
 
+    #region MAIN_MENU
 
+    [SerializeField]
+    GameObject confirmationPanel;
+
+    [SerializeField]
+    GameObject playCanvas;
+
+    [SerializeField]
+    GameObject optionsCanvas;
+
+    [SerializeField]
+    GameObject credits;
+
+
+    //Botón de exit en libro lo activa y botón de no en confirmar lo desactiva
+    public void ConfirmateExit(bool _shouldActivate)
+    {
+        //Activar o desactivar panel
+        confirmationPanel.SetActive(_shouldActivate);
+    }
+
+    public void PlayButton()
+    {
+        playCanvas.SetActive(true);
+        optionsCanvas.SetActive(false);
+        credits.SetActive(false);
+    }
+
+    public void OptionsButton()
+    {
+        optionsCanvas.SetActive(true);
+        playCanvas.SetActive(false);
+        credits.SetActive(false);
+    }
+
+    public void CreditsButton()
+    {
+        credits.SetActive(true);
+        optionsCanvas.SetActive(false);
+        playCanvas.SetActive(false);
+    }
+
+    public void BackToMenu()
+    {
+        TM.MoveToMainMenu();
+
+        //Guardar la partida
+    }
+
+        #region PLAY_GAME
+
+     public void NewGameButton()
+     {
+        //Comprobar si hay ya una partida guardada y activar aviso
+        
+        //Else crear guardado y mover cámara
+        TM.BackToMap();
+     }
+     
+     public void ContinueButton()
+     {
+        //Cargar partida y mover cámara
+        TM.BackToMap();
+     }
+
+    #endregion
+
+
+
+    #region OPTIONS
+
+
+    #endregion
+
+    #endregion
 }
