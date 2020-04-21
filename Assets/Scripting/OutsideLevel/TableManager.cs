@@ -16,6 +16,9 @@ public class TableManager : MonoBehaviour
     [Header("CÁMARAS")]
     //Cámara del mapa
     [SerializeField]
+    private GameObject mainMenuCamera;
+    //Cámara del mapa
+    [SerializeField]
     private GameObject mapCamera;
     //Cámara de la selección de unidades
     [SerializeField]
@@ -65,6 +68,13 @@ public class TableManager : MonoBehaviour
                 GameManager.Instance.characterDataForCurrentLevel.Add(initialCharacters[i].GetComponent<CharacterData>());
                 GameManager.Instance._isFirstTimeLoadingGame = false;
             }
+
+            //Activo la cámara del libro
+        }
+
+        else
+        {
+            //Activo la cámara del mapa
         }
 
         //Devuelvo las figuras a la caja y reseteo las listas de unidades
@@ -140,6 +150,12 @@ public class TableManager : MonoBehaviour
         lastLevelClicked = levelClicked;
     }
 
+    public void MoveToMainMenu()
+    {
+        mainMenuCamera.SetActive(true);
+        mapCamera.SetActive(false);
+    }
+
     public void MoveToSelection()
     {
         mapCamera.SetActive(false);
@@ -175,6 +191,7 @@ public class TableManager : MonoBehaviour
 
         //Movimiento de cámara
         mapCamera.SetActive(true);
+        mainMenuCamera.SetActive(false);
         selectCamera.SetActive(false);
         progresionCamera.SetActive(false);
 
