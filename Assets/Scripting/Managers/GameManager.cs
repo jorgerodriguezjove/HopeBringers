@@ -95,8 +95,6 @@ public class GameManager : PersistentSingleton<GameManager>
     public int upgradesBought;
     public int charactersFullyUpgraded;
 
-
-
     //Especificos
 
 

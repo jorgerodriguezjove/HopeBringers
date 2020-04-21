@@ -88,6 +88,10 @@ public class AppPlayerPrefKeys
 {
     public static readonly string MUSIC_VOLUME = "MusicVolume";
     public static readonly string SFX_VOLUME = "SfxVolume";
+    public static readonly string QUALITY_LEVEL = "QualityLevel";
+    public static readonly string RESOLUTION = "Resolution";
+    public static readonly string FULLSCREEN = "FullScreen";
+    //public static readonly string VSYNC = "Vsync";
 }
 
 //Nombres de los sonidos en la carpeta de resources.

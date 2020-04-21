@@ -61,12 +61,91 @@ public class UITableManager : MonoBehaviour
     private List<int> ids;
     private List<UpgradeNode> upgrades;
 
+    [Header("OPTIONS")]
+
+    //Resolución
+    Resolution[] resolutions;
+    [SerializeField]
+    TMP_Dropdown resolutionDropdown;
+
+    //Fulsscreen
+    [SerializeField]
+    Toggle toggleFullsCreen;
+
+    //Música y sonido
+    [SerializeField] Slider musicSlider;
+    [SerializeField] Slider sFXSlider;
+
+    //Calidad
+    [SerializeField]
+    TMP_Dropdown qualityDropdown;
+
+
     [Header("REFERENCIAS")]
     [SerializeField]
     private TableManager TM;
     #endregion
 
     #region INIT
+
+    private void Start()
+    {
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+
+        List<string> options = new List<string>();
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + " x " + resolutions[i].height;
+            options.Add(option);
+
+            //Si no hay resolución guardada se pone por defecto en 1920 x 1080
+            if (!PlayerPrefs.HasKey(AppPlayerPrefKeys.RESOLUTION) && resolutions[i].width == 1920 && resolutions[i].height == 1080)
+            {
+                PlayerPrefs.SetInt(AppPlayerPrefKeys.RESOLUTION, i);
+            }
+        }
+
+        resolutionDropdown.AddOptions(options);
+        SetResolution(PlayerPrefs.GetInt(AppPlayerPrefKeys.RESOLUTION));
+        resolutionDropdown.value = PlayerPrefs.GetInt(AppPlayerPrefKeys.RESOLUTION);
+        resolutionDropdown.RefreshShownValue();
+
+        //Si no hay ajuste guardado se pone por defecto en fullscreen
+        if (!PlayerPrefs.HasKey(AppPlayerPrefKeys.FULLSCREEN))
+        {
+            SetFullScreen(true);
+        }
+
+        else
+        {
+            if (PlayerPrefs.GetInt(AppPlayerPrefKeys.FULLSCREEN) == 0)
+            {
+                SetFullScreen(false);
+            }
+            else
+            {
+                SetFullScreen(true);
+            }
+        }
+
+        //Valores iniciales calidad
+        if (PlayerPrefs.HasKey(AppPlayerPrefKeys.QUALITY_LEVEL))
+        {
+            SetQuality(5);
+        }
+
+        else
+        {
+            SetQuality(PlayerPrefs.GetInt(AppPlayerPrefKeys.QUALITY_LEVEL));
+        }
+
+        //Valores iniciales de slider
+        musicSlider.value = Mathf.Clamp(SoundManager.Instance.MusicVolume, 0, 1);
+        sFXSlider.value = Mathf.Clamp(SoundManager.Instance.SfxVolume, 0, 1);
+
+    }
 
     #endregion
 
@@ -277,6 +356,10 @@ public class UITableManager : MonoBehaviour
         playCanvas.SetActive(true);
         optionsCanvas.SetActive(false);
         credits.SetActive(false);
+
+        //Guardo el valor del sonido dejado al mover el slider
+        SoundManager.Instance.MusicVolumeSave = musicSlider.value;
+        SoundManager.Instance.SfxVolumeSave = sFXSlider.value;
     }
 
     public void OptionsButton()
@@ -297,7 +380,7 @@ public class UITableManager : MonoBehaviour
     {
         TM.MoveToMainMenu();
 
-        //Guardar la partida
+        //Guardar la partida-+
     }
 
         #region PLAY_GAME
@@ -318,10 +401,79 @@ public class UITableManager : MonoBehaviour
 
     #endregion
 
-
-
     #region OPTIONS
 
+    public void SetResolution(int _resolutionIndex)
+    {
+        Resolution resolution = resolutions[_resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+
+        PlayerPrefs.SetInt(AppPlayerPrefKeys.RESOLUTION, _resolutionIndex);
+    }
+
+
+    public void SetFullScreen (bool _isFullScreen)
+    {
+        Screen.fullScreen = _isFullScreen;
+        toggleFullsCreen.isOn = _isFullScreen;
+
+        if (_isFullScreen)
+        {
+            PlayerPrefs.SetInt(AppPlayerPrefKeys.FULLSCREEN, 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt(AppPlayerPrefKeys.FULLSCREEN, 0);
+        }
+       
+    }
+
+    public void OnMusicValueChanged()
+    {
+        SoundManager.Instance.MusicVolume = musicSlider.value;
+    }
+
+    public void OnSfxValueChanged()
+    {
+        SoundManager.Instance.SfxVolume = sFXSlider.value;
+    }
+
+    public void SetQuality (int _qualityIndex)
+    {
+        QualitySettings.SetQualityLevel(_qualityIndex);
+        qualityDropdown.value = _qualityIndex;
+        qualityDropdown.RefreshShownValue();
+
+        PlayerPrefs.SetInt(AppPlayerPrefKeys.QUALITY_LEVEL, _qualityIndex);
+    }
+
+    public void ResetValues()
+    {
+        //Reseteo resolución
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            if (resolutions[i].width == 1920 && resolutions[i].height == 1080)
+            {
+                SetResolution(i);
+                resolutionDropdown.value = PlayerPrefs.GetInt(AppPlayerPrefKeys.RESOLUTION);
+                resolutionDropdown.RefreshShownValue();
+                break;
+            }
+        }
+
+        //FullScreen
+        SetFullScreen(true);
+
+        //Volumen
+        SoundManager.Instance.MusicVolume = 0.5f;
+        musicSlider.value = 0.5f; 
+        SoundManager.Instance.SfxVolume = 0.5f;
+        sFXSlider.value = 0.5f;
+
+        //Calidad
+        SetQuality(5);
+
+    }
 
     #endregion
 
