@@ -461,7 +461,7 @@ public class UnitBase : MonoBehaviour
         //Logro hacer 0 daño
         if (GetComponent<PlayerUnit>() && damageWithMultipliersApplied == 0)
         {
-            GameManager.Instance.UnlockAchievement(0);
+            GameManager.Instance.UnlockAchievement("");
         }
     }
 

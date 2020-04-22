@@ -114,6 +114,13 @@ public class APppMusic
    
 }
 
+//Nombres de escenas.
+public class AppAchievements
+{
+    public static readonly string ACHV_BEGIN = "achievement_00";
+
+}
+
 //Nombres de Inputs Para el futuro.
 //public class AppInputs
 //{
