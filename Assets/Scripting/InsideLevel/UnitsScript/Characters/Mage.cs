@@ -40,8 +40,13 @@ public class Mage : PlayerUnit
     public int timeElectricityAttackExpands;
     //Este int para que vuelva a su estado principal
     public int fTimeElectricityAttackExpands = 3;
+
     [HideInInspector]
-    public List<UnitBase> unitsAttacked;
+    public List<UnitBase> attackingUnits;
+    [HideInInspector]
+    public List<UnitBase> nextUnits;
+    [HideInInspector]
+    public List<UnitBase> unitsFinished;
 
     //Mejora del ataque (no hace daño a aliados y cada vez que hace la cadena, aumenta el daño)
     public bool lightningChain2;
@@ -124,25 +129,6 @@ public class Mage : PlayerUnit
         {
             if (areaAttack2)
             {
-                TM.rhombusTiles.Clear();
-
-                TM.GetRhombusTiles(unitToAttack.myCurrentTile, areaRange);
-
-                //Hago daño
-                DoDamage(unitToAttack);
-
-                //Hago daño a las unidades adyacentes
-                for (int i = 0; i < TM.rhombusTiles.Count; ++i)
-                {
-                    if (TM.rhombusTiles[i].unitOnTile != null)
-                    {
-                        DoDamage(TM.rhombusTiles[i].unitOnTile);
-                    }
-                }
-            }
-
-            else
-            {
                 //Animación de ataque 
                 //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
                 //myAnimator.SetTrigger("Attack");
@@ -164,15 +150,37 @@ public class Mage : PlayerUnit
                         DoDamage(TM.surroundingTiles[i].unitOnTile);
                     }
                 }
+        
+            }
 
-            }                      
+            else
+            {
+                //Animación de ataque 
+                //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
+                //myAnimator.SetTrigger("Attack");                              
+                //Hago daño a las unidades adyacentes
+                for (int i = 0; i < unitToAttack.myCurrentTile.neighbours.Count; ++i)
+                {
+                    if (unitToAttack.myCurrentTile.neighbours[i].unitOnTile != null)
+                    {
+                        DoDamage(unitToAttack.myCurrentTile.neighbours[i].unitOnTile);
+                    }
+                }
+
+                //Hago daño
+                DoDamage(unitToAttack);
+
+
+            }
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
 
         else if (lightningChain)
         {
-            unitsAttacked.Clear();
+            //unitsToAttack.Clear();
+            //nextUnits.Clear();
+            unitsFinished.Clear();
 
             if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
             {
@@ -183,48 +191,86 @@ public class Mage : PlayerUnit
                 //Hago daño
                 DoDamage(unitToAttack);
             }
-            
-            unitsAttacked.Add(unitToAttack);
 
-            for (int j = 0; j < unitsAttacked.Count; j++)
-            {
-                if (timeElectricityAttackExpands > 0)
-                {
-                    timeElectricityAttackExpands--;
-                    //limitantAttackBonus--;
-                    
-                    for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; k++)
+            attackingUnits.Add(unitToAttack);
+
+            for (int i = 0; i < attackingUnits.Count; i++)
+            {                
+                    for (int j = 0; j < attackingUnits[i].myCurrentTile.neighbours.Count; j++)
                     {
-                        //&& unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this
-
-                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null &&
-                            !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile))
+                        if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
+                            !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                         {
-                            if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
-                            {
 
-                            }
-                            else
-                            {
-                                //if (limitantAttackBonus<= 0 && lightningChain2)
-                                //{
-                                    
-                                //}
-                                //else if(lightningChain2)
-                                //{
-                                //    baseDamage++;
-                                //}
+                            DoDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
-                                DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
-                            }
-                            
-                            unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+
+                            nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+
                         }
                     }
-                }
+
+                unitsFinished.Add(attackingUnits[i]);
+                attackingUnits.Remove(attackingUnits[i]);
+
+                if ( attackingUnits.Count == 0)
+                {
+                    timeElectricityAttackExpands--;
+                    if (timeElectricityAttackExpands > 0)
+                    {
+                        for (int k = 0; k < nextUnits.Count; k++)
+                        {
+                            attackingUnits.Add(nextUnits[k]);
+                            nextUnits.Remove(nextUnits[k]);
+                        }
+
+                        return;
+                    }
+                    else
+                    {
+                        break;
+                    }                    
+                }                                                   
             }
+
+            //for (int j = 0; j < unitsAttacked.Count; j++)
+            //{
+            //    timeElectricityAttackExpands--;
+
+            //    if (timeElectricityAttackExpands > 0)
+            //    {                                                          
+            //        for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; k++)
+            //        {
+            //            //&& unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this
+
+            //            if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null &&
+            //                !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile))
+            //            {
+            //                if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
+            //                {
+
+            //                }
+            //                else
+            //                {
+            //                    //if (limitantAttackBonus<= 0 && lightningChain2)
+            //                    //{
+                                    
+            //                    //}
+            //                    //else if(lightningChain2)
+            //                    //{
+            //                    //    baseDamage++;
+            //                    //}
+
+            //                    DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+            //                }
+                            
+            //                unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
+            //            }
+            //        }
+            //    }
+            //}
             
-            unitsAttacked.Clear();
+           
             limitantAttackBonus = fLimitantAttackBonus;
             baseDamage = fBaseDamage;
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
@@ -597,81 +643,82 @@ public class Mage : PlayerUnit
         {
             if (areaAttack2)
             {
-                
-                TM.GetRhombusTiles(_unitToAttack.myCurrentTile, areaRange);
-
-             
-                for (int i = 0; i < TM.rhombusTiles.Count; ++i)
-                {
-                    if (TM.rhombusTiles[i] != null)
-                    {
-                        tilesInEnemyHover.Add(TM.rhombusTiles[i]);
-                    }
-                }
-
-            }
-            else
-            {
                 TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, areaRange, true, false);
 
                 for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                 {
                     tilesInEnemyHover.Add(TM.surroundingTiles[i]);
                 }
+
             }
-                       
+            else
+            {
+                //Animación de ataque 
+                //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
+                //myAnimator.SetTrigger("Attack");                              
+                //Hago daño a las unidades adyacentes
+
+                for (int i = 0; i < _unitToAttack.myCurrentTile.neighbours.Count; ++i)
+                {
+                    if (_unitToAttack.myCurrentTile.neighbours[i] != null)
+                    {
+                        tilesInEnemyHover.Add(_unitToAttack.myCurrentTile.neighbours[i]);
+                    }
+                }
+
+
+            }
+
         }
         else if (lightningChain)
         {
-            unitsAttacked.Clear();
-            unitsAttacked.Add(_unitToAttack);
-
-            for (int j = 0; j < unitsAttacked.Count; j++)
+            attackingUnits.Clear();
+            attackingUnits.Add(_unitToAttack);
+         
+            for (int i = 0; i < attackingUnits.Count; i++)
             {
-
-                if (timeElectricityAttackExpands > 0)
+                for (int j = 0; j < attackingUnits[i].myCurrentTile.neighbours.Count; j++)
                 {
-                    timeElectricityAttackExpands--;
-                    limitantAttackBonus--;
-
-                    for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; k++)
+                    if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
+                        !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                     {
 
-                        if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null && !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile)
-                            && unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this)
-                        {
-                            if (lightningChain2 && _unitToAttack.GetComponent<PlayerUnit>())
-                            {
 
-                            }
-                            else
-                            {
-                                if (limitantAttackBonus <= 0 && lightningChain2)
-                                {
+                        nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+                        tilesInEnemyHover.Add(attackingUnits[j].myCurrentTile.neighbours[j]);
 
-                                }
-                                else if (lightningChain2)
-                                {
-                                    baseDamage++;
-                                }
-                            }
-
-                            unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
-                            tilesInEnemyHover.Add(unitsAttacked[j].myCurrentTile.neighbours[k]);
-
-                        }
                     }
+                }
 
+                unitsFinished.Add(attackingUnits[i]);
+                attackingUnits.Remove(attackingUnits[i]);
 
+                if (attackingUnits.Count == 0)
+                {
+                    timeElectricityAttackExpands--;
+                    if (timeElectricityAttackExpands > 0)
+                    {
+                        for (int k = 0; k < nextUnits.Count; k++)
+                        {
+                            attackingUnits.Add(nextUnits[k]);
+                            nextUnits.Remove(nextUnits[k]);
+                        }
+
+                        return;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
-            
+                   
         }
 
         limitantAttackBonus = fLimitantAttackBonus;
         timeElectricityAttackExpands = fTimeElectricityAttackExpands;
-        unitsAttacked.Clear();
+        attackingUnits.Clear();
 
         if (mirrorDecoy)
         {

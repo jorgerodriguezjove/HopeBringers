@@ -62,7 +62,6 @@ public class Druid : PlayerUnit
     #endregion
 
 
-    //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
@@ -98,47 +97,65 @@ public class Druid : PlayerUnit
             //Hay que cambiar
             Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
-            currentHealth -= 1;
-            UIM.RefreshTokens();
-            UIM.RefreshHealth();
-
-            //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
-            TM.surroundingTiles.Clear();
-
-            TM.GetSurroundingTiles(unitToAttack.myCurrentTile, 1, true, false);
-            //Hago daño a las unidades adyacentes
-            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+            if (unitToAttack.GetComponent<PlayerUnit>())
             {
-                if (TM.surroundingTiles[i].unitOnTile != null)
-                {
-                    if (areaHealer2)
-                    {
-                        TM.surroundingTiles[i].unitOnTile.isStunned = false;
-                        TM.surroundingTiles[i].unitOnTile.turnStunned = 0;
-                        TM.surroundingTiles[i].unitOnTile.hasFear = false;
-                        TM.surroundingTiles[i].unitOnTile.turnsWithFear = 0;
-                        TM.surroundingTiles[i].unitOnTile.BuffbonusStateDamage = 0;
-                        
-                    }
-                    if (tileTransformer)
-                    {
-                        Instantiate(healerTilePref, TM.surroundingTiles[i].unitOnTile.transform.position, TM.surroundingTiles[i].unitOnTile.transform.rotation);
+                currentHealth -= 1;
+                UIM.RefreshTokens();
+                UIM.RefreshHealth();
 
-                    }
-                    TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
-                }
-            }
+                //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
+                TM.surroundingTiles.Clear();
 
-            if (tilesSpawned.Count > 0)
-            {
-                for (int i = 0; i < tilesSpawned.Count; i++)
+                TM.GetSurroundingTiles(unitToAttack.myCurrentTile, 1, true, false);
+                //Hago daño a las unidades adyacentes
+                for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                 {
-                    Destroy(tilesSpawned[i].gameObject);
+                    if (TM.surroundingTiles[i].unitOnTile != null)
+                    {
+                        if (areaHealer2)
+                        {
+                            TM.surroundingTiles[i].unitOnTile.isStunned = false;
+                            TM.surroundingTiles[i].unitOnTile.turnStunned = 0;
+                            TM.surroundingTiles[i].unitOnTile.hasFear = false;
+                            TM.surroundingTiles[i].unitOnTile.turnsWithFear = 0;
+                            TM.surroundingTiles[i].unitOnTile.BuffbonusStateDamage = 0;
+
+                        }
+                        if (tileTransformer)
+                        {
+                            Instantiate(healerTilePref, TM.surroundingTiles[i].unitOnTile.transform.position, TM.surroundingTiles[i].unitOnTile.transform.rotation);
+
+                        }
+                        TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
+                    }
                 }
 
-                tilesSpawned.Clear();
-            }
+                if (tilesSpawned.Count > 0)
+                {
+                    for (int i = 0; i < tilesSpawned.Count; i++)
+                    {
+                        Destroy(tilesSpawned[i].gameObject);
+                    }
 
+                    tilesSpawned.Clear();
+                }
+            }
+            else
+            {
+                //Hago daño
+                DoDamage(unitToAttack);
+
+                if (currentHealth < maxHealth)
+                {
+                    currentHealth += healedLife;
+                    UIM.RefreshTokens();
+                    UIM.RefreshHealth();
+                }
+
+                //Hay que cambiar
+                SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+
+            }
         }
 
         else
@@ -465,36 +482,42 @@ public class Druid : PlayerUnit
 
         if (areaHealer)
         {
-
-            TM.surroundingTiles.Clear();
-
-            TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
-
-            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+            if (_unitToAttack.GetComponent<PlayerUnit>())
             {
-                if (TM.surroundingTiles[i] != null)
-                {
-                    tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+                TM.surroundingTiles.Clear();
 
+                TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
+
+                for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                {
+                    if (TM.surroundingTiles[i] != null)
+                    {
+                        tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+
+                    }
+                }
+
+                for (int i = 0; i < tilesInEnemyHover.Count; i++)
+                {
+                    tilesInEnemyHover[i].ColorHeal();
+
+                    if (tileTransformer)
+                    {
+                        GameObject shadowTile = Instantiate(shadowHealerTilePref, tilesInEnemyHover[i].transform.position, tilesInEnemyHover[i].transform.rotation);
+                        tilesSpawned.Add(shadowTile);
+                    }
+
+                    if (tilesInEnemyHover[i].unitOnTile != null)
+                    {
+                        tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeHealed();
+                    }
                 }
             }
-
-            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            else
             {
-                tilesInEnemyHover[i].ColorHeal();
-
-                if (tileTransformer)
-                {
-                    GameObject shadowTile = Instantiate(shadowHealerTilePref, tilesInEnemyHover[i].transform.position, tilesInEnemyHover[i].transform.rotation);
-                    tilesSpawned.Add(shadowTile);
-                }
-
-                if (tilesInEnemyHover[i].unitOnTile != null)
-                {
-                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeHealed();
-                }
+                _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(-1);
+                _unitToAttack.myCurrentTile.ColorAttack();
             }
-
         }
         else
         {

@@ -124,12 +124,17 @@ public class Knight : PlayerUnit
             {
                 //Hay que cambiarlo/quitarlo después si se quiere aumentar más
                 myAnimator.SetTrigger("Attack");
-
-
+           
                 if (currentFacingDirection == FacingDirection.North)
                 {
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush + 1]);
-
+                    if (myCurrentTile.tilesInLineUp[tilesToPush].unitOnTile == null
+                        && myCurrentTile.tilesInLineUp[tilesToPush] != null
+                        && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
+                        && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
+                    {
+                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush]);
+                    }
+                    
                     for (int i = 0; i - 1 < tilesToPush; i++)
                     {
 
@@ -137,38 +142,42 @@ public class Knight : PlayerUnit
                         {
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                            if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
-                            {
-                                myCurrentTile.tilesInLineUp[i].unitOnTile.MoveToTilePushed(myCurrentTile.tilesInLineUp[i].unitOnTile.myCurrentTile.tilesInLineDown[0]);
-                            }
+                          
                         }
                     }
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush]);
                 }
 
                 else if (currentFacingDirection == FacingDirection.South)
                 {
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush + 1]);
 
                     for (int i = 0; i - 1 < tilesToPush; i++)
                     {
+                        if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
+                       && myCurrentTile.tilesInLineDown[tilesToPush] != null
+                       && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
+                       && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
+                        {
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
+                        }
 
                         if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                         {
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                            if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
-                            {
-                                myCurrentTile.tilesInLineDown[i].unitOnTile.MoveToTilePushed(myCurrentTile.tilesInLineDown[i].unitOnTile.myCurrentTile.tilesInLineUp[0]);
-                            }
+                          
                         }
                     }
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
                 }
 
                 else if (currentFacingDirection == FacingDirection.East)
                 {
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[tilesToPush + 1]);
+                    if (myCurrentTile.tilesInLineRight[tilesToPush].unitOnTile == null
+                        && myCurrentTile.tilesInLineRight[tilesToPush] != null
+                        && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
+                        && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
+                    {
+                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[tilesToPush]);
+                    }
 
                     for (int i = 0; i - 1 < tilesToPush; i++)
                     {
@@ -176,19 +185,20 @@ public class Knight : PlayerUnit
                         {
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineRight[i].unitOnTile);
-                            if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
-                            {
-
-                                myCurrentTile.tilesInLineRight[i].unitOnTile.MoveToTilePushed(myCurrentTile.tilesInLineRight[i].unitOnTile.myCurrentTile.tilesInLineLeft[0]);
-                            }
+                         
                         }
                     }
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[tilesToPush]);
                 }
 
                 else if (currentFacingDirection == FacingDirection.West)
                 {
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush + 1]);
+                    if (myCurrentTile.tilesInLineLeft[tilesToPush].unitOnTile == null
+                       && myCurrentTile.tilesInLineLeft[tilesToPush] != null
+                       && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
+                       && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
+                    {
+                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush]);
+                    }
 
                     for (int i = 0; i - 1 < tilesToPush; i++)
                     {
@@ -197,18 +207,11 @@ public class Knight : PlayerUnit
                         {
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                            if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
-                            {
-                                myCurrentTile.tilesInLineLeft[i].unitOnTile.MoveToTilePushed(myCurrentTile.tilesInLineLeft[i].unitOnTile.myCurrentTile.tilesInLineRight[0]);
-                            }
+                          
                         }
                     }
-                    unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush]);
                 }
-
-                //Hago daño
-                DoDamage(unitToAttack);
-
+              
 
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
             }
@@ -724,6 +727,100 @@ public class Knight : PlayerUnit
 
         }
 
+        else if (pushFarther2)
+        {
+
+
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                if (myCurrentTile.tilesInLineUp[tilesToPush].unitOnTile == null
+                    && myCurrentTile.tilesInLineUp[tilesToPush] != null
+                    && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
+                    && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
+                {
+                    _unitToAttack.shaderHover.SetActive(true);
+                    _unitToAttack.shaderHover.transform.position = myCurrentTile.tilesInLineUp[tilesToPush].transform.position;
+                }
+
+                for (int i = 0; i - 1 < tilesToPush; i++)
+                {
+
+                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                    {
+                        tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[i]);
+                    }
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+
+                for (int i = 0; i - 1 < tilesToPush; i++)
+                {
+                    if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
+                   && myCurrentTile.tilesInLineDown[tilesToPush] != null
+                   && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
+                   && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
+                    {
+                        _unitToAttack.shaderHover.SetActive(true);
+                        _unitToAttack.shaderHover.transform.position = myCurrentTile.tilesInLineDown[tilesToPush].transform.position;
+                    }
+
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                    {
+                        tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[i]);
+
+                    }
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                if (myCurrentTile.tilesInLineRight[tilesToPush].unitOnTile == null
+                    && myCurrentTile.tilesInLineRight[tilesToPush] != null
+                    && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
+                    && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
+                {
+                    _unitToAttack.shaderHover.SetActive(true);
+                    _unitToAttack.shaderHover.transform.position = myCurrentTile.tilesInLineRight[tilesToPush].transform.position;
+                }
+
+                for (int i = 0; i - 1 < tilesToPush; i++)
+                {
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                    {
+                        tilesInEnemyHover.Add(myCurrentTile.tilesInLineRight[i]);
+
+                    }
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+                if (myCurrentTile.tilesInLineLeft[tilesToPush].unitOnTile == null
+                   && myCurrentTile.tilesInLineLeft[tilesToPush] != null
+                   && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
+                   && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
+                {
+                    _unitToAttack.shaderHover.SetActive(true);
+                    _unitToAttack.shaderHover.transform.position = myCurrentTile.tilesInLineLeft[tilesToPush].transform.position;
+                }
+
+                for (int i = 0; i - 1 < tilesToPush; i++)
+                {
+
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                    {
+                        tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[i]);
+
+                    }
+                }
+            }
+
+
+
+
+        }
         else
         {
             tilesInEnemyHover.Clear();
@@ -774,12 +871,26 @@ public class Knight : PlayerUnit
 
 
         }
+
+        if (tilesInEnemyHover.Count > 0)
+        {
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                tilesInEnemyHover[i].ColorAttack();
+
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                }            
+            }
+        }
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
         shieldBlockAllDamage.SetActive(false);
-
+        _unitToAttack.shaderHover.SetActive(false);
 
         if (tilesInEnemyHover.Count > 0)
         {
@@ -790,11 +901,21 @@ public class Knight : PlayerUnit
                     if (pushWider2)
                     {
                         tilesInEnemyHover[i].unitOnTile.stunIcon.SetActive(false);
+                        tilesInEnemyHover[i].ColorDesAttack();
+                        tilesInEnemyHover[i].unitOnTile.ResetColor();
+
+                    }
+                    else
+                    {
+                        tilesInEnemyHover[i].ColorDesAttack();
+                        tilesInEnemyHover[i].unitOnTile.ResetColor();
 
                     }
                 }
             }
         }
+
+        tilesInEnemyHover.Clear(); 
         
     }
 }

@@ -26,6 +26,10 @@ public class Valkyrie : PlayerUnit
     //int que indica cuanto añade de armadura
     public int numberOfArmorAdded;
 
+    //Escudos usados al hacer hover para indicar que se va a subir la armadura
+    public GameObject armorShield;
+    public GameObject armorShield2;
+
     [Header("Pasivas")]
     //PASIVAS
 
@@ -520,7 +524,7 @@ public class Valkyrie : PlayerUnit
     {
         if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
         {
-            Debug.Log("ha entrado");
+            
             if ( LM.selectedCharacter == this && !hasMoved && changePositions)
             {
                 if (_unitToAttack.currentHealth <= numberCanChange)
@@ -533,50 +537,81 @@ public class Valkyrie : PlayerUnit
         }
         else
         {
-            Debug.Log("No ha entrado");
-            shaderHover.SetActive(true);
-            Vector3 vector2Spawn = new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z);
-            shaderHover.transform.position = vector2Spawn;
+           
+            //Al final dijimos que lo de las sombras liaba más que ayudaba
 
-            _unitToAttack.shaderHover.SetActive(true);
-            Vector3 vector2SpawnEnemy = new Vector3(_unitToAttack.transform.position.x, transform.position.y + 2.5f, _unitToAttack.transform.position.z);
-            _unitToAttack.shaderHover.transform.position = vector2SpawnEnemy;
+            //shaderHover.SetActive(true);
+            //Vector3 vector2Spawn = new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z);
+            //shaderHover.transform.position = vector2Spawn;
+
+            //_unitToAttack.shaderHover.SetActive(true);
+            //Vector3 vector2SpawnEnemy = new Vector3(_unitToAttack.transform.position.x, transform.position.y + 2.5f, _unitToAttack.transform.position.z);
+            //_unitToAttack.shaderHover.transform.position = vector2SpawnEnemy;
 
             changePosArrows.SetActive(true);
-            changePosArrows.transform.position = Vector3.Lerp(vector2Spawn, vector2SpawnEnemy, 0.5f);
-            changePosArrows.transform.position = new Vector3(changePosArrows.transform.position.x, transform.position.y + 4.5f, changePosArrows.transform.position.z);
+            //Descomentar cuando esté añadido a todas las unidades
+            //_unitToAttack.changePositionIcon.SetActive(true);
 
+            if (canChooseEnemy)
+            {
+                tilesInEnemyHover.Clear();
 
-            if (armorMode)
+                for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+                {
+                    tilesInEnemyHover.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
+
+                    if (currentUnitsAvailableToAttack[i] == _unitToAttack)
+                    {
+                        break;
+                    }  
+                }
+
+            }else if (armorMode)
             {
                 if (_unitToAttack.GetComponent<PlayerUnit>())
                 {
                     if (armorMode2)
                     {
-                        if (currentArmor > currentHealth)
+                        if (currentArmor >= currentHealth)
                         {
-
                         }
                         else
                         {
                             canvasUnit.SetActive(true);
-                            canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                            armorShield2.SetActive(true);
+                            canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());                            
                         }
                     }
 
-                    if (_unitToAttack.currentArmor > _unitToAttack.currentHealth)
+                    if (_unitToAttack.currentArmor >= _unitToAttack.currentHealth)
                     {
                     }
                     else
                     {
                         _unitToAttack.canvasUnit.SetActive(true);
+                        armorShield.SetActive(true);
+                        Vector3 vector2Spawn = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 1.5f, _unitToAttack.transform.position.z);
+                        armorShield.transform.position = vector2Spawn;
                         _unitToAttack.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
                     }
                 }
             }
 
         }
-        
+
+        if (tilesInEnemyHover.Count > 0)
+        {
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                tilesInEnemyHover[i].ColorAttack();
+
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                }
+            }
+        }
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
@@ -600,19 +635,33 @@ public class Valkyrie : PlayerUnit
                     if (armorMode2)
                     {
                         canvasUnit.SetActive(false);
+                        armorShield2.SetActive(false);
                     }
                     _unitToAttack.canvasUnit.SetActive(false);
+                    armorShield.SetActive(false);
                 }
             }
 
 
         }
+
         shaderHover.SetActive(false);
         _unitToAttack.shaderHover.SetActive(false);
         changePosArrows.SetActive(false);
 
+        if (tilesInEnemyHover.Count > 0)
+        {
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                tilesInEnemyHover[i].ColorDesAttack();
 
-        
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    tilesInEnemyHover[i].unitOnTile.ResetColor();
+                }
+            }
+        }
+
     }
 
 
