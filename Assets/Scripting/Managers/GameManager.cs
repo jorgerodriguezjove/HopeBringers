@@ -736,4 +736,11 @@ public class GameManager : PersistentSingleton<GameManager>
 
     #endregion
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            StartDialog(true);
+        }
+    }
 }
