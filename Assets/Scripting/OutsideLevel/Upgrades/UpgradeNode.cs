@@ -82,7 +82,23 @@ public class UpgradeNode : MonoBehaviour
     {
         if(!isBought)
         {
-            FindObjectOfType<TableManager>().BuyUpgrade(GetComponent<UpgradeNode>());
+            //Aviso comprar mejora
+            if (GameManager.Instance.currentExp >= upgradeCost)
+            {
+                FindObjectOfType<UITableManager>().ConfirmateUpgrade(true, GetComponent<UpgradeNode>());
+            }
+
+            //Aviso no suficiente xp
+            else
+            {
+                FindObjectOfType<UITableManager>().NotEnoughXp();
+            }
+        }
+
+        // Mensaje Ya ha sido comprada
+        else
+        {
+            FindObjectOfType<UITableManager>().AlreadyBought();
         }
     }
 

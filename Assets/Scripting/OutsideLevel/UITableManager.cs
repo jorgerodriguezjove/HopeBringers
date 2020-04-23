@@ -61,6 +61,21 @@ public class UITableManager : MonoBehaviour
     private List<int> ids;
     private List<UpgradeNode> upgrades;
 
+    [SerializeField]
+    private GameObject confirmateUpgrade;
+
+    [SerializeField]
+    private float timeToHidePanel;
+    [SerializeField]
+    private GameObject timedPanel;
+
+    [SerializeField]
+    private GameObject textNotEnoughXp;
+    [SerializeField]
+    private GameObject textAlreadyBought;
+
+    private GameObject currentText;
+
     [Header("OPTIONS")]
 
     //Resolución
@@ -80,10 +95,12 @@ public class UITableManager : MonoBehaviour
     [SerializeField]
     TMP_Dropdown qualityDropdown;
 
-
     [Header("REFERENCIAS")]
     [SerializeField]
     private TableManager TM;
+
+    [HideInInspector]
+    public UpgradeNode lastUpgradeClicked;
     #endregion
 
     #region INIT
@@ -481,4 +498,46 @@ public class UITableManager : MonoBehaviour
     #endregion
 
     #endregion
+
+    public void ConfirmateUpgrade(bool _showConfirmation, UpgradeNode _upgradeClicked)
+    {
+        confirmateUpgrade.SetActive(_showConfirmation);
+        lastUpgradeClicked = _upgradeClicked;
+    }
+
+    public void YesBuyUpgrade()
+    {
+        FindObjectOfType<TableManager>().BuyUpgrade(lastUpgradeClicked);
+        confirmateUpgrade.SetActive(false);
+    }
+
+    public void NoBuyUpgrade()
+    {
+        confirmateUpgrade.SetActive(false);
+    }
+
+    public void NotEnoughXp()
+    {
+        currentText = textNotEnoughXp;
+        StartCoroutine("ShowHidePanelXp");
+    }
+
+    public void AlreadyBought()
+    {
+        currentText = textAlreadyBought;
+        StartCoroutine("ShowHidePanelXp");
+    }
+
+    IEnumerator ShowHidePanelXp()
+    {
+        timedPanel.SetActive(true);
+        currentText.SetActive(true);
+
+        yield return new WaitForSeconds(timeToHidePanel);
+
+        currentText.SetActive(false);
+        timedPanel.SetActive(false);
+    }
+
+
 }

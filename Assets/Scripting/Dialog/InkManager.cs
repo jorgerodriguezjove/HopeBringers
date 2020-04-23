@@ -80,6 +80,7 @@ public class InkManager : MonoBehaviour
         InitNPCVariables();
 
         HideChoices();
+
         story = new Story(inkJSONAsset.text);
 
         RefreshView();

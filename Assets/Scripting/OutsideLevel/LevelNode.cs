@@ -67,6 +67,12 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     TextAsset endDialog;
 
+    [SerializeField]
+    bool afterFinishInterlude;
+    [SerializeField]
+    string interludeSceneName;
+
+
 
     [Header("MATERIALES")]
 
@@ -98,7 +104,7 @@ public class LevelNode : MonoBehaviour
 		//Avisar al TM de que se ha pulsado un nivel
 		if (isUnlocked)
 		{
-			TM.OnLevelClicked(GetComponent<LevelNode>(), idLevel, xpToWin, xpPerTurn, xpPerCharacter ,maxNumberOfUnits ,startDialog, endDialog);
+			TM.OnLevelClicked(GetComponent<LevelNode>(), idLevel, xpToWin, xpPerTurn, xpPerCharacter ,maxNumberOfUnits ,startDialog, endDialog, afterFinishInterlude, interludeSceneName);
         }
 	}
 

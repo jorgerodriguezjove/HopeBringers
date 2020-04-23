@@ -44,6 +44,12 @@ public class GameManager : PersistentSingleton<GameManager>
     [SerializeField]
     public int maxUnitsInThisLevel;
 
+    [HideInInspector]
+    public bool isInterlude;
+    [HideInInspector]
+    public string interludeSceneName;
+
+
     [Header("DIÁLOGOS")]
     [HideInInspector]
     public TextAsset currentLevelStartDialog;
@@ -270,9 +276,18 @@ public class GameManager : PersistentSingleton<GameManager>
 
         if (isCurrentDialogStart)
         {
-            //Comienza el juego
-            LM = FindObjectOfType<LevelManager>();
-            LM.StartGameplayAfterDialog();
+            if (isInterlude && SceneManager.GetActiveScene().name == interludeSceneName)
+            {
+                //Acaba interludio y se vuelve a level selection
+                SceneManager.LoadScene(AppScenes.MAP_SCENE, LoadSceneMode.Single);
+            }
+
+            else
+            {
+                //Comienza el juego
+                LM = FindObjectOfType<LevelManager>();
+                LM.StartGameplayAfterDialog();
+            }
         }
 
         else
@@ -667,18 +682,21 @@ public class GameManager : PersistentSingleton<GameManager>
         Debug.Log("Comprobar si desbloqueo el logro");
 
         //Comprobar si esta el logro
-        TestAchievementStatus(_achievementId);
-        if (!unlockAchievementCheck)
+        if (FindObjectOfType<SteamManager>() != null)
         {
-            Debug.Log("Ahora si logro desbloquado");
+            TestAchievementStatus(_achievementId);
+            if (!unlockAchievementCheck)
+            {
+                Debug.Log("Ahora si logro desbloquado");
 
-            //Desbloqueo el logro
-            SteamUserStats.SetAchievement(_achievementId);
+                //Desbloqueo el logro
+                SteamUserStats.SetAchievement(_achievementId);
 
-            //Aviso al SteamManager de que avise del logro ahora mismo y que no espere a cerrar el juego.
-            SteamUserStats.StoreStats();
+                //Aviso al SteamManager de que avise del logro ahora mismo y que no espere a cerrar el juego.
+                SteamUserStats.StoreStats();
+            }
+
         }
-
     }
 
     public void TestAchievementStatus(string _achievementId)
@@ -740,6 +758,10 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            inkManRef = FindObjectOfType<InkManager>();
+            dialogManRef = FindObjectOfType<DialogManager>();
+
+         
             StartDialog(true);
         }
     }

@@ -907,6 +907,19 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void BackToLevelSelectionButton()
+    {
+        if (GameManager.Instance.isInterlude)
+        {
+            FindObjectOfType<LoadScene>().OnClickButtonSceneLoad(GameManager.Instance.interludeSceneName);
+        }
+
+        else
+        {
+            FindObjectOfType<LoadScene>().OnClickButtonSceneLoad(AppScenes.MAP_SCENE);
+        }
+    }
+
     #endregion
 
     public void UpdateTurnNumber(int _currentTurn, int _turnLimit)
