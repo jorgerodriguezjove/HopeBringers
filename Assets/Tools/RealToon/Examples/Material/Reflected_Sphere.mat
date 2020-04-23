@@ -9,17 +9,18 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Reflected_Sphere
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_R_ON _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON
-    _DYNAMICNOISEOUTLINE_ON _DYNAMICNOISYOUTLINE_ON _ENABLELIGHTFALLOFF_ON _FRESNELONLIGHT_ON
-    _FRESNELONSHADOWDARK_ON _REFLECTIONBLENDTOMAINTEXTURE_ON _RIMLIGHTINLIGHT_ON
-    _SHADOWMASKGLOSSTEXTURE_ON _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSELFSHADOW_ON
-    _USEGILIGHTING_ON
+  m_ShaderKeywords: N_F_DCS_ON N_F_EAL_ON N_F_HDLS_ON N_F_HPSS_ON N_F_O_ON N_F_R_ON
+    _ALPHABASECUTOUT_ON _CUSTOMLIGHTDIRECTIONFOLLOWOBJECTROTATION_ON _DYNAMICNOISEOUTLINE_ON
+    _DYNAMICNOISYOUTLINE_ON _ENABLELIGHTFALLOFF_ON _FRESNELONLIGHT_ON _FRESNELONSHADOWDARK_ON
+    _REFLECTIONBLENDTOMAINTEXTURE_ON _RIMLIGHTINLIGHT_ON _SHADOWMASKGLOSSTEXTURE_ON
+    _SHOWSHADOWTONLIGHT_ON _SHOWSHADOWTONSELFSHADOW_ON _USEGILIGHTING_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -40,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1015cd4b55f6c34459cbd2de7eb84648, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskGloss:
@@ -138,7 +139,7 @@ Material:
     - _LightAffectRimLightColor: 0
     - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 0
-    - _LightFalloffSoftness: 1
+    - _LightFalloffSoftness: 0.201
     - _LightIntensity: -1
     - _LightIntensityAffectOCALCTPTDirectionalLight: 0
     - _MCIALO: 0
@@ -151,13 +152,13 @@ Material:
     - _N_F_CLD: 0
     - _N_F_CO: 0
     - _N_F_D: 0
-    - _N_F_DCS: 0
+    - _N_F_DCS: 1
     - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
-    - _N_F_HDLS: 0
-    - _N_F_HPSS: 0
+    - _N_F_HDLS: 1
+    - _N_F_HPSS: 1
     - _N_F_MC: 0
     - _N_F_NLASOBF: 0
     - _N_F_NM: 0
@@ -179,7 +180,7 @@ Material:
     - _OutlineExtrudeMethod: 0
     - _OutlineMode: 0
     - _OutlineNoiseIntensity: 0.844
-    - _OutlineWidth: 9.55
+    - _OutlineWidth: 5
     - _OutlineWidthAffectedByViewDistance: 0
     - _OutlineZPostionInCamera: 0
     - _OverallShadowColorPower: 1
@@ -256,7 +257,7 @@ Material:
     - _FresnelColor: {r: 0.07586217, g: 1, b: 0, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.8014706, g: 0.8014706, b: 0.8014706, a: 1}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 1, g: 0.55862063, b: 0, a: 1}
     - _OutlineOffset: {r: 0, g: 0, b: 0, a: 1}
     - _OverallShadowColor: {r: 0, g: 0, b: 0, a: 1}
