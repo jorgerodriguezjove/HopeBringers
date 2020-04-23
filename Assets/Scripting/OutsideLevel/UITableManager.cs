@@ -388,7 +388,10 @@ public class UITableManager : MonoBehaviour
      public void NewGameButton()
      {
         //Comprobar si hay ya una partida guardada y activar aviso
-        
+
+        //Desbloqueo primer logro
+        GameManager.Instance.UnlockAchievement(AppAchievements.ACHV_BEGIN);
+
         //Else crear guardado y mover cámara
         TM.BackToMap();
      }

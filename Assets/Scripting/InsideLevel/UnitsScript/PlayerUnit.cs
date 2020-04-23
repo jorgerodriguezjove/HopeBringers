@@ -778,7 +778,7 @@ public class PlayerUnit : UnitBase
             if (unitAttacker.GetComponent<PlayerUnit>())
             {
                 
-                GameManager.Instance.UnlockAchievement(0);
+                GameManager.Instance.UnlockAchievement("");
             }
 
             Die();

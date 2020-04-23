@@ -1048,25 +1048,25 @@ public class EnemyUnit : UnitBase
                 //Logro balista mata enemigo
                 if (unitAttacker.GetComponent<EnBalista>())
                 {
-                    GameManager.Instance.UnlockAchievement(0);
+                    GameManager.Instance.UnlockAchievement("");
                 }
 
                 //Logro gigante mata enemigo
                 else if (unitAttacker.GetComponent<EnGiant>())
                 {
-                    GameManager.Instance.UnlockAchievement(0);
+                    GameManager.Instance.UnlockAchievement("");
                 }
 
                 //Logro matar enemigo en ventaja altura
                 if (unitAttacker.myCurrentTile.height > myCurrentTile.height)
                 {
-                    GameManager.Instance.UnlockAchievement(0);
+                    GameManager.Instance.UnlockAchievement("");
                 }
 
                 //Logro matar enemigo en desventaja altura
                 if (unitAttacker.myCurrentTile.height < myCurrentTile.height)
                 {
-                    GameManager.Instance.UnlockAchievement(0);
+                    GameManager.Instance.UnlockAchievement("");
                 }
             }
 

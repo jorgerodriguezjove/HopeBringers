@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Steamworks;
 
 public class GameManager : PersistentSingleton<GameManager>
 {
@@ -70,6 +71,9 @@ public class GameManager : PersistentSingleton<GameManager>
     //Lista con los ids de los niveles completados
     [HideInInspector]
     public List<int> levelIDsUnlocked = new List<int>();
+
+    //Bool que guarda la info del ultimo logro comprobado. Determina si el logro ha sido desbloqueado o no para que salte el aviso al jugar.
+    private bool unlockAchievementCheck;
 
     [Header("ACHIEVEMENTS")]
 
@@ -657,12 +661,40 @@ public class GameManager : PersistentSingleton<GameManager>
     }
 
     //Esta función la creo para poder buscar facilmente todos los sitios donde he puesoto desbloquear achievements específicos.
-    //EN TODOS LOS CASOS FALTA PONER EL NÚMERO CONCRETO
-    public void UnlockAchievement(int _achievementId)
+    //EN TODOS LOS CASOS FALTA PONER EL string CONCRETO
+    public void UnlockAchievement(string _achievementId)
     {
-        //Desbloquear logro especifico que toque
+        Debug.Log("Comprobar si desbloqueo el logro");
+
+        //Comprobar si esta el logro
+        TestAchievementStatus(_achievementId);
+        if (!unlockAchievementCheck)
+        {
+            Debug.Log("Ahora si logro desbloquado");
+
+            //Desbloqueo el logro
+            SteamUserStats.SetAchievement(_achievementId);
+
+            //Aviso al SteamManager de que avise del logro ahora mismo y que no espere a cerrar el juego.
+            SteamUserStats.StoreStats();
+        }
+
     }
 
+    public void TestAchievementStatus(string _achievementId)
+    {
+        SteamUserStats.GetAchievement(_achievementId, out unlockAchievementCheck);
+    }
+
+    //Función por si acaso necesito volver a bloquear los logros parar testear
+    public void DEBUG_LockSteamAchievement (string _achievementId)
+    {
+        TestAchievementStatus(_achievementId);
+        if (unlockAchievementCheck)
+        {
+            SteamUserStats.ClearAchievement(_achievementId);
+        }
+    }
     
 
     public void CheckUpgradeAchievements()
@@ -675,7 +707,7 @@ public class GameManager : PersistentSingleton<GameManager>
             if (allCharacters[i].idSkillsBought.Count == 4)
             {
                 //Logro mejorar un personaje al máximo
-                UnlockAchievement(0);
+                UnlockAchievement("");
                 charactersFullyUpgraded++;
             }
 
@@ -685,19 +717,19 @@ public class GameManager : PersistentSingleton<GameManager>
         if (upgradesBought == 1)
         {
             //Logro mejorar la primera vez
-            UnlockAchievement(0);
+            UnlockAchievement("");
         }
 
         if (charactersFullyUpgraded == 8)
         {
             //Logro mejorar todos los personajes al máximo
-            UnlockAchievement(0);
+            UnlockAchievement("");
         }
 
         else if (charactersFullyUpgraded == 4)
         {
             //Logro mejorar 4 personajes al máximo
-            UnlockAchievement(0);
+            UnlockAchievement("");
         }
        
     }
