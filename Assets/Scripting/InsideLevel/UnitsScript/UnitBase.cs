@@ -242,7 +242,7 @@ public class UnitBase : MonoBehaviour
 
 
     [SerializeField]
-    public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon, buffIcon, debuffIcon;
+    public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon, buffIcon, debuffIcon, movementBuffIcon, movementDebuffIcon, stunnedIcon;
 
 
     //Material inicial y al ser seleccionado
@@ -985,5 +985,26 @@ public class UnitBase : MonoBehaviour
         monkMark.SetActive(false);
         monkMark2.SetActive(false);
         monkMark3.SetActive(false);
+    }
+
+    public void SetMovementIcon(int numToCheck, UnitBase unitToApply)
+    {
+        if (numToCheck > 0)
+        {
+            unitToApply.movementBuffIcon.SetActive(true);
+            unitToApply.movementDebuffIcon.SetActive(false);
+
+        }
+        else if (numToCheck < 0)
+        {
+            unitToApply.movementBuffIcon.SetActive(false);
+            unitToApply.movementDebuffIcon.SetActive(true);
+        }
+        else
+        {
+            unitToApply.movementBuffIcon.SetActive(false);
+            unitToApply.movementDebuffIcon.SetActive(false);
+        }
+
     }
 }
