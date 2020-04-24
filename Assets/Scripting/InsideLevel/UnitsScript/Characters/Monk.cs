@@ -330,7 +330,7 @@ public class Monk : PlayerUnit
         base.DoDamage(unitToDealDamage);
     }
 
-    public override void CheckUnitsAndTilesInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
         currentTilesInRangeForAttack.Clear();
@@ -543,14 +543,19 @@ public class Monk : PlayerUnit
             }
 
         }
-        //Feedback de ataque
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-        {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
-            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+        if (_shouldPaintEnemiesAndShowHealthbar)
+        {
+            //Feedback de ataque
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+            }
         }
+        
 
         for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
         {

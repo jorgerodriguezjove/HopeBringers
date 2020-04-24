@@ -235,7 +235,7 @@ public class Druid : PlayerUnit
 
     #region CHECKS
     //AL igual que con el Mago, se hace override a esta función para que pueda atravesar unidades al atacar.
-    public override void CheckUnitsAndTilesInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
         previousTileHeight = 0;
@@ -453,26 +453,27 @@ public class Druid : PlayerUnit
 
         }
 
-        //Marco las unidades disponibles para atacar de color rojo
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        if (_shouldPaintEnemiesAndShowHealthbar)
         {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            if (currentUnitsAvailableToAttack[i].GetComponent<PlayerUnit>())
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
             {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                if (currentUnitsAvailableToAttack[i].GetComponent<PlayerUnit>())
+                {
 
-                currentUnitsAvailableToAttack[i].canvasUnit.SetActive(true);
-                currentUnitsAvailableToAttack[i].canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife.ToString());
-                currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(true);
-                
-                
+                    currentUnitsAvailableToAttack[i].canvasUnit.SetActive(true);
+                    currentUnitsAvailableToAttack[i].canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife.ToString());
+                    currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(true);
+                }
+
+                else
+                {
+                    currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                }
+
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
             }
-            else
-            {
-                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-            }
-            
-            
-            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
         }
     }
     #endregion

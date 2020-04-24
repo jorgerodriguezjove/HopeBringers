@@ -252,7 +252,7 @@ public class Valkyrie : PlayerUnit
         base.DoDamage(unitToDealDamage);
     }
 
-    public override void CheckUnitsAndTilesInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
         currentTilesInRangeForAttack.Clear();
@@ -471,15 +471,19 @@ public class Valkyrie : PlayerUnit
 
         }
 
-        //Marco las unidades disponibles para atacar de color rojo
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        if (_shouldPaintEnemiesAndShowHealthbar)
         {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
-            currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
-
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+            }
         }
+
+      
 
         for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
         {

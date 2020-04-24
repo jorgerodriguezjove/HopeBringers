@@ -97,7 +97,7 @@ public class Rogue : PlayerUnit
         
 
     }
-    public override void CheckUnitsAndTilesInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
         currentTilesInRangeForAttack.Clear();
@@ -229,13 +229,16 @@ public class Rogue : PlayerUnit
             }
         }
 
-        //Feedback de ataque
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        if (_shouldPaintEnemiesAndShowHealthbar)
         {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-            
-            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+            //Feedback de ataque
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+            }
         }
 
         for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
@@ -422,7 +425,7 @@ public class Rogue : PlayerUnit
             if (unitsCanJump >= 1)
             {
                 hasAttacked = false;                
-                CheckUnitsAndTilesInRangeToAttack();
+                CheckUnitsAndTilesInRangeToAttack(true);
 
                 hasMoved = true;
                 LM.DeSelectUnit();

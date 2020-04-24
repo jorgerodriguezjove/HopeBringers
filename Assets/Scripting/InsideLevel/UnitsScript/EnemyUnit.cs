@@ -849,14 +849,16 @@ public class EnemyUnit : UnitBase
                 }
             }
 
+            Debug.Log("aa");
+            HealthBarOn_Off(false);
             LM.selectedCharacter.HideAttackEffect(this);
             LM.selectedCharacter.tilesInEnemyHover.Clear();
         }
+
         if(LM.selectedCharacter != null) 
         {
             if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
             {
-
                 for (int i = 0; i < LM.selectedCharacter.tilesInEnemyHover.Count; i++)
                 {
                     LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
@@ -888,7 +890,6 @@ public class EnemyUnit : UnitBase
                 LM.HideHover(this);
                 HealthBarOn_Off(false);
 
-               
             }
         }
 

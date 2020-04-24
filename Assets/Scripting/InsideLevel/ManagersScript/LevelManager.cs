@@ -356,7 +356,7 @@ public class LevelManager : MonoBehaviour
             }
 
             //Chequeo y pinto el rango de ataque
-            hoverUnit.CheckUnitsAndTilesInRangeToAttack();
+            hoverUnit.CheckUnitsAndTilesInRangeToAttack(false);
         }
     }
 
@@ -1053,7 +1053,7 @@ public class LevelManager : MonoBehaviour
                         tilesAvailableForMovement[i].ColorMovement();
                     }
 
-                    selectedCharacter.CheckUnitsAndTilesInRangeToAttack();
+                    selectedCharacter.CheckUnitsAndTilesInRangeToAttack(false);
 
 					if (selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
 					{
@@ -1081,7 +1081,7 @@ public class LevelManager : MonoBehaviour
 					/*UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);*/ /*Legacy Code*/
 					selectedCharacter.SelectedColor();
 
-                    selectedCharacter.CheckUnitsAndTilesInRangeToAttack();
+                    selectedCharacter.CheckUnitsAndTilesInRangeToAttack(false);
 
                     //He añadido este if para que el rogue no pueda atacar dos veces a la misma unidad usando una de sus habilidades
                     if (selectedCharacter.GetComponent<Rogue>())

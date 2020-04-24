@@ -180,7 +180,7 @@ public class MageDecoy : Mage
 
     #endregion
 
-    public override void CheckUnitsAndTilesInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
         currentTilesInRangeForAttack.Clear();

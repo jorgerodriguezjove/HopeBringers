@@ -116,7 +116,7 @@ public class Mage : PlayerUnit
             for (int i = 0; i < myDecoys.Count; i++)
             {
                 //En el override de esta función el decoy también comprueba si tiene la segunda mejora y ataca de una forma o de la otra
-                myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesInRangeToAttack();
+                myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesInRangeToAttack(true);
             }
 
         }
@@ -404,7 +404,7 @@ public class Mage : PlayerUnit
 
     #region CHECKS
     //Hago override a esta función para que pueda atravesar unidades al atacar.
-    public override void CheckUnitsAndTilesInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
         currentTilesInRangeForAttack.Clear();
@@ -603,15 +603,20 @@ public class Mage : PlayerUnit
 
         }
 
-        //Marco las unidades disponibles para atacar de color rojo
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        if (_shouldPaintEnemiesAndShowHealthbar)
         {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
-            currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
 
+            }
         }
+
+      
 
         for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
         {

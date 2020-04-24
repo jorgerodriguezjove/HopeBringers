@@ -68,7 +68,7 @@ public class Samurai : PlayerUnit
         myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = LM.honorCount.ToString();              
     }
 
-    public override void CheckUnitsAndTilesInRangeToAttack()
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         CheckIfIsLonely();
 
@@ -213,15 +213,15 @@ public class Samurai : PlayerUnit
             }
         }
 
-        //Marco las unidades disponibles para atacar de color rojo
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        if (_shouldPaintEnemiesAndShowHealthbar)
         {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-           
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+            }
         }
-
-
     }
 
     public override void Attack(UnitBase unitToAttack)

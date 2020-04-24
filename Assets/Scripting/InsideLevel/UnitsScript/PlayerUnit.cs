@@ -368,7 +368,7 @@ public class PlayerUnit : UnitBase
                 }
                 else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-                  
+
                     Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
                     if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef)
                     {
@@ -379,7 +379,7 @@ public class PlayerUnit : UnitBase
 
                 if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-                myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
+                    myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
                 }
 
                 if (!hasAttacked)
@@ -627,7 +627,7 @@ public class PlayerUnit : UnitBase
         //IMPORTANTE: HE PUESTO ESTO DESPUÉS PARA QUE FUNCIONE EL MOSTRAR RANGO DE ATAQUE Y PARECE NO DAR PROBLEMAS. REVISAR EN EL FUTURO
         //Esto tiene que ir antes del  LM.UnitHasFinishedMovementAndRotation() para que función de UnitHasFinishedMovementAndRotation() sepa si hay
         // enemigos a los que atacar
-        CheckUnitsAndTilesInRangeToAttack();
+        CheckUnitsAndTilesInRangeToAttack(true);
     }
 
     public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
@@ -1039,7 +1039,7 @@ public class PlayerUnit : UnitBase
 
     //Comprueba las unidades (tanto aliadas como enemigas) que están en alcance para ser atacadas.
     //Es virtual porque la comprobación del pícaro es diferente (tiene que tener en cuenta el tile en el que va a acabar tras el salto).
-    public virtual void CheckUnitsAndTilesInRangeToAttack()
+    public virtual void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
         currentTilesInRangeForAttack.Clear();
@@ -1152,13 +1152,16 @@ public class PlayerUnit : UnitBase
             }	
 		}
 
-        //Marco las unidades disponibles para atacar de color rojo
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        if (_shouldPaintEnemiesAndShowHealthbar)
         {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-            currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
-            currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+            }
         }
 
 
