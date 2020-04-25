@@ -97,6 +97,12 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     public GameObject insideGameInfoObject;
 
+    //Escudo que bloquea el daño completo
+    public GameObject shieldBlockAllDamage;
+
+    //Escudo que no bloquea el daño completo
+    public GameObject shieldBlockPartialDamage;
+
     //Para el tooltip de ataque
 
     [Header("REFERENCIAS")]
@@ -373,7 +379,6 @@ public class PlayerUnit : UnitBase
                     if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef)
                     {
                         LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
-
                     }
                 }
 
@@ -670,8 +675,6 @@ public class PlayerUnit : UnitBase
     //Función de ataque que se hace override en cada clase
     public virtual void Attack(UnitBase unitToAttack)
     {
-        
-
         //El daño y la animación no lo pongo aquí porque tiene que ser lo primero que se calcule.
 
         //Cada unidad se encargará de aplicar su efecto en su override.
@@ -688,21 +691,21 @@ public class PlayerUnit : UnitBase
         FinishMyActions();
     }
 
-    public void CheckIfKnightIsDefending(Knight knightThatDef, UnitBase unitThatIsAttacking)
+    public void CheckIfKnightIsDefending(Knight knightThatDef, FacingDirection unitThatIsAttackingDirection)
     {
         if (knightThatDef != null)
         {
             //Este es el valor que queremos que tenga para defender unidades
             knightThatDef.shieldDef = 5;
+
             if (knightThatDef.isBlockingNeighbours)
             {
                 if (knightThatDef.myCurrentTile.neighbours.Contains(myCurrentTile))
                 {
-
-                    if ((knightThatDef.currentFacingDirection == FacingDirection.North && unitThatIsAttacking.currentFacingDirection == FacingDirection.South)
-                        || (knightThatDef.currentFacingDirection == FacingDirection.South && unitThatIsAttacking.currentFacingDirection == FacingDirection.North)
-                        || (knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttacking.currentFacingDirection == FacingDirection.East)
-                        || (knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttacking.currentFacingDirection == FacingDirection.West))
+                    if ((knightThatDef.currentFacingDirection == FacingDirection.North && unitThatIsAttackingDirection == FacingDirection.South)
+                        || (knightThatDef.currentFacingDirection == FacingDirection.South && unitThatIsAttackingDirection == FacingDirection.North)
+                        || (knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttackingDirection == FacingDirection.East)
+                        || (knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttackingDirection == FacingDirection.West))
                     {
 
                         //Cambiar variable en el Knight
@@ -710,25 +713,24 @@ public class PlayerUnit : UnitBase
                         {
                             knightThatDef.shieldDef = 999;
                         }
-
                     }
+
                     else
                     {
                         knightThatDef.shieldDef = 0;
                     }
                 }
+
                 else
                 {
                     knightThatDef.shieldDef = 0;
                 }
-
             }
+
             else
             {
                 knightThatDef.shieldDef = 0;
             }
-
-
         }
     }
 
@@ -743,7 +745,7 @@ public class PlayerUnit : UnitBase
         
         if (knightDef != null)
         {
-            CheckIfKnightIsDefending(knightDef, unitAttacker);
+            CheckIfKnightIsDefending(knightDef, unitAttacker.currentFacingDirection);
             damageReceived -= knightDef.shieldDef;
         }
        
@@ -863,7 +865,17 @@ public class PlayerUnit : UnitBase
 
     }
 
-	public override void CalculateDamage(UnitBase unitToDealDamage)
+    public void ShowHideFullShield(bool _shouldShow)
+    {
+        shieldBlockAllDamage.SetActive(_shouldShow);
+    }
+
+    public void ShowHidePartialShield(bool _shouldShow)
+    {
+        shieldBlockPartialDamage.SetActive(_shouldShow);
+    }
+
+    public override void CalculateDamage(UnitBase unitToDealDamage)
 	{
 		//Reseteo la variable de daño a realizar
 		damageWithMultipliersApplied = baseDamage;
