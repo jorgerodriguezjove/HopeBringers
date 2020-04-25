@@ -9,6 +9,13 @@ public class EnCharger : EnemyUnit
     [SerializeField]
     public GameObject tileDamageRef;
 
+    //Icono que aparece sobre los tiles donde va a dejar fuego.
+    [SerializeField]
+    public GameObject iconFireShadow;
+
+    [HideInInspector]
+    public List<GameObject> listIconsFire;
+
     public override void SearchingObjectivesToAttack()
     {
         if (isDead || hasAttacked)
@@ -682,5 +689,28 @@ public class EnCharger : EnemyUnit
                 
             }
         }
+    }
+
+
+
+    public void InstantiateIconsFire()
+    {
+        for (int i = 0; i < pathToObjective.Count; i++)
+        {
+            GameObject icon = Instantiate(iconFireShadow);
+            icon.transform.position = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
+            listIconsFire.Add(icon);
+
+        }
+    }
+
+    public void RemoveIconsFire()
+    {
+        for (int i = 0; i < listIconsFire.Count; i++)
+        {
+            Destroy(listIconsFire[i]);
+        }
+
+        listIconsFire.Clear();
     }
 }

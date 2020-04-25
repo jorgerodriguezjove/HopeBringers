@@ -532,6 +532,11 @@ public class LevelManager : MonoBehaviour
                         hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
                     }
 
+                    if (hoverUnit.myTierLevel == EnemyUnit.TierLevel.Level2)
+                    {
+                        hoverUnit.GetComponent<EnCharger>().InstantiateIconsFire();
+                    }
+
                     hoverUnit.GetComponent<EnCharger>().ShowPushResult();
 
                 }
@@ -681,6 +686,18 @@ public class LevelManager : MonoBehaviour
             //Goblin, gigante, esqueleto, duelista
             else
             {
+                if (hoverUnit.GetComponent<EnGoblin>() && hoverUnit.GetComponent<EnGoblin>().myTierLevel == EnemyUnit.TierLevel.Level2)
+                {
+                    //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
+                    for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
+                    {
+                        if (hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>())
+                        {
+                            hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>().ShowHideExclamation(true);
+                        }
+                    }
+                }
+
                 //Muestro la acción que va a realizar el enemigo 
                 hoverUnit.ShowActionPathFinding(true);
 
@@ -728,6 +745,12 @@ public class LevelManager : MonoBehaviour
                     //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
                     else if (hoverUnit.GetComponent<EnGiant>())
                     {
+                        if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
+                        {
+                            Debug.Log("METER AQUI QUE APAREZCA STUN SOBRE PERSONAJES Y QUE EN HOVER EXIT SE QUITE");
+                            //hoverUnit.currentUnitsAvailableToAttack[0].
+                        }
+
                         hoverUnit.GetComponent<EnGiant>().SaveLateralUnitsForNumberAttackInLevelManager();
 
                         for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
@@ -748,8 +771,16 @@ public class LevelManager : MonoBehaviour
                                 tempLateralUnitGiant.ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                                 tempLateralUnitGiant.HealthBarOn_Off(true);
 
+                                if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
+                                {
+                                    Debug.Log("METER AQUI QUE APAREZCA STUN SOBRE PERSONAJES Y QUE EN HOVER EXIT SE QUITE");
+                                    //hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].
+                                }
+
                             }
                         }
+
+
                     }
                 }
 
@@ -815,8 +846,12 @@ public class LevelManager : MonoBehaviour
             }
 
             else if (hoverUnit.GetComponent<EnCharger>())
-
             {
+                if (hoverUnit.myTierLevel == EnemyUnit.TierLevel.Level2)
+                {
+                    hoverUnit.GetComponent<EnCharger>().RemoveIconsFire();
+                }
+
                 hoverUnit.shaderHover.SetActive(false);
                 hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false, null);
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
@@ -844,6 +879,7 @@ public class LevelManager : MonoBehaviour
                 }
 
                 hoverUnit.GetComponent<EnCharger>().HideShowResult();
+
             }
 
             else if (hoverUnit.GetComponent<EnWatcher>())
@@ -884,6 +920,18 @@ public class LevelManager : MonoBehaviour
             //Goblin, gigante, boss y demás
             else
             {
+                if (hoverUnit.GetComponent<EnGoblin>() && hoverUnit.GetComponent<EnGoblin>().myTierLevel == EnemyUnit.TierLevel.Level2)
+                {
+                    //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
+                    for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
+                    {
+                        if (hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>())
+                        {
+                            hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>().ShowHideExclamation(false);
+                        }
+                    }
+                }
+
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 && hoverUnit.currentUnitsAvailableToAttack[0] != null)
                 {
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
@@ -931,6 +979,9 @@ public class LevelManager : MonoBehaviour
                 //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
                 else if (hoverUnit.GetComponent<EnGiant>())
                 {
+                    Debug.Log("QUITAR AQUI ICONO STUN HOVER");
+                    //hoverUnit.currentUnitsAvailableToAttack[0].quitarstun
+
                     for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
                     {
                         if (hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile != null)
@@ -941,20 +992,30 @@ public class LevelManager : MonoBehaviour
                             tempLateralUnitGiant.previsualizeAttackIcon.SetActive(false);
                             tempLateralUnitGiant.DisableCanvasHover();
 
+                            if (tempLateralUnitGiant.GetComponent<Knight>())
+                            {
+                                tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowHideFullShield(false);
+                                tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowHidePartialShield(false);
+                            }
                         }
+
+                        Debug.Log("QUITAR AQUI ICONO STUN HOVER");
+                        //tempLateralUnitGiant.quitarstun
                     }
                 }
 
                 hoverUnit.ClearRange();
             }
 
+            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowHideFullShield(false);
+            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowHidePartialShield(false);
         }
     }
 
    public void CalculatePreviousActionPlayer(PlayerUnit playerToDo, UnitBase unitToDO)
-    {
-        playerToDo.ShowAttackEffect(unitToDO);
-    }
+   {
+       playerToDo.ShowAttackEffect(unitToDO);
+   }
 
     #endregion
 

@@ -11,14 +11,6 @@ public class Knight : PlayerUnit
     [SerializeField]
     public int tilesToPush;
 
-    //Escudo que bloquea el daño completo
-    public GameObject shieldBlockAllDamage;
-
-    //Escudo que no bloquea el daño completo
-    public GameObject shieldBlockDamage;
-
-
-
     [Header("MEJORAS DE PERSONAJE")]
 
     [Header("Activas")]
@@ -710,8 +702,6 @@ public class Knight : PlayerUnit
 
         else if (pushFarther2)
         {
-
-
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (myCurrentTile.tilesInLineUp[tilesToPush].unitOnTile == null
@@ -802,6 +792,7 @@ public class Knight : PlayerUnit
 
 
         }
+
         else
         {
             tilesInEnemyHover.Clear();

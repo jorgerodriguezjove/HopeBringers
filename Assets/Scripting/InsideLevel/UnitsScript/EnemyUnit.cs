@@ -139,7 +139,7 @@ public class EnemyUnit : UnitBase
     private GameObject sleepParticle;
 
     [SerializeField]
-    private GameObject exclamationIcon;
+    public GameObject exclamationIcon;
 
     //Variables del doble click
     int clicked;
@@ -775,6 +775,7 @@ public class EnemyUnit : UnitBase
         {
             //Pinto el rango de acción y de movimiento
             LM.ShowEnemyHover(rangeOfAction, true ,this);
+            Debug.Log("onhoverenterfuct");
         }
 
         //Pinto únicamente el rango de movimiento
@@ -1224,7 +1225,7 @@ public class EnemyUnit : UnitBase
         }
         else
         {
-            Debug.Log("FALTA SETEAR EL ICONO DE EXCLAMACIÓN");
+            exclamationIcon.SetActive(true);
         }
 
 
@@ -1239,6 +1240,20 @@ public class EnemyUnit : UnitBase
         isGoingToBeAlertedOnEnemyTurn = true;
     }
 
+    //Esto lo uso para poder desactivar las exclamaciones del goblin tier 2 pero sin quitarsela a los enemigos que ya tenían la exclamación por si solos
+    public void ShowHideExclamation(bool _show)
+    {
+        if (_show)
+        {
+            exclamationIcon.SetActive(true);
+        }
+
+        else if (!isGoingToBeAlertedOnEnemyTurn)
+        {
+            exclamationIcon.SetActive(false);
+        }
+    }
+
     public void DesAlertEnemy()
     {
         //Desaparece exclamación
@@ -1248,9 +1263,8 @@ public class EnemyUnit : UnitBase
         }
         else
         {
-            Debug.Log("FALTA SETEAR EL ICONO DE EXCLAMACIÓN");
+            exclamationIcon.SetActive(false);
         }
-
 
         isGoingToBeAlertedOnEnemyTurn = false;
     }
@@ -1465,7 +1479,6 @@ public class EnemyUnit : UnitBase
         return facingDirectionAfterMovement; 
     }
 
-
     #region GOBLIN_SHARED_FUNCTIONALITY
 
     //Función de movimiento que se llama al cambiar al state Moving.
@@ -1502,7 +1515,6 @@ public class EnemyUnit : UnitBase
 
         StartCoroutine("MovingUnitAnimation");
     }
-
 
     //Corrutina de movimiento
     //De los enemigos que se mueven los que no la usan son el charger y la balista
@@ -1611,7 +1623,6 @@ public class EnemyUnit : UnitBase
             currentFacingDirection = FacingDirection.West;
         }
     }
-
 
     public virtual void Attack()
     {

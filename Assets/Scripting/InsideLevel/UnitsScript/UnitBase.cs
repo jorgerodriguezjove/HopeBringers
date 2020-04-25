@@ -427,17 +427,72 @@ public class UnitBase : MonoBehaviour
 
         unitAttacking.damageWithMultipliersApplied += unitAttacking.BuffbonusStateDamage;
 
+        //Estas líneas las añado para comprobar si el caballero tiene que defender
+        Knight knightDef = FindObjectOfType<Knight>();
+
+        if (knightDef != null && knightDef.isBlockingNeighbours)
+        {
+            unitToDealDamage.GetComponent<PlayerUnit>().CheckIfKnightIsDefending(knightDef, endFacingDirection);
+            unitAttacking.damageWithMultipliersApplied -= knightDef.shieldDef;
+
+            if (knightDef.shieldDef > 0)
+            {
+                //Escudo full
+                if (knightDef.isBlockingNeighboursFull)
+                {
+                    unitToDealDamage.GetComponent<PlayerUnit>().ShowHideFullShield(true);
+                }
+
+                //Escudo parcial
+                else if (knightDef.isBlockingNeighbours)
+                {
+                    unitToDealDamage.GetComponent<PlayerUnit>().ShowHidePartialShield(true);
+                }
+            }
+        }
+
+        #region Knight_Blocks
+
+        //FrontBlock
         if (unitToDealDamage.GetComponent<Knight>() && (
                endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
             || endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
             || endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
             || endFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East))
         {
-            Debug.Log("Block");
+            Debug.Log("Front Block");
+            //Icono escudo total
+            unitToDealDamage.GetComponent<Knight>().ShowHideFullShield(true);
             unitAttacking.damageWithMultipliersApplied = 0;
         }
 
-        Debug.Log(endFacingDirection);
+        //Lateralblock
+        else if (unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().lateralBlock && 
+          ((unitToDealDamage.currentFacingDirection == FacingDirection.North || unitToDealDamage.currentFacingDirection == FacingDirection.South &&  endFacingDirection == FacingDirection.East  || endFacingDirection == FacingDirection.West) 
+         ||(unitToDealDamage.currentFacingDirection == FacingDirection.East  || unitToDealDamage.currentFacingDirection == FacingDirection.West  &&  endFacingDirection == FacingDirection.North || endFacingDirection == FacingDirection.South)))
+        {
+            Debug.Log("Lateral Block");
+            //Icono escudo parcial
+            unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
+            unitAttacking.damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageLateralBlocked;
+        }
+
+        //Backblock
+        else if (unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().backBlock && (
+                endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.North
+             || endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.East
+             || endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.South
+             || endFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.West))
+        {
+            Debug.Log("Back Block");
+            //Icono escudo parcial
+            unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
+            unitAttacking.damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageBackBlocked;
+        }
+
+        #endregion
+
+        Debug.Log("CalculateDamagePreviousAttack");
     }
 
     //Aplico el daño a la unidad elegida
@@ -482,6 +537,15 @@ public class UnitBase : MonoBehaviour
     public virtual void Die()
     {
         //Cada unidad hace lo propio al morir
+    }
+
+    //Esta función se usa para mostrar el escudo encima de los personajes. Puede aparecer al hacer hover sobre enemigo y mostrar ataque o justo en la animación de ataque.
+    public void CalculateDirectionOfAttackReceivedToShowShield(IndividualTiles tileWhereEnemyFinishMovement)
+    {
+        if (GetComponent<Knight>())
+        {
+            //GetComponent<Knight>().shieldBlockAllDamage.SetActive(true);
+        }
     }
 
     #endregion
@@ -752,16 +816,7 @@ public class UnitBase : MonoBehaviour
         }        
     }
 
-    //Esta función se usa para mostrar el escudo encima de los personajes. Puede aparecer al hacer hover sobre enemigo y mostrar ataque o justo en la animación de ataque.
-    public void CalculateDirectionOfAttackReceivedToShowShield(IndividualTiles tileWhereEnemyFinishMovement)
-    {
-        if (GetComponent<Knight>())
-        {
-            GetComponent<Knight>().shieldBlockAllDamage.SetActive(true);
-        }
-    }
-
-
+   
     public virtual void ColorAvailableToBeHealed()
     {
         if (!isDead)
