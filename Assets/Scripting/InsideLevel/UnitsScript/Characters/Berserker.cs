@@ -68,28 +68,8 @@ public class Berserker : PlayerUnit
     public override void Attack(UnitBase unitToAttack)
     {
         hasAttacked = true;
-        
-        if (unitToAttack.isMarked)
-        {
-            unitToAttack.QuitMarks();
-            
-            currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
-            unitToAttack.numberOfMarks = 0;
 
-            if (FindObjectOfType<Monk>().debuffMark2)
-            {
-                if (!unitToAttack.isStunned)
-                {
-                    StunUnit(unitToAttack, 1);
-                }
-
-            }
-            else if (FindObjectOfType<Monk>().healerMark2)
-            {
-                ApplyBuffOrDebuffdamage(this, 1, 3);
-            }
-            UIM.RefreshTokens();
-        }
+        CheckIfUnitHasMarks(unitToAttack);
 
         if (circularAttack)
         {
@@ -239,6 +219,8 @@ public class Berserker : PlayerUnit
 
             if (rageFear)
             {
+               // ApplyBuffOrDebuffDamage(unitToDealDamage, -1, fearTurnBonus);
+
                 unitToDealDamage.hasFear = true;
                 unitToDealDamage.turnsWithFear += fearTurnBonus;
 

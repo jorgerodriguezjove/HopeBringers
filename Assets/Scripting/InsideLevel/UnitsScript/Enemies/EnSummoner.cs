@@ -44,7 +44,7 @@ public class EnSummoner : EnemyUnit
 
                 if (unitsInRange[i].GetComponent<EnemyUnit>())
                 {
-                    ApplyBuffOrDebuffdamage(unitsInRange[i], enemyBuff, 3);
+                    ApplyBuffOrDebuffDamage(unitsInRange[i], enemyBuff, 3);
                     
                 }
             }

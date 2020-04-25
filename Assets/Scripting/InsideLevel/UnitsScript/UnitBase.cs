@@ -244,6 +244,9 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon, buffIcon, debuffIcon, movementBuffIcon, movementDebuffIcon, stunnedIcon;
 
+    [SerializeField]
+    public GameObject hoverBuffIcon, hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon;
+
 
     //Material inicial y al ser seleccionado
     protected Material initMaterial;
@@ -939,7 +942,7 @@ public class UnitBase : MonoBehaviour
         unitToStun.stunIcon.SetActive(true);
     }
 
-    public virtual void ApplyBuffOrDebuffdamage(UnitBase unitToApply, int damageAdded, int turnsAdded)
+    public virtual void ApplyBuffOrDebuffDamage(UnitBase unitToApply, int damageAdded, int turnsAdded)
     {
         if (unitToApply.GetComponent<Druid>())
         {
@@ -952,24 +955,41 @@ public class UnitBase : MonoBehaviour
             unitToApply.turnsWithBuffOrDebuff = turnsAdded;
         }
 
-        SetBuffDebuffIcon(damageAdded, unitToApply);
+        SetBuffDebuffIcon(damageAdded, unitToApply, false);
     }
 
-    public void SetBuffDebuffIcon(int numToCheck, UnitBase unitToApply)
+    public void SetBuffDebuffIcon(int numToCheck, UnitBase unitToApply, bool isOnHover)
     {
         if (numToCheck > 0)
         {
-            unitToApply.buffIcon.SetActive(true);
-            unitToApply.debuffIcon.SetActive(false);
-
+            if (isOnHover)
+            {
+                unitToApply.hoverBuffIcon.SetActive(true);
+                unitToApply.hoverDebuffIcon.SetActive(false);
+            }
+            else
+            {
+                unitToApply.buffIcon.SetActive(true);
+                unitToApply.debuffIcon.SetActive(false);
+            }           
         }
         else if(numToCheck < 0)
         {
-            unitToApply.buffIcon.SetActive(false);
-            unitToApply.debuffIcon.SetActive(true);
+            if (isOnHover)
+            {
+                unitToApply.hoverBuffIcon.SetActive(false);
+                unitToApply.hoverDebuffIcon.SetActive(true);
+            }
+            else
+            {                
+                unitToApply.buffIcon.SetActive(false);
+                unitToApply.debuffIcon.SetActive(true);
+            }           
         }
         else
         {
+            unitToApply.hoverBuffIcon.SetActive(false);
+            unitToApply.hoverDebuffIcon.SetActive(false);
             unitToApply.buffIcon.SetActive(false);
             unitToApply.debuffIcon.SetActive(false);
         }
@@ -987,21 +1007,44 @@ public class UnitBase : MonoBehaviour
         monkMark3.SetActive(false);
     }
 
-    public void SetMovementIcon(int numToCheck, UnitBase unitToApply)
+    public void SetMovementIcon(int numToCheck, UnitBase unitToApply, bool isOnHover)
     {
         if (numToCheck > 0)
         {
-            unitToApply.movementBuffIcon.SetActive(true);
-            unitToApply.movementDebuffIcon.SetActive(false);
+            if (isOnHover)
+            {
+                unitToApply.hoverMovementBuffIcon.SetActive(true);
+                unitToApply.hoverMovementDebuffIcon.SetActive(false);
+
+            }
+            else
+            {
+                unitToApply.movementBuffIcon.SetActive(true);
+                unitToApply.movementDebuffIcon.SetActive(false);
+            }
+
+          
 
         }
         else if (numToCheck < 0)
         {
-            unitToApply.movementBuffIcon.SetActive(false);
-            unitToApply.movementDebuffIcon.SetActive(true);
+            if (isOnHover)
+            {
+                unitToApply.hoverMovementBuffIcon.SetActive(false);
+                unitToApply.hoverMovementDebuffIcon.SetActive(true);
+
+            }
+            else
+            {
+                unitToApply.movementBuffIcon.SetActive(false);
+                unitToApply.movementDebuffIcon.SetActive(true);
+            }
+            
         }
         else
         {
+            unitToApply.hoverMovementBuffIcon.SetActive(false);
+            unitToApply.hoverMovementDebuffIcon.SetActive(false);
             unitToApply.movementBuffIcon.SetActive(false);
             unitToApply.movementDebuffIcon.SetActive(false);
         }

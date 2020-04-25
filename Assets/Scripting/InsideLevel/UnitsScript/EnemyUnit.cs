@@ -235,7 +235,7 @@ public class EnemyUnit : UnitBase
 
                 if (isMarked && FindObjectOfType<Monk>().debuffMark)
                 {
-                    ApplyBuffOrDebuffdamage(this,-1,3);                   
+                    ApplyBuffOrDebuffDamage(this,-1,3);                   
                 }
 
                 //Añado esto para stunnear a los enemigos 
@@ -671,7 +671,7 @@ public class EnemyUnit : UnitBase
                 //Llamo a LevelManager para desactivar hover
                 if (LM.selectedCharacter != null)
                 {
-                    LM.selectedCharacter.HideDamageIcons(this);
+                    LM.selectedCharacter.HideDamageIcons(LM.selectedCharacter);
                 }
                 LM.HideHover(LM.selectedEnemy);
                 LM.selectedEnemy.HealthBarOn_Off(false);
@@ -817,7 +817,7 @@ public class EnemyUnit : UnitBase
                 shaderHover.SetActive(false);
 
                 if (myPortrait != null)
-                    myPortrait.UnHighlightMyself();
+                myPortrait.UnHighlightMyself();
 
             }
 
@@ -851,6 +851,7 @@ public class EnemyUnit : UnitBase
 
             Debug.Log("aa");
             HealthBarOn_Off(false);
+            LM.selectedCharacter.healthBar.SetActive(false);
             LM.selectedCharacter.HideAttackEffect(this);
             LM.selectedCharacter.tilesInEnemyHover.Clear();
         }
@@ -869,6 +870,7 @@ public class EnemyUnit : UnitBase
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
                     }
                 }
+                LM.selectedCharacter.healthBar.SetActive(false);
                 LM.selectedCharacter.HideAttackEffect(this);
                 LM.selectedCharacter.tilesInEnemyHover.Clear();
             }
@@ -923,7 +925,7 @@ public class EnemyUnit : UnitBase
 		if(LM.selectedCharacter != null)
 		{
 			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
-            
+
         }
 
         //if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
@@ -956,6 +958,12 @@ public class EnemyUnit : UnitBase
         {
 
             knightRef.HideAttackEffect(this);
+        }
+
+        if (LM.selectedCharacter != null)
+        {
+            LM.selectedCharacter.healthBar.SetActive(false);
+
         }
 
     }

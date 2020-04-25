@@ -299,7 +299,7 @@ public class PlayerUnit : UnitBase
 
     public virtual void ResetSpecificVariables()
     {
-        //Cada unidad reseta si tiene variables específicas
+        //Cada unidad resetea si tiene variables específicas
     }
     #endregion
 
@@ -627,7 +627,7 @@ public class PlayerUnit : UnitBase
         //IMPORTANTE: HE PUESTO ESTO DESPUÉS PARA QUE FUNCIONE EL MOSTRAR RANGO DE ATAQUE Y PARECE NO DAR PROBLEMAS. REVISAR EN EL FUTURO
         //Esto tiene que ir antes del  LM.UnitHasFinishedMovementAndRotation() para que función de UnitHasFinishedMovementAndRotation() sepa si hay
         // enemigos a los que atacar
-        CheckUnitsAndTilesInRangeToAttack(true);
+        CheckUnitsAndTilesInRangeToAttack(false);
     }
 
     public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
@@ -731,7 +731,6 @@ public class PlayerUnit : UnitBase
 
         }
     }
-
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
@@ -873,14 +872,16 @@ public class PlayerUnit : UnitBase
 		if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
 		{
 			damageWithMultipliersApplied -= penalizatorDamageLessHeight;
-            unitToDealDamage.downToUpDamageIcon.SetActive(true);
+            healthBar.SetActive(true);
+            downToUpDamageIcon.SetActive(true);
 		}
 
 		//Si estoy en ventaja de altura hago más daño
 		else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
 		{
 			damageWithMultipliersApplied += bonusDamageMoreHeight;
-            unitToDealDamage.upToDownDamageIcon.SetActive(true);
+            healthBar.SetActive(true);
+            upToDownDamageIcon.SetActive(true);
 		}
 
 		//Si le ataco por la espalda hago más daño
@@ -926,7 +927,8 @@ public class PlayerUnit : UnitBase
                 }
                 //Ataque por la espalda
                 damageWithMultipliersApplied += bonusDamageBackAttack;
-                unitToDealDamage.backStabIcon.SetActive(true);
+                healthBar.SetActive(true);
+                backStabIcon.SetActive(true);
             }
 		}
 
@@ -1170,6 +1172,30 @@ public class PlayerUnit : UnitBase
             currentTilesInRangeForAttack[i].ColorBorderRed();
         }
 
+    }
+
+    public void CheckIfUnitHasMarks(UnitBase _unitToCheck)
+    {
+        if (_unitToCheck.isMarked)
+        {
+            _unitToCheck.QuitMarks();
+            currentHealth += FindObjectOfType<Monk>().healerBonus * _unitToCheck.numberOfMarks;
+            _unitToCheck.numberOfMarks = 0;
+
+            if (FindObjectOfType<Monk>().debuffMark2)
+            {
+                if (!_unitToCheck.isStunned)
+                {
+                    StunUnit(_unitToCheck, 1);
+                }
+            }
+            else if (FindObjectOfType<Monk>().healerMark2)
+            {
+                ApplyBuffOrDebuffDamage(this, 1, 3);
+            }
+
+            UIM.RefreshTokens();
+        }
     }
 
     #endregion

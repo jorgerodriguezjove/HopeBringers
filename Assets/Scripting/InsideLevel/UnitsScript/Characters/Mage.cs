@@ -85,31 +85,7 @@ public class Mage : PlayerUnit
     {
         hasAttacked = true;
 
-        if (unitToAttack.isMarked)
-        {
-            unitToAttack.QuitMarks();
-
-            currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
-            unitToAttack.numberOfMarks = 0; 
-
-            if (FindObjectOfType<Monk>().debuffMark2)
-            {
-                if (!unitToAttack.isStunned)
-                {
-                    StunUnit(unitToAttack, 1);
-                }
-                
-            }
-            else if (FindObjectOfType<Monk>().healerMark2)
-            {
-                ApplyBuffOrDebuffdamage(this, 1, 3);
-                
-
-            }
-
-            UIM.RefreshTokens();
-
-        }
+        CheckIfUnitHasMarks(unitToAttack);
 
         if (mirrorDecoy)
         {

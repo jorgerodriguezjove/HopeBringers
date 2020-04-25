@@ -552,10 +552,14 @@ public class LevelManager : MonoBehaviour
                 //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                 {
-                    //El -1 es para que aparezca bien el número en el icono pero luego a nivel logico no se reste
-                    hoverUnit.unitsInRange[i].ShowHideFear(true, hoverUnit.GetComponent<EnWatcher>().turnDurationDebuffs-1);
-                    //Pongo -1 para que no pinte nada
-                    hoverUnit.unitsInRange[i].ColorAvailableToBeAttackedAndNumberDamage(-1);
+                    if (hoverUnit.unitsInRange[i].GetComponent<PlayerUnit>())
+                    {
+                        hoverUnit.SetBuffDebuffIcon(-1, hoverUnit.unitsInRange[i], true);
+                    }
+                    ////El -1 es para que aparezca bien el número en el icono pero luego a nivel logico no se reste
+                    //hoverUnit.unitsInRange[i].ShowHideFear(true, hoverUnit.GetComponent<EnWatcher>().turnDurationDebuffs-1);
+                    ////Pongo -1 para que no pinte nada
+                    //hoverUnit.unitsInRange[i].ColorAvailableToBeAttackedAndNumberDamage(-1);
                 }
 
                 //Rango de acción
@@ -847,9 +851,14 @@ public class LevelManager : MonoBehaviour
                 //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                 {
-                    hoverUnit.unitsInRange[i].ShowHideFear(false, hoverUnit.unitsInRange[i].turnsWithFear);
-                    hoverUnit.unitsInRange[i].ResetColor();
-                    hoverUnit.unitsInRange[i].DisableCanvasHover();
+                    if (hoverUnit.unitsInRange[i].GetComponent<PlayerUnit>())
+                    {
+                       // hoverUnit.SetBuffDebuffIcon(0, hoverUnit.unitsInRange[i], true);
+                    }
+                   
+                    //hoverUnit.unitsInRange[i].ShowHideFear(false, hoverUnit.unitsInRange[i].turnsWithFear);
+                    //hoverUnit.unitsInRange[i].ResetColor();
+                    //hoverUnit.unitsInRange[i].DisableCanvasHover();
                 }
 
                 //Rango despertar y miedo

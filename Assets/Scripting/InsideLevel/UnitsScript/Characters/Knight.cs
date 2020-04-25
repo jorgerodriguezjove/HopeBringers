@@ -96,26 +96,7 @@ public class Knight : PlayerUnit
     {
         hasAttacked = true;
 
-        if (unitToAttack.isMarked)
-        {
-            unitToAttack.QuitMarks();
-            currentHealth += FindObjectOfType<Monk>().healerBonus * unitToAttack.numberOfMarks;
-            unitToAttack.numberOfMarks = 0;
-
-            if (FindObjectOfType<Monk>().debuffMark2)
-            {
-                if (!unitToAttack.isStunned)
-                {
-                    StunUnit(unitToAttack, 1);
-                }
-
-            }
-            else if (FindObjectOfType<Monk>().healerMark2)
-            {
-                ApplyBuffOrDebuffdamage(this, 1, 3);
-            }
-            UIM.RefreshTokens();
-        }
+        CheckIfUnitHasMarks(unitToAttack);
 
         //Este primer if  lo pongo de momento para seguir la misma estructura que con los otros personajes y por si hay que cambiar algo específico como la animación, el sonido...
         if (pushFarther)
@@ -826,7 +807,7 @@ public class Knight : PlayerUnit
             tilesInEnemyHover.Clear();
 
             _unitToAttack.shaderHover.SetActive(true);
-
+            tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
             if (currentFacingDirection == FacingDirection.North)
             {
                 _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
@@ -892,6 +873,15 @@ public class Knight : PlayerUnit
         shieldBlockAllDamage.SetActive(false);
         _unitToAttack.shaderHover.SetActive(false);
 
+        tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+        //Marco las unidades disponibles para atacar de color rojo
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            CalculateDamage(currentUnitsAvailableToAttack[i]);
+            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+          
+        }
+
         if (tilesInEnemyHover.Count > 0)
         {
             for (int i = 0; i < tilesInEnemyHover.Count; i++)
@@ -901,16 +891,13 @@ public class Knight : PlayerUnit
                     if (pushWider2)
                     {
                         tilesInEnemyHover[i].unitOnTile.stunIcon.SetActive(false);
-                        tilesInEnemyHover[i].ColorDesAttack();
-                        tilesInEnemyHover[i].unitOnTile.ResetColor();
-
                     }
-                    else
-                    {
-                        tilesInEnemyHover[i].ColorDesAttack();
-                        tilesInEnemyHover[i].unitOnTile.ResetColor();
 
-                    }
+                    tilesInEnemyHover[i].ColorDesAttack();
+                    tilesInEnemyHover[i].unitOnTile.ResetColor();
+                    tilesInEnemyHover[i].unitOnTile.HealthBarOn_Off(false);
+                    tilesInEnemyHover[i].ColorBorderRed();
+                    tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
                 }
             }
         }
