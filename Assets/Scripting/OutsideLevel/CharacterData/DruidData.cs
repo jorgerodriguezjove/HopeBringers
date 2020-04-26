@@ -17,7 +17,10 @@ public class DruidData : CharacterData
 
             //Actualizo las merjoas especificas del personaje
             //HAY QUE CAMBIARLO EN SU SCRIPT
-            //myUnitReferenceOnLevel.GetComponent<Druid>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.pushFurther1], specificBoolCharacterUpgrades[AppKnightUpgrades.pushWider1]);
+            myUnitReferenceOnLevel.GetComponent<Druid>().SetSpecificStats(specificIntCharacterUpgrades[AppDruidUpgrades.heal1], specificBoolCharacterUpgrades[AppDruidUpgrades.heal2],
+                                                                          specificBoolCharacterUpgrades[AppDruidUpgrades.areaHeal1], specificBoolCharacterUpgrades[AppDruidUpgrades.areaHeal2],
+                                                                          specificBoolCharacterUpgrades[AppDruidUpgrades.tile1], specificBoolCharacterUpgrades[AppDruidUpgrades.tile2],
+                                                                          specificBoolCharacterUpgrades[AppDruidUpgrades.tileMovement1], specificBoolCharacterUpgrades[AppDruidUpgrades.tileMovement2]);
         }
     }
 
@@ -26,8 +29,17 @@ public class DruidData : CharacterData
     {
         //Mejoras Tipo BOOL
         //HAY QUE CAMBIARLO EN SU SCRIPT
-        //specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, false);
-        //specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushWider1, false);
+        specificIntCharacterUpgrades.Add(AppDruidUpgrades.heal1, 0);
+        specificBoolCharacterUpgrades.Add(AppDruidUpgrades.heal2, false);
+
+        specificBoolCharacterUpgrades.Add(AppDruidUpgrades.areaHeal1, false);
+        specificBoolCharacterUpgrades.Add(AppDruidUpgrades.areaHeal2, false);
+
+        specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tile1, false);
+        specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tile2, false);
+
+        specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tileMovement1, false);
+        specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tileMovement2, false);
 
         //Mejoras tipo INT
         //specificIntCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, myUnitReferenceOnLevel.GetComponent<Knight>().tilesToPush);

@@ -6,12 +6,10 @@ public class Druid : PlayerUnit
 {
     #region VARIABLES
 
-   
     [Header("MEJORAS DE PERSONAJE")]
 
     [SerializeField]
     public  int healedLife;
-
    
     public int buffHeal;
 
@@ -26,7 +24,6 @@ public class Druid : PlayerUnit
     //int que indica cuantas unidades de movimiento se mejora a la unidad
     //Jojo, acuerdate de que hay que incremeentar healedLife más aún
     public int movementUpgrade;
-
 
     //bool activa 2
     public bool areaHealer;
@@ -60,6 +57,80 @@ public class Druid : PlayerUnit
     public GameObject shadowHealerTilePref;
 
     #endregion
+
+    public void SetSpecificStats(int _heal1, bool _heal2,
+                                 bool _areaHeal1, bool _areaHeal2,
+                                 bool _tile1, bool _tile2,
+                                 bool _tileMovement1, bool _tileMovement2)
+    {
+
+        //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
+
+        activeSkillInfo = AppDruidUpgrades.initialActiveText;
+        pasiveSkillInfo = AppDruidUpgrades.initialPasiveText;
+
+        #region Actives
+
+        healedLife = _heal1;
+        individualHealer2 = _heal2;
+
+        areaHealer = _areaHeal1;
+        areaHealer2 = _areaHeal2;
+
+        if (areaHealer2)
+        {
+            activeSkillInfo = AppDruidUpgrades.areaHeal2Text;
+        }
+
+        else if (areaHealer)
+        {
+            activeSkillInfo = AppDruidUpgrades.areaHeal1Text;
+        }
+
+        if (individualHealer2)
+        {
+            activeSkillInfo = AppDruidUpgrades.heal2Text;
+        }
+
+        else if (healedLife > 1)
+        {
+            activeSkillInfo = AppDruidUpgrades.heal1Text;
+        }
+
+        #endregion
+
+        #region Pasives
+
+        tileTransformer = _tile1;
+        tileTransformer2 = _tile2;
+
+        tileSustitute = _tileMovement1;
+        tileSustitute2 = _tileMovement2;
+
+
+        if (tileSustitute2)
+        {
+            pasiveSkillInfo = AppDruidUpgrades.tileMovement2Text;
+        }
+
+        else if (tileSustitute)
+        {
+            pasiveSkillInfo = AppDruidUpgrades.tileMovement1Text;
+        }
+
+        if (tileTransformer2)
+        {
+            pasiveSkillInfo = AppDruidUpgrades.tileMovement2Text;
+        }
+
+        else if (tileTransformer)
+        {
+            pasiveSkillInfo = AppDruidUpgrades.tileMovement1Text;
+        }
+
+
+        #endregion
+    }
 
 
     public override void Attack(UnitBase unitToAttack)

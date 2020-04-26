@@ -20,13 +20,10 @@ public class Knight : PlayerUnit
     //Empuje en línea mejorado (superempuje)
     public bool pushFarther2;
 
-
     //Empuje ancho
     public bool pushWider;
     //Empuje ancho mejorado (stunea a los enemigos atacados)
     public bool pushWider2;
-
-
 
     [Header("Pasivas")]
     //PASIVAS
@@ -52,34 +49,76 @@ public class Knight : PlayerUnit
 
     #endregion
 
-    public void SetSpecificStats(bool _pushFarther, bool _pushWider)
+    public void SetSpecificStats(bool _pushFarther1, bool _pushFarther2, 
+                                 bool _pushWider1, bool _pushWider2,
+                                 bool _individualBlock1, bool _individualBlock2, 
+                                 bool _neighbourBlock1, bool _neighbourBlock2)
     {
-        pushFarther = _pushFarther;
-        pushWider = _pushWider;
-
+        #region Actives
         //Lo primero que hago es poner el texto genérico, de tal forma que si no hay mejoras se quedará este texto.
-        activeSkillInfo = AppKnightUpgrades.genericAttackText;
+        activeSkillInfo = AppKnightUpgrades.initialActiveText;
+        
+        pushFarther = _pushFarther1;
+        pushFarther2 = _pushFarther2;
+
+        pushWider = _pushWider1;
+        pushWider2 = _pushWider2;
 
         //Hay que hacer que la mejora mas avanzada se compruebe primero y que compruebe su versión anterior con else if.
         //Esto es por que siempre que compre la segunda mejora, la primera va a estar en true siempre.
         if (pushFarther2)
         {
             tilesToPush = 3;
+            activeSkillInfo = AppKnightUpgrades.pusFurther2Text;
         }
 
         else if (pushFarther)
         {
             tilesToPush = 2;
-
             activeSkillInfo = AppKnightUpgrades.pusFurther1Text;
         }
 
-      
+        if (pushWider2)
+        {
+            activeSkillInfo = AppKnightUpgrades.pushWider2Text;
+        }
 
-        if (pushWider)
+        else if (pushWider)
         {
             activeSkillInfo = AppKnightUpgrades.pushWider1Text;
         }
+        #endregion
+
+        #region Pasives
+
+        pasiveSkillInfo = AppKnightUpgrades.initialPasiveText;
+
+        lateralBlock = _individualBlock1;
+        backBlock = _individualBlock2;
+
+        isBlockingNeighbours = _neighbourBlock1;
+        isBlockingNeighboursFull = _neighbourBlock2;
+
+        if (backBlock)
+        {
+            pasiveSkillInfo = AppKnightUpgrades.individualBlock2Text;
+        }
+
+        else if (lateralBlock)
+        {
+            pasiveSkillInfo = AppKnightUpgrades.individualBlock1Text;
+        }
+
+        if (isBlockingNeighboursFull)
+        {
+            pasiveSkillInfo = AppKnightUpgrades.neighbourBlock2Text;
+        }
+
+        else if (isBlockingNeighbours)
+        {
+            pasiveSkillInfo = AppKnightUpgrades.neighbourBlock1Text;
+        }
+        #endregion
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.

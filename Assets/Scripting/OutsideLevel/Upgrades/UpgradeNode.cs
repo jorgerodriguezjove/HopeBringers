@@ -127,7 +127,13 @@ public class UpgradeNode : MonoBehaviour
         //Si la mejora es de tipo bool busco la mejora en el diccionario y la aplico
         if (isItBoolUpgrade)
         {
-           if(myUnit.specificBoolCharacterUpgrades.ContainsKey(upgradeName))
+            Debug.Log(myUnit);
+
+            Debug.Log(upgradeName);
+
+            Debug.Log(myUnit.specificBoolCharacterUpgrades);
+
+           if (myUnit.specificBoolCharacterUpgrades.ContainsKey(upgradeName))
            {
                myUnit.specificBoolCharacterUpgrades[upgradeName] = true;
            }
@@ -170,7 +176,7 @@ public class UpgradeNode : MonoBehaviour
     //Al desbloquear upgrades por comprar
     public void UnlockUpgrade()
     {
-        //isBlocked = false;
+
         gameObject.SetActive(true);
     }
 }

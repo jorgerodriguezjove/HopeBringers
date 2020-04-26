@@ -16,7 +16,10 @@ public class RogueData : CharacterData
             base.UpdateMyUnitStatsForTheLevel();
 
             //Inicializo las variables especificas del personaje
-            myUnitReferenceOnLevel.GetComponent<Rogue>().SetSpecificStats(specificBoolCharacterUpgrades[AppRogueUpgrades.multiJumpAttack1], specificBoolCharacterUpgrades[AppRogueUpgrades.extraTurnAfterKill1]);
+            myUnitReferenceOnLevel.GetComponent<Rogue>().SetSpecificStats(specificBoolCharacterUpgrades[AppRogueUpgrades.multiJumpAttack1], specificIntCharacterUpgrades[AppRogueUpgrades.multiJumpAttack2],
+                                                                          specificBoolCharacterUpgrades[AppRogueUpgrades.extraTurnAfterKill1], specificIntCharacterUpgrades[AppRogueUpgrades.extraTurnAfterKill2],
+                                                                          specificBoolCharacterUpgrades[AppRogueUpgrades.smokeBomb1], specificBoolCharacterUpgrades[AppRogueUpgrades.smokeBomb2],
+                                                                          specificBoolCharacterUpgrades[AppRogueUpgrades.buffDamageKill1], specificBoolCharacterUpgrades[AppRogueUpgrades.buffDamageKill2]);
         }
     }
 
@@ -25,9 +28,16 @@ public class RogueData : CharacterData
     {
         //Mejoras Tipo BOOL
         specificBoolCharacterUpgrades.Add(AppRogueUpgrades.multiJumpAttack1, false);
-        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.extraTurnAfterKill1, false);
+        specificIntCharacterUpgrades.Add(AppRogueUpgrades.multiJumpAttack2, 0);
 
-        //Mejoras tipo INT
+        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.extraTurnAfterKill1, false);
+        specificIntCharacterUpgrades.Add(AppRogueUpgrades.extraTurnAfterKill2, 0);
+
+        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.smokeBomb1, false);
+        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.smokeBomb2, false);
+
+        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.buffDamageKill1, false);
+        specificBoolCharacterUpgrades.Add(AppRogueUpgrades.buffDamageKill2, false);
     }
 
 

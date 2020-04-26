@@ -17,6 +17,7 @@ public class Rogue : PlayerUnit
     public int unitsCanJump;
     //Esto se hace para que al empezar nuevo turno se reseteen los saltos. Hay que poner el mismo número que la variable de arriba
     public int fUnitsCanJump;
+
     //Lista de posibles unidades a las que atacar
     [HideInInspector]
     public List<UnitBase> unitsAttacked;
@@ -60,12 +61,73 @@ public class Rogue : PlayerUnit
 
     #endregion
 
-    public void SetSpecificStats(bool _multiJumpAttack1, bool _extraTurnAfterKill1)
+    public void SetSpecificStats(bool _multiJumpAttack1, int _multiJumpAttack2,
+                                 bool _extraTurnAfterKill1, int _extraTurnAfterKill2,
+                                 bool _buffDamage1, bool _buffDamage2,
+                                 bool _smokeBomb1, bool _smokeBomb2)
     {
-        checkersAttack = _multiJumpAttack1;
-        extraTurnAttackAfterKill = _extraTurnAfterKill1;
-        //fUnitsCanJump = unitsCanJump;
+        activeSkillInfo = AppRogueUpgrades.initialActiveText;
+        pasiveSkillInfo = AppRogueUpgrades.initialPasiveText;
 
+        #region Actives
+
+        checkersAttack = _multiJumpAttack1;
+        if (_multiJumpAttack2 > 0)
+        {
+            fUnitsCanJump = _multiJumpAttack2;
+            unitsCanJump = _multiJumpAttack2;
+            activeSkillInfo = AppRogueUpgrades.multiJumpAttack2Text;
+        }
+
+        else if (checkersAttack)
+        {
+            activeSkillInfo = AppRogueUpgrades.multiJumpAttack1Text;
+        }
+
+        extraTurnAttackAfterKill = _extraTurnAfterKill1;
+        if (_extraTurnAfterKill2 > 0)
+        {
+            extraTurnCount = _extraTurnAfterKill2;
+            fextraTurnCount = _extraTurnAfterKill2;
+            activeSkillInfo = AppRogueUpgrades.extraTurnAfterKill2Text;
+        }
+
+        else if (extraTurnAttackAfterKill)
+        {
+            activeSkillInfo = AppRogueUpgrades.extraTurnAfterKill1Text;
+        }
+
+        #endregion
+
+        #region Pasives
+
+        afterKillBonus = _buffDamage1;
+        afterKillBonus2 = _buffDamage2;
+
+        if (afterKillBonus2)
+        {
+            pasiveSkillInfo = AppRogueUpgrades.buffDamageKill2Text;
+        }
+
+        else if (afterKillBonus)
+        {
+            pasiveSkillInfo = AppRogueUpgrades.buffDamageKill1Text;
+        }
+
+        smokeBomb = _smokeBomb1;
+        smokeBomb2 = _smokeBomb2;
+
+        if (smokeBomb2)
+        {
+            pasiveSkillInfo = AppRogueUpgrades.smokeBomb2Text;
+        }
+
+        else if (smokeBomb)
+        {
+            pasiveSkillInfo = AppRogueUpgrades.smokeBomb1Text;
+        }
+
+        #endregion
     }
 
     public override void CheckWhatToDoWithSpecialToken()
@@ -87,15 +149,11 @@ public class Rogue : PlayerUnit
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();           
         }
 
-
         if (afterKillBonus)
         {
             myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.enabled = true;
             myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.text = baseDamage.ToString();
         }
-        
-        
-
     }
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
