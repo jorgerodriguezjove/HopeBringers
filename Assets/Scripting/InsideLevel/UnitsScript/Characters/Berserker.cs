@@ -219,15 +219,7 @@ public class Berserker : PlayerUnit
 
             if (rageFear)
             {
-               // ApplyBuffOrDebuffDamage(unitToDealDamage, -1, fearTurnBonus);
-
-                unitToDealDamage.hasFear = true;
-                unitToDealDamage.turnsWithFear += fearTurnBonus;
-
-                if (unitToDealDamage.fearIcon != null)
-                {
-                    unitToDealDamage.ShowHideFear(true, fearTurnBonus);
-                }
+                ApplyBuffOrDebuffDamage(unitToDealDamage, -1, fearTurnBonus);
             }
         }
 
@@ -410,7 +402,7 @@ public class Berserker : PlayerUnit
             {
                 if (rageFear)
                 {
-                    tilesInEnemyHover[i].unitOnTile.ShowHideFear(true, fearTurnBonus);
+                    SetBuffDebuffIcon(-1,_unitToAttack, true);
                 }
 
                 if (circularAttack)
@@ -441,7 +433,8 @@ public class Berserker : PlayerUnit
             {
                 if (rageFear)
                 {
-                    tilesInEnemyHover[i].unitOnTile.ShowHideFear(false, fearTurnBonus);
+                    SetBuffDebuffIcon(0, _unitToAttack, true);
+
                 }
 
                 if (circularAttack)

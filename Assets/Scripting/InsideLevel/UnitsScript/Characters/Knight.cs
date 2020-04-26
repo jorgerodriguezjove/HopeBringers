@@ -689,7 +689,7 @@ public class Knight : PlayerUnit
                     tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(-1);
                     if (pushWider2)
                     {
-                        tilesInEnemyHover[i].unitOnTile.stunIcon.SetActive(true);
+                        SetStunIcon(tilesInEnemyHover[i].unitOnTile, true, true);
                         //Descomentar si se quiere cambiar el sitio donde aparece
                       //  tilesInEnemyHover[i].unitOnTile.stunIcon.transform.position = tilesInEnemyHover[i].unitOnTile.shaderHover.transform.position;
                     }
@@ -881,7 +881,8 @@ public class Knight : PlayerUnit
                 {
                     if (pushWider2)
                     {
-                        tilesInEnemyHover[i].unitOnTile.stunIcon.SetActive(false);
+                        SetStunIcon(tilesInEnemyHover[i].unitOnTile, true, false);
+
                     }
 
                     tilesInEnemyHover[i].ColorDesAttack();

@@ -57,7 +57,7 @@ public class EnWatcher : EnemyUnit
 
                 if (myTierLevel == TierLevel.Level2)
                 {
-                    unitsInRange[i].GetComponent<PlayerUnit>().movementUds = movementUds - movementDebuff;
+                    ApplyBuffOrDebuffMovement(unitsInRange[i], movementDebuff, 1);
                 }
             }
         }

@@ -115,8 +115,7 @@ public class PlayerUnit : UnitBase
     //Añado esto para que el mage pueda acceder a la función de GetSurroundingTiles()
     public TileManager TM;
 
-    //Este int lo pongo para saber el primer número y que así el tier 2 del Watcher no esté restando a los current movementsUds
-    public int fMovementUds;
+    
 
     #endregion
 
@@ -215,7 +214,15 @@ public class PlayerUnit : UnitBase
                     {
                         BuffbonusStateDamage = 0;
                     }
-                    
+
+                    SetBuffDebuffIcon(0, this, false);
+                }
+
+                turnsWithMovementBuffOrDebuff--;
+                if (turnsWithMovementBuffOrDebuff <= 0)
+                {
+                    movementUds = fMovementUds;
+                    SetMovementIcon(0, this, false);
                 }
 
                 if (arrowIndicator != null)
@@ -273,7 +280,7 @@ public class PlayerUnit : UnitBase
                 {
                     isStunned = false;
                     turnStunned = 0;
-                    stunIcon.SetActive(false);
+                    SetStunIcon(this, false, false);
                 }
                 turnStunned--;
             }

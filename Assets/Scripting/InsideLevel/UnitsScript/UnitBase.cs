@@ -29,6 +29,10 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int movementUds;
 
+    [HideInInspector]
+    //Este int lo pongo para saber el primer número y que así el tier 2 del Watcher no esté restando a los current movementsUds
+    public int fMovementUds;
+
     [SerializeField]
     public int attackRange;
 
@@ -39,23 +43,10 @@ public class UnitBase : MonoBehaviour
     public int numberOfMarks;
 
     //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
-    //Bool que indica si la unidad tiene miedo o no
-    public bool hasFear;
-    //Añado esto para acumular el número de turnos que la unidad tiene miedo
-    public int turnsWithFear;
-    //Icono que muestra que la unidad  tiene miedo
-    public GameObject fearIcon;
-
-    [SerializeField]
-    TextMeshProUGUI turnsWithFearInHUD;
-
-    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
     //Bool que indica si está stuneado o no 
     public bool isStunned;
     //Añado esto por si los stuns se puede acumular
     public int turnStunned;
-    //Icono que muestra que la unidad está stunneada
-    public GameObject stunIcon;
 
     //Bool para poder ocultar a las unidades
     public bool isHidden;
@@ -92,6 +83,10 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     //Turnos que el buff o debuff tiene que estar aplicado
     public int turnsWithBuffOrDebuff;
+
+    [SerializeField]
+    //Turnos que el buff o debuff de movimiento tiene que estar aplicado
+    public int turnsWithMovementBuffOrDebuff;
 
     [Header("LOGIC")]
 
@@ -921,12 +916,6 @@ public class UnitBase : MonoBehaviour
         HealthBarOn_Off(false);
     }
 
-    public void ShowHideFear (bool _shouldShow, int turnsWithFear)
-    {
-       fearIcon.SetActive(_shouldShow);     
-       turnsWithFearInHUD.text = turnsWithFear.ToString();
-    }
-
 
     #endregion
 
@@ -992,11 +981,40 @@ public class UnitBase : MonoBehaviour
 
     public virtual void StunUnit(UnitBase unitToStun , int turnsToStunned)
     {
+        
         unitToStun.isStunned = true;
         unitToStun.turnStunned = turnsToStunned;
-        unitToStun.stunIcon.SetActive(true);
+        SetStunIcon(unitToStun,false, true);
     }
 
+    public virtual void SetStunIcon(UnitBase _unitToStun, bool onHover, bool hasToShow)
+    {
+        if (onHover)
+        {
+            if (hasToShow)
+            {
+                _unitToStun.hoverStunnedIcon.SetActive(true);
+            }
+            else
+            {
+                _unitToStun.hoverStunnedIcon.SetActive(false);
+            }
+        }
+        else
+        {
+            if (hasToShow)
+            {
+                _unitToStun.stunnedIcon.SetActive(true);
+                _unitToStun.hoverStunnedIcon.SetActive(false);
+            }
+            else
+            {
+                _unitToStun.stunnedIcon.SetActive(false);
+                _unitToStun.hoverStunnedIcon.SetActive(false);
+            }
+
+        }                   
+    }
     public virtual void ApplyBuffOrDebuffDamage(UnitBase unitToApply, int damageAdded, int turnsAdded)
     {
         if (unitToApply.GetComponent<Druid>())
@@ -1049,19 +1067,15 @@ public class UnitBase : MonoBehaviour
             unitToApply.debuffIcon.SetActive(false);
         }
     }
-    public void EnableUnableCollider(bool _shouldEnableCollider)
-    {
-        GetComponent<Collider>().enabled = _shouldEnableCollider;
-    }
 
-    public void QuitMarks()
+    public virtual void ApplyBuffOrDebuffMovement(UnitBase unitToApply, int movementRemoved, int turnsAdded)
     {
-        isMarked = false;
-        monkMark.SetActive(false);
-        monkMark2.SetActive(false);
-        monkMark3.SetActive(false);
-    }
+        unitToApply.movementUds -= movementRemoved;
+        unitToApply.turnsWithMovementBuffOrDebuff = turnsAdded;
 
+
+        SetMovementIcon(movementRemoved, unitToApply, false);
+    }
     public void SetMovementIcon(int numToCheck, UnitBase unitToApply, bool isOnHover)
     {
         if (numToCheck > 0)
@@ -1078,7 +1092,7 @@ public class UnitBase : MonoBehaviour
                 unitToApply.movementDebuffIcon.SetActive(false);
             }
 
-          
+
 
         }
         else if (numToCheck < 0)
@@ -1094,7 +1108,7 @@ public class UnitBase : MonoBehaviour
                 unitToApply.movementBuffIcon.SetActive(false);
                 unitToApply.movementDebuffIcon.SetActive(true);
             }
-            
+
         }
         else
         {
@@ -1105,4 +1119,17 @@ public class UnitBase : MonoBehaviour
         }
 
     }
+
+    public void QuitMarks()
+    {
+        isMarked = false;
+        monkMark.SetActive(false);
+        monkMark2.SetActive(false);
+        monkMark3.SetActive(false);
+    }
+    public void EnableUnableCollider(bool _shouldEnableCollider)
+    {
+        GetComponent<Collider>().enabled = _shouldEnableCollider;
+    }
+
 }

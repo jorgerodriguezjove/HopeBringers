@@ -747,8 +747,8 @@ public class LevelManager : MonoBehaviour
                     {
                         if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
                         {
-                            Debug.Log("METER AQUI QUE APAREZCA STUN SOBRE PERSONAJES Y QUE EN HOVER EXIT SE QUITE");
-                            //hoverUnit.currentUnitsAvailableToAttack[0].
+                           
+                            hoverUnit.SetStunIcon(hoverUnit.currentUnitsAvailableToAttack[0],true,true); 
                         }
 
                         hoverUnit.GetComponent<EnGiant>().SaveLateralUnitsForNumberAttackInLevelManager();
@@ -773,8 +773,9 @@ public class LevelManager : MonoBehaviour
 
                                 if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
                                 {
-                                    Debug.Log("METER AQUI QUE APAREZCA STUN SOBRE PERSONAJES Y QUE EN HOVER EXIT SE QUITE");
-                                    //hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].
+                                   
+                                    hoverUnit.SetStunIcon(hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile, true, true);
+                                    
                                 }
 
                             }
@@ -979,8 +980,8 @@ public class LevelManager : MonoBehaviour
                 //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
                 else if (hoverUnit.GetComponent<EnGiant>())
                 {
-                    Debug.Log("QUITAR AQUI ICONO STUN HOVER");
-                    //hoverUnit.currentUnitsAvailableToAttack[0].quitarstun
+                   
+                    hoverUnit.SetStunIcon(hoverUnit.currentUnitsAvailableToAttack[0], true, false);
 
                     for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
                     {
@@ -999,8 +1000,10 @@ public class LevelManager : MonoBehaviour
                             }
                         }
 
-                        Debug.Log("QUITAR AQUI ICONO STUN HOVER");
-                        //tempLateralUnitGiant.quitarstun
+                       
+                        hoverUnit.SetStunIcon(hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile, true, false);
+
+                        
                     }
                 }
 

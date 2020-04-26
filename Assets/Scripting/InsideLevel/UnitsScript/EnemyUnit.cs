@@ -238,6 +238,14 @@ public class EnemyUnit : UnitBase
                     ApplyBuffOrDebuffDamage(this,-1,3);                   
                 }
 
+                turnsWithMovementBuffOrDebuff--;
+                if (turnsWithMovementBuffOrDebuff <= 0)
+                {
+                    movementUds = fMovementUds;
+                    SetMovementIcon(0, this, false);
+                }
+
+
                 //Añado esto para stunnear a los enemigos 
                 if (!isStunned)
                 {
@@ -250,7 +258,8 @@ public class EnemyUnit : UnitBase
                     {
                         isStunned = false;
                         turnStunned = 0;
-                        stunIcon.SetActive(false);
+                        SetStunIcon(this, false, false);
+                        
                     }
                     turnStunned--;
                     myCurrentEnemyState = enemyState.Ended;
@@ -277,25 +286,7 @@ public class EnemyUnit : UnitBase
 
                 if (!corroutineDone)
                 {
-                    //Añado esto para ir eliminando el miedo a los enemigos 
-                    if (hasFear)
-                    {
-                        turnsWithFear--;
-                        if (fearIcon != null)
-                        {
-                            ShowHideFear(true, turnsWithFear);
-                        }
-                        if (turnsWithFear<=0)
-                        {
-                            hasFear = false;
-
-                            if (fearIcon != null)
-                            {
-                                ShowHideFear(false, turnsWithFear);
-                            }
-                            
-                        }
-                    }
+                 
                     StartCoroutine("WaitBeforeNextState");
                 }
                 break;

@@ -92,8 +92,8 @@ public class Druid : PlayerUnit
                         {
                             TM.surroundingTiles[i].unitOnTile.isStunned = false;
                             TM.surroundingTiles[i].unitOnTile.turnStunned = 0;
-                            TM.surroundingTiles[i].unitOnTile.hasFear = false;
-                            TM.surroundingTiles[i].unitOnTile.turnsWithFear = 0;
+                            ApplyBuffOrDebuffDamage(TM.surroundingTiles[i].unitOnTile, 0, 0);
+
                             TM.surroundingTiles[i].unitOnTile.BuffbonusStateDamage = 0;
 
                         }
