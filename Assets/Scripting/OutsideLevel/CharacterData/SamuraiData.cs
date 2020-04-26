@@ -17,7 +17,10 @@ public class SamuraiData : CharacterData
 
             //Actualizo las merjoas especificas del personaje
             //HAY QUE CAMBIARLO EN SU SCRIPT
-            //myUnitReferenceOnLevel.GetComponent<Samurai>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.pushFurther1], specificBoolCharacterUpgrades[AppKnightUpgrades.pushWider1]);
+            myUnitReferenceOnLevel.GetComponent<Samurai>().SetSpecificStats(specificBoolCharacterUpgrades[AppSamuraiUpgrades.parry1], specificBoolCharacterUpgrades[AppSamuraiUpgrades.parry2],
+                                                                            specificBoolCharacterUpgrades[AppSamuraiUpgrades.multiAttack1], specificIntCharacterUpgrades[AppSamuraiUpgrades.multiAttack2],
+                                                                            specificBoolCharacterUpgrades[AppSamuraiUpgrades.honor1], specificBoolCharacterUpgrades[AppSamuraiUpgrades.honor2],
+                                                                            specificBoolCharacterUpgrades[AppSamuraiUpgrades.loneWolf1], specificBoolCharacterUpgrades[AppSamuraiUpgrades.loneWolf2]);
         }
     }
 
@@ -26,11 +29,17 @@ public class SamuraiData : CharacterData
     {
         //Mejoras Tipo BOOL
         //HAY QUE CAMBIARLO EN SU SCRIPT
-        //specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, false);
-        //specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushWider1, false);
+        specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.parry1, false);
+        specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.parry2, false);
 
-        //Mejoras tipo INT
-        //specificIntCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, myUnitReferenceOnLevel.GetComponent<Knight>().tilesToPush);
+        specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.multiAttack1, false);
+        specificIntCharacterUpgrades.Add(AppSamuraiUpgrades.multiAttack2, 0);
+
+        specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.honor1, false);
+        specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.honor2, false);
+
+        specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.loneWolf1, false);
+        specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.loneWolf2, false);
     }
 
 }

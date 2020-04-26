@@ -48,15 +48,82 @@ public class Berserker : PlayerUnit
     private int fearTurnBonus;
     #endregion
 
-    public void SetSpecificStats(bool _areaAttack, bool _circularAttack1)
+    public void SetSpecificStats(bool _areaAttack, int _areaAttack2,
+                                 bool _circularAttack1, int _circularAttack2,
+                                 int _rageDamagePlus1, int _rageDamagePlus2, 
+                                 bool _rageFear, int _fearTurnBonus)
     {
-        areaAttack = _areaAttack;
-        circularAttack = _circularAttack1;
 
-        if (areaAttack)
+        //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
+
+        activeSkillInfo = AppBerserkUpgrades.initialActiveText;
+        pasiveSkillInfo = AppBerserkUpgrades.initialPasiveText;
+
+        #region Actives
+
+        areaAttack = _areaAttack;
+        bonusDamageAreaAttack = _areaAttack2;
+        
+        circularAttack = _circularAttack1;
+        timesCircularAttackRepeats = _circularAttack2;
+
+        if (_areaAttack2 > 0)
+        {
+            activeSkillInfo = AppBerserkUpgrades.areaAttack2Text;
+        }
+
+        else if (areaAttack)
         {
             bonusDamageAreaAttack = 2;
+            activeSkillInfo = AppBerserkUpgrades.areaAttack1Text;
         }
+
+        if (_circularAttack2 > 1)
+        {
+            activeSkillInfo = AppBerserkUpgrades.circularAttack2Text;
+        }
+
+        else if (circularAttack)
+        {
+            activeSkillInfo = AppBerserkUpgrades.circularAttack1Text;
+        }
+
+        #endregion
+
+        #region Pasives
+
+        rageDamagePlus = _rageDamagePlus2;
+
+        if (rageDamagePlus < _rageDamagePlus1)
+        {
+            rageDamagePlus = _rageDamagePlus1;
+        }
+
+        rageFear = _rageFear;
+        fearTurnBonus = _fearTurnBonus;
+
+        if (rageDamagePlus > 1)
+        {
+            pasiveSkillInfo = AppBerserkUpgrades.rageDamage2Text;
+        }
+
+        else if (rageFear)
+        {
+            pasiveSkillInfo = AppBerserkUpgrades.rageDamage1Text;
+        }
+
+        if (fearTurnBonus > 1)
+        {
+            pasiveSkillInfo = AppBerserkUpgrades.fearRage2Text;
+        }
+
+        else if (fearTurnBonus > 0)
+        {
+            pasiveSkillInfo = AppBerserkUpgrades.fearRage1Text;
+        }
+
+
+        #endregion
     }
 
     public override void CheckWhatToDoWithSpecialToken()

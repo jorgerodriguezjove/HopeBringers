@@ -31,7 +31,6 @@ public class Samurai : PlayerUnit
     //int que  indica el número de veces que el samurai ataca
     public int timesDoubleAttackRepeats;
 
-    
 
     [Header("Pasivas")]
     //PASIVAS
@@ -54,6 +53,80 @@ public class Samurai : PlayerUnit
     public GameObject lonelyBox;
 
     #endregion
+
+    public void SetSpecificStats(bool _parry1, bool _parry2,
+                                bool _multiAttack1, int _multiAttack2,
+                                bool _honor1, bool _honor2,
+                                bool _loneWolf1, bool _loneWolf2)
+    {
+
+        //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
+
+        activeSkillInfo = AppSamuraiUpgrades.initialActiveText;
+        pasiveSkillInfo = AppSamuraiUpgrades.initialPasiveText;
+
+        #region Actives
+
+        parryOn = _parry1;
+        parryOn2 = _parry2;
+
+        doubleAttack = _multiAttack1;
+        timesDoubleAttackRepeats = _multiAttack2;
+
+        if (parryOn2)
+        {
+            activeSkillInfo = AppSamuraiUpgrades.parry2Text;
+        }
+
+        else if (parryOn)
+        {
+            activeSkillInfo = AppSamuraiUpgrades.parry1Text;
+        }
+
+        //TENER CUIDADO CON ESTA, DEPENDE DE CUANTOS ATAQUES TENGA LA SEGUNDA MEJORA
+        if (timesDoubleAttackRepeats > 2)
+        {
+            activeSkillInfo = AppSamuraiUpgrades.multiAttack2Text;
+        }
+
+        else if (doubleAttack)
+        {
+            activeSkillInfo = AppSamuraiUpgrades.multiAttack1Text;
+        }
+
+        #endregion
+
+        #region Pasives
+
+        itsForHonorTime = _honor1;
+        itsForHonorTime2 = _honor2;
+
+        buffLonelyArea = _loneWolf1;
+        isLonelyLikeMe = _loneWolf2;
+
+        if (_honor2)
+        {
+            pasiveSkillInfo = AppSamuraiUpgrades.honor2Text;
+        }
+
+        else if (_honor1)
+        {
+            pasiveSkillInfo = AppSamuraiUpgrades.honor1Text;
+        }
+
+        if (_loneWolf2)
+        {
+            pasiveSkillInfo = AppSamuraiUpgrades.loneWolf2Text;
+        }
+
+        else if (_loneWolf1)
+        {
+            pasiveSkillInfo = AppSamuraiUpgrades.loneWolf1Text;
+        }
+
+
+        #endregion
+    }
 
     public override void CheckWhatToDoWithSpecialToken()
     {
@@ -421,6 +494,7 @@ public class Samurai : PlayerUnit
         }
 
     }
+
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         if(parryOn)

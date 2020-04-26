@@ -69,15 +69,75 @@ public class Mage : PlayerUnit
 
     #endregion
 
-    public void SetSpecificStats(bool _lightningChain1, bool _crossAreaAttack1)
+    public void SetSpecificStats(bool _lightningChain1, bool _lightningChain2,
+                                 bool _crossAreaAttack1,bool _crossAreaAttack2,
+                                 bool _bombDecoy1, bool _bombDecoy2,
+                                 bool _mirrorDecoy1, bool _mirrorDecoy2)
     {
-        lightningChain = _lightningChain1;
-        areaAttack = _crossAreaAttack1;
+        activeSkillInfo = AppMageUpgrades.initialActiveText;
+        pasiveSkillInfo = AppMageUpgrades.initialPasiveText;
 
-        if (areaAttack)
+        #region Actives
+
+        lightningChain = _lightningChain1;
+        lightningChain2 = _lightningChain2;
+            
+        areaAttack = _crossAreaAttack1;
+        areaAttack2 = _crossAreaAttack2;
+
+        if (lightningChain2)
+        {
+            activeSkillInfo = AppMageUpgrades.lightningChain2Text;
+        }
+
+        else if(lightningChain)
+        {
+            activeSkillInfo = AppMageUpgrades.lightningChain1Text;
+        }
+
+        if (areaAttack2)
+        {
+            activeSkillInfo = AppMageUpgrades.crossAreaAttack2Text;
+        }
+
+        else if (areaAttack)
         {
             areaRange = 1;
+            activeSkillInfo = AppMageUpgrades.crossAreaAttack1Text;
         }
+
+        #endregion
+
+        #region Pasives
+
+        isDecoyBomb = _bombDecoy1;
+        isDecoyBomb2 = _bombDecoy2;
+
+        mirrorDecoy = _mirrorDecoy1;
+        mirrorDecoy2 = _mirrorDecoy2;
+
+        if (isDecoyBomb2)
+        {
+            pasiveSkillInfo = AppMageUpgrades.bombDecoy2Text;
+        }
+
+        else if (isDecoyBomb)
+        {
+            pasiveSkillInfo = AppMageUpgrades.bombDecoy1Text;
+        }
+
+        if (mirrorDecoy2)
+        {
+            pasiveSkillInfo = AppMageUpgrades.mirrorDecoy2Text;
+        }
+
+        else if (mirrorDecoy)
+        {
+            areaRange = 1;
+            pasiveSkillInfo = AppMageUpgrades.mirrorDecoy1Text;
+        }
+
+        #endregion
     }
 
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
