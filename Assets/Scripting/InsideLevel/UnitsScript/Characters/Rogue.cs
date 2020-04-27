@@ -130,7 +130,7 @@ public class Rogue : PlayerUnit
         #endregion
     }
 
-    public override void CheckWhatToDoWithSpecialToken()
+    public override void CheckWhatToDoWithSpecialsTokens()
     {
 
         if (extraTurnAttackAfterKill)

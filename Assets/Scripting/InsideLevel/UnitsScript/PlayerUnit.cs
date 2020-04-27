@@ -242,7 +242,7 @@ public class PlayerUnit : UnitBase
 
                 //Refresco de los tokens para resetearlos en pantalla
                 UIM.RefreshTokens();
-                CheckWhatToDoWithSpecialToken();
+                CheckWhatToDoWithSpecialsTokens();
                 isMovingorRotating = false;
                 unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
                 ResetSpecificVariables();
@@ -271,7 +271,7 @@ public class PlayerUnit : UnitBase
                 }
                 //Refresco de los tokens para resetearlos en pantalla
                 UIM.RefreshTokens();
-                CheckWhatToDoWithSpecialToken();
+                CheckWhatToDoWithSpecialsTokens();
                 isMovingorRotating = false;
                 unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
                 ResetSpecificVariables();
@@ -1205,7 +1205,7 @@ public class PlayerUnit : UnitBase
             {
                 if (!_unitToCheck.isStunned)
                 {
-                    StunUnit(_unitToCheck, 1);
+                    StunUnit(_unitToCheck);
                 }
             }
             else if (FindObjectOfType<Monk>().healerMark2)
@@ -1230,7 +1230,7 @@ public class PlayerUnit : UnitBase
         }
     }
 
-    public virtual void CheckWhatToDoWithSpecialToken()
+    public virtual void CheckWhatToDoWithSpecialsTokens()
     {
         //Cada character realiza su comprobación
 

@@ -70,6 +70,9 @@ public class Portraits : MonoBehaviour
     //Token especial de los personajes
     public GameObject specialToken;
 
+    //Token especial de los personajes
+    public GameObject specialToken2;
+
     #endregion
 
     #region INIT

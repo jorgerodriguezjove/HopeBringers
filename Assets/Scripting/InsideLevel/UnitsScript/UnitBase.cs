@@ -224,13 +224,6 @@ public class UnitBase : MonoBehaviour
     public GameObject monkMark;
     public TextMeshProUGUI monkMarkText;
 
-    //Se usa para indicar las marcas del monk con la pasiva 1
-    public GameObject monkMark2;
-    public TextMeshProUGUI monkMark2Text;
-
-    //Se usa para indicar las marcas del monk con la pasiva 2
-    public GameObject monkMark3;
-    public TextMeshProUGUI monkMark3Text;
 
     //Se usa para el ataque del samurai y el ataque del berserker
     public TextMeshProUGUI timesRepeatNumber;
@@ -238,6 +231,9 @@ public class UnitBase : MonoBehaviour
 
     [SerializeField]
     public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon, buffIcon, debuffIcon, movementBuffIcon, movementDebuffIcon, stunnedIcon;
+
+
+    public TextMeshProUGUI buffIconText, debuffIconText, movementBuffIconText, movementDebuffIconText;
 
     [SerializeField]
     public GameObject hoverBuffIcon, hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon;
@@ -979,11 +975,11 @@ public class UnitBase : MonoBehaviour
 
     }
 
-    public virtual void StunUnit(UnitBase unitToStun , int turnsToStunned)
+    public virtual void StunUnit(UnitBase unitToStun)
     {
         
         unitToStun.isStunned = true;
-        unitToStun.turnStunned = turnsToStunned;
+        unitToStun.turnStunned = 1;
         SetStunIcon(unitToStun,false, true);
     }
 
@@ -1043,6 +1039,7 @@ public class UnitBase : MonoBehaviour
             else
             {
                 unitToApply.buffIcon.SetActive(true);
+                unitToApply.buffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
                 unitToApply.debuffIcon.SetActive(false);
             }           
         }
@@ -1057,6 +1054,7 @@ public class UnitBase : MonoBehaviour
             {                
                 unitToApply.buffIcon.SetActive(false);
                 unitToApply.debuffIcon.SetActive(true);
+                unitToApply.debuffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
             }           
         }
         else
@@ -1089,6 +1087,7 @@ public class UnitBase : MonoBehaviour
             else
             {
                 unitToApply.movementBuffIcon.SetActive(true);
+                unitToApply.movementBuffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
                 unitToApply.movementDebuffIcon.SetActive(false);
             }
 
@@ -1107,6 +1106,8 @@ public class UnitBase : MonoBehaviour
             {
                 unitToApply.movementBuffIcon.SetActive(false);
                 unitToApply.movementDebuffIcon.SetActive(true);
+                unitToApply.movementDebuffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
+
             }
 
         }
@@ -1124,8 +1125,7 @@ public class UnitBase : MonoBehaviour
     {
         isMarked = false;
         monkMark.SetActive(false);
-        monkMark2.SetActive(false);
-        monkMark3.SetActive(false);
+        
     }
     public void EnableUnableCollider(bool _shouldEnableCollider)
     {

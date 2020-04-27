@@ -51,9 +51,7 @@ public class Monk : PlayerUnit
     #endregion
 
     public void PutQuitMark(UnitBase unitToMark, bool haveToPut, bool haveToShow)
-    {
-        Debug.Log("PutQuitMark");
-
+    {      
         if (haveToPut)
         {
             unitToMark.isMarked = true;
@@ -63,75 +61,26 @@ public class Monk : PlayerUnit
             unitToMark.isMarked = false;
         }
 
-        if (debuffMark)
+        
+        if (haveToShow)
         {
-            if (haveToShow)
+            unitToMark.monkMark.SetActive(true);
+
+            if (suplex2 && unitToMark.numberOfMarks == 2)
             {
-                unitToMark.monkMark2.SetActive(true);
 
-                if (suplex2 && unitToMark.numberOfMarks == 2)
-                {
-
-                    unitToMark.monkMark2Text.enabled = true;
-                    unitToMark.monkMark2Text.text = "++";
-
-                }
-            }
-            else
-            {
-                unitToMark.monkMark2.SetActive(false);
-
-                unitToMark.monkMark2Text.enabled = false;
+                unitToMark.monkMarkText.enabled = true;
+                unitToMark.monkMarkText.text = "++";
 
             }
-
         }
-        else if (healerMark)
-        {
-            if (haveToShow)
-            {
-                unitToMark.monkMark3.SetActive(true);
-
-                if (suplex2 && unitToMark.numberOfMarks == 2)
-                {
-
-                    unitToMark.monkMark3Text.enabled = true;
-                    unitToMark.monkMark3Text.text = "++";
-
-                }
-
-            }
-            else
-            {
-                unitToMark.monkMark3.SetActive(false);
-
-                unitToMark.monkMark3Text.enabled = false;
-
-            }
-
-        }
-
         else
         {
-            if (haveToShow)
-            {
-                unitToMark.monkMark.SetActive(true);
+            unitToMark.monkMark.SetActive(false);
 
-                if (suplex2 && unitToMark.numberOfMarks == 2)
-                {
-
-                    unitToMark.monkMarkText.enabled = true;
-                    unitToMark.monkMarkText.text = "++";
-
-                }
-            }
-            else
-            {
-                unitToMark.monkMark.SetActive(false);
-
-                unitToMark.monkMarkText.enabled = false;
-            }
+            unitToMark.monkMarkText.enabled = false;
         }
+       
 
     }
 
@@ -573,7 +522,6 @@ public class Monk : PlayerUnit
                 {
                     PutQuitMark(_unitToAttack, true, false);
                     
-                    //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                     TM.surroundingTiles.Clear();
 
                     TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
@@ -596,14 +544,14 @@ public class Monk : PlayerUnit
             }
             else
             {
-                rotatorFeedbackArrow.SetActive(true);
-                Vector3 spawnRotatorArrow = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 1, _unitToAttack.transform.position.z);
-                rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
+               
                 PutQuitMark(_unitToAttack, false, true);
 
             }
 
-
+            rotatorFeedbackArrow.SetActive(true);
+            Vector3 spawnRotatorArrow = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 3, _unitToAttack.transform.position.z);
+            rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
 
         }
         else if (suplex)

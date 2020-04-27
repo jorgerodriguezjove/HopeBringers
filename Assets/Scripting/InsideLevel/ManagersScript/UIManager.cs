@@ -269,7 +269,7 @@ public class UIManager : MonoBehaviour
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
 
 			//Línea para comprobar lo que tiene que hacer el special token en cada unidad
-			panelesPJ[i].GetComponent<Portraits>().assignedPlayer.CheckWhatToDoWithSpecialToken();
+			panelesPJ[i].GetComponent<Portraits>().assignedPlayer.CheckWhatToDoWithSpecialsTokens();
 
 		}
 

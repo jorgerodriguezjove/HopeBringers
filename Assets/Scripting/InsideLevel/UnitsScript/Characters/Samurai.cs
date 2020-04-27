@@ -128,7 +128,7 @@ public class Samurai : PlayerUnit
         #endregion
     }
 
-    public override void CheckWhatToDoWithSpecialToken()
+    public override void CheckWhatToDoWithSpecialsTokens()
     {
         if (buffLonelyArea)
         { 

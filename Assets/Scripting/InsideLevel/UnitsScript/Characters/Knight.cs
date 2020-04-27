@@ -269,7 +269,7 @@ public class Knight : PlayerUnit
             //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
             if (pushWider2)
             {
-                StunUnit(unitToAttack, 1);
+                StunUnit(unitToAttack);
             }
             //Hago daño
             DoDamage(unitToAttack);
@@ -283,7 +283,7 @@ public class Knight : PlayerUnit
                     if (pushWider2)
                     {
 
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
 
@@ -304,7 +304,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                     }
 
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
@@ -330,7 +330,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
 
@@ -350,7 +350,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
 
@@ -377,7 +377,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
@@ -397,7 +397,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
 
@@ -423,7 +423,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
@@ -444,7 +444,7 @@ public class Knight : PlayerUnit
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
-                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile, 1);
+                        StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)

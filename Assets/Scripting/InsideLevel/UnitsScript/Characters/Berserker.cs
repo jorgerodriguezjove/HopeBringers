@@ -126,7 +126,7 @@ public class Berserker : PlayerUnit
         #endregion
     }
 
-    public override void CheckWhatToDoWithSpecialToken()
+    public override void CheckWhatToDoWithSpecialsTokens()
     {
         myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
     }
