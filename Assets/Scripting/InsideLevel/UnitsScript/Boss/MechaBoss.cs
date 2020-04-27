@@ -134,6 +134,8 @@ public class MechaBoss : EnemyUnit
     {
         base.Attack();
 
+        bossPortrait.FlipAttackTokens();
+
         if (isCharging)
         {
             Debug.Log("disparo");
@@ -393,4 +395,10 @@ public class MechaBoss : EnemyUnit
         keepSearching = false;
     }
 
+
+    public override void MoveUnit()
+    {
+        bossPortrait.FlipMovementToken();
+        base.MoveUnit();
+    }
 }

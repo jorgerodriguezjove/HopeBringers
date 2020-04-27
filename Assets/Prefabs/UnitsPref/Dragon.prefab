@@ -771,16 +771,12 @@ MonoBehaviour:
   currentHealth: 0
   currentArmor: 0
   movementUds: 3
+  fMovementUds: 0
   attackRange: 1
   isMarked: 0
   numberOfMarks: 0
-  hasFear: 0
-  turnsWithFear: 0
-  fearIcon: {fileID: 0}
-  turnsWithFearInHUD: {fileID: 0}
   isStunned: 0
   turnStunned: 0
-  stunIcon: {fileID: 0}
   isHidden: 0
   baseDamage: 1
   bonusDamageBackAttack: 1
@@ -790,6 +786,7 @@ MonoBehaviour:
   damageMadeByFall: 1
   BuffbonusStateDamage: 0
   turnsWithBuffOrDebuff: 0
+  turnsWithMovementBuffOrDebuff: 0
   unitModel: {fileID: 812720015327976743}
   unitMaterialModel: {fileID: 8025675287679305071}
   myCurrentTile: {fileID: 0}
@@ -826,13 +823,25 @@ MonoBehaviour:
   notAttackX: {fileID: 0}
   shaderHover: {fileID: 8512296912233093262}
   monkMark: {fileID: 0}
-  monkMark2: {fileID: 0}
-  monkMark3: {fileID: 0}
+  monkMarkText: {fileID: 0}
+  timesRepeatNumber: {fileID: 0}
   backStabIcon: {fileID: 0}
   upToDownDamageIcon: {fileID: 0}
   downToUpDamageIcon: {fileID: 0}
   buffIcon: {fileID: 0}
   debuffIcon: {fileID: 0}
+  movementBuffIcon: {fileID: 0}
+  movementDebuffIcon: {fileID: 0}
+  stunnedIcon: {fileID: 0}
+  buffIconText: {fileID: 0}
+  debuffIconText: {fileID: 0}
+  movementBuffIconText: {fileID: 0}
+  movementDebuffIconText: {fileID: 0}
+  hoverBuffIcon: {fileID: 0}
+  hoverDebuffIcon: {fileID: 0}
+  hoverMovementBuffIcon: {fileID: 0}
+  hoverMovementDebuffIcon: {fileID: 0}
+  hoverStunnedIcon: {fileID: 0}
   canvasUnit: {fileID: 7958651517046312001}
   changePositionIcon: {fileID: 0}
   unitGeneralInfo: 
@@ -850,6 +859,7 @@ MonoBehaviour:
   orderToShow: 0
   thisUnitOrder: {fileID: 0}
   currentUnitsAvailableToAttack: []
+  shadowTile: {fileID: 0}
   isGoingToBeAlertedOnEnemyTurn: 0
   haveIBeenAlerted: 1
   pathToObjective: []
@@ -857,6 +867,7 @@ MonoBehaviour:
   LevelManagerRef: {fileID: 0}
   enemyTierInfo: 
   enemyTierImage: {fileID: 0}
+  numberOfAttackTokens: 3
   arrowEnemyIndicator: {fileID: 6238210997727036621}
   selectedMaterial: {fileID: 2100000, guid: 138a6284f26a7d6488028cc22d37c737, type: 2}
   myPortrait: {fileID: 0}

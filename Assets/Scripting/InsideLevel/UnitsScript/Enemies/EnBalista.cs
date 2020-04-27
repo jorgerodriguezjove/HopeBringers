@@ -23,6 +23,9 @@ public class EnBalista : EnemyUnit
     [SerializeField]
     private List<IndividualTiles> tilesToShoot = new List<IndividualTiles>();
 
+    [SerializeField]
+    private float timeBetweenParticles;
+
     #endregion 
 
     public override void SearchingObjectivesToAttack()
@@ -159,7 +162,7 @@ public class EnBalista : EnemyUnit
         {
             //En principio se destruye la particula por si sola al terminar
             Instantiate(attackParticle, new Vector3(tilesToShoot[i].transform.position.x, tilesToShoot[i].transform.position.y + 0.5f, tilesToShoot[i].transform.position.z), attackParticle.transform.rotation);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(timeBetweenParticles);
 
             if (tilesToShoot[i].unitOnTile != null)
             {
