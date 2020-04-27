@@ -46,10 +46,10 @@ public class DarkLord : EnemyUnit
     #region COPIA_GOBLIN
 
     protected override void Awake()
-    {
-        Debug.Log("Awake");
+    {  
         //Le digo al enemigo cual es el LevelManager del nivel actual
         LevelManagerRef = FindObjectOfType<LevelManager>().gameObject;
+        UIM = FindObjectOfType<UIManager>();
 
         //Referencia al LM y me incluyo en la lista de enemiogos
         LM = LevelManagerRef.GetComponent<LevelManager>();
@@ -133,6 +133,8 @@ public class DarkLord : EnemyUnit
 
                 areaCharged = false;
                 attackCountThisTurn++;
+
+                bossPortrait.FlipAttackTokens();
             }
 
             if (currentlyPossesing)
@@ -591,6 +593,8 @@ public class DarkLord : EnemyUnit
 
     private void CallWaitCoroutine()
     {
+        bossPortrait.FlipAttackTokens();
+
         //Salgo de la comprobación de acciones para volver a empezar
         StartCoroutine("WaitBeforeNextAction");
         myCurrentEnemyState = enemyState.Waiting;
@@ -676,6 +680,11 @@ public class DarkLord : EnemyUnit
     }
 
     //PARA MOVEUNIT SE USA LA BASE DEL ENEMIGO (Que es la lógica del goblin).
+    public override void MoveUnit()
+    {
+        bossPortrait.FlipMovementToken();
+        base.MoveUnit();
+    }
 
     //Esta función muestra la acción del enemigo.
     //Para esconderla hay otra función (esta en el EnemyUnit)

@@ -106,8 +106,9 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     public GameObject LevelManagerRef;
     protected LevelManager LM;
+    protected UIManager UIM;
 
-	[Header("INFO")]
+    [Header("INFO")]
 
 	[@TextAreaAttribute(15, 20)]
 	public string enemyTierInfo;
@@ -117,6 +118,8 @@ public class EnemyUnit : UnitBase
     [Header("ONLY BOSS")]
     [SerializeField]
     public int numberOfAttackTokens;
+    [HideInInspector]
+    public PortraitBoss bossPortrait;
 
     [Header("FEEDBACK")]
 
@@ -154,14 +157,21 @@ public class EnemyUnit : UnitBase
 
     #region INIT
 
+    //El dark lord hace OVERRIDE
     protected virtual void Awake()
     {
         //Le digo al enemigo cual es el LevelManager del nivel actual
         LevelManagerRef = FindObjectOfType<LevelManager>().gameObject;
+        UIM = FindObjectOfType<UIManager>();
 
         //Referencia al LM y me incluyo en la lista de enemiogos
         LM = LevelManagerRef.GetComponent<LevelManager>();
         LM.enemiesOnTheBoard.Add(this);
+
+        if (GetComponent<MechaBoss>() || GetComponent<DarkLord>() || GetComponent<BossMultTile>())
+        {
+            bossPortrait = FindObjectOfType<PortraitBoss>();
+        }
 
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
 
@@ -184,7 +194,6 @@ public class EnemyUnit : UnitBase
 		{
 			inGamePortrait.sprite = characterImage;
 		}
-		
     }
 
    
@@ -590,6 +599,11 @@ public class EnemyUnit : UnitBase
         //currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
         //currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
         //currentTimeWaitingBeforeEnding = timeWaitingBeforeEnding;
+
+        if (bossPortrait != null)
+        {
+            bossPortrait.RefreshAllTokens();
+        }
 
         if (myPortrait != null)
         {
@@ -1078,9 +1092,9 @@ public class EnemyUnit : UnitBase
             Die();
         }
 
-        if (GetComponent<MechaBoss>() || GetComponent<DarkLord>() || GetComponent<BossMultTile>())
+        if (bossPortrait != null)
         {
-            FindObjectOfType<UIManager>().RefreshHealth();
+            bossPortrait.RefreshHealth();
         }
 
         base.ReceiveDamage(damageReceived, unitAttacker);
@@ -1186,9 +1200,7 @@ public class EnemyUnit : UnitBase
 
     public override void UndoAttack(int previousHealth)
     {
-       
-        base.UndoAttack(previousHealth);
-       
+        base.UndoAttack(previousHealth);  
     }
 
     public void ExecuteAnimationAttack()
@@ -1223,11 +1235,11 @@ public class EnemyUnit : UnitBase
         {
             exclamationIcon.SetActive(true);
         }
+
         else
         {
             exclamationIcon.SetActive(true);
         }
-
 
         //Quito particulas dormido
         if (sleepParticle != null)

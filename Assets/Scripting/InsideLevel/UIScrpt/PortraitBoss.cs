@@ -76,20 +76,7 @@ public class PortraitBoss : MonoBehaviour
         gameObject.SetActive(true);
         //initImage = GetComponent<Image>().sprite;
 
-        if (FindObjectOfType<MechaBoss>())
-        {
-            assignedBoss = FindObjectOfType<MechaBoss>();
-        }
-
-        else if (FindObjectOfType<DarkLord>())
-        {
-            assignedBoss = FindObjectOfType<DarkLord>();
-        }
-
-        else if (FindObjectOfType<BossMultTile>())
-        {
-            assignedBoss = FindObjectOfType<BossMultTile>();
-        }
+        AssignCurrentBoss();
 
         if (assignedBoss != null)
         {
@@ -111,114 +98,132 @@ public class PortraitBoss : MonoBehaviour
         }
     }
 
+    public void AssignCurrentBoss()
+    {
+        if (FindObjectOfType<MechaBoss>())
+        {
+            assignedBoss = FindObjectOfType<MechaBoss>();
+            assignedBoss.bossPortrait = this;
+        }
+
+        else if (FindObjectOfType<DarkLord>())
+        {
+            assignedBoss = FindObjectOfType<DarkLord>();
+            assignedBoss.bossPortrait = this;
+        }
+
+        else if (FindObjectOfType<BossMultTile>())
+        {
+            assignedBoss = FindObjectOfType<BossMultTile>();
+            assignedBoss.bossPortrait = this;
+        }
+    }
+
     #endregion
 
     //A las funciones de hover y click se llama gracias al event triggger que tienen en el componente (mirar editor vamos)
     #region INTERACTION
 
-    //public void AssignClickerPlayer()
-    //{
-    //    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-    //    {
-    //        UIM.PortraitCharacterSelect(assignedPlayer);
-    //        LM.camRef.FocusCameraOnCharacter(assignedPlayer.gameObject);
-    //        isClicked = true;
-    //    }
-    //}
+    public void ClickPortrait()
+    {
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            //UIM.PortraitCharacterSelect(assignedBoss);
+            LM.camRef.FocusCameraOnCharacter(assignedBoss.gameObject);
+            isClicked = true;
+        }
+    }
 
-    //public void Highlight()
-    //{
-    //    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-    //    {
-    //        UIM.HighlightCharacter(assignedPlayer);
+    public void Highlight()
+    {
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            //UIM.HighlightCharacter(assignedBoss);
 
-    //        if (LM.selectedCharacter == null && LM.selectedEnemy == null)
-    //        {
-    //            ShowCharacterImageFromPortrait();
-    //            UIM.LM.ShowUnitHover(assignedPlayer.movementUds, assignedPlayer);
+            if (LM.selectedCharacter == null && LM.selectedEnemy == null)
+            {
+                //ShowCharacterImageFromPortrait();
+                //UIM.LM.ShowUnitHover(assignedBoss.movementUds, assignedBoss);
+            }
 
-    //        }
-    //        selectedPanel.SetActive(true);
-    //    }
-    //}
+            Debug.Log("owo");
+            selectedPanel.SetActive(true);
+        }
+    }
 
-    //public void Unhighlight()
-    //{
-    //    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-    //    {
-    //        if (LM.selectedCharacter == null && LM.selectedEnemy == null)
-    //        {
+    public void Unhighlight()
+    {
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            if (LM.selectedCharacter == null && LM.selectedEnemy == null)
+            {
 
-    //            UIM.LM.HideUnitHover(assignedPlayer);
-    //        }
+                //UIM.LM.HideUnitHover(assignedBoss);
+            }
 
-    //        if (LM.selectedCharacter != assignedPlayer)
-    //        {
-    //            UIM.UnHighlightCharacter(assignedPlayer);
-    //        }
+            if (LM.selectedCharacter != assignedBoss)
+            {
+                //UIM.UnHighlightCharacter(assignedBoss);
+            }
 
-
-    //        if (isClicked == false)
-    //        {
-
-
-    //            if (LM.selectedCharacter != assignedPlayer)
-    //            {
-    //                assignedPlayer.ResetColor();
-    //                selectedPanel.SetActive(false);
-    //            }
-
-    //        }
-    //    }
-    //}
+            if (isClicked == false)
+            {
+                if (LM.selectedCharacter != assignedBoss)
+                {
+                    assignedBoss.ResetColor();
+                    selectedPanel.SetActive(false);
+                }
+            }
+        }
+    }
 
 
-    //public void HighlightPortrait()
-    //{
-    //    //GetComponent<Image>().sprite = selectedImage;
-    //    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-    //    {
-    //        selectedPanel.SetActive(true);
-    //    }
-    //}
-    //public void UnHighlightPortrait()
-    //{
-    //    //GetComponent<Image>().sprite = initImage;
+    public void HighlightPortrait()
+    {
+        //GetComponent<Image>().sprite = selectedImage;
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            selectedPanel.SetActive(true);
+        }
+    }
+    public void UnHighlightPortrait()
+    {
+        //GetComponent<Image>().sprite = initImage;
 
-    //    //if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-    //    //{
-    //    //    selectedPanel.SetActive(false);
-    //    //}
-    //    if (LM.selectedCharacter != this)
-    //    {
-    //        selectedPanel.SetActive(false);
-    //    }
+        if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+        {
+            selectedPanel.SetActive(false);
+        }
 
-    //}
+        if (LM.selectedCharacter != this)
+        {
+            selectedPanel.SetActive(false);
+        }
+    }
 
-    //public void ShowCharacterImageFromPortrait()
-    //{
-    //    if (UIM.LM.selectedCharacter == null)
-    //    {
-    //        UIM.ShowUnitInfo(assignedPlayer.unitGeneralInfo, assignedPlayer);
-    //    }
-    //}
+    public void ShowCharacterImageFromPortrait()
+    {
+        if (UIM.LM.selectedCharacter == null)
+        {
+            UIM.ShowUnitInfo(assignedBoss.unitGeneralInfo, assignedBoss);
+        }
+    }
 
-    //public void OnMouseEnter()
-    //{
-    //    Highlight();
+    public void OnMouseEnter()
+    {
+        Highlight();
 
-    //}
+    }
 
-    //private void OnMouseExit()
-    //{
-    //    Unhighlight();
-    //}
+    private void OnMouseExit()
+    {
+        Unhighlight();
+    }
 
-    //private void OnMouseDown()
-    //{
-    //    AssignClickerPlayer();
-    //}
+    private void OnMouseDown()
+    {
+        ClickPortrait();
+    }
 
     #endregion
 
@@ -284,42 +289,41 @@ public class PortraitBoss : MonoBehaviour
         }
     }
 
-    ////Función que se encarga de actualizar el estado de los tokens de movimiento y ataque.
-    //public void RefreshTokens()
-    //{
-    //    for (int i = 0; i < attackTokens.Count; i++)
-    //    {
-    //        //Añado este if para que compruebe si es un decoy o no.
-    //        if (assignedBoss != null)
-    //        {
-    //            //attackTokens[i].SetActive(!assignedPlayer.hasAttacked);
-    //            if (!assignedBoss.hasAttacked)
-    //            {
-    //                attackTokens[i].GetComponent<Animator>().Play("TokenReset");
-    //            }
-    //            else
-    //            {
-    //                attackTokens[i].GetComponent<Animator>().Play("TokenFlip");
-    //            }
-    //        }
-    //    }
-    //    for (int i = 0; i < movementTokens.Count; i++)
-    //    {
-    //        //Añado este if para que compruebe si es un decoy o no.
-    //        if (assignedBoss != null)
-    //        {
-    //            //movementTokens[i].SetActive(!assignedPlayer.hasMoved);
-    //            if (!assignedBoss.hasMoved)
-    //            {
-    //                movementTokens[i].GetComponent<Animator>().Play("TokenReset");
-    //            }
-    //            else
-    //            {
-    //                movementTokens[i].GetComponent<Animator>().Play("TokenFlip");
-    //            }
-    //        }
-    //    }
-    //}
+    int attackCounter;
+
+    //Flipea el siguiente token de ataque
+    public void FlipAttackTokens()
+    {
+        attackTokens[attackCounter].GetComponent<Animator>().Play("TokenFlip");
+        attackCounter++;
+    }
+
+    //Flipea el token de movimiento
+    public void FlipMovementToken()
+    {
+        movementTokens[0].GetComponent<Animator>().Play("TokenFlip");
+    }
+
+    //Resetea los tokens
+    public void RefreshAllTokens()
+    {
+        for (int i = 0; i < attackTokens.Count; i++)
+        {
+            if (assignedBoss != null)
+            {
+                attackTokens[i].GetComponent<Animator>().Play("TokenReset");
+            }
+        }
+        for (int i = 0; i < movementTokens.Count; i++)
+        {
+            if (assignedBoss != null)
+            {
+                movementTokens[i].GetComponent<Animator>().Play("TokenReset");
+            }
+        }
+
+        attackCounter = 0;
+    }
 
     public void RefreshSprites()
     {

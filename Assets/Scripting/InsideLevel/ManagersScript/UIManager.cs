@@ -286,6 +286,7 @@ public class UIManager : MonoBehaviour
 
     public void HideGameHud()
     {
+        Debug.Log("HideGameHud en ui manager no hace nada");
         //hudParentObject.SetActive(false);
         //hud3DInGame.SetActive(false);
         //hideDuringUnitPlacementHud.SetActive(false);
@@ -486,18 +487,12 @@ public class UIManager : MonoBehaviour
 		{
             panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
 		}
-
-        if (bossPortrait.gameObject.activeSelf)
-        {
-            bossPortrait.RefreshHealth();
-        }
 	}
     //Avisa a los retratos activos de que refresquen los tokens
     public void RefreshTokens()
 	{
         for (int i = 0; i < panelesPJ.Count; i++)
         {
-            
             panelesPJ[i].GetComponent<Portraits>().RefreshTokens();
         }
 	}

@@ -459,6 +459,8 @@ public class BossMultTile : EnemyUnit
     private void CallWaitCoroutine()
     {
         //Salgo de la comprobación de acciones para volver a empezar
+
+        bossPortrait.FlipAttackTokens();
         StartCoroutine("WaitBeforeNextAction");
         myCurrentEnemyState = enemyState.Waiting;
     }
@@ -647,6 +649,7 @@ public class BossMultTile : EnemyUnit
         //Actualizo info de los tiles
         UpdateInformationAfterMovement(pathToObjective[limitantNumberOfTilesToMove]);
 
+        bossPortrait.FlipMovementToken();
         StartCoroutine("MovingUnitAnimation");
 
         #endregion
