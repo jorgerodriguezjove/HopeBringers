@@ -17,7 +17,10 @@ public class MonkData : CharacterData
 
             //Actualizo las merjoas especificas del personaje
             //HAY QUE CAMBIARLO EN SU SCRIPT
-            //myUnitReferenceOnLevel.GetComponent<Monk>().SetSpecificStats(specificBoolCharacterUpgrades[AppKnightUpgrades.pushFurther1], specificBoolCharacterUpgrades[AppKnightUpgrades.pushWider1]);
+              myUnitReferenceOnLevel.GetComponent<Monk>().SetSpecificStats(specificBoolCharacterUpgrades[AppMonkUpgrades.turn1], specificBoolCharacterUpgrades[AppMonkUpgrades.turn2],
+                                                                           specificBoolCharacterUpgrades[AppMonkUpgrades.suplex1], specificBoolCharacterUpgrades[AppMonkUpgrades.suplex2],
+                                                                           specificBoolCharacterUpgrades[AppMonkUpgrades.markBuff1], specificBoolCharacterUpgrades[AppMonkUpgrades.markBuff2],
+                                                                           specificBoolCharacterUpgrades[AppMonkUpgrades.markDebuff1], specificBoolCharacterUpgrades[AppMonkUpgrades.markDebuff2]);
         }
     }
 
@@ -25,12 +28,17 @@ public class MonkData : CharacterData
     protected override void InitializeSpecificUpgrades()
     {
         //Mejoras Tipo BOOL
-        //HAY QUE CAMBIARLO EN SU SCRIPT
-        //specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, false);
-        //specificBoolCharacterUpgrades.Add(AppKnightUpgrades.pushWider1, false);
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.turn1, false);
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.turn2, false);
 
-        //Mejoras tipo INT
-        //specificIntCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, myUnitReferenceOnLevel.GetComponent<Knight>().tilesToPush);
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.suplex1, false);
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.suplex2, false);
+
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.markBuff1, false);
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.markBuff2, false);
+
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.markDebuff1, false);
+        specificBoolCharacterUpgrades.Add(AppMonkUpgrades.markDebuff2, false);
     }
 
 }

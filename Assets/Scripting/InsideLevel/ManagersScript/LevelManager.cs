@@ -1010,8 +1010,11 @@ public class LevelManager : MonoBehaviour
                 hoverUnit.ClearRange();
             }
 
-            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowHideFullShield(false);
-            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowHidePartialShield(false);
+            if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+            {
+                hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowHideFullShield(false);
+                hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowHidePartialShield(false);
+            }
         }
     }
 

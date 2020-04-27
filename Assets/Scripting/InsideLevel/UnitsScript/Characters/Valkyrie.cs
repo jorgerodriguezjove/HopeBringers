@@ -57,6 +57,83 @@ public class Valkyrie : PlayerUnit
     [SerializeField]
     public List<GameObject> myHaloInstancies = new List<GameObject>();
 
+    public void SetSpecificStats(int _range1, bool _range2,
+                                bool _armor1, bool _armor2,
+                                bool _change1, bool _change2,
+                                int _height1, int _height2)
+    {
+
+        //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
+
+        activeSkillInfo = AppValkyrieUpgrades.initialActiveText;
+        pasiveSkillInfo = AppValkyrieUpgrades.initialPasiveText;
+
+        #region Actives
+
+        if (_range1 > attackRange)
+        {
+            attackRange = _range1;
+        }
+        canChooseEnemy = _range2;
+
+        armorMode = _armor1;
+        armorMode2 = _armor2;
+
+        if (armorMode2)
+        {
+            activeSkillInfo = AppValkyrieUpgrades.armorChange2Text;
+        }
+
+        else if (armorMode)
+        {
+            activeSkillInfo = AppValkyrieUpgrades.armorChange1Text;
+        }
+
+        if (canChooseEnemy)
+        {
+            activeSkillInfo = AppValkyrieUpgrades.moreRange2Text;
+        }
+
+        else if (_range1 > attackRange)
+        {
+            activeSkillInfo = AppValkyrieUpgrades.moreRange1Text;
+        }
+
+        #endregion
+
+        #region Pasives
+
+        changePositions = _change1;
+        changePositions2 = _change2;
+
+        if (_height2 > maxHeightDifferenceToMove)
+        {
+            maxHeightDifferenceToMove = _height2;
+            pasiveSkillInfo = AppValkyrieUpgrades.height2Text;
+        }
+
+        else if (_height1 > maxHeightDifferenceToMove)
+        {
+            maxHeightDifferenceToMove = _height1;
+            pasiveSkillInfo = AppValkyrieUpgrades.height1Text;
+        }
+
+
+        if (changePositions2)
+        {
+            pasiveSkillInfo = AppValkyrieUpgrades.sustitution2Text;
+        }
+
+        else if (changePositions)
+        {
+            pasiveSkillInfo = AppValkyrieUpgrades.sustitution1Text;
+        }
+
+
+        #endregion
+    }
+
+
     protected override void OnMouseDown()
     {
         base.OnMouseDown();

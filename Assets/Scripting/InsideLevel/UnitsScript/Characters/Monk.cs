@@ -11,7 +11,6 @@ public class Monk : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
-
     [Header("Activas")]
     
     //bool para la activa 1
@@ -49,6 +48,80 @@ public class Monk : PlayerUnit
 
 
     #endregion
+
+    public void SetSpecificStats(bool _turn1, bool _turn2,
+                                bool _suplex1, bool _suplex2,
+                                bool _markDebuff1, bool _markDebuff2,
+                                bool _markBuff1, bool _markBuff2)
+    {
+
+        //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
+
+        activeSkillInfo = AppMonkUpgrades.initialActiveText;
+        pasiveSkillInfo = AppMonkUpgrades.initialPasiveText;
+
+        #region Actives
+
+        rotatorTime = _turn1;
+        rotatorTime2 = _turn2;
+
+        suplex = _suplex1;
+        suplex2 = _suplex2;
+
+        if (rotatorTime2)
+        {
+            activeSkillInfo = AppMonkUpgrades.turn2Text;
+        }
+
+        else if (rotatorTime)
+        {
+            activeSkillInfo = AppMonkUpgrades.turn1Text;
+        }
+
+        if (suplex2)
+        {
+            activeSkillInfo = AppMonkUpgrades.suplex2Text;
+        }
+
+        else if (suplex)
+        {
+            activeSkillInfo = AppMonkUpgrades.suplex1Text;
+        }
+
+        #endregion
+
+        #region Pasives
+
+        debuffMark = _markDebuff1;
+        debuffMark2 = _markDebuff2;
+
+        healerMark = _markBuff1;
+        healerMark2 = _markBuff2;
+
+
+        if (debuffMark2)
+        {
+            pasiveSkillInfo = AppMonkUpgrades.markDebuff2Text;
+        }
+
+        else if (debuffMark)
+        {
+            pasiveSkillInfo = AppMonkUpgrades.markDebuff1Text;
+        }
+
+        if (healerMark2)
+        {
+            pasiveSkillInfo = AppMonkUpgrades.markBuff2Text;
+        }
+
+        else if (healerMark)
+        {
+            pasiveSkillInfo = AppMonkUpgrades.markBuff1Text;
+        }
+
+
+        #endregion
+    }
 
     public void PutQuitMark(UnitBase unitToMark, bool haveToPut, bool haveToShow)
     {      
