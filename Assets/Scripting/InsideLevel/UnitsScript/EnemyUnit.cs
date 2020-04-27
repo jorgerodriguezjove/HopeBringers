@@ -114,7 +114,11 @@ public class EnemyUnit : UnitBase
 	[SerializeField]
 	public Sprite enemyTierImage;
 
-	[Header("FEEDBACK")]
+    [Header("ONLY BOSS")]
+    [SerializeField]
+    public int numberOfAttackTokens;
+
+    [Header("FEEDBACK")]
 
     //Flecha que indica que enemigo está realizando su acción.
     [SerializeField]
@@ -1072,6 +1076,11 @@ public class EnemyUnit : UnitBase
             }
 
             Die();
+        }
+
+        if (GetComponent<MechaBoss>() || GetComponent<DarkLord>() || GetComponent<BossMultTile>())
+        {
+            FindObjectOfType<UIManager>().RefreshHealth();
         }
 
         base.ReceiveDamage(damageReceived, unitAttacker);

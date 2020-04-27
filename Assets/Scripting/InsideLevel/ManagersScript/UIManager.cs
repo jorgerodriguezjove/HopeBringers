@@ -34,12 +34,6 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	public GameObject optionsButton;
 
-    //Texto de cuadro inferior derecha (tiles)
-	//[SerializeField]
-	//private TextMeshProUGUI tooltipText;
-	//[SerializeField]
-	//private Image tooltipImage;
-
     //Texto de cartel superior con las acciones
 	[SerializeField]
 	private TextMeshProUGUI tooltipAccionesText;
@@ -178,11 +172,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI totalXp;
 
-    [Header("REFERENCIAS")]
+    [Header("BOSS")]
+    [SerializeField]
+    PortraitBoss bossPortrait;
 
-    //Level Manager
-	[HideInInspector]
-    public LevelManager LM;
+    [Header("REFERENCIAS")]
 
     [SerializeField]
     GameObject hudParentObject;
@@ -196,6 +190,10 @@ public class UIManager : MonoBehaviour
     GameObject hideDuringUnitPlacementHud;
     [SerializeField]
     GameObject hideDuringUnitPlacement3DHud;
+
+    //Level Manager
+    [HideInInspector]
+    public LevelManager LM;
 
 	[Header("TUTORIAL")]
 
@@ -270,8 +268,17 @@ public class UIManager : MonoBehaviour
 
 			//Línea para comprobar lo que tiene que hacer el special token en cada unidad
 			panelesPJ[i].GetComponent<Portraits>().assignedPlayer.CheckWhatToDoWithSpecialsTokens();
-
 		}
+
+        if (FindObjectOfType<MechaBoss>() || FindObjectOfType<DarkLord>() ||FindObjectOfType<BossMultTile>())
+        {
+            bossPortrait.gameObject.SetActive(true);
+        }
+
+        else
+        {
+            Debug.Log("no boss");
+        }
 
         tooltipAccionesText.text = "Selecciona una unidad";
 
@@ -479,6 +486,11 @@ public class UIManager : MonoBehaviour
 		{
             panelesPJ[i].GetComponent<Portraits>().RefreshHealth();
 		}
+
+        if (bossPortrait.gameObject.activeSelf)
+        {
+            bossPortrait.RefreshHealth();
+        }
 	}
     //Avisa a los retratos activos de que refresquen los tokens
     public void RefreshTokens()
