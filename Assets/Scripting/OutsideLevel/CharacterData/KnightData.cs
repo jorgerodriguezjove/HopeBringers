@@ -40,9 +40,6 @@ public class KnightData : CharacterData
 
         specificBoolCharacterUpgrades.Add(AppKnightUpgrades.neighbourBlock1, false);
         specificBoolCharacterUpgrades.Add(AppKnightUpgrades.neighbourBlock2, false);
-
-        //Mejoras tipo INT
-        //specificIntCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, myUnitReferenceOnLevel.GetComponent<Knight>().tilesToPush);
     }
 
 }

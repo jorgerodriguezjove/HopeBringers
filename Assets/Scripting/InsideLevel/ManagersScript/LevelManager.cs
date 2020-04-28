@@ -242,8 +242,6 @@ public class LevelManager : MonoBehaviour
         //Comienza la fase de colocación de unidades
         //El Hud se inicializa al terminar la colocación de unidades
         InitializeCharacters();
-
-        
     }
 
     //Crea a los personajes del jugador correspondientes
@@ -251,6 +249,9 @@ public class LevelManager : MonoBehaviour
     {
         //Aparece la caja
         UIM.ActivateHudUnitPlacement();
+
+        //Turnos durante colocación de unidades
+        UIM.UpdateTurnNumber(1, turnLimit);
 
         //Se instancian en los transform los personajes desbloqueados (GameManager necesita saberlos)
         for (int i = 0; i < GameManager.Instance.characterDataForCurrentLevel.Count; i++)

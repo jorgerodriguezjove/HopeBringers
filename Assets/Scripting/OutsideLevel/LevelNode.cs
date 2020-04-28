@@ -59,6 +59,7 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public string LevelTitle;
     //Decripción del nivel
+    [TextArea(1,10)]
     [SerializeField]
     public string descriptionText;
 
@@ -71,8 +72,6 @@ public class LevelNode : MonoBehaviour
     bool afterFinishInterlude;
     [SerializeField]
     string interludeSceneName;
-
-
 
     [Header("MATERIALES")]
 
@@ -133,7 +132,6 @@ public class LevelNode : MonoBehaviour
             unlockableLevels[i].UnlockThisLevel();
         }
     }
-
 
     #endregion
 }

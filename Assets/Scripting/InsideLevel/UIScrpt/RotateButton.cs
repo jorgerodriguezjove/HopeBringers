@@ -5,19 +5,40 @@ using UnityEngine.UI;
 
 public class RotateButton : MonoBehaviour
 {
+    [Header("DIRECTION")]
     [SerializeField]
      public PlayerUnit.FacingDirection newDirection;
 
+    [Header("MATERIALS")]
+    [SerializeField]
+    private Material highlightedMat;
+    private Material initialMaterial;
+
+    [Header("REFERENCIAS")]
     UIManager UIM;
+
+    MeshRenderer myMeshRenderer;
 
     private void Start()
     {
         UIM = FindObjectOfType<UIManager>();
+        myMeshRenderer = GetComponent<MeshRenderer>();
+        initialMaterial = myMeshRenderer.material;
     }
 
     private void OnMouseDown()
     {
         UIM.RotatePlayerInNewDirection(newDirection);
+    }
+
+    private void OnMouseEnter()
+    {
+        myMeshRenderer.material = highlightedMat;   
+    }
+
+    private void OnMouseExit()
+    {
+        myMeshRenderer.material = initialMaterial;
     }
 
     public void UiManagerChangeDirection()

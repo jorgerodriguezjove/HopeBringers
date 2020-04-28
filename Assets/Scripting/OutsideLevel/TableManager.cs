@@ -54,6 +54,10 @@ public class TableManager : MonoBehaviour
     [SerializeField]
     private LevelNode level1;
 
+    [Header("VFX ")]
+    [SerializeField]
+    public GameObject vfxLevelUp;
+
     #endregion
     
     #region INIT
@@ -156,6 +160,7 @@ public class TableManager : MonoBehaviour
     {
         mainMenuCamera.SetActive(true);
         mapCamera.SetActive(false);
+        UITM.HideAllUI();
     }
 
     public void MoveToSelection()
@@ -164,12 +169,16 @@ public class TableManager : MonoBehaviour
         selectCamera.SetActive(true);
 
         currentClickedSceneName = lastLevelClicked.sceneName;
+
+        UITM.ShowLevelInfoUI();
     }
 
     public void MoveToProgresion()
     {
         mapCamera.SetActive(false);
         progresionCamera.SetActive(true);
+
+        UITM.ShowProgresionUI();
     }
 
     public void MoveToUpgrades()
@@ -178,6 +187,8 @@ public class TableManager : MonoBehaviour
 
         progresionCamera.SetActive(false);
         upgradesCamera.SetActive(true);
+
+        UITM.ShowUpgradesUI();
     }
     
     public void BackToProgresion()
@@ -185,6 +196,8 @@ public class TableManager : MonoBehaviour
         upgradesCamera.SetActive(false);
         progresionCamera.SetActive(true);
         currentCharacterUpgrading.transform.position = currentCharacterUpgrading.initialPosition;
+
+        UITM.ShowProgresionUI();
     }
 
     public void BackToMap()
@@ -199,6 +212,8 @@ public class TableManager : MonoBehaviour
 
         //Reseteo personajes seleccionados
         ResetCharactersToBox();
+
+        UITM.ShowMapUI();
     }
 
     public void ResetCharactersToBox()

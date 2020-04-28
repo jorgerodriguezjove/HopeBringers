@@ -13,9 +13,6 @@ public class UpgradeNode : MonoBehaviour
     [SerializeField]
     public int upgradeCost;
 
-    [SerializeField]
-    public string tooltip;
-
     //Si es resta o suma
     [Tooltip ("Activar si la mejora reduce el valor en vez de sumar. Por ej reducir cooldown")]
     [SerializeField]
@@ -41,8 +38,6 @@ public class UpgradeNode : MonoBehaviour
     [HideInInspector]
     public int idUpgrade;
 
-    //[SerializeField]
-    //public bool isBlocked;
     [SerializeField]
     public bool isBought;
 
@@ -50,15 +45,25 @@ public class UpgradeNode : MonoBehaviour
     [SerializeField]
     GameObject imageFeedbackIsBought;
 
+    //Imágen que indica que todavía no se puede comprar la mejora
+    [SerializeField]
+    GameObject imageFeedbackIsBlocked;
+
     [SerializeField]
     List<UpgradeNode> nodesUnlockedAfterBuying;
 
     [HideInInspector]
     public CharacterData myUnit;
 
+    //Bool que indica si se puede intentar comprar la mejora.
+    public bool isInteractuable = true;
+
     [Header("REFERENCIAS")]
     [HideInInspector]
     public TableManager TM;
+
+    [SerializeField]
+    private GameObject feedbackBranchBlocked;
 
     #endregion
 
@@ -80,10 +85,10 @@ public class UpgradeNode : MonoBehaviour
     //Al hacer click sobre el upgrade
     public void onClickUpgrade()
     {
-        if(!isBought)
+        if(!isBought && isInteractuable)
         {
             //Aviso comprar mejora
-            if (GameManager.Instance.currentExp >= upgradeCost)
+            if (GameManager.Instance.currentExp >= myUnit.unitPowerLevel)
             {
                 FindObjectOfType<UITableManager>().ConfirmateUpgrade(true, GetComponent<UpgradeNode>());
             }
@@ -96,7 +101,7 @@ public class UpgradeNode : MonoBehaviour
         }
 
         // Mensaje Ya ha sido comprada
-        else
+        else if (isInteractuable)
         {
             FindObjectOfType<UITableManager>().AlreadyBought();
         }
@@ -171,12 +176,43 @@ public class UpgradeNode : MonoBehaviour
                 Debug.LogError("Diccionario Generico y especifico Int no contienen el nombre: " + upgradeName);
             }
         }
+
+        FindObjectOfType<UITableManager>().UpdateUpgradesBlocked();
     }
 
     //Al desbloquear upgrades por comprar
     public void UnlockUpgrade()
     {
-
-        gameObject.SetActive(true);
+        imageFeedbackIsBlocked.SetActive(false);
+        isInteractuable = true;
     }
+
+    public void ShowHideFeedbackBlockedBranch(bool _shouldShow)
+    {
+        feedbackBranchBlocked.SetActive(_shouldShow);
+        isInteractuable = !_shouldShow;
+    }
+
+    public void ShowFeedbackBlockedUpgrade()
+    {
+        imageFeedbackIsBlocked.SetActive(true);
+        isInteractuable = false;
+    }
+
+    private void OnMouseEnter()
+    {
+        //Hover highlight
+        if (isInteractuable)
+        {
+
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        
+    }
+
+
+
 }

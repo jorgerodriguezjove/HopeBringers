@@ -34,10 +34,6 @@ public class UITableManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI descriptionTextRef;
 
-    //Array con los paneles que se pueden activar para colocar las unidades en un nivel
-    [SerializeField]
-    public GameObject[] panelsForUnitColocation = new GameObject[4];
-
     [Header("PROGRESION")]
 
     [SerializeField]
@@ -61,8 +57,13 @@ public class UITableManager : MonoBehaviour
     private List<int> ids;
     private List<UpgradeNode> upgrades;
 
+    //Confirmación compra mejora
     [SerializeField]
     private GameObject confirmateUpgrade;
+
+    //Aviso bloqueará mejora del otro árbol
+    [SerializeField]
+    private GameObject warningBlockUpgrade;
 
     [SerializeField]
     private float timeToHidePanel;
@@ -79,9 +80,9 @@ public class UITableManager : MonoBehaviour
     [Header("OPTIONS")]
 
     //Resolución
-    Resolution[] resolutions;
     [SerializeField]
     TMP_Dropdown resolutionDropdown;
+    Resolution[] resolutions;
 
     //Fulsscreen
     [SerializeField]
@@ -167,7 +168,6 @@ public class UITableManager : MonoBehaviour
     #endregion
 
     #region MAP
-
     public void ShowInfoOnLevelClick(string levelName)
     {
         levelNameInfoText.SetText(levelName);
@@ -240,21 +240,10 @@ public class UITableManager : MonoBehaviour
         //Setear textos del nivel
         titleTextRef.SetText(_levelClicked.LevelTitle);
         descriptionTextRef.SetText(_levelClicked.descriptionText);
-
-        for (int i = 0; i < _levelClicked.maxNumberOfUnits; i++)
-        {
-            panelsForUnitColocation[i].SetActive(true);
-        }
     }
 
     public void BackToMapUI()
     {
-        //Desactivo todos los paneles de unidad
-        for (int i = 0; i < panelsForUnitColocation.Length; i++)
-        {
-            panelsForUnitColocation[i].SetActive(false);
-        }
-
         //Movimientos de cámara y seteos de variables
         TM.BackToMap();
 
@@ -291,8 +280,6 @@ public class UITableManager : MonoBehaviour
             upgrades[i].GetComponent<UpgradeNode>().idUpgrade = i;
         }
 
-        Debug.Log(ids.Count);
-
         //Por cada mejora compruebo si existe en ids compradas un valor en la lista que coincida el id
         for (int i = 0; i < upgrades.Count; i++)
         {
@@ -300,6 +287,84 @@ public class UITableManager : MonoBehaviour
             {
                 upgrades[i].UpgradeBought();
             }
+        }
+
+        UpdateUpgradesBlocked();
+    }
+
+    public void UpdateUpgradesBlocked()
+    {
+        SkillTree currentSkillTree = currentSkillTreeObj.GetComponent<SkillTree>();
+
+        //Bloquear ramas activas
+        if (currentSkillTree.active1Upgrades[0].isBought)
+        {
+            //Me aseguro de que rama 1 no está bloqueada
+            currentSkillTree.active1Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+
+            //Bloqueo la rama 2
+            currentSkillTree.active2Upgrades[0].ShowHideFeedbackBlockedBranch(true);
+
+            //Desbloqueo mejora 2
+            currentSkillTree.active1Upgrades[1].isInteractuable = true;
+
+        }
+        else if (currentSkillTree.active2Upgrades[0].isBought)
+        {
+            //Me aseguro de que rama 2 no está bloqueada
+            currentSkillTree.active2Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+
+            //Bloqueo la rama 1
+            currentSkillTree.active1Upgrades[0].ShowHideFeedbackBlockedBranch(true);
+
+            //Desbloqueo mejora 2
+            currentSkillTree.active2Upgrades[1].isInteractuable = true;
+        }
+
+        //Si ninguna ha sido comprada
+        else
+        {
+            //Me aseguro de que rama 1 y 2 no está bloqueada
+            currentSkillTree.active1Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+            currentSkillTree.active2Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+
+            currentSkillTree.active1Upgrades[1].ShowFeedbackBlockedUpgrade();
+            currentSkillTree.active2Upgrades[1].ShowFeedbackBlockedUpgrade();
+        }
+
+        //Bloquear ramas pasivas
+        if (currentSkillTree.pasive1Upgrades[0].isBought)
+        {
+            //Me aseguro de que rama 1 no está bloqueada
+            currentSkillTree.pasive1Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+
+            //Bloqueo la rama 2
+            currentSkillTree.pasive2Upgrades[0].ShowHideFeedbackBlockedBranch(true);
+
+            //Desbloqueo mejora 2
+            currentSkillTree.pasive1Upgrades[1].isInteractuable = true;
+        }
+
+        else if (currentSkillTree.pasive2Upgrades[0].isBought)
+        {
+            //Me aseguro de que rama 2 no está bloqueada
+            currentSkillTree.pasive2Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+
+            //Bloqueo la rama 1
+            currentSkillTree.pasive1Upgrades[0].ShowHideFeedbackBlockedBranch(true);
+
+            //Desbloqueo mejora 2
+            currentSkillTree.pasive2Upgrades[1].isInteractuable = true;
+        }
+
+        else
+        {
+            //Me aseguro de que rama 1 no está bloqueada
+            currentSkillTree.pasive1Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+            currentSkillTree.pasive2Upgrades[0].ShowHideFeedbackBlockedBranch(false);
+
+            currentSkillTree.pasive1Upgrades[1].ShowFeedbackBlockedUpgrade();
+            currentSkillTree.pasive2Upgrades[1].ShowFeedbackBlockedUpgrade();
         }
     }
 
@@ -334,6 +399,8 @@ public class UITableManager : MonoBehaviour
 
     #endregion
 
+    #region LEVELS
+
     LevelNode[] allLevelsInMapCheat;
 
     //Cheats
@@ -345,6 +412,8 @@ public class UITableManager : MonoBehaviour
             allLevelsInMapCheat[i].UnlockThisLevel();
         }
     }
+
+    #endregion
 
     #region MAIN_MENU
 
@@ -499,9 +568,23 @@ public class UITableManager : MonoBehaviour
 
     #endregion
 
+    #region UPGRADES
+
     public void ConfirmateUpgrade(bool _showConfirmation, UpgradeNode _upgradeClicked)
     {
         confirmateUpgrade.SetActive(_showConfirmation);
+
+        //Aviso rama se bloqueará
+        if (currentSkillTreeObj.GetComponent<SkillTree>().firstUpgradesInTree.Contains(_upgradeClicked))
+        {
+            warningBlockUpgrade.SetActive(true);
+        }
+
+        else
+        {
+            warningBlockUpgrade.SetActive(false);
+        }
+
         lastUpgradeClicked = _upgradeClicked;
     }
 
@@ -509,6 +592,10 @@ public class UITableManager : MonoBehaviour
     {
         FindObjectOfType<TableManager>().BuyUpgrade(lastUpgradeClicked);
         confirmateUpgrade.SetActive(false);
+
+
+        SkillTree currentSkillTree = currentSkillTreeObj.GetComponent<SkillTree>();
+        Instantiate(TM.vfxLevelUp, currentSkillTree.active1Upgrades[0].myUnit.gameObject.transform);
     }
 
     public void NoBuyUpgrade()
@@ -539,5 +626,57 @@ public class UITableManager : MonoBehaviour
         timedPanel.SetActive(false);
     }
 
+    #endregion
 
+    #region HIDE_SHOW_UI
+
+    public void ShowMapUI()
+    {
+        mapUI.SetActive(true);
+        selectionUI.SetActive(false);
+        progresionUI.SetActive(false);
+        upgradesUI.SetActive(false);
+
+    }
+
+    public void ShowLevelInfoUI()
+    {
+        mapUI.SetActive(false);
+        selectionUI.SetActive(true);
+        progresionUI.SetActive(false);
+        upgradesUI.SetActive(false);
+
+    }
+
+    public void ShowProgresionUI()
+    {
+        mapUI.SetActive(false);
+        selectionUI.SetActive(false);
+        progresionUI.SetActive(true);
+        upgradesUI.SetActive(false);
+
+    }
+
+    public void ShowUpgradesUI()
+    {
+        mapUI.SetActive(false);
+        selectionUI.SetActive(false);
+        progresionUI.SetActive(false);
+        upgradesUI.SetActive(true);
+    }
+
+    public void HideAllUI()
+    {
+        mapUI.SetActive(false);
+        selectionUI.SetActive(false);
+        progresionUI.SetActive(false);
+        upgradesUI.SetActive(false);
+    }
+
+    #endregion
+
+    public void DebugFreeXp()
+    {
+        GameManager.Instance.currentExp = 9000;
+    }
 }
