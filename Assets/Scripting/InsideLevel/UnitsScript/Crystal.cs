@@ -216,7 +216,6 @@ public class Crystal : EnemyUnit
         //Cambios en UI
         LM.HideHover(this);
         HealthBarOn_Off(false);
-        LM.UIM.HideTileInfo();
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         //Cambios en la lógica para indicar que ha muerto
