@@ -684,7 +684,6 @@ public class EnemyUnit : UnitBase
                 }
                 LM.HideHover(LM.selectedEnemy);
                 LM.selectedEnemy.HealthBarOn_Off(false);
-                LM.UIM.HideUnitInfo("");
                 //LM.UIM.HideCharacterInfo("");
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 LM.tilesAvailableForMovement.Clear();
@@ -706,7 +705,6 @@ public class EnemyUnit : UnitBase
                 LM.selectedEnemy = GetComponent<EnemyUnit>();
 
                 LM.CheckIfHoverShouldAppear(GetComponent<EnemyUnit>());
-                LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
 
                 if (myPortrait != null)
                     myPortrait.HighlightMyself();
@@ -738,7 +736,6 @@ public class EnemyUnit : UnitBase
                     LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
                    
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                    LM.UIM.ShowUnitInfo(LM.selectedCharacter.attackInfo, LM.selectedCharacter);
                     LM.CheckIfHoverShouldAppear(this);
                     HealthBarOn_Off(true);
                 }
@@ -793,9 +790,6 @@ public class EnemyUnit : UnitBase
             LM.ShowEnemyHover(movementUds, false ,this);
         }
 
-        //Llamo a LevelManager para activar hover				
-        LM.UIM.ShowUnitInfo(this.unitGeneralInfo, this);
-
 		//LM.UIM.ShowCharacterInfo(unitInfo, this); 
 		HealthBarOn_Off(true);
         //gameObject.GetComponent<PlayerHealthBar>().ReloadHealth();
@@ -819,18 +813,13 @@ public class EnemyUnit : UnitBase
 
             else if (LM.selectedEnemy != null && LM.selectedEnemy != this)
             {
-
                 ResetColor();
                 HealthBarOn_Off(false);
-                LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
-                //LM.UIM.HideUnitInfo("");
                 shaderHover.SetActive(false);
 
                 if (myPortrait != null)
                 myPortrait.UnHighlightMyself();
-
             }
-
         }
     }
 
@@ -888,7 +877,6 @@ public class EnemyUnit : UnitBase
         
         if (LM.selectedEnemy == null)
         {
-            LM.UIM.HideUnitInfo("");
             if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
                 shaderHover.SetActive(false);
@@ -913,35 +901,20 @@ public class EnemyUnit : UnitBase
                 HealthBarOn_Off(false);
             }
 
-            LM.UIM.HideUnitInfo("");
-            LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
             LM.selectedCharacter.HideDamageIcons(this);
             myCurrentTile.ColorDesAttack();
-            previsualizeAttackIcon.SetActive(false);
-
-          
+            previsualizeAttackIcon.SetActive(false);          
         }
         
-        //LM.UIM.HideCharacterInfo("");
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
-		//LM.UIM.HideCharacterInfo("");
-		if (LM.selectedCharacter == null)
-		{
-			LM.UIM.HideUnitInfo("");
-		}
-
 		Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-		if(LM.selectedCharacter != null)
+
+        if (LM.selectedCharacter != null)
 		{
-			LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
+			//LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
 
         }
-
-        //if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && LM.selectedCharacter.currentUnitsAvailableToAttack[0] == GetComponent<EnemyUnit>())
-        //{
-        //    Debug.Log("rojo");
-        //}
 
         else
         {

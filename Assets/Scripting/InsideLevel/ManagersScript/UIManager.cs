@@ -78,20 +78,15 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI pasiveInfoTextInTooltip;
 
     [SerializeField]
-	public Image imagePanel;
+	public Image activeIconTooltip;
 
-	[Header("CURSORES")]
+    [SerializeField]
+    public Image pasiveIconTooltip;
 
+    [Header("CURSORES")]
 	[SerializeField]
 	public Texture2D attackCursor;
 	public Texture2D movementCursor;
-
-	//Imagen de cada player explicando sus acciones
-	[SerializeField]
-	public Image explanationImage;
-
-	[SerializeField]
-	public Image imageCharacterInfo;
 
     [Header("SCROLL")]
     //Bools que indican si se estan pulsando los botones
@@ -514,51 +509,6 @@ public class UIManager : MonoBehaviour
         }
 	}
     #endregion
-
-    #region UNITS_INFO
-	//Deprecated
-	//public void ShowCharacterImage(UnitBase characterImage)
-	//{
-	//	if(characterImage.characterImage != null)
-	//	{
-	//		imageCharacterInfo.gameObject.SetActive(true);
-	//		imageCharacterInfo.sprite = characterImage.characterImage;
-	//	}
-	//}
-
-	//public void HideCharacterImage()
-	//{
-	//	imageCharacterInfo.gameObject.SetActive(false);
-	//	imageCharacterInfo.sprite = null;
-	//}
-
-    public void ShowUnitInfo(string generalInfoText, UnitBase unitTooltipImage)
-    {
-        if (LM.selectedCharacter == unitTooltipImage || LM.selectedEnemy == unitTooltipImage || LM.selectedCharacter == null || LM.selectedEnemy == null)
-        {
-            //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
-
-            if (unitTooltipImage.tooltipImage != null)
-            {
-                explanationImage.gameObject.SetActive(true);
-                explanationImage.sprite = unitTooltipImage.tooltipImage;
-            }
-            else
-            {
-                explanationImage.sprite = null;
-            }
-
-        }
-        
-    }
-
-    public void HideUnitInfo(string textToPrint)
-	{
-		explanationImage.gameObject.SetActive(false);
-		explanationImage.sprite = null;
-	}
-
-	#endregion
 
     #region ENEMY_INFO
 

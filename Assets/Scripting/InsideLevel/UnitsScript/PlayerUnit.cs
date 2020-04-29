@@ -54,9 +54,9 @@ public class PlayerUnit : UnitBase
 
 
     [SerializeField]
-    public Sprite attackTooltipImage;
+    public Sprite activeTooltipIcon;
     [SerializeField]
-	public Sprite pasiveTooltipImage;
+	public Sprite pasiveTooltipIcon;
 
 
     //COMPROBAR QUE ES ESTO

@@ -201,14 +201,6 @@ public class PortraitBoss : MonoBehaviour
         }
     }
 
-    public void ShowCharacterImageFromPortrait()
-    {
-        if (UIM.LM.selectedCharacter == null)
-        {
-            UIM.ShowUnitInfo(assignedBoss.unitGeneralInfo, assignedBoss);
-        }
-    }
-
     public void OnMouseEnter()
     {
         Highlight();

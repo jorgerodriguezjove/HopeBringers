@@ -8,6 +8,7 @@ public class Tooltips : MonoBehaviour
 {
 	[HideInInspector]
 	public PlayerUnit tooltipAssignedPlayer;
+
 	//Contador para retrasar la aparición del tooltip
 	public float timeToShowTooltip = 1f;
 	float timeToShowTooltipTimer;
@@ -46,31 +47,35 @@ public class Tooltips : MonoBehaviour
 				{
 					UIM.tooltipPanel.SetActive(true);
 
+                    //Actualizar textos
                     UIM.attackInfoTextInTooltip.SetText(tooltipAssignedPlayer.activeSkillInfo);
                     UIM.pasiveInfoTextInTooltip.SetText(tooltipAssignedPlayer.pasiveSkillInfo);
 
-                    if (tooltipAssignedPlayer.attackTooltipImage != null)
-                    {
-                        UIM.imagePanel.gameObject.SetActive(true);
-                        UIM.imagePanel.sprite = tooltipAssignedPlayer.attackTooltipImage;
-                    }
-                    else
-                    {
-                        UIM.imagePanel.gameObject.SetActive(false);
-                    }
+                    //Actualizar iconos
+                    UIM.activeIconTooltip.sprite = tooltipAssignedPlayer.activeTooltipIcon;
+                    UIM.pasiveIconTooltip.sprite = tooltipAssignedPlayer.pasiveTooltipIcon;
 
-					//Mostrar el tooltip
-					Debug.Log(gameObject.name);
-				}
+                    
+
+                    //if (tooltipAssignedPlayer.attackTooltipImage != null)
+                    //{
+                    //    UIM.imagePanel.gameObject.SetActive(true);
+                    //    UIM.imagePanel.sprite = tooltipAssignedPlayer.attackTooltipImage;
+                    //}
+                    //else
+                    //{
+                    //    UIM.imagePanel.gameObject.SetActive(false);
+                    //}
+                }
 			}
+
+            //Desaparece Tooltip
 			else
 			{
 				timeToShowTooltipTimer = timeToShowTooltip;
 				UIM.tooltipPanel.SetActive(false);
-
-				//Tooltip desaparece
-				Debug.Log("Tooltip Desaparece");
 			}
+
 			lastMouseCoordinate = Input.mousePosition;
 		}
 

@@ -342,7 +342,6 @@ public class LevelManager : MonoBehaviour
             hoverUnit.HealthBarOn_Off(true);
             //hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
-            UIM.ShowUnitInfo(hoverUnit.unitGeneralInfo, hoverUnit);
 
             //Pinto tiles de movimiento
             //Importante tienen que ir antes de pintar el rango de ataque
@@ -374,7 +373,6 @@ public class LevelManager : MonoBehaviour
         if (selectedCharacter == null)
         {
             hoverUnit.HealthBarOn_Off(false);
-            UIM.HideUnitInfo("");
             UIM.TooltipDefault();
             hoverUnit.myCurrentTile.ColorDeselect();
 
@@ -1118,7 +1116,6 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter.HealthBarOn_Off(true);
 					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
-                    UIM.ShowUnitInfo(selectedCharacter.unitGeneralInfo, selectedCharacter);
 
 
                     //This
@@ -1252,7 +1249,6 @@ public class LevelManager : MonoBehaviour
 
             //Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
             UIM.ActivateDeActivateEndButton();
-            UIM.HideUnitInfo("");
             selectedCharacter.HideDamageIcons(selectedCharacter);
             
             tilesAvailableForMovement.Clear();
@@ -1295,7 +1291,6 @@ public class LevelManager : MonoBehaviour
 
             CheckIfHoverShouldAppear(_enemySelected);
 
-            UIM.ShowUnitInfo(_unitInfo, _enemySelected);
             _enemySelected.SelectedFunctionality();
             UIM.MoveScrollToEnemy(_enemySelected);
         }
@@ -1334,7 +1329,6 @@ public class LevelManager : MonoBehaviour
             {
                 DeSelectUnit();
                 SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
-                UIM.ShowUnitInfo(clickedUnit.unitGeneralInfo, clickedUnit);
             }
 
             else if (clickedUnit.GetComponent<EnemyUnit>())
@@ -1356,10 +1350,6 @@ public class LevelManager : MonoBehaviour
                 selectedEnemy.myPortrait.UnHighlightMyself();
 
             HideEnemyHover(selectedEnemy);
-
-
-            UIM.HideUnitInfo("");
-
 
             UIM.TooltipDefault();
             selectedEnemy = null;
@@ -1617,27 +1607,6 @@ public class LevelManager : MonoBehaviour
             }
 
         }
-    }
-
-        #endregion
-
-        #region UNIT_INFO
-
-    public void ShowUnitInfo()
-    {
-        if (selectedCharacter != null)
-        {
-            UIM.ShowUnitInfo(selectedCharacter.unitGeneralInfo, selectedCharacter);
-        }
-        else if (selectedEnemy != null)
-        {
-            UIM.ShowUnitInfo(selectedEnemy.unitGeneralInfo, selectedEnemy);
-        }
-    }
-
-    public void HideUnitInfo()
-    {
-        UIM.HideUnitInfo("");
     }
 
         #endregion

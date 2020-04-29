@@ -73,7 +73,7 @@ public class Crystal : EnemyUnit
     public override void OnHoverEnterFunctionality()
     {
         //Llamo a LevelManager para activar hover				
-        LM.UIM.ShowUnitInfo(this.unitGeneralInfo, this);
+        //LM.UIM.ShowUnitInfo(this.unitGeneralInfo, this);
 
         //LM.UIM.ShowCharacterInfo(unitInfo, this); 
         HealthBarOn_Off(true);
@@ -97,7 +97,6 @@ public class Crystal : EnemyUnit
                 }
                 LM.HideHover(LM.selectedEnemy);
                 LM.selectedEnemy.HealthBarOn_Off(false);
-                LM.UIM.HideUnitInfo("");
                 //LM.UIM.HideCharacterInfo("");
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             }
@@ -106,8 +105,6 @@ public class Crystal : EnemyUnit
             {
                 LM.DeSelectUnit();
                 LM.selectedEnemy = GetComponent<EnemyUnit>();
-
-                LM.UIM.ShowUnitInfo(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
 
                 //Activo la barra de vida
                 HealthBarOn_Off(true);
@@ -154,7 +151,6 @@ public class Crystal : EnemyUnit
     {
         if (LM.selectedEnemy == null)
         {
-            LM.UIM.HideUnitInfo("");
             if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
                 ResetColor();
@@ -171,21 +167,15 @@ public class Crystal : EnemyUnit
                 HealthBarOn_Off(false);
             }
 
-            LM.UIM.HideUnitInfo("");
-            LM.UIM.ShowUnitInfo(LM.selectedEnemy.unitGeneralInfo, LM.selectedEnemy);
             LM.selectedCharacter.HideDamageIcons(this);
             myCurrentTile.ColorDesAttack();
         }
 
-        if (LM.selectedCharacter == null)
-        {
-            LM.UIM.HideUnitInfo("");
-        }
-
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+
         if (LM.selectedCharacter != null)
         {
-            LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
+            //LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
         }
 
         else

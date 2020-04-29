@@ -122,7 +122,6 @@ public class Portraits : MonoBehaviour
 
             if (LM.selectedCharacter == null && LM.selectedEnemy == null)
             {
-                ShowCharacterImageFromPortrait();
                 UIM.LM.ShowUnitHover(assignedPlayer.movementUds, assignedPlayer);
 
             }
@@ -183,14 +182,6 @@ public class Portraits : MonoBehaviour
         }
             
     }
-
-	public void ShowCharacterImageFromPortrait()
-	{
-		if (UIM.LM.selectedCharacter == null)
-		{
-			UIM.ShowUnitInfo(assignedPlayer.unitGeneralInfo, assignedPlayer);
-		}
-	}
 
 	public void OnMouseEnter()
 	{
