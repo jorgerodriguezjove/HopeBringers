@@ -271,13 +271,13 @@ public class UITableManager : MonoBehaviour
 
         upgrades = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
         ids = unitClicked.idSkillsBought;
-        Debug.Log(unitClicked.idSkillsBought.Count);
 
         for (int i = 0; i < upgrades.Count; i++)
         {
             upgrades[i].GetComponent<UpgradeNode>().TM = TM;
             upgrades[i].GetComponent<UpgradeNode>().myUnit = unitClicked;
             upgrades[i].GetComponent<UpgradeNode>().idUpgrade = i;
+            upgrades[i].GetComponent<UpgradeNode>().UpdateIconAndDescription();
         }
 
         //Por cada mejora compruebo si existe en ids compradas un valor en la lista que coincida el id

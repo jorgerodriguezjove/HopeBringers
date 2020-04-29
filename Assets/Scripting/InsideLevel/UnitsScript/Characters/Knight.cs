@@ -69,13 +69,13 @@ public class Knight : PlayerUnit
         if (pushFarther2)
         {
             tilesToPush = 3;
-            activeSkillInfo = AppKnightUpgrades.pusFurther2Text;
+            activeSkillInfo = AppKnightUpgrades.pushFurther2Text;
         }
 
         else if (pushFarther)
         {
             tilesToPush = 2;
-            activeSkillInfo = AppKnightUpgrades.pusFurther1Text;
+            activeSkillInfo = AppKnightUpgrades.pushFurther1Text;
         }
 
         if (pushWider2)

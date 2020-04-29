@@ -34,8 +34,6 @@ public class PlayerUnit : UnitBase
     [HideInInspector]
     public List<IndividualTiles> tilesInEnemyHover;
 
-   
-
     [Header("MOVIMIENTO")]
 
     //Camino que tiene que seguir la unidad para moverse
@@ -46,12 +44,10 @@ public class PlayerUnit : UnitBase
     protected float timeWaitAfterAttack;
 
 	[Header("INFO")]
-	
     [HideInInspector]
-	public string activeSkillInfo = "Info ataque";
+	public string activeSkillInfo = "-----";
     [HideInInspector]
-	public string pasiveSkillInfo = "Info pasiva";
-
+	public string pasiveSkillInfo = "iiiii";
 
     [SerializeField]
     public Sprite attackTooltipImage;

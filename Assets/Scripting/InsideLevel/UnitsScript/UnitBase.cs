@@ -268,21 +268,6 @@ public class UnitBase : MonoBehaviour
 	[SerializeField]
 	protected Image inGamePortrait;
 
-	//¿SE PUEDE BORRAR?
-	//Texto que describe a la unidad.
-	//[SerializeField]
-	//public string characterDescription;
-
-	//LO COMENTO PORQUE AHORA MISMO NO ESTÁ EN USO
-	//Icono que aparece en la lista de turnos.
-	//[SerializeField]
-	//public Sprite unitIcon;
-
-	//¿SE PUEDE BORRAR?
-	//Canvas que muestra la vida de la unidad
-	//[SerializeField]
-	//protected Canvas myCanvasHealthbar;
-
 	#endregion
 
 	//El level manager llama a esta función sustituyendo al start

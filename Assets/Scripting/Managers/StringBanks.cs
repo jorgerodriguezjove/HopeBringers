@@ -27,25 +27,24 @@ public class AppGenericUpgrades
     public static readonly string damageMadeByFall = "damageMadeByFall";
 }
 
-
 public class AppKnightUpgrades
 {
     #region Active
     public static readonly string initialActiveText = "El caballero hace daño a su objetivo y le empuja una casilla";
-    public static readonly string initialPasiveText = "El caballero hace daño a su objetivo y le empuja una casilla";
+    public static readonly string initialPasiveText = "El caballero no recibe daño por delante";
 
     //EMPUJAR MÁS LEJOS
 
-    ///Mejoras
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string pushFurther1 = "pushFurther1";
     public static readonly string pushFurther2 = "pushFurther2";
 
     ///Textos
-    public static readonly string pusFurther1Text = "The knight improves his shield so he can push enemies two tiles further";
-    public static readonly string pusFurther2Text = "El enemigo empujado atraviesa al resto de enemigos en su camino haciendoles daño";
-
+    public static readonly string pushFurther1Text = "The knight improves his shield so he can push enemies two tiles further";
+    public static readonly string pushFurther2Text = "El enemigo empujado atraviesa al resto de enemigos en su camino haciendoles daño";
 
     //EMPUJAR MÁS ENEMIGOS
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string pushWider1 = "pushWider1";
     public static readonly string pushWider2 = "pushWider2";
 
@@ -59,7 +58,7 @@ public class AppKnightUpgrades
     #region Pasive
     //EMPUJAR MÁS LEJOS
 
-    ///Mejoras
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string individualBlock1 = "individualBlock1";
     public static readonly string individualBlock2 = "individualBlock2";
 
@@ -69,6 +68,7 @@ public class AppKnightUpgrades
 
 
     //EMPUJAR MÁS ENEMIGOS
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string neighbourBlock1 = "neighbourBlock1";
     public static readonly string neighbourBlock2 = "neighbourBlock2";
 
@@ -190,7 +190,7 @@ public class AppBerserkUpgrades
     #region Active
     //DOUBLE ATTACK
 
-    ///Mejoras
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string areaAttack1 = "areaAttack1";
     public static readonly string areaAttack2 = "areaAttack2";
 
@@ -199,6 +199,7 @@ public class AppBerserkUpgrades
     public static readonly string areaAttack2Text = "";
 
     //CIRCULAR ATTACK
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string circularAttack1 = "circularAttack1";
     public static readonly string circularAttack2 = "circularAttack2";
 
@@ -211,7 +212,7 @@ public class AppBerserkUpgrades
     #region Pasive
     //RAGE
 
-    ///Mejoras
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string rageDamage1 = "rageDamage1";
     public static readonly string rageDamage2 = "rageDamage2";
 
@@ -221,6 +222,7 @@ public class AppBerserkUpgrades
 
 
     //FEAR
+    ///Mejoras a nivel lógico y nombre de ICONOS
     public static readonly string fearRage1 = "fearRage1";
     public static readonly string fearRage2 = "fearRage2";
 

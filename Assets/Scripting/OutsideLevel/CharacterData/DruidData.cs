@@ -41,8 +41,7 @@ public class DruidData : CharacterData
         specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tileMovement1, false);
         specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tileMovement2, false);
 
-        //Mejoras tipo INT
-        //specificIntCharacterUpgrades.Add(AppKnightUpgrades.pushFurther1, myUnitReferenceOnLevel.GetComponent<Knight>().tilesToPush);
+       //Texts
     }
 
 }

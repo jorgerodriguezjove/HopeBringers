@@ -54,13 +54,6 @@ public class CharacterData : MonoBehaviour
     [HideInInspector]
     private TableManager TM;
 
-    //public bool A1;
-    //public bool A2;
-    //public bool A3;
-    //public bool B1;
-    //public bool B2;
-    //public bool B3;
-
     //Diccionario con las mejoras de stats tipo int que tienen todos los personajes.
     public Dictionary<string, int> genericUpgrades = new Dictionary<string, int>();
 
@@ -69,6 +62,9 @@ public class CharacterData : MonoBehaviour
 
     //Diccionario con las mejoras de stats tipo bool que tiene cada personaje. Cada personaje inicializa las suyas en su script de Data.
     public Dictionary<string, bool> specificBoolCharacterUpgrades = new Dictionary<string, bool>();
+
+    //Diccionario con las descripciones de las mejoras
+    public Dictionary<string, string> specificStringCharacterUpgrades = new Dictionary<string, string>();
 
     #endregion
 

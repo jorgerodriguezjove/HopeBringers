@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class UpgradeNode : MonoBehaviour
 {
@@ -25,7 +26,11 @@ public class UpgradeNode : MonoBehaviour
 
     [Tooltip ("Este nombre tiene que ser el mismo usado en AppUpgrades")]
     [SerializeField]
+    //Nombre de la mejora a nivel lógico y del sprite
     private string upgradeName;
+
+    //Es coger el upgrade name y añadirle "Text". Por ej: PusFurther1 pasa a ser PushFurther1Text
+    private string descriptionText;
 
     //Valor añadido
     [SerializeField]
@@ -65,6 +70,12 @@ public class UpgradeNode : MonoBehaviour
     [SerializeField]
     private GameObject feedbackBranchBlocked;
 
+    [SerializeField]
+    private TextMeshProUGUI descriptionTextBoxReference;
+
+    [SerializeField]
+    private Image iconHolder;
+
     #endregion
 
     #region INIT
@@ -77,6 +88,26 @@ public class UpgradeNode : MonoBehaviour
         {
             imageFeedbackIsBought.SetActive(true);
             imageFeedbackIsBought.GetComponent<ImageRadiaUpgrade>().SetImageFill(false);
+        }
+    }
+
+    public void UpdateIconAndDescription()
+    {
+        descriptionText = upgradeName + "Text";
+
+        Debug.Log(Resources.Load<Sprite>("Icons/" + upgradeName));
+
+        iconHolder.sprite = Resources.Load<Sprite>("Icons/" + upgradeName);
+
+        if (myUnit.specificStringCharacterUpgrades.ContainsKey(descriptionText))
+        {
+            descriptionTextBoxReference.SetText(myUnit.specificStringCharacterUpgrades[descriptionText]);
+        }
+        
+        else
+        {
+            Debug.Log("No se ha cargado la descripción porque no hay key con ese nombre.");
+            descriptionTextBoxReference.SetText(myUnit.specificStringCharacterUpgrades["pushFurther1Text"]);
         }
     }
 
