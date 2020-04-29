@@ -102,8 +102,6 @@ public class EnemyPortraits : MonoBehaviour
         {
             LM.SelectEnemy(assignedEnemy.unitGeneralInfo,assignedEnemy);
 
-            UIM.ShowUnitInfo(assignedEnemy.unitGeneralInfo, assignedEnemy);
-
 			LM.camRef.FocusCameraOnCharacter(assignedEnemy.gameObject);
 
             HighlightMyself();

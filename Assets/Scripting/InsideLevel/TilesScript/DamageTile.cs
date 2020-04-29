@@ -106,19 +106,4 @@ public class DamageTile : MonoBehaviour
 			damageDone = false;
 		}
 	}
-
-	
-	#region INTERACTION
-
-	private void OnMouseEnter()
-	{
-		LM.UIM.ShowTileInfo(tileInfo, tileImage);
-	}
-
-	private void OnMouseExit()
-	{
-		LM.UIM.HideTileInfo();
-	}
-
-	#endregion
 }

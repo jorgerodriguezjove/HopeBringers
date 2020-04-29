@@ -38,12 +38,6 @@ public class UIManager : MonoBehaviour
 	[SerializeField]
 	private TextMeshProUGUI tooltipAccionesText;
 
-    //Cuadro inferior izquierda. Referencia para animaciones
-	[SerializeField]
-	private GameObject characterInfo;
-    //Texto cuadro inferior izquierda
-	[SerializeField]
-	private TextMeshProUGUI characterInfoText;
     //Duración de la animación
 	[SerializeField]
 	private float animationDuration;
@@ -84,20 +78,15 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI pasiveInfoTextInTooltip;
 
     [SerializeField]
-	public Image imagePanel;
+	public Image activeIconTooltip;
 
-	[Header("CURSORES")]
+    [SerializeField]
+    public Image pasiveIconTooltip;
 
+    [Header("CURSORES")]
 	[SerializeField]
 	public Texture2D attackCursor;
 	public Texture2D movementCursor;
-
-	//Imagen de cada player explicando sus acciones
-	[SerializeField]
-	public Image explanationImage;
-
-	[SerializeField]
-	public Image imageCharacterInfo;
 
     [Header("SCROLL")]
     //Bools que indican si se estan pulsando los botones
@@ -239,7 +228,6 @@ public class UIManager : MonoBehaviour
 
         unitsToPlaceParent.SetActive(false);
 
-        characterInfoOriginalPosition = characterInfo.transform.position;
 		endTurnBttnInitMaterial = endTurnButton.GetComponent<MeshRenderer>().material;
         //Guardo la posición inicial de la lista para poder volver a ponerla en esta posición al terminar el turno enemigo.
         initialScrollPosition = padrePanelesEnemigos.transform.position;
@@ -520,78 +508,6 @@ public class UIManager : MonoBehaviour
             characterToUnhighlight.ResetColor();
         }
 	}
-    #endregion
-
-    #region UNITS_INFO
-	//Deprecated
-	//public void ShowCharacterImage(UnitBase characterImage)
-	//{
-	//	if(characterImage.characterImage != null)
-	//	{
-	//		imageCharacterInfo.gameObject.SetActive(true);
-	//		imageCharacterInfo.sprite = characterImage.characterImage;
-	//	}
-	//}
-
-	//public void HideCharacterImage()
-	//{
-	//	imageCharacterInfo.gameObject.SetActive(false);
-	//	imageCharacterInfo.sprite = null;
-	//}
-
-    public void ShowUnitInfo(string generalInfoText, UnitBase unitTooltipImage)
-    {
-        if (LM.selectedCharacter == unitTooltipImage || LM.selectedEnemy == unitTooltipImage || LM.selectedCharacter == null || LM.selectedEnemy == null)
-        {
-            //characterInfo.transform.DOMove(characterInfo.transform.parent.position, animationDuration);
-            characterInfoText.text = generalInfoText;
-
-            if (unitTooltipImage.tooltipImage != null)
-            {
-                explanationImage.gameObject.SetActive(true);
-                explanationImage.sprite = unitTooltipImage.tooltipImage;
-            }
-            else
-            {
-                explanationImage.sprite = null;
-            }
-
-        }
-        
-    }
-
-    public void HideUnitInfo(string textToPrint)
-	{
-		//characterInfo.transform.DOMove(characterInfoOriginalPosition, animationDuration);
-		characterInfoText.text = textToPrint;
-		explanationImage.gameObject.SetActive(false);
-		explanationImage.sprite = null;
-	}
-
-	#endregion
-
-	#region TILE_INFO
-
-	public void ShowTileInfo(string textToPrint, Sprite tileImageToShow)
-	{
-		if(LM.selectedCharacter == null && LM.selectedEnemy == null)
-		{
-			characterInfoText.text = textToPrint;
-			explanationImage.gameObject.SetActive(true);
-			explanationImage.sprite = tileImageToShow;
-		}	
-	}
-
-	public void HideTileInfo()
-	{
-		if(LM.selectedCharacter == null && LM.selectedEnemy == null)
-		{
-			characterInfoText.text = "";
-			explanationImage.gameObject.SetActive(false);
-			explanationImage.sprite = null;
-		}
-	}
-
     #endregion
 
     #region ENEMY_INFO

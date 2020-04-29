@@ -107,17 +107,4 @@ public class HealerTile : DamageTile
             damageDone = true;
         }
     }
-    #region INTERACTION
-
-    private void OnMouseEnter()
-    {
-        LM.UIM.ShowTileInfo(tileInfo, tileImage);
-    }
-
-    private void OnMouseExit()
-    {
-        LM.UIM.HideTileInfo();
-    }
-
-    #endregion
 }
