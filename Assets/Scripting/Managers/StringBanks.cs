@@ -446,6 +446,8 @@ public class AppPaths
     public static readonly string PERSISTENT_DATA = Application.persistentDataPath;
     public static readonly string PATH_RESOURCE_SFX = "Audio/Sounds/";
     public static readonly string PATH_RESOURCE_MUSIC = "Audio/Music/";
+
+    public static readonly string PATH_RESOURCE_GENERIC_ICONS = "Icons/";
 }
 
 //Nombres de PlayerPrefKeys

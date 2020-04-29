@@ -57,7 +57,9 @@ public class Knight : PlayerUnit
         #region Actives
         //Lo primero que hago es poner el texto genérico, de tal forma que si no hay mejoras se quedará este texto.
         activeSkillInfo = AppKnightUpgrades.initialActiveText;
-        
+
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
+
         pushFarther = _pushFarther1;
         pushFarther2 = _pushFarther2;
 
@@ -70,28 +72,34 @@ public class Knight : PlayerUnit
         {
             tilesToPush = 3;
             activeSkillInfo = AppKnightUpgrades.pushFurther2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.pushFurther2);
         }
 
         else if (pushFarther)
         {
             tilesToPush = 2;
             activeSkillInfo = AppKnightUpgrades.pushFurther1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.pushFurther1);
         }
 
         if (pushWider2)
         {
             activeSkillInfo = AppKnightUpgrades.pushWider2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.pushWider2);
         }
 
         else if (pushWider)
         {
             activeSkillInfo = AppKnightUpgrades.pushWider1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.pushWider1);
         }
         #endregion
 
         #region Pasives
 
+        //Default
         pasiveSkillInfo = AppKnightUpgrades.initialPasiveText;
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
 
         lateralBlock = _individualBlock1;
         backBlock = _individualBlock2;
@@ -102,21 +110,25 @@ public class Knight : PlayerUnit
         if (backBlock)
         {
             pasiveSkillInfo = AppKnightUpgrades.individualBlock2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.individualBlock2);
         }
 
         else if (lateralBlock)
         {
             pasiveSkillInfo = AppKnightUpgrades.individualBlock1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.individualBlock1);
         }
 
         if (isBlockingNeighboursFull)
         {
             pasiveSkillInfo = AppKnightUpgrades.neighbourBlock2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.individualBlock2);
         }
 
         else if (isBlockingNeighbours)
         {
             pasiveSkillInfo = AppKnightUpgrades.neighbourBlock1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.individualBlock1);
         }
         #endregion
     }

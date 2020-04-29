@@ -60,6 +60,9 @@ public class Monk : PlayerUnit
         activeSkillInfo = AppMonkUpgrades.initialActiveText;
         pasiveSkillInfo = AppMonkUpgrades.initialPasiveText;
 
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+
         #region Actives
 
         rotatorTime = _turn1;
@@ -71,21 +74,25 @@ public class Monk : PlayerUnit
         if (rotatorTime2)
         {
             activeSkillInfo = AppMonkUpgrades.turn2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.turn2);
         }
 
         else if (rotatorTime)
         {
             activeSkillInfo = AppMonkUpgrades.turn1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.turn1);
         }
 
         if (suplex2)
         {
             activeSkillInfo = AppMonkUpgrades.suplex2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.suplex2);
         }
 
         else if (suplex)
         {
             activeSkillInfo = AppMonkUpgrades.suplex1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.suplex1);
         }
 
         #endregion
@@ -102,21 +109,25 @@ public class Monk : PlayerUnit
         if (debuffMark2)
         {
             pasiveSkillInfo = AppMonkUpgrades.markDebuff2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.markDebuff2);
         }
 
         else if (debuffMark)
         {
             pasiveSkillInfo = AppMonkUpgrades.markDebuff1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.markDebuff1);
         }
 
         if (healerMark2)
         {
             pasiveSkillInfo = AppMonkUpgrades.markBuff2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.markBuff2);
         }
 
         else if (healerMark)
         {
             pasiveSkillInfo = AppMonkUpgrades.markBuff1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.markBuff1);
         }
 
 

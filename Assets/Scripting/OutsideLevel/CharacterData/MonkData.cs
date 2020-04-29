@@ -39,6 +39,22 @@ public class MonkData : CharacterData
 
         specificBoolCharacterUpgrades.Add(AppMonkUpgrades.markDebuff1, false);
         specificBoolCharacterUpgrades.Add(AppMonkUpgrades.markDebuff2, false);
+
+
+        //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Activas
+        specificStringCharacterUpgrades.Add("turn1Text", AppMonkUpgrades.turn1Text);
+        specificStringCharacterUpgrades.Add("turn2Text", AppMonkUpgrades.turn2Text);
+
+        specificStringCharacterUpgrades.Add("suplex1Text", AppMonkUpgrades.suplex1Text);
+        specificStringCharacterUpgrades.Add("suplex2Text", AppMonkUpgrades.suplex2Text);
+
+        //Pasivas
+        specificStringCharacterUpgrades.Add("markDebuff1Text", AppMonkUpgrades.markDebuff1Text);
+        specificStringCharacterUpgrades.Add("markDebuff2Text", AppMonkUpgrades.markDebuff2Text);
+
+        specificStringCharacterUpgrades.Add("markBuff1Text", AppMonkUpgrades.markBuff1Text);
+        specificStringCharacterUpgrades.Add("markBuff2Text", AppMonkUpgrades.markBuff2Text);
     }
 
 }

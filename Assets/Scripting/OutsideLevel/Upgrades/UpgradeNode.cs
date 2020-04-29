@@ -95,9 +95,9 @@ public class UpgradeNode : MonoBehaviour
     {
         descriptionText = upgradeName + "Text";
 
-        Debug.Log(Resources.Load<Sprite>("Icons/" + upgradeName));
+        Debug.Log(Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + upgradeName));
 
-        iconHolder.sprite = Resources.Load<Sprite>("Icons/" + upgradeName);
+        iconHolder.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + upgradeName);
 
         if (myUnit.specificStringCharacterUpgrades.ContainsKey(descriptionText))
         {

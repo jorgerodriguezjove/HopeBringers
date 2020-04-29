@@ -41,7 +41,20 @@ public class DruidData : CharacterData
         specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tileMovement1, false);
         specificBoolCharacterUpgrades.Add(AppDruidUpgrades.tileMovement2, false);
 
-       //Texts
+        //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Activas
+        specificStringCharacterUpgrades.Add("heal1Text", AppDruidUpgrades.heal1Text);
+        specificStringCharacterUpgrades.Add("heal2Text", AppDruidUpgrades.heal2Text);
+
+        specificStringCharacterUpgrades.Add("areaHeal1Text", AppDruidUpgrades.areaHeal1Text);
+        specificStringCharacterUpgrades.Add("areaHeal2Text", AppDruidUpgrades.areaHeal2Text);
+
+        //Pasivas
+        specificStringCharacterUpgrades.Add("tile1Text", AppDruidUpgrades.tile1Text);
+        specificStringCharacterUpgrades.Add("tile2Text", AppDruidUpgrades.tile2Text);
+
+        specificStringCharacterUpgrades.Add("tileMovement1Text", AppDruidUpgrades.tileMovement1Text);
+        specificStringCharacterUpgrades.Add("tileMovement2Text", AppDruidUpgrades.tileMovement2Text);
     }
 
 }

@@ -39,7 +39,19 @@ public class MageData : CharacterData
         specificBoolCharacterUpgrades.Add(AppMageUpgrades.mirrorDecoy1, false);
         specificBoolCharacterUpgrades.Add(AppMageUpgrades.mirrorDecoy2, false);
 
+        //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Activas
+        specificStringCharacterUpgrades.Add("lightningChain1Text", AppMageUpgrades.lightningChain1Text);
+        specificStringCharacterUpgrades.Add("lightningChain2Text", AppMageUpgrades.lightningChain2Text);
 
-        //Mejoras tipo INT
+        specificStringCharacterUpgrades.Add("crossAreaAttack1Text", AppMageUpgrades.crossAreaAttack1Text);
+        specificStringCharacterUpgrades.Add("crossAreaAttack2Text", AppMageUpgrades.crossAreaAttack2Text);
+
+        //Pasivas
+        specificStringCharacterUpgrades.Add("bombDecoy1Text", AppMageUpgrades.bombDecoy1Text);
+        specificStringCharacterUpgrades.Add("bombDecoy2Text", AppMageUpgrades.bombDecoy2Text);
+
+        specificStringCharacterUpgrades.Add("mirrorDecoy1Text", AppMageUpgrades.mirrorDecoy1Text);
+        specificStringCharacterUpgrades.Add("mirrorDecoy2Text", AppMageUpgrades.mirrorDecoy2Text);
     }
 }

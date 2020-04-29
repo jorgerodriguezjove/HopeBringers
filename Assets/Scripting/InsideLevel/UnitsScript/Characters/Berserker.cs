@@ -59,6 +59,9 @@ public class Berserker : PlayerUnit
         activeSkillInfo = AppBerserkUpgrades.initialActiveText;
         pasiveSkillInfo = AppBerserkUpgrades.initialPasiveText;
 
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+
         #region Actives
 
         areaAttack = _areaAttack;
@@ -70,22 +73,27 @@ public class Berserker : PlayerUnit
         if (_areaAttack2 > 0)
         {
             activeSkillInfo = AppBerserkUpgrades.areaAttack2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.areaAttack2);
+
         }
 
         else if (areaAttack)
         {
             bonusDamageAreaAttack = 2;
             activeSkillInfo = AppBerserkUpgrades.areaAttack1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.areaAttack1);
         }
 
         if (_circularAttack2 > 1)
         {
             activeSkillInfo = AppBerserkUpgrades.circularAttack2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack2);
         }
 
         else if (circularAttack)
         {
             activeSkillInfo = AppBerserkUpgrades.circularAttack1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack2);
         }
 
         #endregion
@@ -105,21 +113,25 @@ public class Berserker : PlayerUnit
         if (rageDamagePlus > 1)
         {
             pasiveSkillInfo = AppBerserkUpgrades.rageDamage2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage2);
         }
 
         else if (rageFear)
         {
             pasiveSkillInfo = AppBerserkUpgrades.rageDamage1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage1);
         }
 
         if (fearTurnBonus > 1)
         {
             pasiveSkillInfo = AppBerserkUpgrades.fearRage2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage2);
         }
 
         else if (fearTurnBonus > 0)
         {
             pasiveSkillInfo = AppBerserkUpgrades.fearRage1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage1);
         }
 
 

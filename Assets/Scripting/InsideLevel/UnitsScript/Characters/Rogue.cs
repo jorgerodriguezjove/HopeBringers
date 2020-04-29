@@ -69,19 +69,26 @@ public class Rogue : PlayerUnit
         activeSkillInfo = AppRogueUpgrades.initialActiveText;
         pasiveSkillInfo = AppRogueUpgrades.initialPasiveText;
 
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+
         #region Actives
 
         checkersAttack = _multiJumpAttack1;
+
         if (_multiJumpAttack2 > 0)
         {
             fUnitsCanJump = _multiJumpAttack2;
             unitsCanJump = _multiJumpAttack2;
             activeSkillInfo = AppRogueUpgrades.multiJumpAttack2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.multiJumpAttack2);
+
         }
 
         else if (checkersAttack)
         {
             activeSkillInfo = AppRogueUpgrades.multiJumpAttack1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.multiJumpAttack1);
         }
 
         extraTurnAttackAfterKill = _extraTurnAfterKill1;
@@ -90,11 +97,13 @@ public class Rogue : PlayerUnit
             extraTurnCount = _extraTurnAfterKill2;
             fextraTurnCount = _extraTurnAfterKill2;
             activeSkillInfo = AppRogueUpgrades.extraTurnAfterKill2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.extraTurnAfterKill2);
         }
 
         else if (extraTurnAttackAfterKill)
         {
             activeSkillInfo = AppRogueUpgrades.extraTurnAfterKill1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.extraTurnAfterKill1);
         }
 
         #endregion
@@ -107,11 +116,13 @@ public class Rogue : PlayerUnit
         if (afterKillBonus2)
         {
             pasiveSkillInfo = AppRogueUpgrades.buffDamageKill2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.buffDamageKill2);
         }
 
         else if (afterKillBonus)
         {
             pasiveSkillInfo = AppRogueUpgrades.buffDamageKill1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.buffDamageKill1);
         }
 
         smokeBomb = _smokeBomb1;
@@ -120,11 +131,13 @@ public class Rogue : PlayerUnit
         if (smokeBomb2)
         {
             pasiveSkillInfo = AppRogueUpgrades.smokeBomb2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.smokeBomb2);
         }
 
         else if (smokeBomb)
         {
             pasiveSkillInfo = AppRogueUpgrades.smokeBomb1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.smokeBomb2);
         }
 
         #endregion

@@ -77,6 +77,9 @@ public class Mage : PlayerUnit
         activeSkillInfo = AppMageUpgrades.initialActiveText;
         pasiveSkillInfo = AppMageUpgrades.initialPasiveText;
 
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+
         #region Actives
 
         lightningChain = _lightningChain1;
@@ -88,22 +91,26 @@ public class Mage : PlayerUnit
         if (lightningChain2)
         {
             activeSkillInfo = AppMageUpgrades.lightningChain2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.lightningChain2);
         }
 
         else if(lightningChain)
         {
             activeSkillInfo = AppMageUpgrades.lightningChain1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.lightningChain1);
         }
 
         if (areaAttack2)
         {
             activeSkillInfo = AppMageUpgrades.crossAreaAttack2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.crossAreaAttack2);
         }
 
         else if (areaAttack)
         {
             areaRange = 1;
             activeSkillInfo = AppMageUpgrades.crossAreaAttack1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.crossAreaAttack1);
         }
 
         #endregion
@@ -119,22 +126,26 @@ public class Mage : PlayerUnit
         if (isDecoyBomb2)
         {
             pasiveSkillInfo = AppMageUpgrades.bombDecoy2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.bombDecoy2);
         }
 
         else if (isDecoyBomb)
         {
             pasiveSkillInfo = AppMageUpgrades.bombDecoy1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.bombDecoy1);
         }
 
         if (mirrorDecoy2)
         {
             pasiveSkillInfo = AppMageUpgrades.mirrorDecoy2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.mirrorDecoy2);
         }
 
         else if (mirrorDecoy)
         {
             areaRange = 1;
             pasiveSkillInfo = AppMageUpgrades.mirrorDecoy1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.mirrorDecoy1);
         }
 
         #endregion

@@ -69,6 +69,9 @@ public class Druid : PlayerUnit
         activeSkillInfo = AppDruidUpgrades.initialActiveText;
         pasiveSkillInfo = AppDruidUpgrades.initialPasiveText;
 
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+
         #region Actives
 
         healedLife = _heal1;
@@ -80,21 +83,25 @@ public class Druid : PlayerUnit
         if (areaHealer2)
         {
             activeSkillInfo = AppDruidUpgrades.areaHeal2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.areaHeal2);
         }
 
         else if (areaHealer)
         {
             activeSkillInfo = AppDruidUpgrades.areaHeal1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.areaHeal1);
         }
 
         if (individualHealer2)
         {
             activeSkillInfo = AppDruidUpgrades.heal2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.heal2);
         }
 
         else if (healedLife > 1)
         {
             activeSkillInfo = AppDruidUpgrades.heal1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.heal1);
         }
 
         #endregion
@@ -111,21 +118,25 @@ public class Druid : PlayerUnit
         if (tileSustitute2)
         {
             pasiveSkillInfo = AppDruidUpgrades.tileMovement2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tileMovement2);
         }
 
         else if (tileSustitute)
         {
             pasiveSkillInfo = AppDruidUpgrades.tileMovement1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tileMovement1);
         }
 
         if (tileTransformer2)
         {
-            pasiveSkillInfo = AppDruidUpgrades.tileMovement2Text;
+            pasiveSkillInfo = AppDruidUpgrades.tile2Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tile2);
         }
 
         else if (tileTransformer)
         {
-            pasiveSkillInfo = AppDruidUpgrades.tileMovement1Text;
+            pasiveSkillInfo = AppDruidUpgrades.tile1Text;
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tile1);
         }
 
 

@@ -39,6 +39,19 @@ public class BerserkerData : CharacterData
         specificBoolCharacterUpgrades.Add(AppBerserkUpgrades.fearRage1, false);
         specificIntCharacterUpgrades.Add(AppBerserkUpgrades.fearRage2, 0);
 
-        //Mejoras tipo INT
+        //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Activas
+        specificStringCharacterUpgrades.Add("areaAttack1Text", AppBerserkUpgrades.areaAttack1Text);
+        specificStringCharacterUpgrades.Add("areaAttack2Text", AppBerserkUpgrades.areaAttack2Text);
+
+        specificStringCharacterUpgrades.Add("circularAttack1Text", AppBerserkUpgrades.circularAttack1Text);
+        specificStringCharacterUpgrades.Add("circularAttack2Text", AppBerserkUpgrades.circularAttack2Text);
+
+        //Pasivas
+        specificStringCharacterUpgrades.Add("rageDamage1Text", AppBerserkUpgrades.rageDamage1Text);
+        specificStringCharacterUpgrades.Add("rageDamage2Text", AppBerserkUpgrades.rageDamage2Text);
+
+        specificStringCharacterUpgrades.Add("fearRage1Text", AppBerserkUpgrades.fearRage1Text);
+        specificStringCharacterUpgrades.Add("fearRage2Text", AppBerserkUpgrades.fearRage2Text);
     }
 }
