@@ -15,6 +15,9 @@ public class CommandInvoker : MonoBehaviour
     //Unidad que estaba seleccionada cuando le he dado a undo move
     PlayerUnit playerSelectedWhileClickingUndo;
 
+    UnitBase lastUndoPlayer;
+    UnitBase NextCommandPlayer;
+
     private void Awake()
     {
         commandBuffer = new Queue<ICommand>();
@@ -50,13 +53,45 @@ public class CommandInvoker : MonoBehaviour
     {
         playerSelectedWhileClickingUndo = LM.selectedCharacter;
 
-       
         if (playerSelectedWhileClickingUndo != null && !playerSelectedWhileClickingUndo.isMovingorRotating || playerSelectedWhileClickingUndo == null)
         {
             if (counter > 0)
             {
+                Debug.Log("Command History count: " + commandHistory.Count);
+
+                //Reduzco el counter
                 counter--;
+
+                //Guardo el player del siguiente comando
+                lastUndoPlayer = commandHistory[counter].Player();
+
+                //Deshago el comando
                 commandHistory[counter].Undo();
+
+                Debug.Log("Primer undo: " + commandHistory[counter]);
+
+                ////Compruebo si la siguiente acción está realizada por el mismo personaje
+                while (counter > 0)
+                {
+                    NextCommandPlayer = commandHistory[counter - 1].Player();
+
+                    if (NextCommandPlayer == lastUndoPlayer && !commandHistory[counter - 1].CheckIfMoveCommand())
+                    {
+                        Debug.Log("Siguiente Undo: " + commandHistory[counter]);
+
+                        //Repito las tres primeras lineas deshaciendo esta acción
+                        counter--;
+                        lastUndoPlayer = commandHistory[counter].Player();
+                        commandHistory[counter].Undo();
+                    }
+
+                    //Si siguen quedando acciones pero ya no se cumple que coincida el personaje sago del loop.
+                    else
+                    {
+                        break;
+                    }
+                }
+
                 LM.DeSelectUnit();
             }
         }

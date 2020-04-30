@@ -39,6 +39,16 @@ public class MoveCommand : ICommand
     {
         pj.UndoMove(previousTile, previousRotation, true);
     }
+
+    public UnitBase Player()
+    {
+        return pj;
+    }
+
+    public bool CheckIfMoveCommand()
+    {
+        return true;
+    }
 }
 
 public class AttackCommand : ICommand
@@ -52,7 +62,7 @@ public class AttackCommand : ICommand
     UnitBase pj;
     UnitBase enemy;
 
-    public AttackCommand(UnitBase.FacingDirection _enemypreviousRotation, UnitBase.FacingDirection _pjpreviousRotation, IndividualTiles _enemyPreviousTile, IndividualTiles _pjPreviousTile, int _enemyPreviousHealth, int _pjPreviousHealth ,UnitBase _pj, UnitBase _enemy )
+    public AttackCommand(UnitBase.FacingDirection _enemypreviousRotation, UnitBase.FacingDirection _pjpreviousRotation, IndividualTiles _enemyPreviousTile, IndividualTiles _pjPreviousTile, int _enemyPreviousHealth, int _pjPreviousHealth, UnitBase _pj, UnitBase _enemy)
     {
         enemyPreviousRotation = _enemypreviousRotation;
         pjPreviousRotation = _pjpreviousRotation;
@@ -71,7 +81,6 @@ public class AttackCommand : ICommand
 
     public void Undo()
     {
-
         //El enemigo usa tanto undo attack como undomove.
         //Restaurar vida del enemigo
         enemy.UndoAttack(enemyPreviousHealth);
@@ -83,7 +92,16 @@ public class AttackCommand : ICommand
 
         pj.UndoMove(pjPreviousTile, pjPreviousRotation, false);
         pj.UndoAttack(pjPreviousHealth);
-
-
     }
+
+    public UnitBase Player()
+    {
+        return pj;
+    }
+
+    public bool CheckIfMoveCommand()
+    {
+        return false;
+    }
+
 }
