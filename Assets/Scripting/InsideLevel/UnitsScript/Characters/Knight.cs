@@ -603,6 +603,7 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
                     }
@@ -614,13 +615,14 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
-
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
 
                     }
                 }
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+                SetShadowRotation(_unitToAttack);
                 _unitToAttack.shaderHover.SetActive(true);
                 _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
 
@@ -635,6 +637,7 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
                     }
@@ -645,12 +648,14 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
                     }
                 }
 
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+                SetShadowRotation(_unitToAttack);
                 _unitToAttack.shaderHover.SetActive(true);
                 _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
 
@@ -666,6 +671,7 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
 
@@ -679,6 +685,7 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
 
@@ -686,6 +693,7 @@ public class Knight : PlayerUnit
                 }
 
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+                SetShadowRotation(_unitToAttack);
                 _unitToAttack.shaderHover.SetActive(true);
                 _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
 
@@ -704,6 +712,7 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
 
@@ -716,6 +725,7 @@ public class Knight : PlayerUnit
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
+                        SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.SetActive(true);
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
 
@@ -723,6 +733,7 @@ public class Knight : PlayerUnit
                 }
 
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+                SetShadowRotation(_unitToAttack);
                 _unitToAttack.shaderHover.SetActive(true);
                 _unitToAttack.shaderHover.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
 

@@ -1112,6 +1112,32 @@ public class UnitBase : MonoBehaviour
         monkMark.SetActive(false);
         
     }
+
+    public virtual void SetShadowRotation(UnitBase unitToSet)
+    {
+        if (unitToSet.currentFacingDirection == FacingDirection.North)
+        {
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+           
+        }
+
+        else if (unitToSet.currentFacingDirection == FacingDirection.South)
+        {
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+        }
+
+        else if (unitToSet.currentFacingDirection == FacingDirection.East)
+        {
+
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+        }
+
+        else if (unitToSet.currentFacingDirection == FacingDirection.West)
+        {
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+        }
+    }
+
     public void EnableUnableCollider(bool _shouldEnableCollider)
     {
         GetComponent<Collider>().enabled = _shouldEnableCollider;

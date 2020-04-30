@@ -418,6 +418,7 @@ public class EnemyUnit : UnitBase
 
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
+                SetShadowRotation(this);
                 shaderHover.SetActive(true);
             }
 

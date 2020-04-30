@@ -642,6 +642,8 @@ public class Monk : PlayerUnit
         {
             tilesInEnemyHover.Clear();
 
+            SetShadowRotation(_unitToAttack);
+
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (myCurrentTile.tilesInLineDown[0].unitOnTile == null)
@@ -659,6 +661,7 @@ public class Monk : PlayerUnit
                 {
                     currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position;
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[0]);
+                    
                     _unitToAttack.shaderHover.SetActive(true);
                     _unitToAttack.shaderHover.transform.position = currentTileVectorToMove;
                 }

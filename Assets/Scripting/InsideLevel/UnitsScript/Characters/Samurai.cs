@@ -149,7 +149,13 @@ public class Samurai : PlayerUnit
         myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
         myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
         //Cambiar el número si va a tener más de un turno
-        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = LM.honorCount.ToString();              
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = LM.honorCount.ToString();   
+
+        if (unitToParry != null)
+        {
+            unitToParry = null;
+            parryIcon.SetActive(false);
+        }
     }
 
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
