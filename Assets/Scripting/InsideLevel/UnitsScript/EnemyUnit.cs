@@ -194,6 +194,8 @@ public class EnemyUnit : UnitBase
 		{
 			inGamePortrait.sprite = characterImage;
 		}
+
+        fMovementUds = movementUds;
     }
 
    
