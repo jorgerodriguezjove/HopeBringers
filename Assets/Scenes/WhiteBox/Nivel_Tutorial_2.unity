@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -4191,7 +4191,7 @@ PrefabInstance:
     - target: {fileID: 4676733195737262852, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4886240529649180903, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
@@ -4388,6 +4388,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelsEsentialManagers
       objectReference: {fileID: 0}
+    - target: {fileID: 6530585948057783310, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6734166925878033608, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -4456,6 +4461,11 @@ PrefabInstance:
     - target: {fileID: 8079236427448593167, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8399638175238824705, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8436068824809450809, guid: 0aa1f913d04c21748a29637181344fa8,
@@ -13419,10 +13429,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 141717575}
     m_Modifications:
+    - target: {fileID: 8863670873493409992, guid: aef5f2fcf5745414c86ea4e4c1cdb129,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8863670875054454902, guid: aef5f2fcf5745414c86ea4e4c1cdb129,
         type: 3}
       propertyPath: m_Name
       value: Tutorial2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8863670875054454902, guid: aef5f2fcf5745414c86ea4e4c1cdb129,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8863670875054454903, guid: aef5f2fcf5745414c86ea4e4c1cdb129,
         type: 3}
@@ -13462,7 +13482,7 @@ PrefabInstance:
     - target: {fileID: 8863670875054454903, guid: aef5f2fcf5745414c86ea4e4c1cdb129,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 8863670875054454903, guid: aef5f2fcf5745414c86ea4e4c1cdb129,
         type: 3}
