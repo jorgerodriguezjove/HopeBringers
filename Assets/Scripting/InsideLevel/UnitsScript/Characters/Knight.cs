@@ -343,17 +343,24 @@ public class Knight : PlayerUnit
                         && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
                         && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
                     {
+                        //UNDO
+                        CreateAttackCommand(unitToAttack);
+
                         unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush]);
                     }
                     
                     for (int i = 0; i - 1 < tilesToPush; i++)
                     {
-
                         if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                         {
+                            if (myCurrentTile.tilesInLineUp[i].unitOnTile != unitToAttack)
+                            {
+                                //UNDO
+                                CreateAttackCommand(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                            }
+
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                          
                         }
                     }
                 }
@@ -368,14 +375,22 @@ public class Knight : PlayerUnit
                        && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
                        && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
                         {
+                            //UNDO
+                            CreateAttackCommand(unitToAttack);
+
                             unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
                         }
 
                         if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                         {
+                            if (myCurrentTile.tilesInLineDown[i].unitOnTile != unitToAttack)
+                            {
+                                //UNDO
+                                CreateAttackCommand(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                            }
+
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                          
                         }
                     }
                 }
@@ -387,6 +402,9 @@ public class Knight : PlayerUnit
                         && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
                         && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
                     {
+                        //UNDO
+                        CreateAttackCommand(unitToAttack);
+
                         unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[tilesToPush]);
                     }
 
@@ -394,9 +412,14 @@ public class Knight : PlayerUnit
                     {
                         if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                         {
+                            if (myCurrentTile.tilesInLineRight[i].unitOnTile != unitToAttack)
+                            {
+                                //UNDO
+                                CreateAttackCommand(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                            }
+
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineRight[i].unitOnTile);
-                         
                         }
                     }
                 }
@@ -408,6 +431,9 @@ public class Knight : PlayerUnit
                        && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
                        && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
                     {
+                        //UNDO
+                        CreateAttackCommand(unitToAttack);
+
                         unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush]);
                     }
 
@@ -416,20 +442,28 @@ public class Knight : PlayerUnit
 
                         if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                         {
+                            if (myCurrentTile.tilesInLineLeft[i].unitOnTile != unitToAttack)
+                            {
+                                //UNDO
+                                CreateAttackCommand(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                            }
+
                             //Hago daño
                             DoDamage(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                          
                         }
                     }
                 }
               
-
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
             }
+
             else
             {               
                 //Animación de ataque
                 myAnimator.SetTrigger("Attack");
+
+                //UNDO
+                CreateAttackCommand(unitToAttack);
 
                 //Hago daño
                 DoDamage(unitToAttack);
@@ -456,8 +490,6 @@ public class Knight : PlayerUnit
 
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
             }
-
-
         }
 
         else if (pushWider)
@@ -491,6 +523,7 @@ public class Knight : PlayerUnit
 
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                     }
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
@@ -572,12 +605,8 @@ public class Knight : PlayerUnit
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.shaderHover.SetActive(false);
 
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineDown, damageMadeByPush, damageMadeByFall);
-
-
                     }
                 }
-
-
 
                 unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall);
             }
@@ -640,7 +669,6 @@ public class Knight : PlayerUnit
                     //UNDO
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
-
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
@@ -692,6 +720,9 @@ public class Knight : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             //Hago daño
             DoDamage(unitToAttack);
 
@@ -717,6 +748,7 @@ public class Knight : PlayerUnit
 
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
+
         HideAttackEffect(unitToAttack);
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);

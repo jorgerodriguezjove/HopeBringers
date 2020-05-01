@@ -156,14 +156,15 @@ public class Valkyrie : PlayerUnit
     {
         hasAttacked = true;
 
-
         CheckIfUnitHasMarks(unitToAttack);
 
         if (canChooseEnemy)
         {
-
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
+
+            //UNDO
+            CreateAttackCommand(unitToAttack);
 
             //Quito el color del tile
             myCurrentTile.ColorDeselect();
@@ -176,6 +177,9 @@ public class Valkyrie : PlayerUnit
                 }
                 else if (currentUnitsAvailableToAttack[i] != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[i]);
+
                     DoDamage(currentUnitsAvailableToAttack[i]);
                 }
 
@@ -209,12 +213,14 @@ public class Valkyrie : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             //Quito el color del tile
             myCurrentTile.ColorDeselect();
 
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
-
                 if (armorMode2)
                 {
                     currentArmor += numberOfArmorAdded;
@@ -230,11 +236,11 @@ public class Valkyrie : PlayerUnit
                     unitToAttack.currentArmor = unitToAttack.currentHealth;
                 }
             }
+
             else
             {
                 //Hago daño
                 DoDamage(unitToAttack);
-
             }
 
             //Intercambio
@@ -242,7 +248,6 @@ public class Valkyrie : PlayerUnit
 
             currentTileVectorToMove = unitToAttack.myCurrentTile.transform.position;
             transform.DOMove(currentTileVectorToMove, 1);
-
 
             currentTileVectorToMove = myCurrentTile.transform.position;
             unitToAttack.transform.DOMove(currentTileVectorToMove, 1);
@@ -257,11 +262,13 @@ public class Valkyrie : PlayerUnit
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
-
         }
+
         else
         {
+
+            //UNDO
+            CreateAttackCommand(unitToAttack);
 
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
@@ -272,13 +279,12 @@ public class Valkyrie : PlayerUnit
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
 
-
             }
+
             else
             {
                 //Hago daño
                 DoDamage(unitToAttack);
-
             }
 
             //Intercambio
@@ -294,7 +300,6 @@ public class Valkyrie : PlayerUnit
             UpdateInformationAfterMovement(previousTile);
             unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
 
-           
             //Hay que cambiarlo
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
@@ -795,6 +800,15 @@ public class Valkyrie : PlayerUnit
     }
     
 }
+
+
+    public override void UndoAttack(AttackCommand lastAttack)
+    {
+        base.UndoAttack(lastAttack);
+
+        //Intercambio con otro personaje
+    }
+
 }
 
 

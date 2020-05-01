@@ -168,6 +168,7 @@ public class Rogue : PlayerUnit
             myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.text = baseDamage.ToString();
         }
     }
+
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
@@ -318,7 +319,6 @@ public class Rogue : PlayerUnit
         }
     }
 
-
     public void CheckPasiveUpgrades(UnitBase _unitToAttack)
     {
 
@@ -383,6 +383,9 @@ public class Rogue : PlayerUnit
 
         if (checkersAttack)
         {
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             unitsCanJump--;
 
             //Importante esta llamada sea la primera
@@ -395,13 +398,13 @@ public class Rogue : PlayerUnit
             //Cambio la rotación
             NewRotationAfterJump(unitToAttack.myCurrentTile);
             unitsAttacked.Add(unitToAttack);
+            
             //Hago daño
             DoDamage(unitToAttack);
 
             CheckPasiveUpgrades(unitToAttack);
 
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();
-
                 
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
@@ -426,10 +429,12 @@ public class Rogue : PlayerUnit
                 //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
                 base.Attack(unitToAttack);
             }
-
         }
+
         else if (extraTurnAttackAfterKill)
         {
+            //UNDO
+            CreateAttackCommand(unitToAttack);
 
             //Importante esta llamada sea la primera
             CalculateAttackLogic(unitToAttack, true);
@@ -456,7 +461,6 @@ public class Rogue : PlayerUnit
                 UIM.RefreshTokens();
                 LM.DeSelectUnit();
                
-
                 myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = "0";
 
                 //Lo hago aquí para que cuando se seleccione nuevamente ya esté bien calculado.
@@ -477,6 +481,9 @@ public class Rogue : PlayerUnit
         }
         else
         {
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             //Importante esta llamada sea la primera
             CalculateAttackLogic(unitToAttack, true);
 
@@ -853,4 +860,22 @@ public class Rogue : PlayerUnit
 
         }
     }
+
+    public override void UndoAttack(AttackCommand lastAttack)
+    {
+        base.UndoAttack(lastAttack);
+
+        unitsAttacked.Clear();
+        for (int i = 0; i < lastAttack.unitsAttacked.Count; i++)
+        {
+            unitsAttacked.Add(lastAttack.unitsAttacked[i]);
+        }
+
+        extraTurnCount = lastAttack.ninjaExtraTurns;
+        unitsCanJump = lastAttack.ninjaExtraJumps;
+
+        //Smoketiles
+    }
+
+    
 }

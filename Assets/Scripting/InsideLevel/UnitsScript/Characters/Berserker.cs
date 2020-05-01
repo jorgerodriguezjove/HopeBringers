@@ -10,12 +10,14 @@ public class Berserker : PlayerUnit
     #region VARIABLES
     [Header("STATS DE CLASE")]
     //Indica si el berserker está en Rage
-    private bool isInRage;
+    [HideInInspector]
+    public bool isInRage;
 
     public GameObject isInRageIcon;
 
     //Al llegar a 0, el rage se quita
-    private int turnsLeftToRageOff;
+    [HideInInspector]
+    public int turnsLeftToRageOff;
     [SerializeField]
     private int maxNumberOfTurnsInRage;
 
@@ -352,27 +354,37 @@ public class Berserker : PlayerUnit
             myAnimator.SetTrigger("Attack");
             for (int i = 0; i < timesCircularAttackRepeats; i++)
             {
-                currentFacingDirection = FacingDirection.North;
                 if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(myCurrentTile.tilesInLineUp[0].unitOnTile);
+
+                    currentFacingDirection = FacingDirection.North;
                     DoDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
                 }
-
-                currentFacingDirection = FacingDirection.South;
+                
                 if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(myCurrentTile.tilesInLineDown[0].unitOnTile);
+
+                    currentFacingDirection = FacingDirection.South;
                     DoDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
                 }
 
-                currentFacingDirection = FacingDirection.East;
+               
                 if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(myCurrentTile.tilesInLineRight[0].unitOnTile);
+
+                    currentFacingDirection = FacingDirection.East;
                     DoDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
                 }
 
-                currentFacingDirection = FacingDirection.West;
+               
                 if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+
+                    currentFacingDirection = FacingDirection.West;
                     DoDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
                 }
 
@@ -387,12 +399,16 @@ public class Berserker : PlayerUnit
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-                {                   
+                {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);                   
                 }
 
                 if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
-                {                    
+                {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);                  
                 }
             }
@@ -401,11 +417,15 @@ public class Berserker : PlayerUnit
             {
                 if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                 }
 
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
-                {                  
+                {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                 }
             }
@@ -414,11 +434,15 @@ public class Berserker : PlayerUnit
             {
                 if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                 }
 
                 if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                 }
             }
@@ -428,11 +452,15 @@ public class Berserker : PlayerUnit
 
                 if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                 }
 
                 if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                 {
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                 }
             }
@@ -440,18 +468,21 @@ public class Berserker : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
+            CreateAttackCommand(unitToAttack);
+
             //Hago daño
             DoDamage(unitToAttack);
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
         }
 
         else
         {
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
+
+            CreateAttackCommand(unitToAttack);
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -802,6 +833,23 @@ public class Berserker : PlayerUnit
 
 
         tilesInEnemyHover.Clear();
+    }
+
+    public override void UndoAttack(AttackCommand lastAttack)
+    {
+        base.UndoAttack(lastAttack);
+
+
+        //ESTO NO VA EN ATAQUE, VA EN MOVIMIENTO
+        isInRage = lastAttack.isInRage;
+        turnsLeftToRageOff = lastAttack.rageTurnsLeft;
+
+        if (!isInRage)
+        {
+            ResetColor();
+        }
+
+        //Quitar efectos de rage visuales si se le quita con el undo
     }
 
     #region COLORS

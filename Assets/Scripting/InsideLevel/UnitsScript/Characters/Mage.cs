@@ -180,6 +180,8 @@ public class Mage : PlayerUnit
                 //HAY QUE HACER UNA PARA EL ATAQUE EN CRUZ O PARTÍCULAS
                 //myAnimator.SetTrigger("Attack");
 
+                //UNDO
+                CreateAttackCommand(unitToAttack);
 
                 //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                 TM.surroundingTiles.Clear();
@@ -194,6 +196,9 @@ public class Mage : PlayerUnit
                 {
                     if (TM.surroundingTiles[i].unitOnTile != null)
                     {
+                        //UNDO
+                        CreateAttackCommand(TM.surroundingTiles[i].unitOnTile);
+
                         DoDamage(TM.surroundingTiles[i].unitOnTile);
                     }
                 }
@@ -210,15 +215,20 @@ public class Mage : PlayerUnit
                 {
                     if (unitToAttack.myCurrentTile.neighbours[i].unitOnTile != null)
                     {
+                        //UNDO
+                        CreateAttackCommand(unitToAttack.myCurrentTile.neighbours[i].unitOnTile);
+
                         DoDamage(unitToAttack.myCurrentTile.neighbours[i].unitOnTile);
                     }
                 }
 
+                //UNDO
+                CreateAttackCommand(unitToAttack);
+
                 //Hago daño
                 DoDamage(unitToAttack);
-
-
             }
+
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
@@ -235,6 +245,9 @@ public class Mage : PlayerUnit
             }
             else
             {
+                //UNDO
+                CreateAttackCommand(unitToAttack);
+
                 //Hago daño
                 DoDamage(unitToAttack);
             }
@@ -248,12 +261,12 @@ public class Mage : PlayerUnit
                         if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
                             !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                         {
+                            //UNDO
+                            CreateAttackCommand(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
                             DoDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
-
                             nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
-
                         }
                     }
 
@@ -279,53 +292,18 @@ public class Mage : PlayerUnit
                     }                    
                 }                                                   
             }
-
-            //for (int j = 0; j < unitsAttacked.Count; j++)
-            //{
-            //    timeElectricityAttackExpands--;
-
-            //    if (timeElectricityAttackExpands > 0)
-            //    {                                                          
-            //        for (int k = 0; k < unitsAttacked[j].myCurrentTile.neighbours.Count; k++)
-            //        {
-            //            //&& unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != this
-
-            //            if (unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile != null &&
-            //                !unitsAttacked.Contains(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile))
-            //            {
-            //                if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
-            //                {
-
-            //                }
-            //                else
-            //                {
-            //                    //if (limitantAttackBonus<= 0 && lightningChain2)
-            //                    //{
-                                    
-            //                    //}
-            //                    //else if(lightningChain2)
-            //                    //{
-            //                    //    baseDamage++;
-            //                    //}
-
-            //                    DoDamage(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
-            //                }
-                            
-            //                unitsAttacked.Add(unitsAttacked[j].myCurrentTile.neighbours[k].unitOnTile);
-            //            }
-            //        }
-            //    }
-            //}
-            
            
             limitantAttackBonus = fLimitantAttackBonus;
             baseDamage = fBaseDamage;
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
         }
+
         else
         {
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             //Hago daño
             DoDamage(unitToAttack);
 
@@ -682,8 +660,11 @@ public class Mage : PlayerUnit
 
         if (shouldResetMovement)
         {
-            Destroy(myDecoys[myDecoys.Count - 1]);
-            myDecoys.RemoveAt(myDecoys.Count - 1);
+            if (myDecoys.Count > 0)
+            {
+                Destroy(myDecoys[myDecoys.Count - 1]);
+                myDecoys.RemoveAt(myDecoys.Count - 1);
+            }
         }
     }
 
@@ -734,8 +715,6 @@ public class Mage : PlayerUnit
                     if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
                         !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                     {
-
-
                         nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
                         tilesInEnemyHover.Add(attackingUnits[j].myCurrentTile.neighbours[j]);
 
@@ -802,6 +781,14 @@ public class Mage : PlayerUnit
             }
 
         }
+    }
+
+    public override void UndoAttack(AttackCommand lastAttack)
+    {
+        base.UndoAttack(lastAttack);
+
+        //myDecoys.
+        //Hacer la movida de los decoys
     }
 
 }
