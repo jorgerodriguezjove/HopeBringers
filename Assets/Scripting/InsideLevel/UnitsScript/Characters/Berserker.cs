@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 using TMPro;
 using UnityEngine.UI;
 
@@ -143,6 +143,201 @@ public class Berserker : PlayerUnit
         myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
     }
 
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
+    {
+        currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
+
+        if (currentFacingDirection == FacingDirection.North)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineUp.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineUp[i].isEmpty && !myCurrentTile.tilesInLineUp[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
+                }
+
+                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.South)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineDown.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineDown[i].isEmpty && !myCurrentTile.tilesInLineDown[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
+                }
+
+                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.East)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineRight.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineRight[i].isEmpty && !myCurrentTile.tilesInLineRight[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
+                }
+
+                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.West)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineLeft[i].isEmpty && !myCurrentTile.tilesInLineLeft[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
+                }
+
+                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (_shouldPaintEnemiesAndShowHealthbar)
+        {
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+            }
+        }
+
+        if (areaAttack)
+        {
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                if (myCurrentTile.tilesInLineUp[0].tilesInLineRight[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineRight[0]);
+                }
+
+                if (myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0]);
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+                if (myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0]);
+                }
+
+                if (myCurrentTile.tilesInLineDown[0].tilesInLineRight[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineRight[0]);
+
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                if (myCurrentTile.tilesInLineRight[0].tilesInLineUp[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineUp[0]);
+
+                }
+
+                if (myCurrentTile.tilesInLineRight[0].tilesInLineDown[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineDown[0]);
+
+                }
+              
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+                if (myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0]);
+                }
+
+                if (myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0]);
+                }
+
+            }
+        }
+
+        
+            for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+            {
+                currentTilesInRangeForAttack[i].ColorBorderRed();
+            }
+        
+        
+
+    }
+
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
@@ -188,8 +383,7 @@ public class Berserker : PlayerUnit
 
         else if (areaAttack)
         {
-            baseDamage = bonusDamageAreaAttack;
-
+          
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
@@ -281,54 +475,38 @@ public class Berserker : PlayerUnit
 
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-        if (isInRage)
-        {
-           
-            CalculateDamage(unitToDealDamage);
-
-            Debug.Log(damageWithMultipliersApplied);
-
-            //Añado el daño de rage.
-            damageWithMultipliersApplied += rageDamagePlus;
-
-            Debug.Log(damageWithMultipliersApplied);
-
-            //Una vez aplicados los multiplicadores efectuo el daño.
-            unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
-
+        
             if (rageFear)
             {
                 ApplyBuffOrDebuffDamage(unitToDealDamage, -1, fearTurnBonus);
             }
-        }
 
-        else
-        {
             CalculateDamage(unitToDealDamage);
             //Una vez aplicados los multiplicadores efectuo el daño.
             unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
-        }
 
-        //Añado este if para el count de honor del samurai
-        if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
-       || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
-       || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
-       || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
-       )
-        {
-            LM.honorCount++;
-        }
-        //Si ataco por la espalda instancio la partícula de ataque crítico
-        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
-        {
-            Instantiate(criticAttackParticle, unitModel.transform.position, unitModel.transform.rotation);
-        }
 
-        //Si no, instancio la partícula normal
-        else
-        {
-            Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
-        }
+            //Añado este if para el count de honor del samurai
+            if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+           || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+           || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+           || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
+           )
+            {
+                LM.honorCount++;
+            }
+            //Si ataco por la espalda instancio la partícula de ataque crítico
+            if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+            {
+                Instantiate(criticAttackParticle, unitModel.transform.position, unitModel.transform.rotation);
+            }
+
+            //Si no, instancio la partícula normal
+            else
+            {
+                Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+            }
+        
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
@@ -349,6 +527,98 @@ public class Berserker : PlayerUnit
 
 
         base.ReceiveDamage(damageReceived, unitAttacker);
+    }
+
+    public override void CalculateDamage(UnitBase unitToDealDamage)
+    {
+        //Reseteo la variable de daño a realizar
+        damageWithMultipliersApplied = baseDamage;
+
+        //Si estoy en desventaja de altura hago menos daño
+        if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
+        {
+            damageWithMultipliersApplied -= penalizatorDamageLessHeight;
+            healthBar.SetActive(true);
+            downToUpDamageIcon.SetActive(true);
+        }
+
+        //Si estoy en ventaja de altura hago más daño
+        else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
+        {
+            damageWithMultipliersApplied += bonusDamageMoreHeight;
+            healthBar.SetActive(true);
+            upToDownDamageIcon.SetActive(true);
+        }
+
+        //Si le ataco por la espalda hago más daño
+        if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+        {
+            if (unitToDealDamage.GetComponent<EnDuelist>()
+               && unitToDealDamage.GetComponent<EnDuelist>().hasTier2
+               && hasAttacked)
+            {
+
+                if (currentFacingDirection == FacingDirection.North)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.South;
+                }
+
+                else if (currentFacingDirection == FacingDirection.South)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.North;
+                }
+
+                else if (currentFacingDirection == FacingDirection.East)
+                {
+
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.West;
+                }
+
+                else if (currentFacingDirection == FacingDirection.West)
+                {
+                    unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                    unitToDealDamage.currentFacingDirection = FacingDirection.East;
+                }
+
+            }
+            else
+            {
+                //Añado este if para que, cada vez que ataque un jugador y si le va a realizar daño por la espalda, el count del honor se resetea
+                if (hasAttacked)
+                {
+                    LM.honorCount = 0;
+                }
+                //Ataque por la espalda
+                damageWithMultipliersApplied += bonusDamageBackAttack;
+                healthBar.SetActive(true);
+                backStabIcon.SetActive(true);
+            }
+        }
+
+        //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null && samuraiUpgraded.itsForHonorTime2)
+        {
+            damageWithMultipliersApplied += LM.honorCount;
+        }
+
+        if (isInRage)
+        {          
+            //Añado el daño de rage.
+            damageWithMultipliersApplied += rageDamagePlus;
+        }
+
+        if (areaAttack)
+        {
+            //Añado el daño de rage.
+            damageWithMultipliersApplied += bonusDamageAreaAttack;
+        }
+
+            damageWithMultipliersApplied += BuffbonusStateDamage;       
     }
 
     public void RageChecker()
@@ -535,8 +805,6 @@ public class Berserker : PlayerUnit
     }
 
     #region COLORS
-
-
     public virtual void RageColor()
     {
         if (!isDead)

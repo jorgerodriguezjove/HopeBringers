@@ -141,10 +141,7 @@ public class Samurai : PlayerUnit
 
     public override void CheckWhatToDoWithSpecialsTokens()
     {
-        if (buffLonelyArea)
-        { 
-            lonelyBox.SetActive(true);
-        }
+       
         CheckIfIsLonely();
         myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
         myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
@@ -364,34 +361,58 @@ public class Samurai : PlayerUnit
 
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-      
+
+        CalculateDamage(unitToDealDamage);
+        //Una vez aplicados los multiplicadores efectuo el daño.
+        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+
+        Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+    }
+
+    public override void CalculateDamage(UnitBase unitToDealDamage)
+    {
+        //Reseteo la variable de daño a realizar
+        damageWithMultipliersApplied = baseDamage;
+
+        //Si estoy en desventaja de altura hago menos daño
+        if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
+        {
+            damageWithMultipliersApplied -= penalizatorDamageLessHeight;
+            healthBar.SetActive(true);
+            downToUpDamageIcon.SetActive(true);
+        }
+
+        //Si estoy en ventaja de altura hago más daño
+        else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
+        {
+            damageWithMultipliersApplied += bonusDamageMoreHeight;
+            healthBar.SetActive(true);
+            upToDownDamageIcon.SetActive(true);
+        }
+
+        //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null && samuraiUpgraded.itsForHonorTime2)
+        {
+            damageWithMultipliersApplied += LM.honorCount;
+
+        }
+
         if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
-            || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
-            || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
-            || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
-            )
+          || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+          || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+          || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
+          )
         {
             if (itsForHonorTime)
             {
-                LM.honorCount++;              
+                LM.honorCount++;
             }
-
-            CalculateDamage(unitToDealDamage);
-
-            Debug.Log(damageWithMultipliersApplied);
 
             //Añado el daño de ataque frontal
             damageWithMultipliersApplied += samuraiFrontAttack;
             backStabIcon.SetActive(false);
-
-
-
-        }
-        else
-        {
-            CalculateDamage(unitToDealDamage);
-            //Una vez aplicados los multiplicadores efectuo el daño.
-           
         }
 
         CheckIfIsLonely();
@@ -401,23 +422,21 @@ public class Samurai : PlayerUnit
             damageWithMultipliersApplied += lonelyAreaDamage;
 
         }
-
-
         if (itsForHonorTime)
         {
             if (itsForHonorTime2)
             {
                 //Este espacio lo dejo para que el multiplicador no se sume dos veces, ya que al ser la mejora de la pasiva el multiplicador se suma en la función calculateDamage para todas las unidades.
             }
-            else{
+            else
+            {
                 damageWithMultipliersApplied += LM.honorCount;
             }
-          
         }
-        //Una vez aplicados los multiplicadores efectuo el daño.
-        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
 
-        Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
+        damageWithMultipliersApplied += BuffbonusStateDamage;
+
+        Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
@@ -529,8 +548,17 @@ public class Samurai : PlayerUnit
             }
 
         }
-       
 
+        if (currentUnitsAvailableToAttack.Count>0)
+        {
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+            }
+        }
+        
 
     }
 
@@ -546,5 +574,38 @@ public class Samurai : PlayerUnit
             _unitToAttack.timesRepeatNumber.enabled = false;
 
         }
+
+        if (currentUnitsAvailableToAttack.Count > 0)
+        {
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                currentUnitsAvailableToAttack[i].ResetColor();
+                currentUnitsAvailableToAttack[i].DisableCanvasHover();
+            }
+        }
+      
     }
+
+     
+    protected override void OnMouseEnter()
+{
+        base.OnMouseEnter();
+        if (buffLonelyArea)
+        {
+            lonelyBox.SetActive(true);
+        }
+}
+
+    protected override void OnMouseExit()
+    {
+        base.OnMouseExit();
+
+        if (buffLonelyArea && !LM.selectedCharacter == this)
+        {
+            lonelyBox.SetActive(false);
+        }
+    }
+
+
 }

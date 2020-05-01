@@ -133,7 +133,194 @@ public class Knight : PlayerUnit
         #endregion
     }
 
-    //En función de donde este mirando el personaje paso una lista de tiles diferente.
+
+    public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
+    {
+        currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
+
+        if (currentFacingDirection == FacingDirection.North)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineUp.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineUp[i].isEmpty && !myCurrentTile.tilesInLineUp[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
+                }
+
+                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.South)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineDown.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineDown.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineDown[i].isEmpty && !myCurrentTile.tilesInLineDown[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
+                }
+
+                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.East)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineRight.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineRight[i].isEmpty && !myCurrentTile.tilesInLineRight[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
+                }
+
+                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (currentFacingDirection == FacingDirection.West)
+        {
+            if (attackRange <= myCurrentTile.tilesInLineLeft.Count)
+            {
+                rangeVSTilesInLineLimitant = attackRange;
+            }
+            else
+            {
+                rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
+            }
+
+            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            {
+                if (!myCurrentTile.tilesInLineLeft[i].isEmpty && !myCurrentTile.tilesInLineLeft[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
+                }
+
+                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    //Almaceno la primera unidad en la lista de posibles unidades
+                    currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                    break;
+                }
+            }
+        }
+
+        if (_shouldPaintEnemiesAndShowHealthbar)
+        {
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamage(currentUnitsAvailableToAttack[i]);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+            }
+        }
+
+        if (pushWider)
+        {
+            if (currentFacingDirection == FacingDirection.North)
+            {
+                if (myCurrentTile.tilesInLineUp[0].tilesInLineRight[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineRight[0]);
+                }
+
+                if (myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0]);
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.South)
+            {
+                if (myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0]);
+                }
+
+                if (myCurrentTile.tilesInLineDown[0].tilesInLineRight[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineRight[0]);
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.East)
+            {
+                if (myCurrentTile.tilesInLineRight[0].tilesInLineUp[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineUp[0]);
+                }
+
+                if (myCurrentTile.tilesInLineRight[0].tilesInLineDown[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineDown[0]);
+
+                }
+            }
+
+            else if (currentFacingDirection == FacingDirection.West)
+            {
+                if (myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0]);
+                }
+
+                if (myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0] != null)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0]);
+                }
+
+            }
+        }
+        
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
+        }
+    }
 
     public override void Attack(UnitBase unitToAttack)
     {
@@ -507,7 +694,7 @@ public class Knight : PlayerUnit
 
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
-
+        HideAttackEffect(unitToAttack);
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }
@@ -947,6 +1134,7 @@ public class Knight : PlayerUnit
 
                     }
 
+                    tilesInEnemyHover[i].unitOnTile.hoverImpactIcon.SetActive(false);
                     tilesInEnemyHover[i].ColorDesAttack();
                     tilesInEnemyHover[i].unitOnTile.ResetColor();
                     tilesInEnemyHover[i].unitOnTile.HealthBarOn_Off(false);

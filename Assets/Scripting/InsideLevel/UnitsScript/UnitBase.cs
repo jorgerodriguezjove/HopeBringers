@@ -222,7 +222,7 @@ public class UnitBase : MonoBehaviour
 
     //Se usa para indicar las marcas del monk
     public GameObject monkMark;
-    public TextMeshProUGUI monkMarkText;
+    public GameObject monkMarkUpgrade;
 
 
     //Se usa para el ataque del samurai y el ataque del berserker
@@ -236,7 +236,7 @@ public class UnitBase : MonoBehaviour
     public TextMeshProUGUI buffIconText, debuffIconText, movementBuffIconText, movementDebuffIconText;
 
     [SerializeField]
-    public GameObject hoverBuffIcon, hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon;
+    public GameObject hoverBuffIcon, hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon, hoverImpactIcon;
 
 
     //Material inicial y al ser seleccionado
@@ -536,6 +536,8 @@ public class UnitBase : MonoBehaviour
             {
                 Debug.Log("borde");
                 //No calculo nada
+
+                hoverImpactIcon.SetActive(true);
                 return null;
             }
 
@@ -548,7 +550,9 @@ public class UnitBase : MonoBehaviour
                     if (tilesToCheckForCollision[i].height > myCurrentTile.height)
                     {
                         Debug.Log("pared");
+                        hoverImpactIcon.SetActive(true);
                         return tilesToCheckForCollision[i - 1];
+                        
                     }
 
                     //El tile al que empujo está más bajo (caída)
@@ -593,6 +597,7 @@ public class UnitBase : MonoBehaviour
                         else if (tilesToCheckForCollision[i].unitOnTile != null)
                         {
                             Debug.Log("otra unidad");
+                            hoverImpactIcon.SetActive(true);
                             return tilesToCheckForCollision[i - 1];
                         }
                     }
@@ -628,7 +633,13 @@ public class UnitBase : MonoBehaviour
                 //Recibo daño 
                 ReceiveDamage(attackersDamageByPush, null);
 
+                if (currentHealth <= 0)
+                {
+                    healthBar.SetActive(false);
+                }
                 //Hago animación de rebote??
+
+
             }
 
             //Si hay tiles en la lista me empujan contra tiles que no son bordes 
@@ -646,7 +657,10 @@ public class UnitBase : MonoBehaviour
                         //Desplazo a la unidad
                         MoveToTilePushed(tilesToCheckForCollision[i - 1]);
 
-
+                        if(currentHealth <= 0)
+                        {
+                            healthBar.SetActive(false);
+                        }
                         return;
                     }
 
@@ -667,12 +681,20 @@ public class UnitBase : MonoBehaviour
                             {
                                 //Muere la unidad que cae
                                 Die();
+                                if (currentHealth <= 0)
+                                {
+                                    healthBar.SetActive(false);
+                                }
                             }
 
                             else
                             {
                                 //Muere la unidad de abajo
                                 tilesToCheckForCollision[i].unitOnTile.Die();
+                                if (tilesToCheckForCollision[i].unitOnTile.currentHealth <= 0)
+                                {
+                                    tilesToCheckForCollision[i].unitOnTile.healthBar.SetActive(false);
+                                }
                             }
                         }
 
@@ -713,6 +735,7 @@ public class UnitBase : MonoBehaviour
                             //Recibo daño 
                             ReceiveDamage(attackersDamageByPush, null);
 
+                            
 
                             Vector3 test = new Vector3((this.transform.position.x + tilesToCheckForCollision[i].unitOnTile.transform.position.x) / 2, this.transform.position.y, (this.transform.position.z + tilesToCheckForCollision[i].unitOnTile.transform.position.z) / 2);
 
@@ -742,6 +765,8 @@ public class UnitBase : MonoBehaviour
                     Debug.Log(tilesToCheckForCollision[numberOfTilesMoved]);
                 }
             }
+
+           
         }
        
     }
@@ -1110,7 +1135,8 @@ public class UnitBase : MonoBehaviour
     {
         isMarked = false;
         monkMark.SetActive(false);
-        
+       monkMarkUpgrade.SetActive(false);
+
     }
 
     public virtual void SetShadowRotation(UnitBase unitToSet)

@@ -296,6 +296,7 @@ public class Druid : PlayerUnit
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
         previousTileHeight = 0;
 
         if (currentFacingDirection == FacingDirection.North)
@@ -317,36 +318,32 @@ public class Druid : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineUp[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Si no hay obstáculo marco el tile para indicar el rango
+                    if (!myCurrentTile.tilesInLineUp[i].isEmpty && !myCurrentTile.tilesInLineUp[i].isObstacle)
                     {
-
-                        if (myCurrentTile.tilesInLineUp[i].unitOnTile.currentHealth == myCurrentTile.tilesInLineUp[i].unitOnTile.maxHealth
-                            && myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
-                        {
-
-                        }
-                        else
-                        {
-                            //Almaceno la primera unidad en la lista de posibles unidades
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
-                        }
-                        
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
                     }
 
                     else
                     {
-                        continue;
+                        break;
                     }
-                }
 
-                if (myCurrentTile.tilesInLineUp[i].isEmpty)
-                {
-                    break;
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
+                    }
+
+                    if (myCurrentTile.tilesInLineUp[i].isEmpty)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -370,35 +367,31 @@ public class Druid : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineDown[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    if (!myCurrentTile.tilesInLineDown[i].isEmpty && !myCurrentTile.tilesInLineDown[i].isObstacle)
                     {
-                        if (myCurrentTile.tilesInLineDown[i].unitOnTile.currentHealth == myCurrentTile.tilesInLineDown[i].unitOnTile.maxHealth
-                           && myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
-                        {
-
-                        }
-                        else
-                        {
-                            //Almaceno la primera unidad en la lista de posibles unidades
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
-                        }
-                        
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
                     }
 
                     else
                     {
-                        continue;
+                        break;
                     }
-                }
 
-                if (myCurrentTile.tilesInLineDown[i].isEmpty)
-                {
-                    break;
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+                    }
+
+                    if (myCurrentTile.tilesInLineDown[i].isEmpty)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -422,36 +415,30 @@ public class Druid : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineRight[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    if (!myCurrentTile.tilesInLineRight[i].isEmpty && !myCurrentTile.tilesInLineRight[i].isObstacle)
                     {
-
-                        if (myCurrentTile.tilesInLineRight[i].unitOnTile.currentHealth == myCurrentTile.tilesInLineRight[i].unitOnTile.maxHealth
-                           && myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
-                        {
-
-                        }
-                        else
-                        {
-                            //Almaceno la primera unidad en la lista de posibles unidades
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
-                        }
-                       
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
                     }
-
                     else
                     {
-                        continue;
+                        break;
                     }
-                }
 
-                if (myCurrentTile.tilesInLineRight[i].isEmpty)
-                {
-                    break;
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
+                    }
+
+                    if (myCurrentTile.tilesInLineRight[i].isEmpty)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -475,37 +462,31 @@ public class Druid : PlayerUnit
                     previousTileHeight = myCurrentTile.tilesInLineLeft[i].height;
                 }
 
-                //Si hay una unidad
-                if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
+                    || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    if (!myCurrentTile.tilesInLineLeft[i].isEmpty && !myCurrentTile.tilesInLineLeft[i].isObstacle)
                     {
-
-
-                        if (myCurrentTile.tilesInLineLeft[i].unitOnTile.currentHealth == myCurrentTile.tilesInLineLeft[i].unitOnTile.maxHealth
-                           && myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
-                        {
-
-                        }
-                        else
-                        {
-                            //Almaceno la primera unidad en la lista de posibles unidades
-                            currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
-                        }
-                       
+                        currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
                     }
 
                     else
                     {
-                        continue;
+                        break;
                     }
-                }
 
-                if (myCurrentTile.tilesInLineLeft[i].isEmpty)
-                {
-                    break;
+                    //Si hay una unidad la guardo en posibles objetivos
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
+                    {
+                        //Almaceno la primera unidad en la lista de posibles unidades
+                        currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
+                    }
+
+                    if (myCurrentTile.tilesInLineLeft[i].isEmpty)
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -517,22 +498,21 @@ public class Druid : PlayerUnit
             for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
             {
                 CalculateDamage(currentUnitsAvailableToAttack[i]);
-                if (currentUnitsAvailableToAttack[i].GetComponent<PlayerUnit>())
-                {
-
-                    currentUnitsAvailableToAttack[i].canvasUnit.SetActive(true);
-                    currentUnitsAvailableToAttack[i].canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife.ToString());
-                    currentUnitsAvailableToAttack[i].previsualizeAttackIcon.SetActive(true);
-                }
-
-                else
-                {
-                    currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-                }
-
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
+                currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
+
             }
         }
+
+
+
+        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        {
+            currentTilesInRangeForAttack[i].ColorBorderRed();
+        }
+
+
     }
     #endregion
 

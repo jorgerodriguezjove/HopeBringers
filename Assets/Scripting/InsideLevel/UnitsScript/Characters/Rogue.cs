@@ -831,25 +831,26 @@ public class Rogue : PlayerUnit
     {
         if (unitToSet.currentFacingDirection == FacingDirection.North)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
 
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.South)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
 
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.East)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
 
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.West)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+
         }
     }
 }

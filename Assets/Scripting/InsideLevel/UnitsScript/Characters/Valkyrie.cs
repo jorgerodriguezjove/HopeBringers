@@ -739,7 +739,7 @@ public class Valkyrie : PlayerUnit
         if (LM.selectedCharacter == this)
         {
 
-            valkHalo2.SetActive(true);
+           
             valkHalo.SetActive(false);
 
              if (myHaloInstancies.Count > 0)
@@ -753,7 +753,9 @@ public class Valkyrie : PlayerUnit
              
              if (myHaloUnits.Count>0)
              {
-                 for (int i = 0; i < myHaloUnits.Count; i++)
+                valkHalo2.SetActive(true);
+
+                for (int i = 0; i < myHaloUnits.Count; i++)
                  {
                      if(myHaloUnits[i].currentHealth <= numberCanChange)
                      {
@@ -766,7 +768,7 @@ public class Valkyrie : PlayerUnit
         }
         else
         {
-            valkHalo.SetActive(true);
+            
             valkHalo2.SetActive(false);
 
             if (myHaloInstancies.Count > 0)
@@ -780,6 +782,7 @@ public class Valkyrie : PlayerUnit
 
             if (myHaloUnits.Count > 0)
             {
+                valkHalo.SetActive(true);
                 for (int i = 0; i < myHaloUnits.Count; i++)
                 {
                     if (myHaloUnits[i].currentHealth <= numberCanChange)

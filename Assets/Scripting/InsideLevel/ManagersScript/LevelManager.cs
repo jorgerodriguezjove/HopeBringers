@@ -1218,6 +1218,11 @@ public class LevelManager : MonoBehaviour
             selectedCharacter.myPanelPortrait.GetComponent<Portraits>().isClicked = false;
             UIM.TooltipDefault();
 
+            if (selectedCharacter.GetComponent<Samurai>())
+            {
+                selectedCharacter.GetComponent<Samurai>().lonelyBox.SetActive(false);
+
+            }
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
             {

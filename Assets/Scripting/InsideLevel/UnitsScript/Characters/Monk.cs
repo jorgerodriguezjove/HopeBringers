@@ -153,8 +153,9 @@ public class Monk : PlayerUnit
             if (suplex2 && unitToMark.numberOfMarks == 2)
             {
 
-                unitToMark.monkMarkText.enabled = true;
-                unitToMark.monkMarkText.text = "++";
+                unitToMark.monkMark.SetActive(false);
+
+                unitToMark.monkMarkUpgrade.SetActive(true);
 
             }
         }
@@ -162,7 +163,7 @@ public class Monk : PlayerUnit
         {
             unitToMark.monkMark.SetActive(false);
 
-            unitToMark.monkMarkText.enabled = false;
+            unitToMark.monkMarkUpgrade.SetActive(false);
         }
        
 
@@ -417,10 +418,12 @@ public class Monk : PlayerUnit
                     }
                 }
 
-
+                if (!myCurrentTile.tilesInLineUp[0].isEmpty && !myCurrentTile.tilesInLineUp[0].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineUp[0].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0]);
+                }
             }
         }
-
 
         //Abajo
         if (currentFacingDirection == FacingDirection.South)
@@ -471,7 +474,10 @@ public class Monk : PlayerUnit
                     }
                 }
 
-
+                if (!myCurrentTile.tilesInLineDown[0].isEmpty && !myCurrentTile.tilesInLineDown[0].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineDown[0].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0]);
+                }
             }
         }
 
@@ -522,7 +528,10 @@ public class Monk : PlayerUnit
                     }
                 }
 
-
+                if (!myCurrentTile.tilesInLineRight[0].isEmpty && !myCurrentTile.tilesInLineRight[0].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineRight[0].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0]);
+                }
             }
         }
         //Izquierda
@@ -572,6 +581,11 @@ public class Monk : PlayerUnit
                             break;
                         }
                     }
+                }
+
+                if (!myCurrentTile.tilesInLineLeft[0].isEmpty && !myCurrentTile.tilesInLineLeft[0].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineLeft[0].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0]);
                 }
             }
 
