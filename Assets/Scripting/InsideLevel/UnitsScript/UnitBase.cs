@@ -78,7 +78,7 @@ public class UnitBase : MonoBehaviour
     protected int damageMadeByFall;
 
     //Daño para añadir buff  (tambien lo usamos para los debuff)
-    public int BuffbonusStateDamage;
+    public int buffbonusStateDamage;
 
     [SerializeField]
     //Turnos que el buff o debuff tiene que estar aplicado
@@ -373,7 +373,7 @@ public class UnitBase : MonoBehaviour
                 damageWithMultipliersApplied += bonusDamageBackAttack;
             }
         }
-        damageWithMultipliersApplied += BuffbonusStateDamage;
+        damageWithMultipliersApplied += buffbonusStateDamage;
     }
 
     //Prueba para calcular damages en el hover
@@ -401,7 +401,7 @@ public class UnitBase : MonoBehaviour
             unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageBackAttack;
         }
 
-        unitAttacking.damageWithMultipliersApplied += unitAttacking.BuffbonusStateDamage;
+        unitAttacking.damageWithMultipliersApplied += unitAttacking.buffbonusStateDamage;
 
         //Estas líneas las añado para comprobar si el caballero tiene que defender
         Knight knightDef = FindObjectOfType<Knight>();
@@ -974,15 +974,23 @@ public class UnitBase : MonoBehaviour
         }
         #endregion
 
+        //Mover de tile
         transform.DOMove(tileToMoveBack.transform.position, 0);
         UpdateInformationAfterMovement(tileToMoveBack);
        
     }
 
-    public virtual void UndoAttack(int previousHealth)
-    {
-        currentHealth = previousHealth;
+    //public virtual void UndoAttack(int previousHealth)
+    //{
+    //    currentHealth = previousHealth;
 
+    //}
+
+    //Esta función resetea los valores de las unidades al darle a undo.
+    //La necesitan tanto pjs como enemigos
+    public virtual void UndoAttack(AttackCommand lastAttack)
+    {
+        //Todas las variables se tienen que setear en el override del player y el obj, ya que cada uno tiene la suya.
     }
 
     public virtual void StunUnit(UnitBase unitToStun)
@@ -1030,7 +1038,7 @@ public class UnitBase : MonoBehaviour
         }
         else
         {
-            unitToApply.BuffbonusStateDamage = damageAdded;
+            unitToApply.buffbonusStateDamage = damageAdded;
             unitToApply.turnsWithBuffOrDebuff = turnsAdded;
         }
 

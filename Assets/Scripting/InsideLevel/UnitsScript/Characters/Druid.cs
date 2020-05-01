@@ -176,7 +176,7 @@ public class Druid : PlayerUnit
                             TM.surroundingTiles[i].unitOnTile.turnStunned = 0;
                             ApplyBuffOrDebuffDamage(TM.surroundingTiles[i].unitOnTile, 0, 0);
 
-                            TM.surroundingTiles[i].unitOnTile.BuffbonusStateDamage = 0;
+                            TM.surroundingTiles[i].unitOnTile.buffbonusStateDamage = 0;
 
                         }
                         if (tileTransformer)

@@ -618,7 +618,7 @@ public class Berserker : PlayerUnit
             damageWithMultipliersApplied += bonusDamageAreaAttack;
         }
 
-            damageWithMultipliersApplied += BuffbonusStateDamage;       
+            damageWithMultipliersApplied += buffbonusStateDamage;       
     }
 
     public void RageChecker()

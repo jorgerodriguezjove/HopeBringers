@@ -245,7 +245,7 @@ public class EnemyUnit : UnitBase
                 turnsWithBuffOrDebuff--;
                 if (turnsWithBuffOrDebuff<=0)
                 {
-                    BuffbonusStateDamage = 0;
+                    buffbonusStateDamage = 0;
                 }
 
                 if (isMarked && FindObjectOfType<Monk>().debuffMark)
@@ -1173,9 +1173,57 @@ public class EnemyUnit : UnitBase
         base.UndoMove(tileToMoveBack, rotationToTurnBack, shouldResetMovement);
     }
 
-    public override void UndoAttack(int previousHealth)
+    public override void UndoAttack(AttackCommand lastAttack)
     {
-        base.UndoAttack(previousHealth);  
+        //Resetear el material
+        ResetColor();
+
+        //Actualizar hud
+        UIM.RefreshHealth();
+        UIM.RefreshTokens();
+
+        #region Rotation
+
+        if (lastAttack.objPreviousRotation == FacingDirection.North)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
+            currentFacingDirection = FacingDirection.North;
+        }
+
+        else if (lastAttack.objPreviousRotation == FacingDirection.South)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
+            currentFacingDirection = FacingDirection.South;
+        }
+
+        else if (lastAttack.objPreviousRotation == FacingDirection.East)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
+            currentFacingDirection = FacingDirection.East;
+        }
+
+        else if (lastAttack.objPreviousRotation == FacingDirection.West)
+        {
+            unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
+            currentFacingDirection = FacingDirection.West;
+        }
+        #endregion
+
+        //Mover de tile
+        transform.DOMove(lastAttack.objPreviousTile.transform.position, 0);
+        UpdateInformationAfterMovement(lastAttack.objPreviousTile);
+
+        //Vida
+        currentHealth = lastAttack.objPreviousHealth;
+
+        currentArmor = lastAttack.objArmor;
+
+        isStunned = lastAttack.objIsStunned;
+
+        isMarked = lastAttack.objIsMarked;
+        numberOfMarks = lastAttack.objnumberOfMarks;
+
+        //Faltan añadir bufos y debufos
     }
 
     public void ExecuteAnimationAttack()

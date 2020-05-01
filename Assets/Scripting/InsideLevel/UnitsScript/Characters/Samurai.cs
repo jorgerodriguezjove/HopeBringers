@@ -434,7 +434,7 @@ public class Samurai : PlayerUnit
             }
         }
 
-        damageWithMultipliersApplied += BuffbonusStateDamage;
+        damageWithMultipliersApplied += buffbonusStateDamage;
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
     }

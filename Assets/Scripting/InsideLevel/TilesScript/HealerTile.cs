@@ -25,7 +25,7 @@ public class HealerTile : DamageTile
 
             else
             {
-                unitOnTile.GetComponent<UnitBase>().BuffbonusStateDamage = 1;
+                unitOnTile.GetComponent<UnitBase>().buffbonusStateDamage = 1;
             }
         }
     }
@@ -55,7 +55,7 @@ public class HealerTile : DamageTile
             if (FindObjectOfType<Druid>().tileSustitute2)
             {
                 //No poner a 0. Restar al BuffbonusStateDamage el bonus ganado por entrar (por si entra con un bufo/debufo de antes que no lo pierda)
-                unitOnTile.GetComponent<UnitBase>().BuffbonusStateDamage = 0;
+                unitOnTile.GetComponent<UnitBase>().buffbonusStateDamage = 0;
             } 
         }
 

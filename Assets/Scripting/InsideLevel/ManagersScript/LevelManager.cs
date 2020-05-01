@@ -1310,21 +1310,31 @@ public class LevelManager : MonoBehaviour
             {
                 enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
 
+                selectedCharacter.Attack(clickedUnit);
+
                 //Compruebo si está en la lista de posibles targets
-                for (int i = 0; i < enemiesNumber; i++)
-                {
-                    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating && !selectedCharacter.hasAttacked)
-                    {
-                        if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
-                        {
-                            ICommand command = new AttackCommand(selectedCharacter.currentUnitsAvailableToAttack[i].currentFacingDirection, selectedCharacter.currentFacingDirection, selectedCharacter.currentUnitsAvailableToAttack[i].myCurrentTile, selectedCharacter.myCurrentTile, selectedCharacter.currentUnitsAvailableToAttack[i].currentHealth, selectedCharacter.currentHealth, selectedCharacter, selectedCharacter.currentUnitsAvailableToAttack[i]);
-                            CommandInvoker.AddCommand(command);
-                            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-                            UIM.CheckActionsAvaliable();
-                            return;
-                        }
-                    }
-                }
+                //for (int i = 0; i < enemiesNumber; i++)
+                //{
+                //    if (selectedCharacter != null && !selectedCharacter.isMovingorRotating && !selectedCharacter.hasAttacked)
+                //    {
+                //        if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
+                //        {
+                //            UnitBase obj = selectedCharacter.currentUnitsAvailableToAttack[i];
+
+                //            ICommand command = new AttackCommand(obj.currentFacingDirection, selectedCharacter.currentFacingDirection,
+                //                                                 obj.myCurrentTile, selectedCharacter.myCurrentTile,
+                //                                                 obj.currentHealth,selectedCharacter.currentHealth,
+                //                                                 selectedCharacter, obj,
+                //                                                 selectedCharacter.currentArmor, obj.currentArmor,
+                //                                                 selectedCharacter.isStunned, obj.isStunned,
+                //                                                 selectedCharacter.isMarked, obj.isMarked, selectedCharacter.numberOfMarks, obj.numberOfMarks);
+                //            CommandInvoker.AddCommand(command);
+                //            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                //            UIM.CheckActionsAvaliable();
+                //            return;
+                //        }
+                //    }
+                //}
             }
 
             //Si llega hasta aqui significa que la unidad seleccionada no formaba parte de las unidades a las que puede atacar.

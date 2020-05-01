@@ -11,19 +11,38 @@ public class MoveCommand : ICommand
 {
     UnitBase.FacingDirection newRotation;
     UnitBase.FacingDirection previousRotation;
+
     IndividualTiles previousTile;
     IndividualTiles tileToMove;
+
     List<IndividualTiles> currentPath;
     UnitBase pj;
 
-    public MoveCommand(UnitBase.FacingDirection newRotation, UnitBase.FacingDirection previousRotation, IndividualTiles previousTile, IndividualTiles tileToMove, List<IndividualTiles> currentPath, UnitBase pj)
+    //PREGUNTAR A MARIO
+    //int damageBuff;
+    //int damageDebuff;
+    //int movementBuff;
+    //int movementDebuff;
+
+
+    public MoveCommand(UnitBase.FacingDirection newRotation, UnitBase.FacingDirection previousRotation,
+                       IndividualTiles previousTile, IndividualTiles tileToMove, 
+                       List<IndividualTiles> currentPath, UnitBase pj)
+                       //int _currentDamageBuff, int _currentDamageDebuff, int _currentMovementBuff, int _currentMovementDebuff)
     {
         this.newRotation = newRotation;
         this.previousRotation = previousRotation;
+
         this.previousTile = previousTile;
         this.tileToMove = tileToMove;
+
         this.currentPath = currentPath;
         this.pj = pj;
+
+        //this.damageBuff = _currentDamageBuff;
+        //this.damageDebuff = _currentDamageDebuff;
+        //this.movementBuff = _currentMovementBuff;
+        //this.movementDebuff = _currentMovementDebuff;
     }
 
     public void Execute()
@@ -53,45 +72,142 @@ public class MoveCommand : ICommand
 
 public class AttackCommand : ICommand
 {
-    UnitBase.FacingDirection enemyPreviousRotation;
-    UnitBase.FacingDirection pjPreviousRotation;
-    IndividualTiles enemyPreviousTile;
-    IndividualTiles pjPreviousTile;
-    int enemyPreviousHealth;
-    int pjPreviousHealth;
-    UnitBase pj;
-    UnitBase enemy;
+    public UnitBase.FacingDirection objPreviousRotation;
+    public UnitBase.FacingDirection pjPreviousRotation;
+    
+    public IndividualTiles objPreviousTile;
+    public IndividualTiles pjPreviousTile;
+    
+    public int objPreviousHealth;
+    public int pjPreviousHealth;
+    
+    public UnitBase pj;
+    public UnitBase obj;
+    
+    public int pjArmor;
+    public int objArmor;
+    
+    public bool pjIsStunned;
+    public bool objIsStunned;
+     
+    public bool pjIsMarked;
+    public bool objIsMarked;
+    public int  pjnumberOfMarks;
+    public int  objnumberOfMarks;
 
-    public AttackCommand(UnitBase.FacingDirection _enemypreviousRotation, UnitBase.FacingDirection _pjpreviousRotation, IndividualTiles _enemyPreviousTile, IndividualTiles _pjPreviousTile, int _enemyPreviousHealth, int _pjPreviousHealth, UnitBase _pj, UnitBase _enemy)
+    //PREGUNTAR A MARIO
+    //public int pj_damageBuff;
+    //public int pj_damageDebuff;
+    //public int pj_movementBuff;
+    //public int pj_movementDebuff;
+
+    //public int obj_damageBuff;
+    //public int obj_damageDebuff;
+    //public int obj_movementBuff;
+    //public int obj_movementDebuff;
+
+    #region VARIABLES ESPECÍFICAS PJ
+
+    //Ninja
+    public int ninjaExtraTurns;
+    public int ninjaExtraJumps;
+    public List<GameObject> smokeTiles;
+    public int ninjaBonusDamage;
+
+    //Mago
+    public GameObject oldDecoy;
+    public GameObject newDecoy; //Esto da problemas seguro, mirar quizas en el execute que quite el actual en vez de guardarlo antes.
+    public bool hasMovedWithDecoy; //Quizás es poner simplemente que se ha movido
+
+    //Berserker
+    public bool isInRage;
+    public int rageTurnsLeft;
+
+    //Samurai
+    public bool isInParry;
+    public int honor; //Assegurar que no jode nada del bufo al resetearlo
+
+    //Druid
+    GameObject healTileInstantiated;
+    GameObject damageTileReplaced;
+
+    //Valk
+    public bool hasInterchanged; //No me acuerdo como iba el intercambio pero habrá que hacer algo como para el decoy.
+
+    //thiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiis
+    public bool isAlone; //ESTO EN REALIDAD IRIA EN EL MOVIMIENTO, COMPROBAR QUE FUNCIONA (HACER LO MISMO CON EL CABALLERO Y SI SE PONE A PROTEGER A LOS LADOS
+    #endregion
+
+    public AttackCommand(UnitBase.FacingDirection _enemypreviousRotation, UnitBase.FacingDirection _pjpreviousRotation,
+                         IndividualTiles _enemyPreviousTile, IndividualTiles _pjPreviousTile, 
+                         int _enemyPreviousHealth, int _pjPreviousHealth, 
+                         UnitBase _pj, UnitBase _enemy,
+                         int _pjArmor, int _objArmor,
+                         bool _pjIsStunned, bool _objIsStunned,
+                         bool _pjIsMarked, bool _objIsMarked, int _pjnumberOfMarks, int _objnumberOfMarks)
+                         //,int pj_damageBuff, int pj_damageDebuff, int pj_movementBuff, int pj_movementDebuff,
+                         //int obj_damageBuff, int obj_damageDebuff, int obj_movementBuff, int obj_movementDebuff)
     {
-        enemyPreviousRotation = _enemypreviousRotation;
+        objPreviousRotation = _enemypreviousRotation;
         pjPreviousRotation = _pjpreviousRotation;
-        enemyPreviousTile = _enemyPreviousTile;
+
+        objPreviousTile = _enemyPreviousTile;
         pjPreviousTile = _pjPreviousTile;
-        enemyPreviousHealth = _enemyPreviousHealth;
+
+        objPreviousHealth = _enemyPreviousHealth;
         pjPreviousHealth = _pjPreviousHealth;
+
         pj = _pj;
-        enemy = _enemy;
+        obj = _enemy;
+
+        pjArmor = _pjArmor;
+        objArmor = _objArmor;
+
+        pjIsStunned = _pjIsStunned;
+        objIsStunned = _objIsStunned;
+
+        pjIsMarked = _pjIsMarked;
+        objIsMarked = _objIsMarked;
+        pjnumberOfMarks = _pjnumberOfMarks;
+        objnumberOfMarks = _objnumberOfMarks;
+
+        #region Specific
+
+        if (pj.GetComponent<Rogue>())
+        {
+            Rogue refPj = pj.GetComponent<Rogue>(); 
+
+            ninjaExtraTurns = refPj.extraTurnCount;
+            ninjaExtraJumps = refPj.unitsCanJump;
+
+            smokeTiles.Clear();
+
+            //Añadir en ninja referencia a tiles de humo que instancia
+
+            //for (int i = 0; i < refPj.smoke; i++)
+            //{
+            //    smokeTiles.Add(refPj.smoke[0]);
+            //}
+            
+            //Poner aqui daño que gana ninja al matar enemigos
+
+            //ninjaBonusDamage = refPj. ;
+        }
+
+        #endregion
     }
 
     public void Execute()
     {
-        pj.GetComponent<PlayerUnit>().Attack(enemy);
+        //pj.GetComponent<PlayerUnit>().Attack(obj);
     }
 
     public void Undo()
     {
-        //El enemigo usa tanto undo attack como undomove.
-        //Restaurar vida del enemigo
-        enemy.UndoAttack(enemyPreviousHealth);
-        //Mover y rotar al enemigo usando el undo movement
-        enemy.UndoMove(enemyPreviousTile, enemyPreviousRotation, false);
+        obj.UndoAttack(this);   
+        pj.UndoAttack(this);
 
-        //El Pj sin embargo no puede usar el undoMove porque si no se resetea la capacidad de moverse y el decoy del mago.
-        //El UndoAttack a parte de la vida, en el caso del player tambíén se encarga de moverlo
-
-        pj.UndoMove(pjPreviousTile, pjPreviousRotation, false);
-        pj.UndoAttack(pjPreviousHealth);
+        //En las funciones que he llamado falta setear los bufos de daño y movimiento
     }
 
     public UnitBase Player()
@@ -105,3 +221,6 @@ public class AttackCommand : ICommand
     }
 
 }
+
+
+

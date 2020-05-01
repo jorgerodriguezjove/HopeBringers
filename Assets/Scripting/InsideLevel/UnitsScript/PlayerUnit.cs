@@ -208,7 +208,7 @@ public class PlayerUnit : UnitBase
                     }
                     else
                     {
-                        BuffbonusStateDamage = 0;
+                        buffbonusStateDamage = 0;
                     }
 
                     SetBuffDebuffIcon(0, this, false);
@@ -248,7 +248,7 @@ public class PlayerUnit : UnitBase
                 turnsWithBuffOrDebuff--;
                 if (turnsWithBuffOrDebuff <= 0)
                 {
-                    BuffbonusStateDamage = 0;
+                    buffbonusStateDamage = 0;
                 }
                 if (arrowIndicator != null)
                 {
@@ -651,24 +651,62 @@ public class PlayerUnit : UnitBase
         UIM.RefreshTokens();
     }
 
-    public override void UndoAttack(int previousHealth)
+    public override void UndoAttack(AttackCommand lastAttack)
     {
-        //Todo esto es una copia del undo move sin la parte que resetea el movimiento.
-
         //Permitirle otra vez atacar
         hasAttacked = false;
+        //FALTA RESETEAR EL MOVIMIENTO SI ESTABA EN TRUE ANTES DE ATACAR
 
         //Resetear el material
         ResetColor();
-
-       
-        //Base (restaurar vida a nivel lógico)
-        base.UndoAttack(previousHealth);
         
         //Actualizar hud
         UIM.RefreshHealth();
         UIM.RefreshTokens();
 
+
+        #region Rotation
+
+        if (lastAttack.pjPreviousRotation == FacingDirection.North)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
+            currentFacingDirection = FacingDirection.North;
+        }
+
+        else if (lastAttack.pjPreviousRotation == FacingDirection.South)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
+            currentFacingDirection = FacingDirection.South;
+        }
+
+        else if (lastAttack.pjPreviousRotation == FacingDirection.East)
+        {
+            unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
+            currentFacingDirection = FacingDirection.East;
+        }
+
+        else if (lastAttack.pjPreviousRotation == FacingDirection.West)
+        {
+            unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
+            currentFacingDirection = FacingDirection.West;
+        }
+        #endregion
+
+        //Mover de tile
+        transform.DOMove(lastAttack.pjPreviousTile.transform.position, 0);
+        UpdateInformationAfterMovement(lastAttack.pjPreviousTile);
+
+        //Vida
+        currentHealth = lastAttack.pjPreviousHealth;
+
+        currentArmor = lastAttack.pjArmor;
+
+        isStunned = lastAttack.pjIsStunned;
+
+        isMarked = lastAttack.pjIsMarked;
+        numberOfMarks = lastAttack.pjnumberOfMarks;
+
+        //Faltan añadir bufos y debufos
     }
 
     #endregion
@@ -956,7 +994,7 @@ public class PlayerUnit : UnitBase
 
         }
 
-        damageWithMultipliersApplied += BuffbonusStateDamage;
+        damageWithMultipliersApplied += buffbonusStateDamage;
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
 	}
@@ -1231,6 +1269,20 @@ public class PlayerUnit : UnitBase
         //Cada character realiza su comprobación
 
 
+    }
+
+
+    //Crear AttackCommand para Undo
+    public virtual void CreateAttackCommand(UnitBase obj)
+    {
+        ICommand command = new AttackCommand(obj.currentFacingDirection, currentFacingDirection,
+                                      obj.myCurrentTile, myCurrentTile,
+                                      obj.currentHealth, currentHealth,
+                                      GetComponent<UnitBase>(), obj,
+                                      currentArmor, obj.currentArmor,
+                                      isStunned, obj.isStunned,
+                                      isMarked, obj.isMarked, numberOfMarks, obj.numberOfMarks);
+        CommandInvoker.AddCommand(command);
     }
     
 }

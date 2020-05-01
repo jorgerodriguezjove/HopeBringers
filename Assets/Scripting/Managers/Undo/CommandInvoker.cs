@@ -41,6 +41,8 @@ public class CommandInvoker : MonoBehaviour
         if (commandBuffer.Count > 0)
         {
             ICommand c = commandBuffer.Dequeue();
+            LM.UIM.CheckActionsAvaliable();
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             c.Execute();
 
             commandHistory.Add(c);

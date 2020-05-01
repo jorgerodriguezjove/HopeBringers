@@ -351,7 +351,7 @@ public class Mage : PlayerUnit
 
         }
 
-        damageWithMultipliersApplied += BuffbonusStateDamage;
+        damageWithMultipliersApplied += buffbonusStateDamage;
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
     }

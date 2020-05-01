@@ -465,11 +465,15 @@ public class Knight : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
             if (pushWider2)
             {
                 StunUnit(unitToAttack);
             }
+
             //Hago daño
             DoDamage(unitToAttack);
 
@@ -478,6 +482,9 @@ public class Knight : PlayerUnit
             {
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
@@ -485,8 +492,6 @@ public class Knight : PlayerUnit
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                     }
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
-
-                    
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                     {
@@ -500,6 +505,9 @@ public class Knight : PlayerUnit
 
                 if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
@@ -525,6 +533,8 @@ public class Knight : PlayerUnit
             {
                 if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
 
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
@@ -546,6 +556,9 @@ public class Knight : PlayerUnit
 
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
@@ -571,6 +584,9 @@ public class Knight : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.East)
             {
+                //UNDO
+                CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+
                 if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                 {
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
@@ -593,6 +609,9 @@ public class Knight : PlayerUnit
 
                 if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
@@ -616,9 +635,12 @@ public class Knight : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.West)
             {
-
                 if (unitToAttack.myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
+
+
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
@@ -640,6 +662,9 @@ public class Knight : PlayerUnit
 
                 if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                 {
+                    //UNDO
+                    CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+
                     //Este bool es para la segunda mejora (voy stunneando antes de hacerles daño)
                     if (pushWider2)
                     {
@@ -653,14 +678,12 @@ public class Knight : PlayerUnit
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.shaderHover.SetActive(false);
 
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall);
-
                     }
                 }
 
                 unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
             }
 
-        
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
 

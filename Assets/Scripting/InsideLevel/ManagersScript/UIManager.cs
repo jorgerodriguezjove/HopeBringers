@@ -458,10 +458,17 @@ public class UIManager : MonoBehaviour
 
     #region ROTATION_ARROWS
 
+   
+
     [SerializeField]
     public void RotatePlayerInNewDirection(UnitBase.FacingDirection newDirection)
     {
-        ICommand command = new MoveCommand(newDirection, LM.selectedCharacter.currentFacingDirection, LM.selectedCharacter.myCurrentTile, LM.tileToMoveAfterRotate, LM.TM.currentPath, LM.selectedCharacter);
+        UnitBase currentPlayer = LM.selectedCharacter;
+
+        ICommand command = new MoveCommand(newDirection, currentPlayer.currentFacingDirection,
+                                           currentPlayer.myCurrentTile, LM.tileToMoveAfterRotate,
+                                           LM.TM.currentPath, currentPlayer);
+                                           //currentPlayer.buffbonusStateDamage, currentPlayer.movementbu);
         CommandInvoker.AddCommand(command);
     }
 
