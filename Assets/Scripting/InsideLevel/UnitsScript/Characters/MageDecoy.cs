@@ -49,7 +49,6 @@ public class MageDecoy : Mage
         }
     }
 
-
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         //Animación de ataque
@@ -97,7 +96,6 @@ public class MageDecoy : Mage
 
      
     }
-
 
     IEnumerator WaitToDamageSurrounding()
     {
@@ -457,6 +455,7 @@ public class MageDecoy : Mage
         }
 
     }
+
     public void ChangePositionIconFeedback(bool has2Show)
     {
         if (has2Show)

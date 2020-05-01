@@ -664,7 +664,6 @@ public class PlayerUnit : UnitBase
         UIM.RefreshHealth();
         UIM.RefreshTokens();
 
-
         #region Rotation
 
         if (lastAttack.pjPreviousRotation == FacingDirection.North)

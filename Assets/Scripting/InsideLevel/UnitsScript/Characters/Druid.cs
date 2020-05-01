@@ -170,6 +170,9 @@ public class Druid : PlayerUnit
                 {
                     if (TM.surroundingTiles[i].unitOnTile != null)
                     {
+                        //UNDO
+                        CreateAttackCommand(TM.surroundingTiles[i].unitOnTile);
+
                         if (areaHealer2)
                         {
                             TM.surroundingTiles[i].unitOnTile.isStunned = false;
@@ -181,9 +184,10 @@ public class Druid : PlayerUnit
                         }
                         if (tileTransformer)
                         {
+                           
                             Instantiate(healerTilePref, TM.surroundingTiles[i].unitOnTile.transform.position, TM.surroundingTiles[i].unitOnTile.transform.rotation);
-
                         }
+
                         TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
                     }
                 }
@@ -198,8 +202,12 @@ public class Druid : PlayerUnit
                     tilesSpawned.Clear();
                 }
             }
+
             else
             {
+                //UNDO
+                CreateAttackCommand(unitToAttack);
+
                 //Hago daño
                 DoDamage(unitToAttack);
 
@@ -212,12 +220,14 @@ public class Druid : PlayerUnit
 
                 //Hay que cambiar
                 SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
-
             }
         }
 
         else
         {
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             //Hay que cambiar
             Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
@@ -229,10 +239,10 @@ public class Druid : PlayerUnit
                 {
                     unitToAttack.movementUds = unitToAttack.GetComponent<PlayerUnit>().fMovementUds + movementUpgrade;
                 }
+
                 else if (tileTransformer)
                 {
                     Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation);
-
                 }
 
                 if (tilesSpawned.Count > 0)
@@ -245,12 +255,12 @@ public class Druid : PlayerUnit
                     tilesSpawned.Clear();
                 }
                 
-
                 unitToAttack.currentHealth += healedLife;
                 currentHealth -= 1;
                 UIM.RefreshTokens();
                 UIM.RefreshHealth();
             }
+
             else
             {
                 //Hago daño
@@ -265,19 +275,15 @@ public class Druid : PlayerUnit
 
                 //Hay que cambiar
                 SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
-
             }
         }
         
-
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
-        
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-
         //Añado este if para el count de honor del samurai
         if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
        || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
@@ -611,5 +617,12 @@ public class Druid : PlayerUnit
 
         _unitToAttack.ResetColor();
         _unitToAttack.myCurrentTile.ColorDesAttack();
+    }
+
+    public override void UndoAttack(AttackCommand lastAttack)
+    {
+        base.UndoAttack(lastAttack);
+
+        //tiles instanciado y sustituido
     }
 }

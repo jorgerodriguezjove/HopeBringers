@@ -178,6 +178,9 @@ public class Monk : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             PutQuitMark(unitToAttack, true, true);
            
             unitToAttack.numberOfMarks = 1;
@@ -186,29 +189,29 @@ public class Monk : PlayerUnit
 
 
             if (unitToAttack.currentFacingDirection == FacingDirection.North)
-         {
-                unitToAttack.unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-                unitToAttack.currentFacingDirection = FacingDirection.South;
-         }
+            {
+                   unitToAttack.unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                   unitToAttack.currentFacingDirection = FacingDirection.South;
+            }
 
-         else if (unitToAttack.currentFacingDirection == FacingDirection.South)
-         {
-                unitToAttack.unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-                unitToAttack.currentFacingDirection = FacingDirection.North;
-         }
+            else if (unitToAttack.currentFacingDirection == FacingDirection.South)
+            {
+                   unitToAttack.unitModel.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                   unitToAttack.currentFacingDirection = FacingDirection.North;
+            }
 
-         else if (unitToAttack.currentFacingDirection == FacingDirection.East)
-         {
+            else if (unitToAttack.currentFacingDirection == FacingDirection.East)
+            {
 
-                unitToAttack.unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-                unitToAttack.currentFacingDirection = FacingDirection.West;
-         }
+                   unitToAttack.unitModel.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                   unitToAttack.currentFacingDirection = FacingDirection.West;
+            }
 
-         else if (unitToAttack.currentFacingDirection == FacingDirection.West)
-         {
-                unitToAttack.unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-                unitToAttack.currentFacingDirection = FacingDirection.East;
-         }
+            else if (unitToAttack.currentFacingDirection == FacingDirection.West)
+            {
+                   unitToAttack.unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                   unitToAttack.currentFacingDirection = FacingDirection.East;
+            }
 
             if (rotatorTime2)
             {
@@ -232,8 +235,10 @@ public class Monk : PlayerUnit
                             if(TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
                                 && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
                             {
-                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, true, true);
+                                //UNDO
+                                CreateAttackCommand(TM.surroundingTiles[i].unitOnTile);
 
+                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, true, true);
                             }
                         }
                     }
@@ -248,13 +253,15 @@ public class Monk : PlayerUnit
             //Meter sonido Monk
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
 
-
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
 
         else if (suplex)
         {
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (myCurrentTile.tilesInLineDown[0].unitOnTile == null)
@@ -333,6 +340,9 @@ public class Monk : PlayerUnit
         {
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
+
+            //UNDO
+            CreateAttackCommand(unitToAttack);
 
             PutQuitMark(unitToAttack, true, true);
             unitToAttack.numberOfMarks = 1;

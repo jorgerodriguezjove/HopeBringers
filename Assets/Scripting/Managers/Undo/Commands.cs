@@ -109,9 +109,10 @@ public class AttackCommand : ICommand
     #region VARIABLES ESPECÍFICAS PJ
 
     //Ninja
+    public List<UnitBase> unitsAttacked = new List<UnitBase>();
     public int ninjaExtraTurns;
     public int ninjaExtraJumps;
-    public List<GameObject> smokeTiles;
+    public List<GameObject> smokeTiles = new List<GameObject>();
     public int ninjaBonusDamage;
 
     //Mago
@@ -175,12 +176,21 @@ public class AttackCommand : ICommand
 
         if (pj.GetComponent<Rogue>())
         {
-            Rogue refPj = pj.GetComponent<Rogue>(); 
+            Rogue refPj = pj.GetComponent<Rogue>();
+
+            unitsAttacked.Clear();
+
+            for (int i = 0; i < refPj.unitsAttacked.Count; i++)
+            {
+                unitsAttacked.Add(refPj.unitsAttacked[i]);
+            }
 
             ninjaExtraTurns = refPj.extraTurnCount;
             ninjaExtraJumps = refPj.unitsCanJump;
 
             smokeTiles.Clear();
+
+            //TODO LO QUE FALTA AQUI HAY QUE PONERLO TAMBIEN EN LA FUNCIÓN UNDOATTACK DE CADA PERSONAJE
 
             //Añadir en ninja referencia a tiles de humo que instancia
 
@@ -192,6 +202,55 @@ public class AttackCommand : ICommand
             //Poner aqui daño que gana ninja al matar enemigos
 
             //ninjaBonusDamage = refPj. ;
+        }
+
+        else if (pj.GetComponent<Mage>())
+        {
+            Mage refPj = pj.GetComponent<Mage>();
+
+            if (refPj.myDecoys.Count >0)
+            {
+                oldDecoy = refPj.myDecoys[0];
+            }
+            
+            //newDecoy; //Esto da problemas seguro, mirar quizas en el execute que quite el actual en vez de guardarlo antes.
+
+
+            //hasMovedWithDecoy = refPj.hasMoved; //Quizás es poner simplemente si ha movido
+        }
+
+        else if (pj.GetComponent<Berserker>())
+        {
+            Berserker refPj = pj.GetComponent<Berserker>();
+
+            isInRage = refPj.isInRage;
+            rageTurnsLeft = refPj.turnsLeftToRageOff;
+        }
+
+        else if (pj.GetComponent<Samurai>())
+        {
+            Samurai refPj = pj.GetComponent<Samurai>();
+
+            //isInParry = refPj.; //Quitar el aprry
+            //honor = LM.HONOR; Hay que hacer que el samurai también guarde el honor o algo porque no puedo acceder a LM
+        }
+
+        else if (pj.GetComponent<Druid>())
+        {
+            Druid refPj = pj.GetComponent<Druid>();
+
+            //healTileInstantiated = ; Poner variables en el druida que guarden estos tiles.
+            //damageTileReplaced =;
+
+          //El druida parece que afecta a movementUDs ¿Esto esta bien? ¿o debería ser un bufo?
+
+        }
+
+        else if (pj.GetComponent<Valkyrie>())
+        {
+            Valkyrie refPj = pj.GetComponent<Valkyrie>();
+
+            //hasInterchanged = refPj.hasMoved; Igual que el mago con el decoy.
         }
 
         #endregion

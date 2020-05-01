@@ -315,11 +315,13 @@ public class Samurai : PlayerUnit
     {
         hasAttacked = true;
 
-
         CheckIfUnitHasMarks(unitToAttack);
 
         if (parryOn)
         {
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
             unitToParry = unitToAttack;
             parryIcon.SetActive(true);
             //Animación de preparar el parry            
@@ -333,24 +335,30 @@ public class Samurai : PlayerUnit
                 //Animación de ataque                
                 myAnimator.SetTrigger("Attack");
 
+                //UNDO
+                CreateAttackCommand(unitToAttack);
+
                 //Hago daño
                 DoDamage(unitToAttack);
             }
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-
         }
+
         else
         {
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
+
+            //UNDO
+            CreateAttackCommand(unitToAttack);
+
 
             //Hago daño
             DoDamage(unitToAttack);
 
             //Meter sonido Samurai
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
-
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
@@ -607,5 +615,12 @@ public class Samurai : PlayerUnit
         }
     }
 
+
+    public override void UndoAttack(AttackCommand lastAttack)
+    {
+        base.UndoAttack(lastAttack);
+
+        //Quitar el parry
+    }
 
 }
