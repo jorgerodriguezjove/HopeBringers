@@ -461,7 +461,7 @@ public class EnGrabber : EnemyUnit
 
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
-                shaderHover.SetActive(true);
+                sombraHoverUnit.SetActive(true);
             }
 
             myLineRenderer.positionCount += (limitantNumberOfTilesToMove + 1);
@@ -481,7 +481,7 @@ public class EnGrabber : EnemyUnit
 
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
-                        shaderHover.transform.position = pointPosition;
+                        sombraHoverUnit.transform.position = pointPosition;
 
                         if ((pathToObjective[limitantNumberOfTilesToMove + 1]) == currentUnitsAvailableToAttack[0].myCurrentTile)
                         {
@@ -494,7 +494,7 @@ public class EnGrabber : EnemyUnit
                         }
 
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
-                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+                        sombraHoverUnit.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
                     }
                 }
             }
@@ -517,14 +517,14 @@ public class EnGrabber : EnemyUnit
     //Función que muetra la sombra del objetivo donde va a ser atraida
     public void ShowGrabShadow(IndividualTiles _referenceTile,FacingDirection _referenceDirection)
     {
-        currentUnitsAvailableToAttack[0].shaderHover.SetActive(true);
+        currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(true);
 
         List<IndividualTiles> tileUnitGrabbed = new List<IndividualTiles>();
         tileUnitGrabbed = _referenceTile.GetTilesInFrontOfTheCharacter(_referenceDirection, 1);
 
         Vector3 pointPosition = new Vector3(tileUnitGrabbed[0].transform.position.x, tileUnitGrabbed[0].transform.position.y + 0.5f, tileUnitGrabbed[0].transform.position.z);
 
-        currentUnitsAvailableToAttack[0].shaderHover.transform.position = pointPosition;
+        currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = pointPosition;
 
     }
 
@@ -538,6 +538,6 @@ public class EnGrabber : EnemyUnit
 
     public void HideGrabShadow()
     {
-        currentUnitsAvailableToAttack[0].shaderHover.SetActive(false);
+        currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(false);
     }
 }

@@ -10,7 +10,7 @@ public class UnitBase : MonoBehaviour
 {
     #region VARIABLES
 
-    [Header("STATS GENÉRICOS")]
+    [Header("BASE")]
 
     //Variable que se usará para ordenar a las unidades
     [SerializeField]
@@ -23,6 +23,7 @@ public class UnitBase : MonoBehaviour
 	[HideInInspector]
     public int currentHealth;
 
+    [HideInInspector]
     public int currentArmor;
 
     //Uds movimiento máximas de la unidad.
@@ -33,29 +34,14 @@ public class UnitBase : MonoBehaviour
     //Este int lo pongo para saber el primer número y que así el tier 2 del Watcher no esté restando a los current movementsUds
     public int fMovementUds;
 
-    [SerializeField]
-    public int attackRange;
-
-    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
-    //Bool que indica si está marcado o no 
-    public bool isMarked;
-    //Int para poder utilizar la mejora de la activa 2 del monk
-    public int numberOfMarks;
-
-    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
-    //Bool que indica si está stuneado o no 
-    public bool isStunned;
-    //Añado esto por si los stuns se puede acumular
-    public int turnStunned;
-
-    //Bool para poder ocultar a las unidades
-    public bool isHidden;
-
     [Header("DAMAGE")]
 
     //Daño de la unidad
     [SerializeField]
     public int baseDamage;
+
+    [SerializeField]
+    public int attackRange;
 
     //Daño cuándo ataca por la espalda
     [SerializeField]
@@ -69,6 +55,14 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public float penalizatorDamageLessHeight;
 
+    //Máxima diferencia de altura para atacar
+    [SerializeField]
+    protected float maxHeightDifferenceToAttack;
+
+    //Máxima diferencia de altura para moverse
+    [SerializeField]
+    public float maxHeightDifferenceToMove;
+
     //Daño que hace cada unidad por choque
     [SerializeField]
     protected int damageMadeByPush;
@@ -77,18 +71,7 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected int damageMadeByFall;
 
-    //Daño para añadir buff  (tambien lo usamos para los debuff)
-    public int buffbonusStateDamage;
-
-    [SerializeField]
-    //Turnos que el buff o debuff tiene que estar aplicado
-    public int turnsWithBuffOrDebuff;
-
-    [SerializeField]
-    //Turnos que el buff o debuff de movimiento tiene que estar aplicado
-    public int turnsWithMovementBuffOrDebuff;
-
-    [Header("LOGIC")]
+    [Header("MODEL & MATERIAL")]
 
     //Modelo de la unidad. TIENE QUE ESTAR SERIALIZADO
     [SerializeField]
@@ -98,22 +81,8 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected GameObject unitMaterialModel;
 
-    //Tile en el que está el personaje actualmente. Se setea desde el editor.
-    [SerializeField]
-    public IndividualTiles myCurrentTile;
-
-    //Enum con las cuatro posibles direcciones en las que puede estar mirando una unidad.
-    [HideInInspector]
-    public enum FacingDirection { North, East, South, West }
-
-    //Dirección actual. ESTÁ EN SERIALIZEFIELD PARA PROBARLO.
-    [SerializeField]
-    public FacingDirection currentFacingDirection;
-
-    //Posición a la que tiene que moverse la unidad actualmente
-    //La cambio a public para que el LevelManager pueda acceder
-    [HideInInspector]
-    public Vector3 currentTileVectorToMove;
+    //Material inicial y al ser seleccionado
+    protected Material initMaterial;
 
     [Header("ANIMATION TIME")]
 
@@ -133,27 +102,15 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     float timeToWaitBeforeHidingHealthbar;
 
-    //Lista de posibles unidades a las que atacar
-    [HideInInspector]
-    public List<IndividualTiles> currentTilesInRangeForAttack;
-
-
-    [Header("ATAQUE")]
+    //DAMAGE
 
     //Variable en la que guardo el daño a realizar
+    [HideInInspector]
     public float damageWithMultipliersApplied;
 
-    //Máxima diferencia de altura para atacar
-    [SerializeField]
-    protected float maxHeightDifferenceToAttack;
-
     //AÑADO ESTA VARIABLE PARA QUE SEPA SI PUEDE ATACAR A LA UNIDAD DEL SIGUIENTE TILE
-    [SerializeField]
+    [HideInInspector]
     protected float previousTileHeight;
-
-    //Máxima diferencia de altura para moverse
-    [SerializeField]
-    public float maxHeightDifferenceToMove;
 
     //Bool que comprueba si el enemigo ha muerto para quitarlo de la lista de enemigos al final del turno.
     [HideInInspector]
@@ -174,11 +131,6 @@ public class UnitBase : MonoBehaviour
     protected GameObject criticAttackParticle;
     [SerializeField]
     protected GameObject collisionParticlePref;
-
-    [Header("ANIMATIONS")]
-
-    //Animator
-    protected Animator myAnimator;
 
     [Header("FEEDBACK")]
 
@@ -207,55 +159,121 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     protected Material AvailableToBeHealedColor;
 
+    //Referencia al gameobject que actua como hover de los enemigos.
+    //La cambio aquí para que el playerunit también lo use.
+    [SerializeField]
+    public GameObject sombraHoverUnit;
+
+    //Se usa para el ataque del samurai y el ataque del berserker
+    [SerializeField]
+    public TextMeshProUGUI timesRepeatNumber;
+
+    //Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
+    [SerializeField]
+    public GameObject canvasHover;
+
+    [Header("HEALTHBAR_ICON")]
+
+    [SerializeField]
+    public GameObject backStabIcon;
+
+    [SerializeField]
+    public GameObject upToDownDamageIcon, downToUpDamageIcon, buffIcon, debuffIcon, movementBuffIcon, movementDebuffIcon, stunnedIcon;
+
+    public TextMeshProUGUI buffIconText, debuffIconText, movementBuffIconText, movementDebuffIconText;
+
+    [Header("HOVER_PARTICLE")]
+
+    [SerializeField]
+    public GameObject hoverBuffIcon;
+
+    [SerializeField]
+    public GameObject hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon, hoverImpactIcon;
+
+    //Se usa para indicar las marcas del monk
+    public GameObject monkMark;
+    public GameObject monkMarkUpgrade;
+
+    //Icono que aparece encima para dar feedback de que se puede intercambiar con el decoy u otras unidades en el caso de la valquiria
+    //Lo pongo en unitbase porque si no hay funciones que no van
+    [SerializeField]
+    public GameObject changePositionIcon;
 
     //Este icono lo utilizo para poner la espada encima de los posibles enemigos. 
     [SerializeField]
     public GameObject previsualizeAttackIcon;
 
     //Se una para indicar que el samurai no puede atacar a una unidad
+    [SerializeField]
     public GameObject notAttackX;
 
-    //Referencia al gameobject que actua como hover de los enemigos.
-    //La cambio aquí para que el playerunit también lo use.
+    //ANIMATIONS
+
+    //Animator
+    protected Animator myAnimator;
+
+    [Header("DEBUG ONLY")]
+
+    //LOGIC
+
+    //Tile en el que está el personaje actualmente. Se setea desde el editor.
     [SerializeField]
-    public GameObject shaderHover;
+    public IndividualTiles myCurrentTile;
 
-    //Se usa para indicar las marcas del monk
-    public GameObject monkMark;
-    public GameObject monkMarkUpgrade;
+    //Enum con las cuatro posibles direcciones en las que puede estar mirando una unidad.
+    [HideInInspector]
+    public enum FacingDirection { North, East, South, West }
 
+    //Dirección actual. ESTÁ EN SERIALIZEFIELD PARA PROBARLO.
+    [SerializeField]
+    public FacingDirection currentFacingDirection;
 
-    //Se usa para el ataque del samurai y el ataque del berserker
-    public TextMeshProUGUI timesRepeatNumber;
+    //MARCAS Y BUFF/DEBUFF/STUN
 
+    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
+    //Bool que indica si está marcado o no 
+    [SerializeField]
+    public bool isMarked;
+    //Int para poder utilizar la mejora de la activa 2 del monk
+    [SerializeField]
+    public int numberOfMarks;
+
+    //Una vez que el feedback esté implementado, hay que esconderlo en el inspector
+    //Bool que indica si está stuneado o no 
+    [SerializeField]
+    public bool isStunned;
+    //Añado esto por si los stuns se puede acumular
+    [SerializeField]
+    public int turnStunned;
+
+    //Bool para poder ocultar a las unidades
+    [SerializeField]
+    public bool isHidden;
+
+    //Daño para añadir buff  (tambien lo usamos para los debuff)
+    [SerializeField]
+    public int buffbonusStateDamage;
 
     [SerializeField]
-    public GameObject backStabIcon, upToDownDamageIcon, downToUpDamageIcon, buffIcon, debuffIcon, movementBuffIcon, movementDebuffIcon, stunnedIcon;
-
-
-    public TextMeshProUGUI buffIconText, debuffIconText, movementBuffIconText, movementDebuffIconText;
+    //Turnos que el buff o debuff tiene que estar aplicado
+    public int turnsWithBuffOrDebuff;
 
     [SerializeField]
-    public GameObject hoverBuffIcon, hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon, hoverImpactIcon;
+    //Turnos que el buff o debuff de movimiento tiene que estar aplicado
+    public int turnsWithMovementBuffOrDebuff;
 
+    //TILES
 
-    //Material inicial y al ser seleccionado
-    protected Material initMaterial;
+    //Posición a la que tiene que moverse la unidad actualmente
+    //La cambio a public para que el LevelManager pueda acceder
+    [HideInInspector]
+    public Vector3 currentTileVectorToMove;
 
-    //Este canvas sirve para mostrar temas de vida al hacer hover en el caso del enemigo y en el caso del player (no está implementado) sirve para mostrar barra de vida.
-    [SerializeField]
-    public GameObject canvasUnit;
+    //Lista de posibles unidades a las que atacar
+    [HideInInspector]
+    public List<IndividualTiles> currentTilesInRangeForAttack;
 
-
-    //Icono que aparece encima para dar feedback de que se puede intercambiar con el decoy u otras unidades en el caso de la valquiria
-    //Lo pongo en unitbase porque si no hay funciones que no van
-    public GameObject changePositionIcon;
-
-    [Header("INFO")]
-
-    [SerializeField]
-    [@TextAreaAttribute(15, 20)]
-    public string unitGeneralInfo;
+    [Header("INFO (ÚLTIMA VARIABLE UNITBASE)")]
 	[SerializeField]
 	public Sprite characterImage;
 
@@ -268,10 +286,14 @@ public class UnitBase : MonoBehaviour
 	[SerializeField]
 	protected Image inGamePortrait;
 
-	#endregion
+    [SerializeField]
+    [@TextAreaAttribute(15, 20)]
+    public string unitGeneralInfo;
 
-	//El level manager llama a esta función sustituyendo al start
-	public virtual void InitializeUnitOnTile()
+    #endregion
+
+    //El level manager llama a esta función sustituyendo al start
+    public virtual void InitializeUnitOnTile()
     {
         FindAndSetFirstTile();
         myCurrentTile.unitOnTile = this;
@@ -833,13 +855,13 @@ public class UnitBase : MonoBehaviour
 
     public virtual void EnableCanvasHover(float damageReceived)
     {
-        canvasUnit.SetActive(true);
-        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText( "-" + damageReceived.ToString());
+        canvasHover.SetActive(true);
+        canvasHover.GetComponent<CanvasHover>().damageNumber.SetText( "-" + damageReceived.ToString());
     }
 
     public void DisableCanvasHover()
     {
-        canvasUnit.SetActive(false);
+        canvasHover.SetActive(false);
         previsualizeAttackIcon.SetActive(false);
     }
 
@@ -1029,6 +1051,7 @@ public class UnitBase : MonoBehaviour
 
         }                   
     }
+
     public virtual void ApplyBuffOrDebuffDamage(UnitBase unitToApply, int damageAdded, int turnsAdded)
     {
         if (unitToApply.GetComponent<Druid>())
@@ -1092,6 +1115,7 @@ public class UnitBase : MonoBehaviour
 
         SetMovementIcon(movementRemoved, unitToApply, false);
     }
+
     public void SetMovementIcon(int numToCheck, UnitBase unitToApply, bool isOnHover)
     {
         if (numToCheck > 0)
@@ -1151,24 +1175,24 @@ public class UnitBase : MonoBehaviour
     {
         if (unitToSet.currentFacingDirection == FacingDirection.North)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
            
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.South)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.East)
         {
 
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.West)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
         }
     }
 

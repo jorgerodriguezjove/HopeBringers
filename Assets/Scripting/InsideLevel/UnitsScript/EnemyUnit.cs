@@ -421,7 +421,7 @@ public class EnemyUnit : UnitBase
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
                 SetShadowRotation(this);
-                shaderHover.SetActive(true);
+                sombraHoverUnit.SetActive(true);
             }
 
             //Coge
@@ -439,7 +439,7 @@ public class EnemyUnit : UnitBase
 
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
-                        shaderHover.transform.position = pointPosition;
+                        sombraHoverUnit.transform.position = pointPosition;
 
                         if ((pathToObjective[limitantNumberOfTilesToMove + 1]) == currentUnitsAvailableToAttack[0].myCurrentTile)
                         {
@@ -452,7 +452,7 @@ public class EnemyUnit : UnitBase
                         }
 
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
-                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+                        sombraHoverUnit.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
                     }
                 }
             }
@@ -473,7 +473,7 @@ public class EnemyUnit : UnitBase
     public void HideActionPathfinding()
     {
         myLineRenderer.enabled = false;
-        shaderHover.SetActive(false);
+        sombraHoverUnit.SetActive(false);
 
         for (int i = 0; i < tilesAlreadyUnderAttack.Count; i++)
         {
@@ -818,7 +818,7 @@ public class EnemyUnit : UnitBase
             {
                 ResetColor();
                 HealthBarOn_Off(false);
-                shaderHover.SetActive(false);
+                sombraHoverUnit.SetActive(false);
 
                 if (myPortrait != null)
                 myPortrait.UnHighlightMyself();
@@ -830,10 +830,10 @@ public class EnemyUnit : UnitBase
     public virtual void OnHoverExitFunctionality()
     {
         LM.HideEnemyHover(this);
-        shaderHover.SetActive(false);
-        if (LM.selectedCharacter != null && LM.selectedCharacter.shaderHover != null)
+        sombraHoverUnit.SetActive(false);
+        if (LM.selectedCharacter != null && LM.selectedCharacter.sombraHoverUnit != null)
         {
-            LM.selectedCharacter.shaderHover.SetActive(false);
+            LM.selectedCharacter.sombraHoverUnit.SetActive(false);
 
 
             if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
@@ -846,7 +846,7 @@ public class EnemyUnit : UnitBase
                     if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                     {
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
-                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
+                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.sombraHoverUnit.SetActive(false);
                     }
                 }
             }
@@ -869,7 +869,7 @@ public class EnemyUnit : UnitBase
                     if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                     {
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
-                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
+                        LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.sombraHoverUnit.SetActive(false);
                     }
                 }
                 LM.selectedCharacter.healthBar.SetActive(false);
@@ -882,7 +882,7 @@ public class EnemyUnit : UnitBase
         {
             if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
-                shaderHover.SetActive(false);
+                sombraHoverUnit.SetActive(false);
 
                 ResetColor();
 

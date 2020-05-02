@@ -463,9 +463,9 @@ public class LevelManager : MonoBehaviour
 
                     if (tileToMove != null)
                     {
-                        hoverUnit.shaderHover.SetActive(true);
+                        hoverUnit.sombraHoverUnit.SetActive(true);
                         Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
-                        hoverUnit.shaderHover.transform.position = positionToSpawn;
+                        hoverUnit.sombraHoverUnit.transform.position = positionToSpawn;
                         tileToMove.ColorMovement();
 
                         hoverUnit.myLineRenderer.enabled = true;
@@ -526,8 +526,8 @@ public class LevelManager : MonoBehaviour
 
                     if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
                     {
-                        hoverUnit.shaderHover.SetActive(true);
-                        hoverUnit.shaderHover.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
+                        hoverUnit.sombraHoverUnit.SetActive(true);
+                        hoverUnit.sombraHoverUnit.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
                         hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
                     }
 
@@ -823,7 +823,7 @@ public class LevelManager : MonoBehaviour
                     {
                         hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(true, tileToMove);
 
-                        hoverUnit.shaderHover.SetActive(false);
+                        hoverUnit.sombraHoverUnit.SetActive(false);
                         tileToMove.ColorDeselect();
                         hoverUnit.myLineRenderer.enabled = false;
 
@@ -852,7 +852,7 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.GetComponent<EnCharger>().RemoveIconsFire();
                 }
 
-                hoverUnit.shaderHover.SetActive(false);
+                hoverUnit.sombraHoverUnit.SetActive(false);
                 hoverUnit.GetComponent<EnCharger>().CheckCharactersInLine(false, null);
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
                 {
@@ -1212,7 +1212,7 @@ public class LevelManager : MonoBehaviour
 
 			selectedCharacter.HealthBarOn_Off(false);
             selectedCharacter.previsualizeAttackIcon.SetActive(false);
-            selectedCharacter.canvasUnit.SetActive(false);
+            selectedCharacter.canvasHover.SetActive(false);
             selectedCharacter.notAttackX.SetActive(false);
             selectedCharacter.myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
             selectedCharacter.myPanelPortrait.GetComponent<Portraits>().isClicked = false;

@@ -656,9 +656,9 @@ public class Valkyrie : PlayerUnit
                         }
                         else
                         {
-                            canvasUnit.SetActive(true);
+                            canvasHover.SetActive(true);
                             armorShield2.SetActive(true);
-                            canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());                            
+                            canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());                            
                         }
                     }
 
@@ -667,11 +667,11 @@ public class Valkyrie : PlayerUnit
                     }
                     else
                     {
-                        _unitToAttack.canvasUnit.SetActive(true);
+                        _unitToAttack.canvasHover.SetActive(true);
                         armorShield.SetActive(true);
                         Vector3 vector2Spawn = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 1.5f, _unitToAttack.transform.position.z);
                         armorShield.transform.position = vector2Spawn;
-                        _unitToAttack.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                        _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
                     }
                 }
             }
@@ -713,10 +713,10 @@ public class Valkyrie : PlayerUnit
                 {
                     if (armorMode2)
                     {
-                        canvasUnit.SetActive(false);
+                        canvasHover.SetActive(false);
                         armorShield2.SetActive(false);
                     }
-                    _unitToAttack.canvasUnit.SetActive(false);
+                    _unitToAttack.canvasHover.SetActive(false);
                     armorShield.SetActive(false);
                 }
             }
@@ -724,8 +724,8 @@ public class Valkyrie : PlayerUnit
 
         }
 
-        shaderHover.SetActive(false);
-        _unitToAttack.shaderHover.SetActive(false);
+        sombraHoverUnit.SetActive(false);
+        _unitToAttack.sombraHoverUnit.SetActive(false);
         changePosArrows.SetActive(false);
 
         if (tilesInEnemyHover.Count > 0)

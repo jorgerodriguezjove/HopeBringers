@@ -53,14 +53,14 @@ public class EnWatcher : EnemyUnit
             {
                 ApplyBuffOrDebuffDamage(unitsInRange[i], attackDebuff, turnDurationDebuffs);
 
-                
-
                 if (myTierLevel == TierLevel.Level2)
                 {
                     ApplyBuffOrDebuffMovement(unitsInRange[i], movementDebuff, 1);
                 }
             }
         }
+        
+        Instantiate(attackParticle, this.transform);
         myCurrentEnemyState = enemyState.Ended;
     }
 }

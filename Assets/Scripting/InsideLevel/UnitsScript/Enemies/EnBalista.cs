@@ -26,6 +26,9 @@ public class EnBalista : EnemyUnit
     [SerializeField]
     private float timeBetweenParticles;
 
+    [SerializeField]
+    private GameObject particleChargingAttack;
+
     #endregion 
 
     public override void SearchingObjectivesToAttack()
@@ -119,6 +122,8 @@ public class EnBalista : EnemyUnit
 
     public override void Attack()
     {
+        particleChargingAttack.SetActive(isAttackPrepared);
+
         //Si no he sido alertado, activo mi estado de alerta.
         if (!haveIBeenAlerted)
         {
@@ -129,6 +134,7 @@ public class EnBalista : EnemyUnit
         {
             if (isAttackPrepared)
             {
+                
                 base.Attack();
                 StartCoroutine("AttackCorroutine");
                 myCurrentEnemyState = enemyState.Waiting;
@@ -173,7 +179,6 @@ public class EnBalista : EnemyUnit
                    if(tilesToShoot[i].unitOnTile == null)
                     {
                         //Añadir partícula de explosión
-
 
                         FindObjectOfType<TileManager>().GetSurroundingTiles(tilesToShoot[i], 1, true, false);
                         //Hago daño a las unidades adyacentes(3x3)

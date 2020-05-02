@@ -81,7 +81,7 @@ public class BossMultTile : EnemyUnit
 
         else
         {
-            crystalList[0].isCrystalActive = true;
+            crystalList[0].ActiveCrystal();
         }
     }
 
@@ -756,7 +756,7 @@ public class BossMultTile : EnemyUnit
 
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
-                shaderHover.SetActive(true);
+                sombraHoverUnit.SetActive(true);
             }
 
             //Coge
@@ -774,9 +774,9 @@ public class BossMultTile : EnemyUnit
 
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
-                        shaderHover.transform.position = pointPosition;
+                        sombraHoverUnit.transform.position = pointPosition;
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
-                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+                        sombraHoverUnit.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
                     }
                 }
             }

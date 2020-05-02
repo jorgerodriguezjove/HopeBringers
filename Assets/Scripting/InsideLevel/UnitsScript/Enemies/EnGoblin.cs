@@ -5,6 +5,9 @@ using DG.Tweening;
 
 public class EnGoblin : EnemyUnit
 {
+    [SerializeField]
+    GameObject tier2AttackHorn;
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -129,6 +132,8 @@ public class EnGoblin : EnemyUnit
                     if (unitsInRange[i].GetComponent<EnemyUnit>())
                     {
                         unitsInRange[i].GetComponent<EnemyUnit>().AlertEnemy();
+
+                        Instantiate(tier2AttackHorn, this.transform);
                     }
                 }
             }
@@ -142,8 +147,6 @@ public class EnGoblin : EnemyUnit
             myCurrentEnemyState = enemyState.Searching;
             return;
         }
-
-        //base.Attack();
 
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {

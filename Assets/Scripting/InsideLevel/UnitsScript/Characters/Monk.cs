@@ -691,8 +691,8 @@ public class Monk : PlayerUnit
                     currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position;
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[0]);
                     
-                    _unitToAttack.shaderHover.SetActive(true);
-                    _unitToAttack.shaderHover.transform.position = currentTileVectorToMove;
+                    _unitToAttack.sombraHoverUnit.SetActive(true);
+                    _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
                 }
             }
 
@@ -703,8 +703,8 @@ public class Monk : PlayerUnit
                 {
                     currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position;
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[0]);
-                    _unitToAttack.shaderHover.SetActive(true);
-                    _unitToAttack.shaderHover.transform.position = currentTileVectorToMove;
+                    _unitToAttack.sombraHoverUnit.SetActive(true);
+                    _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
                 }
             }
 
@@ -714,8 +714,8 @@ public class Monk : PlayerUnit
                 {
                     currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position;
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineRight[0]);
-                    _unitToAttack.shaderHover.SetActive(true);
-                    _unitToAttack.shaderHover.transform.position = currentTileVectorToMove;
+                    _unitToAttack.sombraHoverUnit.SetActive(true);
+                    _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
                 }
             }
 
@@ -786,7 +786,7 @@ public class Monk : PlayerUnit
 
         else if (suplex)
         {
-            _unitToAttack.shaderHover.SetActive(false);
+            _unitToAttack.sombraHoverUnit.SetActive(false);
 
             if (!hasAttacked)
             {

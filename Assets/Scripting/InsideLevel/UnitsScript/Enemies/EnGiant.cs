@@ -243,9 +243,9 @@ public class EnGiant : EnemyUnit
             //Esto significa que el enemigo está adyacente del player (son el tile del gigante y el del player vamos)
             if (pathToObjective.Count > 2)
             {
-                Debug.DrawRay(new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 0.5f, shaderHover.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
+                Debug.DrawRay(new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 0.5f, sombraHoverUnit.transform.position.z), transform.TransformDirection(Vector3.down), Color.yellow, 20f);
 
-                if (Physics.Raycast(new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 0.5f, shaderHover.transform.position.z), transform.TransformDirection(Vector3.down), out hit))
+                if (Physics.Raycast(new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 0.5f, sombraHoverUnit.transform.position.z), transform.TransformDirection(Vector3.down), out hit))
                 {
                     shadowHoverTile = hit.collider.gameObject.GetComponent<IndividualTiles>();
                 }
@@ -352,7 +352,7 @@ public class EnGiant : EnemyUnit
 
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
-                shaderHover.SetActive(true);
+                sombraHoverUnit.SetActive(true);
             }
 
             myLineRenderer.positionCount += (limitantNumberOfTilesToMove + 1);
@@ -370,7 +370,7 @@ public class EnGiant : EnemyUnit
 
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
-                        shaderHover.transform.position = pointPosition;
+                        sombraHoverUnit.transform.position = pointPosition;
 
 
                         if ((pathToObjective[limitantNumberOfTilesToMove + 1]) == currentUnitsAvailableToAttack[0].myCurrentTile)
@@ -384,7 +384,7 @@ public class EnGiant : EnemyUnit
                         }
 
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
-                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+                        sombraHoverUnit.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
                     }
                 }
             }

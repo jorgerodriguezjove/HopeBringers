@@ -13,7 +13,6 @@ public class PlayerUnit : UnitBase
     public Transform initialPosInBox;
 
     [Header("LOGICA PLAYER")]
-
     //Bools que indican si el personaje se ha movido y si ha atacado.
     [HideInInspector]
     public bool hasMoved = false;
@@ -27,7 +26,7 @@ public class PlayerUnit : UnitBase
     public bool canHover;
 
     //Lista de posibles unidades a las que atacar
-    [SerializeField]
+    [HideInInspector]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Lista de tiles al hacer hover en enemigos
@@ -39,26 +38,23 @@ public class PlayerUnit : UnitBase
     //Camino que tiene que seguir la unidad para moverse
     protected List<IndividualTiles> myCurrentPath = new List<IndividualTiles>();
 
+    [Header("PLAYER_UNIT")]
     //Tiempo a esperar tras atacar
     [SerializeField]
     protected float timeWaitAfterAttack;
 
 	[Header("INFO")]
     [HideInInspector]
-	public string activeSkillInfo = "-----";
+	public string activeSkillInfo;
     [HideInInspector]
-	public string pasiveSkillInfo = "iiiii";
+	public string pasiveSkillInfo;
 
-    [SerializeField]
+    [HideInInspector]
     public Sprite activeTooltipIcon;
-    [SerializeField]
+    [HideInInspector]
 	public Sprite pasiveTooltipIcon;
 
-
-    //COMPROBAR QUE ES ESTO
-	public string attackInfo;
-
-	[Header("FEEDBACK")]
+    [Header("FEEDBACK")]
 
     [SerializeField]
     public Material selectedMaterial;
@@ -66,19 +62,18 @@ public class PlayerUnit : UnitBase
     [SerializeField]
     private Material finishedMaterial;
 
-	[SerializeField]
-    public Canvas canvasWithRotationArrows;
-
-    //Flecha que indica al jugador si la unidad aún pueda realizar acciones.
-    [SerializeField]
-    private GameObject arrowIndicator;
-
     protected GameObject movementTokenInGame;
 
     private GameObject attackTokenInGame;
 
     [HideInInspector]
     public GameObject myPanelPortrait;
+
+    [Header("PORTRAITS & REF")]
+
+    //Flecha que indica al jugador si la unidad aún pueda realizar acciones.
+    [SerializeField]
+    private GameObject arrowIndicator;
 
     [SerializeField]
 	public Sprite portraitImage;
@@ -89,14 +84,21 @@ public class PlayerUnit : UnitBase
 	[SerializeField]
 	private Image inGamePortrait2;
 
+    [SerializeField]
+    public Canvas canvasWithRotationArrows;
+
     //Objeto que sirve de padre para todo el hud in game del personaje
     [SerializeField]
     public GameObject insideGameInfoObject;
 
+    [Header("HOVER PARTICLE")]
+
     //Escudo que bloquea el daño completo
+    [SerializeField]
     public GameObject shieldBlockAllDamage;
 
     //Escudo que no bloquea el daño completo
+    [SerializeField]
     public GameObject shieldBlockPartialDamage;
 
     //Para el tooltip de ataque
@@ -107,11 +109,9 @@ public class PlayerUnit : UnitBase
     public LevelManager LM;
     [HideInInspector]
     public UIManager UIM;
-
     //Añado esto para que el mage pueda acceder a la función de GetSurroundingTiles()
+    [HideInInspector]
     public TileManager TM;
-
-    
 
     #endregion
 
@@ -367,9 +367,9 @@ public class PlayerUnit : UnitBase
                     {
                         // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                         druidRef.previsualizeAttackIcon.SetActive(true);
-                        druidRef.canvasUnit.SetActive(true);
-                        druidRef.canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("-1");
-                        canvasUnit.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
+                        druidRef.canvasHover.SetActive(true);
+                        druidRef.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("-1");
+                        canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
                         ColorAvailableToBeHealed();
                     }
 
@@ -451,9 +451,9 @@ public class PlayerUnit : UnitBase
                 ResetColor();
             }
 
-            if (LM.selectedCharacter != null && LM.selectedCharacter.shaderHover != null)
+            if (LM.selectedCharacter != null && LM.selectedCharacter.sombraHoverUnit != null)
             {
-                LM.selectedCharacter.shaderHover.SetActive(false);
+                LM.selectedCharacter.sombraHoverUnit.SetActive(false);
 
                 if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
                 {
@@ -465,7 +465,7 @@ public class PlayerUnit : UnitBase
                         if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                         {
                             LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.ResetColor();
-                            LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.shaderHover.SetActive(false);
+                            LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.sombraHoverUnit.SetActive(false);
 
                         }
                     }
@@ -477,9 +477,9 @@ public class PlayerUnit : UnitBase
             }
 
 
-            if (shaderHover != null)
+            if (sombraHoverUnit != null)
             {
-                shaderHover.SetActive(false);
+                sombraHoverUnit.SetActive(false);
             }
             Druid druidRef = FindObjectOfType<Druid>();
 
@@ -487,7 +487,7 @@ public class PlayerUnit : UnitBase
             {
                 // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 druidRef.previsualizeAttackIcon.SetActive(false);
-                druidRef.canvasUnit.SetActive(false);
+                druidRef.canvasHover.SetActive(false);
             }
         }
 

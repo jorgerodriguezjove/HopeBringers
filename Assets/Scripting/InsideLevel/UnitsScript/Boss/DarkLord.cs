@@ -43,6 +43,12 @@ public class DarkLord : EnemyUnit
     //El cono es especial porque en tilesToCheck guardo la línea central del cono y en cone tile guardo el cono entero
     List<IndividualTiles> coneTiles = new List<IndividualTiles>();
 
+    [SerializeField]
+    private GameObject particleDisappear;
+
+    [SerializeField]
+    private GameObject particleEnemyPossesed;
+
     #region COPIA_GOBLIN
 
     protected override void Awake()
@@ -58,6 +64,11 @@ public class DarkLord : EnemyUnit
         {
             LM.enemiesOnTheBoard.Add(this);
             currentHealth = maxHealth;
+        }
+
+        else
+        {
+            Instantiate(particleEnemyPossesed, transform);
         }
 
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
@@ -446,6 +457,7 @@ public class DarkLord : EnemyUnit
         unitModel.SetActive(false);
         GetComponent<Collider>().enabled = false;
         currentlyPossesing = true;
+        particleDisappear.SetActive(true);
 
         //Aparece bloque en su lugar
         obstacleWhilePossesing.SetActive(true);
@@ -464,6 +476,7 @@ public class DarkLord : EnemyUnit
         //Desactivar personaje
         unitModel.SetActive(true);
         GetComponent<Collider>().enabled = true;
+        particleDisappear.SetActive(false);
         currentlyPossesing = false;
 
         //Aparece bloque en su lugar
@@ -729,7 +742,7 @@ public class DarkLord : EnemyUnit
 
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
-                shaderHover.SetActive(true);
+                sombraHoverUnit.SetActive(true);
             }
 
             //Coge
@@ -747,7 +760,7 @@ public class DarkLord : EnemyUnit
 
                     if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
                     {
-                        shaderHover.transform.position = pointPosition;
+                        sombraHoverUnit.transform.position = pointPosition;
                         if ((pathToObjective[i]) == currentUnitsAvailableToAttack[0].myCurrentTile)
                         {
 
@@ -760,7 +773,7 @@ public class DarkLord : EnemyUnit
                         }
 
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
-                        shaderHover.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+                        sombraHoverUnit.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
                     }
                 }
             }

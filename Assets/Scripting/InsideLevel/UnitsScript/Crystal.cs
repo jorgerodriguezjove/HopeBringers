@@ -9,6 +9,9 @@ public class Crystal : EnemyUnit
     [SerializeField]
     public bool isCrystalActive = false;
 
+    [SerializeField]
+    private GameObject particleCrystalActive;
+
     protected override void Awake()
     {
         //Le digo al enemigo cual es el LevelManager del nivel actual
@@ -52,6 +55,8 @@ public class Crystal : EnemyUnit
         {
             isCrystalActive = true;
         }
+
+        particleCrystalActive.SetActive(isCrystalActive);
     }
 
     public override void MoveToTilePushed(IndividualTiles newTile)
@@ -223,6 +228,8 @@ public class Crystal : EnemyUnit
         LM.UIM.SetEnemyOrder();
     }
 
+    
+
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
         if (!isCrystalActive)
@@ -242,5 +249,11 @@ public class Crystal : EnemyUnit
         }
 
         base.EnableCanvasHover(damageReceived);
+    }
+
+    public void ActiveCrystal()
+    {
+        isCrystalActive = true;
+        particleCrystalActive.SetActive(true);
     }
 }

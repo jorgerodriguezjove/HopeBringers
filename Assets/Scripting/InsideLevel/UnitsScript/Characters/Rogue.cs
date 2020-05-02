@@ -747,8 +747,8 @@ public class Rogue : PlayerUnit
         SetShadowRotation(_unitToAttack);
 
         SetShadowRotation(this);
-        shaderHover.SetActive(true);
-        shaderHover.transform.position = currentTileVectorToMove;
+        sombraHoverUnit.SetActive(true);
+        sombraHoverUnit.transform.position = currentTileVectorToMove;
 
         
         if (smokeBomb)
@@ -759,12 +759,12 @@ public class Rogue : PlayerUnit
                 if (_unitToAttack.myCurrentTile.tileZ < tilesInEnemyHover[0].tileZ)
                 {
                     previousFacingDirection = FacingDirection.South;
-                    shaderHover.transform.DORotate(new Vector3(0, 180, 0), 0);
+                    sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), 0);
                 }
                 else
                 {
                     previousFacingDirection = FacingDirection.North;
-                    shaderHover.transform.DORotate(new Vector3(0, 0, 0), 0);
+                    sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), 0);
 
 
                 }
@@ -774,13 +774,13 @@ public class Rogue : PlayerUnit
                 if (_unitToAttack.myCurrentTile.tileX < tilesInEnemyHover[0].tileX)
                 {
                     previousFacingDirection = FacingDirection.West;
-                    shaderHover.transform.DORotate(new Vector3(0, -90, 0), 0);
+                    sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), 0);
 
                 }
                 else
                 {
                     previousFacingDirection = FacingDirection.East;
-                    shaderHover.transform.DORotate(new Vector3(0, 90, 0), 0);
+                    sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), 0);
 
                 }
             }
@@ -795,8 +795,8 @@ public class Rogue : PlayerUnit
 
                     TM.GetSurroundingTiles(tilesInEnemyHover[0], 1, true, false);
 
-                     Vector3 spawnBombShadow = new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 2, shaderHover.transform.position.z);
-                    GameObject smokeBombShadowRef1 = Instantiate(smokeBombShadow, spawnBombShadow, shaderHover.transform.rotation);
+                     Vector3 spawnBombShadow = new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 2, sombraHoverUnit.transform.position.z);
+                    GameObject smokeBombShadowRef1 = Instantiate(smokeBombShadow, spawnBombShadow, sombraHoverUnit.transform.rotation);
                     bombsSpawned.Add(smokeBombShadowRef1);
 
                     //Hago daño a las unidades adyacentes
@@ -827,9 +827,9 @@ public class Rogue : PlayerUnit
                 }
                 else
                 {
-                    Vector3 spawnBombShadow = new Vector3(shaderHover.transform.position.x, shaderHover.transform.position.y + 2, shaderHover.transform.position.z);
+                    Vector3 spawnBombShadow = new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 2, sombraHoverUnit.transform.position.z);
                     //Enseñar sombra bomba de humo
-                    GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, spawnBombShadow, shaderHover.transform.rotation);
+                    GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, spawnBombShadow, sombraHoverUnit.transform.rotation);
                     bombsSpawned.Add(smokeBombShadowRef);
 
 
@@ -861,25 +861,25 @@ public class Rogue : PlayerUnit
     {
         if (unitToSet.currentFacingDirection == FacingDirection.North)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
 
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.South)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
 
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.East)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
 
         }
 
         else if (unitToSet.currentFacingDirection == FacingDirection.West)
         {
-            unitToSet.shaderHover.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
 
         }
     }

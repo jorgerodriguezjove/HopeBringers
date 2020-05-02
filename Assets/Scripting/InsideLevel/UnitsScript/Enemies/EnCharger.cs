@@ -16,6 +16,9 @@ public class EnCharger : EnemyUnit
     [HideInInspector]
     public List<GameObject> listIconsFire;
 
+    [SerializeField]
+    private GameObject particleAttack;
+
     public override void SearchingObjectivesToAttack()
     {
         if (isDead || hasAttacked)
@@ -79,6 +82,8 @@ public class EnCharger : EnemyUnit
     //La balista y el charger al ser de los primeros y ser bastante distintos voy a intentar no tocarlos mucho.
     new IEnumerator MovingUnitAnimation()
     {
+        particleAttack.SetActive(true);
+
         myCurrentEnemyState = enemyState.Waiting;
 
         //Animación de movimiento
@@ -138,6 +143,7 @@ public class EnCharger : EnemyUnit
             currentUnitsAvailableToAttack[0].ExecutePush(1, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
         }
 
+        particleAttack.SetActive(false);
 
         myCurrentEnemyState = enemyState.Ended;
     }
@@ -180,7 +186,7 @@ public class EnCharger : EnemyUnit
 
                             myCurrentTile.tilesInLineUp[i].ColorAttack();
                            
-                            shaderHover.transform.DORotate(new Vector3(0, 0, 0), 0);                         
+                            sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), 0);                         
                         }
                         else
                         {
@@ -206,7 +212,7 @@ public class EnCharger : EnemyUnit
                             myLineRenderer.enabled = true;
 
                             myCurrentTile.tilesInLineDown[i].ColorAttack();
-                            shaderHover.transform.DORotate(new Vector3(0, 180, 0), 0);                            
+                            sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), 0);                            
                         }
                         else
                         {
@@ -236,7 +242,7 @@ public class EnCharger : EnemyUnit
                         {
                             myLineRenderer.enabled = true;
                             myCurrentTile.tilesInLineRight[i].ColorAttack();
-                            shaderHover.transform.DORotate(new Vector3(0, 90, 0), 0);
+                            sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), 0);
 
                           
                         }
@@ -263,7 +269,7 @@ public class EnCharger : EnemyUnit
                         {
                             myLineRenderer.enabled = true;
                             myCurrentTile.tilesInLineLeft[i].ColorAttack();
-                            shaderHover.transform.DORotate(new Vector3(0, -90, 0), 0);
+                            sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), 0);
 
                            
 
@@ -625,7 +631,7 @@ public class EnCharger : EnemyUnit
 
     public void ShowPushResult()
     {
-        currentUnitsAvailableToAttack[0].shaderHover.SetActive(true);
+        currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(true);
         SetShadowRotation(currentUnitsAvailableToAttack[0]);
 
 
@@ -633,7 +639,7 @@ public class EnCharger : EnemyUnit
         {
             tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineUp, damageMadeByPush, damageMadeByFall);
 
-            currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+            currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
 
             tileWhereObjectiveShadowWillEnd.ColorAttack();
         }
@@ -642,7 +648,7 @@ public class EnCharger : EnemyUnit
         {
             tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineDown, damageMadeByPush, damageMadeByFall);
 
-             currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+             currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
 
              tileWhereObjectiveShadowWillEnd.ColorAttack();
         }
@@ -650,14 +656,14 @@ public class EnCharger : EnemyUnit
         else if (temporalFacingDirectionWhileHover == FacingDirection.East)
         {
             tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineRight, damageMadeByPush, damageMadeByFall);
-            currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+            currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
             tileWhereObjectiveShadowWillEnd.ColorAttack();
         }
 
         else if (temporalFacingDirectionWhileHover == FacingDirection.West)
         {
             tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineLeft, damageMadeByPush, damageMadeByFall);
-            currentUnitsAvailableToAttack[0].shaderHover.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
+            currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
             tileWhereObjectiveShadowWillEnd.ColorAttack();
         }
     }
@@ -666,7 +672,7 @@ public class EnCharger : EnemyUnit
     {
         if (currentUnitsAvailableToAttack.Count >0 )
         {
-            currentUnitsAvailableToAttack[0].shaderHover.SetActive(false);
+            currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(false);
             tileWhereObjectiveShadowWillEnd.ColorDesAttack();
         }
     }

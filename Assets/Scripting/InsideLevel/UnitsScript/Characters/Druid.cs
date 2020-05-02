@@ -55,6 +55,13 @@ public class Druid : PlayerUnit
 
     public GameObject shadowHealerTilePref;
 
+    [SerializeField]
+    GameObject areaHealParticle;
+
+    [SerializeField]
+    GameObject healParticle;
+
+
     #endregion
 
     public void SetSpecificStats(int _heal1, bool _heal2,
@@ -163,7 +170,7 @@ public class Druid : PlayerUnit
         if (areaHealer)
         {
             //Hay que cambiar
-            Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
+            Instantiate(areaHealParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
@@ -238,11 +245,11 @@ public class Druid : PlayerUnit
             //UNDO
             CreateAttackCommand(unitToAttack);
 
-            //Hay que cambiar
-            Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
-
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
+                //Hay que cambiar
+                Instantiate(healParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
+
                 //Hay que cambiar
                 SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
                 if (individualHealer2)
@@ -273,6 +280,9 @@ public class Druid : PlayerUnit
 
             else
             {
+                //Hay que cambiar
+                Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
+
                 //Hago daño
                 DoDamage(unitToAttack);
 
