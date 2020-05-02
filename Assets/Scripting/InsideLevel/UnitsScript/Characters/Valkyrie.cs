@@ -50,6 +50,8 @@ public class Valkyrie : PlayerUnit
     public GameObject valkHalo2;
     public GameObject unitHalo2;
 
+    [SerializeField]
+    private GameObject attack1, attack2, attack3;
     
     [SerializeField]
     public List<PlayerUnit> myHaloUnits = new List<PlayerUnit>();
@@ -163,6 +165,33 @@ public class Valkyrie : PlayerUnit
 
         CheckIfUnitHasMarks(unitToAttack);
 
+        List<IndividualTiles> tilesInFront = new List<IndividualTiles>();
+
+        tilesInFront = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection,3);
+
+        //Particulas
+        for (int i = 0; i < tilesInFront.Count; i++)
+        {
+            if (tilesInFront[i].unitOnTile != null && tilesInFront[i].unitOnTile == unitToAttack)
+            {
+                if (i == 1)
+                {
+                    attack1.SetActive(true);
+                }
+                
+                else if (i == 2)
+                {
+                    attack2.SetActive(true);
+                }
+
+                else if (i == 3)
+                {
+                    attack3.SetActive(true);
+                }
+            }
+        }
+
+
         if (canChooseEnemy)
         {
             //Animación de ataque
@@ -271,7 +300,6 @@ public class Valkyrie : PlayerUnit
 
         else
         {
-
             //UNDO
             CreateAttackCommand(unitToAttack);
 

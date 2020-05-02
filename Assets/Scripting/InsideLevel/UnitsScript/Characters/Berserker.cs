@@ -25,6 +25,12 @@ public class Berserker : PlayerUnit
     public Material rageMaterial;    
     private Material finitMaterial;
 
+    [SerializeField]
+    private GameObject particleMultpleAttack;
+
+    [SerializeField]
+    private GameObject particleCircularAttac;
+
     [Header("MEJORAS DE PERSONAJE")]
 
     //[Header("Activas")]
@@ -49,6 +55,8 @@ public class Berserker : PlayerUnit
     //Este es el int que hay que cambiar para que el el berserker meta más turnos de miedo
     private int fearTurnBonus;
     #endregion
+
+    
 
     public void SetSpecificStats(bool _areaAttack, int _areaAttack2,
                                  bool _circularAttack1, int _circularAttack2,
@@ -364,6 +372,8 @@ public class Berserker : PlayerUnit
 
         if (circularAttack)
         {
+            particleCircularAttac.SetActive(true);
+
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
             myAnimator.SetTrigger("Attack");
@@ -410,12 +420,16 @@ public class Berserker : PlayerUnit
 
         else if (areaAttack)
         {
-          
+
+           
+
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.transform);
 
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);                   
                 }
@@ -423,6 +437,8 @@ public class Berserker : PlayerUnit
                 if (unitToAttack.myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.transform);
 
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);                  
                 }
@@ -434,12 +450,16 @@ public class Berserker : PlayerUnit
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
 
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.transform);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                 }
 
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
+
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.transform);
 
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
                 }
@@ -451,12 +471,16 @@ public class Berserker : PlayerUnit
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.transform);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                 }
 
                 if (unitToAttack.myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.transform);
 
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                 }
@@ -469,6 +493,8 @@ public class Berserker : PlayerUnit
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.transform);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                 }
 
@@ -476,9 +502,13 @@ public class Berserker : PlayerUnit
                 {
                     CreateAttackCommand(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
 
+                    Instantiate(particleMultpleAttack, currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.transform);
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                 }
             }
+
+            Instantiate(particleMultpleAttack, unitToAttack.transform);
 
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
@@ -498,6 +528,8 @@ public class Berserker : PlayerUnit
             myAnimator.SetTrigger("Attack");
 
             CreateAttackCommand(unitToAttack);
+
+            Instantiate(attackParticle, unitToAttack.transform);
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -531,7 +563,6 @@ public class Berserker : PlayerUnit
             //Una vez aplicados los multiplicadores efectuo el daño.
             unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
 
-
             //Añado este if para el count de honor del samurai
             if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
            || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
@@ -541,18 +572,6 @@ public class Berserker : PlayerUnit
             {
                 LM.honorCount++;
             }
-            //Si ataco por la espalda instancio la partícula de ataque crítico
-            if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
-            {
-                Instantiate(criticAttackParticle, unitModel.transform.position, unitModel.transform.rotation);
-            }
-
-            //Si no, instancio la partícula normal
-            else
-            {
-                Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
-            }
-        
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)

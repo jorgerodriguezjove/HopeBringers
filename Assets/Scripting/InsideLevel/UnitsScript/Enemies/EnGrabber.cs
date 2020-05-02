@@ -7,6 +7,9 @@ public class EnGrabber : EnemyUnit
 {
     public int turn2StunEnemy;
 
+    [SerializeField]
+    GameObject particleAttack5, particleAttack4, particleAttack3, particleAttack2;
+
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -117,6 +120,38 @@ public class EnGrabber : EnemyUnit
 
     public override void Attack()
     {
+
+        List<IndividualTiles> tilesInFront = new List<IndividualTiles>();
+
+        tilesInFront = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, attackRange);
+
+        //Particulas
+        for (int i = 0; i < tilesInFront.Count; i++)
+        {
+            if (tilesInFront[i].unitOnTile != null && tilesInFront[i].unitOnTile == currentUnitsAvailableToAttack[0])
+            {
+                if (i == 2)
+                {
+                    particleAttack2.SetActive(true);
+                }
+
+                else if (i == 3)
+                {
+                    particleAttack3.SetActive(true);
+                }
+
+                else if (i == 4)
+                {
+                    particleAttack4.SetActive(true);
+                }
+
+                else if (i == 5)
+                {
+                    particleAttack5.SetActive(true);
+                }
+            }
+        }
+
         //Si no he sido alertado, activo mi estado de alerta.
         //Al alertarme salo del void de ataque para hacer la busqueda normal de jugadores.
         if (!haveIBeenAlerted)

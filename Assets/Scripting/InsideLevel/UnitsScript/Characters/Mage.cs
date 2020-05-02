@@ -11,6 +11,12 @@ public class Mage : PlayerUnit
     [SerializeField]
     protected GameObject chargingParticle;
 
+    [SerializeField]
+    private GameObject particleAreaAttack;
+
+    [SerializeField]
+    private GameObject particleLightning;
+
     //Prefab del mage decoy
     [SerializeField]
     protected GameObject mageDecoyRefAsset;
@@ -183,10 +189,12 @@ public class Mage : PlayerUnit
 
         Instantiate(chargingParticle, gameObject.transform.position, chargingParticle.transform.rotation);
 
-        Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
+      
 
         if (areaAttack)
         {
+            Instantiate(particleAreaAttack, unitToAttack.transform.position, unitToAttack.transform.rotation);
+
             if (areaAttack2)
             {
                 //Animación de ataque 
@@ -277,6 +285,8 @@ public class Mage : PlayerUnit
                             //UNDO
                             CreateAttackCommand(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
+                            Instantiate(particleLightning, unitToAttack.transform.position, unitToAttack.transform.rotation);
+
                             DoDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
                             nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
@@ -316,6 +326,8 @@ public class Mage : PlayerUnit
         {
             //UNDO
             CreateAttackCommand(unitToAttack);
+
+            Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
 
             //Hago daño
             DoDamage(unitToAttack);

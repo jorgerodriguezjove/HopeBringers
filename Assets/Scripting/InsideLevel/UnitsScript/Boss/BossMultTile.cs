@@ -7,6 +7,18 @@ public class BossMultTile : EnemyUnit
 {
     int coneRange = 5;
 
+    [SerializeField]
+    private GameObject particleCharging;
+
+    [SerializeField]
+    private GameObject particleBeam;
+
+    [SerializeField]
+    private GameObject particleMeteorite;
+
+    [SerializeField]
+    private GameObject particleFire;
+
     [Header("CRISTALES")]
     public List<Crystal> crystalList = new List<Crystal>();
 
@@ -163,6 +175,7 @@ public class BossMultTile : EnemyUnit
                     else
                     {
                         isBeamOrMeteoriteCharged = false;
+                        particleCharging.SetActive(false);
                     }
 
                     myCurrentEnemyState = enemyState.Ended;
@@ -276,6 +289,8 @@ public class BossMultTile : EnemyUnit
                 {
                     currentUnitsAvailableToAttack.Add(coneTiles[i].unitOnTile);
                 }
+
+                Instantiate(particleFire, coneTiles[i].transform);
             }
             return true;
         }
@@ -345,6 +360,7 @@ public class BossMultTile : EnemyUnit
 
         myCurrentEnemyState = enemyState.Waiting;
 
+        particleCharging.SetActive(true);
         isBeamOrMeteoriteCharged = true;
     }
 
@@ -358,6 +374,8 @@ public class BossMultTile : EnemyUnit
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             //Particulas. Si queremos que sean distinta entre los ataques simplemente if (phase2)
+            Instantiate(attackParticle, currentUnitsAvailableToAttack[i].transform);
+
 
             DoDamage(currentUnitsAvailableToAttack[i]);
         }
@@ -437,8 +455,6 @@ public class BossMultTile : EnemyUnit
 
     private void DoBeamOrMeteorite()
     {
-        //Partículas en tiles
-
         for (int i = 0; i < beamOrMeteoriteTiles.Count; i++)
         {
             if (beamOrMeteoriteTiles[i].unitOnTile != null && beamOrMeteoriteTiles[i].unitOnTile.GetComponent<PlayerUnit>())
@@ -449,9 +465,20 @@ public class BossMultTile : EnemyUnit
             beamOrMeteoriteTiles[i].ColorDesAttack();
         }
 
+        if (!isPhase2)
+        {
+            particleBeam.SetActive(false);
+            particleBeam.SetActive(true);
+        }
+
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             DoDamage(currentUnitsAvailableToAttack[i]);
+
+            if (isPhase2)
+            {
+                Instantiate(particleMeteorite, currentUnitsAvailableToAttack[i].transform);
+            }
         }
     }
 

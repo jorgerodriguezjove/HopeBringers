@@ -52,6 +52,13 @@ public class Samurai : PlayerUnit
 
     public GameObject lonelyBox;
 
+
+    [SerializeField]
+    private GameObject particleParryAttack;
+
+    [SerializeField]
+    private GameObject particleMultipleAttack;
+
     #endregion
 
     public void SetSpecificStats(bool _parry1, bool _parry2,
@@ -341,12 +348,15 @@ public class Samurai : PlayerUnit
             myAnimator.SetTrigger("Attack");
 
         }
+
         else if (doubleAttack)
         {
             for (int i = 0; i < timesDoubleAttackRepeats; i++)
             {
                 //Animación de ataque                
                 myAnimator.SetTrigger("Attack");
+
+                particleMultipleAttack.SetActive(true);
 
                 //UNDO
                 CreateAttackCommand(unitToAttack);
@@ -366,6 +376,7 @@ public class Samurai : PlayerUnit
             //UNDO
             CreateAttackCommand(unitToAttack);
 
+            Instantiate(attackParticle, unitToAttack.transform);
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -382,12 +393,9 @@ public class Samurai : PlayerUnit
 
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-
         CalculateDamage(unitToDealDamage);
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
-
-        Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
     }
 
     public override void CalculateDamage(UnitBase unitToDealDamage)
@@ -464,6 +472,8 @@ public class Samurai : PlayerUnit
     {
         if (parryOn)
         {
+            particleParryAttack.SetActive(true);
+
             if (parryOn2)
             {
                 if (unitAttacker == unitToParry)
@@ -490,11 +500,9 @@ public class Samurai : PlayerUnit
                         parryIcon.SetActive(false);
 
                     }
-                  
-
                 }
-                
             }
+
             else if(unitAttacker == unitToParry)
             {
                 damageReceived = 0;
@@ -502,15 +510,13 @@ public class Samurai : PlayerUnit
                 UIM.RefreshHealth();
                 unitToParry = null;
                 parryIcon.SetActive(false);
-
             }
-            
         }
+
         else
         {
             base.ReceiveDamage(damageReceived, unitAttacker);
         }
-        
     }
 
     public void CheckIfIsLonely()
