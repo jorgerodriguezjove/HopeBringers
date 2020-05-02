@@ -59,19 +59,29 @@ public class Portraits : MonoBehaviour
     //Bool que indica a los retratos si están clickados
     public bool isClicked;
 
+    //Token especial de los personajes
+    public GameObject specialToken;
+
+    //Token especial de los personajes
+    public GameObject specialToken2;
+
     //Numero para los contadores de las habilidades de cada personaje
     [SerializeField]
     public TextMeshProUGUI specialSkillTurnsLeft;
 
     //Numero para el contador del ninja
     [SerializeField]
-    public TextMeshProUGUI ninjaBuffDamage;
+    public TextMeshProUGUI specialSkillTurnsLeft2;
 
-    //Token especial de los personajes
-    public GameObject specialToken;
+    //Numero para los contadores de las habilidades de cada personaje
+    [SerializeField]
+    public Image specialSkillImage;
 
-    //Token especial de los personajes
-    public GameObject specialToken2;
+    //Numero para el contador del ninja
+    [SerializeField]
+    public Image specialSkillImage2;
+
+
 
     #endregion
 
@@ -91,7 +101,6 @@ public class Portraits : MonoBehaviour
 
     private void Start()
     {
-		
         RefreshHealth();
         activatedTokens = assignedPlayer.maxHealth;
         RefreshSprites();

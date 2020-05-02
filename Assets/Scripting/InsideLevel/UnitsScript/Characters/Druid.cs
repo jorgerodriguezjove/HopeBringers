@@ -22,7 +22,6 @@ public class Druid : PlayerUnit
     public bool individualHealer2;
 
     //int que indica cuantas unidades de movimiento se mejora a la unidad
-    //Jojo, acuerdate de que hay que incremeentar healedLife más aún
     public int movementUpgrade;
 
     //bool activa 2
@@ -94,14 +93,23 @@ public class Druid : PlayerUnit
 
         if (individualHealer2)
         {
+            healedLife = _heal1 + 1;
+            movementUpgrade = 1;
+
             activeSkillInfo = AppDruidUpgrades.heal2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.heal2);
         }
 
+        //CHECK
         else if (healedLife > 1)
         {
             activeSkillInfo = AppDruidUpgrades.heal1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.heal1);
+        }
+
+        else
+        {
+            healedLife = 1;
         }
 
         #endregion
@@ -117,6 +125,8 @@ public class Druid : PlayerUnit
 
         if (tileSustitute2)
         {
+            bonusOnTile = 1;
+
             pasiveSkillInfo = AppDruidUpgrades.tileMovement2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tileMovement2);
         }

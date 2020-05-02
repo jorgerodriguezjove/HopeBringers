@@ -105,6 +105,7 @@ public class Monk : PlayerUnit
         healerMark = _markBuff1;
         healerMark2 = _markBuff2;
 
+        healerBonus = 1;
 
         if (debuffMark2)
         {
@@ -120,12 +121,16 @@ public class Monk : PlayerUnit
 
         if (healerMark2)
         {
+            healerBonus = 2;
+
             pasiveSkillInfo = AppMonkUpgrades.markBuff2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.markBuff2);
         }
 
         else if (healerMark)
         {
+            healerBonus = 2;
+
             pasiveSkillInfo = AppMonkUpgrades.markBuff1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.markBuff1);
         }

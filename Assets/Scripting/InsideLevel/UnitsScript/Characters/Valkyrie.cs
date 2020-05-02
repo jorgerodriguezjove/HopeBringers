@@ -84,12 +84,16 @@ public class Valkyrie : PlayerUnit
 
         if (armorMode2)
         {
+            numberOfArmorAdded = 2;
+
             activeSkillInfo = AppValkyrieUpgrades.armorChange2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.armorChange2);
         }
 
         else if (armorMode)
         {
+            numberOfArmorAdded = 1;
+
             activeSkillInfo = AppValkyrieUpgrades.armorChange1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.armorChange1);
         }
@@ -100,6 +104,7 @@ public class Valkyrie : PlayerUnit
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.moreRange2);
         }
 
+        //CHECK
         else if (_range1 > attackRange)
         {
             activeSkillInfo = AppValkyrieUpgrades.moreRange1Text;
@@ -127,23 +132,23 @@ public class Valkyrie : PlayerUnit
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.height1);
         }
 
-
         if (changePositions2)
         {
+            numberCanChange = 2; 
+
             pasiveSkillInfo = AppValkyrieUpgrades.sustitution2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.sustitution2);
         }
 
         else if (changePositions)
         {
+            numberCanChange = 1;
+
             pasiveSkillInfo = AppValkyrieUpgrades.sustitution1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.sustitution1);
         }
-
-
         #endregion
     }
-
 
     protected override void OnMouseDown()
     {
@@ -806,7 +811,7 @@ public class Valkyrie : PlayerUnit
     {
         base.UndoAttack(lastAttack);
 
-        //Intercambio con otro personaje
+        //Intercambio con otro personaje. Usar hasmoved
     }
 
 }

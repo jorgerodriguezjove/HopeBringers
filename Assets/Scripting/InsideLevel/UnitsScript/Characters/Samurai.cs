@@ -91,12 +91,16 @@ public class Samurai : PlayerUnit
         //TENER CUIDADO CON ESTA, DEPENDE DE CUANTOS ATAQUES TENGA LA SEGUNDA MEJORA
         if (timesDoubleAttackRepeats > 2)
         {
+            //Aqui no hace falta timesDoubleAttackRepeats, porque ya esta arriba.
+
             activeSkillInfo = AppSamuraiUpgrades.multiAttack2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.multiAttack2);
         }
 
         else if (doubleAttack)
         {
+            timesDoubleAttackRepeats = 2;
+
             activeSkillInfo = AppSamuraiUpgrades.multiAttack1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.multiAttack2);
         }
@@ -110,6 +114,8 @@ public class Samurai : PlayerUnit
 
         buffLonelyArea = _loneWolf1;
         isLonelyLikeMe = _loneWolf2;
+
+        lonelyAreaDamage = 2;
 
         if (_honor2)
         {
@@ -141,12 +147,19 @@ public class Samurai : PlayerUnit
 
     public override void CheckWhatToDoWithSpecialsTokens()
     {
-       
         CheckIfIsLonely();
-        myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
-        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
-        //Cambiar el número si va a tener más de un turno
-        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = LM.honorCount.ToString();   
+
+        if (itsForHonorTime)
+        {
+            myPanelPortrait.GetComponent<Portraits>().specialToken2.SetActive(true);
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.enabled = true;
+
+            //Cambiar el número si va a tener más de un turno
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = LM.honorCount.ToString();
+
+            myPanelPortrait.GetComponent<Portraits>().specialSkillImage2.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.honor1);
+        }
+
 
         if (unitToParry != null)
         {
@@ -620,7 +633,9 @@ public class Samurai : PlayerUnit
     {
         base.UndoAttack(lastAttack);
 
-        //Quitar el parry
+        unitToParry = lastAttack.unitToParry;
+
+        //Falta Honor
     }
 
 }

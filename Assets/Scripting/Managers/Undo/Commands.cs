@@ -125,7 +125,7 @@ public class AttackCommand : ICommand
     public int rageTurnsLeft;
 
     //Samurai
-    public bool isInParry;
+    public UnitBase unitToParry;
     public int honor; //Assegurar que no jode nada del bufo al resetearlo
 
     //Druid
@@ -189,19 +189,12 @@ public class AttackCommand : ICommand
             ninjaExtraJumps = refPj.unitsCanJump;
 
             smokeTiles.Clear();
+            for (int i = 0; i < refPj.bombsSpawned.Count; i++)
+            {
+                smokeTiles.Add(refPj.bombsSpawned[i]);
+            }
 
-            //TODO LO QUE FALTA AQUI HAY QUE PONERLO TAMBIEN EN LA FUNCIÓN UNDOATTACK DE CADA PERSONAJE
-
-            //Añadir en ninja referencia a tiles de humo que instancia
-
-            //for (int i = 0; i < refPj.smoke; i++)
-            //{
-            //    smokeTiles.Add(refPj.smoke[0]);
-            //}
-            
-            //Poner aqui daño que gana ninja al matar enemigos
-
-            //ninjaBonusDamage = refPj. ;
+            ninjaBonusDamage = refPj.baseDamage;
         }
 
         else if (pj.GetComponent<Mage>())
@@ -219,20 +212,12 @@ public class AttackCommand : ICommand
             //hasMovedWithDecoy = refPj.hasMoved; //Quizás es poner simplemente si ha movido
         }
 
-        else if (pj.GetComponent<Berserker>())
-        {
-            Berserker refPj = pj.GetComponent<Berserker>();
-
-            isInRage = refPj.isInRage;
-            rageTurnsLeft = refPj.turnsLeftToRageOff;
-        }
-
         else if (pj.GetComponent<Samurai>())
         {
             Samurai refPj = pj.GetComponent<Samurai>();
 
-            //isInParry = refPj.; //Quitar el aprry
-            //honor = LM.HONOR; Hay que hacer que el samurai también guarde el honor o algo porque no puedo acceder a LM
+            unitToParry = refPj.unitToParry; 
+           // honor = LM.HONOR; Hay que hacer que el samurai también guarde el honor o algo porque no puedo acceder a LM
         }
 
         else if (pj.GetComponent<Druid>())
@@ -251,6 +236,14 @@ public class AttackCommand : ICommand
             Valkyrie refPj = pj.GetComponent<Valkyrie>();
 
             //hasInterchanged = refPj.hasMoved; Igual que el mago con el decoy.
+        }
+
+        if (obj.GetComponent<Berserker>())
+        {
+            Berserker refPj = obj.GetComponent<Berserker>();
+
+            isInRage = refPj.isInRage;
+            rageTurnsLeft = refPj.turnsLeftToRageOff;
         }
 
         #endregion

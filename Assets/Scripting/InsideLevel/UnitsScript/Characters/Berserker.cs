@@ -72,28 +72,33 @@ public class Berserker : PlayerUnit
         circularAttack = _circularAttack1;
         timesCircularAttackRepeats = _circularAttack2;
 
+        //CHECK
         if (_areaAttack2 > 0)
         {
+            bonusDamageAreaAttack = 2;
+
             activeSkillInfo = AppBerserkUpgrades.areaAttack2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.areaAttack2);
-
         }
 
         else if (areaAttack)
         {
-            bonusDamageAreaAttack = 2;
             activeSkillInfo = AppBerserkUpgrades.areaAttack1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.areaAttack1);
         }
 
         if (_circularAttack2 > 1)
         {
+            //Aqui no hace falta timesCircularAttackRepeats, porque ya esta arriba.
+
             activeSkillInfo = AppBerserkUpgrades.circularAttack2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack2);
         }
 
         else if (circularAttack)
         {
+            timesCircularAttackRepeats = 1;
+
             activeSkillInfo = AppBerserkUpgrades.circularAttack1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack2);
         }
@@ -126,12 +131,16 @@ public class Berserker : PlayerUnit
 
         if (fearTurnBonus > 1)
         {
+            //Aqui no hace falta tocar fearTurnBonus, porque ya se iguala a _fearTurnBonus
+
             pasiveSkillInfo = AppBerserkUpgrades.fearRage2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage2);
         }
 
         else if (fearTurnBonus > 0)
         {
+            fearTurnBonus = 1;
+
             pasiveSkillInfo = AppBerserkUpgrades.fearRage1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage1);
         }
@@ -142,7 +151,13 @@ public class Berserker : PlayerUnit
 
     public override void CheckWhatToDoWithSpecialsTokens()
     {
-        myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
+        //Base del rage
+        myPanelPortrait.GetComponent<Portraits>().specialToken2.SetActive(true);
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.enabled = true;
+
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = turnsLeftToRageOff.ToString();
+
+        myPanelPortrait.GetComponent<Portraits>().specialSkillImage2.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage1);
     }
 
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
@@ -550,8 +565,8 @@ public class Berserker : PlayerUnit
         
         //La primera vez que entra en rage inicializo los turnos que puede estar en rage.
         turnsLeftToRageOff = maxNumberOfTurnsInRage - 1;
-        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
-        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = turnsLeftToRageOff.ToString();
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.enabled = true;
+        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = turnsLeftToRageOff.ToString();
         turnsLeftToRageOff = maxNumberOfTurnsInRage;
         //Cambiar material
         RageColor();
@@ -839,8 +854,6 @@ public class Berserker : PlayerUnit
     {
         base.UndoAttack(lastAttack);
 
-
-        //ESTO NO VA EN ATAQUE, VA EN MOVIMIENTO
         isInRage = lastAttack.isInRage;
         turnsLeftToRageOff = lastAttack.rageTurnsLeft;
 
@@ -848,6 +861,8 @@ public class Berserker : PlayerUnit
         {
             ResetColor();
         }
+
+        Debug.Log("woooooowooo");
 
         //Quitar efectos de rage visuales si se le quita con el undo
     }

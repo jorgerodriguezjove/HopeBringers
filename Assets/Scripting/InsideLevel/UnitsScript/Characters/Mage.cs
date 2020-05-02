@@ -32,14 +32,24 @@ public class Mage : PlayerUnit
     //ACTIVAS
 
     public bool areaAttack;
-    public int areaRange;
-
     public bool areaAttack2;
+    [HideInInspector]
+    public int areaRange = 1;
 
     public bool lightningChain;
     public int timeElectricityAttackExpands;
     //Este int para que vuelva a su estado principal
-    public int fTimeElectricityAttackExpands = 3;
+    public int fTimeElectricityAttackExpands;
+
+    //Mejora del ataque (no hace daño a aliados y cada vez que hace la cadena, aumenta el daño)
+    public bool lightningChain2;
+
+    public int limitantAttackBonus;
+    //Las dos siguientes variables las suelo poner en el awake pero se puede poner de forma manual. Hay que mirar como solucionarlo
+    //Este int lo añado para que el limite de ataques vuelva a su estado del principio antes de volver a atacar
+    public int fLimitantAttackBonus;
+    //Este int lo añado para que el ataque del mago vuelva a su estado del principio antes de volver a atacar
+    public int fBaseDamage;
 
     [HideInInspector]
     public List<UnitBase> attackingUnits;
@@ -47,16 +57,6 @@ public class Mage : PlayerUnit
     public List<UnitBase> nextUnits;
     [HideInInspector]
     public List<UnitBase> unitsFinished;
-
-    //Mejora del ataque (no hace daño a aliados y cada vez que hace la cadena, aumenta el daño)
-    public bool lightningChain2;
-    public int limitantAttackBonus;
-
-    //Las dos siguientes variables las suelo poner en el awake pero se puede poner de forma manual. Hay que mirar como solucionarlo
-    //Este int lo añado para que el limite de ataques vuelva a su estado del principio antes de volver a atacar
-    public int fLimitantAttackBonus=3;
-    //Este int lo añado para que el ataque del mago vuelva a su estado del principio antes de volver a atacar
-    public int fBaseDamage=1;
 
     [Header("Pasivas")]
     //PASIVAS
@@ -87,15 +87,24 @@ public class Mage : PlayerUnit
             
         areaAttack = _crossAreaAttack1;
         areaAttack2 = _crossAreaAttack2;
+        areaRange = 1;
+
+        fBaseDamage = baseDamage;
 
         if (lightningChain2)
         {
+            timeElectricityAttackExpands = 999;
+            limitantAttackBonus = 3;
+
             activeSkillInfo = AppMageUpgrades.lightningChain2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.lightningChain2);
         }
 
         else if(lightningChain)
         {
+            timeElectricityAttackExpands = 3;
+            limitantAttackBonus = 0;
+
             activeSkillInfo = AppMageUpgrades.lightningChain1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.lightningChain1);
         }
@@ -108,10 +117,13 @@ public class Mage : PlayerUnit
 
         else if (areaAttack)
         {
-            areaRange = 1;
             activeSkillInfo = AppMageUpgrades.crossAreaAttack1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.crossAreaAttack1);
         }
+
+        //Importante que este después de las mejoras
+        fTimeElectricityAttackExpands = timeElectricityAttackExpands;
+        fLimitantAttackBonus = limitantAttackBonus;
 
         #endregion
 
@@ -122,6 +134,7 @@ public class Mage : PlayerUnit
 
         mirrorDecoy = _mirrorDecoy1;
         mirrorDecoy2 = _mirrorDecoy2;
+
 
         if (isDecoyBomb2)
         {
@@ -143,7 +156,7 @@ public class Mage : PlayerUnit
 
         else if (mirrorDecoy)
         {
-            areaRange = 1;
+            
             pasiveSkillInfo = AppMageUpgrades.mirrorDecoy1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.mirrorDecoy1);
         }
@@ -333,6 +346,7 @@ public class Mage : PlayerUnit
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
     }
+    
     //Override especial del mago para que no instancie la partícula de ataque
     protected override void DoDamage(UnitBase unitToDealDamage)
     {

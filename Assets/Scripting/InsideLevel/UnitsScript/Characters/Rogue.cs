@@ -11,6 +11,9 @@ public class Rogue : PlayerUnit
 
     [Header("MEJORAS DE PERSONAJE")]
 
+    //Daño inicial del personaje antes de haberse bufado con la pasiva
+    int fBaseDamage;
+    
     [Header("Activas")]
     //ACTIVAS
     public bool checkersAttack;
@@ -19,10 +22,8 @@ public class Rogue : PlayerUnit
     public int fUnitsCanJump;
 
     //Lista de posibles unidades a las que atacar
-    [HideInInspector]
     public List<UnitBase> unitsAttacked;
 
-    
     public bool extraTurnAttackAfterKill;
     //int para saber uantos turnos extra tiene
     public int extraTurnCount;
@@ -57,7 +58,6 @@ public class Rogue : PlayerUnit
 
     //Pasuva mejorada
     public bool smokeBomb2;
-   
 
     #endregion
 
@@ -72,36 +72,46 @@ public class Rogue : PlayerUnit
         activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
         pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
 
+        fBaseDamage = baseDamage;
+
         #region Actives
 
         checkersAttack = _multiJumpAttack1;
+        extraTurnAttackAfterKill = _extraTurnAfterKill1;
 
+        //COMPROBAR QUE ESTO FUNCIONA. (SI NO ESTA MEJORADO _multiJumpAttack2 TENDRÍA QUE SER 0)
         if (_multiJumpAttack2 > 0)
         {
             fUnitsCanJump = _multiJumpAttack2;
             unitsCanJump = _multiJumpAttack2;
             activeSkillInfo = AppRogueUpgrades.multiJumpAttack2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.multiJumpAttack2);
-
         }
 
         else if (checkersAttack)
         {
+            fUnitsCanJump = 2;
+            unitsCanJump = 2;
             activeSkillInfo = AppRogueUpgrades.multiJumpAttack1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.multiJumpAttack1);
         }
 
-        extraTurnAttackAfterKill = _extraTurnAfterKill1;
+        //COMPROBAR QUE ESTO FUNCIONA. (SI NO ESTA MEJORADO _extraTurnAfterKill2 TENDRÍA QUE SER 0)
         if (_extraTurnAfterKill2 > 0)
         {
             extraTurnCount = _extraTurnAfterKill2;
             fextraTurnCount = _extraTurnAfterKill2;
+            
             activeSkillInfo = AppRogueUpgrades.extraTurnAfterKill2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.extraTurnAfterKill2);
         }
 
         else if (extraTurnAttackAfterKill)
         {
+            //Mirar que 1 esta bien.
+            extraTurnCount = 1;
+            fextraTurnCount = 1;
+
             activeSkillInfo = AppRogueUpgrades.extraTurnAfterKill1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.extraTurnAfterKill1);
         }
@@ -113,21 +123,27 @@ public class Rogue : PlayerUnit
         afterKillBonus = _buffDamage1;
         afterKillBonus2 = _buffDamage2;
 
+        smokeBomb = _smokeBomb1;
+        smokeBomb2 = _smokeBomb2;
+
         if (afterKillBonus2)
         {
+            bonusAttackAfterKill = 1;
+            maxbonusAttackAfterKill = 999;
+
             pasiveSkillInfo = AppRogueUpgrades.buffDamageKill2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.buffDamageKill2);
         }
 
         else if (afterKillBonus)
         {
+            bonusAttackAfterKill = 1;
+            maxbonusAttackAfterKill = 3;
+
             pasiveSkillInfo = AppRogueUpgrades.buffDamageKill1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.buffDamageKill1);
         }
-
-        smokeBomb = _smokeBomb1;
-        smokeBomb2 = _smokeBomb2;
-
+        
         if (smokeBomb2)
         {
             pasiveSkillInfo = AppRogueUpgrades.smokeBomb2Text;
@@ -145,27 +161,37 @@ public class Rogue : PlayerUnit
 
     public override void CheckWhatToDoWithSpecialsTokens()
     {
+        Debug.Log("coco");
 
         if (extraTurnAttackAfterKill)
         {
             myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
+
             //Cambiar el número si va a tener más de un turno
-            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = extraTurnCount.ToString() ;
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = extraTurnCount.ToString();
+
+            myPanelPortrait.GetComponent<Portraits>().specialSkillImage.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.extraTurnAfterKill1);
         }
         else if (checkersAttack)
         {
-            unitsCanJump = fUnitsCanJump;
             myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
             myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = true;
+
             //Cambiar el número si va a tener más de un turno
-            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();           
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = unitsCanJump.ToString();
+
+            myPanelPortrait.GetComponent<Portraits>().specialSkillImage.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.multiJumpAttack1);
         }
 
         if (afterKillBonus)
         {
-            myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.enabled = true;
-            myPanelPortrait.GetComponent<Portraits>().ninjaBuffDamage.text = baseDamage.ToString();
+            myPanelPortrait.GetComponent<Portraits>().specialToken2.SetActive(true);
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.enabled = true;
+
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = (baseDamage - fBaseDamage).ToString();
+
+            myPanelPortrait.GetComponent<Portraits>().specialSkillImage2.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppRogueUpgrades.buffDamageKill1);
         }
     }
 
@@ -815,9 +841,6 @@ public class Rogue : PlayerUnit
         {
             tilesInEnemyHover[i].ColorAttack();
         }
-       
-
-
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
@@ -874,7 +897,13 @@ public class Rogue : PlayerUnit
         extraTurnCount = lastAttack.ninjaExtraTurns;
         unitsCanJump = lastAttack.ninjaExtraJumps;
 
-        //Smoketiles
+        baseDamage = lastAttack.ninjaBonusDamage;
+
+        bombsSpawned.Clear();
+        for (int i = 0; i < lastAttack.smokeTiles.Count; i++)
+        {
+            bombsSpawned.Add(lastAttack.smokeTiles[i]);
+        }
     }
 
     
