@@ -666,7 +666,7 @@ public class UIManager : MonoBehaviour
 
 			if (scrollUpToEnemy && LM.selectedEnemy != null)
 			{
-				if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y && LM.selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
+				if (panelesEnemigos.Count > 0 && panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y && LM.selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
 				{
 					padrePanelesEnemigos.transform.Translate(Vector3.up * autoScrollSpeed * Time.deltaTime);
 					buttonUpHighlight.SetActive(true);
