@@ -358,21 +358,7 @@ public class PlayerUnit : UnitBase
                 if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
 
-                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
-
-                    Druid druidRef = FindObjectOfType<Druid>();
-                    Rogue ninjaRef = FindObjectOfType<Rogue>();
-
-                    if (druidRef != null && LM.selectedCharacter == druidRef)
-                    {
-                        // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                        druidRef.previsualizeAttackIcon.SetActive(true);
-                        druidRef.canvasHover.SetActive(true);
-                        druidRef.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("-1");
-                        canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + druidRef.healedLife);
-                        ColorAvailableToBeHealed();
-                    }
-
+                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);                  
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 }
                 else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
@@ -381,6 +367,7 @@ public class PlayerUnit : UnitBase
                     Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
                     if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef)
                     {
+                        
                         LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
                     }
                 }
@@ -390,7 +377,7 @@ public class PlayerUnit : UnitBase
                     myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
                 }
 
-                if (!hasAttacked)
+                if (!hasAttacked && LM.selectedCharacter == null)
                 {
                     myPanelPortrait.GetComponent<Portraits>().HighlightPortrait();
                     SelectedColor();
@@ -447,7 +434,6 @@ public class PlayerUnit : UnitBase
                
                 LM.HideUnitHover(this);
                 myPanelPortrait.GetComponent<Portraits>().UnHighlightPortrait();
-
                 ResetColor();
             }
 
@@ -531,6 +517,14 @@ public class PlayerUnit : UnitBase
             isMovingorRotating = false;
             LM.UnitHasFinishedMovementAndRotation();
             UpdateInformationAfterMovement(myCurrentTile);
+        }
+
+        Samurai samuraiRef = FindObjectOfType<Samurai>();
+
+        if (samuraiRef != null )
+        {
+            samuraiRef.CheckIfIsLonely();
+
         }
 
         //Al acabar al movimiento aviso a levelManager de que avise a los enemigos para ver si serán alertados.
@@ -1232,6 +1226,8 @@ public class PlayerUnit : UnitBase
         {
             _unitToCheck.QuitMarks();
             currentHealth += FindObjectOfType<Monk>().healerBonus * _unitToCheck.numberOfMarks;
+            RefreshHealth(false);
+           
             _unitToCheck.numberOfMarks = 0;
 
             if (FindObjectOfType<Monk>().debuffMark2)

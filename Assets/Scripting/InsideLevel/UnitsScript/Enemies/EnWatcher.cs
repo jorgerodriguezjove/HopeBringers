@@ -55,7 +55,8 @@ public class EnWatcher : EnemyUnit
 
                 if (myTierLevel == TierLevel.Level2)
                 {
-                    ApplyBuffOrDebuffMovement(unitsInRange[i], movementDebuff, 1);
+                    //Pongo movemetDebuff en negativo para que se reste
+                    ApplyBuffOrDebuffMovement(unitsInRange[i], -(movementDebuff), 1);
                 }
             }
         }

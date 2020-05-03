@@ -36,6 +36,9 @@ public class Berserker : PlayerUnit
     //[Header("Activas")]
     //ACTIVAS
     public bool circularAttack;
+
+    public FacingDirection previousDirection;
+
     //Esta variable tiene que cambiar en la mejora 2 de este ataque
     public int timesCircularAttackRepeats;
 
@@ -369,11 +372,12 @@ public class Berserker : PlayerUnit
         hasAttacked = true;
 
         CheckIfUnitHasMarks(unitToAttack);
+        HideAttackEffect(unitToAttack);
 
         if (circularAttack)
         {
             particleCircularAttac.SetActive(true);
-
+            previousDirection = currentFacingDirection;
             //Animación de ataque 
             //HAY QUE HACER UNA PARA EL ATAQUE GIRATORIO
             myAnimator.SetTrigger("Attack");
@@ -413,9 +417,12 @@ public class Berserker : PlayerUnit
                     DoDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
                 }
 
-                //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
-                base.Attack(unitToAttack);
+               
             }
+
+            currentFacingDirection = previousDirection;
+             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
+            base.Attack(unitToAttack);
         }
 
         else if (areaAttack)
@@ -777,61 +784,83 @@ public class Berserker : PlayerUnit
         }
 
         else if (circularAttack)
-        {                           
-                if (myCurrentTile.tilesInLineUp[0] != null)
-                {
+        {
+            previousDirection = currentFacingDirection;
+            if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+            {
 
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[0]);
-               
+                currentFacingDirection = FacingDirection.North;
+                CalculateDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
+                myCurrentTile.tilesInLineUp[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
-                }
 
-                if (myCurrentTile.tilesInLineDown[0]!= null)
-                {
+
+            }
+
+            if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+            {
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[0]);
-                }
+                currentFacingDirection = FacingDirection.South;
+                CalculateDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
+                myCurrentTile.tilesInLineDown[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
-                if (myCurrentTile.tilesInLineRight[0] != null)
-                {
+            }
+
+
+            if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+            {
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineRight[0]);
+                currentFacingDirection = FacingDirection.East;
+                CalculateDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
+                myCurrentTile.tilesInLineRight[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
-                }
+            }
 
-                if (myCurrentTile.tilesInLineLeft[0] != null)
-                {
+
+            if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+            {
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[0]);
-                }
+                currentFacingDirection = FacingDirection.West;
+                CalculateDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+                myCurrentTile.tilesInLineLeft[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
-          
+            }
+            currentFacingDirection = previousDirection;
         }
 
         tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
-      
 
-        for (int i = 0; i < tilesInEnemyHover.Count; i++)
-        {
-            tilesInEnemyHover[i].ColorAttack();
-
-            if (tilesInEnemyHover[i].unitOnTile != null)
+        
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
             {
-                if (rageFear)
-                {
-                    SetBuffDebuffIcon(-1,_unitToAttack, true);
-                }
+                tilesInEnemyHover[i].ColorAttack();
 
-                if (circularAttack)
+                if (tilesInEnemyHover[i].unitOnTile != null)
                 {
-                    if (timesCircularAttackRepeats >= 2)
+                    if (rageFear)
                     {
-                        tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.enabled = true;
-                        tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.text = ("X" + timesCircularAttackRepeats.ToString());
-
+                        SetBuffDebuffIcon(-1, _unitToAttack, true);
                     }
 
+                    if (circularAttack)
+                    {
+                        if (timesCircularAttackRepeats >= 2)
+                        {
+                            tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.enabled = true;
+                            tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.text = ("X" + timesCircularAttackRepeats.ToString());
+                        }
+
+                    }
+                    else
+                    {
+
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied + bonusDamageAreaAttack);
+                    }
                 }
-                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied + bonusDamageAreaAttack);
             }
-        }
+        
+       
 
     }
 

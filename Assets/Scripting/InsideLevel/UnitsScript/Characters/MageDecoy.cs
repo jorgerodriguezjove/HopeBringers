@@ -752,6 +752,7 @@ public class MageDecoy : Mage
                     if (currentTilesInRangeForAttack[i].unitOnTile != null)
                     {
                         currentTilesInRangeForAttack[i].unitOnTile.ResetColor();
+                        currentTilesInRangeForAttack[i].unitOnTile.DisableCanvasHover();
                     }
                 }
             }

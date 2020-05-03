@@ -867,8 +867,12 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
+                      
                     }
                 }
 
@@ -879,17 +883,21 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
-
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
                     }
                 }
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
                 SetShadowRotation(_unitToAttack);
-                _unitToAttack.sombraHoverUnit.SetActive(true);
-                _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
+                if (!isMovingorRotating)
+                {
+                    _unitToAttack.sombraHoverUnit.SetActive(true);
+                    _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
 
-
+                }
 
             }
 
@@ -901,8 +909,11 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
                     }
                 }
 
@@ -912,16 +923,21 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
                     }
                 }
 
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
                 SetShadowRotation(_unitToAttack);
-                _unitToAttack.sombraHoverUnit.SetActive(true);
-                _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
-
+                if (!isMovingorRotating)
+                {
+                    _unitToAttack.sombraHoverUnit.SetActive(true);
+                    _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
+                }
                
             }
 
@@ -935,9 +951,11 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
-
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
                     }
                 }
 
@@ -949,17 +967,21 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
-
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
                     }
                 }
 
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
                 SetShadowRotation(_unitToAttack);
-                _unitToAttack.sombraHoverUnit.SetActive(true);
-                _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
-
+                if (!isMovingorRotating)
+                {
+                    _unitToAttack.sombraHoverUnit.SetActive(true);
+                    _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
+                }
 
                
 
@@ -976,9 +998,11 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
-
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
                     }
                 }
 
@@ -989,18 +1013,22 @@ public class Knight : PlayerUnit
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
                         SetShadowRotation(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.SetActive(true);
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
-
+                        if (!isMovingorRotating)
+                        {
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.SetActive(true);
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
+                        }
                     }
                 }
 
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
                 SetShadowRotation(_unitToAttack);
-                _unitToAttack.sombraHoverUnit.SetActive(true);
-                _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
+                if (!isMovingorRotating)
+                {
+                    _unitToAttack.sombraHoverUnit.SetActive(true);
+                    _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
 
-
+                }
                 
             }
 
@@ -1034,8 +1062,11 @@ public class Knight : PlayerUnit
                     && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
                     && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
                 {
-                    _unitToAttack.sombraHoverUnit.SetActive(true);
-                    _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineUp[tilesToPush].transform.position;
+                    if (!isMovingorRotating)
+                    {
+                        _unitToAttack.sombraHoverUnit.SetActive(true);
+                        _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineUp[tilesToPush].transform.position;
+                    }
                 }
 
                 for (int i = 0; i - 1 < tilesToPush; i++)
@@ -1058,8 +1089,11 @@ public class Knight : PlayerUnit
                    && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
                    && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
                     {
-                        _unitToAttack.sombraHoverUnit.SetActive(true);
-                        _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineDown[tilesToPush].transform.position;
+                        if (!isMovingorRotating)
+                        {
+                            _unitToAttack.sombraHoverUnit.SetActive(true);
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineDown[tilesToPush].transform.position;
+                        }
                     }
 
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
@@ -1077,8 +1111,11 @@ public class Knight : PlayerUnit
                     && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
                     && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
                 {
-                    _unitToAttack.sombraHoverUnit.SetActive(true);
-                    _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineRight[tilesToPush].transform.position;
+                    if (!isMovingorRotating)
+                    {
+                        _unitToAttack.sombraHoverUnit.SetActive(true);
+                        _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineRight[tilesToPush].transform.position;
+                    }
                 }
 
                 for (int i = 0; i - 1 < tilesToPush; i++)
@@ -1098,8 +1135,11 @@ public class Knight : PlayerUnit
                    && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
                    && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
                 {
-                    _unitToAttack.sombraHoverUnit.SetActive(true);
-                    _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineLeft[tilesToPush].transform.position;
+                    if (!isMovingorRotating)
+                    {
+                        _unitToAttack.sombraHoverUnit.SetActive(true);
+                        _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineLeft[tilesToPush].transform.position;
+                    }
                 }
 
                 for (int i = 0; i - 1 < tilesToPush; i++)
@@ -1122,7 +1162,10 @@ public class Knight : PlayerUnit
         {
             tilesInEnemyHover.Clear();
 
-            _unitToAttack.sombraHoverUnit.SetActive(true);
+            if (!isMovingorRotating)
+            {
+                _unitToAttack.sombraHoverUnit.SetActive(true);
+            }
             tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
             if (currentFacingDirection == FacingDirection.North)
             {

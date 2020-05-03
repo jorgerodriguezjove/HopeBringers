@@ -364,6 +364,12 @@ public class Samurai : PlayerUnit
                 //Hago daño
                 DoDamage(unitToAttack);
             }
+
+            if (itsForHonorTime)
+            {
+                //Cambiar el número si va a tener más de un turno
+                myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = LM.honorCount.ToString();
+            }
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
@@ -384,11 +390,19 @@ public class Samurai : PlayerUnit
             //Meter sonido Samurai
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
 
+            if (itsForHonorTime)
+            {
+                //Cambiar el número si va a tener más de un turno
+                myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = LM.honorCount.ToString();
+            }
+
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
 
         }
-        
+
+       
+
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)

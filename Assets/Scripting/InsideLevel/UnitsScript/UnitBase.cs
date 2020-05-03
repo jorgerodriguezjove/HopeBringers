@@ -158,7 +158,7 @@ public class UnitBase : MonoBehaviour
 
     [SerializeField]
     protected Material AvailableToBeHealedColor;
-
+       
     //Referencia al gameobject que actua como hover de los enemigos.
     //La cambio aquí para que el playerunit también lo use.
     [SerializeField]
@@ -857,6 +857,7 @@ public class UnitBase : MonoBehaviour
     {
         canvasHover.SetActive(true);
         canvasHover.GetComponent<CanvasHover>().damageNumber.SetText( "-" + damageReceived.ToString());
+        canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32 (180, 0, 0, 255);
     }
 
     public void DisableCanvasHover()
@@ -894,24 +895,53 @@ public class UnitBase : MonoBehaviour
     //Función que se encarga de actualizar la vida del personaje.
     public void RefreshHealth(bool undoHealthDamage)
     {
-        for (int i = 0; i < maxHealth; i++)
-        {
-            if (i < currentHealth)
-            {
-                if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
-                {
-                    lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
-                }
-            }
-            else
-            {
-                if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
-                {
-                    lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
-                }
-            }
-        }
+        //for (int i = 0; i < maxHealth; i++)
+        //{
+        //    if (i < currentHealth)
+        //    {
+        //        if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+        //        {
+        //            lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+        //        {
+        //            lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
+        //        }
+        //    }
+        //}
+        
+       for (int i = 0; i < maxHealth; i++)
+       {
+           if (i < currentHealth)
+           {
+               if (i < currentArmor)
+               {
+                   if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                   {
 
+                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ArmoredToken();
+                   }
+               }
+               else
+               {
+                   if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                   {
+                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
+                   }
+               }
+           }
+           else
+           {
+               if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+               {
+                    lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
+               }
+           }
+       }
+        
 
 
         //Recorro la lista de tokens empezando por el final. 
@@ -1107,13 +1137,14 @@ public class UnitBase : MonoBehaviour
         }
     }
 
-    public virtual void ApplyBuffOrDebuffMovement(UnitBase unitToApply, int movementRemoved, int turnsAdded)
+    public virtual void ApplyBuffOrDebuffMovement(UnitBase unitToApply, int movementAddedOrRemoved, int turnsAdded)
     {
-        unitToApply.movementUds -= movementRemoved;
+
+        unitToApply.movementUds += movementAddedOrRemoved;
         unitToApply.turnsWithMovementBuffOrDebuff = turnsAdded;
 
 
-        SetMovementIcon(movementRemoved, unitToApply, false);
+        SetMovementIcon(movementAddedOrRemoved, unitToApply, false);
     }
 
     public void SetMovementIcon(int numToCheck, UnitBase unitToApply, bool isOnHover)

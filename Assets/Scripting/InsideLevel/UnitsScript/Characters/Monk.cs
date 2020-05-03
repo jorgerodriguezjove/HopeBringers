@@ -679,8 +679,13 @@ public class Monk : PlayerUnit
                 {
                     currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position;                                       
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[0]);
-                   
-                   
+
+                    if (!isMovingorRotating)
+                    {
+                        _unitToAttack.sombraHoverUnit.SetActive(true);
+                        _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
+
+                    }
                 }
             }
 
@@ -690,9 +695,14 @@ public class Monk : PlayerUnit
                 {
                     currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position;
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[0]);
+
+                    if (!isMovingorRotating)
+                    {
+                        _unitToAttack.sombraHoverUnit.SetActive(true);
+                        _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
+
+                    }
                     
-                    _unitToAttack.sombraHoverUnit.SetActive(true);
-                    _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
                 }
             }
 
@@ -703,8 +713,12 @@ public class Monk : PlayerUnit
                 {
                     currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position;
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[0]);
-                    _unitToAttack.sombraHoverUnit.SetActive(true);
-                    _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
+                    if (!isMovingorRotating)
+                    {
+                        _unitToAttack.sombraHoverUnit.SetActive(true);
+                        _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
+
+                    }
                 }
             }
 
@@ -714,8 +728,12 @@ public class Monk : PlayerUnit
                 {
                     currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position;
                     tilesInEnemyHover.Add(myCurrentTile.tilesInLineRight[0]);
-                    _unitToAttack.sombraHoverUnit.SetActive(true);
-                    _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
+                    if (!isMovingorRotating)
+                    {
+                        _unitToAttack.sombraHoverUnit.SetActive(true);
+                        _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
+
+                    }
                 }
             }
 

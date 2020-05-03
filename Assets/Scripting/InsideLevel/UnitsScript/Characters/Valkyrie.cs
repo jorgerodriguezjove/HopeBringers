@@ -223,6 +223,7 @@ public class Valkyrie : PlayerUnit
             //Hago daño antes de que se produzca el intercambio
             DoDamage(unitToAttack);
 
+            HideAttackEffect(unitToAttack);
             //Intercambio
             previousTile = unitToAttack.myCurrentTile;
 
@@ -269,6 +270,9 @@ public class Valkyrie : PlayerUnit
                 {
                     unitToAttack.currentArmor = unitToAttack.currentHealth;
                 }
+
+                unitToAttack.RefreshHealth(false);
+                RefreshHealth(false);
             }
 
             else
@@ -290,7 +294,7 @@ public class Valkyrie : PlayerUnit
             UpdateInformationAfterMovement(previousTile);
             unitToAttack.UpdateInformationAfterMovement(unitToAttack.myCurrentTile);
 
-
+            HideAttackEffect(unitToAttack);
             UIM.RefreshHealth();
             //Hay que cambiarlo
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
@@ -320,6 +324,7 @@ public class Valkyrie : PlayerUnit
                 DoDamage(unitToAttack);
             }
 
+            HideAttackEffect(unitToAttack);
             //Intercambio
             previousTile = unitToAttack.myCurrentTile;
 
@@ -631,8 +636,8 @@ public class Valkyrie : PlayerUnit
     {
         if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
         {
-            
-            if ( LM.selectedCharacter == this && !hasMoved && changePositions)
+
+            if (LM.selectedCharacter == this && !hasMoved && changePositions)
             {
                 if (_unitToAttack.currentHealth <= numberCanChange)
                 {
@@ -640,11 +645,11 @@ public class Valkyrie : PlayerUnit
                     Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
                 }
             }
-          
+
         }
         else
         {
-           
+
             //Al final dijimos que lo de las sombras liaba más que ayudaba
 
             //shaderHover.SetActive(true);
@@ -670,10 +675,11 @@ public class Valkyrie : PlayerUnit
                     if (currentUnitsAvailableToAttack[i] == _unitToAttack)
                     {
                         break;
-                    }  
+                    }
                 }
 
-            }else if (armorMode)
+            }
+            else if (armorMode)
             {
                 if (_unitToAttack.GetComponent<PlayerUnit>())
                 {
@@ -686,7 +692,17 @@ public class Valkyrie : PlayerUnit
                         {
                             canvasHover.SetActive(true);
                             armorShield2.SetActive(true);
-                            canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());                            
+
+                            if (currentArmor + numberOfArmorAdded >= currentHealth)
+                            {
+                                canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + (currentHealth - currentArmor).ToString());
+
+                            }
+                            else
+                            {
+                                canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                            }
+                            canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
                         }
                     }
 
@@ -699,23 +715,41 @@ public class Valkyrie : PlayerUnit
                         armorShield.SetActive(true);
                         Vector3 vector2Spawn = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 1.5f, _unitToAttack.transform.position.z);
                         armorShield.transform.position = vector2Spawn;
-                        _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+
+                        if (_unitToAttack.currentArmor + numberOfArmorAdded >= _unitToAttack.currentHealth)
+                        {
+                            _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + (_unitToAttack.currentHealth - _unitToAttack.currentArmor).ToString());
+                        }
+                        else
+                        {
+                            _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());
+                        }
+                        _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
                     }
                 }
+                else if (!_unitToAttack.GetComponent<PlayerUnit>())
+                {
+                    tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+                }
+
+            }
+            else if (!_unitToAttack.GetComponent<PlayerUnit>())
+            {
+                tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
             }
 
-        }
-
-        if (tilesInEnemyHover.Count > 0)
-        {
-            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            if (tilesInEnemyHover.Count > 0)
             {
-                tilesInEnemyHover[i].ColorAttack();
-
-                if (tilesInEnemyHover[i].unitOnTile != null)
+                for (int i = 0; i < tilesInEnemyHover.Count; i++)
                 {
-                    CalculateDamage(tilesInEnemyHover[i].unitOnTile);
-                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                    tilesInEnemyHover[i].ColorAttack();
+
+                    if (tilesInEnemyHover[i].unitOnTile != null)
+                    {
+                        CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+
+                        tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                    }
                 }
             }
         }
@@ -760,11 +794,12 @@ public class Valkyrie : PlayerUnit
         {
             for (int i = 0; i < tilesInEnemyHover.Count; i++)
             {
-                tilesInEnemyHover[i].ColorDesAttack();
+                tilesInEnemyHover[i].ColorBorderRed();
 
                 if (tilesInEnemyHover[i].unitOnTile != null)
                 {
                     tilesInEnemyHover[i].unitOnTile.ResetColor();
+                    tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
                 }
             }
         }

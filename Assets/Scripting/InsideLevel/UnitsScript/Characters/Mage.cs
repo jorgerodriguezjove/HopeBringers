@@ -183,6 +183,7 @@ public class Mage : PlayerUnit
             {
                 //En el override de esta función el decoy también comprueba si tiene la segunda mejora y ataca de una forma o de la otra
                 myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesInRangeToAttack(true);
+                myDecoys[i].GetComponent<MageDecoy>().HideAttackEffect(null);
             }
 
         }
@@ -697,6 +698,7 @@ public class Mage : PlayerUnit
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         tilesInEnemyHover.Clear();
+        tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
 
         if (areaAttack)
         {
@@ -803,10 +805,23 @@ public class Mage : PlayerUnit
         {
             for (int i = 0; i < myDecoys.Count; i++)
             {
-                myDecoys[i].GetComponent<MageDecoy>().HideAttackEffect(null);
+                myDecoys[i].GetComponent<MageDecoy>().HideAttackEffect(_unitToAttack);
             }
 
         }
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorBorderRed();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ResetColor();
+                tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
+
+            }
+        }
+        tilesInEnemyHover.Clear();
     }
 
     public override void UndoAttack(AttackCommand lastAttack)

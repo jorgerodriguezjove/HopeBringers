@@ -265,7 +265,6 @@ public class Portraits : MonoBehaviour
                             
                             lifeTokensList[i].GetComponent<LifeToken>().ArmoredToken();
                         }
-
                     }
                     else
                     {
@@ -273,8 +272,6 @@ public class Portraits : MonoBehaviour
                         {
                             lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
                         }
-
-
                     }
                 }
                 else
@@ -284,12 +281,7 @@ public class Portraits : MonoBehaviour
                         lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
                     }
                 }
-            }
-           
-
-
-
-
+            }          
         }
         //Código antiguo con la barra de vida
         #region OldCode

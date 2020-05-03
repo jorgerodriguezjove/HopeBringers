@@ -406,6 +406,8 @@ public class Rogue : PlayerUnit
         hasAttacked = true;
         CalculateDamage(unitToAttack);
         CheckIfUnitHasMarks(unitToAttack);
+        sombraHoverUnit.SetActive(false);
+       canvasHover.SetActive(false);
 
         if (checkersAttack)
         {
@@ -524,7 +526,7 @@ public class Rogue : PlayerUnit
             DoDamage(unitToAttack);
 
             CheckPasiveUpgrades(unitToAttack);
-
+            
             SoundManager.Instance.PlaySound(AppSounds.ROGUE_ATTACK);
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
@@ -737,8 +739,6 @@ public class Rogue : PlayerUnit
             Instantiate(attackParticle, unitModel.transform.position, unitModel.transform.rotation);
         }
     }
-
-
     
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
@@ -747,10 +747,15 @@ public class Rogue : PlayerUnit
         SetShadowRotation(_unitToAttack);
 
         SetShadowRotation(this);
-        sombraHoverUnit.SetActive(true);
-        sombraHoverUnit.transform.position = currentTileVectorToMove;
 
-        
+        if (!isMovingorRotating)
+        {
+            sombraHoverUnit.SetActive(true);
+            sombraHoverUnit.transform.position = currentTileVectorToMove;
+
+        }
+
+
         if (smokeBomb)
         {
             
@@ -854,7 +859,8 @@ public class Rogue : PlayerUnit
 
             bombsSpawned.Clear();
         }
-       
+
+        sombraHoverUnit.SetActive(false);
     }
 
     public override void SetShadowRotation(UnitBase unitToSet)
