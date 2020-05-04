@@ -66,11 +66,11 @@ public class Rogue : PlayerUnit
                                  bool _buffDamage1, bool _buffDamage2,
                                  bool _smokeBomb1, bool _smokeBomb2)
     {
-        activeSkillInfo = AppRogueUpgrades.initialActiveText;
-        pasiveSkillInfo = AppRogueUpgrades.initialPasiveText;
+        activeSkillInfo = AppRogueUpgrades.RogueDataBaseActive;
+        pasiveSkillInfo = AppRogueUpgrades.RogueDataBasePasive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "RogueDataBaseActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "RogueDataBasePasive");
 
         fBaseDamage = baseDamage;
 

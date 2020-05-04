@@ -67,11 +67,11 @@ public class Valkyrie : PlayerUnit
 
         //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
 
-        activeSkillInfo = AppValkyrieUpgrades.initialActiveText;
-        pasiveSkillInfo = AppValkyrieUpgrades.initialPasiveText;
+        activeSkillInfo = AppValkyrieUpgrades.ValkyrieDataBaseActive;
+        pasiveSkillInfo = AppValkyrieUpgrades.ValkyrieDataBasePasive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "ValkyrieDataBaseActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "ValkyrieDataBasePasive");
 
         #region Actives
 

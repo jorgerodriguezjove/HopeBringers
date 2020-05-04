@@ -42,6 +42,10 @@ public class ValkyrieData : CharacterData
         specificIntCharacterUpgrades.Add(AppValkyrieUpgrades.height2, 0);
 
         //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Base
+        specificStringCharacterUpgrades.Add("ValkyrieDataBaseActive", AppValkyrieUpgrades.ValkyrieDataBaseActive);
+        specificStringCharacterUpgrades.Add("ValkyrieDataBasePasive", AppValkyrieUpgrades.ValkyrieDataBasePasive);
+
         //Activas
         specificStringCharacterUpgrades.Add("moreRange1Text", AppValkyrieUpgrades.moreRange1Text);
         specificStringCharacterUpgrades.Add("moreRange2Text", AppValkyrieUpgrades.moreRange2Text);

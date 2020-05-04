@@ -30,8 +30,8 @@ public class AppGenericUpgrades
 public class AppKnightUpgrades
 {
     #region Active
-    public static readonly string initialActiveText = "El caballero hace daño a su objetivo y le empuja una casilla";
-    public static readonly string initialPasiveText = "El caballero no recibe daño por delante";
+    public static readonly string KnightDataBaseActive = "El caballero hace daño a su objetivo y le empuja una casilla";
+    public static readonly string KnightDataBasePasive = "El caballero no recibe daño por delante";
 
     //EMPUJAR MÁS LEJOS
 
@@ -81,8 +81,8 @@ public class AppKnightUpgrades
 
 public class AppRogueUpgrades
 {
-    public static readonly string initialActiveText = "";
-    public static readonly string initialPasiveText = "";
+    public static readonly string RogueDataBaseActive = "Active";
+    public static readonly string RogueDataBasePasive = "Pasive";
 
     #region Active
     //MULTI JUMP
@@ -133,8 +133,8 @@ public class AppRogueUpgrades
 
 public class AppMageUpgrades
 {
-    public static readonly string initialActiveText = "El mago ataca a un enemigo hasta cinco casillas de distancia";
-    public static readonly string initialPasiveText = "Al moverse el mago deja un señuelo en su posición anterior";
+    public static readonly string MageDataBaseActive = "El mago ataca a un enemigo hasta cinco casillas de distancia";
+    public static readonly string MageDataBasePasive = "Al moverse el mago deja un señuelo en su posición anterior";
 
     #region Active
     //CADENA DE RAYOS
@@ -184,8 +184,8 @@ public class AppMageUpgrades
 
 public class AppBerserkUpgrades
 {
-    public static readonly string initialActiveText = "";
-    public static readonly string initialPasiveText = "";
+    public static readonly string BerserkDataBaseActive = "Active";
+    public static readonly string BerserkDataBasePasive = "Pasive";
 
     #region Active
     //DOUBLE ATTACK
@@ -235,8 +235,8 @@ public class AppBerserkUpgrades
 
 public class AppSamuraiUpgrades
 {
-    public static readonly string initialActiveText = "";
-    public static readonly string initialPasiveText = "";
+    public static readonly string SamuraiDataBaseActive = "Active";
+    public static readonly string SamuraiDataBasePasive = "Pasive";
 
     #region Active
     //PARRY
@@ -284,8 +284,8 @@ public class AppSamuraiUpgrades
 
 public class AppDruidUpgrades
 {
-    public static readonly string initialActiveText = "";
-    public static readonly string initialPasiveText = "";
+    public static readonly string DruidDataBaseActive = "Active";
+    public static readonly string DruidDataBasePasive = "Pasive";
 
     #region Active
     //MORE HEAL
@@ -333,8 +333,8 @@ public class AppDruidUpgrades
 
 public class AppMonkUpgrades
 {
-    public static readonly string initialActiveText = "";
-    public static readonly string initialPasiveText = "";
+    public static readonly string MonkDataBaseActive = "Active";
+    public static readonly string MonkDataBasePasive = "Pasive";
 
     #region Active
     //TURN 180 AND CHAIN MARK
@@ -381,8 +381,8 @@ public class AppMonkUpgrades
 
 public class AppValkyrieUpgrades
 {
-    public static readonly string initialActiveText = "";
-    public static readonly string initialPasiveText = "";
+    public static readonly string ValkyrieDataBaseActive = "Active";
+    public static readonly string ValkyrieDataBasePasive = "Pasive";
 
     #region Active
     //MORE RANGE

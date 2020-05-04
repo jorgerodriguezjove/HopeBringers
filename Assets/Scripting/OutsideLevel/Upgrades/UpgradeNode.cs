@@ -102,12 +102,13 @@ public class UpgradeNode : MonoBehaviour
         if (myUnit.specificStringCharacterUpgrades.ContainsKey(descriptionText))
         {
             descriptionTextBoxReference.SetText(myUnit.specificStringCharacterUpgrades[descriptionText]);
+           
         }
         
         else
         {
-            Debug.Log("No se ha cargado la descripción porque no hay key con ese nombre.");
-            descriptionTextBoxReference.SetText(myUnit.specificStringCharacterUpgrades["pushFurther1Text"]);
+            Debug.LogError("Nodo: " + this.name + "No ha cargado la descripción porque no hay key con ese nombre.");
+            //descriptionTextBoxReference.SetText(myUnit.specificStringCharacterUpgrades["pushFurther1Text"]);
         }
     }
 

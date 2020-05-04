@@ -72,11 +72,11 @@ public class Druid : PlayerUnit
 
         //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
 
-        activeSkillInfo = AppDruidUpgrades.initialActiveText;
-        pasiveSkillInfo = AppDruidUpgrades.initialPasiveText;
+        activeSkillInfo = AppDruidUpgrades.DruidDataBaseActive;
+        pasiveSkillInfo = AppDruidUpgrades.DruidDataBasePasive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "DruidDataBaseActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "DruidDataBasePasive");
 
         #region Actives
 

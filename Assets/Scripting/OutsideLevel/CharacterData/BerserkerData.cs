@@ -40,6 +40,10 @@ public class BerserkerData : CharacterData
         specificIntCharacterUpgrades.Add(AppBerserkUpgrades.fearRage2, 0);
 
         //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Base
+        specificStringCharacterUpgrades.Add("BerserkDataBaseActive", AppBerserkUpgrades.BerserkDataBaseActive);
+        specificStringCharacterUpgrades.Add("BerserkDataBasePasive", AppBerserkUpgrades.BerserkDataBasePasive);
+
         //Activas
         specificStringCharacterUpgrades.Add("areaAttack1Text", AppBerserkUpgrades.areaAttack1Text);
         specificStringCharacterUpgrades.Add("areaAttack2Text", AppBerserkUpgrades.areaAttack2Text);

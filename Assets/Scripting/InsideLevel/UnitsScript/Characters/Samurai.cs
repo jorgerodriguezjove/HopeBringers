@@ -69,11 +69,11 @@ public class Samurai : PlayerUnit
 
         //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
 
-        activeSkillInfo = AppSamuraiUpgrades.initialActiveText;
-        pasiveSkillInfo = AppSamuraiUpgrades.initialPasiveText;
+        activeSkillInfo = AppSamuraiUpgrades.SamuraiDataBaseActive;
+        pasiveSkillInfo = AppSamuraiUpgrades.SamuraiDataBasePasive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "SamuraiDataBaseActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "SamuraiDataBasePasive");
 
         #region Actives
 

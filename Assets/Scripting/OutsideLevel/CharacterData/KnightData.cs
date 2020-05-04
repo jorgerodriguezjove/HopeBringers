@@ -42,6 +42,10 @@ public class KnightData : CharacterData
         specificBoolCharacterUpgrades.Add(AppKnightUpgrades.neighbourBlock2, false);
 
         //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Base
+        specificStringCharacterUpgrades.Add("KnightDataBaseActive", AppKnightUpgrades.KnightDataBaseActive);
+        specificStringCharacterUpgrades.Add("KnightDataBasePasive", AppKnightUpgrades.KnightDataBasePasive);
+
         //Activas
         specificStringCharacterUpgrades.Add("pushFurther1Text", AppKnightUpgrades.pushFurther1Text);
         specificStringCharacterUpgrades.Add("pushFurther2Text", AppKnightUpgrades.pushFurther2Text);

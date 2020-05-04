@@ -80,11 +80,11 @@ public class Mage : PlayerUnit
                                  bool _bombDecoy1, bool _bombDecoy2,
                                  bool _mirrorDecoy1, bool _mirrorDecoy2)
     {
-        activeSkillInfo = AppMageUpgrades.initialActiveText;
-        pasiveSkillInfo = AppMageUpgrades.initialPasiveText;
+        activeSkillInfo = AppMageUpgrades.MageDataBaseActive;
+        pasiveSkillInfo = AppMageUpgrades.MageDataBasePasive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "MageDataBaseActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "MageDataBasePasive");
 
         #region Actives
 

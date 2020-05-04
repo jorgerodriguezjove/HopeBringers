@@ -272,6 +272,7 @@ public class UITableManager : MonoBehaviour
         upgrades = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
         ids = unitClicked.idSkillsBought;
 
+        //Updatear upgrades
         for (int i = 0; i < upgrades.Count; i++)
         {
             upgrades[i].GetComponent<UpgradeNode>().TM = TM;
@@ -279,6 +280,9 @@ public class UITableManager : MonoBehaviour
             upgrades[i].GetComponent<UpgradeNode>().idUpgrade = i;
             upgrades[i].GetComponent<UpgradeNode>().UpdateIconAndDescription();
         }
+
+        Debug.Log("Unidad clickada: " + unitClicked.name);
+        currentSkillTreeObj.GetComponent<SkillTree>().UpdateActiveAndPasive(unitClicked);
 
         //Por cada mejora compruebo si existe en ids compradas un valor en la lista que coincida el id
         for (int i = 0; i < upgrades.Count; i++)

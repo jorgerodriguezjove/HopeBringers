@@ -42,6 +42,10 @@ public class MonkData : CharacterData
 
 
         //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Base
+        specificStringCharacterUpgrades.Add("MonkDataBaseActive", AppMonkUpgrades.MonkDataBaseActive);
+        specificStringCharacterUpgrades.Add("MonkDataBasePasive", AppMonkUpgrades.MonkDataBasePasive);
+
         //Activas
         specificStringCharacterUpgrades.Add("turn1Text", AppMonkUpgrades.turn1Text);
         specificStringCharacterUpgrades.Add("turn2Text", AppMonkUpgrades.turn2Text);

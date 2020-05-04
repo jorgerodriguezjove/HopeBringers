@@ -69,11 +69,11 @@ public class Berserker : PlayerUnit
 
         //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
 
-        activeSkillInfo = AppBerserkUpgrades.initialActiveText;
-        pasiveSkillInfo = AppBerserkUpgrades.initialPasiveText;
+        activeSkillInfo = AppBerserkUpgrades.BerserkDataBaseActive;
+        pasiveSkillInfo = AppBerserkUpgrades.BerserkDataBasePasive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "BerserkDataBaseActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "BerserkDataBasePasive");
 
         #region Actives
 

@@ -40,6 +40,10 @@ public class MageData : CharacterData
         specificBoolCharacterUpgrades.Add(AppMageUpgrades.mirrorDecoy2, false);
 
         //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Base
+        specificStringCharacterUpgrades.Add("MageDataBaseActive", AppMageUpgrades.MageDataBaseActive);
+        specificStringCharacterUpgrades.Add("MageDataBasePasive", AppMageUpgrades.MageDataBasePasive);
+
         //Activas
         specificStringCharacterUpgrades.Add("lightningChain1Text", AppMageUpgrades.lightningChain1Text);
         specificStringCharacterUpgrades.Add("lightningChain2Text", AppMageUpgrades.lightningChain2Text);

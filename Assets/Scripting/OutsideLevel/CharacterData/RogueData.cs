@@ -40,6 +40,10 @@ public class RogueData : CharacterData
         specificBoolCharacterUpgrades.Add(AppRogueUpgrades.buffDamageKill2, false);
 
         //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Base
+        specificStringCharacterUpgrades.Add("RogueDataBaseActive", AppRogueUpgrades.RogueDataBaseActive);
+        specificStringCharacterUpgrades.Add("RogueDataBasePasive", AppRogueUpgrades.RogueDataBasePasive);
+
         //Activas
         specificStringCharacterUpgrades.Add("multiJumpAttack1Text", AppRogueUpgrades.multiJumpAttack1Text);
         specificStringCharacterUpgrades.Add("multiJumpAttack2Text", AppRogueUpgrades.multiJumpAttack2Text);

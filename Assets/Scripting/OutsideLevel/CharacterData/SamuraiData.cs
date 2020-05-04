@@ -42,6 +42,10 @@ public class SamuraiData : CharacterData
         specificBoolCharacterUpgrades.Add(AppSamuraiUpgrades.loneWolf2, false);
 
         //DESCRIPCIONES DE LAS MEJORAS. Estos no hace falta inicializarlos en la unidad ingame. Están aqui simplemente para los árboles de mejoras
+        //Base
+        specificStringCharacterUpgrades.Add("SamuraiDataBaseActive", AppSamuraiUpgrades.SamuraiDataBaseActive);
+        specificStringCharacterUpgrades.Add("SamuraiDataBasePasive", AppSamuraiUpgrades.SamuraiDataBasePasive);
+
         //Activas
         specificStringCharacterUpgrades.Add("parry1Text", AppSamuraiUpgrades.parry1Text);
         specificStringCharacterUpgrades.Add("parry2Text", AppSamuraiUpgrades.parry2Text);

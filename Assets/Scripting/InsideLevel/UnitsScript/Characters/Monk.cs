@@ -57,11 +57,11 @@ public class Monk : PlayerUnit
 
         //IMPORTANTE REVISAR QUE ESTAN BIEN LOS TEXTOS (NO ESTOY SEGURO DE HABER CORRESPONDIDO CADA MEJORA CON SU TEXTO BIEN)
 
-        activeSkillInfo = AppMonkUpgrades.initialActiveText;
-        pasiveSkillInfo = AppMonkUpgrades.initialPasiveText;
+        activeSkillInfo = AppMonkUpgrades.MonkDataBaseActive;
+        pasiveSkillInfo = AppMonkUpgrades.MonkDataBasePasive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "MonkDataBaseActive");
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "MonkDataBasePasive");
 
         #region Actives
 

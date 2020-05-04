@@ -60,9 +60,9 @@ public class Knight : PlayerUnit
     {
         #region Actives
         //Lo primero que hago es poner el texto genérico, de tal forma que si no hay mejoras se quedará este texto.
-        activeSkillInfo = AppKnightUpgrades.initialActiveText;
+        activeSkillInfo = AppKnightUpgrades.KnightDataBaseActive;
 
-        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericActive");
+        activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "KnightDataBaseActive");
 
         pushFarther = _pushFarther1;
         pushFarther2 = _pushFarther2;
@@ -102,8 +102,8 @@ public class Knight : PlayerUnit
         #region Pasives
 
         //Default
-        pasiveSkillInfo = AppKnightUpgrades.initialPasiveText;
-        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "genericPasive");
+        pasiveSkillInfo = AppKnightUpgrades.KnightDataBasePasive;
+        pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "KnightDataBasePasive");
 
         lateralBlock = _individualBlock1;
         backBlock = _individualBlock2;
