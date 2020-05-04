@@ -126,6 +126,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject defeatPanel;
 
+    [SerializeField]
+    Camera hud3DCamera;
+    [SerializeField]
+    LayerMask hud3D;
+
     //Lo añado al LevelManager porque quiero que solo exista un count global para todos los personajes
     //int con el honor acumulador
     public int honorCount;
@@ -210,7 +215,9 @@ public class LevelManager : MonoBehaviour
 
     //Una vez ha terminado el diálogo, el GameManager avisa a esta función de que comience el nivel
     public void StartGameplayAfterDialog()
-    {       
+    {
+        hud3DCamera.cullingMask = hud3D;
+
         //Se crea el grid
         TM.CreateGrid();
 

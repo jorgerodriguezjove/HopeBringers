@@ -86,7 +86,7 @@ public class Samurai : PlayerUnit
         if (parryOn2)
         {
             activeSkillInfo = AppSamuraiUpgrades.parry2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.parry2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.parry1);
         }
 
         else if (parryOn)
@@ -101,7 +101,7 @@ public class Samurai : PlayerUnit
             //Aqui no hace falta timesDoubleAttackRepeats, porque ya esta arriba.
 
             activeSkillInfo = AppSamuraiUpgrades.multiAttack2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.multiAttack2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.multiAttack1);
         }
 
         else if (doubleAttack)
@@ -109,7 +109,7 @@ public class Samurai : PlayerUnit
             timesDoubleAttackRepeats = 2;
 
             activeSkillInfo = AppSamuraiUpgrades.multiAttack1Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.multiAttack2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.multiAttack1);
         }
 
         #endregion
@@ -127,19 +127,19 @@ public class Samurai : PlayerUnit
         if (_honor2)
         {
             pasiveSkillInfo = AppSamuraiUpgrades.honor2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.honor2);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.honor1);
         }
 
         else if (_honor1)
         {
             pasiveSkillInfo = AppSamuraiUpgrades.honor1Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.honor1);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.honor1);
         }
 
         if (_loneWolf2)
         {
             pasiveSkillInfo = AppSamuraiUpgrades.loneWolf2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.loneWolf2);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppSamuraiUpgrades.loneWolf1);
         }
 
         else if (_loneWolf1)

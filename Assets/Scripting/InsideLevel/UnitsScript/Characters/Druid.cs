@@ -89,7 +89,7 @@ public class Druid : PlayerUnit
         if (areaHealer2)
         {
             activeSkillInfo = AppDruidUpgrades.areaHeal2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.areaHeal2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.areaHeal1);
         }
 
         else if (areaHealer)
@@ -104,7 +104,7 @@ public class Druid : PlayerUnit
             movementUpgrade = 1;
 
             activeSkillInfo = AppDruidUpgrades.heal2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.heal2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.heal1);
         }
 
         //CHECK
@@ -135,7 +135,7 @@ public class Druid : PlayerUnit
             bonusOnTile = 1;
 
             pasiveSkillInfo = AppDruidUpgrades.tileMovement2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tileMovement2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tileMovement1);
         }
 
         else if (tileSustitute)
@@ -147,7 +147,7 @@ public class Druid : PlayerUnit
         if (tileTransformer2)
         {
             pasiveSkillInfo = AppDruidUpgrades.tile2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tile2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppDruidUpgrades.tile1);
         }
 
         else if (tileTransformer)

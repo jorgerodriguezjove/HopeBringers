@@ -14,7 +14,7 @@ public class CharacterInDialog : MonoBehaviour
 
     public void HighlightSpeaker()
     {
-        transform.localScale = new Vector3(3, 3, 3);
+        transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
     }
 
     public void DesHighlightSpeaker()

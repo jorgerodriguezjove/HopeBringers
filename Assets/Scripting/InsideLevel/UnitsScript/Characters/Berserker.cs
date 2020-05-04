@@ -89,7 +89,7 @@ public class Berserker : PlayerUnit
             bonusDamageAreaAttack = 2;
 
             activeSkillInfo = AppBerserkUpgrades.areaAttack2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.areaAttack2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.areaAttack1);
         }
 
         else if (areaAttack)
@@ -103,7 +103,7 @@ public class Berserker : PlayerUnit
             //Aqui no hace falta timesCircularAttackRepeats, porque ya esta arriba.
 
             activeSkillInfo = AppBerserkUpgrades.circularAttack2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack1);
         }
 
         else if (circularAttack)
@@ -111,7 +111,7 @@ public class Berserker : PlayerUnit
             timesCircularAttackRepeats = 1;
 
             activeSkillInfo = AppBerserkUpgrades.circularAttack1Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.circularAttack1);
         }
 
         #endregion
@@ -131,13 +131,13 @@ public class Berserker : PlayerUnit
         if (rageDamagePlus > 1)
         {
             pasiveSkillInfo = AppBerserkUpgrades.rageDamage2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage2);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage1);
         }
 
         else if (rageFear)
         {
             pasiveSkillInfo = AppBerserkUpgrades.rageDamage1Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage1);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage1);
         }
 
         if (fearTurnBonus > 1)
@@ -145,7 +145,7 @@ public class Berserker : PlayerUnit
             //Aqui no hace falta tocar fearTurnBonus, porque ya se iguala a _fearTurnBonus
 
             pasiveSkillInfo = AppBerserkUpgrades.fearRage2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage2);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage1);
         }
 
         else if (fearTurnBonus > 0)
@@ -153,7 +153,7 @@ public class Berserker : PlayerUnit
             fearTurnBonus = 1;
 
             pasiveSkillInfo = AppBerserkUpgrades.fearRage1Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage1);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.fearRage1);
         }
 
 
@@ -168,7 +168,7 @@ public class Berserker : PlayerUnit
 
         myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = turnsLeftToRageOff.ToString();
 
-        myPanelPortrait.GetComponent<Portraits>().specialSkillImage2.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage1);
+        myPanelPortrait.GetComponent<Portraits>().specialSkillImage2.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "BerserkDataBasePasive");
     }
 
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)

@@ -89,7 +89,7 @@ public class Valkyrie : PlayerUnit
             numberOfArmorAdded = 2;
 
             activeSkillInfo = AppValkyrieUpgrades.armorChange2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.armorChange2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.armorChange1);
         }
 
         else if (armorMode)
@@ -103,7 +103,7 @@ public class Valkyrie : PlayerUnit
         if (canChooseEnemy)
         {
             activeSkillInfo = AppValkyrieUpgrades.moreRange2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.moreRange2);
+            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.moreRange1);
         }
 
         //CHECK
@@ -124,14 +124,14 @@ public class Valkyrie : PlayerUnit
         {
             maxHeightDifferenceToMove = _height2;
             pasiveSkillInfo = AppValkyrieUpgrades.height2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.height2);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.height1);
         }
 
         else if (_height1 > maxHeightDifferenceToMove)
         {
             maxHeightDifferenceToMove = _height1;
             pasiveSkillInfo = AppValkyrieUpgrades.height1Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.height1);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.height1);
         }
 
         if (changePositions2)
@@ -139,7 +139,7 @@ public class Valkyrie : PlayerUnit
             numberCanChange = 2; 
 
             pasiveSkillInfo = AppValkyrieUpgrades.sustitution2Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.sustitution2);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.sustitution1);
         }
 
         else if (changePositions)
@@ -147,7 +147,7 @@ public class Valkyrie : PlayerUnit
             numberCanChange = 1;
 
             pasiveSkillInfo = AppValkyrieUpgrades.sustitution1Text;
-            activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.sustitution1);
+            pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppValkyrieUpgrades.sustitution1);
         }
         #endregion
     }

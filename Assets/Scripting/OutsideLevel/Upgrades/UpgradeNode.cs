@@ -102,7 +102,6 @@ public class UpgradeNode : MonoBehaviour
         if (myUnit.specificStringCharacterUpgrades.ContainsKey(descriptionText))
         {
             descriptionTextBoxReference.SetText(myUnit.specificStringCharacterUpgrades[descriptionText]);
-           
         }
         
         else
