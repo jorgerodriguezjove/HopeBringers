@@ -332,6 +332,8 @@ public class Knight : PlayerUnit
 
         CheckIfUnitHasMarks(unitToAttack);
 
+        ActivateParticleEffect();
+
         //Este primer if  lo pongo de momento para seguir la misma estructura que con los otros personajes y por si hay que cambiar algo específico como la animación, el sonido...
         if (pushFarther)
         {
@@ -443,7 +445,6 @@ public class Knight : PlayerUnit
 
                     for (int i = 0; i - 1 < tilesToPush; i++)
                     {
-
                         if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                         {
                             if (myCurrentTile.tilesInLineLeft[i].unitOnTile != unitToAttack)
@@ -457,7 +458,6 @@ public class Knight : PlayerUnit
                         }
                     }
                 }
-              
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
             }
 
@@ -513,7 +513,6 @@ public class Knight : PlayerUnit
             //Hago daño
             DoDamage(unitToAttack);
 
-
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
@@ -552,14 +551,13 @@ public class Knight : PlayerUnit
                     }
 
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
+
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                     {
-
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.ResetColor();
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.SetActive(false);
 
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineUp, damageMadeByPush, damageMadeByFall);
-
                     }
                 }
 
@@ -578,6 +576,7 @@ public class Knight : PlayerUnit
                     {
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
                     }
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile);
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
@@ -586,8 +585,6 @@ public class Knight : PlayerUnit
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.sombraHoverUnit.SetActive(false);
 
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineDown, damageMadeByPush, damageMadeByFall);
-
-
                     }
                 }
 
@@ -627,16 +624,15 @@ public class Knight : PlayerUnit
                     {
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                     }
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                     {
-
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.ResetColor();
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.SetActive(false);
 
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall);
-
                     }
                 }
 
@@ -650,20 +646,19 @@ public class Knight : PlayerUnit
                     {
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                     }
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                     {
-
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.ResetColor();
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.sombraHoverUnit.SetActive(false);
 
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall);
-
                     }
                 }
-                unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
 
+                unitToAttack.ExecutePush(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall);
             }
 
             else if (currentFacingDirection == FacingDirection.West)
@@ -678,17 +673,15 @@ public class Knight : PlayerUnit
                     {
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
                     }
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile);
 
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                     {
-
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.ResetColor();
                         currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.sombraHoverUnit.SetActive(false);
 
-                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall);
-
-                       
+                        currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.ExecutePush(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall);  
                     }
                 }
 
@@ -702,7 +695,9 @@ public class Knight : PlayerUnit
                     {
                         StunUnit(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
                     }
+
                     DoDamage(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile);
+
                     if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                     {
 
@@ -764,12 +759,11 @@ public class Knight : PlayerUnit
         {
             for (int i = 0; i < particleAttackInPrefab.Count; i++)
             {
-                particleAttackInPrefab[i].SetActive(false);
+                particleAttackInPrefab[i].SetActive(true);
             }
         }
 
         else
-
         {
             particleAttackMiddle.SetActive(true);
         }
@@ -852,6 +846,7 @@ public class Knight : PlayerUnit
         {
             LM.honorCount++;
         }
+
         base.DoDamage(unitToDealDamage);
     }
 
@@ -890,15 +885,15 @@ public class Knight : PlayerUnit
                         }
                     }
                 }
+
                 tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
                 SetShadowRotation(_unitToAttack);
+
                 if (!isMovingorRotating)
                 {
                     _unitToAttack.sombraHoverUnit.SetActive(true);
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
-
                 }
-
             }
 
             else if (currentFacingDirection == FacingDirection.South)
@@ -982,9 +977,6 @@ public class Knight : PlayerUnit
                     _unitToAttack.sombraHoverUnit.SetActive(true);
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;
                 }
-
-               
-
             }
 
             else if (currentFacingDirection == FacingDirection.West)
@@ -1029,7 +1021,6 @@ public class Knight : PlayerUnit
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
 
                 }
-                
             }
 
             for (int i = 0; i < tilesInEnemyHover.Count; i++)
@@ -1048,9 +1039,6 @@ public class Knight : PlayerUnit
                     }
                 }
             }
-
-
-
         }
 
         else if (pushFarther2)
@@ -1152,10 +1140,6 @@ public class Knight : PlayerUnit
                     }
                 }
             }
-
-
-
-
         }
 
         else
@@ -1238,7 +1222,6 @@ public class Knight : PlayerUnit
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-          
         }
 
         if (tilesInEnemyHover.Count > 0)
@@ -1254,6 +1237,16 @@ public class Knight : PlayerUnit
                     }
 
                     tilesInEnemyHover[i].unitOnTile.hoverImpactIcon.SetActive(false);
+
+                    //Quitar iconos de choque
+                    for (int j = 0; j < tilesInEnemyHover[i].neighbours.Count; j++)
+                    {
+                        if (tilesInEnemyHover[i].neighbours[j].unitOnTile != null)
+                        {
+                            tilesInEnemyHover[i].neighbours[j].unitOnTile.hoverImpactIcon.SetActive(false);
+                        }
+                    }
+
                     tilesInEnemyHover[i].ColorDesAttack();
                     tilesInEnemyHover[i].unitOnTile.ResetColor();
                     tilesInEnemyHover[i].unitOnTile.HealthBarOn_Off(false);

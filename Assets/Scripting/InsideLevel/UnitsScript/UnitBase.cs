@@ -554,11 +554,20 @@ public class UnitBase : MonoBehaviour
     {
         if (!isDead)
         {
+            for (int j = 0; j < tilesToCheckForCollision.Count; j++)
+            {
+                if (tilesToCheckForCollision[j].unitOnTile != null)
+                {
+                    tilesToCheckForCollision[j].unitOnTile.hoverImpactIcon.SetActive(true);
+                }
+            }
+
             if (tilesToCheckForCollision.Count <= 1)
             {
                 Debug.Log("borde");
                 //No calculo nada
 
+                Debug.Log(gameObject.name);
                 hoverImpactIcon.SetActive(true);
                 return null;
             }
@@ -619,7 +628,7 @@ public class UnitBase : MonoBehaviour
                         else if (tilesToCheckForCollision[i].unitOnTile != null)
                         {
                             Debug.Log("otra unidad");
-                            hoverImpactIcon.SetActive(true);
+                            Debug.Log(gameObject.name);
                             return tilesToCheckForCollision[i - 1];
                         }
                     }

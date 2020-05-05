@@ -759,7 +759,6 @@ public class Rogue : PlayerUnit
 
         if (smokeBomb)
         {
-            
             if (_unitToAttack.myCurrentTile.tileX == tilesInEnemyHover[0].tileX)
             {
                 if (_unitToAttack.myCurrentTile.tileZ < tilesInEnemyHover[0].tileZ)
@@ -771,8 +770,6 @@ public class Rogue : PlayerUnit
                 {
                     previousFacingDirection = FacingDirection.North;
                     sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), 0);
-
-
                 }
             }
             else
@@ -801,7 +798,7 @@ public class Rogue : PlayerUnit
 
                     TM.GetSurroundingTiles(tilesInEnemyHover[0], 1, true, false);
 
-                     Vector3 spawnBombShadow = new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 2, sombraHoverUnit.transform.position.z);
+                    Vector3 spawnBombShadow = new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 2, sombraHoverUnit.transform.position.z);
                     GameObject smokeBombShadowRef1 = Instantiate(smokeBombShadow, spawnBombShadow, sombraHoverUnit.transform.rotation);
                     bombsSpawned.Add(smokeBombShadowRef1);
 
