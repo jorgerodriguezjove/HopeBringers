@@ -784,7 +784,6 @@ public class EnemyUnit : UnitBase
         {
             //Pinto el rango de acción y de movimiento
             LM.ShowEnemyHover(rangeOfAction, true ,this);
-            Debug.Log("onhoverenterfuct");
         }
 
         //Pinto únicamente el rango de movimiento
@@ -831,14 +830,13 @@ public class EnemyUnit : UnitBase
     {
         LM.HideEnemyHover(this);
         sombraHoverUnit.SetActive(false);
+
         if (LM.selectedCharacter != null && LM.selectedCharacter.sombraHoverUnit != null)
         {
             LM.selectedCharacter.sombraHoverUnit.SetActive(false);
 
-
             if (LM.selectedCharacter.tilesInEnemyHover.Count > 0)
             {
-
                 for (int i = 0; i < LM.selectedCharacter.tilesInEnemyHover.Count; i++)
                 {
                     LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
@@ -872,6 +870,7 @@ public class EnemyUnit : UnitBase
                         LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile.sombraHoverUnit.SetActive(false);
                     }
                 }
+
                 LM.selectedCharacter.healthBar.SetActive(false);
                 LM.selectedCharacter.HideAttackEffect(this);
                 LM.selectedCharacter.tilesInEnemyHover.Clear();
@@ -892,7 +891,6 @@ public class EnemyUnit : UnitBase
                 myPortrait.UnHighlightMyself();
                 LM.HideHover(this);
                 HealthBarOn_Off(false);
-
             }
         }
 
@@ -916,7 +914,6 @@ public class EnemyUnit : UnitBase
         if (LM.selectedCharacter != null)
 		{
 			//LM.UIM.ShowUnitInfo(LM.selectedCharacter.unitGeneralInfo, LM.selectedCharacter);
-
         }
 
         else
@@ -936,7 +933,6 @@ public class EnemyUnit : UnitBase
         if(myPortrait != null)
         {
             myPortrait.UnHighlightMyself();
-
         }
 
         Knight knightRef = FindObjectOfType<Knight>();
@@ -949,9 +945,10 @@ public class EnemyUnit : UnitBase
         if (LM.selectedCharacter != null)
         {
             LM.selectedCharacter.healthBar.SetActive(false);
-
         }
 
+
+        myCurrentTile.ColorDesAttack();
     }
 
     public virtual void SelectedColor()
@@ -1100,6 +1097,12 @@ public class EnemyUnit : UnitBase
         {
             sleepParticle.SetActive(false);
         }
+
+        if (exclamationIcon != null)
+        {
+            exclamationIcon.SetActive(false);
+        }
+
         GetComponent<Collider>().enabled = false;
 
         //Aviso de que el enemigo está muerto

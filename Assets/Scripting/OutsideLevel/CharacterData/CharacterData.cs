@@ -21,7 +21,7 @@ public class CharacterData : MonoBehaviour
 
     [SerializeField]
     public GameObject skillTreePrefab;
-
+   
     //Coste actual de la siguiente mejora del personaje
     [SerializeField]
     public int unitPowerLevel;
@@ -175,9 +175,15 @@ public class CharacterData : MonoBehaviour
     //Motrar u ocultar el modelo de la figura para que aparezca en LevelSelection pero no en los niveles.
     public void HideShowMeshCharacterData(bool isActive)
     {
-        if (unitModel != null && isCharacterUnlocked)
+        if (unitModel != null)
         {
-            unitModel.SetActive(isActive);
+            //Si el personaje está desbloqueado activo/desactivo el objeto y el collider cuando se llama a la función de forma normal
+            if (isCharacterUnlocked)
+            {
+                unitModel.SetActive(isActive);
+            }
+
+            //Activo/Desactivo el collider independientepente de si ha sido desbloqueado o no
             GetComponent<Collider>().enabled = isActive;
         }
     }

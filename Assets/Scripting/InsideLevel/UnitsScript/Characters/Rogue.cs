@@ -492,7 +492,8 @@ public class Rogue : PlayerUnit
                 myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = "0";
 
                 //Lo hago aquí para que cuando se seleccione nuevamente ya esté bien calculado.
-                LM.tilesAvailableForMovement = LM.TM.OptimizedCheckAvailableTilesForMovement(movementUds, this, false);
+                LM.tilesAvailableForMovement = new List<IndividualTiles>(LM.TM.OptimizedCheckAvailableTilesForMovement(movementUds, this, false));
+
                 for (int i = 0; i < LM.tilesAvailableForMovement.Count; i++)
                 {
                     LM.tilesAvailableForMovement[i].ColorMovement();

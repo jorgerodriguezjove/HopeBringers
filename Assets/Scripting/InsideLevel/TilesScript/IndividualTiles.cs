@@ -368,7 +368,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
         }
     }
 
-
     //Cambiar a color normal
     public void ColorDeselect()
     {

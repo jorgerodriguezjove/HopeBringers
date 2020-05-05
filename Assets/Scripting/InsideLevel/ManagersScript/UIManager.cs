@@ -546,7 +546,6 @@ public class UIManager : MonoBehaviour
                 //Asigo el tooltip
                 panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyTooltip>().tooltipAssignedEnemy = LM.enemiesOnTheBoard[i];
                 
-
 				LM.enemiesOnTheBoard[i].GetComponent<EnemyUnit>().myPortrait = panelesEnemigos[panelesEnemigos.Count - 1].GetComponent<EnemyPortraits>();
             }
         }
@@ -691,7 +690,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
 
     #endregion
 
@@ -841,12 +839,12 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance.isInterlude)
         {
-            FindObjectOfType<LoadScene>().OnClickButtonSceneLoad(GameManager.Instance.interludeSceneName);
+            GameManager.Instance.CheckEndLevel(GameManager.Instance.interludeSceneName);
         }
 
         else
         {
-            FindObjectOfType<LoadScene>().OnClickButtonSceneLoad(AppScenes.MAP_SCENE);
+            GameManager.Instance.CheckEndLevel(AppScenes.MAP_SCENE);
         }
     }
 

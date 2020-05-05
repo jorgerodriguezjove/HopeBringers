@@ -354,7 +354,7 @@ public class LevelManager : MonoBehaviour
             //Importante tienen que ir antes de pintar el rango de ataque
             if (hoverUnit.hasMoved == false)
             {
-                tilesAvailableForMovement = TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit);
+                tilesAvailableForMovement = new List<IndividualTiles>(TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit));
 
                 for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                 {
@@ -623,7 +623,7 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
                 }
 
-                tilesAvailableForMovementEnemies = TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit);
+                tilesAvailableForMovementEnemies = new List<IndividualTiles>(TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit));
 
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
                 {
@@ -714,7 +714,7 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForRangeEnemies = TM.CheckAvailableTilesForEnemyAction(hoverUnit.rangeOfAction, hoverUnit);
                 }
 
-                tilesAvailableForMovementEnemies = TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit);
+                tilesAvailableForMovementEnemies = new List<IndividualTiles>(TM.CalculateAvailableTilesForHover(hoverUnit.myCurrentTile, hoverUnit));
 
                 for (int i = 0; i < tilesAvailableForMovementEnemies.Count; i++)
                 {
@@ -1107,8 +1107,6 @@ public class LevelManager : MonoBehaviour
                     if (selectedEnemy != null)
                     {
                         DeselectEnemy();
-                      
-
                     }
 
                     //Desactivo el botón de pasar turno cuando selecciona la unidad
@@ -1117,18 +1115,18 @@ public class LevelManager : MonoBehaviour
 					UIM.TooltipMove();
 					
                     selectedCharacter = clickedUnit;
-                    
 
                     selectedCharacter.myCurrentTile.ColorCurrentTileHover();
                     selectedCharacter.HealthBarOn_Off(true);
 					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
 
+                    ///Esta línea comentada estaba antes para calcular los tiles pero daba problemas y no cogía a veces todos los tiles. En principio como al hacer hover ya los calculo una vez y lo hace bien,
+                    ///uso esos para todos los calculos de pintar,mover etc.
+                    //tilesAvailableForMovement = new List<IndividualTiles>(TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit, true));
 
-                    //This
-                    //UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter); F Code
+                    Debug.Log("Seleccionar personaje: " + selectedCharacter + " " + tilesAvailableForMovement.Count);
 
-                    tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit, true);
                     for (int i = 0; i < tilesAvailableForMovement.Count; i++)
                     {
                         tilesAvailableForMovement[i].ColorMovement();
@@ -1196,10 +1194,10 @@ public class LevelManager : MonoBehaviour
                 {
                     DeselectEnemy();   
                 }
+
                 if (!selectedCharacter.isMovingorRotating)
                 {
                     SelectUnitToAttack(clickedUnit);
-
                 }
             }
         }
@@ -1214,7 +1212,6 @@ public class LevelManager : MonoBehaviour
                 //Hacer que desaparezcan los botones de rotación
                 selectedCharacter.isMovingorRotating = false;
                 selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(false);
-
             }
 
 			selectedCharacter.HealthBarOn_Off(false);
@@ -1228,8 +1225,8 @@ public class LevelManager : MonoBehaviour
             if (selectedCharacter.GetComponent<Samurai>())
             {
                 selectedCharacter.GetComponent<Samurai>().lonelyBox.SetActive(false);
-
             }
+
             //Desmarco las unidades disponibles para atacar
             for (int i = 0; i < selectedCharacter.currentUnitsAvailableToAttack.Count; i++)
             {
@@ -1253,11 +1250,15 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
+            Debug.Log("(Antes descolorear) Deseleccionar unidad " + selectedCharacter + " " + tilesAvailableForMovement.Count);
+
             //Si no se ha movido lo deselecciono.
             for (int i = 0; i < tilesAvailableForMovement.Count; i++)
             {
                 tilesAvailableForMovement[i].ColorDeselect();
             }
+
+            Debug.Log("(Descolorear) Deseleccionar unidad " + selectedCharacter + " " + tilesAvailableForMovement.Count);
 
             //Activo el botón de end turn para que no le de mientras la unidad siga seleccionada
             UIM.ActivateDeActivateEndButton();
@@ -1281,10 +1282,7 @@ public class LevelManager : MonoBehaviour
             if (valkyrieRef!=null)
             {
                 valkyrieRef.CheckValkyrieHalo();
-
             }
-
-
         }
 
         else if(selectedEnemy !=null)
@@ -1380,7 +1378,7 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
-    #region TILE_&_PACEMENT
+    #region TILE_&_PLACEMENT
 
     //Decido si muevo a la unidad, si tengo que colocarla por primera vez o si no hago nada
     public void TileClicked(IndividualTiles tileToMove)
@@ -1401,9 +1399,10 @@ public class LevelManager : MonoBehaviour
                     currentCharacterPlacing.transform.position = tileToMove.transform.position;
                     currentCharacterPlacing.GetComponent<PlayerUnit>().UpdateInformationAfterMovement(tileToMove);
 
-                    //Le quito el padre y le pongo en la escala correcta
+                    //Le quito el padre y le pongo en la escala y rotación correcta
                     currentCharacterPlacing.transform.parent = null;
                     currentCharacterPlacing.transform.localScale = Vector3.one;
+                    currentCharacterPlacing.transform.rotation = Quaternion.identity;
 
                     //Variable a null
                     currentCharacterPlacing = null;
@@ -1424,7 +1423,9 @@ public class LevelManager : MonoBehaviour
             //Movimiento de la unidad
             if (selectedCharacter != null && !selectedCharacter.hasAttacked && !selectedCharacter.hasMoved)
             {
-                tilesAvailableForMovement = TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter, true);
+                ///Esta línea comentada estaba antes para calcular los tiles pero daba problemas y no cogía a veces todos los tiles. En principio como al hacer hover ya los calculo una vez y lo hace bien,
+                ///uso esos para todos los calculos de pintar,mover etc.
+                //tilesAvailableForMovement = new List<IndividualTiles>(TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter, true));
 
                 //Reactivo el collider de las unidades que se les ha quitado antes. Esto es por si hace click en otro tile sin haber rotado.
                 for (int j = 0; j < unitsToEnableCollider.Count; j++)
@@ -1433,6 +1434,10 @@ public class LevelManager : MonoBehaviour
                 }
 
                 unitsToEnableCollider.Clear();
+
+                //Añado la unidad actual a las unidades a las que quitar el collider.
+                selectedCharacter.EnableUnableCollider(false);
+                unitsToEnableCollider.Add(selectedCharacter);
 
                 //Desactivo collider de unidades que rodean al tile clickado
                 for (int j = 0; j < tileToMove.neighbours.Count; j++)
@@ -1448,6 +1453,8 @@ public class LevelManager : MonoBehaviour
                 {
                     if (tileToMove == tilesAvailableForMovement[i] || tileToMove == selectedCharacter.myCurrentTile)
                     {
+                        Debug.Log("Tile " + tileToMove + tileToMove.tileX + "," + tileToMove.tileZ);
+
                         //Calculo el path de la unidad
                         TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ, false);
                         selectedCharacter.myCurrentTile.ColorDeselect();
@@ -1544,6 +1551,7 @@ public class LevelManager : MonoBehaviour
 
             //La muevo a al nuevo tile
             currentCharacterPlacing.transform.position = _tileToMove.transform.position;
+            currentCharacterPlacing.transform.rotation = Quaternion.identity;
             currentCharacterPlacing.UpdateInformationAfterMovement(_tileToMove);
 
             currentCharacterPlacing.ResetColor();
@@ -1555,6 +1563,7 @@ public class LevelManager : MonoBehaviour
 
             //La muevo a al nuevo tile
             _playerClicked.transform.position = otherUnitTile.transform.position;
+            _playerClicked.transform.rotation = Quaternion.identity;
             _playerClicked.UpdateInformationAfterMovement(otherUnitTile);
 
             //Variable a null
@@ -1578,6 +1587,7 @@ public class LevelManager : MonoBehaviour
                 currentCharacterPlacing.transform.parent = currentCharacterPlacing.initialPosInBox;
                 currentCharacterPlacing.transform.localScale = Vector3.one;
                 currentCharacterPlacing.transform.localPosition = Vector3.zero;
+                currentCharacterPlacing.transform.localRotation = Quaternion.identity;
 
                 currentCharacterPlacing.ResetColor();
 
@@ -1591,6 +1601,7 @@ public class LevelManager : MonoBehaviour
                 //Le pongo en la escala correcta
                 _playerClicked.transform.parent = null;
                 _playerClicked.transform.localScale = Vector3.one;
+                _playerClicked.transform.rotation = Quaternion.identity;
 
                 //Variable a null
                 currentCharacterPlacing = null;
@@ -1612,6 +1623,7 @@ public class LevelManager : MonoBehaviour
                 _playerClicked.transform.parent = _playerClicked.initialPosInBox;
                 _playerClicked.transform.localScale = Vector3.one;
                 _playerClicked.transform.localPosition = Vector3.zero;
+                _playerClicked.transform.localRotation= Quaternion.identity;
 
                 //PONER UNIDAD EN TABLERO
 
@@ -1623,6 +1635,7 @@ public class LevelManager : MonoBehaviour
                 //Le pongo en la escala correcta
                 currentCharacterPlacing.transform.parent = null;
                 currentCharacterPlacing.transform.localScale = Vector3.one;
+                currentCharacterPlacing.transform.rotation = Quaternion.identity;
 
                 //Variable a null
                 currentCharacterPlacing = null;
@@ -2005,6 +2018,11 @@ public class LevelManager : MonoBehaviour
             DeSelectUnit();
         }
 
+        //if (selectedCharacter != null)
+        //{
+        //    Debug.Log(selectedCharacter + " " + tilesAvailableForMovement.Count);
+        //}
+
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -2094,5 +2112,7 @@ public class LevelManager : MonoBehaviour
         //Al acabar for updateo lista de enemigos
         UpdateUnitsOrder();
     }
+
+    
 }
 

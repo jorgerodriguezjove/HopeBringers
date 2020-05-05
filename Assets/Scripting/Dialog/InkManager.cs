@@ -216,9 +216,9 @@ public class InkManager : MonoBehaviour
         //Compruebo si es un cambio de personaje
         if (TrySplitContentBySearchString(rawContent, "%", ref subjectID, ref content))
         {
-            Debug.Log(subjectID);
-            Debug.Log(content);
-            Debug.Log(int.Parse(content));
+            //Debug.Log(subjectID);
+            //Debug.Log(content);
+            //Debug.Log(int.Parse(content));
 
             nameAndModelDict[subjectID].characterInstantiated.MoveToPosition(int.Parse(content));
 
@@ -302,9 +302,9 @@ public class InkManager : MonoBehaviour
                 }
 
                 //Encontrar clase modelo en escena y decirle que se resalte y que se oculte el anterior
-                Debug.Log(speaker);
-                Debug.Log(nameAndModelDict[speaker]);
-                Debug.Log(nameAndModelDict[speaker].characterInstantiated);
+                //Debug.Log(speaker);
+                //Debug.Log(nameAndModelDict[speaker]);
+                //Debug.Log(nameAndModelDict[speaker].characterInstantiated);
 
                 nameAndModelDict[speaker].characterInstantiated.HighlightSpeaker();
                 text.color = nameAndModelDict[speaker].colorStruct;

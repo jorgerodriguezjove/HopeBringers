@@ -9,7 +9,6 @@ using Steamworks;
 public class GameManager : PersistentSingleton<GameManager>
 {
     #region VARIABLES
-
     [Header("GAMEFLOW_CONTROLLER")]
     //Este bool avisa al level manager de que el nivel ha sido cargado y el diálogo ha terminado
     public bool canGameplayLevelStart = false;
@@ -48,7 +47,6 @@ public class GameManager : PersistentSingleton<GameManager>
     public bool isInterlude;
     [HideInInspector]
     public string interludeSceneName;
-
 
     [Header("DIÁLOGOS")]
     [HideInInspector]
@@ -261,6 +259,14 @@ public class GameManager : PersistentSingleton<GameManager>
         newCharacterToUnlock = null;
     }
 
+    //Cargar el nivel
+    public void CheckEndLevel(string _levelName)
+    {
+        currentLevelToLoad = _levelName;
+
+        SceneManager.LoadScene(AppScenes.LOAD_SCENE);
+    }
+
     #endregion
 
     #region DIALOG
@@ -272,7 +278,6 @@ public class GameManager : PersistentSingleton<GameManager>
         dialogTime = false;
         Debug.Log("dialog ended");
         //SoundManager.Instance.PlaySound(AppSounds.ENDDIALOG_SFX);
-
 
         if (isCurrentDialogStart)
         {
@@ -295,8 +300,6 @@ public class GameManager : PersistentSingleton<GameManager>
             //Avisar de que salga ventana de victoria
             LM.VictoryScreen();
         }
-
-
     }
 
     public void StartDialog(bool _isStartDialog) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/

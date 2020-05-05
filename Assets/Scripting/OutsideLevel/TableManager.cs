@@ -79,6 +79,7 @@ public class TableManager : MonoBehaviour
         else
         {
             //Activo la cámara del mapa
+            BackToMap();
         }
 
         //Devuelvo las figuras a la caja y reseteo las listas de unidades

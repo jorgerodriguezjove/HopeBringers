@@ -409,17 +409,21 @@ public class TileManager : MonoBehaviour
     }
 
     //Calculo tiles a los que se puede mover una unidad o en los que puede un enemigo buscar objetivos
-    public List<IndividualTiles> OptimizedCheckAvailableTilesForMovement(int movementUds, UnitBase selectedUnit, bool _shouldUseHeap)
+    public List<IndividualTiles> OptimizedCheckAvailableTilesForMovement(int _movementUds, UnitBase _selectedUnit, bool _shouldUseHeap)
     {
-        selectedCharacter = selectedUnit;
+        Debug.Log("TM Antiguo SelectedCharacter: " + selectedCharacter);
+
+        selectedCharacter = _selectedUnit;
         tilesAvailableForMovement.Clear();
 
+        Debug.Log("TM Nuevo SelectedCharacter: " + selectedCharacter);
+
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
-        for (int i = -movementUds; i < (movementUds * 2) + 1; i++)
+        for (int i = -_movementUds; i <= _movementUds; i++)
         {
             //Al restar a losMovementUds el i actual obtengo los tiles que hay por encima de la posición del personaje en dicha columna
             //Este número me sirve para calcular la posición en z de los tiles
-            int tilesInZ = movementUds - Mathf.Abs(i);
+            int tilesInZ = _movementUds - Mathf.Abs(i);
 
             //Esto significa que es el extremo del rombo y sólo hay 1 tile en vertical
             if (tilesInZ == 0)
@@ -428,7 +432,6 @@ public class TileManager : MonoBehaviour
                 if (selectedCharacter.myCurrentTile.tileX + i < gridSizeX && selectedCharacter.myCurrentTile.tileX + i >= 0 &&
                     selectedCharacter.myCurrentTile.tileZ < gridSizeZ && selectedCharacter.myCurrentTile.tileZ >= 0)
                 {
-
                     currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ];
 
                     //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
@@ -453,15 +456,14 @@ public class TileManager : MonoBehaviour
                         if (_shouldUseHeap)
                         {
                             CalculatePathForMovementCostWithHeap(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
-
                         }
+
                         else
                         {
                             CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
                         }
 
-
-                        if (tempCurrentPathCost <= movementUds)
+                        if (tempCurrentPathCost <= _movementUds)
                         {
                             tilesAvailableForMovement.Add(currentTileCheckingForMovement);
                         }
@@ -470,6 +472,7 @@ public class TileManager : MonoBehaviour
                     }
                 }
             }
+
             else
             {
                 for (int j = tilesInZ; j >= -tilesInZ; j--)
@@ -478,10 +481,8 @@ public class TileManager : MonoBehaviour
                     if (selectedCharacter.myCurrentTile.tileX + i < gridSizeX && selectedCharacter.myCurrentTile.tileX + i >= 0 &&
                         selectedCharacter.myCurrentTile.tileZ + j < gridSizeZ && selectedCharacter.myCurrentTile.tileZ + j >= 0)
                     {
-
                         //Almaceno el tile en una variable
                         currentTileCheckingForMovement = grid2DNode[selectedCharacter.myCurrentTile.tileX + i, selectedCharacter.myCurrentTile.tileZ + j];
-
 
                         //Compruebo si el tile está ocupado, tiene un obstáculo o es un tile vacío
                         //IMPORTANTE NO COMPROBAR LA ALTURA. ESO SE HACE EN EL PATHFINDING. La altura se tiene que comprobar de un tile respecto a sus vecinos, no tiene sentido comprobar el tile en el que esta el player con el que quiere llegar.
@@ -506,8 +507,8 @@ public class TileManager : MonoBehaviour
                             if (_shouldUseHeap)
                             {
                                 CalculatePathForMovementCostWithHeap(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
-
                             }
+
                             else
                             {
                                 CalculatePathForMovementCost(currentTileCheckingForMovement.tileX, currentTileCheckingForMovement.tileZ, false);
@@ -515,7 +516,7 @@ public class TileManager : MonoBehaviour
 
                             //Debug.Log("El tile " + currentTileCheckingForMovement + "Cuesta " + tempCurrentPathCost);
 
-                            if (tempCurrentPathCost <= movementUds)
+                            if (tempCurrentPathCost <= _movementUds)
                             {
                                 tilesAvailableForMovement.Add(currentTileCheckingForMovement);
                             }
@@ -526,7 +527,11 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
-       
+
+        Debug.Log("TM Función Optimized " + tilesAvailableForMovement.Count);
+
+        selectedCharacter = null;
+
         return tilesAvailableForMovement;
     }
 
@@ -855,6 +860,31 @@ public class TileManager : MonoBehaviour
         openList.Clear();
         //La variable se tiene que quedar aqui porque si no el Heap da error y pide que sea static.
         closedHasSet.Clear();
+
+        //Por si selectedCharacter es null
+        if (selectedCharacter == null)
+        {
+            if (LM.selectedCharacter != null)
+            {
+                selectedCharacter = LM.selectedCharacter;
+            }
+
+            else if (LM.selectedEnemy != null)
+            {
+                selectedCharacter = LM.selectedEnemy;
+                //selectedCharacter = LM.
+            }
+
+            else if (LM.currentLevelState == LevelManager.LevelState.EnemyPhase)
+            {
+                selectedCharacter = LM.enemiesOnTheBoard[LM.counterForEnemiesOrder];
+            }
+
+            else
+            {
+                Debug.LogError("Variable selectedCharacter de TM es NUll");
+            }
+        }
 
         //Origen y target
         source = grid2DNode[selectedCharacter.myCurrentTile.tileX, selectedCharacter.myCurrentTile.tileZ];
@@ -1529,6 +1559,11 @@ public class TileManager : MonoBehaviour
     //Función que se encarga de calcular los tiles que pintar para indicar el movimiento al hacer hover
     public List<IndividualTiles> CalculateAvailableTilesForHover(IndividualTiles _initialTile, UnitBase _unitHover)
     {
+        if (_unitHover.GetComponent<PlayerUnit>())
+        {
+            selectedCharacter = _unitHover;
+        }
+
         //Reset
         goodTiles.Clear();
         temporalTiles.Clear();

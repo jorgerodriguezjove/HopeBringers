@@ -83,21 +83,23 @@ MonoBehaviour:
   levelNameInfoText: {fileID: 0}
   titleTextRef: {fileID: 0}
   descriptionTextRef: {fileID: 0}
-  panelsForUnitColocation:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   currentCharacterPowerLevelText: {fileID: 0}
   currentTotalXpText: {fileID: 0}
   rightPageProgresionBook: {fileID: 0}
   panelForUnitUpgrade: {fileID: 0}
+  confirmateUpgrade: {fileID: 0}
+  warningBlockUpgrade: {fileID: 0}
+  timeToHidePanel: 0
+  timedPanel: {fileID: 0}
+  textNotEnoughXp: {fileID: 0}
+  textAlreadyBought: {fileID: 0}
   resolutionDropdown: {fileID: 0}
   toggleFullsCreen: {fileID: 0}
   musicSlider: {fileID: 0}
   sFXSlider: {fileID: 0}
   qualityDropdown: {fileID: 0}
   TM: {fileID: 5520797684641119389}
+  lastUpgradeClicked: {fileID: 0}
   confirmationPanel: {fileID: 0}
   playCanvas: {fileID: 0}
   optionsCanvas: {fileID: 0}
@@ -145,7 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ae7324a5b30c5f4d96d6f71d8c6f380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialCharacters: []
+  initialCharacters:
+  - {fileID: 0}
+  - {fileID: 0}
   mainMenuCamera: {fileID: 0}
   mapCamera: {fileID: 0}
   selectCamera: {fileID: 0}
@@ -157,6 +161,7 @@ MonoBehaviour:
   allLevelNodesInGame: []
   UITM: {fileID: 0}
   level1: {fileID: 0}
+  vfxLevelUp: {fileID: 0}
 --- !u!1 &8340479040728451120
 GameObject:
   m_ObjectHideFlags: 0
