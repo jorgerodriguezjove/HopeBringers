@@ -43,6 +43,9 @@ public class DarkLord : EnemyUnit
     //El cono es especial porque en tilesToCheck guardo la línea central del cono y en cone tile guardo el cono entero
     List<IndividualTiles> coneTiles = new List<IndividualTiles>();
 
+    //Tiles que se pintan al atacar
+    List<IndividualTiles> tilesToPaint = new List<IndividualTiles>();
+
     [SerializeField]
     private GameObject particleDisappear;
 
@@ -89,6 +92,7 @@ public class DarkLord : EnemyUnit
         currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
         currentTimeWaitingBeforeEnding   = timeWaitingBeforeEnding;
 
+        fMovementUds = movementUds;
     }
 
     public void InitializeAfterPosesion(int _currentEnemyHealth)
@@ -113,7 +117,6 @@ public class DarkLord : EnemyUnit
         tilesToCheck.Clear();
         currentUnitsAvailableToAttack.Clear();
 
-        //CAMBIAR ESTE HASATTACKED
         if (isDead || attackCountThisTurn >=2)
         {
             myCurrentEnemyState = enemyState.Ended;
@@ -122,7 +125,7 @@ public class DarkLord : EnemyUnit
 
         else
         { 
-            if (attackCountThisTurn > 2)
+            if (attackCountThisTurn >= 2)
             {
                 if (!hasMoved)
                 {
@@ -237,11 +240,11 @@ public class DarkLord : EnemyUnit
 
                 else if (!hasMoved)
                 {
-                    Debug.Log("6. Solo movimiento");
+                    Debug.Log("6. Movimiento");
                     currentUnitsAvailableToAttack.Clear();
-                    tilesToCheck.Clear();
-                    coneTiles.Clear();
-                    
+                    //tilesToCheck.Clear();
+                    //coneTiles.Clear();
+
                     ///Comprueba si se ha movido (si no, se mueve y repite todas las comprobaciones menos el traspaso)
 
                     //Determinamos el enemigo más cercano.
@@ -317,7 +320,15 @@ public class DarkLord : EnemyUnit
                         myCurrentEnemyState = enemyState.Moving;
                         //myCurrentEnemyState = enemyState.Attacking;
                     }
-                }       
+                }
+                
+                else
+                {
+                    Debug.Log("Ended with: " + attackCountThisTurn + " attackCountThisTurn");
+
+                    myCurrentEnemyState = enemyState.Ended;
+                    return;
+                }
             }
         }
     }
@@ -367,6 +378,13 @@ public class DarkLord : EnemyUnit
             //Guardo los dos tiles en frente del personaje
             tilesToCheck = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, normalAttackRange);
 
+            //Tengo que pintarlo en otro for, porque el siguiente hace break
+            for (int i = 0; i < tilesToCheck.Count; i++)
+            {
+                tilesToPaint.Add(tilesToCheck[i]);
+                tilesToCheck[i].ColorAttack();
+            }
+
             //Compruebo si en los 2 tiles de delante hay al menos un enemigo
             for (int i = 0; i < tilesToCheck.Count; i++)
             {
@@ -379,7 +397,6 @@ public class DarkLord : EnemyUnit
                 }
             }
 
-
             if (currentUnitsAvailableToAttack.Count >= 1)
             {
                 return true;
@@ -387,6 +404,12 @@ public class DarkLord : EnemyUnit
 
             else
             {
+                for (int i = 0; i < tilesToCheck.Count; i++)
+                {
+                    tilesToPaint.Remove(tilesToCheck[i]);
+                    tilesToCheck[i].ColorDesAttack();
+                }
+
                 return false;
             }
         }
@@ -414,6 +437,9 @@ public class DarkLord : EnemyUnit
             //Compruebo cada tile del área del cono en busca de personajes
             for (int i = 0; i < coneTiles.Count; i++)
             {
+                tilesToPaint.Add(coneTiles[i]);
+                coneTiles[i].ColorAttack();
+
                 if (coneTiles[i].unitOnTile != null &&
                     coneTiles[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
@@ -436,6 +462,12 @@ public class DarkLord : EnemyUnit
             //Si no hay nadie o sólo hay 1 en rango de normal NO HAGO CONO
             else
             {
+                for (int i = 0; i < coneTiles.Count; i++)
+                {
+                    tilesToPaint.Remove(coneTiles[i]);
+                    coneTiles[i].ColorDesAttack();
+                }
+
                 return false;
             }
         }
@@ -513,7 +545,6 @@ public class DarkLord : EnemyUnit
         {
             for (int i = 0; i < tilesToCheck.Count; i++)
             {
-
                 //Feedback tiles cargados
                 tilesToCheck[i].ColorAttack();
                 tilesInArea.Add(tilesToCheck[i]);
@@ -535,7 +566,6 @@ public class DarkLord : EnemyUnit
 
     private void DoConeAttack()
     {
-       
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             tilesListToPull.Clear();
@@ -607,7 +637,6 @@ public class DarkLord : EnemyUnit
     private void CallWaitCoroutine()
     {
         bossPortrait.FlipAttackTokens();
-
         //Salgo de la comprobación de acciones para volver a empezar
         StartCoroutine("WaitBeforeNextAction");
         myCurrentEnemyState = enemyState.Waiting;
@@ -616,6 +645,17 @@ public class DarkLord : EnemyUnit
     IEnumerator WaitBeforeNextAction()
     {
         yield return new WaitForSeconds(2f);
+
+        //Limpiar tiles de ataque anteriores
+
+        for (int i = 0; i < tilesToPaint.Count; i++)
+        {
+            tilesToPaint[i].ColorDesAttack();
+        }
+
+        tilesToPaint.Clear();
+        tilesToCheck.Clear();
+        coneTiles.Clear();
 
         myCurrentEnemyState = enemyState.Searching;
     }
