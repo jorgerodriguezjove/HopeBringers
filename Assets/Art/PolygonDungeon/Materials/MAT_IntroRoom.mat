@@ -22,14 +22,16 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MAT_IntroRoom
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
-  m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON _EMISSION
-    _METALLICSPECGLOSSMAP _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+  m_ShaderKeywords: N_F_DCS_ON N_F_EAL_ON N_F_HDLS_ON N_F_NLASOBF_ON N_F_O_ON N_F_SS_ON
+    N_F_ST_ON _ALPHABASECUTOUT_ON _EMISSION _METALLICSPECGLOSSMAP _RIMLIGHTINLIGHT_ON
+    _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -190,15 +192,15 @@ Material:
     - _N_F_CA: 0
     - _N_F_CLD: 0
     - _N_F_CO: 0
-    - _N_F_DCS: 0
+    - _N_F_DCS: 1
     - _N_F_EAL: 1
     - _N_F_FR: 0
     - _N_F_GLO: 0
     - _N_F_GLOT: 0
-    - _N_F_HDLS: 0
+    - _N_F_HDLS: 1
     - _N_F_HPSS: 0
     - _N_F_MC: 0
-    - _N_F_NLASOBF: 0
+    - _N_F_NLASOBF: 1
     - _N_F_NM: 0
     - _N_F_O: 1
     - _N_F_PT: 0
