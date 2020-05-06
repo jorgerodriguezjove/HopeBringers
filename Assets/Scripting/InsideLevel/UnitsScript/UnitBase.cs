@@ -1064,31 +1064,36 @@ public class UnitBase : MonoBehaviour
 
     public virtual void SetStunIcon(UnitBase _unitToStun, bool onHover, bool hasToShow)
     {
-        if (onHover)
+        if (_unitToStun != null)
         {
-            if (hasToShow)
+            if (onHover)
             {
-                _unitToStun.hoverStunnedIcon.SetActive(true);
-            }
-            else
-            {
-                _unitToStun.hoverStunnedIcon.SetActive(false);
-            }
-        }
-        else
-        {
-            if (hasToShow)
-            {
-                _unitToStun.stunnedIcon.SetActive(true);
-                _unitToStun.hoverStunnedIcon.SetActive(false);
-            }
-            else
-            {
-                _unitToStun.stunnedIcon.SetActive(false);
-                _unitToStun.hoverStunnedIcon.SetActive(false);
+                if (hasToShow)
+                {
+                    _unitToStun.hoverStunnedIcon.SetActive(true);
+                }
+
+                else
+                {
+                    _unitToStun.hoverStunnedIcon.SetActive(false);
+                }
             }
 
-        }                   
+            else
+            {
+                if (hasToShow)
+                {
+                    _unitToStun.stunnedIcon.SetActive(true);
+                    _unitToStun.hoverStunnedIcon.SetActive(false);
+                }
+                else
+                {
+                    _unitToStun.stunnedIcon.SetActive(false);
+                    _unitToStun.hoverStunnedIcon.SetActive(false);
+                }
+
+            }
+        }             
     }
 
     public virtual void ApplyBuffOrDebuffDamage(UnitBase unitToApply, int damageAdded, int turnsAdded)

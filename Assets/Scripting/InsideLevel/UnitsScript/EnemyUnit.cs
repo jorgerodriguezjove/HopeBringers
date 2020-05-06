@@ -121,6 +121,9 @@ public class EnemyUnit : UnitBase
     [HideInInspector]
     public PortraitBoss bossPortrait;
 
+    [SerializeField]
+    private GameObject interrogationParticle;
+
     [Header("FEEDBACK")]
 
     //Flecha que indica que enemigo está realizando su acción.
@@ -367,7 +370,7 @@ public class EnemyUnit : UnitBase
     }
 
     //Función que se encarga de hacer que el personaje este despierto/alerta
-    public void AlertEnemy()
+    public virtual void AlertEnemy()
     {
         DesAlertEnemy();
         haveIBeenAlerted = true;
@@ -1290,6 +1293,11 @@ public class EnemyUnit : UnitBase
         {
             exclamationIcon.SetActive(false);
         }
+    }
+
+    public void ShowHideInterrogationBoss(bool _show)
+    {
+        interrogationParticle.SetActive(_show);
     }
 
     public void DesAlertEnemy()

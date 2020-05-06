@@ -864,23 +864,29 @@ public class TileManager : MonoBehaviour
         //Por si selectedCharacter es null
         if (selectedCharacter == null)
         {
-            if (LM.selectedCharacter != null)
+            if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
             {
-                selectedCharacter = LM.selectedCharacter;
+                if (LM.selectedCharacter != null)
+                {
+                    selectedCharacter = LM.selectedCharacter;
+                }
+
+                else if (LM.selectedEnemy != null)
+                {
+                    selectedCharacter = LM.selectedEnemy;
+                    //selectedCharacter = LM.
+                }
             }
 
-            else if (LM.selectedEnemy != null)
+            else if (LM.currentLevelState == LevelManager.LevelState.ProcessingEnemiesActions)
             {
-                selectedCharacter = LM.selectedEnemy;
-                //selectedCharacter = LM.
+                if (LM.currentLevelState == LevelManager.LevelState.EnemyPhase)
+                {
+                    selectedCharacter = LM.enemiesOnTheBoard[LM.counterForEnemiesOrder];
+                }
             }
 
-            else if (LM.currentLevelState == LevelManager.LevelState.EnemyPhase)
-            {
-                selectedCharacter = LM.enemiesOnTheBoard[LM.counterForEnemiesOrder];
-            }
-
-            else
+            else if (selectedCharacter == null)
             {
                 Debug.LogError("Variable selectedCharacter de TM es NUll");
             }

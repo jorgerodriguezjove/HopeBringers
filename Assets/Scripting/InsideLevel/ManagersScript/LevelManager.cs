@@ -553,9 +553,9 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
-            else if (hoverUnit.GetComponent<BossMultTile>() || hoverUnit.GetComponent<DarkLord>())
+            else if (hoverUnit.GetComponent<BossMultTile>() || hoverUnit.GetComponent<DarkLord>() || hoverUnit.GetComponent<MechaBoss>())
             {
-                Debug.Log("hacer qeu aparezca interrogación");
+                hoverUnit.ShowHideInterrogationBoss(true);
             }
 
             else if (hoverUnit.GetComponent<EnWatcher>())
@@ -924,6 +924,11 @@ public class LevelManager : MonoBehaviour
                 hoverUnit.GetComponent<EnSummoner>().HideShowFeedbackSpawnPosition(false);
             }
 
+            else if (hoverUnit.GetComponent<BossMultTile>() || hoverUnit.GetComponent<DarkLord>() || hoverUnit.GetComponent<MechaBoss>())
+            {
+                hoverUnit.ShowHideInterrogationBoss(false);
+            }
+
             //Goblin, gigante, boss y demás
             else
             {
@@ -985,9 +990,11 @@ public class LevelManager : MonoBehaviour
 
                 //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
                 else if (hoverUnit.GetComponent<EnGiant>())
-                {
-                   
-                    hoverUnit.SetStunIcon(hoverUnit.currentUnitsAvailableToAttack[0], true, false);
+                {  
+                    if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                    {
+                        hoverUnit.SetStunIcon(hoverUnit.currentUnitsAvailableToAttack[0], true, false);
+                    }
 
                     for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
                     {
@@ -1006,10 +1013,7 @@ public class LevelManager : MonoBehaviour
                             }
                         }
 
-                       
                         hoverUnit.SetStunIcon(hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile, true, false);
-
-                        
                     }
                 }
 
