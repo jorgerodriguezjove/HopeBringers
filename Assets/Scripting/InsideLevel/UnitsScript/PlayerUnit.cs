@@ -9,6 +9,9 @@ public class PlayerUnit : UnitBase
     #region VARIABLES
 
     [Header("COLOCACIÓN DE UNIDAD")]
+    [SerializeField]
+    private bool characterStartedOnTheLevel;
+
     [HideInInspector]
     public Transform initialPosInBox;
 
@@ -1258,7 +1261,7 @@ public class PlayerUnit : UnitBase
     //Si probamos desde el mapa de seleccion el tile se setea al colocar las unidades.
     protected override void FindAndSetFirstTile()
     {
-        if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+        if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa || characterStartedOnTheLevel)
         {
             base.FindAndSetFirstTile();
         }

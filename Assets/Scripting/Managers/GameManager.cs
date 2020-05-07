@@ -242,7 +242,15 @@ public class GameManager : PersistentSingleton<GameManager>
 
         else
         {
-            LM.VictoryScreen();
+            if (LM == null)
+            {
+                LM = FindObjectOfType<LevelManager>();
+            }
+
+            else
+            {
+                LM.VictoryScreen();
+            }
         }
 
         CheckLevelCompleted(currentLevelNodeID);
@@ -298,7 +306,16 @@ public class GameManager : PersistentSingleton<GameManager>
         else
         {
             //Avisar de que salga ventana de victoria
-            LM.VictoryScreen();
+
+            if (LM == null)
+            {
+                LM = FindObjectOfType<LevelManager>();
+            }
+
+            else
+            {
+                 LM.VictoryScreen();
+            }
         }
     }
 

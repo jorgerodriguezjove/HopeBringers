@@ -864,6 +864,7 @@ public class UnitBase : MonoBehaviour
 
     public virtual void EnableCanvasHover(float damageReceived)
     {
+        
         canvasHover.SetActive(true);
         canvasHover.GetComponent<CanvasHover>().damageNumber.SetText( "-" + damageReceived.ToString());
         canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32 (180, 0, 0, 255);
@@ -1091,7 +1092,6 @@ public class UnitBase : MonoBehaviour
                     _unitToStun.stunnedIcon.SetActive(false);
                     _unitToStun.hoverStunnedIcon.SetActive(false);
                 }
-
             }
         }             
     }

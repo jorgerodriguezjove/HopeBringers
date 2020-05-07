@@ -226,6 +226,16 @@ public class LevelManager : MonoBehaviour
             MapGenRef.Init();
         }
 
+        //Esto lo hago por si hay personajes puestos ya en el nivel porque se desbloquean en dicho nivel
+        PlayerUnit[] players = FindObjectsOfType<PlayerUnit>(); 
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (!charactersOnTheBoard.Contains(players[i]))
+            {
+                charactersOnTheBoard.Add(players[i]);
+            }
+        }
+
         //Se inicializan todas las unidades
         for (int i = 0; i < charactersOnTheBoard.Count; i++)
         {
@@ -1847,7 +1857,7 @@ public class LevelManager : MonoBehaviour
 
             counterForEnemiesOrder = 0;
 
-            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead && (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn))
             {
                 //Focus en enemigo si está despierto
                 camRef.SetCameraMovable(false, true);
@@ -1878,23 +1888,39 @@ public class LevelManager : MonoBehaviour
         {
             counterForEnemiesOrder++;
 
-            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead)
             {
-                //Bajo la lista de scroll
-                UIM.ScrollUpOnce();
 
-                //Focus en enemigo si está despierto
-                camRef.SetCameraMovable(false, true);
-                camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+                if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+                {
+                    //Bajo la lista de scroll
+                    UIM.ScrollUpOnce();
 
-                //Empieza el turno del siguiente enemigo
-                enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                    //Focus en enemigo si está despierto
+                    camRef.SetCameraMovable(false, true);
+                    camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+
+                    //Empieza el turno del siguiente enemigo
+                    enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                }
+
+                else
+                {
+                    counterForEnemiesOrder = 0;
+                    currentLevelState = LevelState.PlayerPhase;
+                }
             }
 
             else
             {
-                counterForEnemiesOrder = 0;
-                currentLevelState = LevelState.PlayerPhase;
+                counterForEnemiesOrder++;
+                NextEnemyInList();
+
+                if (counterForEnemiesOrder >30)
+                {
+                    Debug.LogError("Custom error para evitar loop recursivo");
+                    Debug.Break();
+                }
             }
         }
     }
