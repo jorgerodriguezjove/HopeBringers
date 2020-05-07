@@ -406,8 +406,7 @@ public class Rogue : PlayerUnit
         hasAttacked = true;
         CalculateDamage(unitToAttack);
         CheckIfUnitHasMarks(unitToAttack);
-        sombraHoverUnit.SetActive(false);
-       canvasHover.SetActive(false);
+        HideAttackEffect(unitToAttack);
 
         if (checkersAttack)
         {
@@ -438,11 +437,12 @@ public class Rogue : PlayerUnit
 
             if (unitsCanJump >= 1)
             {
+                LM.DeSelectUnit();
                 hasAttacked = false;                
                 CheckUnitsAndTilesInRangeToAttack(true);
 
                 hasMoved = true;
-                LM.DeSelectUnit();
+                
                 UIM.RefreshTokens();
                 LM.SelectUnit(0, this);
 

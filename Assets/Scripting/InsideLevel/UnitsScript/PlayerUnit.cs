@@ -202,6 +202,7 @@ public class PlayerUnit : UnitBase
                 turnsWithBuffOrDebuff--;
                 if (turnsWithBuffOrDebuff <= 0)
                 {
+                    turnsWithBuffOrDebuff = 0;
                     if (GetComponent<Druid>())
                     {
                         GetComponent<Druid>().healedLife -= GetComponent<Druid>().buffHeal;
@@ -217,6 +218,7 @@ public class PlayerUnit : UnitBase
                 turnsWithMovementBuffOrDebuff--;
                 if (turnsWithMovementBuffOrDebuff <= 0)
                 {
+                    turnsWithMovementBuffOrDebuff = 0;
                     movementUds = fMovementUds;
                     SetMovementIcon(0, this, false);
                 }
@@ -248,6 +250,7 @@ public class PlayerUnit : UnitBase
                 turnsWithBuffOrDebuff--;
                 if (turnsWithBuffOrDebuff <= 0)
                 {
+                    turnsWithBuffOrDebuff = 0;
                     buffbonusStateDamage = 0;
                 }
                 if (arrowIndicator != null)
@@ -299,7 +302,6 @@ public class PlayerUnit : UnitBase
 		//Refresco de los tokens de ataque
 		UIM.RefreshTokens();
 		//Aviso al LM que deseleccione la unidad
-		LM.DeSelectUnit();
 		LM.DeSelectUnit();
         UIM.ActivateDeActivateEndButton();
         //Doy feedback de que esa unidad no puede hacer nada
@@ -465,7 +467,10 @@ public class PlayerUnit : UnitBase
 
             if (sombraHoverUnit != null)
             {
-                sombraHoverUnit.SetActive(false);
+                if (LM.selectedEnemy == null)
+                {
+                    sombraHoverUnit.SetActive(false);
+                }
             }
             Druid druidRef = FindObjectOfType<Druid>();
 
@@ -713,7 +718,7 @@ public class PlayerUnit : UnitBase
 
         //Cada unidad se encargará de aplicar su efecto en su override.
 
-
+        
         UIM.CheckActionsAvaliable();
         //La unidad ha atacado y por tanto no puede hacer nada más. Así que espero a que acabe la animación y finalizo su turno.
         StartCoroutine("AttackWait");

@@ -218,9 +218,22 @@ public class EnDuelist : EnemyUnit
     {
         if(_shouldShowArrow)
         {
-            rotatorFeedbackArrow.SetActive(true);
-            Vector3 spawnRotatorArrow = new Vector3(currentUnitsAvailableToAttack[0].transform.position.x, currentUnitsAvailableToAttack[0].transform.position.y + 1, currentUnitsAvailableToAttack[0].transform.position.z);
-            rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
+            if (currentFacingDirection == FacingDirection.North && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.South
+                || currentFacingDirection == FacingDirection.South && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.North
+                || currentFacingDirection == FacingDirection.West && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.East
+                || currentFacingDirection == FacingDirection.East && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.West)
+            {
+
+            }
+            else
+            {
+                rotatorFeedbackArrow.SetActive(true);
+                Vector3 spawnRotatorArrow = new Vector3(currentUnitsAvailableToAttack[0].transform.position.x, currentUnitsAvailableToAttack[0].transform.position.y + 3, currentUnitsAvailableToAttack[0].transform.position.z);
+                rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
+
+            }
+
+           
 
         }
 

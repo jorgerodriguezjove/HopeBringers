@@ -565,7 +565,9 @@ public class LevelManager : MonoBehaviour
                 {
                     if (hoverUnit.unitsInRange[i].GetComponent<PlayerUnit>())
                     {
-                        hoverUnit.SetBuffDebuffIcon(-1, hoverUnit.unitsInRange[i], true);
+                        hoverUnit.SetBuffDebuffIcon(-1, hoverUnit.unitsInRange[i], true);                      
+                        hoverUnit.SetMovementIcon(-1, hoverUnit.unitsInRange[i], true);
+                        
                     }
                     ////El -1 es para que aparezca bien el número en el icono pero luego a nivel logico no se reste
                     //hoverUnit.unitsInRange[i].ShowHideFear(true, hoverUnit.GetComponent<EnWatcher>().turnDurationDebuffs-1);
@@ -704,6 +706,7 @@ public class LevelManager : MonoBehaviour
                     }
                 }
 
+               
                 //Muestro la acción que va a realizar el enemigo 
                 hoverUnit.ShowActionPathFinding(true);
 
@@ -893,12 +896,12 @@ public class LevelManager : MonoBehaviour
             {
                 //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
-                {
+                {      
                     if (hoverUnit.unitsInRange[i].GetComponent<PlayerUnit>())
                     {
-                       // hoverUnit.SetBuffDebuffIcon(0, hoverUnit.unitsInRange[i], true);
+                        hoverUnit.SetBuffDebuffIcon(0, hoverUnit.unitsInRange[i], true);
+                        hoverUnit.SetMovementIcon(0, hoverUnit.unitsInRange[i], true);
                     }
-                   
                     //hoverUnit.unitsInRange[i].ShowHideFear(false, hoverUnit.unitsInRange[i].turnsWithFear);
                     //hoverUnit.unitsInRange[i].ResetColor();
                     //hoverUnit.unitsInRange[i].DisableCanvasHover();
@@ -1348,7 +1351,7 @@ public class LevelManager : MonoBehaviour
 
             //Si llega hasta aqui significa que la unidad seleccionada no formaba parte de las unidades a las que puede atacar.
             //Compruebo si es un player y de ser así lo selecciono
-
+            //PREGUNTAR SI AQUÍ FALTA UN ELSE (al atacar y matar con el ninja sale el su número y la espada)
             if (clickedUnit.GetComponent<PlayerUnit>() && !clickedUnit.GetComponent<MageDecoy>())
             {
                 DeSelectUnit();

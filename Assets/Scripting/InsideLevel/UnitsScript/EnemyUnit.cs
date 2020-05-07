@@ -248,6 +248,7 @@ public class EnemyUnit : UnitBase
                 turnsWithBuffOrDebuff--;
                 if (turnsWithBuffOrDebuff<=0)
                 {
+                    turnsWithBuffOrDebuff = 0;
                     buffbonusStateDamage = 0;
                 }
 
@@ -259,6 +260,7 @@ public class EnemyUnit : UnitBase
                 turnsWithMovementBuffOrDebuff--;
                 if (turnsWithMovementBuffOrDebuff <= 0)
                 {
+                    turnsWithMovementBuffOrDebuff = 0;
                     movementUds = fMovementUds;
                     SetMovementIcon(0, this, false);
                 }
