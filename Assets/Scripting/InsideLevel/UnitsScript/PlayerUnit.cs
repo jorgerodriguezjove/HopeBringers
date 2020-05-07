@@ -495,6 +495,7 @@ public class PlayerUnit : UnitBase
     #region MOVEMENT_&_ROTATION
 
     //El LevelManager avisa a la unidad de que debe moverse.
+    //Esta función tiene que ser override para que el mago pueda instanciar decoys.
     public virtual void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
     {
         //Compruebo la dirección en la que se mueve para girar a la unidad
@@ -534,7 +535,6 @@ public class PlayerUnit : UnitBase
 
         //Al acabar al movimiento aviso a levelManager de que avise a los enemigos para ver si serán alertados.
         LM.AlertEnemiesOfPlayerMovement();
-        Debug.Log(myCurrentTile);
     }
 
     IEnumerator MovingUnitAnimation()

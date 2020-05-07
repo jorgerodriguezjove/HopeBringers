@@ -161,7 +161,7 @@ public class EnGrabber : EnemyUnit
             return;
         }
 
-        CheckUnitToAttack(myCurrentTile);
+        CheckUnitToAttack(myCurrentTile, currentFacingDirection);
 
         if (currentUnitsAvailableToAttack.Count == 0)
         {
@@ -245,202 +245,206 @@ public class EnGrabber : EnemyUnit
         }
     }
   
-    public void CheckUnitToAttack(IndividualTiles _referenceTile)
+    public void CheckUnitToAttack(IndividualTiles _referenceTile, FacingDirection _referenceFacingDirection)
     {
         currentUnitsAvailableToAttack.Clear();
         previousTileHeight = 0;
 
-        if (currentFacingDirection == FacingDirection.North)
+        if (_referenceTile != null)
         {
-            if (attackRange <= _referenceTile.tilesInLineUp.Count)
+            if (currentFacingDirection == FacingDirection.North)
             {
-                rangeVSTilesInLineLimitant = attackRange;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineUp.Count;
-            }
-
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
-            {
-                //Guardo la altura mas alta en esta linea de tiles
-                if (_referenceTile.tilesInLineUp[i].height > previousTileHeight)
+                if (attackRange <= _referenceTile.tilesInLineUp.Count)
                 {
-                    previousTileHeight = _referenceTile.tilesInLineUp[i].height;
+                    rangeVSTilesInLineLimitant = attackRange;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineUp.Count;
                 }
 
-                //Si hay una unidad
-                if (_referenceTile.tilesInLineUp[i].unitOnTile != null && _referenceTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(_referenceTile.tilesInLineUp[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(_referenceTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Guardo la altura mas alta en esta linea de tiles
+                    if (_referenceTile.tilesInLineUp[i].height > previousTileHeight)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades
-                        currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineUp[i].unitOnTile);
+                        previousTileHeight = _referenceTile.tilesInLineUp[i].height;
+                    }
+
+                    //Si hay una unidad
+                    if (_referenceTile.tilesInLineUp[i].unitOnTile != null && _referenceTile.tilesInLineUp[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                        if (Mathf.Abs(_referenceTile.tilesInLineUp[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
+                            || Mathf.Abs(_referenceTile.tilesInLineUp[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineUp[i].unitOnTile);
+                            break;
+                        }
+
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else if (_referenceTile.tilesInLineUp[i].unitOnTile != null)
+                    {
                         break;
                     }
 
-                    else
+
+                    if (_referenceTile.tilesInLineUp[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
                 }
-                else if (_referenceTile.tilesInLineUp[i].unitOnTile != null)
-                {
-                    break;
-                }
-
-
-                if (_referenceTile.tilesInLineUp[i].isEmpty)
-                {
-                    break;
-                }
-            }
-        }
-
-        if (currentFacingDirection == FacingDirection.South)
-        {
-            if (attackRange <= _referenceTile.tilesInLineDown.Count)
-            {
-                rangeVSTilesInLineLimitant = attackRange;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineDown.Count;
             }
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (currentFacingDirection == FacingDirection.South)
             {
-                //Guardo la altura mas alta en esta linea de tiles
-                if (_referenceTile.tilesInLineDown[i].height > previousTileHeight)
+                if (attackRange <= _referenceTile.tilesInLineDown.Count)
                 {
-                    previousTileHeight = _referenceTile.tilesInLineDown[i].height;
+                    rangeVSTilesInLineLimitant = attackRange;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineDown.Count;
                 }
 
-                //Si hay una unidad
-                if (_referenceTile.tilesInLineDown[i].unitOnTile != null && _referenceTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(_referenceTile.tilesInLineDown[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(_referenceTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Guardo la altura mas alta en esta linea de tiles
+                    if (_referenceTile.tilesInLineDown[i].height > previousTileHeight)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades
-                        currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineDown[i].unitOnTile);
+                        previousTileHeight = _referenceTile.tilesInLineDown[i].height;
+                    }
+
+                    //Si hay una unidad
+                    if (_referenceTile.tilesInLineDown[i].unitOnTile != null && _referenceTile.tilesInLineDown[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                        if (Mathf.Abs(_referenceTile.tilesInLineDown[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
+                            || Mathf.Abs(_referenceTile.tilesInLineDown[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineDown[i].unitOnTile);
+                            break;
+                        }
+
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else if (_referenceTile.tilesInLineDown[i].unitOnTile != null)
+                    {
                         break;
                     }
 
-                    else
+                    if (_referenceTile.tilesInLineDown[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
                 }
-                else if (_referenceTile.tilesInLineDown[i].unitOnTile != null)
-                {
-                    break;
-                }
-
-                if (_referenceTile.tilesInLineDown[i].isEmpty)
-                {
-                    break;
-                }
-            }
-        }
-
-        if (currentFacingDirection == FacingDirection.East)
-        {
-            if (attackRange <= _referenceTile.tilesInLineRight.Count)
-            {
-                rangeVSTilesInLineLimitant = attackRange;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineRight.Count;
             }
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (currentFacingDirection == FacingDirection.East)
             {
-                //Guardo la altura mas alta en esta linea de tiles
-                if (_referenceTile.tilesInLineRight[i].height > previousTileHeight)
+                if (attackRange <= _referenceTile.tilesInLineRight.Count)
                 {
-                    previousTileHeight = _referenceTile.tilesInLineRight[i].height;
+                    rangeVSTilesInLineLimitant = attackRange;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineRight.Count;
                 }
 
-                //Si hay una unidad
-                if (_referenceTile.tilesInLineRight[i].unitOnTile != null && _referenceTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(_referenceTile.tilesInLineRight[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(_referenceTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Guardo la altura mas alta en esta linea de tiles
+                    if (_referenceTile.tilesInLineRight[i].height > previousTileHeight)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades
-                        currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineRight[i].unitOnTile);
+                        previousTileHeight = _referenceTile.tilesInLineRight[i].height;
+                    }
+
+                    //Si hay una unidad
+                    if (_referenceTile.tilesInLineRight[i].unitOnTile != null && _referenceTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                        if (Mathf.Abs(_referenceTile.tilesInLineRight[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
+                            || Mathf.Abs(_referenceTile.tilesInLineRight[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineRight[i].unitOnTile);
+                            break;
+                        }
+
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else if (_referenceTile.tilesInLineRight[i].unitOnTile != null)
+                    {
                         break;
                     }
 
-                    else
+                    if (_referenceTile.tilesInLineRight[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
                 }
-                else if (_referenceTile.tilesInLineRight[i].unitOnTile != null)
-                {
-                    break;
-                }
-
-                if (_referenceTile.tilesInLineRight[i].isEmpty)
-                {
-                    break;
-                }
-            }
-        }
-
-        if (currentFacingDirection == FacingDirection.West)
-        {
-            if (attackRange <= _referenceTile.tilesInLineLeft.Count)
-            {
-                rangeVSTilesInLineLimitant = attackRange;
-            }
-            else
-            {
-                rangeVSTilesInLineLimitant = _referenceTile.tilesInLineLeft.Count;
             }
 
-            for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
+            if (currentFacingDirection == FacingDirection.West)
             {
-                //Guardo la altura mas alta en esta linea de tiles
-                if (_referenceTile.tilesInLineLeft[i].height > previousTileHeight)
+                if (attackRange <= _referenceTile.tilesInLineLeft.Count)
                 {
-                    previousTileHeight = _referenceTile.tilesInLineLeft[i].height;
+                    rangeVSTilesInLineLimitant = attackRange;
+                }
+                else
+                {
+                    rangeVSTilesInLineLimitant = _referenceTile.tilesInLineLeft.Count;
                 }
 
-                //Si hay una unidad
-                if (_referenceTile.tilesInLineLeft[i].unitOnTile != null && _referenceTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
+                for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
                 {
-                    //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
-                    if (Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
-                        || Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                    //Guardo la altura mas alta en esta linea de tiles
+                    if (_referenceTile.tilesInLineLeft[i].height > previousTileHeight)
                     {
-                        //Almaceno la primera unidad en la lista de posibles unidades
-                        currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineLeft[i].unitOnTile);
+                        previousTileHeight = _referenceTile.tilesInLineLeft[i].height;
+                    }
+
+                    //Si hay una unidad
+                    if (_referenceTile.tilesInLineLeft[i].unitOnTile != null && _referenceTile.tilesInLineLeft[i].unitOnTile.GetComponent<PlayerUnit>())
+                    {
+                        //Compruebo que la diferencia de altura con mi tile y con el tile anterior es correcto.
+                        if (Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - _referenceTile.height) <= maxHeightDifferenceToAttack
+                            || Mathf.Abs(_referenceTile.tilesInLineLeft[i].height - previousTileHeight) <= maxHeightDifferenceToAttack)
+                        {
+                            //Almaceno la primera unidad en la lista de posibles unidades
+                            currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineLeft[i].unitOnTile);
+                            break;
+                        }
+
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else if (_referenceTile.tilesInLineLeft[i].unitOnTile != null)
+                    {
                         break;
                     }
 
-                    else
+                    if (_referenceTile.tilesInLineLeft[i].isEmpty)
                     {
-                        continue;
+                        break;
                     }
                 }
-                else if (_referenceTile.tilesInLineLeft[i].unitOnTile != null) {
-                    break;
-                }
 
-                if (_referenceTile.tilesInLineLeft[i].isEmpty)
-                {
-                    break;
-                }
             }
-
         }
 
         //Marco las unidades disponibles para atacar de color rojo
@@ -448,7 +452,6 @@ public class EnGrabber : EnemyUnit
         {
             CalculateDamage(currentUnitsAvailableToAttack[i]);
             currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-
         }
     }
 
@@ -530,6 +533,34 @@ public class EnGrabber : EnemyUnit
 
                         Vector3 positionToLook = new Vector3(myCurrentObjective.transform.position.x, myCurrentObjective.transform.position.y + 0.5f, myCurrentObjective.transform.position.z);
                         sombraHoverUnit.transform.DOLookAt(positionToLook, 0, AxisConstraint.Y);
+
+                        if (myCurrentObjective.myCurrentTile.tileX == shadowTile.tileX)
+                        {
+                            if (myCurrentObjective.myCurrentTile.tileZ > shadowTile.tileZ)
+                            {
+                                facingDirectionAfterMovement = FacingDirection.North;
+                            }
+
+                            else
+                            {
+                                facingDirectionAfterMovement = FacingDirection.South;
+                            }
+                        }
+
+                        else if (myCurrentObjective.myCurrentTile.tileZ == shadowTile.tileZ)
+                        {
+                            if (myCurrentObjective.myCurrentTile.tileX > shadowTile.tileX)
+                            {
+                                facingDirectionAfterMovement = FacingDirection.East;
+                            }
+
+                            else
+                            {
+                                facingDirectionAfterMovement = FacingDirection.West;
+                            }
+                        }
+
+                        Debug.Log(facingDirectionAfterMovement);
                     }
                 }
             }
@@ -549,18 +580,24 @@ public class EnGrabber : EnemyUnit
         }
     }
 
+    UnitBase playerWithShadowActivated;
+
     //Función que muetra la sombra del objetivo donde va a ser atraida
     public void ShowGrabShadow(IndividualTiles _referenceTile,FacingDirection _referenceDirection)
     {
-        currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(true);
+        if (currentUnitsAvailableToAttack.Count > 0)
+        {
+            playerWithShadowActivated = currentUnitsAvailableToAttack[0];
 
-        List<IndividualTiles> tileUnitGrabbed = new List<IndividualTiles>();
-        tileUnitGrabbed = _referenceTile.GetTilesInFrontOfTheCharacter(_referenceDirection, 1);
+            currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(true);
 
-        Vector3 pointPosition = new Vector3(tileUnitGrabbed[0].transform.position.x, tileUnitGrabbed[0].transform.position.y + 0.5f, tileUnitGrabbed[0].transform.position.z);
+            List<IndividualTiles> tileUnitGrabbed = new List<IndividualTiles>();
+            tileUnitGrabbed = _referenceTile.GetTilesInFrontOfTheCharacter(_referenceDirection, 1);
 
-        currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = pointPosition;
+            Vector3 pointPosition = new Vector3(tileUnitGrabbed[0].transform.position.x, tileUnitGrabbed[0].transform.position.y + 0.5f, tileUnitGrabbed[0].transform.position.z);
 
+            currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = pointPosition;
+        }
     }
 
     private bool dontShowShadow;
@@ -573,6 +610,10 @@ public class EnGrabber : EnemyUnit
 
     public void HideGrabShadow()
     {
-        currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(false);
+        if (playerWithShadowActivated != null)
+        {
+            playerWithShadowActivated.sombraHoverUnit.SetActive(false);
+            playerWithShadowActivated = null;
+        }
     }
 }

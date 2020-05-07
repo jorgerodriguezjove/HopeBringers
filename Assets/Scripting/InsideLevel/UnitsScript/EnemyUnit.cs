@@ -1440,7 +1440,8 @@ public class EnemyUnit : UnitBase
 
 
     protected Vector3 rotationChosenAfterMovement;
-    protected FacingDirection facingDirectionAfterMovement;
+    [HideInInspector]
+    public FacingDirection facingDirectionAfterMovement;
 
     //Esta función se usa para saber la dirección en la que va a acabar el personaje al acabar de moverse
     //Principalmente es una función para poder usarla en el levelmanager al hacer hover sobre el enemigo y que use la dirección para llamar a la funcion CalculateDamagePreviousAttack() o pintar tiles de rango;
