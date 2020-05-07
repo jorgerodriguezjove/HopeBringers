@@ -388,26 +388,9 @@ public class Mage : PlayerUnit
     //Esta función tiene que ser override para que el mago pueda instanciar decoys.
     public override void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
     {
-        //Compruebo la dirección en la que se mueve para girar a la unidad
-        //   CheckTileDirection(tileToMove);
-        hasMoved = true;
-        //Refresco los tokens para reflejar el movimiento
-        UIM.RefreshTokens();
-
-        //Limpio myCurrentPath y le añado las referencias de pathReceived 
-        //(Como en el goblin no vale con hacer myCurrentPath = PathReceived porque es una referencia a la lista y necesitamos una referencia a los elementos dentro de la lista)
-        myCurrentPath.Clear();
-
-        for (int i = 0; i < pathReceived.Count; i++)
-        {
-            myCurrentPath.Add(pathReceived[i]);
-        }
-
         oldTile = myCurrentTile;
 
-        StartCoroutine("MovingUnitAnimation");
-
-        UpdateInformationAfterMovement(tileToMove);
+        base.MoveToTile(tileToMove,pathReceived);
 
         if (tileToMove != oldTile)
         {

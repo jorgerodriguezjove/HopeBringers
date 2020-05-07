@@ -9,6 +9,9 @@ public class PlayerUnit : UnitBase
     #region VARIABLES
 
     [Header("COLOCACIÓN DE UNIDAD")]
+    [SerializeField]
+    private bool characterStartedOnTheLevel;
+
     [HideInInspector]
     public Transform initialPosInBox;
 
@@ -495,6 +498,7 @@ public class PlayerUnit : UnitBase
     #region MOVEMENT_&_ROTATION
 
     //El LevelManager avisa a la unidad de que debe moverse.
+    //Esta función tiene que ser override para que el mago pueda instanciar decoys.
     public virtual void MoveToTile(IndividualTiles tileToMove, List<IndividualTiles> pathReceived)
     {
         //Compruebo la dirección en la que se mueve para girar a la unidad
@@ -534,7 +538,6 @@ public class PlayerUnit : UnitBase
 
         //Al acabar al movimiento aviso a levelManager de que avise a los enemigos para ver si serán alertados.
         LM.AlertEnemiesOfPlayerMovement();
-        Debug.Log(myCurrentTile);
     }
 
     IEnumerator MovingUnitAnimation()
@@ -1258,7 +1261,7 @@ public class PlayerUnit : UnitBase
     //Si probamos desde el mapa de seleccion el tile se setea al colocar las unidades.
     protected override void FindAndSetFirstTile()
     {
-        if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
+        if (LM.FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa || characterStartedOnTheLevel)
         {
             base.FindAndSetFirstTile();
         }

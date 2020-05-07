@@ -226,6 +226,16 @@ public class LevelManager : MonoBehaviour
             MapGenRef.Init();
         }
 
+        //Esto lo hago por si hay personajes puestos ya en el nivel porque se desbloquean en dicho nivel
+        PlayerUnit[] players = FindObjectsOfType<PlayerUnit>(); 
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (!charactersOnTheBoard.Contains(players[i]))
+            {
+                charactersOnTheBoard.Add(players[i]);
+            }
+        }
+
         //Se inicializan todas las unidades
         for (int i = 0; i < charactersOnTheBoard.Count; i++)
         {
@@ -604,14 +614,22 @@ public class LevelManager : MonoBehaviour
 
             else if (hoverUnit.GetComponent<EnGrabber>())
             {
-                hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.myCurrentTile);
+                hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.myCurrentTile, hoverUnit.currentFacingDirection);
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count == 0)
                 {
                     hoverUnit.ShowActionPathFinding(true);
-                    hoverUnit.GetComponent<EnGrabber>().CalculateDamageForEnemiesGrabbedAfterMovement();
-                    hoverUnit.GetComponent<EnGrabber>().ShowGrabShadow(hoverUnit.shadowTile, hoverUnit.SpecialCheckRotation(hoverUnit.shadowTile, false));
+
+                    //Tengo que hacer que esta comprobación se haga ahora desde el tile en el que va a acabar
+                    hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.shadowTile, hoverUnit.facingDirectionAfterMovement);
+
+                    if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                    {
+                        hoverUnit.GetComponent<EnGrabber>().ShowGrabShadow(hoverUnit.shadowTile, hoverUnit.SpecialCheckRotation(hoverUnit.shadowTile, false));
+                        hoverUnit.GetComponent<EnGrabber>().CalculateDamageForEnemiesGrabbedAfterMovement();
+                    }
                 }
+
                 else
                 {
                     Debug.Log("No me muevo pero si ataco");
@@ -638,7 +656,7 @@ public class LevelManager : MonoBehaviour
                 }
 
 
-                hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.myCurrentTile);
+                hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.myCurrentTile, hoverUnit.currentFacingDirection);
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
@@ -662,7 +680,7 @@ public class LevelManager : MonoBehaviour
                 //Si por el contrario se mueve, pinto el rango desde la función ShowActionPathFinding
                 else
                 {
-                    hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.shadowTile);
+                    hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.shadowTile, hoverUnit.facingDirectionAfterMovement);
                     if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                     {
                         //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
@@ -1130,7 +1148,11 @@ public class LevelManager : MonoBehaviour
 
                     ///Esta línea comentada estaba antes para calcular los tiles pero daba problemas y no cogía a veces todos los tiles. En principio como al hacer hover ya los calculo una vez y lo hace bien,
                     ///uso esos para todos los calculos de pintar,mover etc.
-                    //tilesAvailableForMovement = new List<IndividualTiles>(TM.OptimizedCheckAvailableTilesForMovement(movementUds, clickedUnit, true));
+                    /////tilesAvailableForMovement = new List<IndividualTiles>(TM.OptimizedCheckAvailableTilesForMovement(clickedUnit.movementUds, clickedUnit, true));
+                   
+                    //He puesto esta linea porque si tienes un pj seleccionado al hacer hover sobre otro no se pintan los tiles por lo que si lo seleccionas no aparece ninguno. En principio esta función
+                    //Calcuala bien los tiles y no se quedan sin despintar
+                    tilesAvailableForMovement = new List<IndividualTiles>(TM.CalculateAvailableTilesForHover(clickedUnit.myCurrentTile, clickedUnit));
 
                     Debug.Log("Seleccionar personaje: " + selectedCharacter + " " + tilesAvailableForMovement.Count);
 
@@ -1433,6 +1455,10 @@ public class LevelManager : MonoBehaviour
                 ///Esta línea comentada estaba antes para calcular los tiles pero daba problemas y no cogía a veces todos los tiles. En principio como al hacer hover ya los calculo una vez y lo hace bien,
                 ///uso esos para todos los calculos de pintar,mover etc.
                 //tilesAvailableForMovement = new List<IndividualTiles>(TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter, true));
+
+                //He puesto esta linea porque si tienes un pj seleccionado al hacer hover sobre otro no se pintan los tiles por lo que si lo seleccionas no aparece ninguno. En principio esta función
+                //Calcuala bien los tiles y no se quedan sin despintar
+                tilesAvailableForMovement = new List<IndividualTiles>(TM.CalculateAvailableTilesForHover(selectedCharacter.myCurrentTile, selectedCharacter));
 
                 //Reactivo el collider de las unidades que se les ha quitado antes. Esto es por si hace click en otro tile sin haber rotado.
                 for (int j = 0; j < unitsToEnableCollider.Count; j++)
@@ -1831,7 +1857,7 @@ public class LevelManager : MonoBehaviour
 
             counterForEnemiesOrder = 0;
 
-            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead && (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn))
             {
                 //Focus en enemigo si está despierto
                 camRef.SetCameraMovable(false, true);
@@ -1862,23 +1888,39 @@ public class LevelManager : MonoBehaviour
         {
             counterForEnemiesOrder++;
 
-            if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead)
             {
-                //Bajo la lista de scroll
-                UIM.ScrollUpOnce();
 
-                //Focus en enemigo si está despierto
-                camRef.SetCameraMovable(false, true);
-                camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+                if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+                {
+                    //Bajo la lista de scroll
+                    UIM.ScrollUpOnce();
 
-                //Empieza el turno del siguiente enemigo
-                enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                    //Focus en enemigo si está despierto
+                    camRef.SetCameraMovable(false, true);
+                    camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+
+                    //Empieza el turno del siguiente enemigo
+                    enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                }
+
+                else
+                {
+                    counterForEnemiesOrder = 0;
+                    currentLevelState = LevelState.PlayerPhase;
+                }
             }
 
             else
             {
-                counterForEnemiesOrder = 0;
-                currentLevelState = LevelState.PlayerPhase;
+                counterForEnemiesOrder++;
+                NextEnemyInList();
+
+                if (counterForEnemiesOrder >30)
+                {
+                    Debug.LogError("Custom error para evitar loop recursivo");
+                    Debug.Break();
+                }
             }
         }
     }
