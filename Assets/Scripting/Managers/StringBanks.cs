@@ -133,7 +133,7 @@ public class AppRogueUpgrades
 public class AppMageUpgrades
 {
     public static readonly string MageDataBaseActive = "Mage can target units as far as 5 tiles from him";
-    public static readonly string MageDataBasePasive = "When moving, Mage leaves a decoy at his previous position";
+    public static readonly string MageDataBasePasive = "When moving, Mage leaves a decoy at his previous position. The mage can interchange positions with the decoy";
 
     #region Active
     //CADENA DE RAYOS
@@ -143,7 +143,7 @@ public class AppMageUpgrades
     public static readonly string lightningChain2 = "lightningChain2";
 
     ///Textos
-    public static readonly string lightningChain1Text = "When attacking a target, all adjacent units to it recieve damage, this keeps happening untill the last damaged units have no more adjacent units";
+    public static readonly string lightningChain1Text = "When attacking a target, all adjacent units to it recieve damage, this keeps happening until the last damaged units have no more adjacent units";
     public static readonly string lightningChain2Text = "Damage increases with each time new targets recieve damage, with a limit. Allies don't recieve damage from the chain anymore";
 
 
@@ -278,8 +278,8 @@ public class AppSamuraiUpgrades
     public static readonly string loneWolf2 = "loneWolf2";
 
     ///Textos
-    public static readonly string loneWolf1Text = "When there are no allies in a ?? x ?? tile area with center in Samurai, he recieves a +1 damage buff";
-    public static readonly string loneWolf2Text = "When there are no allies in a ?? x ?? tile area with center in Samurai, he recieves a +2 damage buff";
+    public static readonly string loneWolf1Text = "When there are no allies in a 3 x 3 tile area with center in Samurai, he recieves a +1 damage buff";
+    public static readonly string loneWolf2Text = "When there are no allies in a 3 x 3 tile area with center in Samurai, he recieves a +2 damage buff";
 
     #endregion
 }
@@ -386,7 +386,7 @@ public class AppMonkUpgrades
 
 public class AppValkyrieUpgrades
 {
-    public static readonly string ValkyrieDataBaseActive = "Valkyrie can target units as far as 2 tiles from her. When targeting a unit, she changes positions with it";
+    public static readonly string ValkyrieDataBaseActive = "Valkyrie can target the first unit in the 2 tiles in front of her. When targeting a unit, she changes positions with it";
     public static readonly string ValkyrieDataBasePasive = "Valkyrie has more base movement than other units";
 
     #region Active
@@ -397,8 +397,8 @@ public class AppValkyrieUpgrades
     public static readonly string moreRange2 = "moreRange2";
 
     ///Textos
-    public static readonly string moreRange1Text = "Valkyrie can target units as far as 3 tiles from her";
-    public static readonly string moreRange2Text = "Valkyrie can target units as far as 3 tiles from her, and can target units wiedsfsdgfsdf";
+    public static readonly string moreRange1Text = "Valkyrie's range is now 3 tiles";
+    public static readonly string moreRange2Text = "Valkyrie can target any unit in her range, not only the first one.";
 
     //ARMOUR CHANGE
     public static readonly string armorChange1 = "armorChange1";
