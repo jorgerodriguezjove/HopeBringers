@@ -787,8 +787,11 @@ public class PlayerUnit : UnitBase
         
         if (knightDef != null)
         {
-            CheckIfKnightIsDefending(knightDef, unitAttacker.currentFacingDirection);
-            damageReceived -= knightDef.shieldDef;
+            if (unitAttacker != null)
+            {
+                CheckIfKnightIsDefending(knightDef, unitAttacker.currentFacingDirection);
+                damageReceived -= knightDef.shieldDef;
+            }
         }
        
         if (damageReceived < 0)
