@@ -407,7 +407,7 @@ public class UITableManager : MonoBehaviour
 
     LevelNode[] debugAllLevelsInMapCheat;
     [SerializeField]
-    List<CharacterData> debugAllCharacterData = new List<CharacterData>();
+    CharacterData[] debugAllCharacterData;
 
     //Cheats
     public void UnlockAllLevelsAndCharacters()
@@ -418,8 +418,8 @@ public class UITableManager : MonoBehaviour
             debugAllLevelsInMapCheat[i].UnlockThisLevel();
         }
 
-
-        for (int i = 0; i < debugAllCharacterData.Count; i++)
+        debugAllCharacterData = FindObjectsOfType<CharacterData>();
+        for (int i = 0; i < debugAllCharacterData.Length; i++)
         {
             Debug.Log("Has desbloqueado a un nuevo pj");
 
