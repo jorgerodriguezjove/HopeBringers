@@ -487,7 +487,7 @@ public class EnemyUnit : UnitBase
 
         else
         {
-            Debug.Log(sombraHoverUnit.name + " no tiene sombraHoverUnit");
+            Debug.Log(gameObject.name + " no tiene sombraHoverUnit");
         }
         
 

@@ -493,7 +493,11 @@ public class LevelManager : MonoBehaviour
                     }
 
                     //Compruebo si después de moverse tiene objetivos que atacar
-                    hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, tileToMove);
+                    if (tileToMove != null)
+                    {
+                        hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, tileToMove);
+                    }
+                    
                     //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                     if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                     {
