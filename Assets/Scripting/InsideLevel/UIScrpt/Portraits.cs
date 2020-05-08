@@ -9,7 +9,7 @@ public class Portraits : MonoBehaviour
 	#region VARIABLES
 
     //QUITAR SERIALIZED
-	[HideInInspector]
+	[SerializeField]
 	public PlayerUnit assignedPlayer;
 	[HideInInspector]
 	private UIManager UIM;
@@ -330,7 +330,7 @@ public class Portraits : MonoBehaviour
 
     public void RefreshSprites()
     {
-        characterPortrait.sprite = assignedPlayer.portraitImage;
+        characterPortrait.sprite = assignedPlayer.characterImage;
     }
 
     #endregion

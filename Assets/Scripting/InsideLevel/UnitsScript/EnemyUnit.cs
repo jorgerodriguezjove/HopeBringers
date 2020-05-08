@@ -1681,7 +1681,12 @@ public class EnemyUnit : UnitBase
         if (currentUnitsAvailableToAttack.Count > 0)
         {
             Debug.Log("AQUI");
-            CalculateDamage(currentUnitsAvailableToAttack[0]);
+
+            ///Este se usaba antes y calculaba mal el daño. COMPROBAR SI EL OTRO LO CALCULA BIEN SIEMPRE
+            //CalculateDamage(currentUnitsAvailableToAttack[0]);
+
+            CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], GetComponent<UnitBase>(), myCurrentTile, currentFacingDirection);
+            
 
             currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
         }
