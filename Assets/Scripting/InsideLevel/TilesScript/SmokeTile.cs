@@ -6,6 +6,9 @@ public class SmokeTile : DamageTile
 {
     public bool isNinjaUpgraded;
 
+    //int para saber cuando hay que destruir este tile. Tiene que ser uno más de lo que se quiere porque se actualiza al empezar la fase del jugador
+    public int tileCounter;
+
     #region INIT
     private void Awake()
     {
@@ -16,7 +19,6 @@ public class SmokeTile : DamageTile
 
     public override void OnTriggerStay(Collider unitOnTile)
     {
-
         if (isNinjaUpgraded)
         {
             if (unitOnTile.GetComponent<EnemyUnit>())
@@ -27,10 +29,8 @@ public class SmokeTile : DamageTile
             else if (unitOnTile.GetComponent<PlayerUnit>())
             {
                 unitToDoDamage = unitOnTile.gameObject;
-
                 unitToDoDamage.GetComponent<UnitBase>().isHidden = true;
                 hasUnit = true;
-
             }
 
         }
@@ -64,14 +64,10 @@ public class SmokeTile : DamageTile
             }
             else
             {
-                Debug.Log(unitToDoDamage);
-                
-
+                Debug.Log(unitToDoDamage);                
                 damageDone = true;
                 Debug.Log("DAMAGE DONE");
             }
-
-
         }
     }
 

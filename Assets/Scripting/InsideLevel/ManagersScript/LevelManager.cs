@@ -1790,6 +1790,16 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < damageTilesInBoard.Count; i++)
         {
             damageTilesInBoard[i].damageDone = false;
+
+            if (damageTilesInBoard[i].GetComponent<SmokeTile>())
+            {
+                damageTilesInBoard[i].GetComponent<SmokeTile>().tileCounter--;
+                if (damageTilesInBoard[i].GetComponent<SmokeTile>().tileCounter <= 0)
+                {
+                    Destroy(damageTilesInBoard[i]);
+                }
+            }
+           
         }
 
         //Me aseguro que no quedan tiles en la lista de tiles para moverse.

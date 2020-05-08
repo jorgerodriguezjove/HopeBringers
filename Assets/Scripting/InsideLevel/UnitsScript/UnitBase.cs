@@ -1216,28 +1216,56 @@ public class UnitBase : MonoBehaviour
 
     }
 
-    public virtual void SetShadowRotation(UnitBase unitToSet)
+    public virtual void SetShadowRotation(UnitBase unitToSet, IndividualTiles unitToCheckPos, IndividualTiles otherUnitToCheck)
     {
-        if (unitToSet.currentFacingDirection == FacingDirection.North)
-        {
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+        //if (unitToSet.currentFacingDirection == FacingDirection.North)
+        //{
+        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
            
-        }
+        //}
 
-        else if (unitToSet.currentFacingDirection == FacingDirection.South)
+        //else if (unitToSet.currentFacingDirection == FacingDirection.South)
+        //{
+        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+        //}
+
+        //else if (unitToSet.currentFacingDirection == FacingDirection.East)
+        //{
+
+        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+        //}
+
+        //else if (unitToSet.currentFacingDirection == FacingDirection.West)
+        //{
+        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+        //}
+
+        if (unitToCheckPos.tileX == otherUnitToCheck.tileX)
         {
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            //Arriba
+            if (unitToCheckPos.tileZ > otherUnitToCheck.tileZ)
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+            }
+            //Abajo
+            else
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            }
         }
-
-        else if (unitToSet.currentFacingDirection == FacingDirection.East)
+        //Izquierda o derecha
+        else
         {
-
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-        }
-
-        else if (unitToSet.currentFacingDirection == FacingDirection.West)
-        {
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            //Derecha
+            if (unitToCheckPos.tileX > otherUnitToCheck.tileX)
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+            }
+            //Izquierda
+            else
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            }
         }
     }
 

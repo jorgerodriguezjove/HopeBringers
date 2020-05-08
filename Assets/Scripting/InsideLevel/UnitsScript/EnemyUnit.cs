@@ -425,7 +425,6 @@ public class EnemyUnit : UnitBase
 
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
-                SetShadowRotation(this);
                 sombraHoverUnit.SetActive(true);
             }
 
@@ -437,6 +436,8 @@ public class EnemyUnit : UnitBase
                 shadowTile = pathToObjective[i];
 
                 Vector3 pointPosition = new Vector3(pathToObjective[i].transform.position.x, pathToObjective[i].transform.position.y + 0.5f, pathToObjective[i].transform.position.z);
+                //COMPROBAR
+                SetShadowRotation(this, pathToObjective[i], currentUnitsAvailableToAttack[0].myCurrentTile);
 
                 if (i < pathToObjective.Count - 1)
                 {

@@ -670,8 +670,8 @@ public class Monk : PlayerUnit
         else if (suplex)
         {
             tilesInEnemyHover.Clear();
-
-            SetShadowRotation(_unitToAttack);
+            //COMPROBAR
+            SetShadowRotation(_unitToAttack, _unitToAttack.myCurrentTile, myCurrentTile);
 
             if (currentFacingDirection == FacingDirection.North)
             {

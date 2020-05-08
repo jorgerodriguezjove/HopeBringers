@@ -745,9 +745,8 @@ public class Rogue : PlayerUnit
     {
         tilesInEnemyHover.Clear();
         CalculateAttackLogic(_unitToAttack, false);
-        SetShadowRotation(_unitToAttack);
 
-        SetShadowRotation(this);
+        SetShadowRotation(this, this.myCurrentTile, _unitToAttack.myCurrentTile);
 
         if (!isMovingorRotating)
         {
@@ -859,33 +858,6 @@ public class Rogue : PlayerUnit
         }
 
         sombraHoverUnit.SetActive(false);
-    }
-
-    public override void SetShadowRotation(UnitBase unitToSet)
-    {
-        if (unitToSet.currentFacingDirection == FacingDirection.North)
-        {
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-
-        }
-
-        else if (unitToSet.currentFacingDirection == FacingDirection.South)
-        {
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-
-        }
-
-        else if (unitToSet.currentFacingDirection == FacingDirection.East)
-        {
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-
-        }
-
-        else if (unitToSet.currentFacingDirection == FacingDirection.West)
-        {
-            unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-
-        }
     }
 
     public override void UndoAttack(AttackCommand lastAttack)

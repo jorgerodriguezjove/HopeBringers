@@ -632,7 +632,9 @@ public class EnCharger : EnemyUnit
     public void ShowPushResult()
     {
         currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(true);
-        SetShadowRotation(currentUnitsAvailableToAttack[0]);
+
+        //COMPROBAR
+        SetShadowRotation(currentUnitsAvailableToAttack[0], currentUnitsAvailableToAttack[0].myCurrentTile, myCurrentTile);
 
 
         if (temporalFacingDirectionWhileHover == FacingDirection.North)
