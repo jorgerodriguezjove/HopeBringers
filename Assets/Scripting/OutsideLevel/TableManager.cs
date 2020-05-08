@@ -94,8 +94,6 @@ public class TableManager : MonoBehaviour
         }
 
         //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
-        //Hacer que se quede el último seleccioando!!!!!!!!!!!!!!!!!!!!!
-
         if (GameManager.Instance.currentLevelNodeID == 0)
         {
             Debug.Log("acac");
