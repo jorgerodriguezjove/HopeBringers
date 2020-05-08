@@ -405,15 +405,26 @@ public class UITableManager : MonoBehaviour
 
     #region LEVELS
 
-    LevelNode[] allLevelsInMapCheat;
+    LevelNode[] debugAllLevelsInMapCheat;
+    [SerializeField]
+    List<CharacterData> debugAllCharacterData = new List<CharacterData>();
 
     //Cheats
-    public void UnlockAllLevels()
+    public void UnlockAllLevelsAndCharacters()
     {
-        allLevelsInMapCheat = FindObjectsOfType<LevelNode>();
-        for (int i = 0; i < allLevelsInMapCheat.Length; i++)
+        debugAllLevelsInMapCheat = FindObjectsOfType<LevelNode>();
+        for (int i = 0; i < debugAllLevelsInMapCheat.Length; i++)
         {
-            allLevelsInMapCheat[i].UnlockThisLevel();
+            debugAllLevelsInMapCheat[i].UnlockThisLevel();
+        }
+
+
+        for (int i = 0; i < debugAllCharacterData.Count; i++)
+        {
+            Debug.Log("Has desbloqueado a un nuevo pj");
+
+            GameManager.Instance.newCharacterToUnlock = debugAllCharacterData[i].gameObject;
+            TM.UnlockNewCharacter();
         }
     }
 
