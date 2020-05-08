@@ -129,8 +129,7 @@ public class UnitBase : MonoBehaviour
     protected GameObject attackParticle;
     [SerializeField]
     protected GameObject criticAttackParticle;
-    [SerializeField]
-    protected GameObject collisionParticlePref;
+
 
     [Header("FEEDBACK")]
 
@@ -529,6 +528,9 @@ public class UnitBase : MonoBehaviour
         HealthBarOn_Off(true);
         shouldLockHealthBar = true;
         RefreshHealth(false);
+
+        hoverImpactIcon.SetActive(false);
+
         StartCoroutine("WaitBeforeHiding");
     }
 
@@ -766,12 +768,6 @@ public class UnitBase : MonoBehaviour
                             //Recibo daño 
                             ReceiveDamage(attackersDamageByPush, null);
 
-                            
-
-                            Vector3 test = new Vector3((this.transform.position.x + tilesToCheckForCollision[i].unitOnTile.transform.position.x) / 2, this.transform.position.y, (this.transform.position.z + tilesToCheckForCollision[i].unitOnTile.transform.position.z) / 2);
-
-                            Instantiate(collisionParticlePref, test, collisionParticlePref.transform.rotation);
-
                             //Hago daño a la otra unidad
                             tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
 
@@ -796,10 +792,7 @@ public class UnitBase : MonoBehaviour
                     Debug.Log(tilesToCheckForCollision[numberOfTilesMoved]);
                 }
             }
-
-           
         }
-       
     }
 
     //Función que ejecuta el movimiento del push
