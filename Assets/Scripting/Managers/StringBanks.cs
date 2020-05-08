@@ -29,19 +29,18 @@ public class AppGenericUpgrades
 
 public class AppKnightUpgrades
 {
-    #region Active
-    public static readonly string KnightDataBaseActive = "El caballero hace daño a su objetivo y le empuja una casilla";
-    public static readonly string KnightDataBasePasive = "El caballero no recibe daño por delante";
+	public static readonly string KnightDataBaseActive = "Knight deals damage to the target enemy and pushes it back one tile";
+	public static readonly string KnightDataBasePasive = "Knight does not recieve damage if he gets hit from the front";
+	#region Active
+	//EMPUJAR MÁS LEJOS
 
-    //EMPUJAR MÁS LEJOS
-
-    ///Mejoras a nivel lógico y nombre de ICONOS
-    public static readonly string pushFurther1 = "pushFurther1";
+	///Mejoras a nivel lógico y nombre de ICONOS
+	public static readonly string pushFurther1 = "pushFurther1";
     public static readonly string pushFurther2 = "pushFurther2";
 
     ///Textos
-    public static readonly string pushFurther1Text = "The knight improves his shield so he can push enemies two tiles further";
-    public static readonly string pushFurther2Text = "El enemigo empujado atraviesa al resto de enemigos en su camino haciendoles daño";
+    public static readonly string pushFurther1Text = "Knight pushes enemies two tiles further";
+    public static readonly string pushFurther2Text = "Knight pushes enemies two tiles further, the pushed enemy goes through any enemies on its way dealing them damage";
 
     //EMPUJAR MÁS ENEMIGOS
     ///Mejoras a nivel lógico y nombre de ICONOS
@@ -49,8 +48,8 @@ public class AppKnightUpgrades
     public static readonly string pushWider2 = "pushWider2";
 
     ///Textos
-    public static readonly string pushWider1Text = "El caballero es capaz de empujar a los enemigos laterales de su objetivo";
-    public static readonly string pushWider2Text = "El caballero stunea a los enemigos atacados";
+    public static readonly string pushWider1Text = "Knight also pushes the two enemies at the sides or his target";
+    public static readonly string pushWider2Text = "Knight also pushes the two enemies at the sides or his target, and stuns the pushed enemies";
 
     #endregion
 
@@ -63,8 +62,8 @@ public class AppKnightUpgrades
     public static readonly string individualBlock2 = "individualBlock2";
 
     ///Textos
-    public static readonly string individualBlock1Text = "Recibe menos daño por los lados";
-    public static readonly string individualBlock2Text = "Recibe menos daño por la espalda";
+    public static readonly string individualBlock1Text = "Knight recieves reduced damaged when he gets hit by his sides";
+    public static readonly string individualBlock2Text = "Knight recieves reduced damaged when he gets hit by his sides and his back";
 
 
     //EMPUJAR MÁS ENEMIGOS
@@ -73,16 +72,16 @@ public class AppKnightUpgrades
     public static readonly string neighbourBlock2 = "neighbourBlock2";
 
     ///Textos
-    public static readonly string neighbourBlock1Text = "Los aliados adyacentes al caballero reciben menos daño si el ataque proviene en la dirección contraria al escudo";
-    public static readonly string neighbourBlock2Text = "Los aliados no reciben daño al ser protegidos";
+    public static readonly string neighbourBlock1Text = "Knight protects the allies at his sides, making them to recieve less damage of attacks coming from his front";
+    public static readonly string neighbourBlock2Text = "Knight protects the allies at his sides, making them to recieve no damage of attacks coming from his front";
 
     #endregion
 }
 
 public class AppRogueUpgrades
 {
-    public static readonly string RogueDataBaseActive = "Active";
-    public static readonly string RogueDataBasePasive = "Pasive";
+    public static readonly string RogueDataBaseActive = "Rogue jumps into the opposite tile to the one he is in before attacking";
+    public static readonly string RogueDataBasePasive = "Rogue can attack from every direction, not only his front";
 
     #region Active
     //MULTI JUMP
@@ -92,8 +91,8 @@ public class AppRogueUpgrades
     public static readonly string multiJumpAttack2 = "multiJumpAttack2";
 
     ///Textos
-    public static readonly string multiJumpAttack1Text = "";
-    public static readonly string multiJumpAttack2Text = "";
+    public static readonly string multiJumpAttack1Text = "Rogue can attack again after attacking if he has any valid target where he landed";
+    public static readonly string multiJumpAttack2Text = "Rogue can attack multiple times after attacking if he has a valid target";
 
 
     //EXTRA TURN
@@ -101,8 +100,8 @@ public class AppRogueUpgrades
     public static readonly string extraTurnAfterKill2 = "extraTurnAfterKill2";
 
     ///Textos
-    public static readonly string extraTurnAfterKill1Text = "";
-    public static readonly string extraTurnAfterKill2Text = "";
+    public static readonly string extraTurnAfterKill1Text = "Rogue gets an extra turn after killing an enemy, one time only";
+    public static readonly string extraTurnAfterKill2Text = "Rogue gets an extra turn after killing an enemy, two times";
 
     #endregion
 
@@ -115,8 +114,8 @@ public class AppRogueUpgrades
     public static readonly string smokeBomb2 = "smokeBomb2";
 
     ///Textos
-    public static readonly string smokeBomb1Text = "";
-    public static readonly string smokeBomb2Text = "";
+    public static readonly string smokeBomb1Text = "When killing an enemy, Rogue drops a smoke bomb in the tile he is. This makes enemies loose track of any unit inside of it";
+    public static readonly string smokeBomb2Text = "When killing an enemy, Rogue drops a 3x3 tile area smoke bomb with center in the tile he is. This makes enemies loose track of any unit inside of it";
 
 
     //BUFO DAÑO
@@ -124,8 +123,8 @@ public class AppRogueUpgrades
     public static readonly string buffDamageKill2 = "buffDamageKill2";
 
     ///Textos
-    public static readonly string buffDamageKill1Text = "";
-    public static readonly string buffDamageKill2Text = "";
+    public static readonly string buffDamageKill1Text = "Rogue gets a +1 damage buff when killing an enemy";
+    public static readonly string buffDamageKill2Text = "Rogue gets a +2 damage buff when killing an enemy";
 
     #endregion
 
@@ -133,8 +132,8 @@ public class AppRogueUpgrades
 
 public class AppMageUpgrades
 {
-    public static readonly string MageDataBaseActive = "El mago ataca a un enemigo hasta cinco casillas de distancia";
-    public static readonly string MageDataBasePasive = "Al moverse el mago deja un señuelo en su posición anterior";
+    public static readonly string MageDataBaseActive = "Mage can target units as far as 5 tiles from him";
+    public static readonly string MageDataBasePasive = "When moving, Mage leaves a decoy at his previous position";
 
     #region Active
     //CADENA DE RAYOS
@@ -144,8 +143,8 @@ public class AppMageUpgrades
     public static readonly string lightningChain2 = "lightningChain2";
 
     ///Textos
-    public static readonly string lightningChain1Text = "Al atacar a un objetivo, los personajes adyacentes a este reciben daño formando una cadena de rayos";
-    public static readonly string lightningChain2Text = "El daño aumenta con cada eslabón de la cadena dañado hasta un máximo. Los alidos además no reciben daño pero mantienen la cadena";
+    public static readonly string lightningChain1Text = "When attacking a target, all adjacent units to it recieve damage, this keeps happening untill the last damaged units have no more adjacent units";
+    public static readonly string lightningChain2Text = "Damage increases with each time new targets recieve damage, with a limit. Allies don't recieve damage from the chain anymore";
 
 
     //AREA
@@ -153,8 +152,8 @@ public class AppMageUpgrades
     public static readonly string crossAreaAttack2 = "crossAreaAttack2";
 
     ///Textos
-    public static readonly string crossAreaAttack1Text = "Al atacar a un objetivo, todos los personajes que le rodeen reciben daño";
-    public static readonly string crossAreaAttack2Text = "El área de ataque aumenta hasta incluir las diagonales del objetivo";
+    public static readonly string crossAreaAttack1Text = "When attacking a target, all units adjacent to it recieve damage";
+    public static readonly string crossAreaAttack2Text = "When attacking a target, all units in it's surrounding tiles recieve damage";
 
     #endregion
 
@@ -167,8 +166,8 @@ public class AppMageUpgrades
     public static readonly string bombDecoy2 = "bombDecoy2";
 
     ///Textos
-    public static readonly string bombDecoy1Text = "";
-    public static readonly string bombDecoy2Text = "";
+    public static readonly string bombDecoy1Text = "When defeated, the decoy makes damage in a 3x3 tile area with center on it";
+    public static readonly string bombDecoy2Text = "When the mage changes positions with the decoy, it explodes";
 
 
     //MIRROR
@@ -176,16 +175,16 @@ public class AppMageUpgrades
     public static readonly string mirrorDecoy2 = "mirrorDecoy2";
 
     ///Textos
-    public static readonly string mirrorDecoy1Text = "";
-    public static readonly string mirrorDecoy2Text = "";
+    public static readonly string mirrorDecoy1Text = "When the mage attacks, the decoy attacks the first enemy in range in the direction it is looking";
+    public static readonly string mirrorDecoy2Text = "When the mage attacks, the decoy attacks every enemy in range in the direction it is looking";
 
     #endregion
 }
 
 public class AppBerserkUpgrades
 {
-    public static readonly string BerserkDataBaseActive = "Active";
-    public static readonly string BerserkDataBasePasive = "Pasive";
+    public static readonly string BerserkDataBaseActive = "Berserk attacks a target in front of him";
+    public static readonly string BerserkDataBasePasive = "When Berserk recieves damage, he enters in rage for 3 turns obtaining a +1 damage buff";
 
     #region Active
     //DOUBLE ATTACK
@@ -195,8 +194,8 @@ public class AppBerserkUpgrades
     public static readonly string areaAttack2 = "areaAttack2";
 
     ///Textos
-    public static readonly string areaAttack1Text = "";
-    public static readonly string areaAttack2Text = "";
+    public static readonly string areaAttack1Text = "Berserk attacks in a 3x1 tile area in front of him";
+    public static readonly string areaAttack2Text = "Berserk attacks in a 3x1 tile area in front of him, and deals more damage with it";
 
     //CIRCULAR ATTACK
     ///Mejoras a nivel lógico y nombre de ICONOS
@@ -204,8 +203,8 @@ public class AppBerserkUpgrades
     public static readonly string circularAttack2 = "circularAttack2";
 
     ///Textos
-    public static readonly string circularAttack1Text = "";
-    public static readonly string circularAttack2Text = "";
+    public static readonly string circularAttack1Text = "When attacking, Berserk also attacks all the units in his adjacent tiles";
+    public static readonly string circularAttack2Text = "When attacking, Berserk also attacks all the units in his adjacent tiles. Berserk no does this twice";
 
     #endregion
 
@@ -217,8 +216,8 @@ public class AppBerserkUpgrades
     public static readonly string rageDamage2 = "rageDamage2";
 
     ///Textos
-    public static readonly string rageDamage1Text = "";
-    public static readonly string rageDamage2Text = "";
+    public static readonly string rageDamage1Text = "When Berserk recieves damage, he enters in rage for 3 turns obtaining a +2 damage buff";
+    public static readonly string rageDamage2Text = "When Berserk recieves damage, he enters in rage for 3 turns obtaining a +3 damage buff";
 
 
     //FEAR
@@ -227,16 +226,16 @@ public class AppBerserkUpgrades
     public static readonly string fearRage2 = "fearRage2";
 
     ///Textos
-    public static readonly string fearRage1Text = "";
-    public static readonly string fearRage2Text = "";
+    public static readonly string fearRage1Text = "If Berserk attacks a target while in rage, the target gets a -1 damage debuff for 1 turn";
+    public static readonly string fearRage2Text = "If Berserk attacks a target while in rage, the target gets a -1 damage debuff for 2 turns";
 
     #endregion
 }
 
 public class AppSamuraiUpgrades
 {
-    public static readonly string SamuraiDataBaseActive = "Active";
-    public static readonly string SamuraiDataBasePasive = "Pasive";
+    public static readonly string SamuraiDataBaseActive = "Samurai attacks a target in front of him";
+    public static readonly string SamuraiDataBasePasive = "Samurai has a +1 damage buff when attacking enemies from their front, but he can't attack them form their back";
 
     #region Active
     //PARRY
@@ -246,16 +245,17 @@ public class AppSamuraiUpgrades
     public static readonly string parry2 = "parry2";
 
     ///Textos
-    public static readonly string parry1Text = "";
-    public static readonly string parry2Text = "";
+    public static readonly string parry1Text = "When attacking a target, Samurai prepares his attack. When is about to get hit, he cancels the damage dealt by the target and deals it back to it";
+    public static readonly string parry2Text = "When attacking a target, Samurai prepares his attack. When is about to get hit, he cancels the damage dealt by the target and deals it back to it. " +
+		"Also, if whith his attack prepared recieves damage from his sides he reflects it to the target";
 
     //MULTI ATTACK
     public static readonly string multiAttack1 = "multiAttack1";
     public static readonly string multiAttack2 = "multiAttack2";
 
     ///Textos
-    public static readonly string multiAttack1Text = "";
-    public static readonly string multiAttack2Text = "";
+    public static readonly string multiAttack1Text = "Samurai attacks a target in front of him 3 times";
+    public static readonly string multiAttack2Text = "Samurai attacks a target in front of him 5 times";
 
     #endregion
 
@@ -267,8 +267,10 @@ public class AppSamuraiUpgrades
     public static readonly string honor2 = "honor2";
 
     ///Textos
-    public static readonly string honor1Text = "";
-    public static readonly string honor2Text = "";
+    public static readonly string honor1Text = "When Samurai and his allies attack enemies from the front, the Honor counter increases one point. " +
+		"Any ally attacking an enemy from the back resets the counter. Each point is a +1 damage buff to Samurai";
+    public static readonly string honor2Text = "When Samurai and his allies attack enemies from the front, the Honor counter increases one point. " +
+		"Any ally attacking an enemy from the back resets the counter. Each point is a +1 damage buff to all the party";
 
 
     //SOLITARIO
@@ -276,16 +278,17 @@ public class AppSamuraiUpgrades
     public static readonly string loneWolf2 = "loneWolf2";
 
     ///Textos
-    public static readonly string loneWolf1Text = "";
-    public static readonly string loneWolf2Text = "";
+    public static readonly string loneWolf1Text = "When there are no allies in a ?? x ?? tile area with center in Samurai, he recieves a +1 damage buff";
+    public static readonly string loneWolf2Text = "When there are no allies in a ?? x ?? tile area with center in Samurai, he recieves a +2 damage buff";
 
     #endregion
 }
 
 public class AppDruidUpgrades
 {
-    public static readonly string DruidDataBaseActive = "Active";
-    public static readonly string DruidDataBasePasive = "Pasive";
+	public static readonly string DruidDataBaseActive = "Druid can target units as far as 5 tiles from her. When targeting an ally, she loses 1 hp to heal it. " +
+		"When targeting an enemy, Druid drains 1 hp of it";
+    public static readonly string DruidDataBasePasive = "Special tiles have no effect on Druid";
 
     #region Active
     //MORE HEAL
@@ -295,16 +298,16 @@ public class AppDruidUpgrades
     public static readonly string heal2 = "heal2";
 
     ///Textos
-    public static readonly string heal1Text = "";
-    public static readonly string heal2Text = "";
+    public static readonly string heal1Text = "Druid heals more hp to her allies";
+    public static readonly string heal2Text = "Druid heals more hp to her allies and gives them a +2 movement buff";
 
     //AREA HEAL
     public static readonly string areaHeal1 = "areaHeal1";
     public static readonly string areaHeal2 = "areaHeal2";
 
     ///Textos
-    public static readonly string areaHeal1Text = "";
-    public static readonly string areaHeal2Text = "";
+    public static readonly string areaHeal1Text = "Druid heals in a 3x3 tile area with center on her target";
+    public static readonly string areaHeal2Text = "Druid heals in a 3x3 tile area with center on her target and removes all debuffs";
 
     #endregion
 
@@ -316,8 +319,9 @@ public class AppDruidUpgrades
     public static readonly string tile2 = "tile2";
 
     ///Textos
-    public static readonly string tile1Text = "";
-    public static readonly string tile2Text = "";
+    public static readonly string tile1Text = "When healing an ally, Druid turns the tile where the target is into a healing tile, which heals 1 hp to the unit on it each turn";
+    public static readonly string tile2Text = "When healing an ally, Druid turns the tile where the target is into a healing tile, which heals 1 hp to the ally on it each turn " +
+		"and deals damage any enemy on it each turn";
 
 
     //TILE MOVEMENT
@@ -325,16 +329,17 @@ public class AppDruidUpgrades
     public static readonly string tileMovement2 = "tileMovement2";
 
     ///Textos
-    public static readonly string tileMovement1Text = "";
-    public static readonly string tileMovement2Text = "";
+    public static readonly string tileMovement1Text = "When Druid on a special tile she turns it into a healing tile, which heals 1 hp to the unit on it each turn";
+    public static readonly string tileMovement2Text = "When Druid on a special tile she turns it into a healing tile, " +
+		"which heals 1 hp to the unit on it each turn and gives them a +1 damage buff while on it";
 
     #endregion
 }
 
 public class AppMonkUpgrades
 {
-    public static readonly string MonkDataBaseActive = "Active";
-    public static readonly string MonkDataBasePasive = "Pasive";
+    public static readonly string MonkDataBaseActive = "Monk attacks a target in front of him";
+    public static readonly string MonkDataBasePasive = "When attacking an enemy, Monk leaves a mark on it. When allies attack a marked enemy, the mark explodes healing the attacking unit";
 
     #region Active
     //TURN 180 AND CHAIN MARK
@@ -344,16 +349,16 @@ public class AppMonkUpgrades
     public static readonly string turn2 = "turn2";
 
     ///Textos
-    public static readonly string turn1Text = "";
-    public static readonly string turn2Text = "";
+    public static readonly string turn1Text = "When attacking a target, Monk rotates it 180 degrees";
+    public static readonly string turn2Text = "When attacking a target, Monk rotates it 180 degrees. If it has a mark, it explodes and gives a mark to all adjacent enemies";
 
     //SUPLEX AND UPGRADED MARK
     public static readonly string suplex1 = "suplex1";
     public static readonly string suplex2 = "suplex2";
 
     ///Textos
-    public static readonly string suplex1Text = "";
-    public static readonly string suplex2Text = "";
+    public static readonly string suplex1Text = "When attacking a target, Monk puts that unit in the tile behind him";
+    public static readonly string suplex2Text = "When attacking a target, Monk puts that unit in the tile behind him. If it has a mark Monk upgrades it only once, so it heals more";
 
     #endregion
 
@@ -365,24 +370,24 @@ public class AppMonkUpgrades
     public static readonly string markDebuff2 = "markDebuff2";
 
     ///Textos
-    public static readonly string markDebuff1Text = "";
-    public static readonly string markDebuff2Text = "";
+    public static readonly string markDebuff1Text = "Enemies get a -1 damage debuff while they have a mark on them";
+    public static readonly string markDebuff2Text = "Enemies get a -1 damage debuff while they have a mark on them. When the mark explodes it stuns the enemy besides healing the attacking unit";
 
     //MORE HEAL AND BUFF PLAYER
     public static readonly string markBuff1 = "markBuff1";
     public static readonly string markBuff2 = "markBuff2";
 
     ///Textos
-    public static readonly string markBuff1Text = "";
-    public static readonly string markBuff2Text = "";
+    public static readonly string markBuff1Text = "Marks heal more to the attacking unit";
+    public static readonly string markBuff2Text = "Marks heal more to the attacking unit and gives it a +1 damage buff";
 
     #endregion
 }
 
 public class AppValkyrieUpgrades
 {
-    public static readonly string ValkyrieDataBaseActive = "Active";
-    public static readonly string ValkyrieDataBasePasive = "Pasive";
+    public static readonly string ValkyrieDataBaseActive = "Valkyrie can target units as far as 2 tiles from her. When targeting a unit, she changes positions with it";
+    public static readonly string ValkyrieDataBasePasive = "Valkyrie has more base movement than other units";
 
     #region Active
     //MORE RANGE
@@ -392,16 +397,16 @@ public class AppValkyrieUpgrades
     public static readonly string moreRange2 = "moreRange2";
 
     ///Textos
-    public static readonly string moreRange1Text = "";
-    public static readonly string moreRange2Text = "";
+    public static readonly string moreRange1Text = "Valkyrie can target units as far as 3 tiles from her";
+    public static readonly string moreRange2Text = "Valkyrie can target units as far as 3 tiles from her, and can target units wiedsfsdgfsdf";
 
     //ARMOUR CHANGE
     public static readonly string armorChange1 = "armorChange1";
     public static readonly string armorChange2 = "armorChange2";
 
     ///Textos
-    public static readonly string armorChange1Text = "";
-    public static readonly string armorChange2Text = "";
+    public static readonly string armorChange1Text = "When Valkyrie changes positions with an ally, she gives them 1 armor point";
+    public static readonly string armorChange2Text = "When Valkyrie changes positions with an ally, she gives them and herself 2 armor points";
 
     #endregion
 
@@ -413,16 +418,16 @@ public class AppValkyrieUpgrades
     public static readonly string sustitution2 = "sustitution2";
 
     ///Textos
-    public static readonly string sustitution1Text = "";
-    public static readonly string sustitution2Text = "";
+    public static readonly string sustitution1Text = "Valkyrie can use her movement to change positions with an ally with only 1 hp left in any tile of the level";
+    public static readonly string sustitution2Text = "Valkyrie can use her movement to change positions with an ally with only 3 or less hp left in any tile of the level";
 
     //HEIGHT
     public static readonly string height1 = "height1";
     public static readonly string height2 = "height2";
 
     ///Textos
-    public static readonly string height1Text = "";
-    public static readonly string height2Text = "";
+    public static readonly string height1Text = "Valkyrie can now move with a height difference between tiles of 2";
+    public static readonly string height2Text = "Valkyrie ignores height differences between tiles";
 
     #endregion
 }
