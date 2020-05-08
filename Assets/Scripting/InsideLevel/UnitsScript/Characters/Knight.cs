@@ -369,24 +369,25 @@ public class Knight : PlayerUnit
                             DoDamage(myCurrentTile.tilesInLineUp[i].unitOnTile);
                         }
                     }
+
+                    DoDamage(unitToAttack);
                 }
 
                 else if (currentFacingDirection == FacingDirection.South)
                 {
-
-                    for (int i = 0; i - 1 < tilesToPush; i++)
-                    {
-                        if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
+                    if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
                        && myCurrentTile.tilesInLineDown[tilesToPush] != null
                        && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
                        && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
-                        {
-                            //UNDO
-                            CreateAttackCommand(unitToAttack);
+                    {
+                        //UNDO
+                        CreateAttackCommand(unitToAttack);
 
-                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
-                        }
+                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
+                    }
 
+                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    {
                         if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                         {
                             if (myCurrentTile.tilesInLineDown[i].unitOnTile != unitToAttack)
@@ -399,6 +400,8 @@ public class Knight : PlayerUnit
                             DoDamage(myCurrentTile.tilesInLineDown[i].unitOnTile);
                         }
                     }
+
+                    DoDamage(unitToAttack);
                 }
 
                 else if (currentFacingDirection == FacingDirection.East)
@@ -428,6 +431,8 @@ public class Knight : PlayerUnit
                             DoDamage(myCurrentTile.tilesInLineRight[i].unitOnTile);
                         }
                     }
+
+                    DoDamage(unitToAttack);
                 }
 
                 else if (currentFacingDirection == FacingDirection.West)
@@ -457,7 +462,10 @@ public class Knight : PlayerUnit
                             DoDamage(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                         }
                     }
+
+                    DoDamage(unitToAttack);
                 }
+
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
             }
 

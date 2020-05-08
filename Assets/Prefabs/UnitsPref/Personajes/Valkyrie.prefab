@@ -1217,7 +1217,7 @@ Transform:
   m_LocalPosition: {x: -1.2, y: 0.586, z: -2.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2321526466818588053}
+  - {fileID: 2322119665707696136}
   - {fileID: 3950614576973942921}
   - {fileID: 5326743415036196800}
   - {fileID: 357359107450150031}
@@ -1326,14 +1326,12 @@ MonoBehaviour:
   timeToWaitBeforeHidingHealthbar: 1
   damageWithMultipliersApplied: 0
   isDead: 0
-  movementParticle: {fileID: 2322192261163150173}
+  movementParticle: {fileID: 2322119665707696180}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
   attackParticle: {fileID: 5147340322548916948, guid: 502e233d19f08e5488b039fc62982e78,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 1631310562937272264}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
@@ -1386,6 +1384,7 @@ MonoBehaviour:
   unitName: Valkyrie
   inGamePortrait: {fileID: 923455315166423774}
   unitGeneralInfo: 
+  characterStartedOnTheLevel: 0
   initialPosInBox: {fileID: 0}
   hasMoved: 0
   hasAttacked: 0
@@ -2750,6 +2749,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ValkAtaqueMejorado1
       objectReference: {fileID: 0}
+    - target: {fileID: 1419970769320016961, guid: b681bc3602c0bfb43941931f3a532665,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1419970769320016966, guid: b681bc3602c0bfb43941931f3a532665,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2860,6 +2864,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ValkAtaqueMejorado3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419970769320016961, guid: b681bc3602c0bfb43941931f3a532665,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1419970769320016966, guid: b681bc3602c0bfb43941931f3a532665,
         type: 3}
@@ -3182,13 +3191,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eac7894746a985341a280e45d7abac75, type: 3}
---- !u!4 &2321526466818588053 stripped
+--- !u!4 &2322119665707696136 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75,
     type: 3}
   m_PrefabInstance: {fileID: 2322119665707696185}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2322192261163150173 stripped
+--- !u!1 &2322119665707696180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1062157001075556, guid: eac7894746a985341a280e45d7abac75,
     type: 3}
@@ -3695,6 +3704,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ValkAtaqueMejorado2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419970769320016961, guid: b681bc3602c0bfb43941931f3a532665,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1419970769320016966, guid: b681bc3602c0bfb43941931f3a532665,
         type: 3}
