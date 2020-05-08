@@ -479,7 +479,17 @@ public class EnemyUnit : UnitBase
     public void HideActionPathfinding()
     {
         myLineRenderer.enabled = false;
-        sombraHoverUnit.SetActive(false);
+
+        if (sombraHoverUnit != null)
+        {
+            sombraHoverUnit.SetActive(false);
+        }
+
+        else
+        {
+            Debug.Log(sombraHoverUnit.name + " no tiene sombraHoverUnit");
+        }
+        
 
         for (int i = 0; i < tilesAlreadyUnderAttack.Count; i++)
         {
