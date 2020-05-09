@@ -841,6 +841,8 @@ public class UIManager : MonoBehaviour
 
     public void BackToLevelSelectionButton()
     {
+        LM.UnPauseGame();
+
         if (GameManager.Instance.isInterlude)
         {
             GameManager.Instance.CheckEndLevel(GameManager.Instance.interludeSceneName);
