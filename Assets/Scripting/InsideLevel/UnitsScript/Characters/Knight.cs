@@ -368,6 +368,8 @@ public class Knight : PlayerUnit
 
         ActivateParticleEffect();
 
+        HideAttackEffect(unitToAttack);
+
         //Este primer if  lo pongo de momento para seguir la misma estructura que con los otros personajes y por si hay que cambiar algo específico como la animación, el sonido...
         if (pushFarther)
         {
@@ -790,7 +792,7 @@ public class Knight : PlayerUnit
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
 
-        HideAttackEffect(unitToAttack);
+        
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }
@@ -1168,11 +1170,12 @@ public class Knight : PlayerUnit
                     if (pushWider2)
                     {
                         SetStunIcon(tilesInEnemyHover[i].unitOnTile, true, true);
-                        //Descomentar si se quiere cambiar el sitio donde aparece
+                      //Descomentar si se quiere cambiar el sitio donde aparece
                       //tilesInEnemyHover[i].unitOnTile.stunIcon.transform.position = tilesInEnemyHover[i].unitOnTile.shaderHover.transform.position;
                     }
                 }
             }
+
         }
 
         else if (pushFarther2)
@@ -1291,15 +1294,17 @@ public class Knight : PlayerUnit
                 {
                     _unitToAttack.sombraHoverUnit.SetActive(false);
                 }
-                else
+                else if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall) != null)
                 {
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
                 }
-
-                //Añado esta línea para luego pintar el tile al que se va a mover
-                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall));
-
-                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).ColorAttack();
+               
+                if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall) != null)
+                {
+                    //Añado esta línea para luego pintar el tile al que se va a mover
+                    tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall));
+                    CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).ColorAttack();
+                }
             }
 
             else if (currentFacingDirection == FacingDirection.South)
@@ -1308,14 +1313,17 @@ public class Knight : PlayerUnit
                 {
                     _unitToAttack.sombraHoverUnit.SetActive(false);
                 }
-                else
+                else if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall) != null)
                 {
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).transform.position;
                 }
-                //Añado esta línea para luego pintar el tile al que se va a mover
-                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall));
 
-                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).ColorAttack();
+                if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall) != null)
+                {
+                    //Añado esta línea para luego pintar el tile al que se va a mover
+                    tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall));
+                    CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown, damageMadeByPush, damageMadeByFall).ColorAttack();
+                }               
             }
 
             else if (currentFacingDirection == FacingDirection.East)
@@ -1324,15 +1332,18 @@ public class Knight : PlayerUnit
                 {
                     _unitToAttack.sombraHoverUnit.SetActive(false);
                 }
-                else
+                else if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall) != null)
                 {
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).transform.position;                
                 }
 
-                //Añado esta línea para luego pintar el tile al que se va a mover
-                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall));
-
-                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).ColorAttack();
+                if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall) != null)
+                {
+                    //Añado esta línea para luego pintar el tile al que se va a mover
+                    tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall));
+                    CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight, damageMadeByPush, damageMadeByFall).ColorAttack();
+                }
+                
             }
 
             else if (currentFacingDirection == FacingDirection.West)
@@ -1341,14 +1352,18 @@ public class Knight : PlayerUnit
                 {
                     _unitToAttack.sombraHoverUnit.SetActive(false);
                 }
-                else
+                else if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall) != null)
                 {
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
                 }
 
-                //Añado esta línea para luego pintar el tile al que se va a mover
-                tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall));
-                CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).ColorAttack();
+                if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall) != null)
+                {
+                    //Añado esta línea para luego pintar el tile al que se va a mover
+                    tilesInEnemyHover.Add(CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall));
+                    CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).ColorAttack();
+                }
+            
             }
 
 
@@ -1373,6 +1388,7 @@ public class Knight : PlayerUnit
     {
         shieldBlockAllDamage.SetActive(false);
         _unitToAttack.sombraHoverUnit.SetActive(false);
+        hoverImpactIcon.SetActive(false);
 
         tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
         //Marco las unidades disponibles para atacar de color rojo
