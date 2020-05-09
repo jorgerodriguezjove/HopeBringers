@@ -208,20 +208,15 @@ public class MechaBoss : EnemyUnit
 
     private void ShootBeam()
     {
+        particleAttackBeam.SetActive(false);
+        particleAttackBeam.SetActive(true);
+
         for (int i = 0; i < beamTiles.Count; i++)
         {
             if (beamTiles[i].unitOnTile != null && beamTiles[i].unitOnTile.GetComponent<UnitBase>())
             {
-                if (particleAttackBeam.activeSelf)
-                {
-                    particleAttackBeam.SetActive(false);
-                }
-
-                particleAttackBeam.SetActive(true);
-
                 DoDamage(beamTiles[i].unitOnTile);
             }
-
             beamTiles[i].ColorDesAttack();
         }
     }
