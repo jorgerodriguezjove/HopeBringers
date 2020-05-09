@@ -831,11 +831,18 @@ public class UnitBase : MonoBehaviour
     {
         if (!isDead)
         {
-            unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
+            if (unitMaterialModel != null && unitMaterialModel.GetComponent<SkinnedMeshRenderer>())
+            {
+                unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = AvailableToBeAttackedColor;
+            }
 
             if (damageCalculated >= 0)
             {
-                previsualizeAttackIcon.SetActive(true);
+                if (previsualizeAttackIcon != null)
+                {
+                    previsualizeAttackIcon.SetActive(true);
+                }
+               
                 EnableCanvasHover(damageCalculated);
             }
         }        

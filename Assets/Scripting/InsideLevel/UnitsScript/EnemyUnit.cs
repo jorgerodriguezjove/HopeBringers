@@ -1699,8 +1699,8 @@ public class EnemyUnit : UnitBase
             ///Este se usaba antes y calculaba mal el daño. COMPROBAR SI EL OTRO LO CALCULA BIEN SIEMPRE
             //CalculateDamage(currentUnitsAvailableToAttack[0]);
 
+            //Probe a usar esto pero creo que no funciona bien
             CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[0], GetComponent<UnitBase>(), myCurrentTile, currentFacingDirection);
-            
 
             currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
         }

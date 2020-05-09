@@ -4202,7 +4202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fea6cd8d9d8b747a00e7ca61fc7f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 9
+  speed: 8
   maxHealth: 2
   currentHealth: 0
   currentArmor: 0
@@ -4231,8 +4231,6 @@ MonoBehaviour:
   attackParticle: {fileID: 5147340322548916948, guid: 502e233d19f08e5488b039fc62982e78,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 3050152619086575212}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
@@ -4305,12 +4303,14 @@ MonoBehaviour:
   enemyTierImage: {fileID: 0}
   numberOfAttackTokens: 0
   bossPortrait: {fileID: 0}
+  interrogationParticle: {fileID: 0}
   arrowEnemyIndicator: {fileID: 5853516458502328534}
   selectedMaterial: {fileID: 2100000, guid: a5415897e4e7e744a9ad91bad6400b8d, type: 2}
   myPortrait: {fileID: 0}
   myLineRenderer: {fileID: 8786163929657530259}
   sleepParticle: {fileID: 7920324145984316603}
   exclamationIcon: {fileID: 6008040401762788149}
+  facingDirectionAfterMovement: 0
   tier2AttackHorn: {fileID: 0}
 --- !u!114 &2814326850417192975
 MonoBehaviour:
@@ -4795,11 +4795,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4604415163970502, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4785066959759292, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4958464907473990, guid: 0d42bc61d684259409d481c6f5dd5d5c, type: 3}
       propertyPath: m_LocalPosition.x

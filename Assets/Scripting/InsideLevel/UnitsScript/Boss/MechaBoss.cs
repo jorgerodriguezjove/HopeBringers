@@ -143,9 +143,9 @@ public class MechaBoss : EnemyUnit
 
     public override void Attack()
     {
-        base.Attack();
-
         bossPortrait.FlipAttackTokens();
+
+        base.Attack();
 
         if (isCharging)
         {
@@ -210,7 +210,7 @@ public class MechaBoss : EnemyUnit
     {
         for (int i = 0; i < beamTiles.Count; i++)
         {
-            if (beamTiles[i].unitOnTile != null && beamTiles[i].unitOnTile.GetComponent<PlayerUnit>())
+            if (beamTiles[i].unitOnTile != null && beamTiles[i].unitOnTile.GetComponent<UnitBase>())
             {
                 if (particleAttackBeam.activeSelf)
                 {
