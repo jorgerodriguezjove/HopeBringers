@@ -622,7 +622,7 @@ public class UIManager : MonoBehaviour
         {
             if (isScrollButtonDownBeingPressed)
             {
-                if (panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y)
+                if (panelesEnemigos.Count > 0 && panelesEnemigos[0] != null && panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.down * scrollSpeed * Time.deltaTime);
 					buttonDownHighlight.SetActive(true);
@@ -637,7 +637,7 @@ public class UIManager : MonoBehaviour
 
             if (isScrollButtonUpBeingPressed)
             {
-                if (panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y)
+                if (panelesEnemigos.Count > 1 && panelesEnemigos[panelesEnemigos.Count - 1] && panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y)
                 {
                     padrePanelesEnemigos.transform.Translate(Vector3.up * scrollSpeed * Time.deltaTime);
 					buttonUpHighlight.SetActive(true);
@@ -645,6 +645,7 @@ public class UIManager : MonoBehaviour
 					//buttonDown.gameObject.transform.DORotate(buttonDown.gameObject.transform.rotation.eulerAngles + new Vector3(0, 0, -10), 0.2f);
 				}
             }
+
 			else
 			{
 				buttonUpHighlight.SetActive(false);
@@ -652,11 +653,14 @@ public class UIManager : MonoBehaviour
 
 			if(scrollDownToEnemy && LM.selectedEnemy != null)
 			{
-				if (panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y && LM.selectedEnemy.myPortrait.transform.position.y >= topScrollUp.transform.position.y)
+				if (panelesEnemigos.Count > 0 && panelesEnemigos[0] != null && panelesEnemigos[0].transform.position.y >= topScrollUp.transform.position.y &&
+                    LM.selectedEnemy != null && !LM.selectedEnemy.isDead && LM.selectedEnemy.myPortrait != null && 
+                    LM.selectedEnemy.myPortrait.transform.position.y >= topScrollUp.transform.position.y)
 				{
 					padrePanelesEnemigos.transform.Translate(Vector3.down * autoScrollSpeed * Time.deltaTime);
 					buttonDownHighlight.SetActive(true);
 				}
+
 				else
 				{
 					scrollDownToEnemy = false;
@@ -665,19 +669,19 @@ public class UIManager : MonoBehaviour
 
 			if (scrollUpToEnemy && LM.selectedEnemy != null)
 			{
-				if (panelesEnemigos.Count > 0 && panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y && LM.selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
+				if (panelesEnemigos.Count > 1 &&  panelesEnemigos[panelesEnemigos.Count - 1] != null && panelesEnemigos[panelesEnemigos.Count - 1].transform.position.y <= topScrollDown.transform.position.y &&
+                    LM.selectedEnemy != null && !LM.selectedEnemy.isDead && LM.selectedEnemy.myPortrait != null && LM.selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
 				{
 					padrePanelesEnemigos.transform.Translate(Vector3.up * autoScrollSpeed * Time.deltaTime);
 					buttonUpHighlight.SetActive(true);
 				}
+
 				else
 				{
 					scrollUpToEnemy = false;
 				}
 			}
-
 		}
-
 
         if (skipButtonHolding)
         {
