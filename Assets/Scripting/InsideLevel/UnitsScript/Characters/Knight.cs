@@ -267,56 +267,90 @@ public class Knight : PlayerUnit
         {
             if (currentFacingDirection == FacingDirection.North)
             {
-                if (myCurrentTile.tilesInLineUp[0].tilesInLineRight[0] != null)
+                if (myCurrentTile.tilesInLineUp.Count > 0)
                 {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineRight[0]);
-                }
+                    if (myCurrentTile.tilesInLineUp[0].tilesInLineRight.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineUp[0].tilesInLineRight[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineRight[0]);
+                        }
+                    }
 
-                if (myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0] != null)
-                {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0]);
+                    if (myCurrentTile.tilesInLineUp[0].tilesInLineLeft.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[0].tilesInLineLeft[0]);
+                        }
+                    }
                 }
             }
 
             else if (currentFacingDirection == FacingDirection.South)
             {
-                if (myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0] != null)
+                if (myCurrentTile.tilesInLineDown.Count > 0)
                 {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0]);
-                }
+                    if (myCurrentTile.tilesInLineDown[0].tilesInLineLeft.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineLeft[0]);
+                        }
+                    }
 
-                if (myCurrentTile.tilesInLineDown[0].tilesInLineRight[0] != null)
-                {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineRight[0]);
+                    if (myCurrentTile.tilesInLineDown[0].tilesInLineRight.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineDown[0].tilesInLineRight[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[0].tilesInLineRight[0]);
+                        }
+                    }  
                 }
             }
 
             else if (currentFacingDirection == FacingDirection.East)
             {
-                if (myCurrentTile.tilesInLineRight[0].tilesInLineUp[0] != null)
+                if (myCurrentTile.tilesInLineRight.Count > 0)
                 {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineUp[0]);
-                }
+                    if (myCurrentTile.tilesInLineRight[0].tilesInLineUp.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineRight[0].tilesInLineUp[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineUp[0]);
+                        }
+                    }
 
-                if (myCurrentTile.tilesInLineRight[0].tilesInLineDown[0] != null)
-                {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineDown[0]);
-
+                    if (myCurrentTile.tilesInLineRight[0].tilesInLineDown.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineRight[0].tilesInLineDown[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[0].tilesInLineDown[0]);
+                        }
+                    }
                 }
             }
 
             else if (currentFacingDirection == FacingDirection.West)
             {
-                if (myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0] != null)
+                if (myCurrentTile.tilesInLineLeft.Count > 0)
                 {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0]);
-                }
+                    if (myCurrentTile.tilesInLineLeft[0].tilesInLineUp.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineUp[0]);
+                        }
+                    }
 
-                if (myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0] != null)
-                {
-                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0]);
+                    if (myCurrentTile.tilesInLineLeft[0].tilesInLineDown.Count > 0)
+                    {
+                        if (myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0] != null)
+                        {
+                            currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[0].tilesInLineDown[0]);
+                        }
+                    }  
                 }
-
             }
         }
         

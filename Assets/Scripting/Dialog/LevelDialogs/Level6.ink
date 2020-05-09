@@ -3,7 +3,7 @@
 Knight%1
 Berserk%2
 Mage%3
-Ninja&4
+Ninja%4
 
 Knight: Holly... What the HELL is that thing?
 Ninja: I told you he had some pretty nasty stuff
