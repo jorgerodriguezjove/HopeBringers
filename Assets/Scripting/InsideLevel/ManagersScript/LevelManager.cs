@@ -1346,10 +1346,13 @@ public class LevelManager : MonoBehaviour
         {
             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {
-                enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+                if (selectedCharacter.currentUnitsAvailableToAttack.Contains(clickedUnit))
+                {
+                    selectedCharacter.Attack(clickedUnit);
+                }
 
-                selectedCharacter.Attack(clickedUnit);
-
+                //enemiesNumber = selectedCharacter.currentUnitsAvailableToAttack.Count;
+                //
                 //Compruebo si está en la lista de posibles targets
                 //for (int i = 0; i < enemiesNumber; i++)
                 //{
@@ -1357,11 +1360,13 @@ public class LevelManager : MonoBehaviour
                 //    {
                 //        if (clickedUnit == selectedCharacter.currentUnitsAvailableToAttack[i])
                 //        {
+
+
                 //            UnitBase obj = selectedCharacter.currentUnitsAvailableToAttack[i];
 
                 //            ICommand command = new AttackCommand(obj.currentFacingDirection, selectedCharacter.currentFacingDirection,
                 //                                                 obj.myCurrentTile, selectedCharacter.myCurrentTile,
-                //                                                 obj.currentHealth,selectedCharacter.currentHealth,
+                //                                                 obj.currentHealth, selectedCharacter.currentHealth,
                 //                                                 selectedCharacter, obj,
                 //                                                 selectedCharacter.currentArmor, obj.currentArmor,
                 //                                                 selectedCharacter.isStunned, obj.isStunned,

@@ -941,11 +941,10 @@ public class PlayerUnit : UnitBase
 		//Si le ataco por la espalda hago más daño
 		if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
 		{
-            if (unitToDealDamage.GetComponent<EnDuelist>()
+            if (unitToDealDamage != null && unitToDealDamage.GetComponent<EnDuelist>()
                && unitToDealDamage.GetComponent<EnDuelist>().hasTier2
                && hasAttacked)
             {
-
                 if (currentFacingDirection == FacingDirection.North)
                 {
                     unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
@@ -972,6 +971,7 @@ public class PlayerUnit : UnitBase
                 }
 
             }
+
             else
             {
                 //Añado este if para que, cada vez que ataque un jugador y si le va a realizar daño por la espalda, el count del honor se resetea
@@ -979,6 +979,7 @@ public class PlayerUnit : UnitBase
                 {
                     LM.honorCount = 0;
                 }
+
                 //Ataque por la espalda
                 damageWithMultipliersApplied += bonusDamageBackAttack;
                 healthBar.SetActive(true);
