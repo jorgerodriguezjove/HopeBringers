@@ -1388,6 +1388,7 @@ public class Knight : PlayerUnit
     {
         shieldBlockAllDamage.SetActive(false);
         _unitToAttack.sombraHoverUnit.SetActive(false);
+        hoverImpactIcon.SetActive(false);
 
         tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
         //Marco las unidades disponibles para atacar de color rojo
