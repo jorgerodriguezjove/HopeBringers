@@ -600,16 +600,18 @@ public class UIManager : MonoBehaviour
     //Función que se 
     public void MoveScrollToEnemy(EnemyUnit selectedEnemy)
     {
-        if (!selectedEnemy.GetComponent<Crystal>())
+        if (selectedEnemy != null && selectedEnemy.myPortrait != null && !selectedEnemy.GetComponent<Crystal>())
         {
-            if (selectedEnemy.myPortrait.transform.position.y >= topScrollUp.transform.position.y)
+            if (selectedEnemy.myPortrait != null && selectedEnemy.myPortrait.transform.position.y >= topScrollUp.transform.position.y)
             {
                 scrollDownToEnemy = true;
             }
-            else if (selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
+
+            else if (selectedEnemy.myPortrait != null && selectedEnemy.myPortrait.transform.position.y <= topScrollUp.transform.position.y)
             {
                 scrollUpToEnemy = true;
             }
+
             //Comprobar si el retrato enemigo esta entre el tope inferior y superior
             //Comprobar si esta por encima de ambos topes o por debajo de ambos topes para decidir si subo o bajo la lista
             //Contar el número de retratos que hay hasta que haya uno dentro del cuadro para saber cuánta distancia tengo que bajar o subir la barra.

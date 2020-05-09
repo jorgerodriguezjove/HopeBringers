@@ -234,6 +234,7 @@ public class Druid : PlayerUnit
                 if (currentHealth < maxHealth)
                 {
                     currentHealth += healedLife;
+                    RefreshHealth(false);
                     UIM.RefreshTokens();
                     UIM.RefreshHealth();
                 }
@@ -299,6 +300,7 @@ public class Druid : PlayerUnit
                 if (currentHealth < maxHealth)
                 {
                     currentHealth += healedLife;
+                    RefreshHealth(false);
                     UIM.RefreshTokens();
                     UIM.RefreshHealth();                    
                 }
