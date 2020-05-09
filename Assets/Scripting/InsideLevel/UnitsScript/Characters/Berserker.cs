@@ -125,6 +125,11 @@ public class Berserker : PlayerUnit
             rageDamagePlus = _rageDamagePlus1;
         }
 
+        if (rageDamagePlus == 0)
+        {
+            rageDamagePlus = 1;
+        }
+
         rageFear = _rageFear;
         fearTurnBonus = _fearTurnBonus;
 
