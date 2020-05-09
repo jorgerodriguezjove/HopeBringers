@@ -386,8 +386,8 @@ public class UnitBase : MonoBehaviour
                     unitToDealDamage.unitModel.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
                     unitToDealDamage.currentFacingDirection = FacingDirection.East;
                 }
-
             }
+
             else
             {
                 //Ataque por la espalda
@@ -451,7 +451,7 @@ public class UnitBase : MonoBehaviour
         #region Knight_Blocks
 
         //FrontBlock
-        if (unitToDealDamage.GetComponent<Knight>() && (
+        if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>() && (
                endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
             || endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
             || endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
@@ -464,7 +464,7 @@ public class UnitBase : MonoBehaviour
         }
 
         //Lateralblock
-        else if (unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().lateralBlock && 
+        else if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().lateralBlock && 
           ((unitToDealDamage.currentFacingDirection == FacingDirection.North || unitToDealDamage.currentFacingDirection == FacingDirection.South &&  endFacingDirection == FacingDirection.East  || endFacingDirection == FacingDirection.West) 
          ||(unitToDealDamage.currentFacingDirection == FacingDirection.East  || unitToDealDamage.currentFacingDirection == FacingDirection.West  &&  endFacingDirection == FacingDirection.North || endFacingDirection == FacingDirection.South)))
         {
@@ -475,7 +475,7 @@ public class UnitBase : MonoBehaviour
         }
 
         //Backblock
-        else if (unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().backBlock && (
+        else if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().backBlock && (
                 endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.North
              || endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.East
              || endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.South

@@ -807,7 +807,6 @@ public class PlayerUnit : UnitBase
                 damageReceived = currentArmor * -1;
                 currentHealth -= damageReceived;
                 currentArmor = 0;
-
             }
         }
 
@@ -821,9 +820,8 @@ public class PlayerUnit : UnitBase
         if (currentHealth <= 0)
         {
             //Logro matar aliado
-            if (unitAttacker.GetComponent<PlayerUnit>())
+            if (unitAttacker != null && unitAttacker.GetComponent<PlayerUnit>())
             {
-                
                 GameManager.Instance.UnlockAchievement("");
             }
 
