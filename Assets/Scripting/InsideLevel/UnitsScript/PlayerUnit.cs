@@ -939,7 +939,7 @@ public class PlayerUnit : UnitBase
 		}
 
 		//Si le ataco por la espalda hago más daño
-		if (unitToDealDamage.currentFacingDirection == currentFacingDirection)
+		if (unitToDealDamage != null && unitToDealDamage.currentFacingDirection == currentFacingDirection)
 		{
             if (unitToDealDamage != null && unitToDealDamage.GetComponent<EnDuelist>()
                && unitToDealDamage.GetComponent<EnDuelist>().hasTier2
