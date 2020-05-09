@@ -59,7 +59,7 @@ public class TableManager : MonoBehaviour
     public GameObject vfxLevelUp;
 
     #endregion
-    
+
     #region INIT
 
     private void Start()
@@ -89,20 +89,16 @@ public class TableManager : MonoBehaviour
         //TIENE QUE IR ANTES QUE level1.SelectLevel!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (GameManager.Instance.newCharacterToUnlock != null)
         {
-            Debug.Log("HERE");
             UnlockNewCharacter();
         }
 
         //Al cargar el nivel de mapa se deja predeterminado el nivel 1 seleccionado
         if (GameManager.Instance.currentLevelNodeID == 0)
         {
-            Debug.Log("acac");
             level1.SelectLevel();
         }
         else
         {
-            Debug.Log("torototoc");
-
             for (int i = 0; i < allLevelNodesInGame.Count; i++)
             {
                 if (allLevelNodesInGame[i].idLevel == GameManager.Instance.currentLevelNodeID)
@@ -138,8 +134,8 @@ public class TableManager : MonoBehaviour
         if (levelClicked.newCharacterToUnlock  != null)
         {
             GameManager.Instance.newCharacterToUnlock = levelClicked.newCharacterToUnlock;
-           
         }
+
         else
         {
             GameManager.Instance.newCharacterToUnlock = null;

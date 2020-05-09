@@ -7,6 +7,9 @@ public class CharacterData : MonoBehaviour
 {
     #region VARIABLES
 
+    [SerializeField]
+    int idLevelWhereThisCharacterUnlocks;
+
     //Referencia a la unidad que representa la figura
     [SerializeField]
     public PlayerUnit myUnit;
@@ -84,6 +87,8 @@ public class CharacterData : MonoBehaviour
         initialPosition = gameObject.transform.position;
     }
 
+    LevelNode[] allLevelNodes;
+
     //Si se carga una escena que no es ni el menú ni el mapa (es decir se carga un nivel) se actualiza el bool para que al volver al mapa no se borre.
     public void UpdateInitialized(Scene scene, LoadSceneMode mode)
     {
@@ -99,6 +104,26 @@ public class CharacterData : MonoBehaviour
         {
             //Hacer reaparecer el modelo 
             HideShowMeshCharacterData(true);
+
+
+            Debug.Log("NEW CHARACTERINO");
+            InitializeCharacterToUnlocks();
+        }
+    }
+
+    public void InitializeCharacterToUnlocks()
+    {
+        allLevelNodes = FindObjectsOfType<LevelNode>();
+
+        if (idLevelWhereThisCharacterUnlocks != 0)
+        {
+            for (int i = 0; i < allLevelNodes.Length; i++)
+            {
+                if (allLevelNodes[i].idLevel == idLevelWhereThisCharacterUnlocks && allLevelNodes[i].newCharacterToUnlock == null)
+                {
+                    allLevelNodes[i].newCharacterToUnlock = gameObject;
+                }
+            }
         }
     }
 

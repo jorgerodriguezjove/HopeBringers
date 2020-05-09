@@ -226,8 +226,11 @@ public class PortraitBoss : MonoBehaviour
     {
         for (int i = 0; i < assignedBoss.maxHealth; i++)
         {
-            GameObject lifeTok = Instantiate(lifeTokenPref, lifeContainer.transform);
-            lifeTokensList.Add(lifeTok);
+            if (lifeTokensList.Count < assignedBoss.maxHealth)
+            {
+                GameObject lifeTok = Instantiate(lifeTokenPref, lifeContainer.transform);
+                lifeTokensList.Add(lifeTok);
+            }   
         }
     }
 
