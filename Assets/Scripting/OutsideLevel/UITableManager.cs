@@ -444,6 +444,14 @@ public class UITableManager : MonoBehaviour
     [SerializeField]
     GameObject credits;
 
+    [SerializeField]
+    GameObject continueButton;
+
+    [SerializeField]
+    GameObject confirmationDeleteFile;
+
+    [SerializeField]
+    GameObject confirmationDeleteFileLAST;
 
     //Botón de exit en libro lo activa y botón de no en confirmar lo desactiva
     public void ConfirmateExit(bool _shouldActivate)
@@ -461,6 +469,8 @@ public class UITableManager : MonoBehaviour
         //Guardo el valor del sonido dejado al mover el slider
         SoundManager.Instance.MusicVolumeSave = musicSlider.value;
         SoundManager.Instance.SfxVolumeSave = sFXSlider.value;
+
+        ShowHideContinueButton();
     }
 
     public void OptionsButton()
@@ -488,17 +498,71 @@ public class UITableManager : MonoBehaviour
 
      public void NewGameButton()
      {
-        //Comprobar si hay ya una partida guardada y activar aviso
+        if (GameManager.Instance.CheckIfSaveFileExists())
+        {
+            //Aviso borrar partida
+            confirmationDeleteFile.SetActive(true);
+        }
 
-        //Desbloqueo primer logro
-        GameManager.Instance.UnlockAchievement(AppAchievements.ACHV_BEGIN);
+        else
+        {
+            GameManager.Instance.SaveGame();
 
-        //Else crear guardado y mover cámara
-        TM.BackToMap();
+            //Desbloqueo primer logro
+            GameManager.Instance.UnlockAchievement(AppAchievements.ACHV_BEGIN);
+
+            //Mover cámara
+            TM.BackToMap();
+        }
      }
+
+    //Hacer aparecer o desaparecer botón de continue
+    public void ShowHideContinueButton()
+    {
+        if (GameManager.Instance.CheckIfSaveFileExists())
+        {
+            continueButton.SetActive(true);
+        }
+
+        else
+        {
+            continueButton.SetActive(false);
+        }
+    }
+
+    public void ConfirmateDelet(bool _firstWarning)
+    {
+        if (_firstWarning)
+        {
+            confirmationDeleteFile.SetActive(false);
+            confirmationDeleteFileLAST.SetActive(true);
+        }
+
+        else
+        {
+            confirmationDeleteFile.SetActive(false);
+            confirmationDeleteFileLAST.SetActive(false);
+
+            GameManager.Instance.ReseteSaveFile();
+            GameManager.Instance.SaveGame();
+
+            TM.BackToMap();
+        }
+    }
+
+    public void CancelDelete()
+    {
+        confirmationDeleteFile.SetActive(false);
+        confirmationDeleteFileLAST.SetActive(false);
+    }
      
      public void ContinueButton()
      {
+        //Cargar partida
+        GameManager.Instance.LoadGame();
+
+        //Actualizar??
+
         //Cargar partida y mover cámara
         TM.BackToMap();
      }
@@ -611,6 +675,8 @@ public class UITableManager : MonoBehaviour
 
         SkillTree currentSkillTree = currentSkillTreeObj.GetComponent<SkillTree>();
         Instantiate(TM.vfxLevelUp, currentSkillTree.active1Upgrades[0].myUnit.gameObject.transform);
+
+        GameManager.Instance.SaveGame();
     }
 
     public void NoBuyUpgrade()

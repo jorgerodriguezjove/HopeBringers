@@ -24,7 +24,11 @@ public class CharacterData : MonoBehaviour
 
     [SerializeField]
     public GameObject skillTreePrefab;
-   
+
+    //Solo sirve para el reset
+    [SerializeField]
+    public int initialPowerLevelOnlyUsedForResetSaveFile;
+
     //Coste actual de la siguiente mejora del personaje
     [SerializeField]
     public int unitPowerLevel;

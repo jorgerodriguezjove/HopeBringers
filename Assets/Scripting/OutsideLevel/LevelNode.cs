@@ -122,6 +122,16 @@ public class LevelNode : MonoBehaviour
 		}
     }
 
+    public void HideThisLevel()
+    {
+        isUnlocked = false;
+        GetComponent<Image>().enabled = false;
+        if (dottedLinePath != null)
+        {
+            dottedLinePath.SetActive(false);
+        }
+    }
+
     //Aviso a los niveles conectados que tienen que desbloquearse.
     public void UnlockConnectedLevels()
     {

@@ -822,7 +822,7 @@ public class PlayerUnit : UnitBase
             //Logro matar aliado
             if (unitAttacker != null && unitAttacker.GetComponent<PlayerUnit>())
             {
-                GameManager.Instance.UnlockAchievement("");
+                GameManager.Instance.UnlockAchievement(AppAchievements.ACHV_NOBODY);
             }
 
             Die();
