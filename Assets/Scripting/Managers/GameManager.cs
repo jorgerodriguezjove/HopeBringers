@@ -69,11 +69,11 @@ public class GameManager : PersistentSingleton<GameManager>
     public int currentExp;
 
     //Array con todos los niveles del juego.
-    [HideInInspector]
+    [SerializeField]
     public LevelNode[] allLevelNodes;
 
     //Lista con los ids de los niveles completados
-    [HideInInspector]
+    [SerializeField]
     public List<int> levelIDsUnlocked = new List<int>();
 
     //Bool que guarda la info del ultimo logro comprobado. Determina si el logro ha sido desbloqueado o no para que salte el aviso al jugar.
@@ -366,6 +366,8 @@ public class GameManager : PersistentSingleton<GameManager>
 
     public void LoadGame()
     {
+        Debug.Log(Application.persistentDataPath);
+
         if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -375,7 +377,6 @@ public class GameManager : PersistentSingleton<GameManager>
 
             //Aqui se hace lo contrario que en el CreateSaveGameObject. Se toman las variables del save y se aplican esos valores a las variables que se usan en código
             currentExp = save.s_currentXp;
-
 
             characterDataForCurrentLevel.Clear();
 
@@ -389,16 +390,15 @@ public class GameManager : PersistentSingleton<GameManager>
                 }
             }
 
-
             allLevelNodes = FindObjectsOfType<LevelNode>();
-            for (int i = 0; i < allLevelNodes.Length; i++)
+            levelIDsUnlocked.Clear();
+
+            for (int i = 0; i < save.s_levelIDsUnlocked.Count; i++)
             {
-                if (save.s_levelIDsUnlocked.Contains(allLevelNodes[i].idLevel))
-                {
-                    allLevelNodes[i].UnlockConnectedLevels();
-                    levelIDsUnlocked.Add(allLevelNodes[i].idLevel);
-                }
+                levelIDsUnlocked.Add(save.s_levelIDsUnlocked[i]);
+                allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockConnectedLevels();
             }
+
 
             #region Characters
 
@@ -501,12 +501,44 @@ public class GameManager : PersistentSingleton<GameManager>
 
         else
         {
-            Debug.LogError("IGNORE CUSTOM ERROR: Se ha intentado cargar y no existe archivo de guardado");
+            Debug.Log("Se ha intentado cargar y no existe archivo de guardado");
 
             SaveGame();
         }
-        print(Application.persistentDataPath);
     }
+
+    public void DEBUGDeleteSaveFile()
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
+        {
+            Debug.Log("Archivo de guardado borrado");
+
+            File.Delete(Application.persistentDataPath + "/gamesave.save");
+
+            RefreshEditorProjectWindow();
+        }
+    }
+
+    public bool CheckIfSaveFileExists()
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
+        {
+            return true;
+        }
+
+        else
+        {
+            return false;
+        }
+    }
+
+    void RefreshEditorProjectWindow()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+    #endif
+    }
+    
 
     //Esta función se usa únicamente en el SaveGame. La he separado para que quede más claro la información que se guarda en cada archivo
     private Save CreateSaveGameObject()
@@ -623,6 +655,107 @@ public class GameManager : PersistentSingleton<GameManager>
         return save;
     }
 
+    public void ReseteSaveFile()
+    {
+        if (File.Exists(Application.persistentDataPath + "/gamesave.save"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/gamesave.save", FileMode.Open);
+            Save save = (Save)bf.Deserialize(file);
+            file.Close();
+
+            //Aqui se hace lo contrario que en el CreateSaveGameObject. Se toman las variables del save y se aplican esos valores a las variables que se usan en código
+            currentExp = 0;
+
+            characterDataForCurrentLevel.Clear();
+
+            allLevelNodes = FindObjectsOfType<LevelNode>();
+            for (int i = 0; i < allLevelNodes.Length; i++)
+            {
+                allLevelNodes[i].HideThisLevel();
+            }
+
+            levelIDsUnlocked.Clear();
+
+            for (int i = 0; i < allLevelNodes.Length; i++)
+            {
+                if (allLevelNodes[i].idLevel == 1)
+                {
+                    levelIDsUnlocked.Add(allLevelNodes[i].idLevel);
+                    allLevelNodes[i].UnlockThisLevel();
+                }
+            }
+
+            #region Characters
+
+            KnightData _knight = FindObjectOfType<KnightData>();
+
+            _knight.unitPowerLevel = _knight.initialPowerLevelOnlyUsedForResetSaveFile;
+            _knight.HideShowMeshCharacterData(true);
+            _knight.isCharacterUnlocked = true;
+            _knight.idSkillsBought.Clear();
+
+            MageData _mage = FindObjectOfType<MageData>();
+            _mage.unitPowerLevel = _mage.initialPowerLevelOnlyUsedForResetSaveFile;
+            _mage.HideShowMeshCharacterData(true);
+            _mage.isCharacterUnlocked = true;
+            _mage.idSkillsBought.Clear();
+
+
+            RogueData _rogue = FindObjectOfType<RogueData>();
+            _rogue.unitPowerLevel = _rogue.initialPowerLevelOnlyUsedForResetSaveFile;
+            _rogue.HideShowMeshCharacterData(false);
+            _rogue.isCharacterUnlocked = false;
+            _rogue.idSkillsBought.Clear();
+
+            BerserkerData _berserker = FindObjectOfType<BerserkerData>();
+            _berserker.unitPowerLevel = _berserker.initialPowerLevelOnlyUsedForResetSaveFile;
+            _berserker.HideShowMeshCharacterData(false);
+            _berserker.isCharacterUnlocked = false;
+            _berserker.idSkillsBought.Clear();
+            
+            ValkyrieData _valkyrie = FindObjectOfType<ValkyrieData>();
+            _valkyrie.unitPowerLevel = _valkyrie.initialPowerLevelOnlyUsedForResetSaveFile;
+            _valkyrie.HideShowMeshCharacterData(false);
+            _valkyrie.isCharacterUnlocked = false;
+            _valkyrie.idSkillsBought.Clear();
+
+            DruidData _druid = FindObjectOfType<DruidData>();
+            _druid.unitPowerLevel = _druid.initialPowerLevelOnlyUsedForResetSaveFile;
+            _druid.HideShowMeshCharacterData(false);
+            _druid.isCharacterUnlocked = false;
+            _druid.idSkillsBought.Clear();
+
+            MonkData _monk = FindObjectOfType<MonkData>();
+            _monk.unitPowerLevel = _monk.initialPowerLevelOnlyUsedForResetSaveFile;
+            _monk.HideShowMeshCharacterData(false);
+            _monk.isCharacterUnlocked = false;
+            _monk.idSkillsBought.Clear();
+
+            SamuraiData _samurai = FindObjectOfType<SamuraiData>();
+            _samurai.unitPowerLevel = _samurai.initialPowerLevelOnlyUsedForResetSaveFile;
+            _samurai.HideShowMeshCharacterData(false);
+            _samurai.isCharacterUnlocked = false;
+            _samurai.idSkillsBought.Clear();
+
+            #endregion
+
+            enemiesKilled = 0;
+            randomLevelsCompleted = 0;
+
+            Debug.Log("File Reseted");
+            Debug.Log("-----");
+        }
+
+        else
+        {
+            Debug.Log("Se ha intentado cargar y no existe archivo de guardado");
+        }
+
+        print(Application.persistentDataPath);
+    }
+
+
     #endregion
 
 
@@ -635,42 +768,48 @@ public class GameManager : PersistentSingleton<GameManager>
         if (enemiesKilled >= thirdTierEnemiesKilled)
         {
             //Desbloquear logro 3 Enemies
+            UnlockAchievement(AppAchievements.ACHV_KILL3);
         }
 
         else if (enemiesKilled >= secondTierEnemiesKilled)
         {
             //Desbloquear logro 2 Enemies
+            UnlockAchievement(AppAchievements.ACHV_KILL2);
         }
 
         else if (enemiesKilled >= firsTierEnemiesKilled)
         {
             //Desbloquear logro 1 Enemies
+            UnlockAchievement(AppAchievements.ACHV_KILL1);
         }
     }
-
 
     public void CheckLevelCompleted(int _levelId)
     {
         if (_levelId == firsTierLevelsCompleted)
         {
             //Desbloquear logro 1 Level
+            UnlockAchievement(AppAchievements.ACHV_LEVEL1);
         }
 
         else if (_levelId == secondTierLevelsCompleted)
         {
             //Desbloquear logro 2 Level
+            UnlockAchievement(AppAchievements.ACHV_LEVEL2);
         }
 
         else if (_levelId == thirdTierLevelsCompleted)
         {
 
             //Desbloquear logro 3 Level
+            UnlockAchievement(AppAchievements.ACHV_LEVEL3);
         }
 
         else if (_levelId == fourthTierLevelsCompleted)
         {
 
             //Desbloquear logro 4 Level
+            UnlockAchievement(AppAchievements.ACHV_FINISH);
         }
     }
 
@@ -681,16 +820,19 @@ public class GameManager : PersistentSingleton<GameManager>
         if (randomLevelsCompleted >= thirdTierRandomLevels)
         {
             //Desbloquear logro 3 random levels
+            UnlockAchievement(AppAchievements.ACHV_RANDOM3);
         }
 
         else if (randomLevelsCompleted >= secondTierRandomLevels)
         {
             //Desbloquear logro 2 random levels
+            UnlockAchievement(AppAchievements.ACHV_RANDOM2);
         }
 
         else if (randomLevelsCompleted >= firstTierRandomLevels)
         {
             //Desbloquear logro 1 random levels
+            UnlockAchievement(AppAchievements.ACHV_RANDOM1);
         }
 
     }
@@ -715,7 +857,6 @@ public class GameManager : PersistentSingleton<GameManager>
                 //Aviso al SteamManager de que avise del logro ahora mismo y que no espere a cerrar el juego.
                 SteamUserStats.StoreStats();
             }
-
         }
     }
 
@@ -745,29 +886,23 @@ public class GameManager : PersistentSingleton<GameManager>
             if (allCharacters[i].idSkillsBought.Count == 4)
             {
                 //Logro mejorar un personaje al máximo
-                UnlockAchievement("");
+                UnlockAchievement(AppAchievements.ACHV_UPGRADE1);
                 charactersFullyUpgraded++;
             }
 
             upgradesBought += allCharacters[i].idSkillsBought.Count;
         }
 
-        if (upgradesBought == 1)
-        {
-            //Logro mejorar la primera vez
-            UnlockAchievement("");
-        }
-
         if (charactersFullyUpgraded == 8)
         {
             //Logro mejorar todos los personajes al máximo
-            UnlockAchievement("");
+            UnlockAchievement(AppAchievements.ACHV_UPGRADE3);
         }
 
         else if (charactersFullyUpgraded == 4)
         {
             //Logro mejorar 4 personajes al máximo
-            UnlockAchievement("");
+            UnlockAchievement(AppAchievements.ACHV_UPGRADE2);
         }
        
     }
@@ -778,11 +913,18 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            inkManRef = FindObjectOfType<InkManager>();
-            dialogManRef = FindObjectOfType<DialogManager>();
+            //inkManRef = FindObjectOfType<InkManager>();
+            //dialogManRef = FindObjectOfType<DialogManager>();
 
          
-            StartDialog(true);
+            //StartDialog(true);
         }
+
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            DEBUGDeleteSaveFile();
+        }
+
     }
 }

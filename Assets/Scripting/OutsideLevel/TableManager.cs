@@ -155,6 +155,10 @@ public class TableManager : MonoBehaviour
     {
         mainMenuCamera.SetActive(true);
         mapCamera.SetActive(false);
+
+        GameManager.Instance.SaveGame();
+
+        UITM.ShowHideContinueButton();
         UITM.HideAllUI();
     }
 

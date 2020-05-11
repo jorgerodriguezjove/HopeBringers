@@ -490,6 +490,25 @@ public class APppMusic
 public class AppAchievements
 {
     public static readonly string ACHV_BEGIN = "achievement_00";
+    public static readonly string ACHV_KILL1 = "achievement_01";
+    public static readonly string ACHV_KILL2 = "achievement_02";
+    public static readonly string ACHV_KILL3 = "achievement_03";
+    public static readonly string ACHV_LEVEL1 = "achievement_04";
+    public static readonly string ACHV_LEVEL2 = "achievement_05";
+    public static readonly string ACHV_LEVEL3 = "achievement_07";
+    public static readonly string ACHV_UPGRADE1 = "achievement_09";
+    public static readonly string ACHV_UPGRADE2 = "achievement_10";
+    public static readonly string ACHV_UPGRADE3 = "achievement_11";
+    public static readonly string ACHV_RANDOM1 = "achievement_12";
+    public static readonly string ACHV_RANDOM2 = "achievement_13";
+    public static readonly string ACHV_RANDOM3 = "achievement_14";
+    public static readonly string ACHV_ADVANTAGE = "achievement_15";
+    public static readonly string ACHV_DISADVANTAGE = "achievement_16";
+    public static readonly string ACHV_MISS = "achievement_17";
+    public static readonly string ACHV_STUMP = "achievement_18";
+    public static readonly string ACHV_GIANT = "achievement_19";
+    public static readonly string ACHV_NOBODY = "achievement_20";
+    public static readonly string ACHV_FINISH = "achievement_21";
 
 }
 
