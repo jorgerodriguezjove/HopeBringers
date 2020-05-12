@@ -20,11 +20,11 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int maxHealth;
 
-	[HideInInspector]
-    public int currentHealth;
-
+    //Bools que indican si el personaje se ha movido y si ha atacado.
     [HideInInspector]
-    public int currentArmor;
+    public bool hasMoved = false;
+    [HideInInspector]
+    public bool hasAttacked = false;
 
     //Uds movimiento máximas de la unidad.
     [SerializeField]
@@ -213,7 +213,11 @@ public class UnitBase : MonoBehaviour
 
     [Header("DEBUG ONLY")]
 
-    //LOGIC
+    [SerializeField]
+    public int currentHealth;
+
+    [SerializeField]
+    public int currentArmor;
 
     //Tile en el que está el personaje actualmente. Se setea desde el editor.
     [SerializeField]
@@ -1050,7 +1054,7 @@ public class UnitBase : MonoBehaviour
 
     //Esta función resetea los valores de las unidades al darle a undo.
     //La necesitan tanto pjs como enemigos
-    public virtual void UndoAttack(AttackCommand lastAttack)
+    public virtual void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
         //Todas las variables se tienen que setear en el override del player y el obj, ya que cada uno tiene la suya.
     }
@@ -1212,7 +1216,7 @@ public class UnitBase : MonoBehaviour
     {
         isMarked = false;
         monkMark.SetActive(false);
-       monkMarkUpgrade.SetActive(false);
+        monkMarkUpgrade.SetActive(false);
 
     }
 

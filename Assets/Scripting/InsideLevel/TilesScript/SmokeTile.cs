@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SmokeTile : DamageTile
 {
+    public Rogue myRogueReference;
+
     public bool isNinjaUpgraded;
 
     //int para saber cuando hay que destruir este tile. Tiene que ser uno más de lo que se quiere porque se actualiza al empezar la fase del jugador
@@ -35,12 +37,12 @@ public class SmokeTile : DamageTile
 
         }
         else if(unitOnTile.GetComponent<PlayerUnit>())
-            {
+        {
             unitToDoDamage = unitOnTile.gameObject;
             unitToDoDamage.GetComponent<UnitBase>().isHidden = true;
             hasUnit = true;
         
-             }
+        }
        
     }
 
@@ -71,5 +73,9 @@ public class SmokeTile : DamageTile
         }
     }
 
+    private void OnDestroy()
+    {
+        myRogueReference.realBombsSpawned.Remove(gameObject);
+    }
 
 }

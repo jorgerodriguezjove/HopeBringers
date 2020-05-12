@@ -51,8 +51,12 @@ public class Rogue : PlayerUnit
 
     public GameObject smokeBombShadow;
 
-    [HideInInspector]
-    public List<GameObject> bombsSpawned;
+    [SerializeField]
+    public List<GameObject> bombsShadowSpawned;
+
+    //Mario esta lista la he creado yo porque la otra parece que solo guarda tiles shadow de bomba. Esta lista la uso para el undo.
+    [SerializeField]
+    public List<GameObject> realBombsSpawned;
 
     FacingDirection previousFacingDirection;
 
@@ -374,18 +378,26 @@ public class Rogue : PlayerUnit
                     TM.surroundingTiles.Clear();
                     TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
                     GameObject smokeBombRef1 = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+                    smokeBombRef1.GetComponent<SmokeTile>().myRogueReference = this;
+                    realBombsSpawned.Add(smokeBombRef1);
+
                     //Hago daño a las unidades adyacentes
                     for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                     {
                         if (TM.surroundingTiles[i] != null)
                         {
                             GameObject smokeBombRef = Instantiate(smokeBombPref, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
+                            smokeBombRef.GetComponent<SmokeTile>().myRogueReference = this;
+                            realBombsSpawned.Add(smokeBombRef);
                         }
                     }
                 }
                 else
                 {
                     GameObject smokeBombRef = Instantiate(smokeBombPref, myCurrentTile.transform.position, myCurrentTile.transform.rotation);
+
+                    smokeBombRef.GetComponent<SmokeTile>().myRogueReference = this;
+                    realBombsSpawned.Add(smokeBombRef);
                 }
             }
         }
@@ -403,7 +415,7 @@ public class Rogue : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
+        
         CalculateDamage(unitToAttack);
         CheckIfUnitHasMarks(unitToAttack);
         HideAttackEffect(unitToAttack);
@@ -534,6 +546,8 @@ public class Rogue : PlayerUnit
             base.Attack(unitToAttack);
 
         }
+
+        hasAttacked = true;
     }
 
     private void CalculateAttackLogic(UnitBase unitToAttack, bool _shouldUpdateInfoAfterMovement)
@@ -799,7 +813,7 @@ public class Rogue : PlayerUnit
 
                     Vector3 spawnBombShadow = new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 2, sombraHoverUnit.transform.position.z);
                     GameObject smokeBombShadowRef1 = Instantiate(smokeBombShadow, spawnBombShadow, sombraHoverUnit.transform.rotation);
-                    bombsSpawned.Add(smokeBombShadowRef1);
+                    bombsShadowSpawned.Add(smokeBombShadowRef1);
 
                     //Hago daño a las unidades adyacentes
                     for (int i = 0; i < TM.surroundingTiles.Count; ++i)
@@ -812,13 +826,13 @@ public class Rogue : PlayerUnit
                             if (TM.surroundingTiles[i].unitOnTile != null)
                             {
                                 GameObject smokeBombShadowRef2 = Instantiate(smokeBombShadow, spawnBombShadow2, TM.surroundingTiles[i].transform.rotation);
-                                bombsSpawned.Add(smokeBombShadowRef2);
+                                bombsShadowSpawned.Add(smokeBombShadowRef2);
 
                             }
                             else
                             {
                                 GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
-                                bombsSpawned.Add(smokeBombShadowRef);
+                                bombsShadowSpawned.Add(smokeBombShadowRef);
 
                             }
                            
@@ -832,7 +846,7 @@ public class Rogue : PlayerUnit
                     Vector3 spawnBombShadow = new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 2, sombraHoverUnit.transform.position.z);
                     //Enseñar sombra bomba de humo
                     GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, spawnBombShadow, sombraHoverUnit.transform.rotation);
-                    bombsSpawned.Add(smokeBombShadowRef);
+                    bombsShadowSpawned.Add(smokeBombShadowRef);
 
 
                 }
@@ -849,20 +863,20 @@ public class Rogue : PlayerUnit
     {
         if (smokeBomb)
         {
-            for (int i = 0; i < bombsSpawned.Count; i++)
+            for (int i = 0; i < bombsShadowSpawned.Count; i++)
             {
-                Destroy(bombsSpawned[i].gameObject);
+                Destroy(bombsShadowSpawned[i].gameObject);
             }
 
-            bombsSpawned.Clear();
+            bombsShadowSpawned.Clear();
         }
 
         sombraHoverUnit.SetActive(false);
     }
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
-        base.UndoAttack(lastAttack);
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         unitsAttacked.Clear();
         for (int i = 0; i < lastAttack.unitsAttacked.Count; i++)
@@ -875,10 +889,18 @@ public class Rogue : PlayerUnit
 
         baseDamage = lastAttack.ninjaBonusDamage;
 
-        bombsSpawned.Clear();
+        //Destruyo bombas actuales
+        for (int i = 0; i < realBombsSpawned.Count; i++)
+        {
+            Destroy(realBombsSpawned[i]);
+        }
+
+        realBombsSpawned.Clear();
+        //Instancio bombas antiguas
         for (int i = 0; i < lastAttack.smokeTiles.Count; i++)
         {
-            bombsSpawned.Add(lastAttack.smokeTiles[i]);
+            realBombsSpawned.Add(lastAttack.smokeTiles[i]);
+            Instantiate(lastAttack.smokeTiles[i], lastAttack.smokeTiles[i].transform);
         }
     }
 

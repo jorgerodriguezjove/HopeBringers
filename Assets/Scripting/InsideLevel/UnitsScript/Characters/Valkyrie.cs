@@ -161,8 +161,6 @@ public class Valkyrie : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
-
         CheckIfUnitHasMarks(unitToAttack);
 
         List<IndividualTiles> tilesInFront = new List<IndividualTiles>();
@@ -190,7 +188,6 @@ public class Valkyrie : PlayerUnit
                 }
             }
         }
-
 
         if (canChooseEnemy)
         {
@@ -343,6 +340,8 @@ public class Valkyrie : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
+
+        hasAttacked = true;
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)
@@ -603,6 +602,8 @@ public class Valkyrie : PlayerUnit
 
     public void ChangePosition(PlayerUnit unitToMove)
     {
+        CreateAttackCommand(unitToMove);
+
         IndividualTiles valkyriePreviousTile = unitToMove.myCurrentTile;
         unitToMove.MoveToTilePushed(myCurrentTile);
         unitToMove.UpdateInformationAfterMovement(myCurrentTile);
@@ -632,6 +633,7 @@ public class Valkyrie : PlayerUnit
         }
 
     }
+
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
@@ -870,11 +872,13 @@ public class Valkyrie : PlayerUnit
 }
 
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
-        base.UndoAttack(lastAttack);
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         //Intercambio con otro personaje. Usar hasmoved
+
+        RefreshHealth(false);
     }
 
 }

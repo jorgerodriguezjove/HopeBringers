@@ -163,7 +163,7 @@ public class Druid : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
+        
 
         CheckIfUnitHasMarks(unitToAttack);
 
@@ -174,7 +174,6 @@ public class Druid : PlayerUnit
 
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
-                currentHealth -= 1;
                 UIM.RefreshTokens();
                 UIM.RefreshHealth();
                 unitToAttack.RefreshHealth(false);
@@ -184,7 +183,29 @@ public class Druid : PlayerUnit
                 TM.surroundingTiles.Clear();
 
                 TM.GetSurroundingTiles(unitToAttack.myCurrentTile, 1, true, false);
-                //Hago daño a las unidades adyacentes
+
+                //UNDO
+                CreateAttackCommand(unitToAttack);
+
+                //Unidad a la que he clickado
+                if (areaHealer2)
+                {
+                    unitToAttack.isStunned = false;
+                    unitToAttack.turnStunned = 0;
+                    ApplyBuffOrDebuffDamage(unitToAttack, 0, 0);
+
+                    unitToAttack.buffbonusStateDamage = 0;
+                }
+
+                if (tileTransformer)
+                {
+                    Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation);
+                }
+
+                unitToAttack.currentHealth += healedLife;
+                unitToAttack.RefreshHealth(false);
+
+                //Curo a las unidades en el área
                 for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                 {
                     if (TM.surroundingTiles[i].unitOnTile != null)
@@ -221,6 +242,9 @@ public class Druid : PlayerUnit
 
                     tilesSpawned.Clear();
                 }
+
+                //IMPORTANTE PARA EL UNDO QUE LA VIDA SE QUITE AL FINAL
+                currentHealth -= 1;
             }
 
             else
@@ -259,7 +283,6 @@ public class Druid : PlayerUnit
                 if (individualHealer2)
                 {
                     ApplyBuffOrDebuffMovement(unitToAttack, fMovementUds + movementUpgrade, 3);
-                    
                 }
 
                 else if (tileTransformer)
@@ -310,6 +333,8 @@ public class Druid : PlayerUnit
             }
         }
 
+
+        hasAttacked = true;
         HideAttackEffect(unitToAttack);
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
@@ -676,9 +701,9 @@ public class Druid : PlayerUnit
         _unitToAttack.myCurrentTile.ColorBorderRed();
     }
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
-        base.UndoAttack(lastAttack);
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         //tiles instanciado y sustituido
     }

@@ -50,10 +50,11 @@ public class EnemyUnit : UnitBase
     //Distancia en tiles con el enemigo más lejano
     protected int furthestAvailableUnitDistance;
 
-    //Bool que comprueba si la balista se ha movido
-    protected bool hasMoved = false;
+    //LOS HE PUESTO EN EL UNITBASE POR EL UNDO
+    ////Bool que comprueba si la balista se ha movido
+    //protected bool hasMoved = false;
 
-    protected bool hasAttacked = false;
+    //protected bool hasAttacked = false;
 
     //Orden en la lista de enemigos. Según su velocidad cambiará el orden en el que actúa.
     [HideInInspector]
@@ -1166,11 +1167,11 @@ public class EnemyUnit : UnitBase
     {
         if (isDead)
         {
-            ////Cambios en UI
-            //LM.HideHover(this);
-            //HealthBarOn_Off(false);
+            //Aviso de que el enemigo está muerto
+            isDead = false;
+
+            HealthBarOn_Off(true);
             //LM.UIM.HideTileInfo();
-            //Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
             myAnimator.Play("Idle");
 
@@ -1181,9 +1182,6 @@ public class EnemyUnit : UnitBase
             //Hago que visualmente desaparezca aunque no lo destryuo todavía.
             unitModel.SetActive(true);
             GetComponent<Collider>().enabled = true;
-
-            //Aviso de que el enemigo está muerto
-            isDead = false;
 
             //Estas dos llamadas tienen que ir despues del bool de isdead = true
             LM.UIM.SetEnemyOrder();
@@ -1196,8 +1194,40 @@ public class EnemyUnit : UnitBase
         base.UndoMove(tileToMoveBack, rotationToTurnBack, shouldResetMovement);
     }
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
+        if (isDead)
+        {
+            isDead = false;
+            HealthBarOn_Off(true);
+
+            //Cambios en la lógica para indicar que ha muerto
+            myCurrentTile.unitOnTile = GetComponent<EnemyUnit>();
+            myCurrentTile.WarnInmediateNeighbours();
+
+            myAnimator.SetTrigger("Revive");
+
+            //Hago que visualmente desaparezca aunque no lo destryuo todavía.
+            unitModel.SetActive(true);
+            if (sleepParticle != null)
+            {
+                sleepParticle.SetActive(true);
+            }
+
+            if (exclamationIcon != null)
+            {
+                exclamationIcon.SetActive(true);
+            }
+
+            GetComponent<Collider>().enabled = true;
+
+            //Estas dos llamadas tienen que ir despues del bool de isdead = true
+            LM.UIM.SetEnemyOrder();
+
+            //No uso FinishMyActions porque no me interesa que pase turno, sólo que se quede en waiting por si acaso se muere en su turno.
+            myCurrentEnemyState = enemyState.Waiting;
+        }
+
         //Resetear el material
         ResetColor();
 
@@ -1246,6 +1276,18 @@ public class EnemyUnit : UnitBase
         isMarked = lastAttack.objIsMarked;
         numberOfMarks = lastAttack.objnumberOfMarks;
 
+        if (!isMarked)
+        {
+            QuitMarks();
+        }
+
+        if (numberOfMarks >= 1)
+        {
+            isMarked = true;
+            monkMarkUpgrade.SetActive(false);
+            monkMark.SetActive(true);
+        }
+       
         //Faltan añadir bufos y debufos
     }
 

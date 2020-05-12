@@ -16,11 +16,7 @@ public class PlayerUnit : UnitBase
     public Transform initialPosInBox;
 
     [Header("LOGICA PLAYER")]
-    //Bools que indican si el personaje se ha movido y si ha atacado.
-    [HideInInspector]
-    public bool hasMoved = false;
-    [HideInInspector]
-    public bool hasAttacked = false;
+ 
     [HideInInspector]
     public bool isMovingorRotating = false;
 
@@ -332,13 +328,12 @@ public class PlayerUnit : UnitBase
         {
             Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
             
-            if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved && valkyrieRef.changePositions)
+            if (valkyrieRef != null && valkyrieRef.changePositions && LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved)
             {
                 if (currentHealth <= valkyrieRef.numberCanChange)
                 {
                     valkyrieRef.ChangePosition(this);
                 }
- 
             }
            
             else
@@ -650,64 +645,134 @@ public class PlayerUnit : UnitBase
             hasMoved = false;
         }
 
+        Samurai samuraiRef = FindObjectOfType<Samurai>();
+
+        if (samuraiRef != null)
+        {
+            samuraiRef.CheckIfIsLonely();
+
+        }
+
         UIM.RefreshTokens();
     }
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
-        //Permitirle otra vez atacar
-        hasAttacked = false;
-        //FALTA RESETEAR EL MOVIMIENTO SI ESTABA EN TRUE ANTES DE ATACAR
-
-        //Resetear el material
-        ResetColor();
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
         
-        //Actualizar hud
-        UIM.RefreshHealth();
-        UIM.RefreshTokens();
-
-        #region Rotation
-
-        if (lastAttack.pjPreviousRotation == FacingDirection.North)
+        if (_isThisUnitTheAttacker)
         {
-            unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
-            currentFacingDirection = FacingDirection.North;
+            //Permitirle otra vez atacar
+            hasAttacked = lastAttack.pjHasAttacked;
+            hasMoved = lastAttack.pjHasMoved;
+
+            //Resetear el material
+            ResetColor();
+
+            //Actualizar hud
+            UIM.RefreshHealth();
+            UIM.RefreshTokens();
+
+            #region Rotation
+
+            if (lastAttack.pjPreviousRotation == FacingDirection.North)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
+                currentFacingDirection = FacingDirection.North;
+            }
+
+            else if (lastAttack.pjPreviousRotation == FacingDirection.South)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
+                currentFacingDirection = FacingDirection.South;
+            }
+
+            else if (lastAttack.pjPreviousRotation == FacingDirection.East)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
+                currentFacingDirection = FacingDirection.East;
+            }
+
+            else if (lastAttack.pjPreviousRotation == FacingDirection.West)
+            {
+                unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
+                currentFacingDirection = FacingDirection.West;
+            }
+            #endregion
+
+            //Mover de tile
+            transform.DOMove(lastAttack.pjPreviousTile.transform.position, 0);
+            UpdateInformationAfterMovement(lastAttack.pjPreviousTile);
+
+            //Vida
+            currentHealth = lastAttack.pjPreviousHealth;
+
+            currentArmor = lastAttack.pjArmor;
+
+            isStunned = lastAttack.pjIsStunned;
+
+            isMarked = lastAttack.pjIsMarked;
+            numberOfMarks = lastAttack.pjnumberOfMarks;
+
+            //Faltan añadir bufos y debufos
         }
 
-        else if (lastAttack.pjPreviousRotation == FacingDirection.South)
+        else
         {
-            unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
-            currentFacingDirection = FacingDirection.South;
+            //Permitirle otra vez atacar
+            hasAttacked = lastAttack.objHasMoved;
+            hasMoved = lastAttack.objHasAttacked;
+
+            //Resetear el material
+            ResetColor();
+
+            //Actualizar hud
+            UIM.RefreshHealth();
+            UIM.RefreshTokens();
+
+            #region Rotation
+
+            if (lastAttack.objPreviousRotation == FacingDirection.North)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 0, 0), 0);
+                currentFacingDirection = FacingDirection.North;
+            }
+
+            else if (lastAttack.objPreviousRotation == FacingDirection.South)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 180, 0), 0);
+                currentFacingDirection = FacingDirection.South;
+            }
+
+            else if (lastAttack.objPreviousRotation == FacingDirection.East)
+            {
+                unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
+                currentFacingDirection = FacingDirection.East;
+            }
+
+            else if (lastAttack.objPreviousRotation == FacingDirection.West)
+            {
+                unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
+                currentFacingDirection = FacingDirection.West;
+            }
+            #endregion
+
+            //Mover de tile
+            transform.DOMove(lastAttack.objPreviousTile.transform.position, 0);
+            UpdateInformationAfterMovement(lastAttack.objPreviousTile);
+
+            //Vida
+            currentHealth = lastAttack.objPreviousHealth;
+
+            currentArmor = lastAttack.objArmor;
+
+            isStunned = lastAttack.objIsStunned;
+
+            isMarked = lastAttack.objIsMarked;
+            numberOfMarks = lastAttack.objnumberOfMarks;
+
+            //Faltan añadir bufos y debufos
         }
-
-        else if (lastAttack.pjPreviousRotation == FacingDirection.East)
-        {
-            unitModel.transform.DORotate(new Vector3(0, 90, 0), 0);
-            currentFacingDirection = FacingDirection.East;
-        }
-
-        else if (lastAttack.pjPreviousRotation == FacingDirection.West)
-        {
-            unitModel.transform.DORotate(new Vector3(0, -90, 0), 0);
-            currentFacingDirection = FacingDirection.West;
-        }
-        #endregion
-
-        //Mover de tile
-        transform.DOMove(lastAttack.pjPreviousTile.transform.position, 0);
-        UpdateInformationAfterMovement(lastAttack.pjPreviousTile);
-
-        //Vida
-        currentHealth = lastAttack.pjPreviousHealth;
-
-        currentArmor = lastAttack.pjArmor;
-
-        isStunned = lastAttack.pjIsStunned;
-
-        isMarked = lastAttack.pjIsMarked;
-        numberOfMarks = lastAttack.pjnumberOfMarks;
-
-        //Faltan añadir bufos y debufos
     }
 
     #endregion
@@ -1283,7 +1348,8 @@ public class PlayerUnit : UnitBase
                                       GetComponent<UnitBase>(), obj,
                                       currentArmor, obj.currentArmor,
                                       isStunned, obj.isStunned,
-                                      isMarked, obj.isMarked, numberOfMarks, obj.numberOfMarks);
+                                      isMarked, obj.isMarked, numberOfMarks, obj.numberOfMarks,
+                                      hasMoved, obj.hasMoved, hasAttacked, obj.hasAttacked);
         CommandInvoker.AddCommand(command);
     }
     

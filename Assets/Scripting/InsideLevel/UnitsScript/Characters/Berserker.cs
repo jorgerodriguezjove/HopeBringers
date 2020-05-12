@@ -374,8 +374,6 @@ public class Berserker : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
-
         CheckIfUnitHasMarks(unitToAttack);
         HideAttackEffect(unitToAttack);
 
@@ -432,9 +430,6 @@ public class Berserker : PlayerUnit
 
         else if (areaAttack)
         {
-
-           
-
             if (currentFacingDirection == FacingDirection.North)
             {
                 if (unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
@@ -560,6 +555,7 @@ public class Berserker : PlayerUnit
             }
         }
 
+        hasAttacked = true;
         tilesInEnemyHover.Clear();
     }
 
@@ -903,16 +899,20 @@ public class Berserker : PlayerUnit
         tilesInEnemyHover.Clear();
     }
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
-        base.UndoAttack(lastAttack);
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         isInRage = lastAttack.isInRage;
         turnsLeftToRageOff = lastAttack.rageTurnsLeft;
 
         if (!isInRage)
         {
-            ResetColor();
+            isInRageIcon.SetActive(false);
+            turnsLeftToRageOff = maxNumberOfTurnsInRage;
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = false;
+
+            RageColor();
         }
 
         Debug.Log("woooooowooo");
