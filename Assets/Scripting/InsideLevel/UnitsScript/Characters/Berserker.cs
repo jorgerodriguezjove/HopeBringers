@@ -903,16 +903,19 @@ public class Berserker : PlayerUnit
     {
         base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
-        isInRage = lastAttack.isInRage;
-        turnsLeftToRageOff = lastAttack.rageTurnsLeft;
-
-        if (!isInRage)
+        if (!_isThisUnitTheAttacker)
         {
-            isInRageIcon.SetActive(false);
-            turnsLeftToRageOff = maxNumberOfTurnsInRage;
-            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = false;
+            isInRage = lastAttack.isInRage;
+            turnsLeftToRageOff = lastAttack.rageTurnsLeft;
 
-            RageColor();
+            if (!isInRage)
+            {
+                isInRageIcon.SetActive(false);
+                turnsLeftToRageOff = maxNumberOfTurnsInRage;
+                myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.enabled = false;
+
+                RageColor();
+            }
         }
 
         Debug.Log("woooooowooo");

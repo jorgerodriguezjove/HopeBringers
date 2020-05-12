@@ -20,12 +20,6 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int maxHealth;
 
-    //Bools que indican si el personaje se ha movido y si ha atacado.
-    [HideInInspector]
-    public bool hasMoved = false;
-    [HideInInspector]
-    public bool hasAttacked = false;
-
     //Uds movimiento máximas de la unidad.
     [SerializeField]
     public int movementUds;
@@ -219,6 +213,12 @@ public class UnitBase : MonoBehaviour
     [SerializeField]
     public int currentArmor;
 
+    //Bools que indican si el personaje se ha movido y si ha atacado.
+    [SerializeField]
+    public bool hasMoved = false;
+    [SerializeField]
+    public bool hasAttacked = false;
+
     //Tile en el que está el personaje actualmente. Se setea desde el editor.
     [SerializeField]
     public IndividualTiles myCurrentTile;
@@ -310,7 +310,7 @@ public class UnitBase : MonoBehaviour
     public virtual void UpdateInformationAfterMovement(IndividualTiles newTile)
     {
         //Este if está porque la función también se usa al colocar las unidades al principio del nivel y ahí no hay tile
-        if (myCurrentTile != null)
+        if (myCurrentTile != null && myCurrentTile.unitOnTile == this)
         {
             myCurrentTile.unitOnTile = null;
 
@@ -1107,6 +1107,7 @@ public class UnitBase : MonoBehaviour
             unitToApply.GetComponent<Druid>().healedLife += unitToApply.GetComponent<Druid>().buffHeal;
             unitToApply.turnsWithBuffOrDebuff = turnsAdded;
         }
+
         else
         {
             unitToApply.buffbonusStateDamage = damageAdded;

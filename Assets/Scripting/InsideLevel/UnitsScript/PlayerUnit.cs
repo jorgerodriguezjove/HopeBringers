@@ -25,7 +25,7 @@ public class PlayerUnit : UnitBase
     public bool canHover;
 
     //Lista de posibles unidades a las que atacar
-    [HideInInspector]
+    [SerializeField]
     public List<UnitBase> currentUnitsAvailableToAttack;
 
     //Lista de tiles al hacer hover en enemigos
@@ -675,10 +675,6 @@ public class PlayerUnit : UnitBase
             //Resetear el material
             ResetColor();
 
-            //Actualizar hud
-            UIM.RefreshHealth();
-            UIM.RefreshTokens();
-
             #region Rotation
 
             if (lastAttack.pjPreviousRotation == FacingDirection.North)
@@ -720,7 +716,30 @@ public class PlayerUnit : UnitBase
             isMarked = lastAttack.pjIsMarked;
             numberOfMarks = lastAttack.pjnumberOfMarks;
 
-            //Faltan añadir bufos y debufos
+            if (!isMarked)
+            {
+                QuitMarks();
+            }
+
+            if (numberOfMarks >= 1)
+            {
+                isMarked = true;
+                monkMarkUpgrade.SetActive(false);
+                monkMark.SetActive(true);
+            }
+
+            //Bufos y debufos
+
+            //Druida es especial y modifica healedlife
+            if (!GetComponent<Druid>())
+            {
+                buffbonusStateDamage = lastAttack.pj_damageBuffDebuff;
+            }
+            
+            turnsWithBuffOrDebuff = lastAttack.pj_turnsDamageBuffDebuff;
+
+            movementUds = lastAttack.pj_movementBuffDebuff;
+            turnsWithMovementBuffOrDebuff = lastAttack.pj_turnsMovementBuffDebuff;
         }
 
         else
@@ -731,10 +750,6 @@ public class PlayerUnit : UnitBase
 
             //Resetear el material
             ResetColor();
-
-            //Actualizar hud
-            UIM.RefreshHealth();
-            UIM.RefreshTokens();
 
             #region Rotation
 
@@ -777,8 +792,34 @@ public class PlayerUnit : UnitBase
             isMarked = lastAttack.objIsMarked;
             numberOfMarks = lastAttack.objnumberOfMarks;
 
-            //Faltan añadir bufos y debufos
+            if (!isMarked)
+            {
+                QuitMarks();
+            }
+
+            if (numberOfMarks >= 1)
+            {
+                isMarked = true;
+                monkMarkUpgrade.SetActive(false);
+                monkMark.SetActive(true);
+            }
+
+            //Bufos y debufos
+            if (!GetComponent<Druid>())
+            {
+                buffbonusStateDamage = lastAttack.obj_damageBuffDebuff;
+            }
+                
+            turnsWithBuffOrDebuff = lastAttack.obj_turnsDamageBuffDebuff;
+
+            movementUds = lastAttack.obj_movementBuffDebuff;
+            turnsWithMovementBuffOrDebuff = lastAttack.obj_turnsMovementBuffDebuff;
         }
+
+        //Actualizar hud
+        RefreshHealth(false);
+        UIM.RefreshHealth();
+        UIM.RefreshTokens();
     }
 
     #endregion
@@ -1357,7 +1398,9 @@ public class PlayerUnit : UnitBase
                                       currentArmor, obj.currentArmor,
                                       isStunned, obj.isStunned,
                                       isMarked, obj.isMarked, numberOfMarks, obj.numberOfMarks,
-                                      hasMoved, obj.hasMoved, hasAttacked, obj.hasAttacked);
+                                      hasMoved, obj.hasMoved, hasAttacked, obj.hasAttacked,
+                                      buffbonusStateDamage, obj.buffbonusStateDamage,movementUds, obj.movementUds,
+                                      turnsWithBuffOrDebuff, obj.turnsWithBuffOrDebuff, turnsWithMovementBuffOrDebuff, obj.turnsWithMovementBuffOrDebuff);
         CommandInvoker.AddCommand(command);
     }
     

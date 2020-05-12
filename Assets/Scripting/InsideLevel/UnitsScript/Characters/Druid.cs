@@ -36,6 +36,7 @@ public class Druid : PlayerUnit
     //bool pasiva 1
     public bool tileTransformer;
 
+    //Parece que esta lista guarda los tiles de sombra.
     [HideInInspector]
     public List<GameObject> tilesSpawned;
 
@@ -706,5 +707,16 @@ public class Druid : PlayerUnit
         base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         //tiles instanciado y sustituido
+
+        //healedLife en vez de buffbonusStateDamage
+        if (_isThisUnitTheAttacker)
+        {
+            healedLife = lastAttack.pj_damageBuffDebuff;
+        }
+
+        else
+        {
+            healedLife = lastAttack.obj_damageBuffDebuff;
+        }
     }
 }

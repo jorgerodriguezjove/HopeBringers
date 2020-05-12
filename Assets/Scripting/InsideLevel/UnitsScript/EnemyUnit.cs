@@ -1231,10 +1231,6 @@ public class EnemyUnit : UnitBase
         //Resetear el material
         ResetColor();
 
-        //Actualizar hud
-        UIM.RefreshHealth();
-        UIM.RefreshTokens();
-
         #region Rotation
 
         if (lastAttack.objPreviousRotation == FacingDirection.North)
@@ -1287,8 +1283,19 @@ public class EnemyUnit : UnitBase
             monkMarkUpgrade.SetActive(false);
             monkMark.SetActive(true);
         }
-       
-        //Faltan añadir bufos y debufos
+
+        //Druida es especial y modifica healedlife
+        buffbonusStateDamage = lastAttack.obj_damageBuffDebuff;
+        turnsWithBuffOrDebuff = lastAttack.obj_turnsDamageBuffDebuff;
+
+        movementUds = lastAttack.obj_movementBuffDebuff;
+        turnsWithMovementBuffOrDebuff = lastAttack.obj_turnsMovementBuffDebuff;
+
+
+        //Actualizar hud
+        RefreshHealth(false);
+        UIM.RefreshHealth();
+        UIM.RefreshTokens();
     }
 
     public void ExecuteAnimationAttack()

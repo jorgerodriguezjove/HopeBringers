@@ -877,9 +877,7 @@ public class Valkyrie : PlayerUnit
     {
         base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
-        //Intercambio con otro personaje. Usar hasmoved
-
-        RefreshHealth(false);
+        CheckUnitsAndTilesInRangeToAttack(false);
     }
 
 }

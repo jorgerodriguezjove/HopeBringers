@@ -100,16 +100,19 @@ public class AttackCommand : ICommand
     public bool pjHasAttacked;
     public bool objHasAttacked;
 
-    //PREGUNTAR A MARIO
-    //public int pj_damageBuff;
-    //public int pj_damageDebuff;
-    //public int pj_movementBuff;
-    //public int pj_movementDebuff;
+    //Bufos y debufos
+    public int pj_damageBuffDebuff;
+    public int pj_turnsDamageBuffDebuff;
 
-    //public int obj_damageBuff;
-    //public int obj_damageDebuff;
-    //public int obj_movementBuff;
-    //public int obj_movementDebuff;
+    public int obj_damageBuffDebuff;
+    public int obj_turnsDamageBuffDebuff;
+
+    public int pj_movementBuffDebuff;
+    public int pj_turnsMovementBuffDebuff;
+
+    public int obj_movementBuffDebuff;
+    public int obj_turnsMovementBuffDebuff;
+
 
     #region VARIABLES ESPECÍFICAS PJ
 
@@ -151,9 +154,9 @@ public class AttackCommand : ICommand
                          int _pjArmor, int _objArmor,
                          bool _pjIsStunned, bool _objIsStunned,
                          bool _pjIsMarked, bool _objIsMarked, int _pjnumberOfMarks, int _objnumberOfMarks,
-                         bool _pjHasMoved, bool _objHasMoved, bool _pjHasAttacked, bool _objHasAttacked)
-                         //,int pj_damageBuff, int pj_damageDebuff, int pj_movementBuff, int pj_movementDebuff,
-                         //int obj_damageBuff, int obj_damageDebuff, int obj_movementBuff, int obj_movementDebuff)
+                         bool _pjHasMoved, bool _objHasMoved, bool _pjHasAttacked, bool _objHasAttacked,
+                         int _pjDamageBuffDebuff, int _objDamageBuffDebuff, int _pjMovementBuffDebuff, int _objMovementBuffDebuff,
+                         int _pjTurnsDamageBuffDebuff, int _objTurnsDamageBuffDebuff, int _pjTurnsMovementBuffDebuff, int _objTurnsMovementBuffDebuff)
     {
         objPreviousRotation = _enemypreviousRotation;
         pjPreviousRotation = _pjpreviousRotation;
@@ -182,6 +185,18 @@ public class AttackCommand : ICommand
         objHasMoved = _objHasMoved;
         pjHasAttacked = _pjHasAttacked;
         objHasAttacked = _objHasAttacked;
+
+        pj_damageBuffDebuff = _pjDamageBuffDebuff;
+        pj_turnsDamageBuffDebuff = _pjTurnsDamageBuffDebuff;
+
+        obj_damageBuffDebuff = _objDamageBuffDebuff;
+        obj_turnsDamageBuffDebuff = _objTurnsDamageBuffDebuff;
+
+        pj_movementBuffDebuff = _pjMovementBuffDebuff;
+        pj_turnsMovementBuffDebuff = _pjTurnsMovementBuffDebuff;
+
+        obj_movementBuffDebuff = _objMovementBuffDebuff;
+        obj_turnsMovementBuffDebuff = _objTurnsMovementBuffDebuff;
 
         #region Specific
 
