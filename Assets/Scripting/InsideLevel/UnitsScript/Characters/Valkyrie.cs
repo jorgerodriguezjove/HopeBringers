@@ -7,7 +7,6 @@ public class Valkyrie : PlayerUnit
 {
     public IndividualTiles previousTile;
 
-    public GameObject changePosArrows;
 
     [Header("MEJORAS DE PERSONAJE")]
 
@@ -611,6 +610,8 @@ public class Valkyrie : PlayerUnit
         UpdateInformationAfterMovement(valkyriePreviousTile);
         hasMoved = true;
         LM.UnitHasFinishedMovementAndRotation();
+        UIM.RefreshTokens();
+
     }
 
     public void ChangePositionIconFeedback(bool has2Show, UnitBase otherUnit)
@@ -662,9 +663,7 @@ public class Valkyrie : PlayerUnit
             //Vector3 vector2SpawnEnemy = new Vector3(_unitToAttack.transform.position.x, transform.position.y + 2.5f, _unitToAttack.transform.position.z);
             //_unitToAttack.shaderHover.transform.position = vector2SpawnEnemy;
 
-            changePosArrows.SetActive(true);
-            //Descomentar cuando esté añadido a todas las unidades
-            //_unitToAttack.changePositionIcon.SetActive(true);
+            ChangePositionIconFeedback(true, _unitToAttack);          
 
             if (canChooseEnemy)
             {
@@ -790,7 +789,7 @@ public class Valkyrie : PlayerUnit
 
         sombraHoverUnit.SetActive(false);
         _unitToAttack.sombraHoverUnit.SetActive(false);
-        changePosArrows.SetActive(false);
+        ChangePositionIconFeedback(false, _unitToAttack);
 
         if (tilesInEnemyHover.Count > 0)
         {
@@ -835,6 +834,7 @@ public class Valkyrie : PlayerUnit
                      if(myHaloUnits[i].currentHealth <= numberCanChange)
                      {
                      GameObject unitHaloRef = Instantiate(unitHalo2, myHaloUnits[i].transform.position, unitHalo2.transform.rotation);
+                        unitHaloRef.SetActive(true);
                      myHaloInstancies.Add(unitHaloRef);
                      }                   
                  }
@@ -863,6 +863,7 @@ public class Valkyrie : PlayerUnit
                     if (myHaloUnits[i].currentHealth <= numberCanChange)
                     {
                         GameObject unitHaloRef = Instantiate(unitHalo, myHaloUnits[i].transform.position, unitHalo.transform.rotation);
+                        unitHaloRef.SetActive(true);
                         myHaloInstancies.Add(unitHaloRef);
                     }
                 }

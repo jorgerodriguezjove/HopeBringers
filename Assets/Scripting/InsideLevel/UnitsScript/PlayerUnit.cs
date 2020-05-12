@@ -364,6 +364,12 @@ public class PlayerUnit : UnitBase
                 else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
 
+                    Samurai samuraiRef = FindObjectOfType<Samurai>();
+                    if (samuraiRef != null && LM.selectedCharacter == samuraiRef)
+                    {
+                        LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
+                    }
+
                     Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
                     if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef)
                     {
@@ -906,6 +912,7 @@ public class PlayerUnit : UnitBase
             {
                 valkyrieRef.myHaloUnits.Add(this);
                 valkyrieRef.CheckValkyrieHalo();
+               
 
             }else if (valkyrieRef.myHaloUnits.Contains(this))
             {
@@ -1113,6 +1120,7 @@ public class PlayerUnit : UnitBase
 
     }
 
+   
     #endregion
 
     #region CHECKS

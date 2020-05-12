@@ -792,7 +792,6 @@ public class Knight : PlayerUnit
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
 
-
         hasAttacked = true;
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
@@ -800,7 +799,7 @@ public class Knight : PlayerUnit
 
     public void ActivateParticleEffect()
     {
-        if (pushWider|| pushWider2)
+        if (pushWider || pushWider2)
         {
             for (int i = 0; i < particleAttackInPrefab.Count; i++)
             {
@@ -1378,6 +1377,10 @@ public class Knight : PlayerUnit
 
                 if (tilesInEnemyHover[i].unitOnTile != null)
                 {
+                    if (pushWider2)
+                    {
+                        SetStunIcon(tilesInEnemyHover[i].unitOnTile,true,true);
+                    }
                     CalculateDamage(tilesInEnemyHover[i].unitOnTile);
                     tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 }            

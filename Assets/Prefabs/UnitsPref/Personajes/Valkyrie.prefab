@@ -1305,8 +1305,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   maxHealth: 5
-  currentHealth: 0
-  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   movementUds: 6
   fMovementUds: 0
   baseDamage: 1
@@ -1367,6 +1367,8 @@ MonoBehaviour:
   changePositionIcon: {fileID: 2107858665390354353}
   previsualizeAttackIcon: {fileID: 19174632879652722}
   notAttackX: {fileID: 6789610599898760048}
+  currentHealth: 0
+  currentArmor: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -1386,8 +1388,6 @@ MonoBehaviour:
   unitGeneralInfo: 
   characterStartedOnTheLevel: 0
   initialPosInBox: {fileID: 0}
-  hasMoved: 0
-  hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
@@ -1412,7 +1412,6 @@ MonoBehaviour:
   UIM: {fileID: 0}
   TM: {fileID: 0}
   previousTile: {fileID: 0}
-  changePosArrows: {fileID: 6561978711090928201}
   canChooseEnemy: 0
   armorMode: 0
   armorMode2: 0
@@ -2221,6 +2220,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4707328326654346912}
     m_Modifications:
+    - target: {fileID: 2252778221301001968, guid: d5efcee16691a604bad819a95250e1a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3409853078865103740, guid: d5efcee16691a604bad819a95250e1a0,
         type: 3}
       propertyPath: m_IsActive
@@ -2239,7 +2243,7 @@ PrefabInstance:
     - target: {fileID: 4956006663580681733, guid: d5efcee16691a604bad819a95250e1a0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.68
       objectReference: {fileID: 0}
     - target: {fileID: 4956006663580681733, guid: d5efcee16691a604bad819a95250e1a0,
         type: 3}

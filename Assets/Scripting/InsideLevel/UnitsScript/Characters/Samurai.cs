@@ -10,6 +10,11 @@ public class Samurai : PlayerUnit
     [SerializeField]
     private int samuraiFrontAttack;
 
+
+    //Lista de unidades que no puede atacar. La añado para que el samurai pueda poner su icono al no poder atacarles por la espalda
+    [HideInInspector]
+    public List<UnitBase> UnitsNonAttack;
+
     [Header("MEJORAS DE PERSONAJE")]
 
     [Header("Activas")]
@@ -184,6 +189,7 @@ public class Samurai : PlayerUnit
         CheckIfIsLonely();
 
         currentUnitsAvailableToAttack.Clear();
+        UnitsNonAttack.Clear();
 
         if (currentFacingDirection == FacingDirection.North)
         {
@@ -202,8 +208,7 @@ public class Samurai : PlayerUnit
                 {
                     if (myCurrentTile.tilesInLineUp[i].unitOnTile.currentFacingDirection == FacingDirection.North)
                     {
-                        myCurrentTile.tilesInLineUp[i].unitOnTile.previsualizeAttackIcon.SetActive(true);
-                        myCurrentTile.tilesInLineUp[i].unitOnTile.notAttackX.SetActive(true);
+                        UnitsNonAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
 
                         break;
                     }
@@ -235,6 +240,8 @@ public class Samurai : PlayerUnit
                 {
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile.currentFacingDirection == FacingDirection.South)
                     {
+                        UnitsNonAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
+
                         break;
                     }
                     else
@@ -265,6 +272,7 @@ public class Samurai : PlayerUnit
                 {
                     if (myCurrentTile.tilesInLineRight[i].unitOnTile.currentFacingDirection == FacingDirection.East)
                     {
+                        UnitsNonAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
                         break;
                     }
                     else
@@ -295,6 +303,7 @@ public class Samurai : PlayerUnit
                 {
                     if (myCurrentTile.tilesInLineLeft[i].unitOnTile.currentFacingDirection == FacingDirection.West)
                     {
+                        UnitsNonAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                         break;
                     }
                     else
@@ -303,27 +312,11 @@ public class Samurai : PlayerUnit
                         currentUnitsAvailableToAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                         break;
                     }
-
                     
                 }
             }
-
         }
-
-        if (currentUnitsAvailableToAttack.Count > 0)
-        {
-
-
-            if (currentFacingDirection == FacingDirection.North && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.South
-              || currentFacingDirection == FacingDirection.South && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.North
-              || currentFacingDirection == FacingDirection.East && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.West
-              || currentFacingDirection == FacingDirection.West && currentUnitsAvailableToAttack[0].currentFacingDirection == FacingDirection.East
-              )
-            {
-                backStabIcon.SetActive(true);
-            }
-        }
-
+     
         if (_shouldPaintEnemiesAndShowHealthbar)
         {
             //Marco las unidades disponibles para atacar de color rojo
@@ -576,51 +569,61 @@ public class Samurai : PlayerUnit
     }
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
-    {
-        if(parryOn)
-        {
-            parryIcon.SetActive(true);
-
-        }
-        else
-        {
-            if (doubleAttack)
+    {  
+    
+       if (currentUnitsAvailableToAttack.Count > 0)
+       {
+            if (parryOn)
             {
-                _unitToAttack.timesRepeatNumber.enabled = true;
-                _unitToAttack.timesRepeatNumber.text = ("X" + timesDoubleAttackRepeats.ToString());
+                parryIcon.SetActive(true);
+
+            }
+            else
+            {
+                if (doubleAttack)
+                {
+                    _unitToAttack.timesRepeatNumber.enabled = true;
+                    _unitToAttack.timesRepeatNumber.text = ("X" + timesDoubleAttackRepeats.ToString());
+
+                }
 
             }
 
-        }
-
-        if (currentUnitsAvailableToAttack.Count>0)
-        {
             //Marco las unidades disponibles para atacar de color rojo
             for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+           {
+               CalculateDamage(currentUnitsAvailableToAttack[i]);
+               currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+           }
+       }
+
+        if (UnitsNonAttack.Count > 0)
+        {
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < UnitsNonAttack.Count; i++)
             {
-                CalculateDamage(currentUnitsAvailableToAttack[i]);
-                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                UnitsNonAttack[i].notAttackX.SetActive(true);
             }
         }
-        
 
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
-        if (parryOn)
-        {
-            parryIcon.SetActive(false);
-
-        }
-        else
-        {
-            _unitToAttack.timesRepeatNumber.enabled = false;
-
-        }
-
+       
         if (currentUnitsAvailableToAttack.Count > 0)
         {
+            if (parryOn)
+            {
+                parryIcon.SetActive(false);
+
+            }
+            else
+            {
+                _unitToAttack.timesRepeatNumber.enabled = false;
+
+            }
+
             //Marco las unidades disponibles para atacar de color rojo
             for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
             {
@@ -628,13 +631,23 @@ public class Samurai : PlayerUnit
                 currentUnitsAvailableToAttack[i].DisableCanvasHover();
             }
         }
-      
+
+        if (UnitsNonAttack.Count > 0)
+        {
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < UnitsNonAttack.Count; i++)
+            {
+                UnitsNonAttack[i].notAttackX.SetActive(false);
+            }
+        }
+
     }
 
      
     protected override void OnMouseEnter()
 {
         base.OnMouseEnter();
+        CheckIfIsLonely();
         if (buffLonelyArea)
         {
             lonelyBox.SetActive(true);
@@ -650,7 +663,6 @@ public class Samurai : PlayerUnit
             lonelyBox.SetActive(false);
         }
     }
-
 
     public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
