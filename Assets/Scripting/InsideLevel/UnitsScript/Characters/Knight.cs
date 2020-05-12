@@ -362,7 +362,7 @@ public class Knight : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
+      
 
         CheckIfUnitHasMarks(unitToAttack);
 
@@ -792,7 +792,8 @@ public class Knight : PlayerUnit
             SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
         }
 
-        
+
+        hasAttacked = true;
         //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
         base.Attack(unitToAttack);
     }

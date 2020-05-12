@@ -41,6 +41,10 @@ public class Samurai : PlayerUnit
     //bool para la mejora de la pasiva 1
     public bool itsForHonorTime2;
 
+    //Esta variable la uso unicamente para el undo porque en commands no puedo acceder a lm.honor
+    [HideInInspector]
+    public int currentHonor;
+
     //bool para la pasiva 2
     public bool buffLonelyArea;
     //bool que indica si tiene aliados en un área de 3x3 o no
@@ -333,7 +337,7 @@ public class Samurai : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
+        
 
         CheckIfUnitHasMarks(unitToAttack);
 
@@ -401,7 +405,7 @@ public class Samurai : PlayerUnit
 
         }
 
-       
+        hasAttacked = true;
 
     }
 
@@ -438,6 +442,7 @@ public class Samurai : PlayerUnit
 
         if (samuraiUpgraded != null && samuraiUpgraded.itsForHonorTime2)
         {
+            
             damageWithMultipliersApplied += LM.honorCount;
 
         }
@@ -450,6 +455,7 @@ public class Samurai : PlayerUnit
         {
             if (itsForHonorTime)
             {
+                currentHonor++;
                 LM.honorCount++;
             }
 
@@ -538,7 +544,7 @@ public class Samurai : PlayerUnit
         if (buffLonelyArea)
         {
             TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-            //Hago daño a las unidades adyacentes(3x3)
+            
             for (int i = 0; i < myCurrentTile.surroundingNeighbours.Count; ++i)
             {
                 if (myCurrentTile.surroundingNeighbours[i].unitOnTile != null)
@@ -565,11 +571,8 @@ public class Samurai : PlayerUnit
             if (isLonelyLikeMe)
             {
                 isLonelyIcon.SetActive(true);
-
             }
-
         }
-
     }
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
@@ -649,13 +652,17 @@ public class Samurai : PlayerUnit
     }
 
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
-        base.UndoAttack(lastAttack);
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         unitToParry = lastAttack.unitToParry;
 
+        CheckIfIsLonely();
+
         //Falta Honor
+        currentHonor = lastAttack.honor;
+        LM.honorCount = currentHonor;
     }
 
 }

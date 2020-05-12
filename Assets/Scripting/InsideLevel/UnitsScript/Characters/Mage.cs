@@ -173,7 +173,7 @@ public class Mage : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
+        
 
         CheckIfUnitHasMarks(unitToAttack);
 
@@ -338,6 +338,8 @@ public class Mage : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
+
+        hasAttacked = true;
     }
 
     //Override especial del mago para anlar ventajas por altura y daño por la espalda
@@ -807,9 +809,9 @@ public class Mage : PlayerUnit
         tilesInEnemyHover.Clear();
     }
 
-    public override void UndoAttack(AttackCommand lastAttack)
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
-        base.UndoAttack(lastAttack);
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         //myDecoys.
         //Hacer la movida de los decoys

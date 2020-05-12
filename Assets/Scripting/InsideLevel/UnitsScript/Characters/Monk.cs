@@ -176,8 +176,6 @@ public class Monk : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-        hasAttacked = true;
-
         if (rotatorTime){
 
             //Animación de ataque
@@ -185,6 +183,9 @@ public class Monk : PlayerUnit
 
             //UNDO
             CreateAttackCommand(unitToAttack);
+
+            //Hago daño. IMPORTANTE tiene que ir despues del CreateAttackCommand pero antes que el giro porque si no le ataca por la espalda.
+            DoDamage(unitToAttack);
 
             PutQuitMark(unitToAttack, true, true);
            
@@ -231,7 +232,6 @@ public class Monk : PlayerUnit
 
                     TM.GetSurroundingTiles(unitToAttack.myCurrentTile, 1, true, false);
 
-
                     //Marco a las unidades adyacentes si no están marcadas
                     for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                     {
@@ -251,8 +251,7 @@ public class Monk : PlayerUnit
 
             }
             
-            //Hago daño
-            DoDamage(unitToAttack);
+            
             rotatorFeedbackArrow.SetActive(false);
 
             //Meter sonido Monk
@@ -337,6 +336,7 @@ public class Monk : PlayerUnit
             //Meter sonido Monk
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
 
+            hasAttacked = true;
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
@@ -358,9 +358,12 @@ public class Monk : PlayerUnit
             //Meter sonido Monk
             //SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
 
+            hasAttacked = true;
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
-        }      
+        }
+
+        hasAttacked = true;
     }
 
     protected override void DoDamage(UnitBase unitToDealDamage)

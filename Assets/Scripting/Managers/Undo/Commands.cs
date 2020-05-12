@@ -95,6 +95,11 @@ public class AttackCommand : ICommand
     public int  pjnumberOfMarks;
     public int  objnumberOfMarks;
 
+    public bool pjHasMoved;
+    public bool objHasMoved;
+    public bool pjHasAttacked;
+    public bool objHasAttacked;
+
     //PREGUNTAR A MARIO
     //public int pj_damageBuff;
     //public int pj_damageDebuff;
@@ -145,7 +150,8 @@ public class AttackCommand : ICommand
                          UnitBase _pj, UnitBase _enemy,
                          int _pjArmor, int _objArmor,
                          bool _pjIsStunned, bool _objIsStunned,
-                         bool _pjIsMarked, bool _objIsMarked, int _pjnumberOfMarks, int _objnumberOfMarks)
+                         bool _pjIsMarked, bool _objIsMarked, int _pjnumberOfMarks, int _objnumberOfMarks,
+                         bool _pjHasMoved, bool _objHasMoved, bool _pjHasAttacked, bool _objHasAttacked)
                          //,int pj_damageBuff, int pj_damageDebuff, int pj_movementBuff, int pj_movementDebuff,
                          //int obj_damageBuff, int obj_damageDebuff, int obj_movementBuff, int obj_movementDebuff)
     {
@@ -172,6 +178,11 @@ public class AttackCommand : ICommand
         pjnumberOfMarks = _pjnumberOfMarks;
         objnumberOfMarks = _objnumberOfMarks;
 
+        pjHasMoved = _pjHasMoved;
+        objHasMoved = _objHasMoved;
+        pjHasAttacked = _pjHasAttacked;
+        objHasAttacked = _objHasAttacked;
+
         #region Specific
 
         if (pj.GetComponent<Rogue>())
@@ -189,9 +200,9 @@ public class AttackCommand : ICommand
             ninjaExtraJumps = refPj.unitsCanJump;
 
             smokeTiles.Clear();
-            for (int i = 0; i < refPj.bombsSpawned.Count; i++)
+            for (int i = 0; i < refPj.realBombsSpawned.Count; i++)
             {
-                smokeTiles.Add(refPj.bombsSpawned[i]);
+                smokeTiles.Add(refPj.realBombsSpawned[i]);
             }
 
             ninjaBonusDamage = refPj.baseDamage;
@@ -217,7 +228,7 @@ public class AttackCommand : ICommand
             Samurai refPj = pj.GetComponent<Samurai>();
 
             unitToParry = refPj.unitToParry; 
-           // honor = LM.HONOR; Hay que hacer que el samurai también guarde el honor o algo porque no puedo acceder a LM
+            honor = pj.GetComponent<Samurai>().currentHonor; 
         }
 
         else if (pj.GetComponent<Druid>())
@@ -256,8 +267,8 @@ public class AttackCommand : ICommand
 
     public void Undo()
     {
-        obj.UndoAttack(this);   
-        pj.UndoAttack(this);
+        obj.UndoAttack(this, false);   
+        pj.UndoAttack(this, true);
 
         //En las funciones que he llamado falta setear los bufos de daño y movimiento
     }

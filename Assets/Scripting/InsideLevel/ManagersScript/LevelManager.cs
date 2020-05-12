@@ -303,7 +303,8 @@ public class LevelManager : MonoBehaviour
         {
             for (int i = 0; i < enemiesOnTheBoard.Count; i++)
             {
-                if (enemiesOnTheBoard[i].GetComponent<EnemyUnit>().isDead)
+                //&& currentLevelState != LevelState.ProcessingPlayerActions esta para que al moverse y actualizar estado de los enemigos no los destruya y funcione el undo.
+                if (enemiesOnTheBoard[i].GetComponent<EnemyUnit>().isDead && currentLevelState != LevelState.ProcessingPlayerActions)
                 {
                     EnemyUnit deadEnemy = enemiesOnTheBoard[i];
                     enemiesOnTheBoard.Remove(deadEnemy);
@@ -1383,16 +1384,19 @@ public class LevelManager : MonoBehaviour
             //Si llega hasta aqui significa que la unidad seleccionada no formaba parte de las unidades a las que puede atacar.
             //Compruebo si es un player y de ser así lo selecciono
             //PREGUNTAR SI AQUÍ FALTA UN ELSE (al atacar y matar con el ninja sale el su número y la espada)
-            if (clickedUnit.GetComponent<PlayerUnit>() && !clickedUnit.GetComponent<MageDecoy>())
+            else
             {
-                DeSelectUnit();
-                SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
-            }
+                if (clickedUnit.GetComponent<PlayerUnit>() && !clickedUnit.GetComponent<MageDecoy>())
+                {
+                    DeSelectUnit();
+                    SelectUnit(clickedUnit.movementUds, clickedUnit.GetComponent<PlayerUnit>());
+                }
 
-            else if (clickedUnit.GetComponent<EnemyUnit>())
-            {
-                DeSelectUnit();
-                SelectEnemy(clickedUnit.unitGeneralInfo, clickedUnit.GetComponent<EnemyUnit>());
+                else if (clickedUnit.GetComponent<EnemyUnit>())
+                {
+                    DeSelectUnit();
+                    SelectEnemy(clickedUnit.unitGeneralInfo, clickedUnit.GetComponent<EnemyUnit>());
+                }
             }
         }
     }
