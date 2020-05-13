@@ -1481,8 +1481,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   maxHealth: 3
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 4
   fMovementUds: 0
   baseDamage: 1
@@ -1508,8 +1506,6 @@ MonoBehaviour:
   attackParticle: {fileID: 7007615655518635209, guid: ebdaf4cb6eb237f44926aa052b416a05,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 8360776189989060027}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
@@ -1545,6 +1541,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 2436854481965587466}
   previsualizeAttackIcon: {fileID: 4383677330003840201}
   notAttackX: {fileID: 7109044894005719243}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -1562,9 +1562,8 @@ MonoBehaviour:
   unitName: Druid
   inGamePortrait: {fileID: 7959021913447096493}
   unitGeneralInfo: 
+  characterStartedOnTheLevel: 0
   initialPosInBox: {fileID: 0}
-  hasMoved: 0
-  hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
@@ -1584,7 +1583,7 @@ MonoBehaviour:
   canvasWithRotationArrows: {fileID: 5150996625557935003}
   insideGameInfoObject: {fileID: 2450018198717724403}
   shieldBlockAllDamage: {fileID: 693726485648279711}
-  shieldBlockPartialDamage: {fileID: 5508062893081156847}
+  shieldBlockPartialDamage: {fileID: 8130186973688758461}
   LM: {fileID: 0}
   UIM: {fileID: 0}
   TM: {fileID: 0}
@@ -3276,9 +3275,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4508679262651380474}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5508062893081156847 stripped
+--- !u!1 &8130186973688758461 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 8278348262849490453, guid: d5efcee16691a604bad819a95250e1a0,
+  m_CorrespondingSourceObject: {fileID: 5640250682871870023, guid: d5efcee16691a604bad819a95250e1a0,
     type: 3}
   m_PrefabInstance: {fileID: 4508679262651380474}
   m_PrefabAsset: {fileID: 0}

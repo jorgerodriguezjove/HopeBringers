@@ -5844,8 +5844,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   maxHealth: 3
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 4
   fMovementUds: 0
   baseDamage: 1
@@ -5871,8 +5869,6 @@ MonoBehaviour:
   attackParticle: {fileID: 3353366173247169920, guid: a2a4ac8f31ca2c74c931383da1f75c07,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 3532709729053466373}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
@@ -5908,6 +5904,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 4553553263726937408}
   previsualizeAttackIcon: {fileID: 2148751208685607138}
   notAttackX: {fileID: 8955526634855770497}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -5927,9 +5927,8 @@ MonoBehaviour:
   unitGeneralInfo: "Ataque: El mago ataca a distancia a un \xFAnico enemigo.\n\nPasiva:
     Al moverse, el mago deja una copia en su posici\xF3n anterior que atrae a los
     enemigos."
+  characterStartedOnTheLevel: 0
   initialPosInBox: {fileID: 0}
-  hasMoved: 0
-  hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
@@ -5950,7 +5949,7 @@ MonoBehaviour:
   canvasWithRotationArrows: {fileID: 5737905876088385803}
   insideGameInfoObject: {fileID: 7422481941314982989}
   shieldBlockAllDamage: {fileID: 1675504249665737173}
-  shieldBlockPartialDamage: {fileID: 5949422956793791909}
+  shieldBlockPartialDamage: {fileID: 7941028490988050935}
   LM: {fileID: 0}
   UIM: {fileID: 0}
   TM: {fileID: 0}
@@ -7616,9 +7615,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2337932574034373552}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5949422956793791909 stripped
+--- !u!1 &7941028490988050935 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 8278348262849490453, guid: d5efcee16691a604bad819a95250e1a0,
+  m_CorrespondingSourceObject: {fileID: 5640250682871870023, guid: d5efcee16691a604bad819a95250e1a0,
     type: 3}
   m_PrefabInstance: {fileID: 2337932574034373552}
   m_PrefabAsset: {fileID: 0}

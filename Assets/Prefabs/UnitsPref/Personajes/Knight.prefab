@@ -6209,7 +6209,7 @@ Transform:
   - {fileID: 597508674673794816}
   - {fileID: 2300878772754383866}
   - {fileID: 684549695460253065}
-  - {fileID: 6811079046041580834}
+  - {fileID: 6812745310398138559}
   - {fileID: 3060409630358457707}
   - {fileID: 8518118060871412931}
   m_Father: {fileID: 0}
@@ -6283,8 +6283,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   maxHealth: 4
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 4
   fMovementUds: 0
   baseDamage: 1
@@ -6304,7 +6302,7 @@ MonoBehaviour:
   timeToWaitBeforeHidingHealthbar: 1
   damageWithMultipliersApplied: 0
   isDead: 0
-  movementParticle: {fileID: 6811079046041580830}
+  movementParticle: {fileID: 6811155989079039607}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
   attackParticle: {fileID: 5147340322548916948, guid: 502e233d19f08e5488b039fc62982e78,
@@ -6345,6 +6343,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 3292785713057596470}
   previsualizeAttackIcon: {fileID: 3510224248577250549}
   notAttackX: {fileID: 7983553650463402231}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -6364,8 +6366,6 @@ MonoBehaviour:
   unitGeneralInfo: 
   characterStartedOnTheLevel: 0
   initialPosInBox: {fileID: 0}
-  hasMoved: 0
-  hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
@@ -6385,7 +6385,7 @@ MonoBehaviour:
   canvasWithRotationArrows: {fileID: 734347368}
   insideGameInfoObject: {fileID: 1562100085282436810}
   shieldBlockAllDamage: {fileID: 415383971036106915}
-  shieldBlockPartialDamage: {fileID: 4617230932141393107}
+  shieldBlockPartialDamage: {fileID: 8986678997938935937}
   LM: {fileID: 0}
   UIM: {fileID: 0}
   TM: {fileID: 0}
@@ -7412,9 +7412,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3670762397572164294}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4617230932141393107 stripped
+--- !u!1 &8986678997938935937 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 8278348262849490453, guid: d5efcee16691a604bad819a95250e1a0,
+  m_CorrespondingSourceObject: {fileID: 5640250682871870023, guid: d5efcee16691a604bad819a95250e1a0,
     type: 3}
   m_PrefabInstance: {fileID: 3670762397572164294}
   m_PrefabAsset: {fileID: 0}
@@ -8495,13 +8495,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eac7894746a985341a280e45d7abac75, type: 3}
---- !u!4 &6811079046041580834 stripped
+--- !u!4 &6812745310398138559 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4058907019804076, guid: eac7894746a985341a280e45d7abac75,
     type: 3}
   m_PrefabInstance: {fileID: 6811079046041580819}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6811079046041580830 stripped
+--- !u!1 &6811155989079039607 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1062157001075556, guid: eac7894746a985341a280e45d7abac75,
     type: 3}

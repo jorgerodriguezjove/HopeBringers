@@ -177,6 +177,19 @@ public class Mage : PlayerUnit
 
         CheckIfUnitHasMarks(unitToAttack);
 
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorDesAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ResetColor();
+                tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
+
+            }
+        }
+        tilesInEnemyHover.Clear();
+
         if (mirrorDecoy)
         {
             for (int i = 0; i < myDecoys.Count; i++)
@@ -194,7 +207,7 @@ public class Mage : PlayerUnit
 
         if (areaAttack)
         {
-            Instantiate(particleAreaAttack, unitToAttack.transform.position, unitToAttack.transform.rotation);
+            Instantiate(particleAreaAttack, unitToAttack.transform.position, particleAreaAttack.transform.rotation);
 
             if (areaAttack2)
             {
@@ -339,6 +352,7 @@ public class Mage : PlayerUnit
             base.Attack(unitToAttack);
         }
 
+        
         hasAttacked = true;
     }
 
@@ -797,7 +811,23 @@ public class Mage : PlayerUnit
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-            tilesInEnemyHover[i].ColorBorderRed();
+           if(currentTilesInRangeForAttack.Contains(tilesInEnemyHover[i]))
+            {
+                tilesInEnemyHover[i].ColorBorderRed();
+                if (LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
+                {
+                    tilesInEnemyHover[i].ColorMovement();
+                }
+           }
+           else if(LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
+            {
+                tilesInEnemyHover[i].ColorMovement();
+            }
+            else
+            {
+                tilesInEnemyHover[i].ColorDesAttack();
+            }
+           
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
@@ -806,8 +836,10 @@ public class Mage : PlayerUnit
 
             }
         }
+        
         tilesInEnemyHover.Clear();
     }
+
 
     public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {

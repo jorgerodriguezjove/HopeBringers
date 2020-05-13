@@ -606,8 +606,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   maxHealth: 5
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 4
   fMovementUds: 0
   baseDamage: 1
@@ -633,8 +631,6 @@ MonoBehaviour:
   attackParticle: {fileID: 5147340322548916948, guid: 502e233d19f08e5488b039fc62982e78,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 4883029552463857161}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
@@ -670,6 +666,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 2718411365161502834}
   previsualizeAttackIcon: {fileID: 4088491966125922481}
   notAttackX: {fileID: 7404102695213425843}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -687,9 +687,8 @@ MonoBehaviour:
   unitName: Monk
   inGamePortrait: {fileID: 6464724191715318559}
   unitGeneralInfo: 
+  characterStartedOnTheLevel: 0
   initialPosInBox: {fileID: 0}
-  hasMoved: 0
-  hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
@@ -709,7 +708,7 @@ MonoBehaviour:
   canvasWithRotationArrows: {fileID: 8720769159191529676}
   insideGameInfoObject: {fileID: 1568174843949436225}
   shieldBlockAllDamage: {fileID: 993133974281657575}
-  shieldBlockPartialDamage: {fileID: 5195003887708948631}
+  shieldBlockPartialDamage: {fileID: 8411870317161256133}
   LM: {fileID: 0}
   UIM: {fileID: 0}
   TM: {fileID: 0}
@@ -2589,9 +2588,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4249926217097537154}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5195003887708948631 stripped
+--- !u!1 &8411870317161256133 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 8278348262849490453, guid: d5efcee16691a604bad819a95250e1a0,
+  m_CorrespondingSourceObject: {fileID: 5640250682871870023, guid: d5efcee16691a604bad819a95250e1a0,
     type: 3}
   m_PrefabInstance: {fileID: 4249926217097537154}
   m_PrefabAsset: {fileID: 0}

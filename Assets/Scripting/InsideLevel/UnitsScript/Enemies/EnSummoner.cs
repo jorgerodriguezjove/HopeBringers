@@ -118,6 +118,7 @@ public class EnSummoner : EnemyUnit
         {
             DetermineSpawnPosition(false);
             spawnFeedback.SetActive(true);
+            posToSpawn += new Vector3(0, 0.5f, 0);
             spawnFeedback.transform.position = posToSpawn;
         }
 

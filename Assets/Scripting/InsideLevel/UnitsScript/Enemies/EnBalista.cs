@@ -27,7 +27,7 @@ public class EnBalista : EnemyUnit
     private float timeBetweenParticles;
 
     [SerializeField]
-    private GameObject particleChargingAttack;
+    public GameObject particleChargingAttack;
 
     #endregion 
 
@@ -122,7 +122,7 @@ public class EnBalista : EnemyUnit
 
     public override void Attack()
     {
-        particleChargingAttack.SetActive(isAttackPrepared);
+        
 
         //Si no he sido alertado, activo mi estado de alerta.
         if (!haveIBeenAlerted)
@@ -137,6 +137,7 @@ public class EnBalista : EnemyUnit
                 
                 base.Attack();
                 StartCoroutine("AttackCorroutine");
+                
                 myCurrentEnemyState = enemyState.Waiting;
             }
 
@@ -147,6 +148,7 @@ public class EnBalista : EnemyUnit
 
                  //Prepara ataque
                 isAttackPrepared = true;
+                particleChargingAttack.SetActive(isAttackPrepared);
                 myCurrentEnemyState = enemyState.Ended;
             }
         }
@@ -200,6 +202,7 @@ public class EnBalista : EnemyUnit
         }
 
         isAttackPrepared = false;
+        particleChargingAttack.SetActive(isAttackPrepared);
 
         tilesToShoot.Clear();
         myCurrentEnemyState = enemyState.Ended;
@@ -339,6 +342,7 @@ public class EnBalista : EnemyUnit
 
                         if (_referenceTile.tilesInLineRight[i].unitOnTile != null && _referenceTile.tilesInLineRight[i].unitOnTile.GetComponent<PlayerUnit>())
                         {
+
                             //Almaceno la primera unidad en la lista de posibles unidades.
                             currentUnitsAvailableToAttack.Add(_referenceTile.tilesInLineRight[i].unitOnTile);
 

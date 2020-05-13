@@ -889,80 +889,81 @@ public class PlayerUnit : UnitBase
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
-    {
-        //Animación de ataque
-        myAnimator.SetTrigger("Damage");
+    {      
+            //Animación de ataque
+            myAnimator.SetTrigger("Damage");
 
-        //Estas líneas las añado para comprobar si el caballero tiene que defender
-        Knight knightDef = FindObjectOfType<Knight>();
- 
-        
-        if (knightDef != null)
-        {
-            if (unitAttacker != null)
+            //Estas líneas las añado para comprobar si el caballero tiene que defender
+            Knight knightDef = FindObjectOfType<Knight>();
+
+
+            if (knightDef != null)
             {
-                CheckIfKnightIsDefending(knightDef, unitAttacker.currentFacingDirection);
-                damageReceived -= knightDef.shieldDef;
+                if (unitAttacker != null)
+                {
+                    CheckIfKnightIsDefending(knightDef, unitAttacker.currentFacingDirection);
+                    damageReceived -= knightDef.shieldDef;
+                }
             }
-        }
-       
-        if (damageReceived < 0)
-        {
-            damageReceived = 0;
-        }
 
-        if (currentArmor > 0)
-        {
-            currentArmor -= damageReceived;
-            if (currentArmor < 0)
+            if (damageReceived < 0)
             {
-                damageReceived = currentArmor * -1;
+                damageReceived = 0;
+            }
+
+            if (currentArmor > 0)
+            {
+                currentArmor -= damageReceived;
+                if (currentArmor < 0)
+                {
+                    damageReceived = currentArmor * -1;
+                    currentHealth -= damageReceived;
+                    currentArmor = 0;
+                }
+            }
+
+            else
+            {
                 currentHealth -= damageReceived;
-                currentArmor = 0;
-            }
-        }
-
-        else
-        {
-            currentHealth -= damageReceived;
-        }
-       
-        Debug.Log("Soy " + name + " me han hecho daño");
-
-        if (currentHealth <= 0)
-        {
-            //Logro matar aliado
-            if (unitAttacker != null && unitAttacker.GetComponent<PlayerUnit>())
-            {
-                GameManager.Instance.UnlockAchievement(AppAchievements.ACHV_NOBODY);
             }
 
-            Die();
-            return;
-        }
+            Debug.Log("Soy " + name + " me han hecho daño");
 
-        //Cuando me hacen daño refresco la información en la interfaz
-        UIM.RefreshHealth();
-
-
-        //Estas líneas las añado para comprobar si el halo de la valquiria tiene que salir
-        Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
-        if (valkyrieRef != null)
-        {
-            if(currentHealth <= valkyrieRef.numberCanChange)
+            if (currentHealth <= 0)
             {
-                valkyrieRef.myHaloUnits.Add(this);
-                valkyrieRef.CheckValkyrieHalo();
-               
+                //Logro matar aliado
+                if (unitAttacker != null && unitAttacker.GetComponent<PlayerUnit>())
+                {
+                    GameManager.Instance.UnlockAchievement(AppAchievements.ACHV_NOBODY);
+                }
 
-            }else if (valkyrieRef.myHaloUnits.Contains(this))
-            {
-                valkyrieRef.myHaloUnits.Remove(this);
+                Die();
+                return;
             }
-            
-        }
-        
-        base.ReceiveDamage(damageReceived,unitAttacker);
+
+            //Cuando me hacen daño refresco la información en la interfaz
+            UIM.RefreshHealth();
+
+
+            //Estas líneas las añado para comprobar si el halo de la valquiria tiene que salir
+            Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+            if (valkyrieRef != null)
+            {
+                if (currentHealth <= valkyrieRef.numberCanChange)
+                {
+                    valkyrieRef.myHaloUnits.Add(this);
+                    valkyrieRef.CheckValkyrieHalo();
+
+
+                }
+                else if (valkyrieRef.myHaloUnits.Contains(this))
+                {
+                    valkyrieRef.myHaloUnits.Remove(this);
+                }
+
+            }
+
+            base.ReceiveDamage(damageReceived, unitAttacker);        
     }
 
     public override void Die()

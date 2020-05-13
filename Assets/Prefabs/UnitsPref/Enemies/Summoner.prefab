@@ -1088,8 +1088,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 14
   maxHealth: 4
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 0
   fMovementUds: 0
   baseDamage: 1
@@ -1150,6 +1148,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 5550272451663217919}
   previsualizeAttackIcon: {fileID: 5765177141833143356}
   notAttackX: {fileID: 1044716317059754046}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -1759,6 +1761,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: skeletonSpawnBIGFeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 327600413215349991, guid: 05b26df799576fd4fb0186c3f03d9468,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 332790590619142313, guid: 05b26df799576fd4fb0186c3f03d9468,
         type: 3}

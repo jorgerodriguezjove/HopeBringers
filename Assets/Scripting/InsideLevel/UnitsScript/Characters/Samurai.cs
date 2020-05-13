@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class Samurai : PlayerUnit
 {
@@ -333,7 +334,9 @@ public class Samurai : PlayerUnit
         
 
         CheckIfUnitHasMarks(unitToAttack);
-
+        unitToAttack.timesRepeatNumber.enabled = false; 
+        
+        
         if (parryOn)
         {
             //UNDO
@@ -355,6 +358,30 @@ public class Samurai : PlayerUnit
 
                 particleMultipleAttack.SetActive(true);
 
+                //He hecho que la partícula sea hija del unitModel y asi, vaya acorde a estas
+                //if (currentFacingDirection == FacingDirection.North)
+                //{
+
+                //    particleMultipleAttack.transform.DORotate(new Vector3(0, 0, 180),0);
+
+                //}
+                //else if (currentFacingDirection == FacingDirection.South)
+                //{
+
+                //    particleMultipleAttack.transform.DORotate(new Vector3(0, 0, 0), 0);
+                //}
+                //else if (currentFacingDirection == FacingDirection.East)
+                //{
+                //    particleMultipleAttack.transform.DORotate(new Vector3(0, 0, 90), 0);
+
+                //}
+                //else if (currentFacingDirection == FacingDirection.West) 
+                //{
+                //    particleMultipleAttack.transform.DORotate(new Vector3(0, 0, 270), 0);
+                //}
+        
+                
+
                 //UNDO
                 CreateAttackCommand(unitToAttack);
 
@@ -367,6 +394,7 @@ public class Samurai : PlayerUnit
                 //Cambiar el número si va a tener más de un turno
                 myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = LM.honorCount.ToString();
             }
+
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
@@ -610,7 +638,9 @@ public class Samurai : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
-       
+
+        _unitToAttack.timesRepeatNumber.enabled = false;
+
         if (currentUnitsAvailableToAttack.Count > 0)
         {
             if (parryOn)
@@ -618,11 +648,11 @@ public class Samurai : PlayerUnit
                 parryIcon.SetActive(false);
 
             }
-            else
-            {
-                _unitToAttack.timesRepeatNumber.enabled = false;
+           
 
-            }
+                
+
+            
 
             //Marco las unidades disponibles para atacar de color rojo
             for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)

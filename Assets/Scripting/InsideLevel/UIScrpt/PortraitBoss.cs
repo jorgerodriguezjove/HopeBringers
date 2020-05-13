@@ -289,8 +289,12 @@ public class PortraitBoss : MonoBehaviour
     //Flipea el siguiente token de ataque
     public void FlipAttackTokens()
     {
-        attackTokens[attackCounter].GetComponent<Animator>().Play("TokenFlip");
-        attackCounter++;
+        if (attackCounter <= numberOfAttackTokens) 
+        {
+            attackTokens[attackCounter].GetComponent<Animator>().Play("TokenFlip");
+            attackCounter++;
+        }
+        
     }
 
     //Flipea el token de movimiento

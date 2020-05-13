@@ -457,6 +457,7 @@ public class LevelManager : MonoBehaviour
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
                 {
+                    hoverUnit.GetComponent<EnBalista>().particleChargingAttack.SetActive(true);
                     hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
 
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
@@ -841,6 +842,7 @@ public class LevelManager : MonoBehaviour
 
                 if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
                 {
+                    hoverUnit.GetComponent<EnBalista>().particleChargingAttack.SetActive(hoverUnit.GetComponent<EnBalista>().isAttackPrepared);
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
                     if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
                     {
