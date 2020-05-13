@@ -106,6 +106,12 @@ public class TableManager : MonoBehaviour
                     allLevelNodesInGame[i].SelectLevel();
                 }
             }
+
+			//Tutorial mejoras (es 1 o 2)
+			if(GameManager.Instance.levelIDsUnlocked.Count == 2)
+			{
+				//Saltar el moñeco de las mejoras
+			}
         }
     }
 
