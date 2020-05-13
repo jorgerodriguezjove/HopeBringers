@@ -271,7 +271,11 @@ public class MapGenerator : MonoBehaviour
                     {
                         if (Vector3.Distance(obstacleSpawns[j].transform.position, currentObstacleChecking.transform.position) <= 1.25f)
                         {   
-                            nearbySpawns.Add(obstacleSpawns[j]);
+                            //Obstáculos de 2 solo funcionan en horizontal
+                            if (obstacleSpawns[j].transform.position.z == currentObstacleChecking.transform.position.z)
+                            {
+                                nearbySpawns.Add(obstacleSpawns[j]);
+                            }   
                         }
                     }
                 }
@@ -288,11 +292,12 @@ public class MapGenerator : MonoBehaviour
                         randomPos = Random.Range(0, twoTileObstacleConfig.Count);
                         obstacleInstantiated = Instantiate(twoTileObstacleConfig[randomPos].obstacleAsset, (currentObstacleChecking.transform.position + currentsecondObstacleChecking.transform.position) / 2, twoTileObstacleConfig[randomPos].obstacleAsset.transform.rotation);
 
-                        //Recoloco la rotación del obstáculo 
-                        if (currentObstacleChecking.transform.position.z != currentsecondObstacleChecking.transform.position.z)
-                        {
-                            obstacleInstantiated.transform.Rotate(new Vector3(0,90,0));
-                        }
+                        ////Recoloco la rotación del obstáculo 
+                        //if (currentObstacleChecking.transform.position.z != currentsecondObstacleChecking.transform.position.z ||
+                        //    currentObstacleChecking.transform.position.x != currentsecondObstacleChecking.transform.position.x)
+                        //{
+                        //    obstacleInstantiated.transform.Rotate(new Vector3(0,90,0));
+                        //}
 
                         obstacleSpawns.Remove(currentObstacleChecking);
                         obstacleSpawns.Remove(currentsecondObstacleChecking);
@@ -321,9 +326,9 @@ public class MapGenerator : MonoBehaviour
                     obstacleSpawns.Remove(currentObstacleChecking);
                 }
 
-                obstacleInstantiated.AddComponent<BoxCollider>();
-                obstacleInstantiated.GetComponent<BoxCollider>().size = new Vector3(0.9f,0.9f,0.9f);
-                obstacleInstantiated.layer = obstacleLayer;
+                //obstacleInstantiated.AddComponent<BoxCollider>();
+                //obstacleInstantiated.GetComponent<BoxCollider>().size = new Vector3(0.9f,0.9f,0.9f);
+                //obstacleInstantiated.layer = obstacleLayer;
             }
 
             else

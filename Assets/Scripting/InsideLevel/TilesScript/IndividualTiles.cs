@@ -83,7 +83,7 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     private List<IndividualTiles> translatedTilesInFront = new List<IndividualTiles>();
 
     [Header("FEEDBACK")]
-    //Estas son las variables locales. LOS MATERIALES SE SETEAN EN EL TILE MANAGER
+    //Estas son las variables locales. LOS MATERIALES SE SETEAN EN EL  PREFAB DEL TILE
     [SerializeField]
     public Material moveInteriorColor;
     [SerializeField]

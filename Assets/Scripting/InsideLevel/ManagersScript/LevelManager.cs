@@ -177,15 +177,22 @@ public class LevelManager : MonoBehaviour
 
         if (FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa)
         {
+            //Si es random preparo los obstáculos ANTES de crear el grid
+            if (MapGenRef != null)
+            {
+                MapGenRef.LookAndSortSpots();
+                MapGenRef.CreateObstacle();
+            }
+
             TM.CreateGrid();
 
             characterSelectionBox.SetActive(false);
 
-            //Si es un mapa aleatorio se crean los elementos random. Importante que vaya antes que la creación del grid
-            //IMPORTANTE TIENE QUE IR DESPUÉS DE T.CREATEGRID Y ANTES DE FOR(enemiesOntheBoard)
+            //Si es random creo los enemigos una vez creado el grid
             if (MapGenRef != null)
             {
-                MapGenRef.Init();
+                MapGenRef.SetEnemyProbablity();
+                MapGenRef.CreateEnemies();
             }
 
             for (int i = 0; i < FindObjectsOfType<PlayerUnit>().Length; i++)
@@ -218,12 +225,21 @@ public class LevelManager : MonoBehaviour
     {
         hud3DCamera.cullingMask = hud3D;
 
+        //Si es random preparo los obstáculos ANTES de crear el grid
+        if (MapGenRef != null)
+        {
+            MapGenRef.LookAndSortSpots();
+            MapGenRef.CreateObstacle();
+        }
+
         //Se crea el grid
         TM.CreateGrid();
 
+        //Si es random creo los enemigos una vez creado el grid
         if (MapGenRef != null)
         {
-            MapGenRef.Init();
+            MapGenRef.SetEnemyProbablity();
+            MapGenRef.CreateEnemies();
         }
 
         //Esto lo hago por si hay personajes puestos ya en el nivel porque se desbloquean en dicho nivel

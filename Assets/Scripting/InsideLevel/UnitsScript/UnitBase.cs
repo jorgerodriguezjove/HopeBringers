@@ -675,8 +675,6 @@ public class UnitBase : MonoBehaviour
                     healthBar.SetActive(false);
                 }
                 //Hago animación de rebote??
-
-
             }
 
             //Si hay tiles en la lista me empujan contra tiles que no son bordes 
