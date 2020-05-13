@@ -58,6 +58,10 @@ public class TableManager : MonoBehaviour
     [SerializeField]
     public GameObject vfxLevelUp;
 
+	[Header("TUTORIALES")]
+	[SerializeField]
+	public GameObject tutorialMejoras;
+
     #endregion
 
     #region INIT
@@ -111,6 +115,7 @@ public class TableManager : MonoBehaviour
 			if(GameManager.Instance.levelIDsUnlocked.Count == 2)
 			{
 				//Saltar el moñeco de las mejoras
+				tutorialMejoras.SetActive(true);
 			}
         }
     }
