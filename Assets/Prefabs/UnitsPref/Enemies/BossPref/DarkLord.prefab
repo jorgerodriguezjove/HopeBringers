@@ -1278,8 +1278,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 300
   maxHealth: 2
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 3
   fMovementUds: 0
   baseDamage: 1
@@ -1341,6 +1339,10 @@ MonoBehaviour:
   previsualizeAttackIcon: {fileID: 3961527941904105061, guid: 9c3a89aa8aff5824a8083dd89da53ac6,
     type: 3}
   notAttackX: {fileID: 2454765720765911994}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 2
   isMarked: 0
@@ -1553,7 +1555,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: ad0ddddcb55b3d240be90dd41f0a5b0e, type: 2}
+      objectReference: {fileID: 9100000, guid: 3a8b3ed863535414b831acda889fecc5, type: 2}
+    - target: {fileID: 668164789830608940, guid: b2739774a07ffdb459c1bd60e3ef4f10,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 8041528966143742645, guid: b2739774a07ffdb459c1bd60e3ef4f10,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
