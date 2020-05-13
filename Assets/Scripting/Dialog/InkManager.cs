@@ -176,6 +176,11 @@ public class InkManager : MonoBehaviour
             string rawText = story.Continue().Trim();
 
             text.text = ParseContent(rawText);
+
+            if (text.text == null)
+            {
+                RefreshView();
+            }
         }
         else if (story.currentChoices.Count > 0)
         {
@@ -223,8 +228,7 @@ public class InkManager : MonoBehaviour
             nameAndModelDict[subjectID].characterInstantiated.MoveToPosition(int.Parse(content));
 
             //Esto habrá que hacer que en vez de devolver "" que salte a la siguiente línea
-            //O quizas está bien para que se vea como entra/sale el personaje
-            return "";
+            return null;
         }
 
         //Esto es lo que permite saber quien esta hablando al poner "nombre: " en el inkle
@@ -364,8 +368,4 @@ public class InkManager : MonoBehaviour
             firstButtonCreated.Select();
         }
     }
-
-
-
-  
 }

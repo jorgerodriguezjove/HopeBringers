@@ -3,7 +3,7 @@
 Samurai%1
 Druid%2
 
-Dragon%3
+Dragon%4
 
 Dragon: NOOOOOO!!!! MY... POWER... is... fading...
 Dragon: I can't fight anymore but... YOU ARE ALL COMING TO HELL WITH ME!

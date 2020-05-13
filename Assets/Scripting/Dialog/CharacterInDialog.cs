@@ -10,6 +10,11 @@ public class CharacterInDialog : MonoBehaviour
     public void MoveToPosition(int posToMove)
     {
         this.transform.position = positionsToMove[posToMove].position;
+
+        if (posToMove == 3 || posToMove == 4)
+        {
+            this.transform.localRotation = Quaternion.Euler(0, 100 ,0);
+        }
     }
 
     public void HighlightSpeaker()

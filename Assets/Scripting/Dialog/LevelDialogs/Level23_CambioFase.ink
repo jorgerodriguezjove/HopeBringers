@@ -1,6 +1,6 @@
 ===reactions===
 = InReac
-Dragon%3
+Dragon%4
 
 Dragon: Well... I must admit that you are quite strong. But I only had to reabsorb my puppet to recover
 Dragon: Yes... I am the one behind all of it, the true Lord of Despair. My power is too big to fit into a pathetic human
