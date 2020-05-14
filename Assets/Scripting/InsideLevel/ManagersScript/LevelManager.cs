@@ -1319,6 +1319,17 @@ public class LevelManager : MonoBehaviour
             tilesAvailableForMovement.Clear();
             selectedCharacter.ResetColor();
             selectedCharacter.myCurrentTile.ColorDeselect();
+
+            if(selectedCharacter.currentUnitsAvailableToAttack[0] != null)
+            {
+
+                if (!selectedCharacter.currentUnitsAvailableToAttack[0].isMarked)
+                {
+                    selectedCharacter.currentUnitsAvailableToAttack[0].monkMark.SetActive(false);
+                    selectedCharacter.currentUnitsAvailableToAttack[0].monkMarkUpgrade.SetActive(false);                   
+                }
+
+            }
             selectedCharacter = null;
 
             //Reactivo el collider de las unidades que se les ha quitado al seleccionar tile para rotar.

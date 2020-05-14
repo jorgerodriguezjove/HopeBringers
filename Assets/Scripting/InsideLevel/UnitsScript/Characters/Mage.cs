@@ -270,8 +270,8 @@ public class Mage : PlayerUnit
 
         else if (lightningChain)
         {
-            //unitsToAttack.Clear();
-            //nextUnits.Clear();
+            attackingUnits.Clear();
+            nextUnits.Clear();
             unitsFinished.Clear();
 
             if (lightningChain2 && unitToAttack.GetComponent<PlayerUnit>())
@@ -290,7 +290,7 @@ public class Mage : PlayerUnit
             attackingUnits.Add(unitToAttack);
 
             for (int i = 0; i < attackingUnits.Count; i++)
-            {                
+            {
                     for (int j = 0; j < attackingUnits[i].myCurrentTile.neighbours.Count; j++)
                     {
                         if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
@@ -299,32 +299,36 @@ public class Mage : PlayerUnit
                             //UNDO
                             CreateAttackCommand(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
-                            Instantiate(particleLightning, unitToAttack.transform.position, unitToAttack.transform.rotation);
-
-                            DoDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+                            Instantiate(particleLightning, attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile.transform.position, attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile.transform.rotation);
 
                             nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+
+                             DoDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+
                         }
                     }
 
                 unitsFinished.Add(attackingUnits[i]);
                 attackingUnits.Remove(attackingUnits[i]);
-
+                i--;
+                
                 if ( attackingUnits.Count == 0)
                 {
                     timeElectricityAttackExpands--;
+
                     if (timeElectricityAttackExpands > 0)
                     {
                         for (int k = 0; k < nextUnits.Count; k++)
                         {
                             attackingUnits.Add(nextUnits[k]);
-                            nextUnits.Remove(nextUnits[k]);
                         }
 
-                        return;
+                        nextUnits.Clear();
+                        
                     }
                     else
                     {
+                        timeElectricityAttackExpands = fTimeElectricityAttackExpands;
                         break;
                     }                    
                 }                                                   
@@ -733,8 +737,11 @@ public class Mage : PlayerUnit
         else if (lightningChain)
         {
             attackingUnits.Clear();
+            nextUnits.Clear();
+            unitsFinished.Clear();
+
             attackingUnits.Add(_unitToAttack);
-         
+     
             for (int i = 0; i < attackingUnits.Count; i++)
             {
                 for (int j = 0; j < attackingUnits[i].myCurrentTile.neighbours.Count; j++)
@@ -743,35 +750,36 @@ public class Mage : PlayerUnit
                         !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                     {
                         nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
-                        tilesInEnemyHover.Add(attackingUnits[j].myCurrentTile.neighbours[j]);
+                         tilesInEnemyHover.Add(attackingUnits[i].myCurrentTile.neighbours[j]);
 
                     }
                 }
 
                 unitsFinished.Add(attackingUnits[i]);
                 attackingUnits.Remove(attackingUnits[i]);
+                i--;
 
                 if (attackingUnits.Count == 0)
                 {
                     timeElectricityAttackExpands--;
+
                     if (timeElectricityAttackExpands > 0)
                     {
                         for (int k = 0; k < nextUnits.Count; k++)
                         {
                             attackingUnits.Add(nextUnits[k]);
-                            nextUnits.Remove(nextUnits[k]);
                         }
 
-                        return;
+                        nextUnits.Clear();
+
                     }
                     else
                     {
+                        timeElectricityAttackExpands = fTimeElectricityAttackExpands;
                         break;
                     }
                 }
             }
-
-                   
         }
 
         limitantAttackBonus = fLimitantAttackBonus;

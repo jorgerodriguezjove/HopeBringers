@@ -560,13 +560,7 @@ public class UnitBase : MonoBehaviour
     {
         if (!isDead)
         {
-            for (int j = 0; j < tilesToCheckForCollision.Count; j++)
-            {
-                if (tilesToCheckForCollision[j].unitOnTile != null)
-                {
-                    tilesToCheckForCollision[j].unitOnTile.hoverImpactIcon.SetActive(true);
-                }
-            }
+            
 
             if (tilesToCheckForCollision.Count <= 1)
             {
@@ -574,7 +568,10 @@ public class UnitBase : MonoBehaviour
                 //No calculo nada
 
                 Debug.Log(gameObject.name);
-                hoverImpactIcon.SetActive(true);
+                if (tilesToCheckForCollision.Count > 0)
+                {
+                    tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                }
                 return null;
             }
 
@@ -587,7 +584,10 @@ public class UnitBase : MonoBehaviour
                     if (tilesToCheckForCollision[i].height > myCurrentTile.height)
                     {
                         Debug.Log("pared");
-                        hoverImpactIcon.SetActive(true);
+                        if (tilesToCheckForCollision.Count > 0)
+                        {
+                            tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                        }
                         return tilesToCheckForCollision[i - 1];
                         
                     }
@@ -600,6 +600,22 @@ public class UnitBase : MonoBehaviour
                         //Compruebo si hay otra unidad
                         if (tilesToCheckForCollision[i].unitOnTile != null)
                         {
+                            if (tilesToCheckForCollision.Count > 0)
+                            {
+                                if (tilesToCheckForCollision[0].unitOnTile != null)
+                                {
+                                    tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                                }
+                                if (tilesToCheckForCollision[i].unitOnTile != null)
+                                {
+                                    tilesToCheckForCollision[i].unitOnTile.hoverImpactIcon.SetActive(true);
+
+                                }
+                               
+
+                              
+                            }
+
                             if (tilesToCheckForCollision[i].unitOnTile.currentHealth > currentHealth)
                             {
                                 //Muere la unidad que cae
@@ -635,6 +651,16 @@ public class UnitBase : MonoBehaviour
                         {
                             Debug.Log("otra unidad");
                             Debug.Log(gameObject.name);
+
+                            if (tilesToCheckForCollision[0].unitOnTile != null)
+                            {
+                                tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                            }
+                            
+                            tilesToCheckForCollision[i].unitOnTile.hoverImpactIcon.SetActive(true);
+
+                            
+                          
                             return tilesToCheckForCollision[i - 1];
                         }
                     }
@@ -657,6 +683,14 @@ public class UnitBase : MonoBehaviour
     public void ExecutePush(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
     {
         Debug.Log("Empuje");
+
+        for (int j = 0; j < tilesToCheckForCollision.Count; j++)
+        {
+            if (tilesToCheckForCollision[j].unitOnTile != null)
+            {
+                tilesToCheckForCollision[j].unitOnTile.hoverImpactIcon.SetActive(false);
+            }
+        }
 
         //Si no hay tiles en la lista me han empujado contra un borde
         //Tiene que ser menor o igual que 1 en vez de 0 porque para empujar a una unidad contra el borde, la unidad que empuja siempre va a necesitar 1 tile para atacar (que es donde está la unidad a la que voy a atacar)

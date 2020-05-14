@@ -171,7 +171,7 @@ public class Druid : PlayerUnit
         if (areaHealer)
         {
             //Hay que cambiar
-            Instantiate(areaHealParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
+            Instantiate(areaHealParticle, unitToAttack.transform.position, areaHealParticle.transform.rotation);
 
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
@@ -277,7 +277,7 @@ public class Druid : PlayerUnit
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
                 //Hay que cambiar
-                Instantiate(healParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
+                Instantiate(healParticle, unitToAttack.transform.position, healParticle.transform.rotation);
 
                 //Hay que cambiar
                 SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
@@ -604,15 +604,14 @@ public class Druid : PlayerUnit
                 for (int i = 0; i < tilesInEnemyHover.Count; i++)
                 {
                     tilesInEnemyHover[i].ColorHeal();
-
-                    if (tileTransformer)
-                    {
-                        GameObject shadowTile = Instantiate(shadowHealerTilePref, tilesInEnemyHover[i].transform.position, tilesInEnemyHover[i].transform.rotation);
-                        tilesSpawned.Add(shadowTile);
-                    }
-
+                    
                     if (tilesInEnemyHover[i].unitOnTile != null)
                     {
+                        if (tileTransformer)
+                        {
+                            GameObject shadowTile = Instantiate(shadowHealerTilePref, tilesInEnemyHover[i].transform.position, tilesInEnemyHover[i].transform.rotation);
+                            tilesSpawned.Add(shadowTile);
+                        }
                         tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeHealed();
                     }
                 }

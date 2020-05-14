@@ -225,6 +225,8 @@ public class EnemyUnit : UnitBase
 
                 LM.damageTilesInBoard[i].CheckHasToDoDamage();
                 LM.damageTilesInBoard[i].damageDone = true;
+                UIM.RefreshHealth();
+                RefreshHealth(false);
                 break;
             }
         }

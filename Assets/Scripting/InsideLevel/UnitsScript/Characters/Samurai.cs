@@ -344,8 +344,9 @@ public class Samurai : PlayerUnit
 
             unitToParry = unitToAttack;
             parryIcon.SetActive(true);
+            LM.DeSelectUnit();
             //Animación de preparar el parry            
-            myAnimator.SetTrigger("Attack");
+           // myAnimator.SetTrigger("Attack");
 
         }
 
@@ -645,7 +646,10 @@ public class Samurai : PlayerUnit
         {
             if (parryOn)
             {
-                parryIcon.SetActive(false);
+                if (unitToParry == null)
+                {
+                    parryIcon.SetActive(false);
+                }
 
             }
            

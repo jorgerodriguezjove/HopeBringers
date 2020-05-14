@@ -657,10 +657,16 @@ public class Monk : PlayerUnit
                         }
                     }
                 }
+                else
+                {
+                  
+                    PutQuitMark(_unitToAttack, false, true);
+
+                }
             }
             else
             {
-               
+              
                 PutQuitMark(_unitToAttack, false, true);
 
             }
@@ -750,11 +756,27 @@ public class Monk : PlayerUnit
                 }
             }
 
-            PutQuitMark(_unitToAttack, false, true);
+            if (_unitToAttack.isMarked)
+            {
+                PutQuitMark(_unitToAttack, true, true);
+            }
+            else
+            {
+                PutQuitMark(_unitToAttack, false, true);
+
+            }
         }
         else
         {
-            PutQuitMark(_unitToAttack, false, true);
+            if (_unitToAttack.isMarked)
+            {
+                PutQuitMark(_unitToAttack, true, true);
+            }
+            else
+            {
+                PutQuitMark(_unitToAttack, false, true);
+
+            }
 
         }
 
@@ -817,7 +839,7 @@ public class Monk : PlayerUnit
 
         else
         {
-            if (!hasAttacked)
+            if (!_unitToAttack.isMarked)
             {
                 PutQuitMark(_unitToAttack, false, false);
             } 
