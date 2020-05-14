@@ -120,7 +120,7 @@ public class TableManager : MonoBehaviour
     #region CAMERA_MOVEMENT
 
     //Al seleccionar un nivel se setea todo para que aparezca la parte de selección de unidades
-    public void OnLevelClicked(LevelNode levelClicked, int _idLevel, int _xpToWin, int _xpPerTurn, int _xpPerCharacter, int _maxUnits, TextAsset _startDialog, TextAsset _endDialog, bool _isInterlude, string sceneInterlude)
+    public void OnLevelClicked(LevelNode levelClicked, int _idLevel, int _xpToWin, int _xpPerTurn, int _xpPerCharacter, int _maxUnits, TextAsset _startDialog, TextAsset _endDialog, bool _isInterlude, string _sceneInterlude, TextAsset _interludeDialog)
     {
         //Se mueve el indicador del nivel
         levelIndicator.transform.position = new Vector3(levelClicked.transform.position.x, levelIndicator.transform.position.y , levelClicked.transform.position.z);
@@ -134,7 +134,8 @@ public class TableManager : MonoBehaviour
         GameManager.Instance.currentLevelStartDialog = _startDialog;
         GameManager.Instance.currentLevelEndDialog = _endDialog;
         GameManager.Instance.isInterlude = _isInterlude;
-        GameManager.Instance.interludeSceneName = sceneInterlude;
+        GameManager.Instance.interludeSceneName = _sceneInterlude;
+        GameManager.Instance.interludeDialog = _interludeDialog;
 
         //Personaje a desbloquear
         if (levelClicked.newCharacterToUnlock  != null)

@@ -47,6 +47,8 @@ public class GameManager : PersistentSingleton<GameManager>
     public bool isInterlude;
     [HideInInspector]
     public string interludeSceneName;
+    [HideInInspector]
+    public TextAsset interludeDialog;
 
     [Header("DIÁLOGOS")]
     [HideInInspector]
@@ -327,7 +329,15 @@ public class GameManager : PersistentSingleton<GameManager>
         //Si es startDialog cargo el dialogo de start y si no cargo el de end
         if (_isStartDialog)
         {
-            inkManRef.inkJSONAsset = currentLevelStartDialog;
+            if (isInterlude && SceneManager.GetActiveScene().name == interludeSceneName)
+            {
+                inkManRef.inkJSONAsset = interludeDialog;
+            }
+
+            else
+            {
+                inkManRef.inkJSONAsset = currentLevelStartDialog;
+            }
         }
 
         else
@@ -923,7 +933,7 @@ public class GameManager : PersistentSingleton<GameManager>
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            DEBUGDeleteSaveFile();
+            //DEBUGDeleteSaveFile();
         }
 
     }

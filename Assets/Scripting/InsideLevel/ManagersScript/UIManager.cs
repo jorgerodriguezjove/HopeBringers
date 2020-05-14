@@ -845,6 +845,7 @@ public class UIManager : MonoBehaviour
     {
         LM.UnPauseGame();
 
+        //ESTE IF NO PUEDE IR DENTRO DEL EXIT LEVEL(Ahora mismo esta puesto así)
         if (GameManager.Instance.isInterlude)
         {
             GameManager.Instance.CheckEndLevel(GameManager.Instance.interludeSceneName);
