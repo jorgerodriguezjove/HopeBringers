@@ -119,6 +119,7 @@ public class EnGiant : EnemyUnit
             myCurrentEnemyState = enemyState.Searching;
             return;
         }
+
         //base.Attack();
         for (int i = 0; i < myCurrentTile.neighbours.Count; i++)
         {

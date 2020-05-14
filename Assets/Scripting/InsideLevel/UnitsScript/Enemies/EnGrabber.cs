@@ -445,13 +445,15 @@ public class EnGrabber : EnemyUnit
                 }
 
             }
-        }
 
-        //Marco las unidades disponibles para atacar de color rojo
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-        {
-            CalculateDamage(currentUnitsAvailableToAttack[i]);
-            currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+            //Marco las unidades disponibles para atacar de color rojo
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[i],GetComponent<UnitBase>(), _referenceTile, _referenceFacingDirection);
+                currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+            }
+
+            Debug.Log("Check");
         }
     }
 

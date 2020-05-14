@@ -12,6 +12,7 @@ public class EnSkeleton : EnGoblin
     {
         base.Awake();
         FindAndSetFirstTile();
+        LM.AlertEnemiesOfPlayerMovement();
     }
 
     public override void Die()

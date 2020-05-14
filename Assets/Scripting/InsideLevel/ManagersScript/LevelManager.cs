@@ -540,7 +540,7 @@ public class LevelManager : MonoBehaviour
                 hoverUnit.ShowActionPathFinding(true);
 
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
-                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0)
+                if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack[0] != null)
                 {
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
                     if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
@@ -551,16 +551,34 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
 
                     //Calculo el daño que le hace al llegar al tile anterior
-                    hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[0], hoverUnit, hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count-1], hoverUnit.GetComponent<EnCharger>().SpecialCheckRotation(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1], false));
+                    if (hoverUnit.pathToObjective.Count > 0)
+                    {
+                        hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[0], hoverUnit, hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1], hoverUnit.GetComponent<EnCharger>().SpecialCheckRotation(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1], false));
+                        hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                    }
 
-                    hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                    //Si ni siquiera es > 0 entonces es que no se mueve del tile
+                    else
+                    {
+                        hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[0], hoverUnit, hoverUnit.myCurrentTile, hoverUnit.GetComponent<EnCharger>().SpecialCheckRotation(hoverUnit.myCurrentTile, false));
+                        hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.myCurrentTile);
+                    }
+
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                     hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
 
-                    if (hoverUnit.GetComponent<EnCharger>().pathToObjective.Count > 0)
+
+                    if (hoverUnit.pathToObjective.Count > 0)
                     {
                         hoverUnit.sombraHoverUnit.SetActive(true);
                         hoverUnit.sombraHoverUnit.transform.position = hoverUnit.GetComponent<EnCharger>().pathToObjective[hoverUnit.GetComponent<EnCharger>().pathToObjective.Count - 1].transform.position;
+                        hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
+                    }
+
+                    else
+                    {
+                        hoverUnit.sombraHoverUnit.SetActive(true);
+                        hoverUnit.sombraHoverUnit.transform.position = hoverUnit.myCurrentTile.transform.position;
                         hoverUnit.SearchingObjectivesToAttackShowActionPathFinding();
                     }
 
@@ -740,7 +758,6 @@ public class LevelManager : MonoBehaviour
                     }
                 }
 
-               
                 //Muestro la acción que va a realizar el enemigo 
                 hoverUnit.ShowActionPathFinding(true);
 
@@ -797,46 +814,58 @@ public class LevelManager : MonoBehaviour
                     
                     else
                     {
-                        hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
-                        hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+                       
 
                          //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
                         if (hoverUnit.GetComponent<EnGiant>())
                         {
                             if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
                             {
-
                                 hoverUnit.SetStunIcon(hoverUnit.currentUnitsAvailableToAttack[0], true, true);
                             }
 
                             hoverUnit.GetComponent<EnGiant>().SaveLateralUnitsForNumberAttackInLevelManager();
 
-                            for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
+                            //Solo hago esto si al lado del tile donde se va a mover hay una unidad a la que atacar.
+                            if (hoverUnit.myCurrentTile.neighbours.Contains(hoverUnit.currentUnitsAvailableToAttack[0].myCurrentTile) ||
+                                hoverUnit.shadowTile.neighbours.Contains(hoverUnit.currentUnitsAvailableToAttack[0].myCurrentTile))
                             {
-                                if (hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile != null)
+                                //Pintar de rojo y mostrar daño
+                                hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                                hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+                                for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
                                 {
-                                    UnitBase tempLateralUnitGiant = hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile;
-
-                                    //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
-                                    if (tempLateralUnitGiant.GetComponent<MageDecoy>())
+                                    if (hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile != null)
                                     {
-                                        tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                                    }
+                                        UnitBase tempLateralUnitGiant = hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile;
 
-                                    hoverUnit.GetComponent<EnGiant>().CalculateDamagePreviousAttackLateralEnemies(tempLateralUnitGiant);
+                                        //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
+                                        if (tempLateralUnitGiant.GetComponent<MageDecoy>())
+                                        {
+                                            tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                                        }
 
-                                    tempLateralUnitGiant.CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
-                                    tempLateralUnitGiant.ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
-                                    tempLateralUnitGiant.HealthBarOn_Off(true);
+                                        hoverUnit.GetComponent<EnGiant>().CalculateDamagePreviousAttackLateralEnemies(tempLateralUnitGiant);
 
-                                    if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
-                                    {
+                                        tempLateralUnitGiant.CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                                        tempLateralUnitGiant.ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                                        tempLateralUnitGiant.HealthBarOn_Off(true);
 
-                                        hoverUnit.SetStunIcon(hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile, true, true);
-
+                                        if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
+                                        {
+                                            hoverUnit.SetStunIcon(hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile, true, true);
+                                        }
                                     }
                                 }
                             }
+                        }
+
+                        //Goblin/Esquelto y lobo
+                        else
+                        {
+                            hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                            hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
                         }
                     }
                 }
@@ -2127,16 +2156,16 @@ public class LevelManager : MonoBehaviour
         //    Debug.Log(selectedCharacter + " " + tilesAvailableForMovement.Count);
         //}
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    //RaycastHit hit;
+        //    //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            //if (Physics.Raycast(ray, out hit, 100.0f))
-            //{
-            //    Debug.Log("You selected the " + hit.transform.name); // ensure you picked right object
-            //}
-        }
+        //    //if (Physics.Raycast(ray, out hit, 100.0f))
+        //    //{
+        //    //    Debug.Log("You selected the " + hit.transform.name); // ensure you picked right object
+        //    //}
+        //}
     }
     #endregion
 

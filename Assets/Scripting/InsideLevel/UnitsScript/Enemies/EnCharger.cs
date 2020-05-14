@@ -629,23 +629,35 @@ public class EnCharger : EnemyUnit
 
     IndividualTiles tileWhereObjectiveShadowWillEnd;
 
+    //Tiene que ser count-1 excepto cuando count es 1
+    IndividualTiles pathToObjectiveTileReference;
+
     public void ShowPushResult()
     {
+        if (pathToObjective.Count > 0)
+        {
+            pathToObjectiveTileReference = pathToObjective[pathToObjective .Count - 1];   
+        }
+
+        else
+        {
+            pathToObjectiveTileReference = myCurrentTile;
+        }
+       
         currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(true);
 
         //COMPROBAR
         SetShadowRotation(currentUnitsAvailableToAttack[0], currentUnitsAvailableToAttack[0].myCurrentTile, myCurrentTile);
 
-
         if (temporalFacingDirectionWhileHover == FacingDirection.North)
         {
-            if (CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineUp, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile) 
+            if (CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineUp, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile) 
             {
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(false);
             }
             else
             {
-                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineUp, damageMadeByPush, damageMadeByFall);
+                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineUp, damageMadeByPush, damageMadeByFall);
 
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
 
@@ -656,28 +668,28 @@ public class EnCharger : EnemyUnit
 
         else if (temporalFacingDirectionWhileHover == FacingDirection.South)
         {
-            if (CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineDown, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile)
+            if (CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineDown, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile)
             {
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(false);
             }
+
             else
             {
-                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineDown, damageMadeByPush, damageMadeByFall);
+                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineDown, damageMadeByPush, damageMadeByFall);
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
                 tileWhereObjectiveShadowWillEnd.ColorAttack();
-            }
-            
+            }   
         }
 
         else if (temporalFacingDirectionWhileHover == FacingDirection.East)
         {
-            if (CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineRight, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile)
+            if (CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineRight, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile)
             {
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(false);
             }
             else
             {
-                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineRight, damageMadeByPush, damageMadeByFall);
+                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineRight, damageMadeByPush, damageMadeByFall);
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
                 tileWhereObjectiveShadowWillEnd.ColorAttack();
             }
@@ -686,13 +698,13 @@ public class EnCharger : EnemyUnit
 
         else if (temporalFacingDirectionWhileHover == FacingDirection.West)
         {
-            if (CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineLeft, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile)
+            if (CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineLeft, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile)
             {
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.SetActive(false);
             }
             else
             {
-                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjective[pathToObjective.Count - 1].tilesInLineLeft, damageMadeByPush, damageMadeByFall);
+                tileWhereObjectiveShadowWillEnd = CalculatePushLogic(1, pathToObjectiveTileReference.tilesInLineLeft, damageMadeByPush, damageMadeByFall);
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
                 tileWhereObjectiveShadowWillEnd.ColorAttack();
             }

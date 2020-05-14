@@ -68,6 +68,11 @@ public class EnSummoner : EnemyUnit
     {
         hasAttacked = true;
 
+        if (exclamationIcon != null)
+        {
+            exclamationIcon.SetActive(false);
+        }
+
         if (currentUnitsSummoned < maxUnitsSummoned)
         {
             DetermineSpawnPosition(true);
@@ -116,17 +121,29 @@ public class EnSummoner : EnemyUnit
     {
         if (_shouldShow)
         {
-            DetermineSpawnPosition(false);
-            spawnFeedback.SetActive(true);
-            posToSpawn += new Vector3(0, 0.5f, 0);
-            spawnFeedback.transform.position = posToSpawn;
+            if (currentUnitsSummoned< maxUnitsSummoned)
+            {
+                DetermineSpawnPosition(false);
+                spawnFeedback.SetActive(true);
+                posToSpawn += new Vector3(0, 0.5f, 0);
+                spawnFeedback.transform.position = posToSpawn;
+            }
+
+            else
+            {
+                //Mostrar icono no mas spawn (meter en hover icons) ¿?
+                
+            }
+         
         }
 
         else
         {
             spawnFeedback.SetActive(false);
+
+            //Si ponemos icono spawn quitar aqui
         }
-       
+
     }
 }
 
