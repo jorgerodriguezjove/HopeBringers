@@ -122,8 +122,6 @@ public class EnBalista : EnemyUnit
 
     public override void Attack()
     {
-        
-
         //Si no he sido alertado, activo mi estado de alerta.
         if (!haveIBeenAlerted)
         {
@@ -461,7 +459,6 @@ public class EnBalista : EnemyUnit
 
     public void WarnOrResetTilesToShoot(bool _isWarning)
     {
-        Debug.Log("Warn Tiles");
         for (int i = 0; i < tilesToShoot.Count; i++)
         {
             if (_isWarning)

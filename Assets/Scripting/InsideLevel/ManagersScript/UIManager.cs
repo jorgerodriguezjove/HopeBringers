@@ -419,7 +419,6 @@ public class UIManager : MonoBehaviour
 			}
 		}
 
-		
 		if (numberOfCharactersFinished == LM.charactersOnTheBoard.Count)
 		{
 			endTurnButton.GetComponent<MeshRenderer>().material = noMoreActionMaterial;

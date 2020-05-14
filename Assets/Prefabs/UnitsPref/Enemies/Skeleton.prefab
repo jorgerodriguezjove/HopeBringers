@@ -337,8 +337,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   maxHealth: 1
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 5
   fMovementUds: 0
   baseDamage: 1
@@ -399,6 +397,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 646135038495883042}
   previsualizeAttackIcon: {fileID: 1581617889336995809}
   notAttackX: {fileID: 5444461567281828835}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -428,7 +430,7 @@ MonoBehaviour:
   currentUnitsAvailableToAttack: []
   shadowTile: {fileID: 0}
   isGoingToBeAlertedOnEnemyTurn: 0
-  haveIBeenAlerted: 1
+  haveIBeenAlerted: 0
   pathToObjective: []
   unitsInRange: []
   LevelManagerRef: {fileID: 0}

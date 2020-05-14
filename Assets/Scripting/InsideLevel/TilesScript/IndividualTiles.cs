@@ -509,8 +509,6 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
                 {
                     allBalistasToWarn[i].BeWarnedByTile();
                 }
-
-                Debug.Log("Balistaaaaaa");
             }
         }
     }

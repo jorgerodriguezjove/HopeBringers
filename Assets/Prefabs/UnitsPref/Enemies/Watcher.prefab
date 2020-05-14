@@ -749,8 +749,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   maxHealth: 3
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 0
   fMovementUds: 0
   baseDamage: -1
@@ -773,7 +771,7 @@ MonoBehaviour:
   movementParticle: {fileID: 5374016627842121031}
   deathParticle: {fileID: 7266328474437246537, guid: 5df7672c7c74523469da8b03d25c4f20,
     type: 3}
-  attackParticle: {fileID: 6343918622229050574, guid: 56a7eddce1f4efd4fba6bbcdf3e6987c,
+  attackParticle: {fileID: 3834305628444627797, guid: c7f260f5f0bdf724b9489fdce0d1b219,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
     type: 3}
@@ -811,6 +809,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 3106211647229070747}
   previsualizeAttackIcon: {fileID: 3900111208252595544}
   notAttackX: {fileID: 7521697055533064538}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0

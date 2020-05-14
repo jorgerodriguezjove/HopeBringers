@@ -350,8 +350,6 @@ public class LevelManager : MonoBehaviour
                 return (b.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn).CompareTo(a.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn);
 
             });
-
-            Debug.Log("orden updated");
         }
 
 		UIM.SetEnemyOrder();
@@ -469,12 +467,53 @@ public class LevelManager : MonoBehaviour
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
-                hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, hoverUnit.myCurrentTile);
-                //Dibuja el ataque que va a preparar si las unidades se quedan ahí
-                if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
+                if (!hoverUnit.GetComponent<EnBalista>().isAttackPrepared)
                 {
-                    hoverUnit.GetComponent<EnBalista>().particleChargingAttack.SetActive(true);
-                    hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
+                    hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, hoverUnit.myCurrentTile);
+
+                    //Dibuja el ataque que va a preparar si las unidades se quedan ahí
+                    if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
+                    {
+                        hoverUnit.GetComponent<EnBalista>().particleChargingAttack.SetActive(true);
+                        hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
+                    }
+
+                    //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea antes de moverse
+                    else 
+                    {
+                        IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
+
+                        if (tileToMove != null)
+                        {
+                            hoverUnit.sombraHoverUnit.SetActive(true);
+                            Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
+                            hoverUnit.sombraHoverUnit.transform.position = positionToSpawn;
+                            tileToMove.ColorMovement();
+
+                            hoverUnit.myLineRenderer.enabled = true;
+                            hoverUnit.myLineRenderer.positionCount = 2;
+                            Vector3 positionToSpawnLineRenderer = new Vector3(hoverUnit.myCurrentTile.transform.position.x, hoverUnit.myCurrentTile.transform.position.y + 0.3f, hoverUnit.myCurrentTile.transform.position.z);
+                            hoverUnit.myLineRenderer.SetPosition(0, positionToSpawnLineRenderer);
+                            hoverUnit.myLineRenderer.SetPosition(1, positionToSpawn);
+                        }
+
+                        //Compruebo si después de moverse tiene objetivos que atacar
+                        if (tileToMove != null)
+                        {
+                            hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, tileToMove);
+                        }
+
+                        //Dibuja el ataque que va a preparar si las unidades se quedan ahí
+                        if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
+                        {
+                            hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
+                        }
+                    }
+                }
+
+                else
+                {
+                    hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, hoverUnit.myCurrentTile);
 
                     //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
                     if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
@@ -485,55 +524,10 @@ public class LevelManager : MonoBehaviour
                     //Marco las unidades disponibles para atacar de color rojo
                     for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
                     {
-                        hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
+                        hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[i],hoverUnit, hoverUnit.myCurrentTile,hoverUnit.currentFacingDirection);
+                        //hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
                         hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                         hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
-                    }
-                }
-
-                //Dibuja el próximo movimiento si no tiene a ningún jugador en su línea antes de moverse
-                else if (hoverUnit.GetComponent<EnBalista>().isAttackPrepared == false)
-                {
-                    IndividualTiles tileToMove = hoverUnit.GetComponent<EnBalista>().GetTileToMove();
-
-                    if (tileToMove != null)
-                    {
-                        hoverUnit.sombraHoverUnit.SetActive(true);
-                        Vector3 positionToSpawn = new Vector3(tileToMove.transform.position.x, tileToMove.transform.position.y + 0.3f, tileToMove.transform.position.z);
-                        hoverUnit.sombraHoverUnit.transform.position = positionToSpawn;
-                        tileToMove.ColorMovement();
-
-                        hoverUnit.myLineRenderer.enabled = true;
-                        hoverUnit.myLineRenderer.positionCount = 2;
-                        Vector3 positionToSpawnLineRenderer = new Vector3(hoverUnit.myCurrentTile.transform.position.x, hoverUnit.myCurrentTile.transform.position.y + 0.3f, hoverUnit.myCurrentTile.transform.position.z);
-                        hoverUnit.myLineRenderer.SetPosition(0, positionToSpawnLineRenderer);
-                        hoverUnit.myLineRenderer.SetPosition(1, positionToSpawn);
-                    }
-
-                    //Compruebo si después de moverse tiene objetivos que atacar
-                    if (tileToMove != null)
-                    {
-                        hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, tileToMove);
-                    }
-                    
-                    //Dibuja el ataque que va a preparar si las unidades se quedan ahí
-                    if (hoverUnit.GetComponent<EnBalista>().currentUnitsAvailableToAttack.Count > 0)
-                    {
-                        hoverUnit.GetComponent<EnBalista>().FeedbackTilesToCharge(true);
-
-                        //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
-                        if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
-                        {
-                            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                        }
-
-                        //Marco las unidades disponibles para atacar de color rojo
-                        for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
-                        {
-                            hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
-                            hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
-                            hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
-                        }
                     }
                 }
             }
@@ -769,7 +763,7 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForRangeEnemies[i].ColorActionRange();
                 }
 
-                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
+                if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 && hoverUnit.currentUnitsAvailableToAttack[0] != null)
                 {
                     //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
                     if(hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
@@ -778,59 +772,72 @@ public class LevelManager : MonoBehaviour
                     }
 
                     //Pinto sombra
-                    if (hoverUnit.pathToObjective.Count >0)
+                    if (hoverUnit.pathToObjective.Count >0 && hoverUnit.pathToObjective[0] != null)
                     {
                         hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
                     }
 
-                    hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
-                    hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
-
                     if (hoverUnit.GetComponent<EnDuelist>())
                     {
                         hoverUnit.GetComponent<EnDuelist>().ShowArrowsOnEnemies(true);
-                    }
 
-                    //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
-                    else if (hoverUnit.GetComponent<EnGiant>())
-                    {
-                        if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
+                        if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<Knight>())
                         {
-                           
-                            hoverUnit.SetStunIcon(hoverUnit.currentUnitsAvailableToAttack[0],true,true); 
+                            //0 daño porque le gira antes de atacar
+                            hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(0);
+                            hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
                         }
 
-                        hoverUnit.GetComponent<EnGiant>().SaveLateralUnitsForNumberAttackInLevelManager();
-
-                        for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
+                        else
                         {
-                            if (hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile != null)
+                            hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                            hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+                        }
+                    }              
+                    
+                    else
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                        hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
+
+                         //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
+                        if (hoverUnit.GetComponent<EnGiant>())
+                        {
+                            if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
                             {
-                                UnitBase tempLateralUnitGiant = hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile;
 
-                                //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
-                                if (tempLateralUnitGiant.GetComponent<MageDecoy>())
+                                hoverUnit.SetStunIcon(hoverUnit.currentUnitsAvailableToAttack[0], true, true);
+                            }
+
+                            hoverUnit.GetComponent<EnGiant>().SaveLateralUnitsForNumberAttackInLevelManager();
+
+                            for (int i = 0; i < hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective.Count; i++)
+                            {
+                                if (hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile != null)
                                 {
-                                    tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                                    UnitBase tempLateralUnitGiant = hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile;
+
+                                    //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
+                                    if (tempLateralUnitGiant.GetComponent<MageDecoy>())
+                                    {
+                                        tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
+                                    }
+
+                                    hoverUnit.GetComponent<EnGiant>().CalculateDamagePreviousAttackLateralEnemies(tempLateralUnitGiant);
+
+                                    tempLateralUnitGiant.CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                                    tempLateralUnitGiant.ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
+                                    tempLateralUnitGiant.HealthBarOn_Off(true);
+
+                                    if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
+                                    {
+
+                                        hoverUnit.SetStunIcon(hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile, true, true);
+
+                                    }
                                 }
-
-                                hoverUnit.GetComponent<EnGiant>().CalculateDamagePreviousAttackLateralEnemies(tempLateralUnitGiant);
-
-                                tempLateralUnitGiant.CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
-                                tempLateralUnitGiant.ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
-                                tempLateralUnitGiant.HealthBarOn_Off(true);
-
-                                if (hoverUnit.GetComponent<EnGiant>().myTierLevel == EnemyUnit.TierLevel.Level2)
-                                {
-                                   
-                                    hoverUnit.SetStunIcon(hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile, true, true);
-                                    
-                                }
-
                             }
                         }
-
-
                     }
                 }
 
@@ -840,7 +847,6 @@ public class LevelManager : MonoBehaviour
                 {
                     hoverUnit.CheckTilesInRange(hoverUnit.myCurrentTile, hoverUnit.currentFacingDirection);
                 }
-
 
                 //Una vez pintado los tiles naranjas de rango se pinta el tile rojo al que va atacar
                 hoverUnit.ColorAttackTile();
@@ -1527,8 +1533,6 @@ public class LevelManager : MonoBehaviour
                 {
                     if (tileToMove == tilesAvailableForMovement[i] || tileToMove == selectedCharacter.myCurrentTile)
                     {
-                        Debug.Log("Tile " + tileToMove + tileToMove.tileX + "," + tileToMove.tileZ);
-
                         //Calculo el path de la unidad
                         TM.CalculatePathForMovementCost(tileToMove.tileX, tileToMove.tileZ, false);
                         selectedCharacter.myCurrentTile.ColorDeselect();

@@ -1390,7 +1390,7 @@ public class Knight : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
-        shieldBlockAllDamage.SetActive(false);
+        ShowHideFullShield(false);
         _unitToAttack.sombraHoverUnit.SetActive(false);
         hoverImpactIcon.SetActive(false);
 

@@ -341,7 +341,9 @@ public class UnitBase : MonoBehaviour
 
     #region DAMAGE_&_DIE
 
-    //Calcula PERO NO aplico el daño a la unidad elegida
+    //Calcula PERO NO aplico el daño a la unidad elegida.
+    //Esta función solo se usa en el momento justo de hacer daño o para los pj porque usa myCurrentTile y currentFacingDirection
+    //Para los enemigos que se mueven se usa CalculateDamagePreviousAttack
     public virtual void CalculateDamage(UnitBase unitToDealDamage)
     {
         //Reseteo la variable de daño a realizar
@@ -399,22 +401,95 @@ public class UnitBase : MonoBehaviour
             }
         }
         damageWithMultipliersApplied += buffbonusStateDamage;
+
+        //Estas líneas las añado para comprobar si el caballero tiene que defender
+        Knight knightDef = FindObjectOfType<Knight>();
+
+        if (knightDef != null && knightDef.isBlockingNeighbours)
+        {
+            unitToDealDamage.GetComponent<PlayerUnit>().CheckIfKnightIsDefending(knightDef, currentFacingDirection);
+            damageWithMultipliersApplied -= knightDef.shieldDef;
+
+            if (knightDef.shieldDef > 0)
+            {
+                //Escudo full
+                if (knightDef.isBlockingNeighboursFull)
+                {
+                    unitToDealDamage.GetComponent<PlayerUnit>().ShowHideFullShield(true);
+                }
+
+                //Escudo parcial
+                else if (knightDef.isBlockingNeighbours)
+                {
+                    unitToDealDamage.GetComponent<PlayerUnit>().ShowHidePartialShield(true);
+                }
+            }
+        }
+
+        #region Knight_Blocks
+
+        if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>())
+        {
+            //FrontBlock
+            if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
+                || currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+                || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
+                || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East)
+            {
+                Debug.Log("Front Block");
+                //Icono escudo total
+                unitToDealDamage.GetComponent<Knight>().ShowHideFullShield(true);
+                damageWithMultipliersApplied = 0;
+            }
+
+            //Pasivas
+            if (unitToDealDamage.GetComponent<Knight>().lateralBlock)
+            {
+                //LateralBlock
+                if (((unitToDealDamage.currentFacingDirection == FacingDirection.North || unitToDealDamage.currentFacingDirection == FacingDirection.South) && (currentFacingDirection == FacingDirection.East || currentFacingDirection == FacingDirection.West)) ||
+                ((unitToDealDamage.currentFacingDirection == FacingDirection.East || unitToDealDamage.currentFacingDirection == FacingDirection.West) && (currentFacingDirection == FacingDirection.North || currentFacingDirection == FacingDirection.South)))
+                {
+                    Debug.Log("Lateral Block");
+                    //Icono escudo parcial
+                    unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
+                    damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageLateralBlocked;
+                }
+
+                //Backblock
+                else if (unitToDealDamage.GetComponent<Knight>().backBlock)
+                {
+                    if ((currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.North)
+                    || (currentFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.East)
+                    || (currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.South)
+                    || (currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.West))
+                    {
+                        Debug.Log("Back Block");
+                        //Icono escudo parcial
+                        unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
+                        damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageBackBlocked;
+                    }
+                }
+            }
+        }
+            #endregion
+
+            Debug.Log("CalculateDamage Normal");
     }
 
     //Prueba para calcular damages en el hover
-    public virtual void CalculateDamagePreviousAttack(UnitBase unitToDealDamage, UnitBase unitAttacking, IndividualTiles tileAttack, FacingDirection endFacingDirection)
+    public virtual void CalculateDamagePreviousAttack(UnitBase unitToDealDamage, UnitBase unitAttacking, IndividualTiles tileWhereUnitDealingDamageEnds, FacingDirection endFacingDirection)
     {
         //Reseteo la variable de daño a realizar
         unitAttacking.damageWithMultipliersApplied = unitAttacking.baseDamage;
 
         //Si estoy en desventaja de altura hago menos daño
-        if (unitToDealDamage.myCurrentTile.height > tileAttack.height)
+        if (unitToDealDamage.myCurrentTile.height > tileWhereUnitDealingDamageEnds.height)
         {
             unitAttacking.damageWithMultipliersApplied -= unitAttacking.penalizatorDamageLessHeight;
         }
 
         //Si estoy en ventaja de altura hago más daño
-        else if (unitToDealDamage.myCurrentTile.height < tileAttack.height)
+        else if (unitToDealDamage.myCurrentTile.height < tileWhereUnitDealingDamageEnds.height)
         {
             unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageMoreHeight;
         }
@@ -454,46 +529,54 @@ public class UnitBase : MonoBehaviour
 
         #region Knight_Blocks
 
-        //FrontBlock
-        if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>() && (
+        if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>())
+        {
+            //FrontBlock
+            if (
                endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
-            || endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.West
+            || endFacingDirection == FacingDirection.East  && unitToDealDamage.currentFacingDirection == FacingDirection.West
             || endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
-            || endFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East))
-        {
-            Debug.Log("Front Block");
-            //Icono escudo total
-            unitToDealDamage.GetComponent<Knight>().ShowHideFullShield(true);
-            unitAttacking.damageWithMultipliersApplied = 0;
+            || endFacingDirection == FacingDirection.West  && unitToDealDamage.currentFacingDirection == FacingDirection.East)
+            {
+                Debug.Log("Front Block");
+                //Icono escudo total
+                unitToDealDamage.GetComponent<Knight>().ShowHideFullShield(true);
+                unitAttacking.damageWithMultipliersApplied = 0;
+            }
+
+            //Pasivas
+            if (unitToDealDamage.GetComponent<Knight>().lateralBlock)
+            {
+                //LateralBlock
+                if (((unitToDealDamage.currentFacingDirection == FacingDirection.North || unitToDealDamage.currentFacingDirection == FacingDirection.South) && (endFacingDirection == FacingDirection.East || endFacingDirection == FacingDirection.West)) ||
+                ((unitToDealDamage.currentFacingDirection == FacingDirection.East || unitToDealDamage.currentFacingDirection == FacingDirection.West) && (endFacingDirection == FacingDirection.North || endFacingDirection == FacingDirection.South)))
+                {
+                    Debug.Log("Lateral Block");
+                    //Icono escudo parcial
+                    unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
+                    unitAttacking.damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageLateralBlocked;
+                }
+
+                //Backblock
+                else if (unitToDealDamage.GetComponent<Knight>().backBlock)
+                {
+                    if ((endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.North)
+                    || (endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.East)
+                    || (endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.South)
+                    || (endFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.West))
+                {
+                        Debug.Log("Back Block");
+                        //Icono escudo parcial
+                        unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
+                        unitAttacking.damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageBackBlocked;
+                    }
+                }
+            }
+
+            #endregion
+
+            Debug.Log("CalculateDamagePreviousAttack");
         }
-
-        //Lateralblock
-        else if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().lateralBlock && 
-          ((unitToDealDamage.currentFacingDirection == FacingDirection.North || unitToDealDamage.currentFacingDirection == FacingDirection.South &&  endFacingDirection == FacingDirection.East  || endFacingDirection == FacingDirection.West) 
-         ||(unitToDealDamage.currentFacingDirection == FacingDirection.East  || unitToDealDamage.currentFacingDirection == FacingDirection.West  &&  endFacingDirection == FacingDirection.North || endFacingDirection == FacingDirection.South)))
-        {
-            Debug.Log("Lateral Block");
-            //Icono escudo parcial
-            unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
-            unitAttacking.damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageLateralBlocked;
-        }
-
-        //Backblock
-        else if (unitToDealDamage != null && unitToDealDamage.GetComponent<Knight>() && unitToDealDamage.GetComponent<Knight>().backBlock && (
-                endFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.North
-             || endFacingDirection == FacingDirection.East && unitToDealDamage.currentFacingDirection == FacingDirection.East
-             || endFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.South
-             || endFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.West))
-        {
-            Debug.Log("Back Block");
-            //Icono escudo parcial
-            unitToDealDamage.GetComponent<Knight>().ShowHidePartialShield(true);
-            unitAttacking.damageWithMultipliersApplied -= unitToDealDamage.GetComponent<Knight>().damageBackBlocked;
-        }
-
-        #endregion
-
-        Debug.Log("CalculateDamagePreviousAttack");
     }
 
     //Aplico el daño a la unidad elegida
