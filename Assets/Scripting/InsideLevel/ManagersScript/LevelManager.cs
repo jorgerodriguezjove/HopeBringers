@@ -1320,9 +1320,8 @@ public class LevelManager : MonoBehaviour
             selectedCharacter.ResetColor();
             selectedCharacter.myCurrentTile.ColorDeselect();
 
-            if(selectedCharacter.currentUnitsAvailableToAttack[0] != null)
+            if(selectedCharacter.currentUnitsAvailableToAttack.Count > 0 && selectedCharacter.currentUnitsAvailableToAttack[0] != null)
             {
-
                 if (!selectedCharacter.currentUnitsAvailableToAttack[0].isMarked)
                 {
                     selectedCharacter.currentUnitsAvailableToAttack[0].monkMark.SetActive(false);
