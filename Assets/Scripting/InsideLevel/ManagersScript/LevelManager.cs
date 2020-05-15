@@ -223,6 +223,19 @@ public class LevelManager : MonoBehaviour
     //Una vez ha terminado el diálogo, el GameManager avisa a esta función de que comience el nivel
     public void StartGameplayAfterDialog()
     {
+
+        //if (FindObjectOfType<MechaBoss>() || FindObjectOfType<DarkLord>() || FindObjectOfType<BossMultTile>())
+        //{
+        //    SoundManager.Instance.PlayMusic(AppMusic.BOSS_MUSIC);
+        //                  SoundManager.Instance.StopMusic();
+
+        //}
+        //else
+        //{
+        //    SoundManager.Instance.PlayMusic(AppMusic.COMBAT_MUSIC);
+        //            SoundManager.Instance.StopMusic();
+        //}
+
         hud3DCamera.cullingMask = hud3D;
 
         //Si es random preparo los obstáculos ANTES de crear el grid
@@ -2012,6 +2025,17 @@ public class LevelManager : MonoBehaviour
     //Función que se llama cuando se termina de colocar unidades
     public void FinishPlacingUnits()
     {
+        if (FindObjectOfType<MechaBoss>() || FindObjectOfType<DarkLord>() || FindObjectOfType<BossMultTile>())
+        {
+            SoundManager.Instance.StopMusic();
+            SoundManager.Instance.PlayMusic(AppMusic.BOSS_MUSIC);
+        }
+        else
+        {
+            SoundManager.Instance.StopMusic();
+            SoundManager.Instance.PlayMusic(AppMusic.COMBAT_MUSIC);
+        }
+
         for (int i = 0; i < tilesForCharacterPlacement.Count; i++)
         {
             tilesForCharacterPlacement[i].ColorDeselect();
@@ -2245,7 +2269,5 @@ public class LevelManager : MonoBehaviour
         //Al acabar for updateo lista de enemigos
         UpdateUnitsOrder();
     }
-
-    
 }
 

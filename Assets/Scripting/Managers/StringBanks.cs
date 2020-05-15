@@ -469,21 +469,81 @@ public class AppPlayerPrefKeys
 //Nombres de los sonidos en la carpeta de resources.
 public class AppSounds
 {
-    public static readonly string MOVEMENT = "Gen_Move_1";
-    public static readonly string EN_DEATH = "En_Death";
-    public static readonly string COLLISION = "Gen_Collision";
-    public static readonly string KNIGHT_ATTACK = "Knight_Attack";
-    public static readonly string MAGE_ATTACK = "Mage_Attack";
-    public static readonly string PLAYER_SELECTION = "Player_Selection";
-    public static readonly string ROGUE_ATTACK = "Rogue_Attack";
+    public static readonly string PLAYER_SELECTION   = "PlayerClick"; //Implementado
+    public static readonly string TILECLICK          = "PlayerTileClick";
+    public static readonly string TILEHOVER          = "PlayerTileHover";
+    public static readonly string COLLISION          = "Gen_Collision"; //Implementado
+    public static readonly string MOVEMENT           = "Gen_Move_1"; //Implementado
+    public static readonly string HEALING            = "Healing";
+    public static readonly string KNIGHT_ATTACK      = "Knight_Attack"; //Implementado
+    public static readonly string MAGE_ATTACK        = "Mage_Attack"; //Implementado
+    public static readonly string ROGUE_ATTACK       = "Rogue_Attack"; //Implementado
 
+    public static readonly string RECEIVEDAMAGE      = "ReceiveDamage";
+    public static readonly string RECEIVEDAMAGE2     = "ReceiveDamage2";
+    public static readonly string RECEIVEDAMAGE3     = "ReceiveDamage3";
+    public static readonly string EN_DEATH           = "En_Death"; //Implementado
+
+    public static readonly string ENEMYTURN          = "EnemyTurn";
+    public static readonly string ENEMYTURN2         = "EnemyTurn2";
+    public static readonly string ENEMYTURN3         = "EnemyTurn3";
+
+    public static readonly string PLAYERTURN         = "PlayerTurn";
+    public static readonly string PLAYERTURN2        = "PlayerTurn2";
+    public static readonly string PLAYERTURN3        = "PlayerTurn3";
+
+    public static readonly string VICTORY            = "Victory";
+    public static readonly string DEFEAT             = "Defeat";
+
+    public static readonly string BUYABILITIES       = "BuyAbilities";
+    public static readonly string BUTTONCLICK        = "UIButtonClick";
+    public static readonly string BUTTONCLICK2       = "UIButtonClick2";
+    public static readonly string COINCLICK          = "UICoinClick";
+    public static readonly string DIALOGBUTTONCLICK  = "UIDialogButtonClick";
+    public static readonly string UIERROR            = "UIError";
+    public static readonly string TEXTSOUND          = "UITextSound";
+
+    #region Alphabetical Order
+
+    //public static readonly string BUYABILITIES = "BuyAbilities";
+    //public static readonly string DEFEAT = "Defeat";
+    //public static readonly string EN_DEATH = "En_Death";
+    //public static readonly string ENEMYTURN = "EnemyTurn";
+    //public static readonly string ENEMYTURN2 = "EnemyTurn2";
+    //public static readonly string ENEMYTURN3 = "EnemyTurn3";
+    //public static readonly string COLLISION = "Gen_Collision";
+    //public static readonly string MOVEMENT = "Gen_Move_1";
+    //public static readonly string HEALING = "Healing";
+    //public static readonly string KNIGHT_ATTACK = "Knight_Attack";
+    //public static readonly string MAGE_ATTACK = "Mage_Attack";
+    //public static readonly string PLAYER_SELECTION = "PlayerClick";
+    //public static readonly string TILECLICK = "PlayerTileClick";
+    //public static readonly string TILEHOVER = "PlayerTileHover";
+    //public static readonly string PLAYERTURN = "PlayerTurn";
+    //public static readonly string PLAYERTURN2 = "PlayerTurn2";
+    //public static readonly string PLAYERTURN3 = "PlayerTurn3";
+    //public static readonly string RECEIVEDAMAGE = "ReceiveDamage";
+    //public static readonly string RECEIVEDAMAGE2 = "ReceiveDamage2";
+    //public static readonly string RECEIVEDAMAGE3 = "ReceiveDamage3";
+    //public static readonly string ROGUE_ATTACK = "Rogue_Attack";
+    //public static readonly string BUTTONCLICK = "UIButtonClick";
+    //public static readonly string BUTTONCLICK2 = "UIButtonClick2";
+    //public static readonly string COINCLICK = "UICoinClick";
+    //public static readonly string DIALOGBUTTONCLICK = "UIDialogButtonClick";
+    //public static readonly string UIERROR = "UIError";
+    //public static readonly string TEXTSOUND = "UITextSound";
+    //public static readonly string VICTORY = "Victory";
+    #endregion
 }
 
 //Nombres de la música en la carpeta de resources.
-public class APppMusic
+public class AppMusic
 {
-    //public static readonly string INTRO_MUSIC = "INTRO_MUSIC";
-   
+    public static readonly string INTRO_MUSIC = "Main"; //Implementado
+    public static readonly string COMBAT_MUSIC = "Combat"; //Implementado
+    public static readonly string BOSS_MUSIC = "Boss"; //Implementado
+    public static readonly string DIALOG_MUSIC = "Dialog"; //Implementado
+    public static readonly string SUSPENSE_MUSIC = "Suspense";    
 }
 
 //Nombres de escenas.

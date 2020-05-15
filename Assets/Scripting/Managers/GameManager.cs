@@ -148,6 +148,11 @@ public class GameManager : PersistentSingleton<GameManager>
 
         allCharacters = FindObjectsOfType<CharacterData>();
 
+        if (SceneManager.GetActiveScene().name == "LevelSelection")
+        {
+            SoundManager.Instance.StopMusic();
+            SoundManager.Instance.PlayMusic(AppMusic.INTRO_MUSIC);
+        }
         //LoadGame();
     }
 
@@ -329,14 +334,18 @@ public class GameManager : PersistentSingleton<GameManager>
         //Si es startDialog cargo el dialogo de start y si no cargo el de end
         if (_isStartDialog)
         {
+            SoundManager.Instance.StopMusic();
+            SoundManager.Instance.PlayMusic(AppMusic.DIALOG_MUSIC);
+            
             if (isInterlude && SceneManager.GetActiveScene().name == interludeSceneName)
             {
-                inkManRef.inkJSONAsset = interludeDialog;
+                inkManRef.inkJSONAsset = interludeDialog;            
             }
 
             else
             {
                 inkManRef.inkJSONAsset = currentLevelStartDialog;
+               
             }
         }
 
