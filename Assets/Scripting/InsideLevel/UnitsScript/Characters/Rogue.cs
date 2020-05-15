@@ -728,7 +728,6 @@ public class Rogue : PlayerUnit
     //La función es exactamente igual que la original salvo que no calcula el daño, ya que el rogue lo calcula antes de saltar
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-
         //Añado este if para el count de honor del samurai
         if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
        || currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
@@ -766,43 +765,44 @@ public class Rogue : PlayerUnit
         {
             sombraHoverUnit.SetActive(true);
             sombraHoverUnit.transform.position = currentTileVectorToMove;
-
         }
 
+        if (_unitToAttack.myCurrentTile.tileX == tilesInEnemyHover[0].tileX)
+        {
+            if (_unitToAttack.myCurrentTile.tileZ < tilesInEnemyHover[0].tileZ)
+            {
+                previousFacingDirection = FacingDirection.South;
+                sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), 0);
+            }
+
+            else
+            {
+                previousFacingDirection = FacingDirection.North;
+                sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), 0);
+            }
+        }
+
+        else
+        {
+            if (_unitToAttack.myCurrentTile.tileX < tilesInEnemyHover[0].tileX)
+            {
+                previousFacingDirection = FacingDirection.West;
+                sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), 0);
+            }
+
+            else
+            {
+                previousFacingDirection = FacingDirection.East;
+                sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), 0);
+            }
+        }
+
+        //Importante que el calculo de daño vaya después de estos cuatro ifs que calculan previousFacingDirection
+        CalculateDamagePreviousAttack(_unitToAttack, this, tilesInEnemyHover[0], previousFacingDirection);
+        _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
 
         if (smokeBomb)
         {
-            if (_unitToAttack.myCurrentTile.tileX == tilesInEnemyHover[0].tileX)
-            {
-                if (_unitToAttack.myCurrentTile.tileZ < tilesInEnemyHover[0].tileZ)
-                {
-                    previousFacingDirection = FacingDirection.South;
-                    sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), 0);
-                }
-                else
-                {
-                    previousFacingDirection = FacingDirection.North;
-                    sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), 0);
-                }
-            }
-            else
-            {
-                if (_unitToAttack.myCurrentTile.tileX < tilesInEnemyHover[0].tileX)
-                {
-                    previousFacingDirection = FacingDirection.West;
-                    sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), 0);
-
-                }
-                else
-                {
-                    previousFacingDirection = FacingDirection.East;
-                    sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), 0);
-
-                }
-            }
-
-            CalculateDamagePreviousAttack(_unitToAttack, this, tilesInEnemyHover[0], previousFacingDirection);
-
             if (_unitToAttack.currentHealth - damageWithMultipliersApplied <= 0)
             {
                 if (smokeBomb2)
@@ -820,35 +820,29 @@ public class Rogue : PlayerUnit
                     {
                         if (TM.surroundingTiles[i] != null)
                         {
-                           
                             Vector3 spawnBombShadow2 = new Vector3(TM.surroundingTiles[i].transform.position.x, TM.surroundingTiles[i].transform.position.y + 2, TM.surroundingTiles[i].transform.position.z);
 
                             if (TM.surroundingTiles[i].unitOnTile != null)
                             {
                                 GameObject smokeBombShadowRef2 = Instantiate(smokeBombShadow, spawnBombShadow2, TM.surroundingTiles[i].transform.rotation);
                                 bombsShadowSpawned.Add(smokeBombShadowRef2);
-
                             }
+
                             else
                             {
                                 GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, TM.surroundingTiles[i].transform.position, TM.surroundingTiles[i].transform.rotation);
                                 bombsShadowSpawned.Add(smokeBombShadowRef);
-
                             }
-                           
-
                         }
                     }
-
                 }
+
                 else
                 {
                     Vector3 spawnBombShadow = new Vector3(sombraHoverUnit.transform.position.x, sombraHoverUnit.transform.position.y + 2, sombraHoverUnit.transform.position.z);
                     //Enseñar sombra bomba de humo
                     GameObject smokeBombShadowRef = Instantiate(smokeBombShadow, spawnBombShadow, sombraHoverUnit.transform.rotation);
                     bombsShadowSpawned.Add(smokeBombShadowRef);
-
-
                 }
             }
         }
@@ -870,6 +864,8 @@ public class Rogue : PlayerUnit
 
             bombsShadowSpawned.Clear();
         }
+
+        _unitToAttack.DisableCanvasHover();
 
         sombraHoverUnit.SetActive(false);
     }
