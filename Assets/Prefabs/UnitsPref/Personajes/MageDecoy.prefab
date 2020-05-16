@@ -6104,8 +6104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   maxHealth: 1
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 0
   fMovementUds: 0
   baseDamage: 2
@@ -6130,7 +6128,6 @@ MonoBehaviour:
     type: 3}
   attackParticle: {fileID: 0}
   criticAttackParticle: {fileID: 0}
-  collisionParticlePref: {fileID: 0}
   healthBar: {fileID: 121218347383066686}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 4ad50a9cace781149aefc7259c7ae462,
     type: 3}
@@ -6165,6 +6162,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 2995753212519465180}
   previsualizeAttackIcon: {fileID: 467260602695243659}
   notAttackX: {fileID: 966924782102013736}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -6182,9 +6183,8 @@ MonoBehaviour:
   unitName: Mage Decoy
   inGamePortrait: {fileID: 1297074888663576134}
   unitGeneralInfo: 
+  characterStartedOnTheLevel: 0
   initialPosInBox: {fileID: 0}
-  hasMoved: 0
-  hasAttacked: 0
   isMovingorRotating: 0
   canHover: 0
   currentUnitsAvailableToAttack: []
@@ -6784,7 +6784,27 @@ PrefabInstance:
     - target: {fileID: 2297925581660506347, guid: c605a28176437894184420fd82351069,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874334044298303552, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 289.0485
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874334044298303552, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 223.0556
+      objectReference: {fileID: 0}
+    - target: {fileID: 3010566020359537462, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 173.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3010566020359537462, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 108.7
       objectReference: {fileID: 0}
     - target: {fileID: 3681301669944793362, guid: c605a28176437894184420fd82351069,
         type: 3}
@@ -6815,6 +6835,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InsideGameInfoEnemies
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006752929866226216, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.2777
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006752929866226216, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.2777
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006752929866226216, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 77
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006752929866226216, guid: c605a28176437894184420fd82351069,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 145.6
       objectReference: {fileID: 0}
     - target: {fileID: 6526012393495370462, guid: c605a28176437894184420fd82351069,
         type: 3}
