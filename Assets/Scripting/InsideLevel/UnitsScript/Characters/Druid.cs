@@ -178,6 +178,8 @@ public class Druid : PlayerUnit
                 unitToAttack.RefreshHealth(false);
                 RefreshHealth(false);
 
+                SoundManager.Instance.PlaySound(AppSounds.HEALING);
+
                 //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                 TM.surroundingTiles.Clear();
 
@@ -274,11 +276,10 @@ public class Druid : PlayerUnit
 
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
-                //Hay que cambiar
                 Instantiate(healParticle, unitToAttack.transform.position, healParticle.transform.rotation);
 
-                //Hay que cambiar
-                SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
+                SoundManager.Instance.PlaySound(AppSounds.HEALING);
+
                 if (individualHealer2)
                 {
                     ApplyBuffOrDebuffMovement(unitToAttack, fMovementUds + movementUpgrade, 3);
