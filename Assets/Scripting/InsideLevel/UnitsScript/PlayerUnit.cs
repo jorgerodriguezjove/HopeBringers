@@ -366,11 +366,14 @@ public class PlayerUnit : UnitBase
                 else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
 
-                    Samurai samuraiRef = FindObjectOfType<Samurai>();
-                    if (samuraiRef != null && LM.selectedCharacter == samuraiRef)
-                    {
-                        LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
-                    }
+                    //ESTO LO HE QUITADO PORQUE MOSTRABA EL NÚMERO DE DAÑO DEL OBJETIVO SOLO CON HACER HOVER AL SAMURAI.
+                    //No se si hace algo más asi que de momento lo comento
+
+                    //Samurai samuraiRef = FindObjectOfType<Samurai>();
+                    //if (samuraiRef != null && LM.selectedCharacter == samuraiRef)
+                    //{
+                    //    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
+                    //}
 
                     Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
                     if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef)
@@ -463,8 +466,6 @@ public class PlayerUnit : UnitBase
 
                         }
                     }
-                    
-                    LM.selectedCharacter.tilesInEnemyHover.Clear();
                 }
 
                 LM.selectedCharacter.HideAttackEffect(this);
@@ -485,6 +486,13 @@ public class PlayerUnit : UnitBase
                 // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 druidRef.previsualizeAttackIcon.SetActive(false);
                 druidRef.canvasHover.SetActive(false);
+            }
+
+
+            //Tiene que ir después del HideAttackEffect
+            if (LM.selectedCharacter != null)
+            {
+                LM.selectedCharacter.tilesInEnemyHover.Clear();
             }
         }
 

@@ -828,7 +828,6 @@ public class EnemyUnit : UnitBase
         {
             if (LM.selectedEnemy == null)
             {
-                
                 OnHoverExitFunctionality();
             }
 

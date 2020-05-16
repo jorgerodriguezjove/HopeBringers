@@ -50,7 +50,7 @@ public class Berserker : PlayerUnit
     //PASIVAS
     [SerializeField]
     //Este es el int que hay que cambiar para que el rage haga más daño
-    private int rageDamagePlus;
+    private int extraDamageWithRage;
 
     [SerializeField]
     private bool rageFear;
@@ -118,22 +118,22 @@ public class Berserker : PlayerUnit
 
         #region Pasives
 
-        rageDamagePlus = _rageDamagePlus2;
+        extraDamageWithRage = _rageDamagePlus2;
 
-        if (rageDamagePlus < _rageDamagePlus1)
+        if (extraDamageWithRage < _rageDamagePlus1)
         {
-            rageDamagePlus = _rageDamagePlus1;
+            extraDamageWithRage = _rageDamagePlus1;
         }
 
-        if (rageDamagePlus == 0)
+        if (extraDamageWithRage == 0)
         {
-            rageDamagePlus = 1;
+            extraDamageWithRage = 1;
         }
 
         rageFear = _rageFear;
         fearTurnBonus = _fearTurnBonus;
 
-        if (rageDamagePlus > 1)
+        if (extraDamageWithRage > 1)
         {
             pasiveSkillInfo = AppBerserkUpgrades.rageDamage2Text;
             pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppBerserkUpgrades.rageDamage1);
@@ -682,7 +682,7 @@ public class Berserker : PlayerUnit
         if (isInRage)
         {          
             //Añado el daño de rage.
-            damageWithMultipliersApplied += rageDamagePlus;
+            damageWithMultipliersApplied += extraDamageWithRage;
         }
 
         if (areaAttack)
@@ -727,7 +727,6 @@ public class Berserker : PlayerUnit
                 if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
-
                 }
 
                 if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
@@ -741,14 +740,11 @@ public class Berserker : PlayerUnit
                 if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
-
-
                 }
 
                 if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
-
                 }
             }
 
@@ -757,13 +753,11 @@ public class Berserker : PlayerUnit
                 if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
-
                 }
 
                 if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
-
                 }
             }
 
@@ -779,7 +773,6 @@ public class Berserker : PlayerUnit
                 if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
-
                 }
             }
         }
@@ -794,9 +787,6 @@ public class Berserker : PlayerUnit
                 currentFacingDirection = FacingDirection.North;
                 CalculateDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
                 myCurrentTile.tilesInLineUp[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-
-
-
             }
 
             if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
@@ -805,7 +795,6 @@ public class Berserker : PlayerUnit
                 currentFacingDirection = FacingDirection.South;
                 CalculateDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
                 myCurrentTile.tilesInLineDown[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-
             }
 
 
@@ -815,7 +804,6 @@ public class Berserker : PlayerUnit
                 currentFacingDirection = FacingDirection.East;
                 CalculateDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
                 myCurrentTile.tilesInLineRight[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-
             }
 
 
@@ -825,44 +813,47 @@ public class Berserker : PlayerUnit
                 currentFacingDirection = FacingDirection.West;
                 CalculateDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
                 myCurrentTile.tilesInLineLeft[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-
             }
+
             currentFacingDirection = previousDirection;
         }
 
+        //Se añade al menos la unidad a la que se hace hover
         tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
 
-        
-            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                tilesInEnemyHover[i].ColorAttack();
-
-                if (tilesInEnemyHover[i].unitOnTile != null)
+                //En el circular attack no se puede poner aqui porque necesita de su propio calculo.
+                if (!circularAttack)
                 {
-                    if (rageFear)
-                    {
-                        SetBuffDebuffIcon(-1, _unitToAttack, true);
-                    }
+                    CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                }
 
-                    if (circularAttack)
-                    {
-                        if (timesCircularAttackRepeats >= 2)
-                        {
-                            tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.enabled = true;
-                            tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.text = ("X" + timesCircularAttackRepeats.ToString());
-                        }
+                if (rageFear)
+                {
+                    SetBuffDebuffIcon(-1, _unitToAttack, true);
+                }
 
-                    }
-                    else
+                if (circularAttack)
+                {
+                    if (timesCircularAttackRepeats >= 2)
                     {
-
-                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied + bonusDamageAreaAttack);
+                        tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.enabled = true;
+                        tilesInEnemyHover[i].unitOnTile.timesRepeatNumber.text = ("X" + timesCircularAttackRepeats.ToString());
                     }
                 }
-            }
-        
-       
 
+                else
+                {
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied + bonusDamageAreaAttack);
+                }
+            }
+        }
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)

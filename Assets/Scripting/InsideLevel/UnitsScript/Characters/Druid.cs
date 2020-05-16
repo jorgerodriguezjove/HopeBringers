@@ -164,9 +164,6 @@ public class Druid : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-        
-
-
         CheckIfUnitHasMarks(unitToAttack);
 
         if (areaHealer)
@@ -180,8 +177,6 @@ public class Druid : PlayerUnit
                 UIM.RefreshHealth();
                 unitToAttack.RefreshHealth(false);
                 RefreshHealth(false);
-
-                SoundManager.Instance.PlaySound(AppSounds.HEALING);
 
                 //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                 TM.surroundingTiles.Clear();
@@ -279,11 +274,11 @@ public class Druid : PlayerUnit
 
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
-                
+                //Hay que cambiar
                 Instantiate(healParticle, unitToAttack.transform.position, healParticle.transform.rotation);
 
-                SoundManager.Instance.PlaySound(AppSounds.HEALING);
-             
+                //Hay que cambiar
+                SoundManager.Instance.PlaySound(AppSounds.MAGE_ATTACK);
                 if (individualHealer2)
                 {
                     ApplyBuffOrDebuffMovement(unitToAttack, fMovementUds + movementUpgrade, 3);
@@ -470,6 +465,7 @@ public class Druid : PlayerUnit
             {
                 rangeVSTilesInLineLimitant = attackRange;
             }
+
             else
             {
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineRight.Count;
@@ -557,7 +553,6 @@ public class Druid : PlayerUnit
                     }
                 }
             }
-
         }
 
         if (_shouldPaintEnemiesAndShowHealthbar)
@@ -569,24 +564,18 @@ public class Druid : PlayerUnit
                 currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
                 currentUnitsAvailableToAttack[i].myCurrentTile.ColorInteriorRed();
-
             }
         }
-
-
 
         for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
         {
             currentTilesInRangeForAttack[i].ColorBorderRed();
         }
-
-
     }
     #endregion
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
-
         if (areaHealer)
         {
             if (_unitToAttack.GetComponent<PlayerUnit>())
@@ -595,14 +584,19 @@ public class Druid : PlayerUnit
 
                 TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
 
+                tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
+
                 for (int i = 0; i < TM.surroundingTiles.Count; ++i)
                 {
                     if (TM.surroundingTiles[i] != null)
                     {
                         tilesInEnemyHover.Add(TM.surroundingTiles[i]);
-
                     }
                 }
+
+                previsualizeAttackIcon.SetActive(true);
+                canvasHover.SetActive(true);
+                canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("-1");
 
                 for (int i = 0; i < tilesInEnemyHover.Count; i++)
                 {
@@ -615,21 +609,26 @@ public class Druid : PlayerUnit
                             GameObject shadowTile = Instantiate(shadowHealerTilePref, tilesInEnemyHover[i].transform.position, tilesInEnemyHover[i].transform.rotation);
                             tilesSpawned.Add(shadowTile);
                         }
+
+                        tilesInEnemyHover[i].unitOnTile.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife);
+                        tilesInEnemyHover[i].unitOnTile.canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
                         tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeHealed();
+                        tilesInEnemyHover[i].unitOnTile.canvasHover.SetActive(true);
+                        tilesInEnemyHover[i].unitOnTile.myCurrentTile.ColorHeal();
                     }
                 }
             }
+
             else
             {
                 CalculateDamage(_unitToAttack);
                 _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 _unitToAttack.myCurrentTile.ColorAttack();
-               
             }
         }
+
         else
         {
-
             if (_unitToAttack != null && _unitToAttack.GetComponent<PlayerUnit>())
             {
                 if (tileTransformer)
@@ -655,20 +654,15 @@ public class Druid : PlayerUnit
                     _unitToAttack.myCurrentTile.ColorHeal();
                     tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
                 }
-              
-                    
-               
             }
+
             else if (_unitToAttack != null)
             {
                 CalculateDamage(_unitToAttack);
                 _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 _unitToAttack.myCurrentTile.ColorAttack();
-
             }
-
         }
-
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
@@ -688,10 +682,9 @@ public class Druid : PlayerUnit
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-            tilesInEnemyHover[i].ColorBorderRed(); 
-
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
+                tilesInEnemyHover[i].unitOnTile.canvasHover.SetActive(false);
                 tilesInEnemyHover[i].unitOnTile.ResetColor();
                 tilesInEnemyHover[i].ColorDesAttack();
             }
