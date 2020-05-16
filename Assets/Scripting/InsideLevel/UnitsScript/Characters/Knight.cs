@@ -896,6 +896,8 @@ public class Knight : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        base.ShowAttackEffect(_unitToAttack);
+
         if (pushWider)
         {
             if (currentFacingDirection == FacingDirection.North)
@@ -1386,6 +1388,8 @@ public class Knight : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        base.HideAttackEffect(_unitToAttack);
+
         ShowHideFullShield(false);
         _unitToAttack.sombraHoverUnit.SetActive(false);
         hoverImpactIcon.SetActive(false);

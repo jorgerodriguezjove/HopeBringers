@@ -598,7 +598,9 @@ public class Samurai : PlayerUnit
     }
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
-    {  
+    {
+        base.ShowAttackEffect(_unitToAttack);
+
         if (currentUnitsAvailableToAttack.Count > 0)
         {
              if (parryOn)
@@ -618,10 +620,10 @@ public class Samurai : PlayerUnit
 
              //Marco las unidades disponibles para atacar de color rojo
              for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-            {
+             {
                 CalculateDamage(currentUnitsAvailableToAttack[i]);
                 currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-            }
+             }
         }
 
          if (UnitsNonAttack.Count > 0)
@@ -636,6 +638,8 @@ public class Samurai : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        base.HideAttackEffect(_unitToAttack);
+
         _unitToAttack.timesRepeatNumber.enabled = false;
 
         if (currentUnitsAvailableToAttack.Count > 0)

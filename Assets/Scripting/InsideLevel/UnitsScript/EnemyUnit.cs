@@ -1280,11 +1280,18 @@ public class EnemyUnit : UnitBase
             QuitMarks();
         }
 
-        if (numberOfMarks >= 1)
+        if (numberOfMarks == 1)
         {
             isMarked = true;
             monkMarkUpgrade.SetActive(false);
             monkMark.SetActive(true);
+        }
+
+        else if (numberOfMarks == 2)
+        {
+            isMarked = true;
+            monkMarkUpgrade.SetActive(true);
+            monkMark.SetActive(false);
         }
 
         //Druida es especial y modifica healedlife
@@ -1293,7 +1300,6 @@ public class EnemyUnit : UnitBase
 
         movementUds = lastAttack.obj_movementBuffDebuff;
         turnsWithMovementBuffOrDebuff = lastAttack.obj_turnsMovementBuffDebuff;
-
 
         //Actualizar hud
         RefreshHealth(false);

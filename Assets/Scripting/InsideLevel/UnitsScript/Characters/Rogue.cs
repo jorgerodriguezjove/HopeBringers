@@ -756,6 +756,8 @@ public class Rogue : PlayerUnit
     
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        base.ShowAttackEffect(_unitToAttack);
+
         tilesInEnemyHover.Clear();
         CalculateAttackLogic(_unitToAttack, false);
 
@@ -855,6 +857,8 @@ public class Rogue : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        base.HideAttackEffect(_unitToAttack);
+
         if (smokeBomb)
         {
             for (int i = 0; i < bombsShadowSpawned.Count; i++)

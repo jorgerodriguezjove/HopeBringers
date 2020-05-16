@@ -168,16 +168,9 @@ public class Druid : PlayerUnit
 
         if (areaHealer)
         {
-            //Hay que cambiar
-            Instantiate(areaHealParticle, unitToAttack.transform.position, areaHealParticle.transform.rotation);
-
             if (unitToAttack.GetComponent<PlayerUnit>())
             {
-                UIM.RefreshTokens();
-                UIM.RefreshHealth();
-                unitToAttack.RefreshHealth(false);
-                RefreshHealth(false);
-
+                Instantiate(areaHealParticle, unitToAttack.transform.position, areaHealParticle.transform.rotation);
                 SoundManager.Instance.PlaySound(AppSounds.HEALING);
 
                 //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
@@ -221,16 +214,20 @@ public class Druid : PlayerUnit
                             ApplyBuffOrDebuffDamage(TM.surroundingTiles[i].unitOnTile, 0, 0);
 
                             TM.surroundingTiles[i].unitOnTile.buffbonusStateDamage = 0;
-
                         }
+
                         if (tileTransformer)
                         {
                            
                             Instantiate(healerTilePref, TM.surroundingTiles[i].unitOnTile.transform.position, TM.surroundingTiles[i].unitOnTile.transform.rotation);
                         }
 
-                        TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
-                        TM.surroundingTiles[i].unitOnTile.RefreshHealth(false);
+                        //Curación
+                        if (TM.surroundingTiles[i].unitOnTile.currentHealth < TM.surroundingTiles[i].unitOnTile.maxHealth)
+                        {
+                            TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
+                            TM.surroundingTiles[i].unitOnTile.RefreshHealth(false);
+                        }
                     }
                 }
 
@@ -246,6 +243,11 @@ public class Druid : PlayerUnit
 
                 //IMPORTANTE PARA EL UNDO QUE LA VIDA SE QUITE AL FINAL
                 currentHealth -= 1;
+
+                UIM.RefreshTokens();
+                UIM.RefreshHealth();
+                unitToAttack.RefreshHealth(false);
+                RefreshHealth(false);
             }
 
             else
@@ -303,11 +305,13 @@ public class Druid : PlayerUnit
                 if (unitToAttack.currentHealth < unitToAttack.maxHealth) 
                 {
                     unitToAttack.currentHealth += healedLife;
-                    currentHealth -= 1;
+                    
                     unitToAttack.RefreshHealth(false);
-                    RefreshHealth(false);
                 }
-                
+
+                currentHealth -= 1;
+
+                RefreshHealth(false);
                 UIM.RefreshTokens();
                 UIM.RefreshHealth();
             }
@@ -577,6 +581,8 @@ public class Druid : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        base.ShowAttackEffect(_unitToAttack);
+
         if (areaHealer)
         {
             if (_unitToAttack.GetComponent<PlayerUnit>())
@@ -643,18 +649,15 @@ public class Druid : PlayerUnit
                     SetMovementIcon(movementUpgrade,_unitToAttack,true);
                 }
 
-                if (_unitToAttack.currentHealth < _unitToAttack.maxHealth)
-                {
-                    previsualizeAttackIcon.SetActive(true);
-                    canvasHover.SetActive(true);
-                    canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("-1");
-                    _unitToAttack.canvasHover.SetActive(true);
-                    _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife);
-                    _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
-                    _unitToAttack.ColorAvailableToBeHealed();
-                    _unitToAttack.myCurrentTile.ColorHeal();
-                    tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
-                }
+                previsualizeAttackIcon.SetActive(true);
+                canvasHover.SetActive(true);
+                canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("-1");
+                _unitToAttack.canvasHover.SetActive(true);
+                _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife);
+                _unitToAttack.canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
+                _unitToAttack.ColorAvailableToBeHealed();
+                _unitToAttack.myCurrentTile.ColorHeal();
+                tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
             }
 
             else if (_unitToAttack != null)
@@ -668,6 +671,8 @@ public class Druid : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        base.HideAttackEffect(_unitToAttack);
+
         if (tileTransformer)
         {
             if (tilesSpawned.Count > 0)

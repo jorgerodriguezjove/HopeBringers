@@ -1024,6 +1024,12 @@ public class UnitBase : MonoBehaviour
     //Función que se encarga de actualizar la vida del personaje.
     public void RefreshHealth(bool undoHealthDamage)
     {
+        //Por si acaso me curo de más
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
         //for (int i = 0; i < maxHealth; i++)
         //{
         //    if (i < currentHealth)
@@ -1333,7 +1339,6 @@ public class UnitBase : MonoBehaviour
         isMarked = false;
         monkMark.SetActive(false);
         monkMarkUpgrade.SetActive(false);
-
     }
 
     public virtual void SetShadowRotation(UnitBase unitToSet, IndividualTiles unitToCheckPos, IndividualTiles otherUnitToCheck)

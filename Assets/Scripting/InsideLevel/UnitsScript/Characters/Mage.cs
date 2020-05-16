@@ -700,6 +700,8 @@ public class Mage : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        base.ShowAttackEffect(_unitToAttack);
+
         tilesInEnemyHover.Clear();
         tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
 
@@ -808,6 +810,8 @@ public class Mage : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        base.HideAttackEffect(_unitToAttack);
+
         if (mirrorDecoy)
         {
             for (int i = 0; i < myDecoys.Count; i++)
