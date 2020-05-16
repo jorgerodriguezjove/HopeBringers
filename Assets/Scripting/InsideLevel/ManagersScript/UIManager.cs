@@ -292,6 +292,7 @@ public class UIManager : MonoBehaviour
         //He cambiado esta parte para que el end turn también borre los tiles pintados
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
+
             if (LM.CheckIfFinishingTilesReached())
             {
                 LM.InstaWin(false);

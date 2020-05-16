@@ -17,6 +17,8 @@ public class EndTurnButton : MonoBehaviour
 	private void OnMouseDown()
 	{
 		AnEvent.Invoke();
+		SoundManager.Instance.PlaySound(AppSounds.COINCLICK);
+
 	}
 
 	#endregion

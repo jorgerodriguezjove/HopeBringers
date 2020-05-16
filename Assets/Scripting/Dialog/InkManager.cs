@@ -102,6 +102,10 @@ public class InkManager : MonoBehaviour
             {
                 if (text.GetComponent<TeleType>().visibleCount >= text.GetComponent<TeleType>().totalVisibleCharacters)
                 {
+                     
+    
+                    SoundManager.Instance.PlaySound(AppSounds.DIALOGBUTTONCLICK);
+    
                     text.GetComponent<TeleType>().ResetVisibleLetters(); //Nada más cambiar de línea se ocultan las letras
                     triangleUI.SetActive(false);
 

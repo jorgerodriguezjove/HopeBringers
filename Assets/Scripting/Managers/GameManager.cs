@@ -236,6 +236,8 @@ public class GameManager : PersistentSingleton<GameManager>
     //Al completar un nivel el levelManager avisa de que en la escena de mapa va a tener que desbloquear niveles.
     public void VictoryAchieved(int _totalXp)
     {
+        SoundManager.Instance.PlaySound(AppSounds.VICTORY);
+
         Debug.Log("Experiencia al ganar el nivel: " + possibleXpToGainIfCurrentLevelIsWon);
 
         levelIDsUnlocked.Add(currentLevelNodeID);
@@ -272,6 +274,9 @@ public class GameManager : PersistentSingleton<GameManager>
     public void LevelLost()
     {
         newCharacterToUnlock = null;
+
+        SoundManager.Instance.PlaySound(AppSounds.DEFEAT);
+
     }
 
     //Cargar el nivel

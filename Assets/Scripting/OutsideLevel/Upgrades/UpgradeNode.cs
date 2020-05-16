@@ -127,6 +127,7 @@ public class UpgradeNode : MonoBehaviour
             //Aviso no suficiente xp
             else
             {
+                SoundManager.Instance.PlaySound(AppSounds.UIERROR);
                 FindObjectOfType<UITableManager>().NotEnoughXp();
             }
         }

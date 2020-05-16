@@ -891,9 +891,11 @@ public class PlayerUnit : UnitBase
     }
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
-    {      
-            //Animación de ataque
-            myAnimator.SetTrigger("Damage");
+    {
+        SoundManager.Instance.PlaySound(AppSounds.RECEIVEDAMAGE);
+
+        //Animación de ataque
+        myAnimator.SetTrigger("Damage");
 
             //Estas líneas las añado para comprobar si el caballero tiene que defender
             Knight knightDef = FindObjectOfType<Knight>();

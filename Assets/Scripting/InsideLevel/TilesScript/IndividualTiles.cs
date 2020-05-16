@@ -246,6 +246,8 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
         if ( LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && LM.tilesAvailableForMovement.Contains(this) && LM.selectedCharacter != null && !LM.selectedCharacter.hasMoved && !GameManager.Instance.isGamePaused)
         {
+            SoundManager.Instance.PlaySound(AppSounds.TILEHOVER);
+
             //Cambio el cursor
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
 

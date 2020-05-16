@@ -494,7 +494,7 @@ public class UITableManager : MonoBehaviour
         //Guardar la partida-+
     }
 
-        #region PLAY_GAME
+    #region PLAY_GAME
 
      public void NewGameButton()
      {
@@ -669,6 +669,8 @@ public class UITableManager : MonoBehaviour
 
     public void YesBuyUpgrade()
     {
+        SoundManager.Instance.PlaySound(AppSounds.BUYABILITIES);
+
         FindObjectOfType<TableManager>().BuyUpgrade(lastUpgradeClicked);
         confirmateUpgrade.SetActive(false);
 
@@ -759,5 +761,10 @@ public class UITableManager : MonoBehaviour
     public void DebugFreeXp()
     {
         GameManager.Instance.currentExp = 9000;
+    }
+
+    public void ClickSound()
+    {
+        SoundManager.Instance.PlaySound(AppSounds.BUTTONCLICK);
     }
 }

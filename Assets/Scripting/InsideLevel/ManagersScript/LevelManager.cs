@@ -1541,6 +1541,9 @@ public class LevelManager : MonoBehaviour
             //Movimiento de la unidad
             if (selectedCharacter != null && !selectedCharacter.hasAttacked && !selectedCharacter.hasMoved)
             {
+
+                SoundManager.Instance.PlaySound(AppSounds.TILECLICK);
+
                 ///Esta línea comentada estaba antes para calcular los tiles pero daba problemas y no cogía a veces todos los tiles. En principio como al hacer hover ya los calculo una vez y lo hace bien,
                 ///uso esos para todos los calculos de pintar,mover etc.
                 //tilesAvailableForMovement = new List<IndividualTiles>(TM.OptimizedCheckAvailableTilesForMovement(selectedCharacter.movementUds, selectedCharacter, true));
@@ -1829,6 +1832,7 @@ public class LevelManager : MonoBehaviour
         {
             //Aparece cartel
             UIM.EnemyTurnBanner(true);
+            SoundManager.Instance.PlaySound(AppSounds.ENEMYTURN);
 
             //Pausa
             yield return new WaitForSeconds(UIM.bannerTime);
@@ -1842,6 +1846,7 @@ public class LevelManager : MonoBehaviour
         {
             //Aparece cartel
             UIM.PlayerTurnBanner(true);
+            SoundManager.Instance.PlaySound(AppSounds.PLAYERTURN);
 
             //Pausa
             yield return new WaitForSeconds(UIM.bannerTime);
@@ -2268,6 +2273,11 @@ public class LevelManager : MonoBehaviour
 
         //Al acabar for updateo lista de enemigos
         UpdateUnitsOrder();
+    }
+
+    public void ClickSound()
+    {
+        SoundManager.Instance.PlaySound(AppSounds.BUTTONCLICK);
     }
 }
 
