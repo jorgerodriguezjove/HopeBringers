@@ -181,7 +181,7 @@ public class UnitBase : MonoBehaviour
     public GameObject hoverBuffIcon;
 
     [SerializeField]
-    public GameObject hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon, hoverImpactIcon;
+    public GameObject hoverDebuffIcon, hoverMovementBuffIcon, hoverMovementDebuffIcon, hoverStunnedIcon, hoverImpactIcon, hoverRotateIcon;
 
     //Se usa para indicar las marcas del monk
     public GameObject monkMark;

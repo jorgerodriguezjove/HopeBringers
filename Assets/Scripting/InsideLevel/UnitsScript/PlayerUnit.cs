@@ -1219,7 +1219,36 @@ public class PlayerUnit : UnitBase
 
         if (pjMonkUnitReference != null)
         {
-            pjMonkUnitReference.PutQuitMark(_unitToAttack,false,true);
+            pjMonkUnitReference.PutQuitMark(_unitToAttack, this, false, true);
+
+            if (pjMonkUnitReference.rotatorTime)
+            {
+                if (pjMonkUnitReference.rotatorTime2)
+                {
+                    if (_unitToAttack.isMarked)
+                    {
+                        TM.surroundingTiles.Clear();
+
+                        TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
+
+                        //Marco a las unidades adyacentes si no están marcadas
+                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                        {
+                            if (TM.surroundingTiles[i].unitOnTile != null)
+                            {
+                                if (TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
+                                    && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
+                                {
+                                    pjMonkUnitReference.PutQuitMark(TM.surroundingTiles[i].unitOnTile, this, false, true);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                pjMonkUnitReference.PutQuitMark(_unitToAttack, this, false, true);
+                _unitToAttack.hoverRotateIcon.SetActive(true);
+            }
         }
     }
 
@@ -1229,8 +1258,62 @@ public class PlayerUnit : UnitBase
        
         if (pjMonkUnitReference != null)
         {
-            pjMonkUnitReference.PutQuitMark(_unitToAttack, false, false);
+            pjMonkUnitReference.PutQuitMark(_unitToAttack, this, false, false);
+
+            if (pjMonkUnitReference.rotatorTime)
+            {
+                if (pjMonkUnitReference.rotatorTime2)
+                {
+                    if (_unitToAttack.isMarked)
+                    {
+                        pjMonkUnitReference.PutQuitMark(_unitToAttack, this, false, false);
+
+                        //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
+                        TM.surroundingTiles.Clear();
+
+                        TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
+
+                        //Marco a las unidades adyacentes si no están marcadas
+                        for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+                        {
+                            if (TM.surroundingTiles[i].unitOnTile != null)
+                            {
+                                if (TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
+                                    && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
+                                {
+                                    if (!hasAttacked)
+                                    {
+                                        pjMonkUnitReference.PutQuitMark(TM.surroundingTiles[i].unitOnTile, this, false, false);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    _unitToAttack.hoverRotateIcon.SetActive(false);
+                }
+
+                else
+                {
+                    if (!hasAttacked)
+                    {
+                        pjMonkUnitReference.PutQuitMark(_unitToAttack, this, false, false);
+                    }
+
+                    _unitToAttack.hoverRotateIcon.SetActive(false);
+                }
+            }
+
+            //Enemigo
+            pjMonkUnitReference.PutQuitMark(_unitToAttack, this, false, false);
+            _unitToAttack.ResetColor();
+            _unitToAttack.DisableCanvasHover();
         }
+
+        //Para que al quitar el hover si va a explotar una marca que se quite el número de curación
+        DisableCanvasHover();
+        ResetColor();
+        myCurrentTile.ColorDeselect();
     }
 
    
@@ -1458,7 +1541,6 @@ public class PlayerUnit : UnitBase
 
 
     }
-
 
     //Crear AttackCommand para Undo
     public virtual void CreateAttackCommand(UnitBase obj)

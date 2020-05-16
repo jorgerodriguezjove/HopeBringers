@@ -628,6 +628,32 @@ public class Druid : PlayerUnit
 
             else
             {
+                int healNumeber;
+
+                if (_unitToAttack.isMarked)
+                {
+                    if (_unitToAttack.numberOfMarks == 1)
+                    {
+                        healNumeber = (healedLife + pjMonkUnitReference.healerBonus);
+                    }
+
+                    else
+                    {
+                        healNumeber = (healedLife + pjMonkUnitReference.healWithUpgradedMark);
+                    }
+                }
+
+                else
+                {
+                    healNumeber = healedLife;
+                }
+
+                canvasHover.SetActive(true);
+                canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healNumeber);
+                canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
+                ColorAvailableToBeHealed();
+                myCurrentTile.ColorHeal();
+
                 CalculateDamage(_unitToAttack);
                 _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 _unitToAttack.myCurrentTile.ColorAttack();
@@ -662,6 +688,32 @@ public class Druid : PlayerUnit
 
             else if (_unitToAttack != null)
             {
+                int healNumeber;
+
+                if (_unitToAttack.isMarked)
+                {
+                    if (_unitToAttack.numberOfMarks == 1)
+                    {
+                        healNumeber = (healedLife + pjMonkUnitReference.healerBonus);
+                    }
+
+                    else
+                    {
+                        healNumeber = (healedLife + pjMonkUnitReference.healWithUpgradedMark);
+                    }
+                }
+
+                else
+                {
+                    healNumeber = healedLife;
+                }
+
+                canvasHover.SetActive(true);
+                canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healNumeber);
+                canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
+                ColorAvailableToBeHealed();
+                myCurrentTile.ColorHeal();
+
                 CalculateDamage(_unitToAttack);
                 _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 _unitToAttack.myCurrentTile.ColorAttack();

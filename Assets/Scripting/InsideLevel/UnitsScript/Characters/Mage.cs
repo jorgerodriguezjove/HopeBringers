@@ -173,8 +173,6 @@ public class Mage : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
-        
-
         CheckIfUnitHasMarks(unitToAttack);
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
@@ -188,6 +186,7 @@ public class Mage : PlayerUnit
 
             }
         }
+
         tilesInEnemyHover.Clear();
 
         if (mirrorDecoy)
@@ -198,12 +197,9 @@ public class Mage : PlayerUnit
                 myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesInRangeToAttack(true);
                 myDecoys[i].GetComponent<MageDecoy>().HideAttackEffect(null);
             }
-
         }
 
         Instantiate(chargingParticle, gameObject.transform.position, chargingParticle.transform.rotation);
-
-      
 
         if (areaAttack)
         {
@@ -383,10 +379,8 @@ public class Mage : PlayerUnit
     //Override especial del mago para que no instancie la partícula de ataque
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
+        CalculateDamage(unitToDealDamage);
         
-            CalculateDamage(unitToDealDamage);
-        
-
             //Añado este if para el count de honor del samurai
         if (currentFacingDirection == FacingDirection.North && unitToDealDamage.currentFacingDirection == FacingDirection.South
         ||  currentFacingDirection == FacingDirection.South && unitToDealDamage.currentFacingDirection == FacingDirection.North
@@ -731,11 +725,9 @@ public class Mage : PlayerUnit
                         tilesInEnemyHover.Add(_unitToAttack.myCurrentTile.neighbours[i]);
                     }
                 }
-
-
             }
-
         }
+
         else if (lightningChain)
         {
             attackingUnits.Clear();

@@ -871,7 +871,6 @@ public class EnemyUnit : UnitBase
                 }
             }
 
-            Debug.Log("aa");
             HealthBarOn_Off(false);
             LM.selectedCharacter.healthBar.SetActive(false);
             LM.selectedCharacter.HideAttackEffect(this);
