@@ -426,7 +426,6 @@ public class UIManager : MonoBehaviour
 			noMoreActionsPanel.SetActive(true);
 			UndoTooltip();
 		}
-		Debug.Log("Después de " + numberOfCharactersFinished);
 	}
 	public void ResetActionsAvaliable()
 	{

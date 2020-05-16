@@ -140,8 +140,8 @@ public class Monk : PlayerUnit
         healWithUpgradedMark = healerBonus + 1;
     }
 
-    public void PutQuitMark(UnitBase _unitToMark,bool haveToPut, bool showFutureMark)
-    {      
+    public void PutQuitMark(UnitBase _unitToMark,UnitBase _unitAttacking ,bool haveToPut, bool showFutureMark)
+    {
         //Si pongo la marca actualizo los numeros y el estado del bool
         if (haveToPut)
         {
@@ -156,7 +156,7 @@ public class Monk : PlayerUnit
                     _unitToMark.isMarked = false;
                     _unitToMark.numberOfMarks = 0;
 
-                    currentHealth += healWithUpgradedMark;
+                    _unitAttacking.currentHealth += healWithUpgradedMark;
                 }
             }
 
@@ -166,10 +166,10 @@ public class Monk : PlayerUnit
                 _unitToMark.isMarked = false;
                 _unitToMark.numberOfMarks = 0;
 
-                currentHealth += healerBonus;
+                _unitAttacking.currentHealth += healerBonus;
             }
 
-            RefreshHealth(false);
+            _unitAttacking.RefreshHealth(false);
             UIM.RefreshHealth();
         }
 
@@ -185,18 +185,21 @@ public class Monk : PlayerUnit
                     {
                         _unitToMark.monkMark.SetActive(false);
 
-                        _unitToMark.monkMarkUpgrade.SetActive(true);
+                        if (_unitAttacking.GetComponent<Monk>())
+                        {
+                            _unitToMark.monkMarkUpgrade.SetActive(true);
+                        }
                     }
 
                     else
                     {
                         _unitToMark.monkMark.SetActive(false);
 
-                        canvasHover.SetActive(true);
-                        canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healerBonus);
-                        canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
-                        ColorAvailableToBeHealed();
-                        myCurrentTile.ColorHeal();
+                        _unitAttacking.canvasHover.SetActive(true);
+                        _unitAttacking.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healerBonus);
+                        _unitAttacking.canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
+                        _unitAttacking.ColorAvailableToBeHealed();
+                        _unitAttacking.myCurrentTile.ColorHeal();
                     }
                 }
 
@@ -206,17 +209,20 @@ public class Monk : PlayerUnit
 
                     _unitToMark.monkMarkUpgrade.SetActive(false);
 
-                    canvasHover.SetActive(true);
-                    canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healWithUpgradedMark);
-                    canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
-                    ColorAvailableToBeHealed();
-                    myCurrentTile.ColorHeal();
+                    _unitAttacking.canvasHover.SetActive(true);
+                    _unitAttacking.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healWithUpgradedMark);
+                    _unitAttacking.canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
+                    _unitAttacking.ColorAvailableToBeHealed();
+                    _unitAttacking.myCurrentTile.ColorHeal();
                 }
             }
 
             else if (_unitToMark.numberOfMarks == 0)
             {
-                _unitToMark.monkMark.SetActive(true);
+                if (_unitAttacking.GetComponent<Monk>())
+                {
+                    _unitToMark.monkMark.SetActive(true);
+                }
 
                 _unitToMark.monkMarkUpgrade.SetActive(false);
             }
@@ -249,7 +255,6 @@ public class Monk : PlayerUnit
                 _unitToMark.monkMarkUpgrade.SetActive(false);
             }
         }
-
     }
 
     public override void Attack(UnitBase unitToAttack)
@@ -312,14 +317,14 @@ public class Monk : PlayerUnit
                                 //UNDO
                                 CreateAttackCommand(TM.surroundingTiles[i].unitOnTile);
 
-                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, true, false);
+                                PutQuitMark(TM.surroundingTiles[i].unitOnTile,this,true, false);
                             }
                         }
                     }
                 }
             }
 
-            PutQuitMark(unitToAttack, true, false);
+            PutQuitMark(unitToAttack, this, true, false);
 
             rotatorFeedbackArrow.SetActive(false);
 
@@ -387,7 +392,7 @@ public class Monk : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
-            PutQuitMark(unitToAttack, true, false);
+            PutQuitMark(unitToAttack, this, true, false);
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -408,7 +413,7 @@ public class Monk : PlayerUnit
             //UNDO
             CreateAttackCommand(unitToAttack);
 
-            PutQuitMark(unitToAttack, true, false);
+            PutQuitMark(unitToAttack, this, true, false);
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -708,7 +713,7 @@ public class Monk : PlayerUnit
                             if (TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>()
                                 && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
                             {
-                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, true);
+                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, this, false, true);
                             }
                         }
                     }
@@ -716,10 +721,9 @@ public class Monk : PlayerUnit
             }
 
 
-            PutQuitMark(_unitToAttack, false, true);
-            rotatorFeedbackArrow.SetActive(true);
-            Vector3 spawnRotatorArrow = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 3, _unitToAttack.transform.position.z);
-            rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
+            PutQuitMark(_unitToAttack, this, false, true);
+
+            _unitToAttack.hoverRotateIcon.SetActive(true);
         }
 
         else if (suplex)
@@ -801,12 +805,12 @@ public class Monk : PlayerUnit
             }
 
             //MARCAS
-            PutQuitMark(_unitToAttack, false, true);
+            PutQuitMark(_unitToAttack, this, false, true);
         }
 
         else
         {
-            PutQuitMark(_unitToAttack, false, true);
+            PutQuitMark(_unitToAttack, this, false, true);
         }
 
         CalculateDamage(_unitToAttack);
@@ -823,7 +827,7 @@ public class Monk : PlayerUnit
             {
                 if (_unitToAttack.isMarked)
                 {
-                    PutQuitMark(_unitToAttack, false, false);
+                    PutQuitMark(_unitToAttack, this, false, false);
 
                     //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                     TM.surroundingTiles.Clear();
@@ -840,34 +844,35 @@ public class Monk : PlayerUnit
                             {
                                 if (!hasAttacked)
                                 {
-                                    PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, false);
+                                    PutQuitMark(TM.surroundingTiles[i].unitOnTile, this, false, false);
                                 }
                             }
                         }
                     }
                 }
 
-                rotatorFeedbackArrow.SetActive(false);
+                _unitToAttack.hoverRotateIcon.SetActive(false);
             }
 
             else
             {
                 if (!hasAttacked)
                 {
-                    PutQuitMark(_unitToAttack, false, false);
+                    PutQuitMark(_unitToAttack, this, false, false);
                 }
 
-                rotatorFeedbackArrow.SetActive(false);
+                _unitToAttack.hoverRotateIcon.SetActive(false);
             }
         }
 
+        //Monje
         DisableCanvasHover();
         ResetColor();
         myCurrentTile.ColorDeselect();
 
-        PutQuitMark(_unitToAttack, false, false);
+        //Enemigo
+        PutQuitMark(_unitToAttack, this, false, false);
         _unitToAttack.ResetColor();
         _unitToAttack.DisableCanvasHover();
-
     }
 }
