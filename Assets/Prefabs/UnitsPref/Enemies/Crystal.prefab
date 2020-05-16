@@ -47,110 +47,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
-  m_WarningMessage: '
-
-    Transform ''Finger_03'' has been deleted
-
-    Transform
-    ''Finger_02'' has been deleted
-
-    Transform ''Finger_01'' has been deleted
-
-    Transform
-    ''IndexFinger_03'' has been deleted
-
-    Transform ''IndexFinger_02'' has been
-    deleted
-
-    Transform ''IndexFinger_01'' has been deleted
-
-    Transform ''Thumb_03''
-    has been deleted
-
-    Transform ''Thumb_02'' has been deleted
-
-    Transform
-    ''Thumb_01'' has been deleted
-
-    Transform ''Hand_L'' has been deleted
-
-    Transform
-    ''Elbow_L'' has been deleted
-
-    Transform ''Shoulder_L'' has been deleted
-
-    Transform
-    ''Clavicle_L'' has been deleted
-
-    Transform ''Finger_03 1'' has been deleted
-
-    Transform
-    ''Finger_02 1'' has been deleted
-
-    Transform ''Finger_01 1'' has been deleted
-
-    Transform
-    ''IndexFinger_03 1'' has been deleted
-
-    Transform ''IndexFinger_02 1'' has
-    been deleted
-
-    Transform ''IndexFinger_01 1'' has been deleted
-
-    Transform
-    ''Thumb_03 1'' has been deleted
-
-    Transform ''Thumb_02 1'' has been deleted
-
-    Transform
-    ''Thumb_01 1'' has been deleted
-
-    Transform ''Hand_R'' has been deleted
-
-    Transform
-    ''Elbow_R'' has been deleted
-
-    Transform ''Shoulder_R'' has been deleted
-
-    Transform
-    ''Clavicle_R'' has been deleted
-
-    Transform ''Head'' has been deleted
-
-    Transform
-    ''Neck'' has been deleted
-
-    Transform ''Spine_03'' has been deleted
-
-    Transform
-    ''Spine_02'' has been deleted
-
-    Transform ''Spine_01'' has been deleted
-
-    Transform
-    ''Ball_L'' has been deleted
-
-    Transform ''Ankle_L'' has been deleted
-
-    Transform
-    ''LowerLeg_L'' has been deleted
-
-    Transform ''UpperLeg_L'' has been deleted
-
-    Transform
-    ''Ball_R'' has been deleted
-
-    Transform ''Ankle_R'' has been deleted
-
-    Transform
-    ''LowerLeg_R'' has been deleted
-
-    Transform ''UpperLeg_R'' has been deleted
-
-    Transform
-    ''Hips'' has been deleted
-
-    Transform ''Root'' has been deleted'
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -270,8 +167,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   maxHealth: 5
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 0
   fMovementUds: 0
   baseDamage: 0
@@ -298,8 +193,6 @@ MonoBehaviour:
   attackParticle: {fileID: 5147340322548916948, guid: 502e233d19f08e5488b039fc62982e78,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 7002427178069089673}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 4ad50a9cace781149aefc7259c7ae462,
@@ -334,6 +227,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 4909925918603885383}
   previsualizeAttackIcon: {fileID: 6424119784101735300}
   notAttackX: {fileID: 529906382057330566}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -378,6 +275,7 @@ MonoBehaviour:
   myLineRenderer: {fileID: 3645512459767184502}
   sleepParticle: {fileID: 2779683138633240414}
   exclamationIcon: {fileID: 4831513358219870769}
+  facingDirectionAfterMovement: 0
   isCrystalActive: 0
   particleCrystalActive: {fileID: 6392746959745677345}
 --- !u!1 &1880610190010056070
