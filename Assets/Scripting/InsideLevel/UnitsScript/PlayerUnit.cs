@@ -466,8 +466,6 @@ public class PlayerUnit : UnitBase
 
                         }
                     }
-                    
-                    LM.selectedCharacter.tilesInEnemyHover.Clear();
                 }
 
                 LM.selectedCharacter.HideAttackEffect(this);
@@ -488,6 +486,13 @@ public class PlayerUnit : UnitBase
                 // Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 druidRef.previsualizeAttackIcon.SetActive(false);
                 druidRef.canvasHover.SetActive(false);
+            }
+
+
+            //Tiene que ir después del HideAttackEffect
+            if (LM.selectedCharacter != null)
+            {
+                LM.selectedCharacter.tilesInEnemyHover.Clear();
             }
         }
 

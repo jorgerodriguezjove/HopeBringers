@@ -682,8 +682,6 @@ public class Druid : PlayerUnit
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-            tilesInEnemyHover[i].ColorBorderRed(); 
-
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
                 tilesInEnemyHover[i].unitOnTile.canvasHover.SetActive(false);
