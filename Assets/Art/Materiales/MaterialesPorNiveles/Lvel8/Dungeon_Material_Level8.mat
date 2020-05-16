@@ -23,8 +23,8 @@ Material:
   m_Name: Dungeon_Material_Level8
   m_Shader: {fileID: 4800000, guid: 219f3ec11a5079144bcd9d5d1ab57802, type: 3}
   m_ShaderKeywords: N_F_EAL_ON N_F_O_ON N_F_SS_ON N_F_ST_ON _ALPHABASECUTOUT_ON _EMISSION
-    _LIGHTAFFECTSHADOW_ON _LIGHTFALLOFFAFFECTSHADOWT_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON
-    _RIMLIGHTINLIGHT_ON _SELFLITHIGHCONTRAST_ON
+    _LIGHTFALLOFFAFFECTSHADOWT_ON _OUTLINEWIDTHAFFECTEDBYVIEWDISTANCE_ON _RIMLIGHTINLIGHT_ON
+    _SELFLITHIGHCONTRAST_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -147,13 +147,13 @@ Material:
     - _Cutoff: 0.5
     - _Cutout: 0
     - _DetailNormalMapScale: 1
-    - _DirectionalLightIntensity: 0
+    - _DirectionalLightIntensity: 0.43
     - _DistortionBlend: 0.5
     - _DistortionEnabled: 0
     - _DistortionStrength: 1
     - _DistortionStrengthScaled: 0.1
     - _DoubleSided: 2
-    - _DoubleSidedOutline: 0
+    - _DoubleSidedOutline: 1
     - _DstBlend: 0
     - _DynamicNoisyOutline: 0
     - _EmissionScaleUI: 1
@@ -179,10 +179,10 @@ Material:
     - _HighlightColorPower: 5
     - _LightAffectOutlineColor: 0
     - _LightAffectRimLightColor: 0
-    - _LightAffectShadow: 1
+    - _LightAffectShadow: 0
     - _LightFalloffAffectShadowT: 1
     - _LightFalloffSoftness: 0.3
-    - _LightIntensity: -1
+    - _LightIntensity: 0
     - _MCIALO: 0
     - _MCapIntensity: 1
     - _MVCOL: 0
@@ -217,7 +217,7 @@ Material:
     - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
     - _Oper: 8
-    - _OutlineExtrudeMethod: 1
+    - _OutlineExtrudeMethod: 0
     - _OutlineWidth: 8
     - _OutlineWidthAffectedByViewDistance: 1
     - _OutlineZPostionInCamera: 2
@@ -246,7 +246,7 @@ Material:
     - _SelfShadowRealTimeShadowColorPower: 1
     - _SelfShadowRealtimeShadowIntensity: 0.664
     - _SelfShadowShadowTAtViewDirection: 0
-    - _SelfShadowThreshold: 0.935
+    - _SelfShadowThreshold: 0.964
     - _ShadowColorTexturePower: 0
     - _ShadowHardness: 1
     - _ShadowTColorPower: 1
