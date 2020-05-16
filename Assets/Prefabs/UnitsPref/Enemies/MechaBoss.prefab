@@ -116,8 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 20
   maxHealth: 10
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 3
   fMovementUds: 0
   baseDamage: 2
@@ -179,6 +177,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 3098580390870869423}
   previsualizeAttackIcon: {fileID: 3892481173476488556}
   notAttackX: {fileID: 7528130600486177134}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -387,110 +389,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
-  m_WarningMessage: '
-
-    Transform ''Finger_03'' has been deleted
-
-    Transform
-    ''Finger_02'' has been deleted
-
-    Transform ''Finger_01'' has been deleted
-
-    Transform
-    ''IndexFinger_03'' has been deleted
-
-    Transform ''IndexFinger_02'' has been
-    deleted
-
-    Transform ''IndexFinger_01'' has been deleted
-
-    Transform ''Thumb_03''
-    has been deleted
-
-    Transform ''Thumb_02'' has been deleted
-
-    Transform
-    ''Thumb_01'' has been deleted
-
-    Transform ''Hand_L'' has been deleted
-
-    Transform
-    ''Elbow_L'' has been deleted
-
-    Transform ''Shoulder_L'' has been deleted
-
-    Transform
-    ''Clavicle_L'' has been deleted
-
-    Transform ''Finger_03 1'' has been deleted
-
-    Transform
-    ''Finger_02 1'' has been deleted
-
-    Transform ''Finger_01 1'' has been deleted
-
-    Transform
-    ''IndexFinger_03 1'' has been deleted
-
-    Transform ''IndexFinger_02 1'' has
-    been deleted
-
-    Transform ''IndexFinger_01 1'' has been deleted
-
-    Transform
-    ''Thumb_03 1'' has been deleted
-
-    Transform ''Thumb_02 1'' has been deleted
-
-    Transform
-    ''Thumb_01 1'' has been deleted
-
-    Transform ''Hand_R'' has been deleted
-
-    Transform
-    ''Elbow_R'' has been deleted
-
-    Transform ''Shoulder_R'' has been deleted
-
-    Transform
-    ''Clavicle_R'' has been deleted
-
-    Transform ''Head'' has been deleted
-
-    Transform
-    ''Neck'' has been deleted
-
-    Transform ''Spine_03'' has been deleted
-
-    Transform
-    ''Spine_02'' has been deleted
-
-    Transform ''Spine_01'' has been deleted
-
-    Transform
-    ''Ball_L'' has been deleted
-
-    Transform ''Ankle_L'' has been deleted
-
-    Transform
-    ''LowerLeg_L'' has been deleted
-
-    Transform ''UpperLeg_L'' has been deleted
-
-    Transform
-    ''Ball_R'' has been deleted
-
-    Transform ''Ankle_R'' has been deleted
-
-    Transform
-    ''LowerLeg_R'' has been deleted
-
-    Transform ''UpperLeg_R'' has been deleted
-
-    Transform
-    ''Hips'' has been deleted
-
-    Transform ''Root'' has been deleted'
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -2387,17 +2286,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1538924730050149809, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}

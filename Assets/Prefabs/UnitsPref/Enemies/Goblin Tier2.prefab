@@ -18886,7 +18886,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1314037411484213396}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.265, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
@@ -18905,7 +18905,7 @@ Transform:
   - {fileID: 1314037410667333165}
   m_Father: {fileID: 1314037412078071264}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &1314037411484213399
 Animator:
   serializedVersion: 3
@@ -26780,8 +26780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 9
   maxHealth: 2
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 3
   fMovementUds: 0
   baseDamage: 1
@@ -26842,6 +26840,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 4230938052984797112}
   previsualizeAttackIcon: {fileID: 8385281182456755634}
   notAttackX: {fileID: 330101193031619599}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 3
   isMarked: 0

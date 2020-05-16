@@ -2367,7 +2367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3428018934851874487
 Transform:
   m_ObjectHideFlags: 0
@@ -3559,8 +3559,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   maxHealth: 3
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 50
   fMovementUds: 0
   baseDamage: 2
@@ -3621,6 +3619,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 2793689456296698750}
   previsualizeAttackIcon: {fileID: 4305912597393109949}
   notAttackX: {fileID: 7330797333609893823}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0

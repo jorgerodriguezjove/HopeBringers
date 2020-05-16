@@ -934,8 +934,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   maxHealth: 3
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 1
   fMovementUds: 0
   baseDamage: 3
@@ -961,8 +959,6 @@ MonoBehaviour:
   attackParticle: {fileID: 225641566652920853, guid: a9106be8c9891964aa6322ff642e1e90,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 5179053524740057285}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
@@ -998,6 +994,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 3009534905663997942}
   previsualizeAttackIcon: {fileID: 3801184865891817269}
   notAttackX: {fileID: 7691321995557776183}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
@@ -1044,6 +1044,7 @@ MonoBehaviour:
   myLineRenderer: {fileID: 754574087612538432}
   sleepParticle: {fileID: 0}
   exclamationIcon: {fileID: 4456886123862838764}
+  facingDirectionAfterMovement: 0
   isAttackPrepared: 0
   isMovingToHisRight: 0
   tilesToShoot: []
@@ -2252,23 +2253,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4253048757538592, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4253048757538592, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.004
       objectReference: {fileID: 0}
     - target: {fileID: 4253048757538592, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4253048757538592, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000014901159
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4253048757538592, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4253048757538592, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2318,6 +2319,26 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 0.12364541
       objectReference: {fileID: 0}
+    - target: {fileID: 35545964189218320, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 35545964189218320, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 35545964189218320, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 35545964189218320, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.07
+      objectReference: {fileID: 0}
     - target: {fileID: 95050334168308012, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
         type: 3}
       propertyPath: m_Controller
@@ -2329,6 +2350,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 137186716190997794, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1bcc25f4c1d4aa44c9803a876bdaffcf, type: 2}
+    - target: {fileID: 2771049377390144704, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8765985399842489190, guid: 5dca37c5d9f3f4d4cbd068a8ea5348f9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

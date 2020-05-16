@@ -2581,8 +2581,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5471517505310871546}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3993882003684159665}
@@ -2600,7 +2600,7 @@ Transform:
   - {fileID: 4849795744869400346}
   m_Father: {fileID: 6409402853590735207}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &3975558174511005976
 Animator:
   serializedVersion: 3
@@ -3053,8 +3053,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   maxHealth: 4
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 1
   fMovementUds: 0
   baseDamage: 2
@@ -3080,8 +3078,6 @@ MonoBehaviour:
   attackParticle: {fileID: 5147340322548916948, guid: 502e233d19f08e5488b039fc62982e78,
     type: 3}
   criticAttackParticle: {fileID: 5574171949109718134, guid: 03c092189b5049b4c9733e3ed2617494,
-    type: 3}
-  collisionParticlePref: {fileID: 6920270906916404865, guid: 481b97b3d250a024da3fd77f82a38dfd,
     type: 3}
   healthBar: {fileID: 4806624026799600103}
   lifeTokenPref: {fileID: 5476139648183857611, guid: 058ff167b1df8b04bb3fadf14f006fd5,
@@ -3117,6 +3113,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 5573896952525579668}
   previsualizeAttackIcon: {fileID: 5791335331274175831}
   notAttackX: {fileID: 1018764769245006165}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 2
   isMarked: 0
@@ -3154,12 +3154,14 @@ MonoBehaviour:
   enemyTierImage: {fileID: 0}
   numberOfAttackTokens: 0
   bossPortrait: {fileID: 0}
+  interrogationParticle: {fileID: 0}
   arrowEnemyIndicator: {fileID: 7926352826835208669}
   selectedMaterial: {fileID: 2100000, guid: a5415897e4e7e744a9ad91bad6400b8d, type: 2}
   myPortrait: {fileID: 0}
   myLineRenderer: {fileID: 8828141317056814409}
   sleepParticle: {fileID: 2318951966534823854}
   exclamationIcon: {fileID: 698541890746935295}
+  facingDirectionAfterMovement: 0
   tempLateralTilesToFutureObjective: []
 --- !u!114 &2814326850417192975
 MonoBehaviour:
@@ -4480,17 +4482,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.25
+      value: 0.76172
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.25
+      value: 0.76172
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.25
+      value: 0.76172
       objectReference: {fileID: 0}
     - target: {fileID: -1538924730050149809, guid: dc00342af2d46e64099fd8092644a09c,
         type: 3}

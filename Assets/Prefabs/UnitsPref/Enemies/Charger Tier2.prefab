@@ -2376,7 +2376,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6454170519568460557}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4758808501236610447}
@@ -3733,8 +3733,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   maxHealth: 3
-  currentHealth: 0
-  currentArmor: 0
   movementUds: 50
   fMovementUds: 0
   baseDamage: 2
@@ -3795,6 +3793,10 @@ MonoBehaviour:
   changePositionIcon: {fileID: 8818665766487899526}
   previsualizeAttackIcon: {fileID: 2282341989323859007}
   notAttackX: {fileID: 2014044139336307357}
+  currentHealth: 0
+  currentArmor: 0
+  hasMoved: 0
+  hasAttacked: 0
   myCurrentTile: {fileID: 0}
   currentFacingDirection: 0
   isMarked: 0
