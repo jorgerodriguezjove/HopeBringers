@@ -718,6 +718,8 @@ public class Berserker : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        base.ShowAttackEffect(_unitToAttack);
+
         tilesInEnemyHover.Clear();
 
         if (areaAttack)
@@ -858,7 +860,7 @@ public class Berserker : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
-
+        base.HideAttackEffect(_unitToAttack);
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {

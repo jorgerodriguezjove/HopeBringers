@@ -201,6 +201,12 @@ public class LevelManager : MonoBehaviour
                 charactersOnTheBoard[i].InitializeUnitOnTile();
             }
 
+            Monk monk = FindObjectOfType<Monk>();
+            for (int i = 0; i < charactersOnTheBoard.Count; i++)
+            {
+                charactersOnTheBoard[i].pjMonkUnitReference = monk;
+            }
+
             for (int i = 0; i < enemiesOnTheBoard.Count; i++)
             {
                 enemiesOnTheBoard[i].InitializeUnitOnTile();
@@ -263,6 +269,12 @@ public class LevelManager : MonoBehaviour
             {
                 charactersOnTheBoard.Add(players[i]);
             }
+        }
+
+        Monk monk = FindObjectOfType<Monk>();
+        for (int i = 0; i < charactersOnTheBoard.Count; i++)
+        {
+            charactersOnTheBoard[i].pjMonkUnitReference = monk;
         }
 
         //Se inicializan todas las unidades
@@ -1904,7 +1916,6 @@ public class LevelManager : MonoBehaviour
             UIM.RotateButtonStartPhase();
 			UIM.ResetActionsAvaliable();
 
-
             //Resetear todas las variables tipo bool y demás de los players
             for (int i = 0; i < charactersOnTheBoard.Count; i++)
             {
@@ -1916,7 +1927,6 @@ public class LevelManager : MonoBehaviour
 
                 charactersOnTheBoard[i].ResetUnitState();
                 CheckIfGameOver();
-
             }
 
             //Reaparecer el botón de endbutton

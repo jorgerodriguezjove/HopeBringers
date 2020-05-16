@@ -637,9 +637,10 @@ public class Valkyrie : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        base.ShowAttackEffect(_unitToAttack);
+
         if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
         {
-
             if (LM.selectedCharacter == this && !hasMoved && changePositions)
             {
                 if (_unitToAttack.currentHealth <= numberCanChange)
@@ -758,6 +759,7 @@ public class Valkyrie : PlayerUnit
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        base.HideAttackEffect(_unitToAttack);
 
         if ((_unitToAttack.GetComponent<PlayerUnit>()) && !currentUnitsAvailableToAttack.Contains((_unitToAttack)))
         {

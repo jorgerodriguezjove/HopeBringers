@@ -678,6 +678,8 @@ public class MageDecoy : Mage
     //En este caso lo uso para ver lo que hace el decoy cuando el mago lee hace hover
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        base.ShowAttackEffect(_unitToAttack);
+
         if (LM.selectedCharacter != null)
         {
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
@@ -736,6 +738,7 @@ public class MageDecoy : Mage
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+        base.HideAttackEffect(_unitToAttack);
 
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         ChangePositionIconFeedback(false);

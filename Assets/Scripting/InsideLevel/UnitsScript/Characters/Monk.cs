@@ -22,12 +22,10 @@ public class Monk : PlayerUnit
     //bool para la mejora de la activa 1
     public bool rotatorTime2;
 
-
     //bool para la activa 2
     public bool suplex;
 
     public bool suplex2;
-
 
     [Header("Pasivas")]
     //PASIVAS
@@ -40,12 +38,15 @@ public class Monk : PlayerUnit
 
     //bool para pasiva 2
     public bool healerMark;
-    //Hay que cambiar este número 
-    public int healerBonus;
 
     //se necesita este bool para comprobar si tiene la mejora de la pasiva 2
     public bool healerMark2;
 
+    //Hay que cambiar este número 
+    public int healerBonus;
+
+    //Hay que cambiar este número 
+    public int healWithUpgradedMark;
 
     #endregion
 
@@ -134,43 +135,120 @@ public class Monk : PlayerUnit
             pasiveSkillInfo = AppMonkUpgrades.markBuff1Text;
             pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMonkUpgrades.markBuff1);
         }
-
-
         #endregion
+
+        healWithUpgradedMark = healerBonus + 1;
     }
 
-    public void PutQuitMark(UnitBase unitToMark, bool haveToPut, bool haveToShow)
+    public void PutQuitMark(UnitBase _unitToMark,bool haveToPut, bool showFutureMark)
     {      
+        //Si pongo la marca actualizo los numeros y el estado del bool
         if (haveToPut)
         {
-            unitToMark.isMarked = true;
-        }
-        else
-        {
-            unitToMark.isMarked = false;
-        }
+            _unitToMark.isMarked = true;
 
-        
-        if (haveToShow)
-        {
-            unitToMark.monkMark.SetActive(true);
+            _unitToMark.numberOfMarks += 1;
 
-            if (suplex2 && unitToMark.numberOfMarks == 2)
+            if (suplex2)
             {
+                if (_unitToMark.numberOfMarks > 2)
+                {
+                    _unitToMark.isMarked = false;
+                    _unitToMark.numberOfMarks = 0;
 
-                unitToMark.monkMark.SetActive(false);
+                    currentHealth += healWithUpgradedMark;
+                }
+            }
 
-                unitToMark.monkMarkUpgrade.SetActive(true);
+            //NO ES >= 1, ESTÁ BIEN >
+            else if (_unitToMark.numberOfMarks > 1)
+            {
+                _unitToMark.isMarked = false;
+                _unitToMark.numberOfMarks = 0;
 
+                currentHealth += healerBonus;
+            }
+
+            RefreshHealth(false);
+            UIM.RefreshHealth();
+        }
+
+        //Independientemente de que actualice la maca o no tengo que enseñarla
+        //Esto sirve para el showAction que tiene que mostrar el estado en el que acaba la marca (como si ya se hubiese aplicado el ataque)
+        if (showFutureMark)
+        {
+            if (_unitToMark.isMarked)
+            {
+                if (_unitToMark.numberOfMarks == 1)
+                {
+                    if (suplex2)
+                    {
+                        _unitToMark.monkMark.SetActive(false);
+
+                        _unitToMark.monkMarkUpgrade.SetActive(true);
+                    }
+
+                    else
+                    {
+                        _unitToMark.monkMark.SetActive(false);
+
+                        canvasHover.SetActive(true);
+                        canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healerBonus);
+                        canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
+                        ColorAvailableToBeHealed();
+                        myCurrentTile.ColorHeal();
+                    }
+                }
+
+                else if (_unitToMark.numberOfMarks == 2)
+                {
+                    _unitToMark.monkMark.SetActive(false);
+
+                    _unitToMark.monkMarkUpgrade.SetActive(false);
+
+                    canvasHover.SetActive(true);
+                    canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healWithUpgradedMark);
+                    canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
+                    ColorAvailableToBeHealed();
+                    myCurrentTile.ColorHeal();
+                }
+            }
+
+            else if (_unitToMark.numberOfMarks == 0)
+            {
+                _unitToMark.monkMark.SetActive(true);
+
+                _unitToMark.monkMarkUpgrade.SetActive(false);
             }
         }
+
+        //El estado actual (sirve para el ataque)
         else
         {
-            unitToMark.monkMark.SetActive(false);
+            if (_unitToMark.isMarked)
+            {
+                if (_unitToMark.numberOfMarks == 1)
+                {
+                    _unitToMark.monkMark.SetActive(true);
 
-            unitToMark.monkMarkUpgrade.SetActive(false);
+                    _unitToMark.monkMarkUpgrade.SetActive(false);
+                }
+
+                else if (_unitToMark.numberOfMarks == 2)
+                {
+                    _unitToMark.monkMark.SetActive(false);
+
+                    _unitToMark.monkMarkUpgrade.SetActive(true);
+                }
+            }
+
+            else if (_unitToMark.numberOfMarks == 0)
+            {
+                _unitToMark.monkMark.SetActive(false);
+
+                _unitToMark.monkMarkUpgrade.SetActive(false);
+            }
         }
-       
 
     }
 
@@ -186,13 +264,6 @@ public class Monk : PlayerUnit
 
             //Hago daño. IMPORTANTE tiene que ir despues del CreateAttackCommand pero antes que el giro porque si no le ataca por la espalda.
             DoDamage(unitToAttack);
-
-            PutQuitMark(unitToAttack, true, true);
-           
-            unitToAttack.numberOfMarks = 1;
-
-            //PREGUNTAR SI LA ROTACIÓN TIENE QUE IR ANTES O DESPÚES DE HACER DAÑO
-
 
             if (unitToAttack.currentFacingDirection == FacingDirection.North)
             {
@@ -222,9 +293,7 @@ public class Monk : PlayerUnit
             if (rotatorTime2)
             {
                 if (unitToAttack.isMarked)
-                {
-                    PutQuitMark(unitToAttack, false, false);
-                    
+                {   
                     currentHealth += healerBonus;
 
                     //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
@@ -243,15 +312,15 @@ public class Monk : PlayerUnit
                                 //UNDO
                                 CreateAttackCommand(TM.surroundingTiles[i].unitOnTile);
 
-                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, true, true);
+                                PutQuitMark(TM.surroundingTiles[i].unitOnTile, true, false);
                             }
                         }
                     }
                 }
-
             }
-            
-            
+
+            PutQuitMark(unitToAttack, true, false);
+
             rotatorFeedbackArrow.SetActive(false);
 
             //Meter sonido Monk
@@ -318,18 +387,8 @@ public class Monk : PlayerUnit
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 
-            if (suplex2 && unitToAttack.numberOfMarks == 1)
-            {
-                unitToAttack.numberOfMarks = 2;
-            }
+            PutQuitMark(unitToAttack, true, false);
 
-            else
-            {
-                unitToAttack.numberOfMarks = 1;
-            }
-
-            PutQuitMark(unitToAttack, true, true);
-           
             //Hago daño
             DoDamage(unitToAttack);
 
@@ -349,8 +408,7 @@ public class Monk : PlayerUnit
             //UNDO
             CreateAttackCommand(unitToAttack);
 
-            PutQuitMark(unitToAttack, true, true);
-            unitToAttack.numberOfMarks = 1;
+            PutQuitMark(unitToAttack, true, false);
 
             //Hago daño
             DoDamage(unitToAttack);
@@ -630,18 +688,17 @@ public class Monk : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        //Este no usa la base porque es el propio monje
+
         if (rotatorTime)
         {
             if (rotatorTime2)
             {
                 if (_unitToAttack.isMarked)
                 {
-                    PutQuitMark(_unitToAttack, true, false);
-                    
                     TM.surroundingTiles.Clear();
 
                     TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
-
 
                     //Marco a las unidades adyacentes si no están marcadas
                     for (int i = 0; i < TM.surroundingTiles.Count; ++i)
@@ -652,30 +709,19 @@ public class Monk : PlayerUnit
                                 && !TM.surroundingTiles[i].unitOnTile.GetComponent<EnemyUnit>().isMarked)
                             {
                                 PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, true);
-
                             }
                         }
                     }
                 }
-                else
-                {
-                  
-                    PutQuitMark(_unitToAttack, false, true);
-
-                }
-            }
-            else
-            {
-              
-                PutQuitMark(_unitToAttack, false, true);
-
             }
 
+
+            PutQuitMark(_unitToAttack, false, true);
             rotatorFeedbackArrow.SetActive(true);
             Vector3 spawnRotatorArrow = new Vector3(_unitToAttack.transform.position.x, _unitToAttack.transform.position.y + 3, _unitToAttack.transform.position.z);
             rotatorFeedbackArrow.transform.position = spawnRotatorArrow;
-
         }
+
         else if (suplex)
         {
             tilesInEnemyHover.Clear();
@@ -709,9 +755,7 @@ public class Monk : PlayerUnit
                     {
                         _unitToAttack.sombraHoverUnit.SetActive(true);
                         _unitToAttack.sombraHoverUnit.transform.position = currentTileVectorToMove;
-
-                    }
-                    
+                    }   
                 }
             }
 
@@ -756,47 +800,35 @@ public class Monk : PlayerUnit
                 }
             }
 
-            if (_unitToAttack.isMarked)
-            {
-                PutQuitMark(_unitToAttack, true, true);
-            }
-            else
-            {
-                PutQuitMark(_unitToAttack, false, true);
-
-            }
+            //MARCAS
+            PutQuitMark(_unitToAttack, false, true);
         }
+
         else
         {
-            if (_unitToAttack.isMarked)
-            {
-                PutQuitMark(_unitToAttack, true, true);
-            }
-            else
-            {
-                PutQuitMark(_unitToAttack, false, true);
-
-            }
-
+            PutQuitMark(_unitToAttack, false, true);
         }
 
+        CalculateDamage(_unitToAttack);
+        _unitToAttack.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
+      //No usa la base porque es el propio monje
+
         if (rotatorTime)
         {
             if (rotatorTime2)
             {
                 if (_unitToAttack.isMarked)
                 {
-                    PutQuitMark(_unitToAttack, true, true);
+                    PutQuitMark(_unitToAttack, false, false);
 
                     //COMPROBAR QUE NO DE ERROR EN OTRAS COSAS
                     TM.surroundingTiles.Clear();
 
                     TM.GetSurroundingTiles(_unitToAttack.myCurrentTile, 1, true, false);
-
 
                     //Marco a las unidades adyacentes si no están marcadas
                     for (int i = 0; i < TM.surroundingTiles.Count; ++i)
@@ -810,11 +842,12 @@ public class Monk : PlayerUnit
                                 {
                                     PutQuitMark(TM.surroundingTiles[i].unitOnTile, false, false);
                                 }
-                                   
                             }
                         }
                     }
                 }
+
+                rotatorFeedbackArrow.SetActive(false);
             }
 
             else
@@ -823,26 +856,18 @@ public class Monk : PlayerUnit
                 {
                     PutQuitMark(_unitToAttack, false, false);
                 }
+
                 rotatorFeedbackArrow.SetActive(false);
             }
         }
 
-        else if (suplex)
-        {
-            _unitToAttack.sombraHoverUnit.SetActive(false);
+        DisableCanvasHover();
+        ResetColor();
+        myCurrentTile.ColorDeselect();
 
-            if (!hasAttacked)
-            {
-                PutQuitMark(_unitToAttack, false, false);
-            }
-        }
+        PutQuitMark(_unitToAttack, false, false);
+        _unitToAttack.ResetColor();
+        _unitToAttack.DisableCanvasHover();
 
-        else
-        {
-            if (!_unitToAttack.isMarked)
-            {
-                PutQuitMark(_unitToAttack, false, false);
-            } 
-        }
     }
 }

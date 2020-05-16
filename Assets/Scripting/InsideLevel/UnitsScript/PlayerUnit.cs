@@ -111,6 +111,8 @@ public class PlayerUnit : UnitBase
     //Añado esto para que el mage pueda acceder a la función de GetSurroundingTiles()
     [HideInInspector]
     public TileManager TM;
+    [HideInInspector]
+    public Monk pjMonkUnitReference;
 
     #endregion
 
@@ -738,6 +740,13 @@ public class PlayerUnit : UnitBase
                 monkMark.SetActive(true);
             }
 
+            else if (numberOfMarks == 2)
+            {
+                isMarked = true;
+                monkMarkUpgrade.SetActive(true);
+                monkMark.SetActive(false);
+            }
+
             //Bufos y debufos
 
             //Druida es especial y modifica healedlife
@@ -814,6 +823,14 @@ public class PlayerUnit : UnitBase
                 monkMark.SetActive(true);
             }
 
+            else if (numberOfMarks == 2)
+            {
+                isMarked = true;
+                monkMarkUpgrade.SetActive(true);
+                monkMark.SetActive(false);
+            }
+
+
             //Bufos y debufos
             if (!GetComponent<Druid>())
             {
@@ -837,14 +854,40 @@ public class PlayerUnit : UnitBase
     #region ATTACK_&_HEALTH
 
     //Función de ataque que se hace override en cada clase
+    //El daño y la animación no lo pongo aquí porque tiene que ser lo primero que se calcule.
+    //Cada unidad se encargará de aplicar su efecto en su override.
     public virtual void Attack(UnitBase unitToAttack)
     {
-        //El daño y la animación no lo pongo aquí porque tiene que ser lo primero que se calcule.
+        //Esto es para que cuando ataquen los personajes exploten las marcas
+        if (pjMonkUnitReference != null)
+        {  
+            if (!GetComponent<Monk>())
+            {
+                if (unitToAttack.isMarked)
+                {
+                    if (pjMonkUnitReference.suplex2 && unitToAttack.numberOfMarks == 2)
+                    {
+                        //Curar al personaje marca mejorada
+                        currentHealth += pjMonkUnitReference.healWithUpgradedMark;
+                    }
 
-        //Cada unidad se encargará de aplicar su efecto en su override.
+                    else
+                    {
+                        //Curar al personaje normal
+                        currentHealth += pjMonkUnitReference.healerBonus;
+                    }
 
-        
+                    RefreshHealth(false);
+                    UIM.RefreshHealth();
+
+                    unitToAttack.isMarked = false;
+                    unitToAttack.numberOfMarks = 0;
+                }
+            }
+        }
+       
         UIM.CheckActionsAvaliable();
+
         //La unidad ha atacado y por tanto no puede hacer nada más. Así que espero a que acabe la animación y finalizo su turno.
         StartCoroutine("AttackWait");
     }
@@ -980,6 +1023,14 @@ public class PlayerUnit : UnitBase
 
     public override void Die()
     {
+        if (GetComponent<Monk>())
+        {
+            for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+            {
+                LM.charactersOnTheBoard[i].pjMonkUnitReference = null;
+            }
+        }
+
         Debug.Log("Soy " + gameObject.name + " y he muerto");
 
         //Animación de ataque
@@ -1165,13 +1216,21 @@ public class PlayerUnit : UnitBase
     public virtual void ShowAttackEffect(UnitBase _unitToAttack)
     {
         //Cada personaje hace una cosa distinta
+
+        if (pjMonkUnitReference != null)
+        {
+            pjMonkUnitReference.PutQuitMark(_unitToAttack,false,true);
+        }
     }
 
     public virtual void HideAttackEffect(UnitBase _unitToAttack)
     {
-
         //Cada personaje hace una cosa distinta
-
+       
+        if (pjMonkUnitReference != null)
+        {
+            pjMonkUnitReference.PutQuitMark(_unitToAttack, false, false);
+        }
     }
 
    
