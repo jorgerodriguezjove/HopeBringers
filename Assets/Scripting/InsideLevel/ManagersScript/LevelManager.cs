@@ -1581,12 +1581,12 @@ public class LevelManager : MonoBehaviour
                 unitsToEnableCollider.Add(selectedCharacter);
 
                 //Desactivo collider de unidades que rodean al tile clickado
-                for (int j = 0; j < tileToMove.neighbours.Count; j++)
+                for (int j = 0; j < tileToMove.surroundingNeighbours.Count; j++)
                 {
-                    if (tileToMove.neighbours[j].unitOnTile != null)
+                    if (tileToMove.surroundingNeighbours[j].unitOnTile != null)
                     {
-                        tileToMove.neighbours[j].unitOnTile.EnableUnableCollider(false);
-                        unitsToEnableCollider.Add(tileToMove.neighbours[j].unitOnTile);
+                        tileToMove.surroundingNeighbours[j].unitOnTile.EnableUnableCollider(false);
+                        unitsToEnableCollider.Add(tileToMove.surroundingNeighbours[j].unitOnTile);
                     }
                 }
 
