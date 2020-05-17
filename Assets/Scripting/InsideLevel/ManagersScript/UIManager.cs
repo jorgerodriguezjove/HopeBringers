@@ -419,23 +419,19 @@ public class UIManager : MonoBehaviour
                 {
                     numberOfCharactersFinished++;
                 }
+
                 else if (LM.charactersOnTheBoard[i].hasMoved && LM.charactersOnTheBoard[i].hasAttacked == false
                     && LM.charactersOnTheBoard[i].currentUnitsAvailableToAttack.Count == 0)
                 {
                     numberOfCharactersFinished++;
                 }
+
                 else
                 {
                     Debug.Log(LM.charactersOnTheBoard[i] + " Ha pasado ");
                 }
-
-
-            }
-			
+            }	
 		}
-
-        Debug.Log(LM.charactersOnTheBoard.Count);
-        Debug.Log(numberOfCharactersFinished);
 
         if (numberOfCharactersFinished == LM.charactersOnTheBoard.Count)
 		{

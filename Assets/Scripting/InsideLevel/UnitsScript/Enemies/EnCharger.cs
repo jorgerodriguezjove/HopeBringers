@@ -160,10 +160,7 @@ public class EnCharger : EnemyUnit
         pathToObjective.Clear();    
         myLineRenderer.positionCount = 0;     
      
-
         if (currentUnitsAvailableToAttack.Count > 0){
-
-            
 
             //Arriba o abajo
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == myCurrentTile.tileX)
@@ -282,14 +279,7 @@ public class EnCharger : EnemyUnit
                         }
                     }
                 }
-
-
-              
-
             }
-
-           
-
         }
 
         else if (currentUnitsAvailableToAttack.Count == 0)
@@ -406,12 +396,8 @@ public class EnCharger : EnemyUnit
                         myCurrentTile.tilesInLineLeft[i].ColorDesAttack();
                     }
                 }
-
             }
         }
-
-
-
     }
 
     public List<IndividualTiles> tilesBehindObjective = new List<IndividualTiles>();

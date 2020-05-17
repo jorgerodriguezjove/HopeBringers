@@ -913,6 +913,7 @@ public class Knight : PlayerUnit
                             {
                                 currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.SetActive(false);
                             }
+
                             else
                             {
                                 currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.sombraHoverUnit.SetActive(true);
@@ -1285,6 +1286,7 @@ public class Knight : PlayerUnit
             {
                 _unitToAttack.sombraHoverUnit.SetActive(true);
             }
+
             tilesInEnemyHover.Add(_unitToAttack.myCurrentTile);
             if (currentFacingDirection == FacingDirection.North)
             {
@@ -1292,6 +1294,7 @@ public class Knight : PlayerUnit
                 {
                     _unitToAttack.sombraHoverUnit.SetActive(false);
                 }
+
                 else if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall) != null)
                 {
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp, damageMadeByPush, damageMadeByFall).transform.position;
@@ -1384,6 +1387,17 @@ public class Knight : PlayerUnit
         }
     }
 
+    public override void CalculateDamage(UnitBase unitToDealDamage)
+    {
+        base.CalculateDamage(unitToDealDamage);
+
+        //Esto es para mostrar bien el núemro de daño en pjs que reciben daño por choque
+        if (enemiesThatHaveBeenDamageBecauseOfPushing.Contains(unitToDealDamage))
+        {
+            damageWithMultipliersApplied += damageMadeByPush;
+        }
+    }
+
     public override void HideAttackEffect(UnitBase _unitToAttack)
     {
         base.HideAttackEffect(_unitToAttack);
@@ -1431,6 +1445,7 @@ public class Knight : PlayerUnit
             }
         }
 
+        enemiesThatHaveBeenDamageBecauseOfPushing.Clear();
         tilesInEnemyHover.Clear(); 
     }
 }
