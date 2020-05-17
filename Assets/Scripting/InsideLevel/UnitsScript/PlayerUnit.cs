@@ -204,7 +204,6 @@ public class PlayerUnit : UnitBase
             if (!isStunned)
             {
                 turnsWithBuffOrDebuff--;
-                Debug.Log(turnsWithBuffOrDebuff);
                 if (turnsWithBuffOrDebuff <= 0)
                 {
                     turnsWithBuffOrDebuff = 0;
