@@ -36,7 +36,6 @@ public class Mage : PlayerUnit
 
     [Header("Activas")]
     //ACTIVAS
-
     public bool areaAttack;
     public bool areaAttack2;
     [HideInInspector]
@@ -50,12 +49,10 @@ public class Mage : PlayerUnit
     //Mejora del ataque (no hace daño a aliados y cada vez que hace la cadena, aumenta el daño)
     public bool lightningChain2;
 
-    public int limitantAttackBonus;
+    public int limitantMaxAttackBonus;
     //Las dos siguientes variables las suelo poner en el awake pero se puede poner de forma manual. Hay que mirar como solucionarlo
     //Este int lo añado para que el limite de ataques vuelva a su estado del principio antes de volver a atacar
-    public int fLimitantAttackBonus;
-    //Este int lo añado para que el ataque del mago vuelva a su estado del principio antes de volver a atacar
-    public int fBaseDamage;
+    public int currentTickLightning;
 
     [HideInInspector]
     public List<UnitBase> attackingUnits;
@@ -95,12 +92,10 @@ public class Mage : PlayerUnit
         areaAttack2 = _crossAreaAttack2;
         areaRange = 1;
 
-        fBaseDamage = baseDamage;
-
         if (lightningChain2)
         {
             timeElectricityAttackExpands = 999;
-            limitantAttackBonus = 3;
+            limitantMaxAttackBonus = 2;
 
             activeSkillInfo = AppMageUpgrades.lightningChain2Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.lightningChain1);
@@ -109,7 +104,7 @@ public class Mage : PlayerUnit
         else if(lightningChain)
         {
             timeElectricityAttackExpands = 3;
-            limitantAttackBonus = 0;
+            limitantMaxAttackBonus = 0;
 
             activeSkillInfo = AppMageUpgrades.lightningChain1Text;
             activeTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppMageUpgrades.lightningChain1);
@@ -129,7 +124,6 @@ public class Mage : PlayerUnit
 
         //Importante que este después de las mejoras
         fTimeElectricityAttackExpands = timeElectricityAttackExpands;
-        fLimitantAttackBonus = limitantAttackBonus;
 
         #endregion
 
@@ -174,6 +168,7 @@ public class Mage : PlayerUnit
     public override void Attack(UnitBase unitToAttack)
     {
         CheckIfUnitHasMarks(unitToAttack);
+        currentTickLightning = 0;
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
@@ -183,7 +178,6 @@ public class Mage : PlayerUnit
             {
                 tilesInEnemyHover[i].unitOnTile.ResetColor();
                 tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
-
             }
         }
 
@@ -274,6 +268,7 @@ public class Mage : PlayerUnit
             {
 
             }
+
             else
             {
                 //UNDO
@@ -283,32 +278,41 @@ public class Mage : PlayerUnit
                 DoDamage(unitToAttack);
             }
 
+            //Una vez ya he atacado al primer objetivo lo pongo en 1 para que no le afecte al primero.
+            currentTickLightning = 1;
             attackingUnits.Add(unitToAttack);
 
             for (int i = 0; i < attackingUnits.Count; i++)
             {
-                    for (int j = 0; j < attackingUnits[i].myCurrentTile.neighbours.Count; j++)
+                for (int j = 0; j < attackingUnits[i].myCurrentTile.neighbours.Count; j++)
+                {
+                    if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
+                        !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                     {
-                        if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
-                            !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
+                        //Funciona para ambos lightnings porque el no atacar a enemigos se hace en calculate Damage para que funcione en el ShowAttackEffect
+                        if (!nextUnits.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                         {
+                            nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+
                             //UNDO
                             CreateAttackCommand(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
                             Instantiate(particleLightning, attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile.transform.position, attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile.transform.rotation);
 
-                            nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
-
-                             DoDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
-
+                            DoDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
                         }
                     }
-
-                unitsFinished.Add(attackingUnits[i]);
+                }
+               
+                if (!unitsFinished.Contains(attackingUnits[i]))
+                {
+                    unitsFinished.Add(attackingUnits[i]);
+                }
+                
                 attackingUnits.Remove(attackingUnits[i]);
                 i--;
                 
-                if ( attackingUnits.Count == 0)
+                if (attackingUnits.Count == 0)
                 {
                     timeElectricityAttackExpands--;
 
@@ -316,22 +320,29 @@ public class Mage : PlayerUnit
                     {
                         for (int k = 0; k < nextUnits.Count; k++)
                         {
-                            attackingUnits.Add(nextUnits[k]);
+                            if (!attackingUnits.Contains(nextUnits[k]))
+                            {
+                                attackingUnits.Add(nextUnits[k]);
+                            }
+                        }
+
+                        if (lightningChain2 && currentTickLightning < limitantMaxAttackBonus-1)
+                        {
+                            currentTickLightning++;
                         }
 
                         nextUnits.Clear();
-                        
                     }
+
                     else
                     {
                         timeElectricityAttackExpands = fTimeElectricityAttackExpands;
+                        currentTickLightning = 0;
                         break;
                     }                    
                 }                                                   
             }
-           
-            limitantAttackBonus = fLimitantAttackBonus;
-            baseDamage = fBaseDamage;
+
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
@@ -351,7 +362,6 @@ public class Mage : PlayerUnit
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
         }
-
         
         hasAttacked = true;
     }
@@ -368,12 +378,16 @@ public class Mage : PlayerUnit
         if (samuraiUpgraded != null && samuraiUpgraded.itsForHonorTime2)
         {
             damageWithMultipliersApplied += LM.honorCount;
-
         }
 
         damageWithMultipliersApplied += buffbonusStateDamage;
 
-        Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
+        damageWithMultipliersApplied += currentTickLightning;
+
+        if (lightningChain2 && unitToDealDamage.GetComponent<PlayerUnit>())
+        {
+            damageWithMultipliersApplied = 0;
+        }
     }
     
     //Override especial del mago para que no instancie la partícula de ataque
@@ -694,6 +708,8 @@ public class Mage : PlayerUnit
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        currentTickLightning = 0;
+
         base.ShowAttackEffect(_unitToAttack);
 
         tilesInEnemyHover.Clear();
@@ -726,6 +742,17 @@ public class Mage : PlayerUnit
                     }
                 }
             }
+
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                tilesInEnemyHover[i].ColorAttack();
+
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                }
+            }
         }
 
         else if (lightningChain)
@@ -734,6 +761,17 @@ public class Mage : PlayerUnit
             nextUnits.Clear();
             unitsFinished.Clear();
 
+            if (lightningChain2 && _unitToAttack.GetComponent<PlayerUnit>())
+            {
+
+            }
+
+            else
+            {
+                CalculateDamage(_unitToAttack);
+            }
+
+            currentTickLightning = 1;
             attackingUnits.Add(_unitToAttack);
      
             for (int i = 0; i < attackingUnits.Count; i++)
@@ -743,9 +781,14 @@ public class Mage : PlayerUnit
                     if (attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile != null &&
                         !unitsFinished.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                     {
-                        nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
-                         tilesInEnemyHover.Add(attackingUnits[i].myCurrentTile.neighbours[j]);
+                        if (!nextUnits.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
+                        {
+                            nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
+                            CalculateDamage(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+                            tilesInEnemyHover.Add(attackingUnits[i].myCurrentTile.neighbours[j]);
+                            attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                        }
                     }
                 }
 
@@ -766,7 +809,12 @@ public class Mage : PlayerUnit
 
                         nextUnits.Clear();
 
+                        if (lightningChain2 && currentTickLightning < limitantMaxAttackBonus-1)
+                        {
+                            currentTickLightning++;
+                        }
                     }
+
                     else
                     {
                         timeElectricityAttackExpands = fTimeElectricityAttackExpands;
@@ -776,9 +824,26 @@ public class Mage : PlayerUnit
             }
         }
 
-        limitantAttackBonus = fLimitantAttackBonus;
+        //Ataque básico
+        else
+        {
+            for (int i = 0; i < tilesInEnemyHover.Count; i++)
+            {
+                tilesInEnemyHover[i].ColorAttack();
+
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                }
+            }
+        }
+
+
         timeElectricityAttackExpands = fTimeElectricityAttackExpands;
         attackingUnits.Clear();
+
+        //PASIVAS
 
         if (mirrorDecoy)
         {
@@ -786,18 +851,8 @@ public class Mage : PlayerUnit
             {
                 myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesToColorAtHover();
             }
-
         }
 
-        for (int i = 0; i < tilesInEnemyHover.Count; i++)
-        {
-            tilesInEnemyHover[i].ColorAttack();
-
-            if (tilesInEnemyHover[i].unitOnTile != null)
-            {
-                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
-            }
-        }
     }
 
     public override void HideAttackEffect(UnitBase _unitToAttack)
@@ -810,34 +865,34 @@ public class Mage : PlayerUnit
             {
                 myDecoys[i].GetComponent<MageDecoy>().HideAttackEffect(_unitToAttack);
             }
-
         }
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-           if(currentTilesInRangeForAttack.Contains(tilesInEnemyHover[i]))
+            if(currentTilesInRangeForAttack.Contains(tilesInEnemyHover[i]))
             {
-                tilesInEnemyHover[i].ColorBorderRed();
-                if (LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
-                {
-                    tilesInEnemyHover[i].ColorMovement();
-                }
-           }
-           else if(LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
-            {
-                tilesInEnemyHover[i].ColorMovement();
+                 tilesInEnemyHover[i].ColorBorderRed();
+
+                 if (LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
+                 {
+                     tilesInEnemyHover[i].ColorMovement();
+                 }
             }
+
+            else if(LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
+            {
+                 tilesInEnemyHover[i].ColorMovement();
+            }
+
             else
             {
                 tilesInEnemyHover[i].ColorDesAttack();
             }
-           
-
+            
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
                 tilesInEnemyHover[i].unitOnTile.ResetColor();
                 tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
-
             }
         }
         

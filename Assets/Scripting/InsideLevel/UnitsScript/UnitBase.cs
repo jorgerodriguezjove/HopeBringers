@@ -643,8 +643,6 @@ public class UnitBase : MonoBehaviour
     {
         if (!isDead)
         {
-            
-
             if (tilesToCheckForCollision.Count <= 1)
             {
                 Debug.Log("borde");
