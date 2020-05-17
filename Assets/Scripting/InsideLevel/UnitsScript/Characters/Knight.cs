@@ -1150,15 +1150,13 @@ public class Knight : PlayerUnit
                     {
                         _unitToAttack.sombraHoverUnit.SetActive(true);
                     }
+
                     else
                     {
                         _unitToAttack.sombraHoverUnit.SetActive(true);
                         SetShadowRotation(_unitToAttack, (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall)), _unitToAttack.myCurrentTile);
-
-
                     }
                     _unitToAttack.sombraHoverUnit.transform.position = CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft, damageMadeByPush, damageMadeByFall).transform.position;
-
                 }
             }
 
@@ -1177,7 +1175,6 @@ public class Knight : PlayerUnit
                     }
                 }
             }
-
         }
 
         else if (pushFarther2)
@@ -1226,7 +1223,6 @@ public class Knight : PlayerUnit
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[i]);
-
                     }
                 }
             }
