@@ -196,6 +196,7 @@ public class PlayerUnit : UnitBase
                 break;
             }
         }
+
         if (!isDead)
         {
 
@@ -203,6 +204,7 @@ public class PlayerUnit : UnitBase
             if (!isStunned)
             {
                 turnsWithBuffOrDebuff--;
+                Debug.Log(turnsWithBuffOrDebuff);
                 if (turnsWithBuffOrDebuff <= 0)
                 {
                     turnsWithBuffOrDebuff = 0;
@@ -651,6 +653,8 @@ public class PlayerUnit : UnitBase
         //Esto tiene que ir antes del  LM.UnitHasFinishedMovementAndRotation() para que función de UnitHasFinishedMovementAndRotation() sepa si hay
         // enemigos a los que atacar
         CheckUnitsAndTilesInRangeToAttack(false);
+
+        UIM.CheckActionsAvaliable();
     }
 
     public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)

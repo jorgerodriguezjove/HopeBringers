@@ -1050,31 +1050,35 @@ public class UnitBase : MonoBehaviour
         
        for (int i = 0; i < maxHealth; i++)
        {
-           if (i < currentHealth)
-           {
-               if (i < currentArmor)
-               {
-                   if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
-                   {
+          if(lifeTokensListInSceneHealthBar.Count>0)
+            {
+                if (i < currentHealth)
+                {
+                    if (i < currentArmor)
+                    {
+                        if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                        {
 
-                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ArmoredToken();
-                   }
-               }
-               else
-               {
-                   if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
-                   {
-                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
-                   }
-               }
-           }
-           else
-           {
-               if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
-               {
-                    lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
-               }
-           }
+                            lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ArmoredToken();
+                        }
+                    }
+                    else
+                    {
+                        if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                        {
+                            lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().ResetToken();
+                        }
+                    }
+                }
+                else
+                {
+                    if (lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>())
+                    {
+                        lifeTokensListInSceneHealthBar[i].GetComponent<LifeToken>().FlipToken();
+                    }
+                }
+            }
+          
        }
         
 
@@ -1238,42 +1242,42 @@ public class UnitBase : MonoBehaviour
         SetBuffDebuffIcon(damageAdded, unitToApply, false);
     }
 
-    public void SetBuffDebuffIcon(int numToCheck, UnitBase unitToApply, bool isOnHover)
+    public void SetBuffDebuffIcon(int numToCheck, UnitBase _unitToApply, bool isOnHover)
     {
         if (numToCheck > 0)
         {
             if (isOnHover)
             {
-                unitToApply.hoverBuffIcon.SetActive(true);
-                unitToApply.hoverDebuffIcon.SetActive(false);
+                _unitToApply.hoverBuffIcon.SetActive(true);
+                _unitToApply.hoverDebuffIcon.SetActive(false);
             }
             else
             {
-                unitToApply.buffIcon.SetActive(true);
-                unitToApply.buffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
-                unitToApply.debuffIcon.SetActive(false);
+                _unitToApply.buffIcon.SetActive(true);
+                _unitToApply.buffIconText.text = _unitToApply.turnsWithBuffOrDebuff.ToString();
+                _unitToApply.debuffIcon.SetActive(false);
             }           
         }
         else if(numToCheck < 0)
         {
             if (isOnHover)
             {
-                unitToApply.hoverBuffIcon.SetActive(false);
-                unitToApply.hoverDebuffIcon.SetActive(true);
+                _unitToApply.hoverBuffIcon.SetActive(false);
+                _unitToApply.hoverDebuffIcon.SetActive(true);
             }
             else
-            {                
-                unitToApply.buffIcon.SetActive(false);
-                unitToApply.debuffIcon.SetActive(true);
-                unitToApply.debuffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
+            {
+                _unitToApply.buffIcon.SetActive(false);
+                _unitToApply.debuffIcon.SetActive(true);
+                _unitToApply.debuffIconText.text = _unitToApply.turnsWithBuffOrDebuff.ToString();
             }           
         }
         else
         {
-            unitToApply.hoverBuffIcon.SetActive(false);
-            unitToApply.hoverDebuffIcon.SetActive(false);
-            unitToApply.buffIcon.SetActive(false);
-            unitToApply.debuffIcon.SetActive(false);
+            _unitToApply.hoverBuffIcon.SetActive(false);
+            _unitToApply.hoverDebuffIcon.SetActive(false);
+            _unitToApply.buffIcon.SetActive(false);
+            _unitToApply.debuffIcon.SetActive(false);
         }
     }
 
@@ -1282,26 +1286,24 @@ public class UnitBase : MonoBehaviour
 
         unitToApply.movementUds += movementAddedOrRemoved;
         unitToApply.turnsWithMovementBuffOrDebuff = turnsAdded;
-
-
         SetMovementIcon(movementAddedOrRemoved, unitToApply, false);
     }
 
-    public void SetMovementIcon(int numToCheck, UnitBase unitToApply, bool isOnHover)
+    public void SetMovementIcon(int numToCheck, UnitBase _unitToApply, bool isOnHover)
     {
         if (numToCheck > 0)
         {
             if (isOnHover)
             {
-                unitToApply.hoverMovementBuffIcon.SetActive(true);
-                unitToApply.hoverMovementDebuffIcon.SetActive(false);
+                _unitToApply.hoverMovementBuffIcon.SetActive(true);
+                _unitToApply.hoverMovementDebuffIcon.SetActive(false);
 
             }
             else
             {
-                unitToApply.movementBuffIcon.SetActive(true);
-                unitToApply.movementBuffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
-                unitToApply.movementDebuffIcon.SetActive(false);
+                _unitToApply.movementBuffIcon.SetActive(true);
+                _unitToApply.movementBuffIconText.text = _unitToApply.turnsWithBuffOrDebuff.ToString();
+                _unitToApply.movementDebuffIcon.SetActive(false);
             }
 
 
@@ -1311,25 +1313,25 @@ public class UnitBase : MonoBehaviour
         {
             if (isOnHover)
             {
-                unitToApply.hoverMovementBuffIcon.SetActive(false);
-                unitToApply.hoverMovementDebuffIcon.SetActive(true);
+                _unitToApply.hoverMovementBuffIcon.SetActive(false);
+                _unitToApply.hoverMovementDebuffIcon.SetActive(true);
 
             }
             else
             {
-                unitToApply.movementBuffIcon.SetActive(false);
-                unitToApply.movementDebuffIcon.SetActive(true);
-                unitToApply.movementDebuffIconText.text = unitToApply.turnsWithBuffOrDebuff.ToString();
+                _unitToApply.movementBuffIcon.SetActive(false);
+                _unitToApply.movementDebuffIcon.SetActive(true);
+                _unitToApply.movementDebuffIconText.text = _unitToApply.turnsWithBuffOrDebuff.ToString();
 
             }
 
         }
         else
         {
-            unitToApply.hoverMovementBuffIcon.SetActive(false);
-            unitToApply.hoverMovementDebuffIcon.SetActive(false);
-            unitToApply.movementBuffIcon.SetActive(false);
-            unitToApply.movementDebuffIcon.SetActive(false);
+            _unitToApply.hoverMovementBuffIcon.SetActive(false);
+            _unitToApply.hoverMovementDebuffIcon.SetActive(false);
+            _unitToApply.movementBuffIcon.SetActive(false);
+            _unitToApply.movementDebuffIcon.SetActive(false);
         }
 
     }

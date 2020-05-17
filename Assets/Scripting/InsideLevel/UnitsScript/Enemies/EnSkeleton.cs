@@ -13,12 +13,17 @@ public class EnSkeleton : EnGoblin
         base.Awake();
         FindAndSetFirstTile();
         LM.AlertEnemiesOfPlayerMovement();
+      
     }
 
     public override void Die()
     {
         base.Die();
-        whoIsMySummoner.currentUnitsSummoned --;
+        if (whoIsMySummoner !=null)
+        {
+            whoIsMySummoner.currentUnitsSummoned--;
+
+        }
     }
 
     //En caso de necesitar volver a hereder de EnemyUnit en vez de EnGoblin hay que descomentar y actualizar estas dos funciones

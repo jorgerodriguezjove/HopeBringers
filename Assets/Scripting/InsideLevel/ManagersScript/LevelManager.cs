@@ -629,7 +629,7 @@ public class LevelManager : MonoBehaviour
 
             else if (hoverUnit.GetComponent<EnWatcher>())
             {
-                //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
+               
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                 {
                     if (hoverUnit.unitsInRange[i].GetComponent<PlayerUnit>())
@@ -1000,8 +1000,12 @@ public class LevelManager : MonoBehaviour
                 {      
                     if (hoverUnit.unitsInRange[i].GetComponent<PlayerUnit>())
                     {
-                        hoverUnit.SetBuffDebuffIcon(0, hoverUnit.unitsInRange[i], true);
-                        hoverUnit.SetMovementIcon(0, hoverUnit.unitsInRange[i], true);
+                        if(currentLevelState == LevelState.ProcessingPlayerActions)
+                        {
+                            hoverUnit.SetBuffDebuffIcon(0, hoverUnit.unitsInRange[i], true);
+                            hoverUnit.SetMovementIcon(0, hoverUnit.unitsInRange[i], true);
+                        }
+                       
                     }
                     //hoverUnit.unitsInRange[i].ShowHideFear(false, hoverUnit.unitsInRange[i].turnsWithFear);
                     //hoverUnit.unitsInRange[i].ResetColor();

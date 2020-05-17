@@ -29,6 +29,7 @@ public class RotateButton : MonoBehaviour
     private void OnMouseDown()
     {
         UIM.RotatePlayerInNewDirection(newDirection);
+        myMeshRenderer.material = initialMaterial;
     }
 
     private void OnMouseEnter()

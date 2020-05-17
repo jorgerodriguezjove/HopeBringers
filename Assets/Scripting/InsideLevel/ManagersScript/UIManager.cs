@@ -402,30 +402,53 @@ public class UIManager : MonoBehaviour
 
 	public void CheckActionsAvaliable()
 	{
-		numberOfCharactersFinished = 0;
-		for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+        numberOfCharactersFinished = 0;
+
+        for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
 		{
-			if (LM.charactersOnTheBoard[i].hasAttacked)
-			{
-				numberOfCharactersFinished++;
-			}
-			else if(LM.charactersOnTheBoard[i].hasMoved && LM.charactersOnTheBoard[i].hasAttacked == false 
-				&& LM.charactersOnTheBoard[i].currentUnitsAvailableToAttack.Count == 0)
-			{
-				numberOfCharactersFinished++;
-			}
-			else 
-			{
-				Debug.Log(LM.charactersOnTheBoard[i] + " Ha pasado ");
-			}
+            LM.charactersOnTheBoard[i].CheckUnitsAndTilesInRangeToAttack(false);
+
+            if (LM.charactersOnTheBoard[i].GetComponent<MageDecoy>())
+            {
+                numberOfCharactersFinished++;
+               
+            }
+            else
+            {
+                if (LM.charactersOnTheBoard[i].hasAttacked)
+                {
+                    numberOfCharactersFinished++;
+                }
+                else if (LM.charactersOnTheBoard[i].hasMoved && LM.charactersOnTheBoard[i].hasAttacked == false
+                    && LM.charactersOnTheBoard[i].currentUnitsAvailableToAttack.Count == 0)
+                {
+                    numberOfCharactersFinished++;
+                }
+                else
+                {
+                    Debug.Log(LM.charactersOnTheBoard[i] + " Ha pasado ");
+                }
+
+
+            }
+			
 		}
 
-		if (numberOfCharactersFinished == LM.charactersOnTheBoard.Count)
+        Debug.Log(LM.charactersOnTheBoard.Count);
+        Debug.Log(numberOfCharactersFinished);
+
+        if (numberOfCharactersFinished == LM.charactersOnTheBoard.Count)
 		{
 			endTurnButton.GetComponent<MeshRenderer>().material = noMoreActionMaterial;
 			noMoreActionsPanel.SetActive(true);
 			UndoTooltip();
-		}
+        }
+        else
+        {
+            ResetActionsAvaliable();
+        }
+      
+      
 	}
 	public void ResetActionsAvaliable()
 	{

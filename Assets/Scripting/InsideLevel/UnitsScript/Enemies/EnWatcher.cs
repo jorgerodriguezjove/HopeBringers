@@ -51,12 +51,12 @@ public class EnWatcher : EnemyUnit
         {
             if (unitsInRange[i].GetComponent<PlayerUnit>())
             {
-                ApplyBuffOrDebuffDamage(unitsInRange[i], attackDebuff, turnDurationDebuffs);
+                ApplyBuffOrDebuffDamage(unitsInRange[i], -(attackDebuff), 2);
 
                 if (myTierLevel == TierLevel.Level2)
                 {
                     //Pongo movemetDebuff en negativo para que se reste
-                    ApplyBuffOrDebuffMovement(unitsInRange[i], -(movementDebuff), 1);
+                    ApplyBuffOrDebuffMovement(unitsInRange[i], -(movementDebuff), 2);
                 }
             }
         }

@@ -391,7 +391,8 @@ public class Samurai : PlayerUnit
             }
 
             if (itsForHonorTime)
-            {
+            {               
+                LM.honorCount++;               
                 //Cambiar el número si va a tener más de un turno
                 myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = LM.honorCount.ToString();
             }
@@ -418,6 +419,7 @@ public class Samurai : PlayerUnit
 
             if (itsForHonorTime)
             {
+                LM.honorCount++;
                 //Cambiar el número si va a tener más de un turno
                 myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = LM.honorCount.ToString();
             }
@@ -475,12 +477,7 @@ public class Samurai : PlayerUnit
           || currentFacingDirection == FacingDirection.West && unitToDealDamage.currentFacingDirection == FacingDirection.East
           )
         {
-            if (itsForHonorTime)
-            {
-                currentHonor++;
-                LM.honorCount++;
-            }
-
+        
             //Añado el daño de ataque frontal
             damageWithMultipliersApplied += samuraiFrontAttack;
             backStabIcon.SetActive(false);
@@ -495,14 +492,9 @@ public class Samurai : PlayerUnit
         }
         if (itsForHonorTime)
         {
-            if (itsForHonorTime2)
-            {
-                //Este espacio lo dejo para que el multiplicador no se sume dos veces, ya que al ser la mejora de la pasiva el multiplicador se suma en la función calculateDamage para todas las unidades.
-            }
-            else
-            {
+           
                 damageWithMultipliersApplied += LM.honorCount;
-            }
+            
         }
 
         damageWithMultipliersApplied += buffbonusStateDamage;
