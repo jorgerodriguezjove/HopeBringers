@@ -369,6 +369,8 @@ public class Mage : PlayerUnit
     //Override especial del mago para anlar ventajas por altura y daño por la espalda
     public override void CalculateDamage(UnitBase unitToDealDamage)
     {
+        //Esta bien que no haga base.CalculateDamage
+
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;
 

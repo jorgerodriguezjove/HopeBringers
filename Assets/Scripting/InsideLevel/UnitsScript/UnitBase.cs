@@ -293,6 +293,18 @@ public class UnitBase : MonoBehaviour
     [@TextAreaAttribute(15, 20)]
     public string unitGeneralInfo;
 
+
+
+
+
+    //Lista con los enemigos que han sido empujados y que por tanto reciben daño del atacante y al chocarse al ser otro enemigo empujado
+    //Solo sirve para el caballero (y quizás para el charger)
+    [HideInInspector]
+    public List<UnitBase> enemiesThatHaveBeenDamageBecauseOfPushing;
+    //[HideInInspector]
+    //public List<UnitBase> enemiesThatHaveBeenDamageBecauseOfPushing;
+
+
     #endregion
 
     //El level manager llama a esta función sustituyendo al start
@@ -668,6 +680,7 @@ public class UnitBase : MonoBehaviour
                         if (tilesToCheckForCollision.Count > 0)
                         {
                             tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                            enemiesThatHaveBeenDamageBecauseOfPushing.Add(tilesToCheckForCollision[0].unitOnTile);
                         }
                         return tilesToCheckForCollision[i - 1];
                         
@@ -686,15 +699,13 @@ public class UnitBase : MonoBehaviour
                                 if (tilesToCheckForCollision[0].unitOnTile != null)
                                 {
                                     tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                                    enemiesThatHaveBeenDamageBecauseOfPushing.Add(tilesToCheckForCollision[0].unitOnTile);
                                 }
+
                                 if (tilesToCheckForCollision[i].unitOnTile != null)
                                 {
                                     tilesToCheckForCollision[i].unitOnTile.hoverImpactIcon.SetActive(true);
-
                                 }
-                               
-
-                              
                             }
 
                             if (tilesToCheckForCollision[i].unitOnTile.currentHealth > currentHealth)
@@ -736,12 +747,12 @@ public class UnitBase : MonoBehaviour
                             if (tilesToCheckForCollision[0].unitOnTile != null)
                             {
                                 tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                                enemiesThatHaveBeenDamageBecauseOfPushing.Add(tilesToCheckForCollision[0].unitOnTile);
                             }
-                            
-                            tilesToCheckForCollision[i].unitOnTile.hoverImpactIcon.SetActive(true);
 
-                            
-                          
+                            tilesToCheckForCollision[i].unitOnTile.hoverImpactIcon.SetActive(true);
+                            tilesToCheckForCollision[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageMadeByPush);
+
                             return tilesToCheckForCollision[i - 1];
                         }
                     }
