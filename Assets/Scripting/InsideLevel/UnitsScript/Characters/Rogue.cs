@@ -165,8 +165,6 @@ public class Rogue : PlayerUnit
 
     public override void CheckWhatToDoWithSpecialsTokens()
     {
-        Debug.Log("coco");
-
         if (extraTurnAttackAfterKill)
         {
             myPanelPortrait.GetComponent<Portraits>().specialToken.SetActive(true);
