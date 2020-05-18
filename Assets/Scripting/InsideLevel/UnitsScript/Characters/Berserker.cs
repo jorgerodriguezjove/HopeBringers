@@ -562,7 +562,7 @@ public class Berserker : PlayerUnit
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
         
-            if (rageFear)
+            if (rageFear && isInRage)
             {
                 ApplyBuffOrDebuffDamage(unitToDealDamage, -1, fearTurnBonus);
             }
@@ -836,7 +836,7 @@ public class Berserker : PlayerUnit
                     tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                 }
 
-                if (rageFear)
+                if (rageFear && isInRage)
                 {
                     SetBuffDebuffIcon(-1, _unitToAttack, true);
                 }
@@ -868,7 +868,7 @@ public class Berserker : PlayerUnit
 
             if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                if (rageFear)
+                if (rageFear && isInRage)
                 {
                     SetBuffDebuffIcon(0, _unitToAttack, true);
 

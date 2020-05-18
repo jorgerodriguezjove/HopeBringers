@@ -458,6 +458,9 @@ public class Rogue : PlayerUnit
                 UIM.RefreshTokens();
                 LM.SelectUnit(0, this);
 
+                UIM.CheckActionsAvaliable();
+
+
                 for (int i = 0; i < unitsAttacked.Count; i++)
                 {
                     currentUnitsAvailableToAttack.Remove(unitsAttacked[i]);
@@ -468,6 +471,8 @@ public class Rogue : PlayerUnit
             {
                 //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
                 base.Attack(unitToAttack);
+                hasAttacked = true;
+
             }
         }
 
@@ -500,7 +505,7 @@ public class Rogue : PlayerUnit
                 hasMoved = false;               
                 UIM.RefreshTokens();
                 LM.DeSelectUnit();
-               
+                UIM.CheckActionsAvaliable();
                 myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft.text = "0";
 
                 //Lo hago aquí para que cuando se seleccione nuevamente ya esté bien calculado.
@@ -518,6 +523,8 @@ public class Rogue : PlayerUnit
             {
                 //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
                 base.Attack(unitToAttack);
+                hasAttacked = true;
+
             }
         }
         else
@@ -544,10 +551,11 @@ public class Rogue : PlayerUnit
 
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
+            hasAttacked = true;
+
 
         }
 
-        hasAttacked = true;
     }
 
     private void CalculateAttackLogic(UnitBase unitToAttack, bool _shouldUpdateInfoAfterMovement)
@@ -904,5 +912,35 @@ public class Rogue : PlayerUnit
         }
     }
 
-    
+    public override void SetShadowRotation(UnitBase unitToSet, IndividualTiles unitToCheckPos, IndividualTiles otherUnitToCheck)
+    {
+        if (unitToCheckPos.tileX == otherUnitToCheck.tileX)
+        {
+            //Arriba
+            if (unitToCheckPos.tileZ > otherUnitToCheck.tileZ)
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+            }
+            //Abajo
+            else
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+            }
+        }
+        //Izquierda o derecha
+        else
+        {
+            //Derecha
+            if (unitToCheckPos.tileX > otherUnitToCheck.tileX)
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+            }
+            //Izquierda
+            else
+            {
+                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+            }
+        }
+    }
+
 }

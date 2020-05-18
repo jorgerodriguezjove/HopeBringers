@@ -47,7 +47,8 @@ public class EnemyPortraits : MonoBehaviour
 	private void Start()
 	{
 		enemyIconChild.sprite = enemyPortraitSprite;
-		unitNameInPortrait.text = assignedEnemy.unitName;
+        enemyIconChild.preserveAspect = true;
+        unitNameInPortrait.text = assignedEnemy.unitName;
 	}
 
 	#endregion

@@ -19,6 +19,8 @@ public class Knight : PlayerUnit
     public bool pushFarther;
     //Empuje en línea mejorado (superempuje)
     public bool pushFarther2;
+    //Bool para comprobar si puede realizar el movimiento de empuje o no
+    public bool canDoPush;
 
     //Empuje ancho
     public bool pushWider;
@@ -385,10 +387,27 @@ public class Knight : PlayerUnit
                         && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
                         && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
                     {
+                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        {
+                            if (myCurrentTile.tilesInLineUp[i].isObstacle
+                                || myCurrentTile.tilesInLineUp[i].isEmpty)
+                            {
+                                canDoPush = false;
+                                break;
+                            }
+                            else
+                            {
+                                canDoPush = true;
+                            }
+                        }
+                       
                         //UNDO
                         CreateAttackCommand(unitToAttack);
 
-                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush]);
+                        if (canDoPush)
+                        {
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush]);
+                        }
                     }
                     
                     for (int i = 0; i - 1 < tilesToPush; i++)
@@ -416,10 +435,27 @@ public class Knight : PlayerUnit
                        && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
                        && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
                     {
+                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        {
+                            if (myCurrentTile.tilesInLineDown[i].isObstacle
+                                || myCurrentTile.tilesInLineDown[i].isEmpty)
+                            {
+                                canDoPush = false;
+                                break;
+                            }
+                            else
+                            {
+                                canDoPush = true;
+                            }
+                        }
                         //UNDO
                         CreateAttackCommand(unitToAttack);
 
-                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
+                        if (canDoPush)
+                        {
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
+
+                        }
                     }
 
                     for (int i = 0; i - 1 < tilesToPush; i++)
@@ -447,10 +483,27 @@ public class Knight : PlayerUnit
                         && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
                         && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
                     {
+                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        {
+                            if (myCurrentTile.tilesInLineRight[i].isObstacle
+                                || myCurrentTile.tilesInLineRight[i].isEmpty)
+                            {
+                                canDoPush = false;
+                                break;
+                            }
+                            else
+                            {
+                                canDoPush = true;
+                            }
+                        }
                         //UNDO
                         CreateAttackCommand(unitToAttack);
 
-                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[tilesToPush]);
+                        if (canDoPush)
+                        {
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[tilesToPush]);
+
+                        }
                     }
 
                     for (int i = 0; i - 1 < tilesToPush; i++)
@@ -478,10 +531,25 @@ public class Knight : PlayerUnit
                        && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
                        && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
                     {
+                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        {
+                            if (myCurrentTile.tilesInLineLeft[i].isObstacle
+                                || myCurrentTile.tilesInLineLeft[i].isEmpty)
+                            {
+                                canDoPush = false;
+                                break;
+                            }
+                            else
+                            {
+                                canDoPush = true;
+                            }
+                        }
                         //UNDO
                         CreateAttackCommand(unitToAttack);
-
-                        unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush]);
+                        if (canDoPush)
+                        {
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush]);
+                        }
                     }
 
                     for (int i = 0; i - 1 < tilesToPush; i++)
@@ -1187,11 +1255,29 @@ public class Knight : PlayerUnit
                     && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
                     && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
                 {
-                    if (!isMovingorRotating)
+                    for (int i = 0; i  < tilesToPush; i++)
                     {
-                        _unitToAttack.sombraHoverUnit.SetActive(true);
-                        _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineUp[tilesToPush].transform.position;
+                        if (myCurrentTile.tilesInLineUp[i].isObstacle
+                            || myCurrentTile.tilesInLineUp[i].isEmpty)
+                        {
+                            canDoPush = false;
+                            break;
+                        }
+                        else
+                        {
+                            canDoPush = true;
+                        }
                     }
+
+                    if (canDoPush)
+                    {
+                        if (!isMovingorRotating)
+                        {
+                            _unitToAttack.sombraHoverUnit.SetActive(true);
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineUp[tilesToPush].transform.position;
+                        }
+                    }
+                   
                 }
 
                 for (int i = 0; i - 1 < tilesToPush; i++)
@@ -1207,12 +1293,25 @@ public class Knight : PlayerUnit
             else if (currentFacingDirection == FacingDirection.South)
             {
 
-                for (int i = 0; i - 1 < tilesToPush; i++)
+                if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
+                 && myCurrentTile.tilesInLineDown[tilesToPush] != null
+                 && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
+                 && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
                 {
-                    if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
-                   && myCurrentTile.tilesInLineDown[tilesToPush] != null
-                   && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
-                   && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
+                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    {
+                        if (myCurrentTile.tilesInLineDown[i].isObstacle
+                            || myCurrentTile.tilesInLineDown[i].isEmpty)
+                        {
+                            canDoPush = false;
+                            break;
+                        }
+                        else
+                        {
+                            canDoPush = true;
+                        }
+                    }
+                    if (canDoPush)
                     {
                         if (!isMovingorRotating)
                         {
@@ -1220,7 +1319,11 @@ public class Knight : PlayerUnit
                             _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineDown[tilesToPush].transform.position;
                         }
                     }
+                    
+                }
 
+                for (int i = 0; i - 1 < tilesToPush; i++)
+                {                  
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[i]);
@@ -1235,11 +1338,29 @@ public class Knight : PlayerUnit
                     && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
                     && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
                 {
-                    if (!isMovingorRotating)
+                    for (int i = 0; i - 1 < tilesToPush; i++)
                     {
-                        _unitToAttack.sombraHoverUnit.SetActive(true);
-                        _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineRight[tilesToPush].transform.position;
+                        if (myCurrentTile.tilesInLineRight[i].isObstacle
+                            || myCurrentTile.tilesInLineRight[i].isEmpty)
+                        {
+                            canDoPush = false;
+                            break;
+                        }
+                        else
+                        {
+                            canDoPush = true;
+                        }
                     }
+                    
+                    if (canDoPush)
+                    {
+                        if (!isMovingorRotating)
+                        {
+                            _unitToAttack.sombraHoverUnit.SetActive(true);
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineRight[tilesToPush].transform.position;
+                        }
+                    }
+                    
                 }
 
                 for (int i = 0; i - 1 < tilesToPush; i++)
@@ -1259,11 +1380,29 @@ public class Knight : PlayerUnit
                    && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
                    && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
                 {
-                    if (!isMovingorRotating)
+                    for (int i = 0; i - 1 < tilesToPush; i++)
                     {
-                        _unitToAttack.sombraHoverUnit.SetActive(true);
-                        _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineLeft[tilesToPush].transform.position;
+                        if (myCurrentTile.tilesInLineLeft[i].isObstacle
+                            || myCurrentTile.tilesInLineLeft[i].isEmpty)
+                        {
+                            canDoPush = false;
+                            break;
+                        }
+                        else
+                        {
+                            canDoPush = true;
+                        }
                     }
+                   
+                    if (canDoPush)
+                    {
+                        if (!isMovingorRotating)
+                        {
+                            _unitToAttack.sombraHoverUnit.SetActive(true);
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineLeft[tilesToPush].transform.position;
+                        }
+                    }
+                   
                 }
 
                 for (int i = 0; i - 1 < tilesToPush; i++)

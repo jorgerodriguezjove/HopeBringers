@@ -197,6 +197,7 @@ public class EnemyUnit : UnitBase
 		if(characterImage != null && inGamePortrait != null)
 		{
 			inGamePortrait.sprite = characterImage;
+            inGamePortrait.preserveAspect = true;
 		}
 
         fMovementUds = movementUds;
@@ -857,7 +858,15 @@ public class EnemyUnit : UnitBase
             {
                 for (int i = 0; i < LM.selectedCharacter.tilesInEnemyHover.Count; i++)
                 {
-                    LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+                    if (LM.tilesAvailableForMovement.Count > 0 && LM.tilesAvailableForMovement.Contains(LM.selectedCharacter.tilesInEnemyHover[i]))
+                    {
+                        LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+                        LM.selectedCharacter.tilesInEnemyHover[i].ColorMovement();
+                    }
+                    else
+                    {
+                        LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+                    }
 
                     if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                     {
@@ -883,7 +892,15 @@ public class EnemyUnit : UnitBase
             {
                 for (int i = 0; i < LM.selectedCharacter.tilesInEnemyHover.Count; i++)
                 {
-                    LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+                    if (LM.tilesAvailableForMovement.Count > 0 && LM.tilesAvailableForMovement.Contains(LM.selectedCharacter.tilesInEnemyHover[i]))
+                    {
+                        LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+                        LM.selectedCharacter.tilesInEnemyHover[i].ColorMovement();
+                    }
+                    else
+                    {
+                        LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
+                    }
 
                     if (LM.selectedCharacter.tilesInEnemyHover[i].unitOnTile != null)
                     {

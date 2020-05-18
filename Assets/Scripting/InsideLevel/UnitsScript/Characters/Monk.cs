@@ -261,6 +261,8 @@ public class Monk : PlayerUnit
     {
         if (rotatorTime){
 
+            unitToAttack.hoverRotateIcon.SetActive(false);
+
             //Animación de ataque
             myAnimator.SetTrigger("Attack");
 

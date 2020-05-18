@@ -515,29 +515,33 @@ public class UnitBase : MonoBehaviour
 
         unitAttacking.damageWithMultipliersApplied += unitAttacking.buffbonusStateDamage;
 
-        //Estas líneas las añado para comprobar si el caballero tiene que defender
-        Knight knightDef = FindObjectOfType<Knight>();
-
-        if (knightDef != null && knightDef.isBlockingNeighbours)
+        if (unitToDealDamage.GetComponent<PlayerUnit>() != null)
         {
-            unitToDealDamage.GetComponent<PlayerUnit>().CheckIfKnightIsDefending(knightDef, endFacingDirection);
-            unitAttacking.damageWithMultipliersApplied -= knightDef.shieldDef;
+            //Estas líneas las añado para comprobar si el caballero tiene que defender
+            Knight knightDef = FindObjectOfType<Knight>();
 
-            if (knightDef.shieldDef > 0)
+            if (knightDef != null && knightDef.isBlockingNeighbours)
             {
-                //Escudo full
-                if (knightDef.isBlockingNeighboursFull)
-                {
-                    unitToDealDamage.GetComponent<PlayerUnit>().ShowHideFullShield(true);
-                }
+                unitToDealDamage.GetComponent<PlayerUnit>().CheckIfKnightIsDefending(knightDef, endFacingDirection);
+                unitAttacking.damageWithMultipliersApplied -= knightDef.shieldDef;
 
-                //Escudo parcial
-                else if (knightDef.isBlockingNeighbours)
+                if (knightDef.shieldDef > 0)
                 {
-                    unitToDealDamage.GetComponent<PlayerUnit>().ShowHidePartialShield(true);
+                    //Escudo full
+                    if (knightDef.isBlockingNeighboursFull)
+                    {
+                        unitToDealDamage.GetComponent<PlayerUnit>().ShowHideFullShield(true);
+                    }
+
+                    //Escudo parcial
+                    else if (knightDef.isBlockingNeighbours)
+                    {
+                        unitToDealDamage.GetComponent<PlayerUnit>().ShowHidePartialShield(true);
+                    }
                 }
             }
         }
+        
 
         #region Knight_Blocks
 
@@ -1354,28 +1358,6 @@ public class UnitBase : MonoBehaviour
 
     public virtual void SetShadowRotation(UnitBase unitToSet, IndividualTiles unitToCheckPos, IndividualTiles otherUnitToCheck)
     {
-        //if (unitToSet.currentFacingDirection == FacingDirection.North)
-        //{
-        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
-           
-        //}
-
-        //else if (unitToSet.currentFacingDirection == FacingDirection.South)
-        //{
-        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-        //}
-
-        //else if (unitToSet.currentFacingDirection == FacingDirection.East)
-        //{
-
-        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-        //}
-
-        //else if (unitToSet.currentFacingDirection == FacingDirection.West)
-        //{
-        //    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
-        //}
-
         if (unitToCheckPos.tileX == otherUnitToCheck.tileX)
         {
             //Arriba
