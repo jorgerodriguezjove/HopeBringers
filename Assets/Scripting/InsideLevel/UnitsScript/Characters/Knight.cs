@@ -364,8 +364,6 @@ public class Knight : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-      
-
         CheckIfUnitHasMarks(unitToAttack);
 
         ActivateParticleEffect();
@@ -883,7 +881,6 @@ public class Knight : PlayerUnit
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
-
         if (unitAttacker != null)
         {
             if (currentFacingDirection == FacingDirection.North && unitAttacker.currentFacingDirection == FacingDirection.South
@@ -1263,6 +1260,7 @@ public class Knight : PlayerUnit
                             canDoPush = false;
                             break;
                         }
+
                         else
                         {
                             canDoPush = true;
@@ -1275,14 +1273,15 @@ public class Knight : PlayerUnit
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
                             _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineUp[tilesToPush].transform.position;
+
+                            //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
+                            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
                         }
                     }
-                   
                 }
 
                 for (int i = 0; i - 1 < tilesToPush; i++)
                 {
-
                     if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[i]);
@@ -1317,6 +1316,8 @@ public class Knight : PlayerUnit
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
                             _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineDown[tilesToPush].transform.position;
+                            //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
+                            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
                         }
                     }
                     
@@ -1358,6 +1359,8 @@ public class Knight : PlayerUnit
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
                             _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineRight[tilesToPush].transform.position;
+                            //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
+                            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
                         }
                     }
                     
@@ -1400,6 +1403,8 @@ public class Knight : PlayerUnit
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
                             _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineLeft[tilesToPush].transform.position;
+                            //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
+                            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
                         }
                     }
                    
@@ -1411,7 +1416,6 @@ public class Knight : PlayerUnit
                     if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[i]);
-
                     }
                 }
             }
@@ -1531,7 +1535,7 @@ public class Knight : PlayerUnit
         base.CalculateDamage(unitToDealDamage);
 
         //Esto es para mostrar bien el núemro de daño en pjs que reciben daño por choque
-        if (enemiesThatHaveBeenDamageBecauseOfPushing.Contains(unitToDealDamage))
+        if (enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Contains(unitToDealDamage))
         {
             damageWithMultipliersApplied += damageMadeByPush;
         }
@@ -1584,7 +1588,22 @@ public class Knight : PlayerUnit
             }
         }
 
-        enemiesThatHaveBeenDamageBecauseOfPushing.Clear();
+        for (int i = 0; i < enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem.Count; i++)
+        {
+            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem[i].ResetColor();
+            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem[i].DisableCanvasHover();
+            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem[i].myCurrentTile.ColorDesAttack();
+        }
+
+        for (int i = 0; i < enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Count; i++)
+        {
+            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies[i].ResetColor();
+            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies[i].DisableCanvasHover();
+            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies[i].myCurrentTile.ColorDesAttack();
+        }
+
+        enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem.Clear();
+        enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Clear();
         tilesInEnemyHover.Clear(); 
     }
 }

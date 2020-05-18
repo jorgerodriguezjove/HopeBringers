@@ -300,9 +300,9 @@ public class UnitBase : MonoBehaviour
     //Lista con los enemigos que han sido empujados y que por tanto reciben daño del atacante y al chocarse al ser otro enemigo empujado
     //Solo sirve para el caballero (y quizás para el charger)
     [HideInInspector]
-    public List<UnitBase> enemiesThatHaveBeenDamageBecauseOfPushing;
+    public List<UnitBase> enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies;
     //[HideInInspector]
-    //public List<UnitBase> enemiesThatHaveBeenDamageBecauseOfPushing;
+    public List<UnitBase> enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem;
 
 
     #endregion
@@ -654,7 +654,7 @@ public class UnitBase : MonoBehaviour
     #endregion
 
     #region PUSH
-    //Esta función solo calcula el tile en el que acaba la unidad empujada. SIRVE PARA MOSTRAR EFECTO DE ATAQUE CABALLERO.
+    //Esta función solo calcula el tile en el que acaba la unidad empujada. SIRVE PARA MOSTRAR EFECTO DE ATAQUE CABALLERO y Charger.
     public IndividualTiles CalculatePushLogic(int numberOfTilesMoved, List<IndividualTiles> tilesToCheckForCollision, int attackersDamageByPush, int attackersDamageByFall)
     {
         if (!isDead)
@@ -668,6 +668,7 @@ public class UnitBase : MonoBehaviour
                 if (tilesToCheckForCollision.Count > 0)
                 {
                     tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
+                    enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(tilesToCheckForCollision[0].unitOnTile);
                 }
                 return null;
             }
@@ -684,10 +685,10 @@ public class UnitBase : MonoBehaviour
                         if (tilesToCheckForCollision.Count > 0)
                         {
                             tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
-                            enemiesThatHaveBeenDamageBecauseOfPushing.Add(tilesToCheckForCollision[0].unitOnTile);
+                            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(tilesToCheckForCollision[0].unitOnTile);
                         }
+
                         return tilesToCheckForCollision[i - 1];
-                        
                     }
 
                     //El tile al que empujo está más bajo (caída)
@@ -703,12 +704,13 @@ public class UnitBase : MonoBehaviour
                                 if (tilesToCheckForCollision[0].unitOnTile != null)
                                 {
                                     tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
-                                    enemiesThatHaveBeenDamageBecauseOfPushing.Add(tilesToCheckForCollision[0].unitOnTile);
+                                    enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(tilesToCheckForCollision[0].unitOnTile);
                                 }
 
                                 if (tilesToCheckForCollision[i].unitOnTile != null)
                                 {
                                     tilesToCheckForCollision[i].unitOnTile.hoverImpactIcon.SetActive(true);
+                                    enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem.Add(tilesToCheckForCollision[i].unitOnTile);
                                 }
                             }
 
@@ -751,11 +753,15 @@ public class UnitBase : MonoBehaviour
                             if (tilesToCheckForCollision[0].unitOnTile != null)
                             {
                                 tilesToCheckForCollision[0].unitOnTile.hoverImpactIcon.SetActive(true);
-                                enemiesThatHaveBeenDamageBecauseOfPushing.Add(tilesToCheckForCollision[0].unitOnTile);
+                                enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(tilesToCheckForCollision[0].unitOnTile);
                             }
 
+                            //Icono choque, número de daño y color tile
                             tilesToCheckForCollision[i].unitOnTile.hoverImpactIcon.SetActive(true);
                             tilesToCheckForCollision[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageMadeByPush);
+                            tilesToCheckForCollision[i].ColorAttack();
+
+                            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem.Add(tilesToCheckForCollision[i].unitOnTile);
 
                             return tilesToCheckForCollision[i - 1];
                         }

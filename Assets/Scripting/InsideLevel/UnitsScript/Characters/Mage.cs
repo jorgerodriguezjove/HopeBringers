@@ -167,6 +167,8 @@ public class Mage : PlayerUnit
     //En función de donde este mirando el personaje paso una lista de tiles diferente.
     public override void Attack(UnitBase unitToAttack)
     {
+        Debug.Log("Attack");
+
         CheckIfUnitHasMarks(unitToAttack);
         currentTickLightning = 0;
 
@@ -187,6 +189,7 @@ public class Mage : PlayerUnit
         {
             for (int i = 0; i < myDecoys.Count; i++)
             {
+                Debug.Log("decoys");
                 //En el override de esta función el decoy también comprueba si tiene la segunda mejora y ataca de una forma o de la otra
                 myDecoys[i].GetComponent<MageDecoy>().CheckUnitsAndTilesInRangeToAttack(true);
                 myDecoys[i].GetComponent<MageDecoy>().HideAttackEffect(null);
@@ -408,6 +411,7 @@ public class Mage : PlayerUnit
 
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+        Debug.Log("InsideDoDamage");
     }
 
     #region MOVEMENT

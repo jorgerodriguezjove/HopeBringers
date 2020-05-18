@@ -362,12 +362,13 @@ public class PlayerUnit : UnitBase
         {
             if (LM.selectedEnemy == null)
             {
+                //Ataque
                 if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-
                     LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);                  
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 }
+
                 else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
 
@@ -916,37 +917,49 @@ public class PlayerUnit : UnitBase
         if (knightThatDef != null)
         {
             //Este es el valor que queremos que tenga para defender unidades
-            knightThatDef.shieldDef = 5;
+            knightThatDef.shieldDef = 1;
 
+            //Si tiene la mejora
             if (knightThatDef.isBlockingNeighbours)
             {
+                //Compruebo si el caballero tiene como vecino a la unidad que esta comprobando
                 if (knightThatDef.myCurrentTile.neighbours.Contains(myCurrentTile))
                 {
+                    //Si esta en los vecinos compruebo si la direccion es la correcta (compruebo si el atacante y el caballero están opuestos)
                     if ((knightThatDef.currentFacingDirection == FacingDirection.North && unitThatIsAttackingDirection == FacingDirection.South)
                         || (knightThatDef.currentFacingDirection == FacingDirection.South && unitThatIsAttackingDirection == FacingDirection.North)
                         || (knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttackingDirection == FacingDirection.East)
                         || (knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttackingDirection == FacingDirection.West))
                     {
 
-                        //Cambiar variable en el Knight
+                        //Si tiene la segunda mejora el valor es 999 porque bloquea todo el daño 
                         if (knightThatDef.isBlockingNeighboursFull)
                         {
                             knightThatDef.shieldDef = 999;
                         }
+
+                        //Si solo tiene la primera lo dejo con el valor mínimo (podría quitar este else en realidad pero lo dejo por claridad)
+                        else
+                        {
+                            knightThatDef.shieldDef = 1;
+                        }
                     }
 
+                    //Si la dirección no coincide no protege nada
                     else
                     {
                         knightThatDef.shieldDef = 0;
                     }
                 }
 
+                //Si no está en los vecinos el caballero no le protege de ningún daño
                 else
                 {
                     knightThatDef.shieldDef = 0;
                 }
             }
 
+            //Si no tiene la mejora no reduce el daño
             else
             {
                 knightThatDef.shieldDef = 0;

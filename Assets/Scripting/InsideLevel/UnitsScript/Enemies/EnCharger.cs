@@ -694,7 +694,6 @@ public class EnCharger : EnemyUnit
                 currentUnitsAvailableToAttack[0].sombraHoverUnit.transform.position = tileWhereObjectiveShadowWillEnd.transform.position;
                 tileWhereObjectiveShadowWillEnd.ColorAttack();
             }
-           
         }
     }
 
@@ -708,6 +707,26 @@ public class EnCharger : EnemyUnit
                 tileWhereObjectiveShadowWillEnd.ColorDesAttack();
             }
         }
+
+        //Oculto todo el feedback de ataque del enemigo empujado y de los que reciben el choque
+        for (int i = 0; i < enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem.Count; i++)
+        {
+            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem[i].ResetColor();
+            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem[i].DisableCanvasHover();
+            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem[i].myCurrentTile.ColorDesAttack();
+            enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem[i].hoverImpactIcon.SetActive(false);
+        }
+
+        for (int i = 0; i < enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Count; i++)
+        {
+            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies[i].ResetColor();
+            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies[i].DisableCanvasHover();
+            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies[i].myCurrentTile.ColorDesAttack();
+            enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies[i].hoverImpactIcon.SetActive(false);
+        }
+
+        enemiesThatHaveBeenDamageBecauseOfBeingPushedAgainstThem.Clear();
+        enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Clear();
     }
 
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo

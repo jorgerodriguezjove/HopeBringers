@@ -540,17 +540,18 @@ public class LevelManager : MonoBehaviour
                 {
                     hoverUnit.GetComponent<EnBalista>().CheckCharactersInLine(false, hoverUnit.myCurrentTile);
 
-                    //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
-                    if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
-                    {
-                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                    }
-
                     //Marco las unidades disponibles para atacar de color rojo
                     for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
                     {
                         hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[i],hoverUnit, hoverUnit.myCurrentTile,hoverUnit.currentFacingDirection);
                         //hoverUnit.CalculateDamage(hoverUnit.currentUnitsAvailableToAttack[i]);
+
+                        //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función y que enseñe la bomba
+                        if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>() && hoverUnit.damageWithMultipliersApplied > 0)
+                        {
+                            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>().ShowBombAttackEffect();
+                        }
+
                         hoverUnit.currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                         hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
                     }
@@ -567,12 +568,6 @@ public class LevelManager : MonoBehaviour
                 //Dibuja el ataque que va a preparar si las unidades se quedan ahí
                 if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count > 0 && hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack[0] != null)
                 {
-                    //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función
-                    if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
-                    {
-                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                    }
-
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(true);
 
                     //Calculo el daño que le hace al llegar al tile anterior
@@ -587,6 +582,12 @@ public class LevelManager : MonoBehaviour
                     {
                         hoverUnit.CalculateDamagePreviousAttack(hoverUnit.currentUnitsAvailableToAttack[0], hoverUnit, hoverUnit.myCurrentTile, hoverUnit.GetComponent<EnCharger>().SpecialCheckRotation(hoverUnit.myCurrentTile, false));
                         hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.myCurrentTile);
+                    }
+
+                    //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función y que enseñe la bomba
+                    if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>() && hoverUnit.damageWithMultipliersApplied > 0)
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>().ShowBombAttackEffect();
                     }
 
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
@@ -629,7 +630,6 @@ public class LevelManager : MonoBehaviour
 
             else if (hoverUnit.GetComponent<EnWatcher>())
             {
-               
                 for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                 {
                     if (hoverUnit.unitsInRange[i].GetComponent<PlayerUnit>())
@@ -714,20 +714,19 @@ public class LevelManager : MonoBehaviour
                     tilesAvailableForRangeEnemies[i].ColorActionRange();
                 }
 
-
                 hoverUnit.GetComponent<EnGrabber>().CheckUnitToAttack(hoverUnit.myCurrentTile, hoverUnit.currentFacingDirection);
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0)
                 {
-                    //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
-                    if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
-                    {
-                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                    }
-
                     if (hoverUnit.pathToObjective.Count > 0)
                     {
                         hoverUnit.currentUnitsAvailableToAttack[0].CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+                    }
+
+                    //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función y que enseñe la bomba
+                    if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>() && hoverUnit.damageWithMultipliersApplied > 0)
+                    {
+                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>().ShowBombAttackEffect();
                     }
 
                     hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
@@ -807,12 +806,6 @@ public class LevelManager : MonoBehaviour
 
                 if (hoverUnit.currentUnitsAvailableToAttack.Count > 0 && hoverUnit.currentUnitsAvailableToAttack[0] != null)
                 {
-                    //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
-                    if(hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>())
-                    {
-                        hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                    }
-
                     //Pinto sombra
                     if (hoverUnit.pathToObjective.Count >0 && hoverUnit.pathToObjective[0] != null)
                     {
@@ -830,6 +823,12 @@ public class LevelManager : MonoBehaviour
                             hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
                         }
 
+                        //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función y que enseñe la bomba
+                        else if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>() && hoverUnit.damageWithMultipliersApplied > 0)
+                        {
+                            hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>().ShowBombAttackEffect();
+                        }
+
                         else
                         {
                             hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
@@ -839,8 +838,6 @@ public class LevelManager : MonoBehaviour
                     
                     else
                     {
-                       
-
                          //Aplico los mismos efectos a las unidades laterales del objetivo si el enemigo es un gigante
                         if (hoverUnit.GetComponent<EnGiant>())
                         {
@@ -856,6 +853,13 @@ public class LevelManager : MonoBehaviour
                                 hoverUnit.shadowTile.neighbours.Contains(hoverUnit.currentUnitsAvailableToAttack[0].myCurrentTile))
                             {
                                 //Pintar de rojo y mostrar daño
+
+                                //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función y que enseñe la bomba
+                                if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>() && hoverUnit.damageWithMultipliersApplied > 0)
+                                {
+                                    hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>().ShowBombAttackEffect();
+                                }
+
                                 hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                                 hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
 
@@ -865,15 +869,16 @@ public class LevelManager : MonoBehaviour
                                     {
                                         UnitBase tempLateralUnitGiant = hoverUnit.GetComponent<EnGiant>().tempLateralTilesToFutureObjective[i].unitOnTile;
 
-                                        //Líneas para comprobar si está atacando al Decoy y tiene que hacer la función
-                                        if (tempLateralUnitGiant.GetComponent<MageDecoy>())
-                                        {
-                                            tempLateralUnitGiant.GetComponent<PlayerUnit>().ShowAttackEffect(hoverUnit);
-                                        }
-
                                         hoverUnit.GetComponent<EnGiant>().CalculateDamagePreviousAttackLateralEnemies(tempLateralUnitGiant);
 
                                         tempLateralUnitGiant.CalculateDirectionOfAttackReceivedToShowShield(hoverUnit.pathToObjective[hoverUnit.pathToObjective.Count - 1]);
+
+                                        //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función y que enseñe la bomba
+                                        if (tempLateralUnitGiant.GetComponent<MageDecoy>() && hoverUnit.damageWithMultipliersApplied > 0)
+                                        {
+                                            tempLateralUnitGiant.GetComponent<MageDecoy>().ShowBombAttackEffect();
+                                        }
+
                                         tempLateralUnitGiant.ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                                         tempLateralUnitGiant.HealthBarOn_Off(true);
 
@@ -889,6 +894,12 @@ public class LevelManager : MonoBehaviour
                         //Goblin/Esquelto y lobo
                         else
                         {
+                            //Líneas para comprobar si el está atacando al Decoy y tiene que hacer la función y que enseñe la bomba
+                            if (hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>() && hoverUnit.damageWithMultipliersApplied > 0)
+                            {
+                                hoverUnit.currentUnitsAvailableToAttack[0].GetComponent<MageDecoy>().ShowBombAttackEffect();
+                            }
+
                             hoverUnit.currentUnitsAvailableToAttack[0].ColorAvailableToBeAttackedAndNumberDamage(hoverUnit.damageWithMultipliersApplied);
                             hoverUnit.currentUnitsAvailableToAttack[0].HealthBarOn_Off(true);
                         }

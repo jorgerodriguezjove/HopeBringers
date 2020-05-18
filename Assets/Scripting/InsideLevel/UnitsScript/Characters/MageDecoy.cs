@@ -42,6 +42,7 @@ public class MageDecoy : Mage
             {
                 ChangePosition(myMage);
             }
+
             else
             {
                 LM.SelectUnitToAttack(GetComponent<UnitBase>());
@@ -93,8 +94,6 @@ public class MageDecoy : Mage
             LM.charactersOnTheBoard.Remove(this);
             Destroy(gameObject);
         }
-
-     
     }
 
     IEnumerator WaitToDamageSurrounding()
@@ -104,6 +103,7 @@ public class MageDecoy : Mage
         {
             if (TM.surroundingTiles[i].unitOnTile != null)
             {
+                CalculateDamage(TM.surroundingTiles[i].unitOnTile);
                 DoDamage(TM.surroundingTiles[i].unitOnTile);
             }
         }
@@ -133,16 +133,33 @@ public class MageDecoy : Mage
             {
                 if (LM.selectedCharacter != null && LM.selectedCharacter == myMage && !myMage.hasMoved)
                 {
-                    ShowAttackEffect(this);
+                    ShowInterchangeEffect();
 
+                    Debug.Log("intercambio");
+
+                    //Intercambio con decoy
                 }
+
                 else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
+                    //Atacar al decoy
+                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+
+                    Debug.Log("attackCursor");
+
+                    if (myMage.isDecoyBomb)
+                    {
+                        ShowBombAttackEffect();
+                    }
                 }
 
+                //Hover sobre el decoy para seleccionarlo
                 else 
                 {
+                    Debug.Log("selecssion");
+
+
                     if (!hasAttacked)
                     {
                         LM.ShowUnitHover(movementUds, this);
@@ -178,6 +195,8 @@ public class MageDecoy : Mage
 
     #endregion
 
+    //Aunque el bool _shouldPaintEnemiesAndShowHealthbar se usa para otra cosa, voy a usarlo como referencia para que no haga daño al aparecer el decoy.
+    //Esto también arregla el problema de que se llamaba varias veces a esta función y los enemigos recibían el triple de daño
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         currentUnitsAvailableToAttack.Clear();
@@ -190,6 +209,7 @@ public class MageDecoy : Mage
             {
                 rangeVSTilesInLineLimitant = attackRange;
             }
+
             else
             {
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineUp.Count;
@@ -377,25 +397,28 @@ public class MageDecoy : Mage
 
         }
 
-        if (myMage.mirrorDecoy && LM.selectedCharacter == myMage)
+        //Para que no haga daño al salir, no tiene nada que ver con pintar vida o enemigos
+        if (_shouldPaintEnemiesAndShowHealthbar)
         {
-            if (currentUnitsAvailableToAttack.Count > 0)
+            if (myMage.mirrorDecoy && LM.selectedCharacter == myMage)
             {
-                if (myMage.mirrorDecoy2)
+                if (currentUnitsAvailableToAttack.Count > 0)
                 {
-                    for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+                    if (myMage.mirrorDecoy2)
                     {
-                        if (currentUnitsAvailableToAttack[i] != null)
+                        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
                         {
-                            DoDamage(currentUnitsAvailableToAttack[i]);
-
+                            if (currentUnitsAvailableToAttack[i] != null)
+                            {
+                                DoDamage(currentUnitsAvailableToAttack[i]);
+                            }
                         }
-
                     }
-                }
-                else if (currentUnitsAvailableToAttack[0] != null)
-                {
-                    DoDamage(currentUnitsAvailableToAttack[0]);
+
+                    else if (currentUnitsAvailableToAttack[0] != null)
+                    {
+                        DoDamage(currentUnitsAvailableToAttack[0]);
+                    }
                 }
             }
         }
@@ -426,7 +449,6 @@ public class MageDecoy : Mage
             }
 
             StartCoroutine("WaitToDamageSurroundingAfterChangePos");
-
         }
 
         HideAttackEffect(null);
@@ -453,7 +475,6 @@ public class MageDecoy : Mage
                 TM.surroundingTiles[i].ColorDesAttack();
             }
         }
-
     }
 
     public void ChangePositionIconFeedback(bool has2Show)
@@ -465,26 +486,22 @@ public class MageDecoy : Mage
                 myMage.changePositionIcon.SetActive(true);
 
             }
-            changePositionIcon.SetActive(true);
-
-            
+            changePositionIcon.SetActive(true);    
         }
+
         else
         {
             if (myMage != null)
             {
                 myMage.changePositionIcon.SetActive(false);
-
             }
+
             changePositionIcon.SetActive(false);
-
         }
-
     }
 
     public  void CheckUnitsAndTilesToColorAtHover()
     {
-       
         currentUnitsAvailableToAttack.Clear();
         currentTilesInRangeForAttack.Clear();
         previousTileHeight = 0;
@@ -603,6 +620,7 @@ public class MageDecoy : Mage
             {
                 rangeVSTilesInLineLimitant = attackRange;
             }
+
             else
             {
                 rangeVSTilesInLineLimitant = myCurrentTile.tilesInLineLeft.Count;
@@ -631,7 +649,6 @@ public class MageDecoy : Mage
                     }                 
                 }
             }
-
         }
 
         if (myMage.mirrorDecoy)
@@ -653,6 +670,7 @@ public class MageDecoy : Mage
                     }
                 }
             }
+
             else if (currentTilesInRangeForAttack[0] != null)
             {
                 for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
@@ -664,22 +682,31 @@ public class MageDecoy : Mage
                         currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
                         break;
                     }
-                }
-              
+                } 
             }
-
         }
-
-    
-
-
-}
+    }
 
     //En este caso lo uso para ver lo que hace el decoy cuando el mago lee hace hover
+    //Este Show no incluye el efecto de la bomba. Ese esta en la función separada ShowBombAttackEffect();
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         base.ShowAttackEffect(_unitToAttack);
 
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
+        {
+            tilesInEnemyHover[i].ColorAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
+            {
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+            }
+        }
+    }
+
+    //Al igual que con la bomba he sacado la parte del intercambio del ShowAttack
+    public void ShowInterchangeEffect()
+    {
         if (LM.selectedCharacter != null)
         {
             Cursor.SetCursor(LM.UIM.movementCursor, Vector2.zero, CursorMode.Auto);
@@ -697,33 +724,38 @@ public class MageDecoy : Mage
                         tilesInEnemyHover.Add(TM.surroundingTiles[i]);
                     }
                 }
-
             }
         }
-        else
+
+        for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-            if (myMage.isDecoyBomb)
+            tilesInEnemyHover[i].ColorAttack();
+
+            if (tilesInEnemyHover[i].unitOnTile != null)
             {
-                TM.surroundingTiles.Clear();
-
-                TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-
-                //Hago daño a las unidades adyacentes
-                for (int i = 0; i < TM.surroundingTiles.Count; ++i)
-                {
-                    if (TM.surroundingTiles[i] != null)
-                    {
-
-                        tilesInEnemyHover.Add(TM.surroundingTiles[i]);
-                    }
-                }
-
+                CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+                tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             }
-           
-
         }
+    }
 
-       
+    public void ShowBombAttackEffect()
+    {
+        if (myMage.isDecoyBomb)
+        {
+            TM.surroundingTiles.Clear();
+
+            TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
+
+            //Hago daño a las unidades adyacentes
+            for (int i = 0; i < TM.surroundingTiles.Count; ++i)
+            {
+                if (TM.surroundingTiles[i] != null)
+                {
+                    tilesInEnemyHover.Add(TM.surroundingTiles[i]);
+                }
+            }
+        }
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
@@ -772,6 +804,7 @@ public class MageDecoy : Mage
                 tilesInEnemyHover[i].unitOnTile.ResetColor();
             }
         }
+
         tilesInEnemyHover.Clear();
     }
 }

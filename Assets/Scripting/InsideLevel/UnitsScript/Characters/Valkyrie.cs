@@ -700,6 +700,7 @@ public class Valkyrie : PlayerUnit
                                 canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + (currentHealth - currentArmor).ToString());
 
                             }
+
                             else
                             {
                                 canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + numberOfArmorAdded.ToString());

@@ -1064,6 +1064,8 @@ public class EnemyUnit : UnitBase
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
+        Debug.Log("Soy " + name + " y me han hecho: " + damageReceived);
+
         SoundManager.Instance.PlaySound(AppSounds.RECEIVEDAMAGE2);
 
         currentHealth -= damageReceived;
