@@ -452,8 +452,6 @@ public class EnGrabber : EnemyUnit
                 CalculateDamagePreviousAttack(currentUnitsAvailableToAttack[i],GetComponent<UnitBase>(), _referenceTile, _referenceFacingDirection);
                 currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             }
-
-            Debug.Log("Check");
         }
     }
 

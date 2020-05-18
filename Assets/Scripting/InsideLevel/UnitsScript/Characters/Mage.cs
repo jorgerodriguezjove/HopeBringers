@@ -295,10 +295,10 @@ public class Mage : PlayerUnit
                         //Funciona para ambos lightnings porque el no atacar a enemigos se hace en calculate Damage para que funcione en el ShowAttackEffect
                         if (!nextUnits.Contains(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile))
                         {
-                            nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
-
                             //UNDO
                             CreateAttackCommand(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
+
+                            nextUnits.Add(attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile);
 
                             Instantiate(particleLightning, attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile.transform.position, attackingUnits[i].myCurrentTile.neighbours[j].unitOnTile.transform.rotation);
 
@@ -411,7 +411,6 @@ public class Mage : PlayerUnit
 
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
-        Debug.Log("InsideDoDamage");
     }
 
     #region MOVEMENT
@@ -706,10 +705,12 @@ public class Mage : PlayerUnit
         {
             if (myDecoys.Count > 0)
             {
+                LM.charactersOnTheBoard.Remove(myDecoys[myDecoys.Count - 1].GetComponent<PlayerUnit>());
+
                 Destroy(myDecoys[myDecoys.Count - 1]);
                 myDecoys.RemoveAt(myDecoys.Count - 1);
             }
-        }
+        }   
     }
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
