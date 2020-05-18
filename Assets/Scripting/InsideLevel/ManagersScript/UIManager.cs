@@ -410,9 +410,9 @@ public class UIManager : MonoBehaviour
 
             if (LM.charactersOnTheBoard[i].GetComponent<MageDecoy>())
             {
-                numberOfCharactersFinished++;
-               
+                numberOfCharactersFinished++;   
             }
+
             else
             {
                 if (LM.charactersOnTheBoard[i].hasAttacked)

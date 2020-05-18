@@ -1217,7 +1217,6 @@ public class EnemyUnit : UnitBase
         if (isDead)
         {
             isDead = false;
-            HealthBarOn_Off(true);
 
             //Cambios en la lógica para indicar que ha muerto
             myCurrentTile.unitOnTile = GetComponent<EnemyUnit>();
@@ -1317,9 +1316,18 @@ public class EnemyUnit : UnitBase
         turnsWithMovementBuffOrDebuff = lastAttack.obj_turnsMovementBuffDebuff;
 
         //Actualizar hud
+        HealthBarOn_Off(true);
         RefreshHealth(false);
         UIM.RefreshHealth();
         UIM.RefreshTokens();
+
+        StartCoroutine("RefresHealthAfterUndo");
+    }
+
+    IEnumerator RefresHealthAfterUndo()
+    {
+        yield return new WaitForSeconds(1.1f);
+        HealthBarOn_Off(false);
     }
 
     public void ExecuteAnimationAttack()

@@ -92,7 +92,7 @@ public class MageDecoy : Mage
         {
             myMage.myDecoys.Remove(gameObject);
             LM.charactersOnTheBoard.Remove(this);
-            Destroy(gameObject);
+            EnableUnableCollider(false);
         }
     }
 
@@ -103,6 +103,8 @@ public class MageDecoy : Mage
         {
             if (TM.surroundingTiles[i].unitOnTile != null)
             {
+                CreateAttackCommand(TM.surroundingTiles[i].unitOnTile);
+
                 CalculateDamage(TM.surroundingTiles[i].unitOnTile);
                 DoDamage(TM.surroundingTiles[i].unitOnTile);
             }
@@ -121,7 +123,8 @@ public class MageDecoy : Mage
 
         myMage.myDecoys.Remove(gameObject);
         LM.charactersOnTheBoard.Remove(this);
-        Destroy(gameObject);
+
+        EnableUnableCollider(false);
     }
 
     //Es virtual para el decoy del mago.
@@ -159,13 +162,11 @@ public class MageDecoy : Mage
                 {
                     Debug.Log("selecssion");
 
-
                     if (!hasAttacked)
                     {
                         LM.ShowUnitHover(movementUds, this);
                     }
                 }
-                
             }
         }
     }
@@ -410,6 +411,8 @@ public class MageDecoy : Mage
                         {
                             if (currentUnitsAvailableToAttack[i] != null)
                             {
+                                CreateAttackCommand(currentUnitsAvailableToAttack[i]);
+
                                 DoDamage(currentUnitsAvailableToAttack[i]);
                             }
                         }
@@ -417,6 +420,8 @@ public class MageDecoy : Mage
 
                     else if (currentUnitsAvailableToAttack[0] != null)
                     {
+                        CreateAttackCommand(currentUnitsAvailableToAttack[0]);
+
                         DoDamage(currentUnitsAvailableToAttack[0]);
                     }
                 }
@@ -426,6 +431,8 @@ public class MageDecoy : Mage
 
     public void ChangePosition(Mage mage2Move)
     {
+        CreateAttackCommand(mage2Move);
+
         IndividualTiles magePreviousTile = mage2Move.myCurrentTile;
         mage2Move.MoveToTilePushed(myCurrentTile);
         mage2Move.UpdateInformationAfterMovement(myCurrentTile);
@@ -806,5 +813,31 @@ public class MageDecoy : Mage
         }
 
         tilesInEnemyHover.Clear();
+    }
+
+
+    public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
+    {
+        base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
+
+        if (isDead && 
+            (_isThisUnitTheAttacker && lastAttack.pjPreviousHealth > 0) || 
+            (!_isThisUnitTheAttacker && lastAttack.objPreviousHealth > 0))
+        {
+            for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
+            {
+                if (LM.charactersOnTheBoard[i].GetComponent<Mage>())
+                {
+                    myMage = LM.charactersOnTheBoard[i].GetComponent<Mage>();
+
+                    myMage.myDecoys.Add(gameObject);
+                    LM.charactersOnTheBoard.Add(this);
+
+                    break;
+                }
+            }
+
+            EnableUnableCollider(true);
+        }
     }
 }

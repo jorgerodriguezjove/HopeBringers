@@ -78,7 +78,8 @@ public class CommandInvoker : MonoBehaviour
                     NextCommandPlayer = commandHistory[counter - 1].Player();
 
                     //El ninja es excepción porque solo puede atacar de 1 en 1 pero sus saltos cuentan como varios ataques
-                    if (NextCommandPlayer == lastUndoPlayer && !commandHistory[counter - 1].CheckIfMoveCommand() && !NextCommandPlayer.GetComponent<Rogue>())
+                    if ((NextCommandPlayer == lastUndoPlayer || (NextCommandPlayer.GetComponent<Mage>() && lastUndoPlayer.GetComponent<MageDecoy>() || NextCommandPlayer.GetComponent<MageDecoy>() && lastUndoPlayer.GetComponent<Mage>()))
+                        && !commandHistory[counter - 1].CheckIfMoveCommand() && !NextCommandPlayer.GetComponent<Rogue>())
                     {
                         Debug.Log("Siguiente Undo: " + commandHistory[counter]);
 
