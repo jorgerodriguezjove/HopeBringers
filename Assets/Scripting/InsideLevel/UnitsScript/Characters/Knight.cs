@@ -115,12 +115,15 @@ public class Knight : PlayerUnit
 
         if (backBlock)
         {
+            damageBackBlocked = 1;
+            damageLateralBlocked = 1;
             pasiveSkillInfo = AppKnightUpgrades.individualBlock2Text;
             pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.individualBlock1);
         }
 
         else if (lateralBlock)
         {
+            damageLateralBlocked = 1;
             pasiveSkillInfo = AppKnightUpgrades.individualBlock1Text;
             pasiveTooltipIcon = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + AppKnightUpgrades.individualBlock1);
         }

@@ -18,17 +18,17 @@ public class MoveCommand : ICommand
     List<IndividualTiles> currentPath;
     UnitBase pj;
 
-    //PREGUNTAR A MARIO
-    //int damageBuff;
-    //int damageDebuff;
-    //int movementBuff;
-    //int movementDebuff;
+    //Bufos y debufos
+    public int pj_damageBuffDebuff;
+    public int pj_turnsDamageBuffDebuff;
 
+    public int pj_movementBuffDebuff;
+    public int pj_turnsMovementBuffDebuff;
 
     public MoveCommand(UnitBase.FacingDirection newRotation, UnitBase.FacingDirection previousRotation,
                        IndividualTiles previousTile, IndividualTiles tileToMove, 
-                       List<IndividualTiles> currentPath, UnitBase pj)
-                       //int _currentDamageBuff, int _currentDamageDebuff, int _currentMovementBuff, int _currentMovementDebuff)
+                       List<IndividualTiles> currentPath, UnitBase pj,
+                       int _pjDamageBuffDebuff, int _pjTurnsDamageBuffDebuff, int _pjMovementBuffDebuff, int _pjTurnsMovementBuffDebuff)
     {
         this.newRotation = newRotation;
         this.previousRotation = previousRotation;
@@ -39,10 +39,11 @@ public class MoveCommand : ICommand
         this.currentPath = currentPath;
         this.pj = pj;
 
-        //this.damageBuff = _currentDamageBuff;
-        //this.damageDebuff = _currentDamageDebuff;
-        //this.movementBuff = _currentMovementBuff;
-        //this.movementDebuff = _currentMovementDebuff;
+        pj_damageBuffDebuff = _pjDamageBuffDebuff;
+        pj_turnsDamageBuffDebuff = _pjTurnsDamageBuffDebuff;
+
+        pj_movementBuffDebuff = _pjMovementBuffDebuff;
+        pj_turnsMovementBuffDebuff = _pjTurnsMovementBuffDebuff;
     }
 
     public void Execute()
@@ -56,7 +57,7 @@ public class MoveCommand : ICommand
 
     public void Undo()
     {
-        pj.UndoMove(previousTile, previousRotation, true);
+        pj.UndoMove(this ,previousTile, previousRotation, true);
     }
 
     public UnitBase Player()
@@ -137,8 +138,11 @@ public class AttackCommand : ICommand
     public int honor; //Assegurar que no jode nada del bufo al resetearlo
 
     //Druid
-    GameObject healTileInstantiated;
+    public List<GameObject> _realTilesInstantiated = new List<GameObject>();
+    public List<GameObject> _damageTilesReplaced = new List<GameObject>();
     GameObject damageTileReplaced;
+    public int _healedLife;
+    public int _buffHeal;
 
     //Valk
     public bool hasInterchanged; //No me acuerdo como iba el intercambio pero habrá que hacer algo como para el decoy.
@@ -232,9 +236,8 @@ public class AttackCommand : ICommand
                 oldDecoy = refPj.myDecoys[0];
             }
             
+            //Esto lo tenia apuntado hace tiempo pero en principio funciona bien 
             //newDecoy; //Esto da problemas seguro, mirar quizas en el execute que quite el actual en vez de guardarlo antes.
-
-
             //hasMovedWithDecoy = refPj.hasMoved; //Quizás es poner simplemente si ha movido
         }
 
@@ -250,20 +253,25 @@ public class AttackCommand : ICommand
         {
             Druid refPj = pj.GetComponent<Druid>();
 
-            //healTileInstantiated = ; Poner variables en el druida que guarden estos tiles.
+            for (int i = 0; i < refPj.realTilesSpawned.Count; i++)
+            {
+                _realTilesInstantiated.Add(refPj.realTilesSpawned[i]);
+            }
+
+            for (int i = 0; i < refPj.damageTilesReplaced.Count; i++)
+            {
+                _damageTilesReplaced.Add(refPj.damageTilesReplaced[i]);
+            }
+
+            _healedLife = refPj.healedLife;
+            _buffHeal = refPj.buffHeal;
             //damageTileReplaced =;
 
-          //El druida parece que afecta a movementUDs ¿Esto esta bien? ¿o debería ser un bufo?
+            //El druida parece que afecta a movementUDs ¿Esto esta bien? ¿o debería ser un bufo?
 
         }
 
-        else if (pj.GetComponent<Valkyrie>())
-        {
-            Valkyrie refPj = pj.GetComponent<Valkyrie>();
-
-            //hasInterchanged = refPj.hasMoved; Igual que el mago con el decoy.
-        }
-
+        //Este no es else if.
         if (obj.GetComponent<Berserker>())
         {
             Berserker refPj = obj.GetComponent<Berserker>();

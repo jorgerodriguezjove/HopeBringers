@@ -1198,7 +1198,7 @@ public class EnemyUnit : UnitBase
 
     #endregion
 
-    public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
+    public override void UndoMove(MoveCommand _moveCommand, IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
     {
         if (isDead)
         {
@@ -1226,7 +1226,7 @@ public class EnemyUnit : UnitBase
         }
 
 
-        base.UndoMove(tileToMoveBack, rotationToTurnBack, shouldResetMovement);
+        base.UndoMove(_moveCommand,tileToMoveBack, rotationToTurnBack, shouldResetMovement);
     }
 
     public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
