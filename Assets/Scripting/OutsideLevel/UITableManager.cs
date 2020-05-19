@@ -263,11 +263,13 @@ public class UITableManager : MonoBehaviour
     {
         if (currentSkillTreeObj != null)
         {
-            Destroy(currentSkillTreeObj);
+            currentSkillTreeObj.SetActive(false);
+            //Destroy(currentSkillTreeObj);
         }
 
         //Instancio árbol de habilidades
-        currentSkillTreeObj = Instantiate(unitClicked.skillTreePrefab, rightPageProgresionBook.transform);
+        unitClicked.skillTreePrefab.SetActive(true);
+        currentSkillTreeObj = unitClicked.skillTreePrefab; //  Instantiate(unitClicked.skillTreePrefab, rightPageProgresionBook.transform);
 
         upgrades = currentSkillTreeObj.GetComponent<SkillTree>().allUpgradesInTree;
         ids = unitClicked.idSkillsBought;
@@ -382,7 +384,8 @@ public class UITableManager : MonoBehaviour
     {
         if (currentSkillTreeObj != null)
         {
-            Destroy(currentSkillTreeObj);
+            currentSkillTreeObj.SetActive(false);
+            //Destroy(currentSkillTreeObj);
         }
     }
 

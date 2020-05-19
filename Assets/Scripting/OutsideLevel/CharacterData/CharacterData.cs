@@ -55,15 +55,15 @@ public class CharacterData : MonoBehaviour
     [HideInInspector]
     public GameObject panelOfTheBookImIn;
 
-    [Header("Stats genéricos")]
-
     [Header("Referencias")]
     [HideInInspector]
     private TableManager TM;
 
+    [Header("Stats genéricos")]
     //Diccionario con las mejoras de stats tipo int que tienen todos los personajes.
     public Dictionary<string, int> genericUpgrades = new Dictionary<string, int>();
 
+    [Header("Stats específicos")]
     //Diccionario con las mejoras de stats tipo int que tiene cada personaje. Cada personaje inicializa las suyas en su script de Data.
     public Dictionary<string, int> specificIntCharacterUpgrades = new Dictionary<string, int>();
 

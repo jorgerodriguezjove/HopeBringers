@@ -63,7 +63,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumlo
+  m_text: Mage can target units as far as 5 tiles from him
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c263b51924611649a5b3d54446593fe, type: 2}
   m_sharedMaterial: {fileID: -7095111947117880224, guid: 9c263b51924611649a5b3d54446593fe,
@@ -661,7 +661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: a9cdabc93e3e83f4baa171a8792c5120, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1161,7 +1161,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumLoremIpsumlo
+  m_text: When moving, Mage leaves a decoy at his previous position. The mage can
+    interchange positions with the decoy
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9c263b51924611649a5b3d54446593fe, type: 2}
   m_sharedMaterial: {fileID: -7095111947117880224, guid: 9c263b51924611649a5b3d54446593fe,
@@ -1725,7 +1726,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: eed1c48c4b16fba4cafdc770e0ae8bcd, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -2419,7 +2420,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4756267448432593221
 Transform:
   m_ObjectHideFlags: 0
@@ -2964,6 +2965,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: idUpgrade
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: isInteractuable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -2983,6 +2994,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: Damage increases with each time new targets recieve damage, with a limit.
+        Allies don't recieve damage from the chain anymore
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -3140,6 +3157,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7ec12136471427c409c50444a6744712,
+        type: 3}
+    - target: {fileID: 3869042088888453442, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4900391022121976626, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive
@@ -3244,6 +3272,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: idUpgrade
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -3263,6 +3296,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: When attacking a target, all units adjacent to it recieve damage
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -3420,6 +3458,12 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0802134ac5d78394a854448d4e0e2823,
+        type: 3}
     - target: {fileID: 4900391022121976626, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive
@@ -3529,6 +3573,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: idUpgrade
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -3548,6 +3597,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: When defeated, the decoy makes damage in a 3x3 tile area with center
+        on it
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -3705,6 +3760,12 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ece766c1f050aa9498ce7addb9640089,
+        type: 3}
     - target: {fileID: 4900391022121976626, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive
@@ -3804,6 +3865,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: idUpgrade
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: isInteractuable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -3823,6 +3894,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: When the mage attacks, the decoy attacks every enemy in range in the
+        direction it is looking
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -3980,6 +4057,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7ac9a7172a4c06547a5dd1db0f0bc086,
+        type: 3}
+    - target: {fileID: 3869042088888453442, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4900391022121976626, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive
@@ -4084,6 +4172,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: idUpgrade
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: isInteractuable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -4103,6 +4201,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: When attacking a target, all units in it's surrounding tiles recieve
+        damage
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -4260,6 +4364,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8e8322ab48178794d86763c139e33110,
+        type: 3}
+    - target: {fileID: 3869042088888453442, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4900391022121976626, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive
@@ -4377,6 +4492,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.lineCount
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: When attacking a target, all adjacent units to it recieve damage, this
+        keeps happening until the last damaged units have no more adjacent units
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -4534,6 +4655,12 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9c19f2b78e696484c8305890be1fb04f,
+        type: 3}
     - target: {fileID: 3869042088888453442, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive
@@ -4648,6 +4775,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: idUpgrade
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: isInteractuable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -4667,6 +4804,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: When the mage changes positions with the decoy, it explodes
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -4824,6 +4966,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fbefbda70db74ec44b82549f4c280aab,
+        type: 3}
+    - target: {fileID: 3869042088888453442, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4900391022121976626, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive
@@ -4938,6 +5091,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1332255834711543536, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: idUpgrade
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -4957,6 +5115,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2192948028803789542, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_text
+      value: When the mage attacks, the decoy attacks the first enemy in range in
+        the direction it is looking
       objectReference: {fileID: 0}
     - target: {fileID: 2837455556660885508, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
@@ -5114,6 +5278,12 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.8562688
       objectReference: {fileID: 0}
+    - target: {fileID: 3592094543559475432, guid: 03d4e7ae09463e743a5b736858c6fce8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b135745cbbbf394b90448e5e155e325,
+        type: 3}
     - target: {fileID: 4900391022121976626, guid: 03d4e7ae09463e743a5b736858c6fce8,
         type: 3}
       propertyPath: m_IsActive

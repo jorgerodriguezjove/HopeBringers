@@ -488,13 +488,11 @@ public class Samurai : PlayerUnit
         {
             //Añado el daño de area solitaria
             damageWithMultipliersApplied += lonelyAreaDamage;
-
         }
+
         if (itsForHonorTime)
         {
-           
-                damageWithMultipliersApplied += LM.honorCount;
-            
+            damageWithMultipliersApplied += LM.honorCount;
         }
 
         damageWithMultipliersApplied += buffbonusStateDamage;

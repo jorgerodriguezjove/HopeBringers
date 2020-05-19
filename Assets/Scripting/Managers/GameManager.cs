@@ -426,6 +426,9 @@ public class GameManager : PersistentSingleton<GameManager>
 
             #region Characters
 
+            UITableManager UITM = FindObjectOfType<UITableManager>();
+            
+
             KnightData _knight = FindObjectOfType<KnightData>();
 
             _knight.unitPowerLevel = save.s_KnightPowerLevel;
@@ -435,6 +438,8 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     _knight.idSkillsBought.Add(save.s_KnightSkillsIds[i]);
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_knight);
             }
 
             RogueData _rogue = FindObjectOfType<RogueData>();
@@ -446,6 +451,8 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     _rogue.idSkillsBought.Add(save.s_RogueSkillsIds[i]);
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_rogue);
             }
 
             MageData _mage = FindObjectOfType<MageData>();
@@ -457,6 +464,8 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     _mage.idSkillsBought.Add(save.s_MageSkillsIds[i]);
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_mage);
             }
 
             BerserkerData _berserker = FindObjectOfType<BerserkerData>();
@@ -466,8 +475,10 @@ public class GameManager : PersistentSingleton<GameManager>
             {
                 for (int i = 0; i < save.s_BerserkerSkillsIds.Count; i++)
                 {
-                    _berserker.idSkillsBought.Add(save.s_BerserkerSkillsIds[i]);
+                    _berserker.idSkillsBought.Add(save.s_BerserkerSkillsIds[i]);   
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_berserker);
             }
 
             ValkyrieData _valkyrie = FindObjectOfType<ValkyrieData>();
@@ -479,6 +490,8 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     _valkyrie.idSkillsBought.Add(save.s_ValkyrieSkillsIds[i]);
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_valkyrie);
             }
 
             DruidData _druid = FindObjectOfType<DruidData>();
@@ -490,6 +503,8 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     _druid.idSkillsBought.Add(save.s_DruidSkillsIds[i]);
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_druid);
             }
 
             MonkData _monk = FindObjectOfType<MonkData>();
@@ -501,6 +516,8 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     _monk.idSkillsBought.Add(save.s_MonkSkillsIds[i]);
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_monk);
             }
 
             SamuraiData _samurai = FindObjectOfType<SamuraiData>();
@@ -512,8 +529,11 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     _samurai.idSkillsBought.Add(save.s_SamuraiSkillsIds[i]);
                 }
+
+                UITM.SetCharacterUpgradeBookInfo(_samurai);
             }
 
+           
             #endregion
 
             enemiesKilled = save.s_enemiesKilled;
@@ -902,7 +922,6 @@ public class GameManager : PersistentSingleton<GameManager>
             SteamUserStats.ClearAchievement(_achievementId);
         }
     }
-    
 
     public void CheckUpgradeAchievements()
     {
