@@ -712,6 +712,8 @@ public class GameManager : PersistentSingleton<GameManager>
 
             #region Characters
 
+           
+
             KnightData _knight = FindObjectOfType<KnightData>();
 
             _knight.unitPowerLevel = _knight.initialPowerLevelOnlyUsedForResetSaveFile;
@@ -725,6 +727,9 @@ public class GameManager : PersistentSingleton<GameManager>
             _mage.isCharacterUnlocked = true;
             _mage.idSkillsBought.Clear();
 
+            //Añado al mago y al caballero para que salgan en la caja de selección al principio
+            characterDataForCurrentLevel.Add(_knight);
+            characterDataForCurrentLevel.Add(_mage);
 
             RogueData _rogue = FindObjectOfType<RogueData>();
             _rogue.unitPowerLevel = _rogue.initialPowerLevelOnlyUsedForResetSaveFile;
@@ -781,7 +786,6 @@ public class GameManager : PersistentSingleton<GameManager>
 
 
     #endregion
-
 
     #region ACHIEVEMENTS
 
@@ -947,7 +951,8 @@ public class GameManager : PersistentSingleton<GameManager>
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            //DEBUGDeleteSaveFile();
+            DEBUGDeleteSaveFile();
+            Debug.Log("Archivo de Guardado Borrado DEBUG");
         }
 
     }

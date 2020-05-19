@@ -39,6 +39,9 @@ public class TileManager : MonoBehaviour
 
     int gridSizeY;
 
+    //Lista que guarda todos los colliders en escena para luego poder ocultarlos
+    List<Collider> colliderTiles = new List<Collider>();
+
     [Header("FUNCIÓN CREAR PATH")]
 
     //Diccionario con distancia a nodos
@@ -167,11 +170,13 @@ public class TileManager : MonoBehaviour
                         if (Physics.CheckSphere(worldPoint, nodeRadius, startingTileMask))
                         {
                             startingTile = true;
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, startingTileMask)[0]);
                         }
 
                         else if (Physics.CheckSphere(worldPoint, nodeRadius, finishingTileMask))
                         {
                             finishingTile = true;
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, finishingTileMask)[0]);
                         }
 
                         else if (Physics.CheckSphere(worldPoint, nodeRadius, obstacleMask))
@@ -179,6 +184,7 @@ public class TileManager : MonoBehaviour
                             empty = false;
                             isObstacle = true;
                             noTileInThisColumn = false;
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, obstacleMask)[0]);
                         }
 
                         else if (Physics.CheckSphere(worldPoint, nodeRadius, noTileHereMask))
@@ -186,6 +192,7 @@ public class TileManager : MonoBehaviour
                             empty = false;
                             isObstacle = true;
                             noTileInThisColumn = true;
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, noTileHereMask)[0]);
                         }
                     }
 
@@ -196,12 +203,15 @@ public class TileManager : MonoBehaviour
                         if (Physics.CheckSphere(worldPoint, nodeRadius, startingTileMask))
                         {
                             startingTile = true;
+
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, startingTileMask)[0]);
                         }
 
                         //Compruebo si es un tile en el que se puede colocar a un personaje
                         else if (Physics.CheckSphere(worldPoint, nodeRadius, finishingTileMask))
                         {
                             startingTile = true;
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, finishingTileMask)[0]);
                         }
 
 
@@ -211,6 +221,7 @@ public class TileManager : MonoBehaviour
                             empty = false;
                             isObstacle = true;
                             noTileInThisColumn = false;
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, obstacleMask)[0]);
                         }
 
                         //Compruebo si es un obstáculos que no tiene tiles encima
@@ -219,6 +230,7 @@ public class TileManager : MonoBehaviour
                             empty = false;
                             isObstacle = true;
                             noTileInThisColumn = true;
+                            colliderTiles.Add(Physics.OverlapSphere(worldPoint, nodeRadius, noTileHereMask)[0]);
                         }
 
                         else if (grid3DNode[x, y - 1, z].noTilesInThisColumn)
@@ -396,6 +408,19 @@ public class TileManager : MonoBehaviour
                 }
             }
         }
+
+        HideGridAfterFinish();
+    }
+
+    //Una vez terminado de setear los tiles se ocultan los colliders para que no molesten al hacer click
+    public void HideGridAfterFinish()
+    {
+        for (int i = 0; i < colliderTiles.Count; i++)
+        {
+            colliderTiles[i].enabled = false;
+        }
+
+        colliderTiles.Clear();
     }
 
     #endregion
