@@ -46,6 +46,7 @@ public class DamageTile : MonoBehaviour
             Instantiate(unitOnTile.GetComponent<Druid>().healerTilePref, transform.position, transform.rotation);
             Destroy(this.gameObject);
         }
+       
     }
     public virtual void OnTriggerStay(Collider unitOnTile)
 	{
@@ -65,7 +66,12 @@ public class DamageTile : MonoBehaviour
             unitToDoDamage = unitOnTile.gameObject;
             hasUnit = true;
         }
-	}
+
+        if (unitOnTile != null && unitOnTile.GetComponent<HealerTile>())
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     public virtual void OnTriggerExit(Collider unitOnTile)
     {

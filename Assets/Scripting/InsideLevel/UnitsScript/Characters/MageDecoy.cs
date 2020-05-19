@@ -64,8 +64,7 @@ public class MageDecoy : Mage
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
 
-        //Animación de ataque
-        myAnimator.SetTrigger("Death");
+        
 
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
 
@@ -93,6 +92,10 @@ public class MageDecoy : Mage
             myMage.myDecoys.Remove(gameObject);
             LM.charactersOnTheBoard.Remove(this);
             EnableUnableCollider(false);
+
+            myCurrentTile.unitOnTile = null;
+            myCurrentTile.WarnInmediateNeighbours();
+            Destroy(gameObject);
         }
     }
 
@@ -125,6 +128,10 @@ public class MageDecoy : Mage
         LM.charactersOnTheBoard.Remove(this);
 
         EnableUnableCollider(false);
+
+        myCurrentTile.unitOnTile = null;
+        myCurrentTile.WarnInmediateNeighbours();
+        Destroy(gameObject);
     }
 
     //Es virtual para el decoy del mago.

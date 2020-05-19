@@ -358,6 +358,7 @@ public class UnitBase : MonoBehaviour
     //Para los enemigos que se mueven se usa CalculateDamagePreviousAttack
     public virtual void CalculateDamage(UnitBase unitToDealDamage)
     {
+        HideDamageIcons(this);
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;
 
@@ -365,12 +366,15 @@ public class UnitBase : MonoBehaviour
         if (unitToDealDamage.myCurrentTile.height > myCurrentTile.height)
         {
             damageWithMultipliersApplied -= penalizatorDamageLessHeight;
+            downToUpDamageIcon.SetActive(true);
         }
 
         //Si estoy en ventaja de altura hago más daño
         else if (unitToDealDamage.myCurrentTile.height < myCurrentTile.height)
         {
             damageWithMultipliersApplied += bonusDamageMoreHeight;
+            upToDownDamageIcon.SetActive(true);
+            
         }
 
         //Si le ataco por la espalda hago más daño
@@ -410,6 +414,8 @@ public class UnitBase : MonoBehaviour
             {
                 //Ataque por la espalda
                 damageWithMultipliersApplied += bonusDamageBackAttack;
+                backStabIcon.SetActive(true);
+               
             }
         }
         damageWithMultipliersApplied += buffbonusStateDamage;
@@ -491,6 +497,7 @@ public class UnitBase : MonoBehaviour
     //Prueba para calcular damages en el hover
     public virtual void CalculateDamagePreviousAttack(UnitBase unitToDealDamage, UnitBase unitAttacking, IndividualTiles tileWhereUnitDealingDamageEnds, FacingDirection endFacingDirection)
     {
+        HideDamageIcons(this);
         //Reseteo la variable de daño a realizar
         unitAttacking.damageWithMultipliersApplied = unitAttacking.baseDamage;
 
@@ -498,17 +505,20 @@ public class UnitBase : MonoBehaviour
         if (unitToDealDamage.myCurrentTile.height > tileWhereUnitDealingDamageEnds.height)
         {
             unitAttacking.damageWithMultipliersApplied -= unitAttacking.penalizatorDamageLessHeight;
+            downToUpDamageIcon.SetActive(true);
         }
 
         //Si estoy en ventaja de altura hago más daño
         else if (unitToDealDamage.myCurrentTile.height < tileWhereUnitDealingDamageEnds.height)
         {
             unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageMoreHeight;
+            upToDownDamageIcon.SetActive(true);
         }
 
         //Si le ataco por la espalda hago más daño
         if (unitToDealDamage.currentFacingDirection == endFacingDirection)
         {
+            backStabIcon.SetActive(true);
             //Ataque por la espalda
             unitAttacking.damageWithMultipliersApplied += unitAttacking.bonusDamageBackAttack;
         }
@@ -1396,6 +1406,13 @@ public class UnitBase : MonoBehaviour
     public void EnableUnableCollider(bool _shouldEnableCollider)
     {
         GetComponent<Collider>().enabled = _shouldEnableCollider;
+    }
+
+    public void HideDamageIcons(UnitBase unitToHide)
+    {
+        unitToHide.downToUpDamageIcon.SetActive(false);
+        unitToHide.upToDownDamageIcon.SetActive(false);
+        unitToHide.backStabIcon.SetActive(false);
     }
 
 }

@@ -28,15 +28,21 @@ public class HealerTile : DamageTile
                 unitOnTile.GetComponent<UnitBase>().buffbonusStateDamage = 1;
             }
         }
+         
     }
     public override void OnTriggerStay(Collider unitOnTile)
     {
-      
+        if (unitOnTile.GetComponent<HealerTile>() != null && unitOnTile.GetComponent<HealerTile>().unitToDoDamage != null)
+        {
+            Destroy(this.gameObject);
+        } 
         if (unitOnTile.GetComponent<UnitBase>())
         {
             unitToDoDamage = unitOnTile.gameObject;
             hasUnit = true;
         }
+
+     
     }
 
     public override void OnTriggerExit(Collider unitOnTile)

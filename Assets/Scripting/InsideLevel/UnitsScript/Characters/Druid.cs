@@ -708,6 +708,7 @@ public class Druid : PlayerUnit
                     healNumeber = healedLife;
                 }
 
+                healthBar.SetActive(true);
                 canvasHover.SetActive(true);
                 canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healNumeber);
                 canvasHover.GetComponent<CanvasHover>().damageNumber.color = new Color32(0, 255, 50, 255);
@@ -749,7 +750,9 @@ public class Druid : PlayerUnit
         }
 
         tilesInEnemyHover.Clear();
+        healthBar.SetActive(false);
 
+        canvasHover.SetActive(false);
         _unitToAttack.canvasHover.SetActive(false);
         _unitToAttack.ResetColor();
         _unitToAttack.myCurrentTile.ColorBorderRed();

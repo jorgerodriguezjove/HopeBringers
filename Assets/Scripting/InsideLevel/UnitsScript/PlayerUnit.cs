@@ -561,6 +561,7 @@ public class PlayerUnit : UnitBase
 
         }
 
+      
         //Al acabar al movimiento aviso a levelManager de que avise a los enemigos para ver si serán alertados.
         LM.AlertEnemiesOfPlayerMovement();
     }
@@ -590,6 +591,14 @@ public class PlayerUnit : UnitBase
 
                 //Espera entre casillas
                 yield return new WaitForSeconds(timeMovementAnimation);
+            }
+
+            //Estas líneas las añado para comprobar si el caballero tiene que defender
+            Knight knightDef = FindObjectOfType<Knight>();
+
+            if (knightDef != null && knightDef != this)
+            {
+                CheckIfKnightIsDefendingAfterUnitMovement(knightDef, currentFacingDirection);
             }
 
             //Desactivo el trail de partículas de movimiento
@@ -931,18 +940,18 @@ public class PlayerUnit : UnitBase
                         || (knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttackingDirection == FacingDirection.East)
                         || (knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttackingDirection == FacingDirection.West))
                     {
+                        
+                            //Si tiene la segunda mejora el valor es 999 porque bloquea todo el daño 
+                            if (knightThatDef.isBlockingNeighboursFull)
+                            {
+                                knightThatDef.shieldDef = 999;
+                            }
 
-                        //Si tiene la segunda mejora el valor es 999 porque bloquea todo el daño 
-                        if (knightThatDef.isBlockingNeighboursFull)
-                        {
-                            knightThatDef.shieldDef = 999;
-                        }
-
-                        //Si solo tiene la primera lo dejo con el valor mínimo (podría quitar este else en realidad pero lo dejo por claridad)
-                        else
-                        {
-                            knightThatDef.shieldDef = 1;
-                        }
+                            //Si solo tiene la primera lo dejo con el valor mínimo (podría quitar este else en realidad pero lo dejo por claridad)
+                            else
+                            {
+                                knightThatDef.shieldDef = 1;
+                            }                                               
                     }
 
                     //Si la dirección no coincide no protege nada
@@ -966,6 +975,90 @@ public class PlayerUnit : UnitBase
             }
         }
     }
+
+    public void CheckIfKnightIsDefendingAfterUnitMovement(Knight knightThatDef, FacingDirection unitThatIsAttackingDirection)
+    {
+        if (knightThatDef != null)
+        {
+            //Este es el valor que queremos que tenga para defender unidades
+            knightThatDef.shieldDef = 1;
+
+            //Si tiene la mejora
+            if (knightThatDef.isBlockingNeighbours)
+            {
+                //Compruebo si el caballero tiene como vecino a la unidad que esta comprobando
+                if (knightThatDef.myCurrentTile.neighbours.Contains(myCurrentTile))
+                {
+                    if ((knightThatDef.currentFacingDirection == FacingDirection.North && unitThatIsAttackingDirection == FacingDirection.North)
+                      && myCurrentTile == knightThatDef.myCurrentTile.tilesInLineLeft[0] || myCurrentTile == (knightThatDef.myCurrentTile.tilesInLineRight[0]))
+                    {
+                        if (knightThatDef.isBlockingNeighboursFull)
+                        {
+                            ShowHideFullShield(true);
+                        }
+                        else
+                        {
+                            ShowHidePartialShield(true);
+                        }
+
+                        StartCoroutine("HideShields");
+                    }else if ((knightThatDef.currentFacingDirection == FacingDirection.South && unitThatIsAttackingDirection == FacingDirection.South)
+                      && myCurrentTile == knightThatDef.myCurrentTile.tilesInLineLeft[0] || myCurrentTile == (knightThatDef.myCurrentTile.tilesInLineRight[0]))
+                    {
+                        if (knightThatDef.isBlockingNeighboursFull)
+                        {
+                            ShowHideFullShield(true);
+                        }
+                        else
+                        {
+                            ShowHidePartialShield(true);
+                        }
+
+                        StartCoroutine("HideShields");
+                    }
+                    else if ((knightThatDef.currentFacingDirection == FacingDirection.East && unitThatIsAttackingDirection == FacingDirection.East)
+                     && myCurrentTile == knightThatDef.myCurrentTile.tilesInLineUp[0] || myCurrentTile == (knightThatDef.myCurrentTile.tilesInLineDown[0]))
+                    {
+                        if (knightThatDef.isBlockingNeighboursFull)
+                        {
+                            ShowHideFullShield(true);
+                        }
+                        else
+                        {
+                            ShowHidePartialShield(true);
+                        }
+
+                        StartCoroutine("HideShields");
+                    }
+                    else if ((knightThatDef.currentFacingDirection == FacingDirection.West && unitThatIsAttackingDirection == FacingDirection.West)
+                     && myCurrentTile == knightThatDef.myCurrentTile.tilesInLineUp[0] || myCurrentTile == (knightThatDef.myCurrentTile.tilesInLineDown[0]))
+                    {
+                        if (knightThatDef.isBlockingNeighboursFull)
+                        {
+                            ShowHideFullShield(true);
+                        }
+                        else
+                        {
+                            ShowHidePartialShield(true);
+                        }
+
+                        StartCoroutine("HideShields");
+                    }
+                }
+            }
+        }
+    }
+
+    IEnumerator HideShields()
+    {
+
+        yield return new WaitForSeconds(0.5f);
+        
+            ShowHideFullShield(false);       
+            ShowHidePartialShield(false);
+        
+    }
+
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
@@ -1200,13 +1293,6 @@ public class PlayerUnit : UnitBase
         damageWithMultipliersApplied += buffbonusStateDamage;
 
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
-	}
-
-	public void HideDamageIcons(UnitBase unitToHide)
-	{
-        unitToHide.downToUpDamageIcon.SetActive(false);
-        unitToHide.upToDownDamageIcon.SetActive(false);
-        unitToHide.backStabIcon.SetActive(false);
 	}
 
 	public override void HealthBarOn_Off(bool isOn)

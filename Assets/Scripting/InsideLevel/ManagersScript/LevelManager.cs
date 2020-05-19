@@ -1863,7 +1863,7 @@ public class LevelManager : MonoBehaviour
 
             //Pausa
             yield return new WaitForSeconds(UIM.bannerTime);
-
+            
             //Comienza turno enemigo
             UIM.EnemyTurnBanner(false);
             BeginEnemyPhase();

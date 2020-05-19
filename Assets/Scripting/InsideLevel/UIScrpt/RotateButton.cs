@@ -46,6 +46,5 @@ public class RotateButton : MonoBehaviour
     {
         Debug.Log("Funciono");
         UIM.RotatePlayerInNewDirection(newDirection);
-    }
-
+    }   
 }
