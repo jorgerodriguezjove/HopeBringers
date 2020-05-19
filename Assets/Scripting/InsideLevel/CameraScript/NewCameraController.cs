@@ -415,7 +415,6 @@ public class NewCameraController : MonoBehaviour
             
         }
 
-        ZoomOut();
         canZoomCamera = false;
         iscameraLockedOnEnemy = false;
         lockCamera = true;
