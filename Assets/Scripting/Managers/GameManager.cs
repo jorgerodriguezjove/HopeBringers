@@ -304,7 +304,7 @@ public class GameManager : PersistentSingleton<GameManager>
             if (isInterlude && SceneManager.GetActiveScene().name == interludeSceneName)
             {
                 //Acaba interludio y se vuelve a level selection
-                SceneManager.LoadScene(AppScenes.MAP_SCENE, LoadSceneMode.Single);
+                CheckEndLevel(AppScenes.MAP_SCENE);
             }
 
             else

@@ -28,6 +28,16 @@ public class EnWatcher : EnemyUnit
         //Comprobar las unidades que hay en mi rango de acción
         unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
 
+        //Si esta oculto lo quito de la lista de objetivos
+        for (int i = 0; i < unitsInRange.Count; i++)
+        {
+            if (unitsInRange[i].isHidden)
+            {
+                unitsInRange.RemoveAt(i);
+                i--;
+            }
+        }
+
         //Si hay personajes del jugador en mi rango de acción paso a attacking donde me alerto y hago mi accion
         for (int i = 0; i < unitsInRange.Count; i++)
         {

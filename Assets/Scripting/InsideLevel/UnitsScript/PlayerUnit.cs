@@ -10,7 +10,7 @@ public class PlayerUnit : UnitBase
 
     [Header("COLOCACIÓN DE UNIDAD")]
     [SerializeField]
-    private bool characterStartedOnTheLevel;
+    public bool characterStartedOnTheLevel;
 
     [HideInInspector]
     public Transform initialPosInBox;
@@ -353,7 +353,7 @@ public class PlayerUnit : UnitBase
     //Es virtual para el decoy del mago.
     protected virtual void OnMouseEnter()
     {
-        if ( LM.currentLevelState == LevelManager.LevelState.Initializing)
+        if ( LM.currentLevelState == LevelManager.LevelState.Initializing &&  !characterStartedOnTheLevel)
         {
             SelectedColor();
         }

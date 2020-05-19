@@ -216,6 +216,16 @@ public class BossMultTile : EnemyUnit
                     }
                 }
 
+                //Si esta oculto lo quito de la lista de objetivos
+                for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+                {
+                    if (currentUnitsAvailableToAttack[i].isHidden)
+                    {
+                        currentUnitsAvailableToAttack.RemoveAt(i);
+                        i--;
+                    }
+                }
+
                 if (currentUnitsAvailableToAttack.Count >0)
                 {
                     return true;
@@ -238,6 +248,16 @@ public class BossMultTile : EnemyUnit
                     if (threeTilesInFront[i].unitOnTile != null)
                     {
                         currentUnitsAvailableToAttack.Add(threeTilesInFront[i].unitOnTile);
+                    }
+                }
+
+                //Si esta oculto lo quito de la lista de objetivos
+                for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+                {
+                    if (currentUnitsAvailableToAttack[i].isHidden)
+                    {
+                        currentUnitsAvailableToAttack.RemoveAt(i);
+                        i--;
                     }
                 }
 
@@ -292,7 +312,26 @@ public class BossMultTile : EnemyUnit
 
                 Instantiate(particleFire, coneTiles[i].transform);
             }
-            return true;
+
+            //Si esta oculto lo quito de la lista de objetivos
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                if (currentUnitsAvailableToAttack[i].isHidden)
+                {
+                    currentUnitsAvailableToAttack.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            if (currentUnitsAvailableToAttack.Count > 0)
+            {
+                return true;
+            }
+
+            else
+            {
+                return false;
+            }
         }
 
         else

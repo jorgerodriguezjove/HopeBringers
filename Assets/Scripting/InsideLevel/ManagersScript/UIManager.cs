@@ -874,6 +874,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void BackToLevelSelectionButtonLosingGame()
+    {
+        //Lo pongo en null para que no desbloquee el personaje
+        GameManager.Instance.newCharacterToUnlock = null;
+        GameManager.Instance.CheckEndLevel(AppScenes.MAP_SCENE);
+    }
+
     #endregion
 
     public void UpdateTurnNumber(int _currentTurn, int _turnLimit)

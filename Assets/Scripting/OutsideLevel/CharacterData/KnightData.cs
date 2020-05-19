@@ -54,8 +54,8 @@ public class KnightData : CharacterData
         specificStringCharacterUpgrades.Add("pushWider2Text", AppKnightUpgrades.pushWider2Text);
 
         //Pasivas
-        specificStringCharacterUpgrades.Add("individualBlock1Text", AppKnightUpgrades.individualBlock2Text);
-        specificStringCharacterUpgrades.Add("individualBlock2Text", AppKnightUpgrades.individualBlock1Text);
+        specificStringCharacterUpgrades.Add("individualBlock1Text", AppKnightUpgrades.individualBlock1Text);
+        specificStringCharacterUpgrades.Add("individualBlock2Text", AppKnightUpgrades.individualBlock2Text);
 
         specificStringCharacterUpgrades.Add("neighbourBlock1Text", AppKnightUpgrades.neighbourBlock1Text);
         specificStringCharacterUpgrades.Add("neighbourBlock2Text", AppKnightUpgrades.neighbourBlock2Text);

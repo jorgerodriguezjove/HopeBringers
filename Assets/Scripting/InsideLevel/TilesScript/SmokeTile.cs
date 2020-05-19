@@ -28,22 +28,21 @@ public class SmokeTile : DamageTile
                 unitToDoDamage = unitOnTile.gameObject;
                 hasUnit = true;
             }
+
             else if (unitOnTile.GetComponent<PlayerUnit>())
             {
                 unitToDoDamage = unitOnTile.gameObject;
                 unitToDoDamage.GetComponent<UnitBase>().isHidden = true;
                 hasUnit = true;
             }
-
         }
+
         else if(unitOnTile.GetComponent<PlayerUnit>())
         {
             unitToDoDamage = unitOnTile.gameObject;
             unitToDoDamage.GetComponent<UnitBase>().isHidden = true;
             hasUnit = true;
-        
         }
-       
     }
 
     public override void OnTriggerExit(Collider unitOnTile)
@@ -75,7 +74,19 @@ public class SmokeTile : DamageTile
 
     private void OnDestroy()
     {
-        myRogueReference.realBombsSpawned.Remove(gameObject);
-    }
+        if (myRogueReference != null)
+        {
+            myRogueReference.realBombsSpawned.Remove(gameObject);
+        }
+       
+        else
+        {
+            myRogueReference = FindObjectOfType<Rogue>();
 
+            if (myRogueReference != null)
+            {
+                myRogueReference.realBombsSpawned.Remove(gameObject);
+            }
+        }
+    }
 }

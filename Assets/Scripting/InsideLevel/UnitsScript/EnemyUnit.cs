@@ -364,6 +364,7 @@ public class EnemyUnit : UnitBase
             if (currentUnitsAvailableToAttack[i].isHidden)
             {
                 currentUnitsAvailableToAttack.Remove(currentUnitsAvailableToAttack[i]);
+                i--;
             }
         }
 
@@ -430,6 +431,12 @@ public class EnemyUnit : UnitBase
             if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && pathToObjective.Count > 2)
             {
                 sombraHoverUnit.SetActive(true);
+            }
+
+            //SI ES NEGATIVO SIGNIFICA QUE ES INACCESIBLE EL OBJETIVO (CREO)
+            if (limitantNumberOfTilesToMove < 0)
+            {
+                return;
             }
 
             //Coge
@@ -563,6 +570,16 @@ public class EnemyUnit : UnitBase
 
         if (keepSearching)
         {
+            //Si esta oculto lo quito de la lista de objetivos
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                if (currentUnitsAvailableToAttack[i].isHidden)
+                {
+                    currentUnitsAvailableToAttack.RemoveAt(i);
+                    i--;
+                }
+            }
+
             if (currentUnitsAvailableToAttack.Count == 1)
             {
                 myCurrentObjective = currentUnitsAvailableToAttack[0];
@@ -1544,7 +1561,7 @@ public class EnemyUnit : UnitBase
     //El bool solo se usa cuando se llama durante el turno enemigo
     public FacingDirection SpecialCheckRotation(IndividualTiles _tileToComparePosition, bool _DoAll)
     {
-        if (currentUnitsAvailableToAttack.Count > 0)
+        if (currentUnitsAvailableToAttack.Count > 0 && currentUnitsAvailableToAttack[0] != null)
         {
             //Arriba o abajo
             if (currentUnitsAvailableToAttack[0].myCurrentTile.tileX == _tileToComparePosition.tileX)
@@ -1648,6 +1665,13 @@ public class EnemyUnit : UnitBase
         else
         {
             limitantNumberOfTilesToMove = pathToObjective.Count - 2;
+        }
+
+        //Si es negativo CREO que el objetivo es inaccesible y paro.
+        if (pathToObjective.Count-1 < 0)
+        {
+            myCurrentEnemyState = enemyState.Ended;
+            return;
         }
 
         //Compruebo la dirección en la que se mueve para girar a la unidad

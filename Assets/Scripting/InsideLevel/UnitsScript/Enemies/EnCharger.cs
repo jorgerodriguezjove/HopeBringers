@@ -30,6 +30,16 @@ public class EnCharger : EnemyUnit
         //Busca enemigos en sus lineas
         CheckCharactersInLine(false, null);
 
+        //Si esta oculto lo quito de la lista de objetivos
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            if (currentUnitsAvailableToAttack[i].isHidden)
+            {
+                currentUnitsAvailableToAttack.RemoveAt(i);
+                i--;
+            }
+        }
+
         //Si coincide que hay varios personajes a la misma distancia, me quedo con el que tiene menos vida
         if (currentUnitsAvailableToAttack.Count > 1)
         {
@@ -732,6 +742,7 @@ public class EnCharger : EnemyUnit
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public override void SearchingObjectivesToAttackShowActionPathFinding()
     {
+
         myLineRenderer.positionCount += (pathToObjective.Count);
         for (int j = 0; j < pathToObjective.Count; j++)
         {

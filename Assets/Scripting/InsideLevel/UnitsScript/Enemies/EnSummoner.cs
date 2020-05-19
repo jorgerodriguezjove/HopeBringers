@@ -34,14 +34,23 @@ public class EnSummoner : EnemyUnit
             return;
         }
 
-            //Comprobar las unidades que hay en mi rango de acción
-            unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
+        //Comprobar las unidades que hay en mi rango de acción
+        unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
+
+        //Si esta oculto lo quito de la lista de objetivos
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            if (currentUnitsAvailableToAttack[i].isHidden)
+            {
+                currentUnitsAvailableToAttack.RemoveAt(i);
+                i--;
+            }
+        }
 
         if (myTierLevel == TierLevel.Level2)
         {
             for (int i = 0; i < unitsInRange.Count; i++)
             {
-
                 if (unitsInRange[i].GetComponent<EnemyUnit>())
                 {
                     ApplyBuffOrDebuffDamage(unitsInRange[i], enemyBuff, 3);
