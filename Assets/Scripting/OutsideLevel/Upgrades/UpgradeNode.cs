@@ -170,16 +170,16 @@ public class UpgradeNode : MonoBehaviour
 
             Debug.Log(myUnit.specificBoolCharacterUpgrades);
 
-           if (myUnit.specificBoolCharacterUpgrades.ContainsKey(upgradeName))
-           {
-               myUnit.specificBoolCharacterUpgrades[upgradeName] = true;
-           }
+            if (myUnit.specificBoolCharacterUpgrades.ContainsKey(upgradeName))
+            {
+                myUnit.specificBoolCharacterUpgrades[upgradeName] = true;
+            }
 
-           //Por si esta mal puesto el nombre
-           else
-           {
-               Debug.LogError("Diccionario Bool no contiene el nombre: " + upgradeName);
-           }
+            //Por si esta mal puesto el nombre
+            else
+            {
+                Debug.LogError("Diccionario Bool no contiene el nombre: " + upgradeName);
+            }
         }
 
         else
@@ -197,7 +197,7 @@ public class UpgradeNode : MonoBehaviour
             }
 
             //Si la mejora es específica del personaje
-            else if (myUnit.genericUpgrades.ContainsKey(upgradeName))
+            else if (myUnit.specificIntCharacterUpgrades.ContainsKey(upgradeName))
             {
                 myUnit.specificIntCharacterUpgrades[upgradeName] += valueAdded;
             }
