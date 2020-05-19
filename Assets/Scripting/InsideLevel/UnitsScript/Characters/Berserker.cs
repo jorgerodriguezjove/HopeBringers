@@ -726,12 +726,12 @@ public class Berserker : PlayerUnit
         {
             if (currentFacingDirection == FacingDirection.North)
             {
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                 }
 
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
                 }
@@ -739,12 +739,12 @@ public class Berserker : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.South)
             {
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
                 }
 
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                 }
@@ -752,12 +752,12 @@ public class Berserker : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.East)
             {
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
                 }
 
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
                 }
@@ -766,13 +766,13 @@ public class Berserker : PlayerUnit
             else if (currentFacingDirection == FacingDirection.West)
             {
 
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
 
                 }
 
-                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
+                if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0] != null)
                 {
                     tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
                 }
@@ -782,16 +782,15 @@ public class Berserker : PlayerUnit
         else if (circularAttack)
         {
             previousDirection = currentFacingDirection;
-            if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+            if (myCurrentTile.tilesInLineUp.Count > 0 && myCurrentTile.tilesInLineUp[0].unitOnTile != null)
             {
-
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineUp[0]);
                 currentFacingDirection = FacingDirection.North;
                 CalculateDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
                 myCurrentTile.tilesInLineUp[0].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             }
 
-            if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+            if (myCurrentTile.tilesInLineDown.Count > 0 && myCurrentTile.tilesInLineDown[0].unitOnTile != null)
             {
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineDown[0]);
                 currentFacingDirection = FacingDirection.South;
@@ -800,7 +799,7 @@ public class Berserker : PlayerUnit
             }
 
 
-            if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+            if (myCurrentTile.tilesInLineRight.Count > 0 && myCurrentTile.tilesInLineRight[0].unitOnTile != null)
             {
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineRight[0]);
                 currentFacingDirection = FacingDirection.East;
@@ -809,7 +808,7 @@ public class Berserker : PlayerUnit
             }
 
 
-            if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+            if (myCurrentTile.tilesInLineLeft.Count > 0 && myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
             {
                 tilesInEnemyHover.Add(myCurrentTile.tilesInLineLeft[0]);
                 currentFacingDirection = FacingDirection.West;
