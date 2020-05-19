@@ -767,4 +767,14 @@ public class UITableManager : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(AppSounds.BUTTONCLICK);
     }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            //Guardo el valor del sonido dejado al mover el slider
+            SoundManager.Instance.MusicVolumeSave = musicSlider.value;
+            SoundManager.Instance.SfxVolumeSave = sFXSlider.value;
+        }
+    }
 }
