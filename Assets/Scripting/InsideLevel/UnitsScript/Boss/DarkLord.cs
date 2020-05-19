@@ -250,6 +250,16 @@ public class DarkLord : EnemyUnit
                     //Determinamos el enemigo más cercano.
                     currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
 
+                    //Si esta oculto lo quito de la lista de objetivos
+                    for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+                    {
+                        if (currentUnitsAvailableToAttack[i].isHidden)
+                        {
+                            currentUnitsAvailableToAttack.RemoveAt(i);
+                            i--;
+                        }
+                    }
+
                     //Si no hay enemigos termina su turno
                     if (currentUnitsAvailableToAttack.Count == 0)
                     {
@@ -351,6 +361,16 @@ public class DarkLord : EnemyUnit
             }
         }
 
+        //Si esta oculto lo quito de la lista de objetivos
+        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+        {
+            if (currentUnitsAvailableToAttack[i].isHidden)
+            {
+                currentUnitsAvailableToAttack.RemoveAt(i);
+                i--;
+            }
+        }
+
         ///Comprueba si tiene + de 1 objetivo para hacer área
         if (currentUnitsAvailableToAttack.Count > 1)
         {
@@ -394,6 +414,16 @@ public class DarkLord : EnemyUnit
                     currentUnitsAvailableToAttack.Add(tilesToCheck[i].unitOnTile);
                     Debug.Log("El primer enemigo a mi alcance es"+ currentUnitsAvailableToAttack[0]);
                     break;
+                }
+            }
+
+            //Si esta oculto lo quito de la lista de objetivos
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                if (currentUnitsAvailableToAttack[i].isHidden)
+                {
+                    currentUnitsAvailableToAttack.RemoveAt(i);
+                    i--;
                 }
             }
 
@@ -444,6 +474,16 @@ public class DarkLord : EnemyUnit
                     coneTiles[i].unitOnTile.GetComponent<PlayerUnit>())
                 {
                     currentUnitsAvailableToAttack.Add(coneTiles[i].unitOnTile);
+                }
+            }
+
+            //Si esta oculto lo quito de la lista de objetivos
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                if (currentUnitsAvailableToAttack[i].isHidden)
+                {
+                    currentUnitsAvailableToAttack.RemoveAt(i);
+                    i--;
                 }
             }
 

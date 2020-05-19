@@ -44,10 +44,21 @@ public class EnGoblin : EnemyUnit
             //Determinamos el enemigo más cercano.
             currentUnitsAvailableToAttack = LM.CheckEnemyPathfinding(GetComponent<EnemyUnit>());
 
+            //Si esta oculto lo quito de la lista de objetivos
+            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+            {
+                if (currentUnitsAvailableToAttack[i].isHidden)
+                {
+                    currentUnitsAvailableToAttack.RemoveAt(i);
+                    i--;
+                }
+            }
+
             //Si no hay enemigos termina su turno
             if (currentUnitsAvailableToAttack.Count == 0)
             {
                 myCurrentEnemyState = enemyState.Ended;
+                return;
             }
 
             else if (currentUnitsAvailableToAttack.Count > 0)

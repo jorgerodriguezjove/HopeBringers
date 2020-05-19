@@ -49,6 +49,16 @@ public class EnBalista : EnemyUnit
                 //Buscas los enemigos en la línea de visión
                 CheckCharactersInLine(true, myCurrentTile);
 
+                //Si esta oculto lo quito de la lista de objetivos
+                for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
+                {
+                    if (currentUnitsAvailableToAttack[i].isHidden)
+                    {
+                        currentUnitsAvailableToAttack.RemoveAt(i);
+                        i--;
+                    }
+                }
+
                 //Si encuentra enemigos ataca
                 if (currentUnitsAvailableToAttack.Count > 0)
                 {
@@ -61,6 +71,7 @@ public class EnBalista : EnemyUnit
                     {
                         myCurrentEnemyState = enemyState.Ended;
                     }
+
                     else
                     {
                         myCurrentEnemyState = enemyState.Moving;
@@ -68,6 +79,7 @@ public class EnBalista : EnemyUnit
                 }
             }
         }
+
         else
         {
             myCurrentEnemyState = enemyState.Waiting;

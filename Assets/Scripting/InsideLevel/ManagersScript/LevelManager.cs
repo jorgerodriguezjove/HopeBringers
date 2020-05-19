@@ -1160,7 +1160,7 @@ public class LevelManager : MonoBehaviour
     public void SelectUnit(int movementUds, PlayerUnit clickedUnit)
     {
         //Si es el comienzo del nivel y estoy recolocando las unidades
-        if (currentLevelState == LevelState.Initializing)
+        if (currentLevelState == LevelState.Initializing && !clickedUnit.characterStartedOnTheLevel)
         {
             if (charactersAlreadyPlaced.Count <= GameManager.Instance.maxUnitsInThisLevel)
             {
