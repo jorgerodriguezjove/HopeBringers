@@ -172,15 +172,18 @@ public class CharacterData : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //Si es null es porque al cambiar de escena ha desaparecido la referencia
-        if (TM == null)
+        if (isCharacterUnlocked)
         {
-            TM = FindObjectOfType<TableManager>();
-            TM.OnClickCharacter(GetComponent<CharacterData>());
-        }
-        else
-        {
-            TM.OnClickCharacter(GetComponent<CharacterData>());
+            //Si es null es porque al cambiar de escena ha desaparecido la referencia
+            if (TM == null)
+            {
+                TM = FindObjectOfType<TableManager>();
+                TM.OnClickCharacter(GetComponent<CharacterData>());
+            }
+            else
+            {
+                TM.OnClickCharacter(GetComponent<CharacterData>());
+            }
         }
     }
 

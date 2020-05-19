@@ -856,7 +856,6 @@ public class UIManager : MonoBehaviour
         int total = bonus + _baseXp;
 
         totalXp.SetText(total.ToString());
-
     }
 
     public void BackToLevelSelectionButton()
