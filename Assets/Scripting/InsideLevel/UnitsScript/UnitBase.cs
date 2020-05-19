@@ -1165,7 +1165,7 @@ public class UnitBase : MonoBehaviour
     #endregion
 
     //Es virtual porque el mago tiene que añadir la funcionalidad de quitar el decoy
-    public virtual void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
+    public virtual void UndoMove(MoveCommand _moveCommand, IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
     {
         #region Rotation
 

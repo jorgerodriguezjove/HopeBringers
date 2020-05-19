@@ -485,8 +485,8 @@ public class UIManager : MonoBehaviour
 
         ICommand command = new MoveCommand(newDirection, currentPlayer.currentFacingDirection,
                                            currentPlayer.myCurrentTile, LM.tileToMoveAfterRotate,
-                                           LM.TM.currentPath, currentPlayer);
-                                           //currentPlayer.buffbonusStateDamage, currentPlayer.movementbu);
+                                           LM.TM.currentPath, currentPlayer,
+                                           currentPlayer.buffbonusStateDamage, currentPlayer.turnsWithBuffOrDebuff, currentPlayer.movementUds, currentPlayer.turnsWithMovementBuffOrDebuff);
         CommandInvoker.AddCommand(command);
     }
 

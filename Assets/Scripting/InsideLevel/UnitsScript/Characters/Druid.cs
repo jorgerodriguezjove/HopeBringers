@@ -37,8 +37,14 @@ public class Druid : PlayerUnit
     public bool tileTransformer;
 
     //Parece que esta lista guarda los tiles de sombra.
-    [HideInInspector]
-    public List<GameObject> tilesSpawned;
+    [SerializeField]
+    public List<GameObject> shadowTilesSpawned;
+
+    [SerializeField]
+    public List<GameObject> realTilesSpawned;
+
+    [SerializeField]
+    public List<GameObject> damageTilesReplaced;
 
     //bool mejora de la pasiva 1
     public bool tileTransformer2;
@@ -61,6 +67,7 @@ public class Druid : PlayerUnit
 
     [SerializeField]
     GameObject healParticle;
+
 
 
     #endregion
@@ -193,7 +200,7 @@ public class Druid : PlayerUnit
 
                 if (tileTransformer)
                 {
-                    Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation);
+                    realTilesSpawned.Add(Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation));
                 }
 
                 unitToAttack.currentHealth += healedLife;
@@ -218,8 +225,8 @@ public class Druid : PlayerUnit
 
                         if (tileTransformer)
                         {
-                           
-                            Instantiate(healerTilePref, TM.surroundingTiles[i].unitOnTile.transform.position, TM.surroundingTiles[i].unitOnTile.transform.rotation);
+
+                            realTilesSpawned.Add(Instantiate(healerTilePref, TM.surroundingTiles[i].unitOnTile.transform.position, TM.surroundingTiles[i].unitOnTile.transform.rotation));
                         }
 
                         //Curación
@@ -231,14 +238,14 @@ public class Druid : PlayerUnit
                     }
                 }
 
-                if (tilesSpawned.Count > 0)
+                if (shadowTilesSpawned.Count > 0)
                 {
-                    for (int i = 0; i < tilesSpawned.Count; i++)
+                    for (int i = 0; i < shadowTilesSpawned.Count; i++)
                     {
-                        Destroy(tilesSpawned[i].gameObject);
+                        Destroy(shadowTilesSpawned[i].gameObject);
                     }
 
-                    tilesSpawned.Clear();
+                    shadowTilesSpawned.Clear();
                 }
 
                 //IMPORTANTE PARA EL UNDO QUE LA VIDA SE QUITE AL FINAL
@@ -289,17 +296,17 @@ public class Druid : PlayerUnit
 
                 else if (tileTransformer)
                 {
-                    Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation);
+                    realTilesSpawned.Add(Instantiate(healerTilePref, unitToAttack.transform.position, unitToAttack.transform.rotation));
                 }
 
-                if (tilesSpawned.Count > 0)
+                if (shadowTilesSpawned.Count > 0)
                 {
-                    for (int i = 0; i < tilesSpawned.Count; i++)
+                    for (int i = 0; i < shadowTilesSpawned.Count; i++)
                     {
-                        Destroy(tilesSpawned[i].gameObject);
+                        Destroy(shadowTilesSpawned[i].gameObject);
                     }
 
-                    tilesSpawned.Clear();
+                    shadowTilesSpawned.Clear();
                 }
 
                 if (unitToAttack.currentHealth < unitToAttack.maxHealth) 
@@ -614,7 +621,7 @@ public class Druid : PlayerUnit
                         if (tileTransformer)
                         {
                             GameObject shadowTile = Instantiate(shadowHealerTilePref, tilesInEnemyHover[i].transform.position, tilesInEnemyHover[i].transform.rotation);
-                            tilesSpawned.Add(shadowTile);
+                            shadowTilesSpawned.Add(shadowTile);
                         }
 
                         tilesInEnemyHover[i].unitOnTile.canvasHover.GetComponent<CanvasHover>().damageNumber.SetText("+" + healedLife);
@@ -667,7 +674,7 @@ public class Druid : PlayerUnit
                 if (tileTransformer)
                 {
                     GameObject shadowTile = Instantiate(shadowHealerTilePref, _unitToAttack.transform.position, _unitToAttack.transform.rotation);
-                    tilesSpawned.Add(shadowTile);
+                    shadowTilesSpawned.Add(shadowTile);
                 }
 
                 if (individualHealer2)
@@ -728,14 +735,14 @@ public class Druid : PlayerUnit
 
         if (tileTransformer)
         {
-            if (tilesSpawned.Count > 0)
+            if (shadowTilesSpawned.Count > 0)
             {
-                for (int i = 0; i < tilesSpawned.Count; i++)
+                for (int i = 0; i < shadowTilesSpawned.Count; i++)
                 {
-                    Destroy(tilesSpawned[i].gameObject);
+                    Destroy(shadowTilesSpawned[i].gameObject);
                 }
 
-                tilesSpawned.Clear();
+                shadowTilesSpawned.Clear();
             }
         }
 
@@ -762,17 +769,26 @@ public class Druid : PlayerUnit
     {
         base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
-        //tiles instanciado y sustituido
+        //Tiles de curación instanciados borrados
+        for (int i = 0; i < realTilesSpawned.Count; i++)
+        {
+            if (!lastAttack._realTilesInstantiated.Contains(realTilesSpawned[i]))
+            {
+                Destroy(realTilesSpawned[i]);
+                realTilesSpawned.RemoveAt(i);
+                i--;
+            }   
+        }
+
+        damageTilesReplaced.Clear();
+
+        for (int i = 0; i < lastAttack._damageTilesReplaced.Count; i++)
+        {
+            lastAttack._damageTilesReplaced[i].SetActive(true);
+        }
 
         //healedLife en vez de buffbonusStateDamage
-        if (_isThisUnitTheAttacker)
-        {
-            healedLife = lastAttack.pj_damageBuffDebuff;
-        }
-
-        else
-        {
-            healedLife = lastAttack.obj_damageBuffDebuff;
-        }
+        healedLife = lastAttack._healedLife;
+        buffHeal = lastAttack._buffHeal;
     }
 }

@@ -697,9 +697,9 @@ public class Mage : PlayerUnit
     #endregion
 
 
-    public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
+    public override void UndoMove(MoveCommand _moveCommand,IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
     {
-        base.UndoMove(tileToMoveBack, rotationToTurnBack, shouldResetMovement);
+        base.UndoMove(_moveCommand,tileToMoveBack, rotationToTurnBack, shouldResetMovement);
 
         if (shouldResetMovement)
         {

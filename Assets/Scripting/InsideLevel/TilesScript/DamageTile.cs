@@ -43,8 +43,11 @@ public class DamageTile : MonoBehaviour
     {
         if (unitOnTile != null && unitOnTile.GetComponent<Druid>() && unitOnTile.GetComponent<Druid>().tileSustitute)
         {
-            Instantiate(unitOnTile.GetComponent<Druid>().healerTilePref, transform.position, transform.rotation);
-            Destroy(this.gameObject);
+            //unitOnTile.GetComponent<Druid>().CreateAttackCommand(null);
+
+            unitOnTile.GetComponent<Druid>().realTilesSpawned.Add(Instantiate(unitOnTile.GetComponent<Druid>().healerTilePref, transform.position, transform.rotation));
+            unitOnTile.GetComponent<Druid>().damageTilesReplaced.Add(this.gameObject);
+            this.gameObject.SetActive(false);
         }
        
     }

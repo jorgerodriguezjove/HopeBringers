@@ -201,7 +201,6 @@ public class PlayerUnit : UnitBase
 
         if (!isDead)
         {
-
             //Añado esto para stunnear a las unidades 
             if (!isStunned)
             {
@@ -676,9 +675,9 @@ public class PlayerUnit : UnitBase
         UIM.CheckActionsAvaliable();
     }
 
-    public override void UndoMove(IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
+    public override void UndoMove(MoveCommand _moveCommand ,IndividualTiles tileToMoveBack, FacingDirection rotationToTurnBack, bool shouldResetMovement)
     {
-        base.UndoMove(tileToMoveBack, rotationToTurnBack, shouldResetMovement);
+        base.UndoMove(_moveCommand, tileToMoveBack, rotationToTurnBack, shouldResetMovement);
 
         if (shouldResetMovement)
         {
@@ -691,8 +690,20 @@ public class PlayerUnit : UnitBase
         if (samuraiRef != null)
         {
             samuraiRef.CheckIfIsLonely();
-
         }
+
+        //Bufos y debufos
+
+        //Druida es especial y modifica healedlife
+        if (!GetComponent<Druid>())
+        {
+            buffbonusStateDamage = _moveCommand.pj_damageBuffDebuff;
+        }
+
+        turnsWithBuffOrDebuff = _moveCommand.pj_turnsDamageBuffDebuff;
+
+        movementUds = _moveCommand.pj_movementBuffDebuff;
+        turnsWithMovementBuffOrDebuff = _moveCommand.pj_turnsMovementBuffDebuff;
 
         UIM.RefreshTokens();
     }
@@ -700,7 +711,7 @@ public class PlayerUnit : UnitBase
     public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
         base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
-        
+
         if (_isThisUnitTheAttacker)
         {
             //Permitirle otra vez atacar
@@ -787,8 +798,8 @@ public class PlayerUnit : UnitBase
         else
         {
             //Permitirle otra vez atacar
-            hasAttacked = lastAttack.objHasMoved;
-            hasMoved = lastAttack.objHasAttacked;
+            hasMoved = lastAttack.objHasMoved;
+            hasAttacked = lastAttack.objHasAttacked;
 
             //Resetear el material
             ResetColor();
