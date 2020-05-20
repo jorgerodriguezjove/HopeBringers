@@ -6,45 +6,8 @@ using DG.Tweening;
 
 public class DarkLord : EnemyUnit
 {
-    [Header("TRASPASO DE ALMA")]
-    [SerializeField]
-    private int maxCooldownSoulsSkill;
-    private int currentCooldownSoulSkill;
-
-    //Bool que indica cuál es el dark lord original (ya que los enemigos controlados usan este script también)
-    [SerializeField]
-    public bool amITheOriginalDarkLord;
-
-    private bool currentlyPossesing;
-
     [SerializeField]
     private GameObject obstacleWhilePossesing;
-
-    bool coneUsed;
-    bool normalAttackUsed;
-
-    private int attackCountThisTurn;
-
-    [Header("ÁREA")]
-    bool areaCharged;
-
-    List<IndividualTiles> tilesInArea = new List<IndividualTiles>();
-
-    [Header("CONO")]
-    [SerializeField]
-    int coneRange = 5;
-
-    [Header("ATAQUE NORMAL")]
-    [SerializeField]
-    int normalAttackRange = 2;
-
-    //Lista que va guardando las listas de tiles que saco de los calculos del TileManager
-    List<IndividualTiles> tilesToCheck = new List<IndividualTiles>();
-    //El cono es especial porque en tilesToCheck guardo la línea central del cono y en cone tile guardo el cono entero
-    List<IndividualTiles> coneTiles = new List<IndividualTiles>();
-
-    //Tiles que se pintan al atacar
-    List<IndividualTiles> tilesToPaint = new List<IndividualTiles>();
 
     [SerializeField]
     private GameObject particleDisappear;
@@ -55,7 +18,10 @@ public class DarkLord : EnemyUnit
     #region COPIA_GOBLIN
 
     protected override void Awake()
-    {  
+    {
+        amITheOriginalDarkLord = true;
+        amIBeingPossesed = false;
+
         //Le digo al enemigo cual es el LevelManager del nivel actual
         LevelManagerRef = FindObjectOfType<LevelManager>().gameObject;
         UIM = FindObjectOfType<UIManager>();
@@ -95,19 +61,22 @@ public class DarkLord : EnemyUnit
         fMovementUds = movementUds;
     }
 
-    public void InitializeAfterPosesion(int _currentEnemyHealth)
-    {
-        currentHealth = _currentEnemyHealth;
-        LM.enemiesOnTheBoard.Insert(1, this);
-        FindAndSetFirstTile();
-        //myCurrentEnemyState = enemyState.Searching;
-    }
+    //public void InitializeAfterPosesion(int _currentEnemyHealth)
+    //{
+    //    currentHealth = _currentEnemyHealth;
+    //    LM.enemiesOnTheBoard.Insert(1, this);
+    //    FindAndSetFirstTile();
+    //    //myCurrentEnemyState = enemyState.Searching;
+
+    //    bossPortrait = FindObjectOfType<PortraitBoss>();
+    //}
 
     private void Start()
     {
         currentCooldownSoulSkill = maxCooldownSoulsSkill;
     }
 
+    //Pasada a gob
     public override void SearchingObjectivesToAttack()
     {
         myCurrentObjective = null;
@@ -601,8 +570,6 @@ public class DarkLord : EnemyUnit
             DoDamage(currentUnitsAvailableToAttack[i]);
         }
     }
-
-    List<IndividualTiles> tilesListToPull = new List<IndividualTiles>();
 
     private void DoConeAttack()
     {

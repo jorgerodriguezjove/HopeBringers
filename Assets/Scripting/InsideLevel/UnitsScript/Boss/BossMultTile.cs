@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class BossMultTile : EnemyUnit
 {
-    int coneRange = 5;
+    new int coneRange = 5;
 
     [SerializeField]
     private GameObject particleCharging;
@@ -26,7 +26,7 @@ public class BossMultTile : EnemyUnit
     [SerializeField]
     private bool isPhase2;
 
-    private int attackCountThisTurn;
+    new private int attackCountThisTurn;
 
     [SerializeField]
     private bool isBeamOrMeteoriteCharged;
@@ -34,7 +34,7 @@ public class BossMultTile : EnemyUnit
     [SerializeField]
     bool sweepOrStompUsed;
     [SerializeField]
-    bool coneUsed;
+    new bool coneUsed;
 
 
     [SerializeField]

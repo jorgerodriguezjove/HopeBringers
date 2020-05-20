@@ -125,6 +125,51 @@ public class EnemyUnit : UnitBase
     [SerializeField]
     private GameObject interrogationParticle;
 
+    [Header("DARK LORD")]
+    
+    //ATAQUE CONO
+    [SerializeField]
+    protected int coneRange = 5;
+
+    protected bool coneUsed;
+
+    protected List<IndividualTiles> tilesListToPull = new List<IndividualTiles>();
+
+    //ATAQUE NORMAL
+    [SerializeField]
+    protected int normalAttackRange = 2;
+
+    protected bool normalAttackUsed;
+
+    protected bool areaCharged;
+    protected List<IndividualTiles> tilesInArea = new List<IndividualTiles>();
+
+    //TRASPASO DE ALMA
+    [SerializeField]
+    protected int maxCooldownSoulsSkill;
+    protected int currentCooldownSoulSkill;
+
+    //Bool que indica cuál es el dark lord original (ya que los enemigos controlados usan este script también)
+    [SerializeField]
+    public bool amITheOriginalDarkLord = false;
+
+    //Esto lo uso para que cambie el comportamiento de los enemigos (esta hardcodeado)
+    [SerializeField]
+    public bool amIBeingPossesed = false;
+
+    //Bool que indica si el dark lord está poseyendo a un enemigo ahora mismo
+    protected bool currentlyPossesing = false;
+
+    //Lista que va guardando las listas de tiles que saco de los calculos del TileManager
+    protected List<IndividualTiles> tilesToCheck = new List<IndividualTiles>();
+    //El cono es especial porque en tilesToCheck guardo la línea central del cono y en cone tile guardo el cono entero
+    protected List<IndividualTiles> coneTiles = new List<IndividualTiles>();
+    //Tiles que se pintan al atacar
+    protected List<IndividualTiles> tilesToPaint = new List<IndividualTiles>();
+
+    //Número de ataques que ha hecho este turno
+    protected private int attackCountThisTurn;
+
     [Header("FEEDBACK")]
 
     //Flecha que indica que enemigo está realizando su acción.
@@ -388,7 +433,12 @@ public class EnemyUnit : UnitBase
     {
         DesAlertEnemy();
         haveIBeenAlerted = true;
-        Destroy(sleepParticle);
+
+        if (sleepParticle != null)
+        {
+            Destroy(sleepParticle);
+        }
+        
         rangeOfAction = 1000;
     }
 
@@ -1000,7 +1050,6 @@ public class EnemyUnit : UnitBase
         Knight knightRef = FindObjectOfType<Knight>();
         if (knightRef != null)
         {
-
             knightRef.HideAttackEffect(this);
         }
 
@@ -1026,15 +1075,9 @@ public class EnemyUnit : UnitBase
 
     public void StartPosesion()
     {
-        if (GetComponent<DarkLord>() && GetComponent<DarkLord>() != this)
-        {
-           
-        }
+        amIBeingPossesed = true;
 
-        GetComponent<DarkLord>().enabled = true;
-        GetComponent<DarkLord>().amITheOriginalDarkLord = false;
-
-        gameObject.name = "Poseido";
+        gameObject.name = name + " Poseido";
 
         arrowEnemyIndicator.SetActive(false);
         myCurrentEnemyState = enemyState.Waiting;
@@ -1043,12 +1086,11 @@ public class EnemyUnit : UnitBase
         LM.HideEnemyHover(GetComponent<EnemyUnit>());
         hasMoved = false;
         hasAttacked = false;
-        myCurrentEnemyState = enemyState.Waiting;
+        
 
         //Me aseguro de que el tiempo de movimiento vuelve a la normalidad por si le ha dado a acelerar
         currentTimeForMovement = timeMovementAnimation;
 
-        Debug.Log(6);
         currentTimeWaitingBeforeStarting = timeWaitingBeforeStarting;
         currentTimeWaitinBeforeMovement = timeWaitingBeforeMovement;
         currentTimeWaitinBeforeAttacking = timeWaitingBeforeAttacking;
@@ -1061,16 +1103,7 @@ public class EnemyUnit : UnitBase
 
         #endregion
 
-        LM.NextEnemyInList();
-
-        Debug.Log("d");
-        LM.enemiesOnTheBoard.Remove(this);
-        this.enabled = false;
-        GetComponent<DarkLord>().InitializeAfterPosesion(currentHealth);
-
-        return;
-
-      
+        AlertEnemy();
     }
 
     #endregion

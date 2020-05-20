@@ -292,6 +292,12 @@ public class LevelManager : MonoBehaviour
                 enemiesOnTheBoard.RemoveAt(i);
                 i--;
             }
+
+            if (enemiesOnTheBoard[i].GetComponent<DarkLord>() && !enemiesOnTheBoard[i].GetComponent<DarkLord>().amITheOriginalDarkLord)
+            {
+                enemiesOnTheBoard.RemoveAt(i);
+                i--;
+            }
         }
 
         //Se activa la cámara
