@@ -155,8 +155,6 @@ public class MechaBoss : EnemyUnit
     {
         bossPortrait.FlipAttackTokens();
 
-        base.Attack();
-
         if (isCharging)
         {
             Debug.Log("disparo");
@@ -178,7 +176,8 @@ public class MechaBoss : EnemyUnit
         }
     }
 
-    bool isCharging;
+    [HideInInspector]
+    public bool isCharging;
 
     List<IndividualTiles> middleLineTilesInFront = new List<IndividualTiles>();
     List<IndividualTiles> lateralMidLineTiles = new List<IndividualTiles>();
@@ -226,8 +225,23 @@ public class MechaBoss : EnemyUnit
             if (beamTiles[i].unitOnTile != null && beamTiles[i].unitOnTile.GetComponent<UnitBase>())
             {
                 DoDamage(beamTiles[i].unitOnTile);
+
+                //Mostrar numero de daño sobre los personajes
+                CalculateDamagePreviousAttack(beamTiles[i].unitOnTile, GetComponent<UnitBase>(), myCurrentTile, currentFacingDirection);
+                beamTiles[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
             }
             beamTiles[i].ColorDesAttack();
+        }
+    }
+
+    public void CleanObjectiveNumerDamage()
+    {
+        for (int i = 0; i < GetComponent<MechaBoss>().beamTiles.Count; i++)
+        {
+            if (beamTiles[i].unitOnTile != null && beamTiles[i].unitOnTile.GetComponent<UnitBase>())
+            {
+                beamTiles[i].unitOnTile.DisableCanvasHover();
+            }
         }
     }
 
@@ -431,5 +445,22 @@ public class MechaBoss : EnemyUnit
     {
         bossPortrait.FlipMovementToken();
         base.MoveUnit();
+    }
+
+    public override void MoveToTilePushed(IndividualTiles newTile)
+    {
+       
+        base.MoveToTilePushed(newTile);
+
+        if (isCharging)
+        {
+            for (int i = 0; i < beamTiles.Count; i++)
+            {
+                beamTiles[i].ColorDesAttack();
+            }
+
+
+            CheckTilesForBeam();
+        }
     }
 }

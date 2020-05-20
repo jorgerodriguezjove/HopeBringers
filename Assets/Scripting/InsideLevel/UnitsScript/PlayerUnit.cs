@@ -1303,6 +1303,11 @@ public class PlayerUnit : UnitBase
 
         damageWithMultipliersApplied += buffbonusStateDamage;
 
+        if (unitToDealDamage.GetComponent<MechaBoss>() && !unitToDealDamage.GetComponent<MechaBoss>().isCharging)
+        {
+            damageWithMultipliersApplied = 0;
+        }
+
         Debug.Log("Daño base: " + baseDamage + " Daño con multiplicadores " + damageWithMultipliersApplied);
 	}
 

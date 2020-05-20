@@ -275,6 +275,7 @@ public class EnemyUnit : UnitBase
                 {
                     SearchingObjectivesToAttack();
                 }
+
                 else
                 {
                     
@@ -347,6 +348,12 @@ public class EnemyUnit : UnitBase
         else if (myCurrentEnemyState == enemyState.Ended)
         {
             yield return new WaitForSeconds(currentTimeWaitingBeforeEnding);
+
+            if (GetComponent<MechaBoss>())
+            {
+                GetComponent<MechaBoss>().CleanObjectiveNumerDamage();
+            }
+
             arrowEnemyIndicator.SetActive(false);
             FinishMyActions();
         }
@@ -1795,7 +1802,9 @@ public class EnemyUnit : UnitBase
 
     public virtual void Attack()
     {
-        //Cada enemigo realiza su propio ataque
+        //Cada enemigo realiza su propio ataque.
+
+        //Probablemente otros enemigos tambien, pero MechaBoss no implementa la base
 
         if (currentUnitsAvailableToAttack.Count > 0)
         {

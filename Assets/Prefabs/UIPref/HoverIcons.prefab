@@ -29,8 +29,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5309769963491838011}
-  - {fileID: 9160112161000707545}
-  - {fileID: 3104838564378168062}
+  - {fileID: 753407572667032811}
+  - {fileID: 1439612799663374495}
   - {fileID: 7599434327262877816}
   - {fileID: 3269165472409337051}
   - {fileID: 2300835486980617060}
@@ -64,14 +64,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 50
     m_Right: 0
-    m_Top: 0
+    m_Top: 50
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 100, y: 100}
+  m_CellSize: {x: 0.1, y: 0.1}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -555,6 +555,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8354165641596990750}
     m_Modifications:
+    - target: {fileID: 3235908749714267859, guid: bbcf3013b46246f4682ab01ea0f4c732,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6450180053069901793, guid: bbcf3013b46246f4682ab01ea0f4c732,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -622,9 +627,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbcf3013b46246f4682ab01ea0f4c732, type: 3}
---- !u!4 &9160112161000707545 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6450180053069901793, guid: bbcf3013b46246f4682ab01ea0f4c732,
+--- !u!224 &753407572667032811 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3235908749714267859, guid: bbcf3013b46246f4682ab01ea0f4c732,
     type: 3}
   m_PrefabInstance: {fileID: 2782351484797614648}
   m_PrefabAsset: {fileID: 0}
@@ -700,11 +705,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4581924344849454599, guid: 718ee292ca1ceeb429b6319318ddb3b1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 718ee292ca1ceeb429b6319318ddb3b1, type: 3}
---- !u!4 &3104838564378168062 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 538833152681712742, guid: 718ee292ca1ceeb429b6319318ddb3b1,
+--- !u!224 &1439612799663374495 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4581924344849454599, guid: 718ee292ca1ceeb429b6319318ddb3b1,
     type: 3}
   m_PrefabInstance: {fileID: 3201157583599425176}
   m_PrefabAsset: {fileID: 0}

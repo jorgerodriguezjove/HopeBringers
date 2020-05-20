@@ -551,7 +551,12 @@ public class UnitBase : MonoBehaviour
                 }
             }
         }
-        
+
+        if (unitToDealDamage.GetComponent<MechaBoss>() && !unitToDealDamage.GetComponent<MechaBoss>().isCharging)
+        {
+            damageWithMultipliersApplied = 0;
+        }
+
 
         #region Knight_Blocks
 
@@ -959,7 +964,7 @@ public class UnitBase : MonoBehaviour
             UpdateInformationAfterMovement(newTile);
         }  
     }
-
+    
     #endregion
 
     #region COLORS
