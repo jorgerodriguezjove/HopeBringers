@@ -14,6 +14,11 @@ public class RotateButton : MonoBehaviour
     private Material highlightedMat;
     private Material initialMaterial;
 
+    //[Header("COLORS")]
+    //[SerializeField]
+    //private Color32 highlightedColor;
+    //private Color32 initialColor;
+
     [Header("REFERENCIAS")]
     UIManager UIM;
 
@@ -24,22 +29,31 @@ public class RotateButton : MonoBehaviour
         UIM = FindObjectOfType<UIManager>();
         myMeshRenderer = GetComponent<MeshRenderer>();
         initialMaterial = myMeshRenderer.material;
+
+        //initialColor = myMeshRenderer.material.color;
+
     }
 
     private void OnMouseDown()
     {
         UIM.RotatePlayerInNewDirection(newDirection);
         myMeshRenderer.material = initialMaterial;
+
+        //myMeshRenderer.material.SetColor("Init", initialColor);
     }
 
     private void OnMouseEnter()
-    {
-        myMeshRenderer.material = highlightedMat;   
+    {                
+        myMeshRenderer.material = highlightedMat;
+
+        //myMeshRenderer.material.SetColor("Highlighted", highlightedColor);
     }
 
     private void OnMouseExit()
     {
         myMeshRenderer.material = initialMaterial;
+
+        //myMeshRenderer.material.SetColor("Init", initialColor);
     }
 
     public void UiManagerChangeDirection()
