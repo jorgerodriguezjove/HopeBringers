@@ -195,11 +195,13 @@ public class Crystal : EnemyUnit
             dragReference.RemoveCrystal(this);
         }
 
+        particleCrystalActive.SetActive(false);
+
         //BASE MODIFICADA DEL DIE ENEMIGO
         Debug.Log("Soy " + gameObject.name + " y he muerto");
         //Animación, sonido y partículas de muerte
         SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);
-        Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
+        Instantiate(deathParticle, gameObject.transform.position, deathParticle.transform.rotation);
 
         //Cambios en UI
         LM.HideHover(this);
@@ -219,6 +221,14 @@ public class Crystal : EnemyUnit
 
         //Estas dos llamadas tienen que ir despues del bool de isdead = true
         LM.UIM.SetEnemyOrder();
+
+
+        if (dragReference != null && dragReference.currentHealth == dragReference.maxHealth /2)
+        {
+            //Cambio de fase
+
+        }
+
     }
 
     

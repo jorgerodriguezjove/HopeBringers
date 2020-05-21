@@ -1468,7 +1468,7 @@ public class LevelManager : MonoBehaviour
         {
             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {
-                if (selectedCharacter.currentUnitsAvailableToAttack.Contains(clickedUnit))
+                if (selectedCharacter.currentUnitsAvailableToAttack.Contains(clickedUnit) && !GetComponent<BossMultTile>())
                 {
                     selectedCharacter.Attack(clickedUnit);
                 }

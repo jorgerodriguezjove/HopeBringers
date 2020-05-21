@@ -749,7 +749,7 @@ public class EnemyUnit : UnitBase
     //Al clickar en una unidad aviso al LM
     private void OnMouseDown()
     {
-        if (LM.selectedCharacter != null)
+        if (LM.selectedCharacter != null && GetComponent<BossMultTile>())
         {
             Debug.Log("Ataqie");
             LM.SelectUnitToAttack(GetComponent<UnitBase>());
@@ -766,6 +766,7 @@ public class EnemyUnit : UnitBase
                 }
             }
         }
+
 		//Doble click
 		clicked++;
 		if(clicked == 1)
@@ -850,13 +851,29 @@ public class EnemyUnit : UnitBase
             {
                 if (!isDead)
                 { 
-                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
-                   
-                    Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
-                    LM.CheckIfHoverShouldAppear(this);
-                    HealthBarOn_Off(true);
+                    //El dragón muestra lo mismo que si haces hover sobre un enemigo que no esta a tu alcance
+                    if (GetComponent<BossMultTile>())
+                    {
+                        HealthBarOn_Off(true);
+
+                        if (myPortrait != null)
+                            myPortrait.HighlightMyself();
+
+                        SelectedColor();
+                    }
+
+                    else
+                    {
+                        LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
+
+                        Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
+                        LM.CheckIfHoverShouldAppear(this);
+                        HealthBarOn_Off(true);
+                    }
                 }
             }
+
+            //Hover enemigo que no esta a alcance de personaje seleccionado
             else if (LM.selectedCharacter != null && !LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
                 if (!isDead)
