@@ -247,7 +247,7 @@ public class AppSamuraiUpgrades
     ///Textos
     public static readonly string parry1Text = "When attacking a target, Samurai prepares his attack. When is about to get hit, he cancels the damage dealt by the target and deals it back to it";
     public static readonly string parry2Text = "When attacking a target, Samurai prepares his attack. When is about to get hit, he cancels the damage dealt by the target and deals it back to it. " +
-		"Also, if whith his attack prepared recieves damage from his sides he reflects it to the target";
+		"Also, if with his attack prepared recieves damage from his sides, he attacks again to the target in the front";
 
     //MULTI ATTACK
     public static readonly string multiAttack1 = "multiAttack1";
