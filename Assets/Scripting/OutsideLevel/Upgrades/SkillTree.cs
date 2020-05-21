@@ -6,6 +6,10 @@ using TMPro;
 
 public class SkillTree : MonoBehaviour
 {
+    //Esto lo uso para que cuando los character data vuelvan del nivel puedan encontrar su arbol de habilidades correpsondiente y volver a guardar la referencia
+    [SerializeField]
+    public int characterId;
+
     [Header("ALL UPGRADES")]
     //Lista con todas las upgrades dentro del árbol
     [SerializeField]
@@ -34,7 +38,6 @@ public class SkillTree : MonoBehaviour
     //Aqui van todas las upgrades que son segundas mejoras
     [SerializeField]
     public List<UpgradeNode> pasive2Upgrades = new List<UpgradeNode>();
-
 
     [SerializeField]
     Image baseActiveIcon;

@@ -5,8 +5,6 @@ using DG.Tweening;
 
 public class BossMultTile : EnemyUnit
 {
-    new int coneRange = 5;
-
     [SerializeField]
     private GameObject particleCharging;
 
@@ -26,16 +24,11 @@ public class BossMultTile : EnemyUnit
     [SerializeField]
     private bool isPhase2;
 
-    new private int attackCountThisTurn;
-
     [SerializeField]
     private bool isBeamOrMeteoriteCharged;
 
     [SerializeField]
     bool sweepOrStompUsed;
-    [SerializeField]
-    new bool coneUsed;
-
 
     [SerializeField]
     List<IndividualTiles> exteriorTiles = new List<IndividualTiles>();
@@ -51,6 +44,17 @@ public class BossMultTile : EnemyUnit
         base.InitializeUnitOnTile();
 
         UpdateInformationAfterMovement(myCurrentTile);
+
+        Debug.Log(crystalList.Count);
+
+        //Ordenar por velocidad
+        crystalList.Sort(delegate (Crystal a, Crystal b)
+        {
+            return (b.GetComponent<Crystal>().speed).CompareTo(a.GetComponent<Crystal>().speed);
+
+        });
+
+        crystalList[0].ActivateCrystal();
     }
 
     //Override a la información que se actualiza al moverse
@@ -93,7 +97,7 @@ public class BossMultTile : EnemyUnit
 
         else
         {
-            crystalList[0].ActiveCrystal();
+            crystalList[0].ActivateCrystal();
         }
     }
 
@@ -280,7 +284,6 @@ public class BossMultTile : EnemyUnit
         }
     }
 
-    List<IndividualTiles> coneTiles = new List<IndividualTiles>();
     List<IndividualTiles> middleLineConeTiles = new List<IndividualTiles>();
 
     private bool CheckFireCone()
@@ -419,9 +422,6 @@ public class BossMultTile : EnemyUnit
             DoDamage(currentUnitsAvailableToAttack[i]);
         }
     }
-
-    List<IndividualTiles> tilesListToPull = new List<IndividualTiles>();
-
 
     private void DoConoFuego()
     {

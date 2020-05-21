@@ -89,6 +89,8 @@ public class CharacterData : MonoBehaviour
 
 
         initialPosition = gameObject.transform.position;
+
+        skillTreePrefab.GetComponent<SkillTree>().characterId = idCharacter;
     }
 
     LevelNode[] allLevelNodes;
@@ -106,9 +108,20 @@ public class CharacterData : MonoBehaviour
 
         else
         {
+            GameObject skillTreesParent = FindObjectOfType<CanvasSkillTreesContainer>().gameObject;
+
+            for (int i = 0; i < skillTreesParent.transform.childCount; i++)
+            {
+                SkillTree tempSkillTree = skillTreesParent.transform.GetChild(i).GetComponent<SkillTree>();
+
+                if (tempSkillTree.characterId == idCharacter)
+                {
+                    skillTreePrefab = tempSkillTree.gameObject;
+                }
+            }
+
             //Hacer reaparecer el modelo 
             HideShowMeshCharacterData(true);
-
 
             Debug.Log("NEW CHARACTERINO");
             InitializeCharacterToUnlocks();

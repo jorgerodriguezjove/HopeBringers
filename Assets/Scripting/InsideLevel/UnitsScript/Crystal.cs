@@ -39,23 +39,17 @@ public class Crystal : EnemyUnit
         if (dragReference != null)
         {
             dragReference.crystalList.Add(this);
-
-            if (dragReference.crystalList.Count == 1)
-            {
-                isCrystalActive = true;
-            }
-
-            else
-            {
-                isCrystalActive = false;
-            }
         }
 
         else
         {
-            isCrystalActive = true;
+            ActivateCrystal();
         }
+    }
 
+    public void ActivateCrystal()
+    {
+        isCrystalActive = true;
         particleCrystalActive.SetActive(isCrystalActive);
     }
 
@@ -201,7 +195,6 @@ public class Crystal : EnemyUnit
             dragReference.RemoveCrystal(this);
         }
 
-
         //BASE MODIFICADA DEL DIE ENEMIGO
         Debug.Log("Soy " + gameObject.name + " y he muerto");
         //Animación, sonido y partículas de muerte
@@ -249,11 +242,5 @@ public class Crystal : EnemyUnit
         }
 
         base.EnableCanvasHover(damageReceived);
-    }
-
-    public void ActiveCrystal()
-    {
-        isCrystalActive = true;
-        particleCrystalActive.SetActive(true);
     }
 }
