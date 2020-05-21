@@ -1564,7 +1564,7 @@ public class Knight : PlayerUnit
         {
             for (int i = 0; i < tilesInEnemyHover.Count; i++)
             {
-                if (tilesInEnemyHover[i].unitOnTile != null)
+                if (tilesInEnemyHover[i] != null && tilesInEnemyHover[i].unitOnTile != null)
                 {
                     if (pushWider2)
                     {

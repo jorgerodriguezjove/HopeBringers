@@ -230,7 +230,7 @@ public class Druid : PlayerUnit
                         }
 
                         //Curación
-                        if (TM.surroundingTiles[i].unitOnTile.currentHealth < TM.surroundingTiles[i].unitOnTile.maxHealth)
+                        if (TM.surroundingTiles[i].unitOnTile.currentHealth < TM.surroundingTiles[i].unitOnTile.maxHealth && !TM.surroundingTiles[i].unitOnTile.GetComponent<BossMultTile>())
                         {
                             TM.surroundingTiles[i].unitOnTile.currentHealth += healedLife;
                             TM.surroundingTiles[i].unitOnTile.RefreshHealth(false);

@@ -320,18 +320,6 @@ public class GameManager : PersistentSingleton<GameManager>
 
         else
         {
-            if (SceneManager.GetActiveScene().name == AppScenes.DRAGON_SCENE)
-            {
-                isGamePaused = false;
-                LM.UIM.ActivateDialogHud(false);
-                Debug.Log("Se acabó el diálogo");
-                isGamePaused = false;
-
-                Debug.Break();
-
-                return;
-            }
-
             //Avisar de que salga ventana de victoria
             if (LM == null)
             {
@@ -385,30 +373,6 @@ public class GameManager : PersistentSingleton<GameManager>
         dialogManRef.OpenDialogWindow();
         ///SoundManager.Instance.PlaySound(AppSounds.ENTERDIALOG_SFX);
         ///npcEndsound = npcData.finalAudio;
-    }
-
-    public void StartDialogChangePhaseBoss()
-    {
-        dialogTime = true;
-
-        SoundManager.Instance.StopMusic();
-        SoundManager.Instance.PlayMusic(AppMusic.DIALOG_MUSIC);
-
-        //ESTE DIALOGO ES PLACEHOLDER PONER EL BUENO.
-        if (inkManRef == null)
-        {
-            inkManRef = FindObjectOfType<InkManager>();
-        }
-        inkManRef.inkJSONAsset = LM.DEBUG_DIALOG;
-
-        inkManRef.StartStory();
-
-        inkManRef.story.ChoosePathString(dialogInitializer);
-        inkManRef.RefreshView();
-
-        dialogManRef.OpenDialogWindow();
-
-        isGamePaused = true;
     }
 
     #endregion

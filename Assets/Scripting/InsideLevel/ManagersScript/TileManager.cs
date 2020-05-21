@@ -1358,7 +1358,7 @@ public class TileManager : MonoBehaviour
 
         if (selectedUnit == null || selectedUnit.myCurrentTile == null)
         {
-            Debug.Log("GetAllUnitsInRangeWithoutPathfinding null");
+            Debug.Log("GetAllUnitsInRangeWithoutPathfinding NULL");
             return unitsInRangeWithoutPathfinding;
         }
 
@@ -1419,6 +1419,12 @@ public class TileManager : MonoBehaviour
     public List<IndividualTiles> CheckAvailableTilesForEnemyAction(int movementUds, EnemyUnit selectedUnit)
     {
         tilesAvailableForEnemyAction.Clear();
+
+        if (selectedUnit == null || selectedUnit.myCurrentTile == null)
+        {
+            Debug.Log("CheckAvailableTilesForEnemyAction NULL");
+            return tilesAvailableForEnemyAction;
+        }
 
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
         for (int i = -movementUds; i < (movementUds * 2) + 1; i++)

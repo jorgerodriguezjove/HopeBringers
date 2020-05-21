@@ -271,6 +271,15 @@ public class EnBalista : EnemyUnit
     {
         if (!isDead)
         {
+            if (myCurrentTile == null)
+            {
+                FindAndSetFirstTile();
+                if (_referenceTile == null)
+                {
+                    _referenceTile = myCurrentTile;
+                }
+            }
+
             currentUnitsAvailableToAttack.Clear();
             tilesToShoot.Clear();
 
