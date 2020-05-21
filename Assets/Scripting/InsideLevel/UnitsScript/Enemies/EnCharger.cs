@@ -670,6 +670,11 @@ public class EnCharger : EnemyUnit
     {
         if (!isDead)
         {
+            if (myCurrentTile == null)
+            {
+                InitializeUnitOnTile();
+            }
+
             tilesBehindObjective.Clear();
             currentUnitsAvailableToAttack.Clear();
 

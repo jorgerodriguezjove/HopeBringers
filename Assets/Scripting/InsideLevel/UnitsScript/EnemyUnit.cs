@@ -613,6 +613,11 @@ public class EnemyUnit : UnitBase
     //Esta función sirve para que busque los objetivos a atacar pero sin que haga cambios en el turn state del enemigo
     public virtual void SearchingObjectivesToAttackShowActionPathFinding()
     {
+        //if (myCurrentTile == null)
+        //{
+        //    InitializeUnitOnTile();
+        //}
+
         //ESTA BASE ES LA LÓGICA DEL GOBLIN
         myCurrentObjective = null;
         myCurrentObjectiveTile = null;
@@ -1223,8 +1228,16 @@ public class EnemyUnit : UnitBase
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         //Cambios en la lógica para indicar que ha muerto
-        myCurrentTile.unitOnTile = null;
-        myCurrentTile.WarnInmediateNeighbours();
+        if (myCurrentTile != null)
+        {
+            if (myCurrentTile.unitOnTile != null)
+            {
+                myCurrentTile.unitOnTile = null;
+            }
+
+            myCurrentTile.WarnInmediateNeighbours();
+
+        }
 
         //Hago que visualmente desaparezca aunque no lo destryuo todavía.
         unitModel.SetActive(false);

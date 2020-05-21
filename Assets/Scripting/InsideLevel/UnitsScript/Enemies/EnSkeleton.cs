@@ -11,7 +11,8 @@ public class EnSkeleton : EnGoblin
     protected override void Awake()
     {
         base.Awake();
-        FindAndSetFirstTile();
+        InitializeUnitOnTile();
+        //FindAndSetFirstTile();
         LM.AlertEnemiesOfPlayerMovement();
       
     }

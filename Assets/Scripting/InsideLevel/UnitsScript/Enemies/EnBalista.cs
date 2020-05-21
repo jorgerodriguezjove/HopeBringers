@@ -273,7 +273,7 @@ public class EnBalista : EnemyUnit
         {
             if (myCurrentTile == null)
             {
-                FindAndSetFirstTile();
+                InitializeUnitOnTile();
                 if (_referenceTile == null)
                 {
                     _referenceTile = myCurrentTile;

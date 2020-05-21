@@ -501,6 +501,12 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
+
+            if (hoverUnit.myCurrentTile == null)
+            {
+                hoverUnit.GetComponent<UnitBase>().InitializeUnitOnTile();
+            }
+
             if (hoverUnit.GetComponent<EnBalista>())
             {
                 if (!hoverUnit.GetComponent<EnBalista>().isAttackPrepared)
@@ -1931,17 +1937,21 @@ public class LevelManager : MonoBehaviour
         //Quito los booleanos de los tiles de daño para que puedan hace daño el próximo turno.
         for (int i = 0; i < damageTilesInBoard.Count; i++)
         {
-            damageTilesInBoard[i].damageDone = false;
-
-            if (damageTilesInBoard[i].GetComponent<SmokeTile>())
+            if (damageTilesInBoard[i] != null)
             {
-                damageTilesInBoard[i].GetComponent<SmokeTile>().tileCounter--;
-                if (damageTilesInBoard[i].GetComponent<SmokeTile>().tileCounter <= 0)
+                damageTilesInBoard[i].damageDone = false;
+
+                if (damageTilesInBoard[i].GetComponent<SmokeTile>())
                 {
-                    Destroy(damageTilesInBoard[i]);
+                    damageTilesInBoard[i].GetComponent<SmokeTile>().tileCounter--;
+                    if (damageTilesInBoard[i].GetComponent<SmokeTile>().tileCounter <= 0)
+                    {
+                        Destroy(damageTilesInBoard[i]);
+                        damageTilesInBoard.RemoveAt(i);
+                        i--;
+                    }
                 }
             }
-           
         }
 
         //Me aseguro que no quedan tiles en la lista de tiles para moverse.
@@ -2005,23 +2015,49 @@ public class LevelManager : MonoBehaviour
             //Me aseguro de que el jugador no puede interactuar con sus pjs
             //Actualizo el número de unidades en el tablero (Lo hago aquí en vez de  al morir la unidad para que no se cambie el orden en medio del turno enemigo)
 
-            counterForEnemiesOrder = 0;
-
-            if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead && (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn))
+            for (counterForEnemiesOrder = 0; counterForEnemiesOrder < enemiesOnTheBoard.Count; counterForEnemiesOrder++)
             {
-                //Focus en enemigo si está despierto
-                camRef.SetCameraMovable(false, true);
-                camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+                if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead && (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn))
+                {
+                    //Focus en enemigo si está despierto
+                    camRef.SetCameraMovable(false, true);
+                    camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
 
-                //Turn Start
-                enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                    //Turn Start
+                    enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+                    break;
+                }
+
+                //Si el enemigo esta muerto o dormido y no va aser alertado paso al siguiente
             }
 
-            else
-            {
-                counterForEnemiesOrder = 0;
-                currentLevelState = LevelState.PlayerPhase;
-            }
+            
+
+            //if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead)
+            //{
+
+            //    //Si el enemigo esta dormido paso al siguiente
+            //    if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
+            //    {
+                    
+            //    }
+
+            //    else
+            //    {
+            //        //Focus en enemigo si está despierto
+            //        camRef.SetCameraMovable(false, true);
+            //        camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
+
+            //        //Turn Start
+            //        enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
+            //    }
+            //}
+
+            //else
+            //{
+            //    counterForEnemiesOrder = 0;
+            //    currentLevelState = LevelState.PlayerPhase;
+            //}
         }
     }
 
