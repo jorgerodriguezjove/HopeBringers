@@ -749,7 +749,7 @@ public class EnemyUnit : UnitBase
     //Al clickar en una unidad aviso al LM
     private void OnMouseDown()
     {
-        if (LM.selectedCharacter != null && GetComponent<BossMultTile>())
+        if (LM.selectedCharacter != null && !GetComponent<BossMultTile>())
         {
             Debug.Log("Ataqie");
             LM.SelectUnitToAttack(GetComponent<UnitBase>());

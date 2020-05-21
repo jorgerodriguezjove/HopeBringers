@@ -5,6 +5,8 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     #region VARIABLES
+    [SerializeField]
+    public TextAsset DEBUG_DIALOG;
 
     [SerializeField]
     //Offset negativo para determinar la altura de las flechas
@@ -285,18 +287,21 @@ public class LevelManager : MonoBehaviour
 
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
         {
-            enemiesOnTheBoard[i].InitializeUnitOnTile();
-
-            if (enemiesOnTheBoard[i].GetComponent<Crystal>())
+            if (i > 0)
             {
-                enemiesOnTheBoard.RemoveAt(i);
-                i--;
-            }
+                enemiesOnTheBoard[i].InitializeUnitOnTile();
 
-            if (enemiesOnTheBoard[i].GetComponent<DarkLord>() && !enemiesOnTheBoard[i].GetComponent<DarkLord>().amITheOriginalDarkLord)
-            {
-                enemiesOnTheBoard.RemoveAt(i);
-                i--;
+                if (enemiesOnTheBoard[i].GetComponent<Crystal>())
+                {
+                    enemiesOnTheBoard.RemoveAt(i);
+                    i--;
+                }
+
+                if (enemiesOnTheBoard[i].GetComponent<DarkLord>() && !enemiesOnTheBoard[i].GetComponent<DarkLord>().amITheOriginalDarkLord)
+                {
+                    enemiesOnTheBoard.RemoveAt(i);
+                    i--;
+                }
             }
         }
 
@@ -1328,7 +1333,7 @@ public class LevelManager : MonoBehaviour
                     DeselectEnemy();   
                 }
 
-                if (!selectedCharacter.isMovingorRotating)
+                if (!selectedCharacter.isMovingorRotating && !selectedCharacter.GetComponent<BossMultTile>())
                 {
                     SelectUnitToAttack(clickedUnit);
                 }
@@ -1464,7 +1469,7 @@ public class LevelManager : MonoBehaviour
     //Función que se llama al clickar sobre un enemigo o sobre un aliado si ya tengo seleccionado un personaje
     public void SelectUnitToAttack(UnitBase clickedUnit)
     {
-        if (selectedCharacter != null)
+        if (selectedCharacter != null && !clickedUnit.GetComponent<BossMultTile>())
         {
             if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > 0)
             {

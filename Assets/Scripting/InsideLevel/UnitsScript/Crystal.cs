@@ -225,8 +225,9 @@ public class Crystal : EnemyUnit
 
         if (dragReference != null && dragReference.currentHealth == dragReference.maxHealth /2)
         {
+            LM.UIM.ActivateDialogHud(true);
             //Cambio de fase
-
+            GameManager.Instance.StartDialogChangePhaseBoss();
         }
 
     }

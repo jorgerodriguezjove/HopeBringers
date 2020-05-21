@@ -210,6 +210,14 @@ public class UIManager : MonoBehaviour
         maxUnitsToPlace.SetText(GameManager.Instance.maxUnitsInThisLevel.ToString());
     }
 
+    public void ActivateDialogHud(bool _shouldShow)
+    {
+        hud3DInDialog.SetActive(_shouldShow);
+        hideDuringUnitPlacementHud.SetActive(!_shouldShow);
+        hudParentObject.SetActive(!_shouldShow);
+        hideDuringUnitPlacement3DHud.SetActive(_shouldShow);
+    }
+
     public void UpdateUnitsPlaced(int _currentUnitsPlaced)
     {
         currentUnitsPlaced.SetText(_currentUnitsPlaced.ToString());
