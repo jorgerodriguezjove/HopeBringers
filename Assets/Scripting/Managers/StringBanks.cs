@@ -442,7 +442,6 @@ public class AppScenes
     public static readonly string GAME_SCENE = "GameScene";
     public static readonly string CREDITS_SCENE = "Credits";
     public static readonly string MAP_SCENE = "LevelSelection";
-    public static readonly string DRAGON_SCENE = "DragonJorgeTesting";
 
 }
 

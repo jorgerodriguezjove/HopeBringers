@@ -5,6 +5,13 @@ using DG.Tweening;
 
 public class BossMultTile : EnemyUnit
 {
+
+    [SerializeField]
+    GameObject modelBeforeChangedPhase;
+
+    [SerializeField]
+    GameObject modelChangedPhase;
+
     [SerializeField]
     private GameObject particleCharging;
 
@@ -110,6 +117,18 @@ public class BossMultTile : EnemyUnit
         //Explosión particula en dragon
 
         //Insta Win
+    }
+
+    public void ChangePhase()
+    {
+        isPhase2 = true;
+
+        //Cambio de modelo
+        modelBeforeChangedPhase.SetActive(false);
+
+        modelChangedPhase.SetActive(false);
+
+        //Camara y efecto?
     }
 
     #region COPIA_GOBLIN
