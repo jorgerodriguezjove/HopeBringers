@@ -320,8 +320,19 @@ public class GameManager : PersistentSingleton<GameManager>
 
         else
         {
-            //Avisar de que salga ventana de victoria
+            if (SceneManager.GetActiveScene().name == AppScenes.DRAGON_SCENE)
+            {
+                isGamePaused = false;
+                LM.UIM.ActivateDialogHud(false);
+                Debug.Log("Se acabó el diálogo");
+                isGamePaused = false;
 
+                Debug.Break();
+
+                return;
+            }
+
+            //Avisar de que salga ventana de victoria
             if (LM == null)
             {
                 LM = FindObjectOfType<LevelManager>();
@@ -332,6 +343,8 @@ public class GameManager : PersistentSingleton<GameManager>
                  LM.VictoryScreen();
             }
         }
+
+        isGamePaused = false;
     }
 
     public void StartDialog(bool _isStartDialog) /*string dialogToReproduce, string NPCName , string NPCstartAudio, string NPCfinalAudio, List<string> NPCAudio, Sprite portraitNPC)*/
@@ -372,6 +385,30 @@ public class GameManager : PersistentSingleton<GameManager>
         dialogManRef.OpenDialogWindow();
         ///SoundManager.Instance.PlaySound(AppSounds.ENTERDIALOG_SFX);
         ///npcEndsound = npcData.finalAudio;
+    }
+
+    public void StartDialogChangePhaseBoss()
+    {
+        dialogTime = true;
+
+        SoundManager.Instance.StopMusic();
+        SoundManager.Instance.PlayMusic(AppMusic.DIALOG_MUSIC);
+
+        //ESTE DIALOGO ES PLACEHOLDER PONER EL BUENO.
+        if (inkManRef == null)
+        {
+            inkManRef = FindObjectOfType<InkManager>();
+        }
+        inkManRef.inkJSONAsset = LM.DEBUG_DIALOG;
+
+        inkManRef.StartStory();
+
+        inkManRef.story.ChoosePathString(dialogInitializer);
+        inkManRef.RefreshView();
+
+        dialogManRef.OpenDialogWindow();
+
+        isGamePaused = true;
     }
 
     #endregion

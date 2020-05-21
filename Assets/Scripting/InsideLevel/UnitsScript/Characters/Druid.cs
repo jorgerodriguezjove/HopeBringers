@@ -326,7 +326,7 @@ public class Druid : PlayerUnit
             else
             {
                 //Hay que cambiar
-                Instantiate(attackParticle, unitToAttack.transform.position, unitToAttack.transform.rotation);
+                Instantiate(attackParticle, unitToAttack.transform.position, attackParticle.transform.rotation);
 
                 //Hago daño
                 DoDamage(unitToAttack);

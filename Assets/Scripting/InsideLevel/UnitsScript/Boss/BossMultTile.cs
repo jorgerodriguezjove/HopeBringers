@@ -45,8 +45,6 @@ public class BossMultTile : EnemyUnit
 
         UpdateInformationAfterMovement(myCurrentTile);
 
-        Debug.Log(crystalList.Count);
-
         //Ordenar por velocidad
         crystalList.Sort(delegate (Crystal a, Crystal b)
         {
@@ -90,6 +88,8 @@ public class BossMultTile : EnemyUnit
     {
         crystalList.Remove(_crystal);
 
+        ReceiveDamage(1, null);
+
         if (crystalList.Count == 0)
         {
             LM.InstaWin(true);
@@ -99,6 +99,17 @@ public class BossMultTile : EnemyUnit
         {
             crystalList[0].ActivateCrystal();
         }
+    }
+
+    public void EpicWin()
+    {
+        //LLamar a Corrutina que haga
+
+        //Fijar cámara en dragón
+
+        //Explosión particula en dragon
+
+        //Insta Win
     }
 
     #region COPIA_GOBLIN
@@ -115,7 +126,7 @@ public class BossMultTile : EnemyUnit
             return;
         }
 
-        else
+        else if (attackCountThisTurn < numberOfAttackTokens)
         {
             if (isBeamOrMeteoriteCharged)
             {  
@@ -186,6 +197,22 @@ public class BossMultTile : EnemyUnit
                     return;
                 }
             }
+        }
+
+        else if (!hasMoved)
+        {
+            Debug.Log("Mover");
+
+            myCurrentEnemyState = enemyState.Moving;
+            return;
+        }
+
+        else
+        {
+            Debug.Log("Finish");
+
+            myCurrentEnemyState = enemyState.Ended;
+            return;
         }
     }
 
@@ -312,8 +339,6 @@ public class BossMultTile : EnemyUnit
                 {
                     currentUnitsAvailableToAttack.Add(coneTiles[i].unitOnTile);
                 }
-
-                Instantiate(particleFire, coneTiles[i].transform);
             }
 
             //Si esta oculto lo quito de la lista de objetivos
@@ -425,6 +450,11 @@ public class BossMultTile : EnemyUnit
 
     private void DoConoFuego()
     {
+        for (int i = 0; i < coneTiles.Count; i++)
+        {
+            Instantiate(particleFire, coneTiles[i].transform);
+        }
+
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
         {
             tilesListToPull.Clear();
@@ -519,6 +549,9 @@ public class BossMultTile : EnemyUnit
                 Instantiate(particleMeteorite, currentUnitsAvailableToAttack[i].transform);
             }
         }
+
+        isBeamOrMeteoriteCharged = false;
+        
     }
 
 

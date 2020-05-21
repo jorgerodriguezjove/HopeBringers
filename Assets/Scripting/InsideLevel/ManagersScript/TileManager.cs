@@ -1356,6 +1356,12 @@ public class TileManager : MonoBehaviour
     {
         unitsInRangeWithoutPathfinding.Clear();
 
+        if (selectedUnit == null || selectedUnit.myCurrentTile == null)
+        {
+            Debug.Log("GetAllUnitsInRangeWithoutPathfinding null");
+            return unitsInRangeWithoutPathfinding;
+        }
+
         //Recorro de izquierda a derecha los tiles que pueden estar disponibles para moverse (Va moviendose en X columna a columna)
         for (int i = -rangeToCheck; i < (rangeToCheck * 2) + 1; i++)
         {
