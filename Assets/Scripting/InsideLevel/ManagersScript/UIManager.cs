@@ -146,9 +146,11 @@ public class UIManager : MonoBehaviour
 	[@TextAreaAttribute(5, 10)]
 	string tutorialText3;
 
-    [Header("VICTORIA")]
+    [Header("VICTORIA/DEFEAT")]
     [SerializeField]
     GameObject victoryPanel;
+    [SerializeField]
+    GameObject defeatPanel;
 
     [SerializeField]
     TextMeshProUGUI baseXp;
@@ -179,6 +181,8 @@ public class UIManager : MonoBehaviour
     GameObject hideDuringUnitPlacementHud;
     [SerializeField]
     GameObject hideDuringUnitPlacement3DHud;
+    [SerializeField]
+    GameObject hideDuringDialogs;
 
     //Level Manager
     [HideInInspector]
@@ -200,10 +204,12 @@ public class UIManager : MonoBehaviour
 
     public void ActivateHudUnitPlacement()
     {
-        hud3DInDialog.SetActive(false);
+        hideDuringDialogs.SetActive(true);
         hud3DUnitPlacement.SetActive(true);
-        hideDuringUnitPlacementHud.SetActive(false);
         hudParentObject.SetActive(true);
+
+        hud3DInDialog.SetActive(false);
+        hideDuringUnitPlacementHud.SetActive(false);
         hideDuringUnitPlacement3DHud.SetActive(false);
 
         unitsToPlaceParent.SetActive(true);
@@ -852,6 +858,11 @@ public class UIManager : MonoBehaviour
 
     public void Victory(int _baseXp, int _charactersAlifeXp, int _turnsLeftXp)
     {
+        hideDuringDialogs.SetActive(false);
+        hideDuringUnitPlacement3DHud.SetActive(false);
+        hideDuringUnitPlacementHud.SetActive(false);
+
+
         victoryPanel.SetActive(true);
         baseXp.SetText(_baseXp.ToString());
         charactersAliveXp.SetText(_charactersAlifeXp.ToString());
@@ -864,6 +875,17 @@ public class UIManager : MonoBehaviour
         int total = bonus + _baseXp;
 
         totalXp.SetText(total.ToString());
+    }
+
+    public void Defeat()
+    {
+        hideDuringDialogs.SetActive(false);
+        hideDuringUnitPlacement3DHud.SetActive(false);
+        hideDuringUnitPlacementHud.SetActive(false);
+
+
+        defeatPanel.SetActive(true);
+
     }
 
     public void BackToLevelSelectionButton()

@@ -124,9 +124,6 @@ public class LevelManager : MonoBehaviour
     [HideInInspector]
     public MapGenerator MapGenRef;
 
-    //Referencia momentanea para el playtesting
-    [SerializeField]
-    private GameObject defeatPanel;
 
     [SerializeField]
     Camera hud3DCamera;
@@ -336,6 +333,8 @@ public class LevelManager : MonoBehaviour
 
             unitInstantiated.GetComponent<UnitBase>().InitializeHealth();
         }
+
+        GameManager.Instance.isGamePaused = false;
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
@@ -501,7 +500,6 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
-
             if (hoverUnit.myCurrentTile == null)
             {
                 hoverUnit.GetComponent<UnitBase>().InitializeUnitOnTile();
@@ -2174,7 +2172,7 @@ public class LevelManager : MonoBehaviour
         if (charactersOnTheBoard.Count == 0 || (!isObjectiveWaitForTurnLimit && currentTurn > turnLimit))
         {
             Debug.Log("Game Over");
-            defeatPanel.SetActive(true);
+            UIM.Defeat();
             UIM.optionsButton.SetActive(false);
             GameManager.Instance.LevelLost();
 

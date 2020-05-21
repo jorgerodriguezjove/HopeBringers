@@ -226,7 +226,10 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
 
     private void OnMouseDown()
     {
-        LM.TileClicked(this);
+        if (!GameManager.Instance.isGamePaused)
+        {
+            LM.TileClicked(this);
+        }
     }
 
     //Hover enter

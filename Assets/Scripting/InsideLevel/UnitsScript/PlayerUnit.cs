@@ -328,34 +328,37 @@ public class PlayerUnit : UnitBase
     //Es virtual para el decoy del mago.
     protected virtual void OnMouseDown()
     {
-        if (LM.selectedCharacter == this)
+        if (!GameManager.Instance.isGamePaused)
         {
-            LM.TileClicked(this.myCurrentTile);
-        }
-
-        else
-        {
-            Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
-            
-            if (valkyrieRef != null && valkyrieRef.changePositions && LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved)
+            if (LM.selectedCharacter == this)
             {
-                if (currentHealth <= valkyrieRef.numberCanChange)
-                {
-                    valkyrieRef.ChangePosition(this);
-                }
+                LM.TileClicked(this.myCurrentTile);
             }
-           
+
             else
             {
-                LM.SelectUnit(movementUds, this);
-            }  
-        }
+                Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+
+                if (valkyrieRef != null && valkyrieRef.changePositions && LM.selectedCharacter == valkyrieRef && !valkyrieRef.hasMoved)
+                {
+                    if (currentHealth <= valkyrieRef.numberCanChange)
+                    {
+                        valkyrieRef.ChangePosition(this);
+                    }
+                }
+
+                else
+                {
+                    LM.SelectUnit(movementUds, this);
+                }
+            }
+        }      
     }
 
     //Es virtual para el decoy del mago.
     protected virtual void OnMouseEnter()
     {
-        if ( LM.currentLevelState == LevelManager.LevelState.Initializing &&  !characterStartedOnTheLevel)
+        if (LM.currentLevelState == LevelManager.LevelState.Initializing && !characterStartedOnTheLevel)
         {
             SelectedColor();
         }
@@ -367,7 +370,7 @@ public class PlayerUnit : UnitBase
                 //Ataque
                 if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
                 {
-                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);                  
+                    LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
                     Cursor.SetCursor(LM.UIM.attackCursor, Vector2.zero, CursorMode.Auto);
                 }
 
@@ -386,7 +389,7 @@ public class PlayerUnit : UnitBase
                     Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
                     if (valkyrieRef != null && LM.selectedCharacter == valkyrieRef)
                     {
-                        
+
                         LM.CalculatePreviousActionPlayer(LM.selectedCharacter, this);
                     }
                 }

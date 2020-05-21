@@ -754,42 +754,45 @@ public class EnemyUnit : UnitBase
     //Al clickar en una unidad aviso al LM
     private void OnMouseDown()
     {
-        if (LM.selectedCharacter != null && !GetComponent<BossMultTile>())
+        if (!GameManager.Instance.isGamePaused)
         {
-            Debug.Log("Ataqie");
-            LM.SelectUnitToAttack(GetComponent<UnitBase>());
-        }
-        
-        else
-        {
-            if (!isDead)
+            if (LM.selectedCharacter != null && !GetComponent<BossMultTile>())
             {
-                if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
-                {
+                Debug.Log("Ataqie");
+                LM.SelectUnitToAttack(GetComponent<UnitBase>());
+            }
 
-                    LM.SelectEnemy(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
+            else
+            {
+                if (!isDead)
+                {
+                    if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
+                    {
+
+                        LM.SelectEnemy(GetComponent<EnemyUnit>().unitGeneralInfo, GetComponent<EnemyUnit>());
+                    }
                 }
             }
+
+            //Doble click
+            clicked++;
+            if (clicked == 1)
+            {
+                clickTime = Time.time;
+            }
+            if (clicked > 1 && (Time.time - clickTime) < clickDelay)
+            {
+                clicked = 0;
+                clickTime = 0;
+                LM.camRef.FocusCameraOnCharacter(gameObject);
+                //Focus camera
+            }
+            else if (clicked > 2 || Time.time - clickTime > 1)
+            {
+                clicked = 0;
+            }
+
         }
-
-		//Doble click
-		clicked++;
-		if(clicked == 1)
-		{
-			clickTime = Time.time;
-		}
-		if(clicked > 1 && (Time.time - clickTime) < clickDelay)
-		{
-			clicked = 0;
-			clickTime = 0;
-			LM.camRef.FocusCameraOnCharacter(gameObject);
-			//Focus camera
-		}
-		else if (clicked > 2 || Time.time - clickTime > 1)
-		{
-			clicked = 0;
-		}
-
     }
 
     //Función que guarda todo lo que ocurre cuando se selecciona un personaje. Esta función sirve para no repetir codigo y además para poder llamarla desde el Level Manager.
@@ -843,6 +846,7 @@ public class EnemyUnit : UnitBase
 
     private void OnMouseEnter()
     {
+
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && !GameManager.Instance.isGamePaused)
         {
             if (LM.selectedEnemy == null && LM.selectedCharacter == null)
@@ -855,7 +859,7 @@ public class EnemyUnit : UnitBase
             else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
                 if (!isDead)
-                { 
+                {
                     //El dragón muestra lo mismo que si haces hover sobre un enemigo que no esta a tu alcance
                     if (GetComponent<BossMultTile>())
                     {
