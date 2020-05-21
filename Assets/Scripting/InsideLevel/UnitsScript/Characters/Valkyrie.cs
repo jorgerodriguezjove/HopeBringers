@@ -881,6 +881,14 @@ public class Valkyrie : PlayerUnit
         base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
 
         CheckUnitsAndTilesInRangeToAttack(false);
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
+        UIM.CheckActionsAvaliable();
     }
 
 }

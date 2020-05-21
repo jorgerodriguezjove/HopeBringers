@@ -710,7 +710,16 @@ public class Mage : PlayerUnit
                 Destroy(myDecoys[myDecoys.Count - 1]);
                 myDecoys.RemoveAt(myDecoys.Count - 1);
             }
-        }   
+        }
+
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
+        UIM.CheckActionsAvaliable();
     }
 
     public override void ShowAttackEffect(UnitBase _unitToAttack)
@@ -910,6 +919,14 @@ public class Mage : PlayerUnit
     public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
     {
         base.UndoAttack(lastAttack, _isThisUnitTheAttacker);
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
+        UIM.CheckActionsAvaliable();
 
         //myDecoys.
         //Hacer la movida de los decoys

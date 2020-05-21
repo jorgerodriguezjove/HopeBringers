@@ -402,7 +402,7 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
-            hoverUnit.HealthBarOn_Off(true);
+            //hoverUnit.HealthBarOn_Off(true);
             //hoverUnit.GetComponent<PlayerHealthBar>().ReloadHealth();
             hoverUnit.myCurrentTile.ColorCurrentTileHover();
 
@@ -1246,7 +1246,7 @@ public class LevelManager : MonoBehaviour
                     selectedCharacter = clickedUnit;
 
                     selectedCharacter.myCurrentTile.ColorCurrentTileHover();
-                    selectedCharacter.HealthBarOn_Off(true);
+                    
 					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
                     selectedCharacter.SelectedColor();
 
@@ -1288,7 +1288,7 @@ public class LevelManager : MonoBehaviour
 
                     selectedCharacter = clickedUnit;
                     
-                    selectedCharacter.HealthBarOn_Off(true);
+                    
 					//selectedCharacter.GetComponent<PlayerHealthBar>().ReloadHealth();
 					/*UIM.ShowCharacterInfo(selectedCharacter.unitInfo, selectedCharacter);*/ /*Legacy Code*/
 					selectedCharacter.SelectedColor();
@@ -1346,8 +1346,8 @@ public class LevelManager : MonoBehaviour
                 selectedCharacter.isMovingorRotating = false;
                 selectedCharacter.canvasWithRotationArrows.gameObject.SetActive(false);
             }
-
-			selectedCharacter.HealthBarOn_Off(false);
+           
+            selectedCharacter.HealthBarOn_Off(false);
             selectedCharacter.previsualizeAttackIcon.SetActive(false);
             selectedCharacter.canvasHover.SetActive(false);
             selectedCharacter.notAttackX.SetActive(false);
@@ -1410,6 +1410,23 @@ public class LevelManager : MonoBehaviour
                 }
 
             }
+
+            //Estas líneas las añado para comprobar si el halo de la valquiria tiene que salir
+            Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
+            if (valkyrieRef != null)
+            {
+                valkyrieRef.ChangePositionIconFeedback(false, valkyrieRef);
+                //Desmarco las unidades disponibles para atacar
+                for (int i = 0; i < valkyrieRef.currentUnitsAvailableToAttack.Count; i++)
+                {
+                    if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
+                    {
+                        valkyrieRef.ChangePositionIconFeedback(false, valkyrieRef.currentUnitsAvailableToAttack[i]);
+                    }
+                }
+                valkyrieRef.CheckValkyrieHalo();
+            }
+
             selectedCharacter = null;
 
             //Reactivo el collider de las unidades que se les ha quitado al seleccionar tile para rotar.
@@ -1420,12 +1437,7 @@ public class LevelManager : MonoBehaviour
 
             unitsToEnableCollider.Clear();
 
-            //Estas líneas las añado para comprobar si el halo de la valquiria tiene que salir
-            Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
-            if (valkyrieRef!=null)
-            {
-                valkyrieRef.CheckValkyrieHalo();
-            }
+          
         }
 
         else if(selectedEnemy !=null)

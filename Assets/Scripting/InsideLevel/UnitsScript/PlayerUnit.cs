@@ -201,85 +201,7 @@ public class PlayerUnit : UnitBase
 
         if (!isDead)
         {
-            //Añado esto para stunnear a las unidades 
-            if (!isStunned)
-            {
-                turnsWithBuffOrDebuff--;
-                if (turnsWithBuffOrDebuff <= 0)
-                {
-                    turnsWithBuffOrDebuff = 0;
-                    if (GetComponent<Druid>())
-                    {
-                        GetComponent<Druid>().healedLife -= GetComponent<Druid>().buffHeal;
-                    }
-                    else
-                    {
-                        buffbonusStateDamage = 0;
-                    }
-
-                    SetBuffDebuffIcon(0, this, false);
-                }
-
-                turnsWithMovementBuffOrDebuff--;
-                if (turnsWithMovementBuffOrDebuff <= 0)
-                {
-                    turnsWithMovementBuffOrDebuff = 0;
-                    movementUds = fMovementUds;
-                    SetMovementIcon(0, this, false);
-                }
-
-                if (arrowIndicator != null)
-                {
-                    arrowIndicator.SetActive(true);
-                }
-                hasMoved = false;
-                if (movementTokenInGame != null)
-                {
-                    movementTokenInGame.SetActive(true);
-                }
-                hasAttacked = false;
-                if (attackTokenInGame != null)
-                {
-                    attackTokenInGame.SetActive(true);
-                }
-
-                //Refresco de los tokens para resetearlos en pantalla
-                UIM.RefreshTokens();
-                CheckWhatToDoWithSpecialsTokens();
-                isMovingorRotating = false;
-                unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
-                ResetSpecificVariables();
-            }
-            else
-            {
-                turnsWithBuffOrDebuff--;
-                if (turnsWithBuffOrDebuff <= 0)
-                {
-                    turnsWithBuffOrDebuff = 0;
-                    buffbonusStateDamage = 0;
-                }
-                if (arrowIndicator != null)
-                {
-                    arrowIndicator.SetActive(false);
-                }
-                hasMoved = true;
-
-                if (movementTokenInGame != null)
-                {
-                    movementTokenInGame.SetActive(false);
-                }
-                hasAttacked = true;
-                if (attackTokenInGame != null)
-                {
-                    attackTokenInGame.SetActive(false);
-                }
-                //Refresco de los tokens para resetearlos en pantalla
-                UIM.RefreshTokens();
-                CheckWhatToDoWithSpecialsTokens();
-                isMovingorRotating = false;
-                unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
-                ResetSpecificVariables();
-
+          
                 if (turnStunned <= 0)
                 {
                     isStunned = false;
@@ -287,7 +209,88 @@ public class PlayerUnit : UnitBase
                     SetStunIcon(this, false, false);
                 }
                 turnStunned--;
-            }
+
+                if (!isStunned)
+                {
+                    turnsWithBuffOrDebuff--;
+                    if (turnsWithBuffOrDebuff <= 0)
+                    {
+                        turnsWithBuffOrDebuff = 0;
+                        if (GetComponent<Druid>())
+                        {
+                            GetComponent<Druid>().healedLife -= GetComponent<Druid>().buffHeal;
+                        }
+                        else
+                        {
+                            buffbonusStateDamage = 0;
+                        }
+
+                        SetBuffDebuffIcon(0, this, false);
+                    }
+
+                    turnsWithMovementBuffOrDebuff--;
+                    if (turnsWithMovementBuffOrDebuff <= 0)
+                    {
+                        turnsWithMovementBuffOrDebuff = 0;
+                        movementUds = fMovementUds;
+                        SetMovementIcon(0, this, false);
+                    }
+
+                    if (arrowIndicator != null)
+                    {
+                        arrowIndicator.SetActive(true);
+                    }
+                    hasMoved = false;
+                    if (movementTokenInGame != null)
+                    {
+                        movementTokenInGame.SetActive(true);
+                    }
+                    hasAttacked = false;
+                    if (attackTokenInGame != null)
+                    {
+                        attackTokenInGame.SetActive(true);
+                    }
+
+                    //Refresco de los tokens para resetearlos en pantalla
+                    UIM.RefreshTokens();
+                    CheckWhatToDoWithSpecialsTokens();
+                    isMovingorRotating = false;
+                    unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = initMaterial;
+                    ResetSpecificVariables();
+                }
+                else
+                {
+                    turnsWithBuffOrDebuff--;
+                    if (turnsWithBuffOrDebuff <= 0)
+                    {
+                        turnsWithBuffOrDebuff = 0;
+                        buffbonusStateDamage = 0;
+                    }
+                    if (arrowIndicator != null)
+                    {
+                        arrowIndicator.SetActive(false);
+                    }
+                    hasMoved = true;
+
+                    if (movementTokenInGame != null)
+                    {
+                        movementTokenInGame.SetActive(false);
+                    }
+                    hasAttacked = true;
+                    if (attackTokenInGame != null)
+                    {
+                        attackTokenInGame.SetActive(false);
+                    }
+                    //Refresco de los tokens para resetearlos en pantalla
+                    UIM.RefreshTokens();
+                    CheckWhatToDoWithSpecialsTokens();
+                    isMovingorRotating = false;
+                    unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material = finishedMaterial;
+                    ResetSpecificVariables();
+
+
+                }
+            
 
         }
 
@@ -706,6 +709,14 @@ public class PlayerUnit : UnitBase
         turnsWithMovementBuffOrDebuff = _moveCommand.pj_turnsMovementBuffDebuff;
 
         UIM.RefreshTokens();
+        UIM.CheckActionsAvaliable();
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
     }
 
     public override void UndoAttack(AttackCommand lastAttack, bool _isThisUnitTheAttacker)
@@ -881,6 +892,14 @@ public class PlayerUnit : UnitBase
         RefreshHealth(false);
         UIM.RefreshHealth();
         UIM.RefreshTokens();
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
+        UIM.CheckActionsAvaliable();
     }
 
     #endregion
@@ -919,7 +938,22 @@ public class PlayerUnit : UnitBase
                 }
             }
         }
-       
+
+        //Estas líneas las añado para comprobar si el samurai tiene la mejora de la pasiva 1
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null )
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+
+        }
+        
+        //Añado esto para saber si tengo que resetear el honor
+         if (unitToAttack != null && unitToAttack.currentFacingDirection == currentFacingDirection)
+         {
+             LM.honorCount = 0;
+         }
+                                    
         UIM.CheckActionsAvaliable();
 
         //La unidad ha atacado y por tanto no puede hacer nada más. Así que espero a que acabe la animación y finalizo su turno.
@@ -1132,7 +1166,7 @@ public class PlayerUnit : UnitBase
 
             //Estas líneas las añado para comprobar si el halo de la valquiria tiene que salir
             Valkyrie valkyrieRef = FindObjectOfType<Valkyrie>();
-            if (valkyrieRef != null)
+            if (valkyrieRef != null && valkyrieRef != this)
             {
                 if (currentHealth <= valkyrieRef.numberCanChange)
                 {
@@ -1153,6 +1187,9 @@ public class PlayerUnit : UnitBase
 
     public override void Die()
     {
+        monkMark.SetActive(false);
+        monkMarkUpgrade.SetActive(false);
+
         if (GetComponent<Monk>())
         {
             for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
@@ -1343,6 +1380,7 @@ public class PlayerUnit : UnitBase
     //Función que llama el LevelManager al hacer hover sobre un objetivo al que poder atacar
     public virtual void ShowAttackEffect(UnitBase _unitToAttack)
     {
+        HealthBarOn_Off(true);
         //Cada personaje hace una cosa distinta
 
         if (pjMonkUnitReference != null)

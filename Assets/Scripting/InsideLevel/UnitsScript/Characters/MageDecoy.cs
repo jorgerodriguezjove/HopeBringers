@@ -64,7 +64,9 @@ public class MageDecoy : Mage
     {
         Debug.Log("Soy " + gameObject.name + " y he muerto");
 
-        
+        monkMark.SetActive(false);
+        monkMarkUpgrade.SetActive(false);
+
 
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
 
@@ -845,6 +847,14 @@ public class MageDecoy : Mage
             }
 
             EnableUnableCollider(true);
+            //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+            Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+            if (samuraiUpgraded != null)
+            {
+                samuraiUpgraded.RefreshHonorOnPortrait();
+            }
+            UIM.CheckActionsAvaliable();
         }
     }
 }

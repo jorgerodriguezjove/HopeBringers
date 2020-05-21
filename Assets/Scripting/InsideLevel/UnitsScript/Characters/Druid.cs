@@ -790,5 +790,16 @@ public class Druid : PlayerUnit
         //healedLife en vez de buffbonusStateDamage
         healedLife = lastAttack._healedLife;
         buffHeal = lastAttack._buffHeal;
+
+        UIM.CheckActionsAvaliable();
+
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
+
     }
 }

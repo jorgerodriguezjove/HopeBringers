@@ -913,6 +913,15 @@ public class Berserker : PlayerUnit
         Debug.Log("woooooowooo");
 
         //Quitar efectos de rage visuales si se le quita con el undo
+
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
+        UIM.CheckActionsAvaliable();
     }
 
     #region COLORS

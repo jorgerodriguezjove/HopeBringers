@@ -185,6 +185,11 @@ public class Samurai : PlayerUnit
         }
     }
 
+    public void RefreshHonorOnPortrait()
+    {
+       myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = LM.honorCount.ToString();
+    }
+
     public override void CheckUnitsAndTilesInRangeToAttack(bool _shouldPaintEnemiesAndShowHealthbar)
     {
         CheckIfIsLonely();
@@ -502,7 +507,7 @@ public class Samurai : PlayerUnit
 
     public override void ReceiveDamage(int damageReceived, UnitBase unitAttacker)
     {
-        if (parryOn)
+        if (parryOn && unitToParry != null)
         {
             particleParryAttack.SetActive(true);
 
@@ -692,6 +697,16 @@ public class Samurai : PlayerUnit
         //Falta Honor
         currentHonor = lastAttack.honor;
         LM.honorCount = currentHonor;
+
+        //Estas líneas las añado para comprobar si hay samurai y si hay que actualizar el honor
+        Samurai samuraiUpgraded = FindObjectOfType<Samurai>();
+
+        if (samuraiUpgraded != null)
+        {
+            samuraiUpgraded.RefreshHonorOnPortrait();
+        }
+
+        UIM.CheckActionsAvaliable();
     }
 
 }

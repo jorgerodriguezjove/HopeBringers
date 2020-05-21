@@ -285,13 +285,22 @@ public class EnemyUnit : UnitBase
         switch (myCurrentEnemyState)
         {
             case (enemyState.Waiting):
+
+                if (isMarked && isDead)
+                {
+                    isMarked = false;
+                    monkMark.SetActive(false);
+                    monkMarkUpgrade.SetActive(false);
+                }
+
                 break;
 
             case (enemyState.Searching):
 
                 //Aqui no hay wait, porque se tiene que esperar antes de empezar a buscar, no con cada busqueda.
 
-                arrowEnemyIndicator.SetActive(true);
+                HealthBarOn_Off(true);
+                //arrowEnemyIndicator.SetActive(true);
 
 
                 turnsWithBuffOrDebuff--;
@@ -332,7 +341,16 @@ public class EnemyUnit : UnitBase
                         
                     }
                     turnStunned--;
-                    myCurrentEnemyState = enemyState.Ended;
+
+                    //Añado esto para stunnear a los enemigos 
+                    if (!isStunned)
+                    {
+                        SearchingObjectivesToAttack();
+                    }
+                    else
+                    {
+                        myCurrentEnemyState = enemyState.Ended;
+                    }                    
                 }
 
                 break;
@@ -399,7 +417,9 @@ public class EnemyUnit : UnitBase
                 GetComponent<MechaBoss>().CleanObjectiveNumerDamage();
             }
 
-            arrowEnemyIndicator.SetActive(false);
+            HealthBarOn_Off(false);
+
+            //arrowEnemyIndicator.SetActive(false);
             FinishMyActions();
         }
 
@@ -1171,6 +1191,7 @@ public class EnemyUnit : UnitBase
 
     public override void Die()
     {
+        
         Debug.Log("Soy " + gameObject.name + " y he muerto");
 
         //Animación, sonido y partículas de muerte
@@ -1181,6 +1202,7 @@ public class EnemyUnit : UnitBase
         //Cambios en UI
         LM.HideHover(this);
         HealthBarOn_Off(false);
+      
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 
         //Cambios en la lógica para indicar que ha muerto

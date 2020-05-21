@@ -101,6 +101,7 @@ public class CommandInvoker : MonoBehaviour
         }
 
         playerSelectedWhileClickingUndo = null;
+        LM.UIM.CheckActionsAvaliable();
     }
 
     //Resetear el undo
