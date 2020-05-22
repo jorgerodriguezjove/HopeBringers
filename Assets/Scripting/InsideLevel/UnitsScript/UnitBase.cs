@@ -358,6 +358,11 @@ public class UnitBase : MonoBehaviour
     //Para los enemigos que se mueven se usa CalculateDamagePreviousAttack
     public virtual void CalculateDamage(UnitBase unitToDealDamage)
     {
+        if (unitToDealDamage == null || unitToDealDamage.isDead)
+        {
+            return;
+        }
+
         HideDamageIcons(this);
         //Reseteo la variable de daño a realizar
         damageWithMultipliersApplied = baseDamage;

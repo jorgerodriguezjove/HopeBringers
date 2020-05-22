@@ -365,12 +365,9 @@ public class Samurai : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-        
-
         CheckIfUnitHasMarks(unitToAttack);
         unitToAttack.timesRepeatNumber.enabled = false; 
-        
-        
+
         if (parryOn)
         {
             //UNDO

@@ -386,10 +386,10 @@ public class EnGoblin : EnemyUnit
                     if (unitsInRange[i].GetComponent<EnemyUnit>())
                     {
                         unitsInRange[i].GetComponent<EnemyUnit>().AlertEnemy();
-
-                        Instantiate(tier2AttackHorn, this.transform);
                     }
                 }
+
+                Instantiate(tier2AttackHorn, this.transform.position, tier2AttackHorn.transform.rotation);
             }
         }
         

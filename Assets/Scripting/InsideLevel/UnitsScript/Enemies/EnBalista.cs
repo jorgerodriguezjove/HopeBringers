@@ -227,9 +227,12 @@ public class EnBalista : EnemyUnit
     
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
-        CalculateDamage(unitToDealDamage);
-        //Una vez aplicados los multiplicadores efectuo el daño.
-        unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+        if (unitToDealDamage != null && !unitToDealDamage.isDead)
+        {
+            CalculateDamage(unitToDealDamage);
+            //Una vez aplicados los multiplicadores efectuo el daño.
+            unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+        }
     }
 
     //Función que pinta o despinta los tiles a los que está atcando la ballesta
