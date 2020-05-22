@@ -314,7 +314,9 @@ public class EnemyUnit : UnitBase
                     buffbonusStateDamage = 0;
                 }
 
-                if (isMarked && FindObjectOfType<Monk>().debuffMark)
+                Monk monk = FindObjectOfType<Monk>();
+
+                if (isMarked && monk != null && monk.debuffMark)
                 {
                     ApplyBuffOrDebuffDamage(this,-1,99);                   
                 }
@@ -327,7 +329,6 @@ public class EnemyUnit : UnitBase
                     SetMovementIcon(0, this, false);
                 }
 
-
                 //Añado esto para stunnear a los enemigos 
                 if (!isStunned)
                 {
@@ -336,7 +337,6 @@ public class EnemyUnit : UnitBase
 
                 else
                 {
-                    
                     if (turnStunned <= 0)
                     {
                         isStunned = false;
@@ -1242,8 +1242,6 @@ public class EnemyUnit : UnitBase
 
     public override void Die()
     {
-       
-
         Debug.Log("Soy " + gameObject.name + " y he muerto");
         //Animación, sonido y partículas de muerte
         myAnimator.SetTrigger("Death");
