@@ -425,6 +425,8 @@ public class GameManager : PersistentSingleton<GameManager>
             {
                 levelIDsUnlocked.Add(save.s_levelIDsUnlocked[i]);
                 allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockConnectedLevels();
+
+                Debug.Log(allLevelNodes[save.s_levelIDsUnlocked[i]]);
             }
 
 
