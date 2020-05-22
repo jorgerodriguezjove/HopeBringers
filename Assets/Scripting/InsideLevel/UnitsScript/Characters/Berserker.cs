@@ -361,12 +361,13 @@ public class Berserker : PlayerUnit
             }
         }
 
-        
+        if (LM.selectedCharacter == this || LM.selectedCharacter == null)
+        {
             for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
             {
                 currentTilesInRangeForAttack[i].ColorBorderRed();
             }
-        
+        }
         
 
     }

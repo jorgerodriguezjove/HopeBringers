@@ -340,10 +340,12 @@ public class Rogue : PlayerUnit
                 currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
             }
         }
-
-        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        if (LM.selectedCharacter == this || LM.selectedCharacter == null)
         {
-            currentTilesInRangeForAttack[i].ColorBorderRed();
+            for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+            {
+                currentTilesInRangeForAttack[i].ColorBorderRed();
+            }
         }
     }
 
@@ -876,7 +878,7 @@ public class Rogue : PlayerUnit
         }
 
         _unitToAttack.DisableCanvasHover();
-
+        
         sombraHoverUnit.SetActive(false);
     }
 

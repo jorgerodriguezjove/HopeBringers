@@ -1483,9 +1483,10 @@ public class PlayerUnit : UnitBase
         DisableCanvasHover();
         ResetColor();
         myCurrentTile.ColorDeselect();
+
     }
 
-   
+
     #endregion
 
     #region CHECKS
@@ -1657,10 +1658,13 @@ public class PlayerUnit : UnitBase
             }
         }
 
-
-        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        if (LM.selectedCharacter == this || LM.selectedCharacter == null)
         {
-            currentTilesInRangeForAttack[i].ColorBorderRed();
+
+            for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+            {
+                currentTilesInRangeForAttack[i].ColorBorderRed();
+            }
         }
 
     }
@@ -1669,25 +1673,37 @@ public class PlayerUnit : UnitBase
     {
         if (_unitToCheck.isMarked)
         {
-            _unitToCheck.QuitMarks();
-            currentHealth += FindObjectOfType<Monk>().healerBonus * _unitToCheck.numberOfMarks;
-            RefreshHealth(false);
-           
-            _unitToCheck.numberOfMarks = 0;
 
-            if (FindObjectOfType<Monk>().debuffMark2)
+            Monk monkref = FindObjectOfType<Monk>();
+
+            if(monkref != null)
             {
-                if (!_unitToCheck.isStunned)
+                _unitToCheck.QuitMarks();
+                currentHealth += monkref.healerBonus * _unitToCheck.numberOfMarks;
+                RefreshHealth(false);
+
+                _unitToCheck.numberOfMarks = 0;
+
+                if (_unitToCheck.isMarked && monkref.debuffMark)
                 {
-                    StunUnit(_unitToCheck);
+                    ApplyBuffOrDebuffDamage(_unitToCheck, 0, 0);
                 }
-            }
-            else if (FindObjectOfType<Monk>().healerMark2)
-            {
-                ApplyBuffOrDebuffDamage(this, 1, 3);
-            }
 
-            UIM.RefreshTokens();
+                if (monkref.debuffMark2)
+                {
+                    if (!_unitToCheck.isStunned)
+                    {
+                        StunUnit(_unitToCheck);
+                    }
+                }
+                else if (monkref.healerMark2)
+                {
+                    ApplyBuffOrDebuffDamage(this, 1, 3);
+                }
+
+                UIM.RefreshTokens();
+            }
+          
         }
     }
 

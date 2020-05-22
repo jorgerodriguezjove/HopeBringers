@@ -221,7 +221,7 @@ public class Monk : PlayerUnit
             {
                 if (_unitAttacking.GetComponent<Monk>())
                 {
-                    _unitToMark.monkMark.SetActive(true);
+                    _unitToMark.monkMark.SetActive(true);                  
                 }
 
                 _unitToMark.monkMarkUpgrade.SetActive(false);
@@ -259,6 +259,8 @@ public class Monk : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
+       
+
         if (rotatorTime){
 
             unitToAttack.hoverRotateIcon.SetActive(false);
@@ -426,6 +428,11 @@ public class Monk : PlayerUnit
             hasAttacked = true;
             //La base tiene que ir al final para que el bool de hasAttacked se active después del efecto.
             base.Attack(unitToAttack);
+        }
+
+        if (unitToAttack.isMarked && debuffMark)
+        {
+            ApplyBuffOrDebuffDamage(unitToAttack, -1, 99);
         }
 
         hasAttacked = true;
@@ -685,11 +692,13 @@ public class Monk : PlayerUnit
                 currentUnitsAvailableToAttack[i].HealthBarOn_Off(true);
             }
         }
-        
 
-        for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+        if (LM.selectedCharacter == this || LM.selectedCharacter == null)
         {
-            currentTilesInRangeForAttack[i].ColorBorderRed();
+            for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+            {
+                currentTilesInRangeForAttack[i].ColorBorderRed();
+            }
         }
     }
 

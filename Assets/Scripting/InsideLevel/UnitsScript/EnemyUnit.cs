@@ -293,6 +293,12 @@ public class EnemyUnit : UnitBase
                     monkMarkUpgrade.SetActive(false);
                 }
 
+                if (isDead)
+                {
+                    HealthBarOn_Off(false);
+                }
+               
+
                 break;
 
             case (enemyState.Searching):
@@ -312,7 +318,7 @@ public class EnemyUnit : UnitBase
 
                 if (isMarked && FindObjectOfType<Monk>().debuffMark)
                 {
-                    ApplyBuffOrDebuffDamage(this,-1,3);                   
+                    ApplyBuffOrDebuffDamage(this,-1,99);                   
                 }
 
                 turnsWithMovementBuffOrDebuff--;
@@ -1203,7 +1209,7 @@ public class EnemyUnit : UnitBase
                     GameManager.Instance.UnlockAchievement(AppAchievements.ACHV_DISADVANTAGE);
                 }
             }
-
+             HealthBarOn_Off(false);            
             Die();
         }
 
@@ -1219,7 +1225,6 @@ public class EnemyUnit : UnitBase
     {
         
         Debug.Log("Soy " + gameObject.name + " y he muerto");
-
         //Animación, sonido y partículas de muerte
         myAnimator.SetTrigger("Death");
         SoundManager.Instance.PlaySound(AppSounds.EN_DEATH);

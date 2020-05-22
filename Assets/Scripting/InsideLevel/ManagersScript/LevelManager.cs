@@ -465,6 +465,8 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
+         
+            
 
             if (hoverUnit.hasMoved == false)
             {
@@ -1392,6 +1394,8 @@ public class LevelManager : MonoBehaviour
                 }
             }
 
+          
+
             Debug.Log("(Antes descolorear) Deseleccionar unidad " + selectedCharacter + " " + tilesAvailableForMovement.Count);
 
             //Si no se ha movido lo deselecciono.
@@ -1692,6 +1696,8 @@ public class LevelManager : MonoBehaviour
                                     selectedCharacter.currentTilesInRangeForAttack[j].ColorDeselect();
                                 }
 
+                                
+
                                 for (int j = 0; j < selectedCharacter.currentUnitsAvailableToAttack.Count; j++)
                                 {
                                     if (selectedCharacter.currentUnitsAvailableToAttack[j] != null)
@@ -1851,6 +1857,8 @@ public class LevelManager : MonoBehaviour
                 selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
             }
         }
+
+      
 
         for (int j = 0; j < unitsToEnableCollider.Count; j++)
         {

@@ -195,6 +195,7 @@ public class Samurai : PlayerUnit
         CheckIfIsLonely();
 
         currentUnitsAvailableToAttack.Clear();
+        currentTilesInRangeForAttack.Clear();
         UnitsNonAttack.Clear();
 
         if (currentFacingDirection == FacingDirection.North)
@@ -210,6 +211,11 @@ public class Samurai : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineUp[i].isEmpty && !myCurrentTile.tilesInLineUp[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineUp[i]);
+                }
+
                 if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     if (myCurrentTile.tilesInLineUp[i].unitOnTile.currentFacingDirection == FacingDirection.North)
@@ -242,6 +248,11 @@ public class Samurai : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineDown[i].isEmpty && !myCurrentTile.tilesInLineDown[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineDown[i]);
+                }
+
                 if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile.currentFacingDirection == FacingDirection.South)
@@ -274,6 +285,11 @@ public class Samurai : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineRight[i].isEmpty && !myCurrentTile.tilesInLineRight[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineRight[i]);
+                }
+
                 if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     if (myCurrentTile.tilesInLineRight[i].unitOnTile.currentFacingDirection == FacingDirection.East)
@@ -305,6 +321,11 @@ public class Samurai : PlayerUnit
 
             for (int i = 0; i < rangeVSTilesInLineLimitant; i++)
             {
+                if (!myCurrentTile.tilesInLineLeft[i].isEmpty && !myCurrentTile.tilesInLineLeft[i].isObstacle && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
+                {
+                    currentTilesInRangeForAttack.Add(myCurrentTile.tilesInLineLeft[i]);
+                }
+
                 if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
                     if (myCurrentTile.tilesInLineLeft[i].unitOnTile.currentFacingDirection == FacingDirection.West)
@@ -330,6 +351,14 @@ public class Samurai : PlayerUnit
             {
                 CalculateDamage(currentUnitsAvailableToAttack[i]);
                 currentUnitsAvailableToAttack[i].ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+            }
+        }
+
+        if (LM.selectedCharacter == this || LM.selectedCharacter == null)
+        {
+            for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
+            {
+                currentTilesInRangeForAttack[i].ColorBorderRed();
             }
         }
     }
@@ -517,8 +546,7 @@ public class Samurai : PlayerUnit
                 {
                     damageReceived = 0;
                     DoDamage(unitToParry);
-                    UIM.RefreshHealth();
-                    unitToParry = null;
+                    UIM.RefreshHealth();                    
                     parryIcon.SetActive(false);
                 }
                 else if (unitToParry != null)
@@ -530,10 +558,11 @@ public class Samurai : PlayerUnit
                         && currentFacingDirection == FacingDirection.North || currentFacingDirection == FacingDirection.South))
                     {
 
-                        damageReceived = 0;
+                        base.ReceiveDamage(damageReceived, unitAttacker);
+
                         DoDamage(unitToParry);
                         UIM.RefreshHealth();
-                        unitToParry = null;
+                       
                         parryIcon.SetActive(false);
 
                     }
@@ -545,7 +574,7 @@ public class Samurai : PlayerUnit
                 damageReceived = 0;
                 DoDamage(unitToParry);
                 UIM.RefreshHealth();
-                unitToParry = null;
+                
                 parryIcon.SetActive(false);
             }
         }

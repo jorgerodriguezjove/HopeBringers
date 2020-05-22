@@ -348,7 +348,7 @@ public class UnitBase : MonoBehaviour
         if (GetComponent<PlayerUnit>())
         {
             myCurrentTile.WarnBalista(GetComponent<PlayerUnit>());
-        }
+        }    
     }
 
     #region DAMAGE_&_DIE
@@ -920,7 +920,10 @@ public class UnitBase : MonoBehaviour
                             Debug.Log("otra unidad");
                             //Recibo daño 
                             ReceiveDamage(attackersDamageByPush, null);
-
+                            if (currentHealth <= 0)
+                            {
+                                healthBar.SetActive(false);
+                            }
                             //Hago daño a la otra unidad
                             tilesToCheckForCollision[i].unitOnTile.ReceiveDamage(attackersDamageByPush, null);
 
