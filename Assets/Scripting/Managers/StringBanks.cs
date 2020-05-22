@@ -72,8 +72,8 @@ public class AppKnightUpgrades
     public static readonly string neighbourBlock2 = "neighbourBlock2";
 
     ///Textos
-    public static readonly string neighbourBlock1Text = "Knight protects the allies at his sides, making them to recieve less damage of attacks coming from his front";
-    public static readonly string neighbourBlock2Text = "Knight protects the allies at his sides, making them to recieve no damage of attacks coming from his front";
+    public static readonly string neighbourBlock1Text = "Knight protects the allies adjacent to him, making them to recieve less damage of attacks coming from his front";
+    public static readonly string neighbourBlock2Text = "Knight protects the allies adjacent to him, making them to recieve no damage of attacks coming from his front";
 
     #endregion
 }
