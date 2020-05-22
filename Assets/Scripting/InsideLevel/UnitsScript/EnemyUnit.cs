@@ -1242,7 +1242,8 @@ public class EnemyUnit : UnitBase
 
     public override void Die()
     {
-        
+       
+
         Debug.Log("Soy " + gameObject.name + " y he muerto");
         //Animación, sonido y partículas de muerte
         myAnimator.SetTrigger("Death");
