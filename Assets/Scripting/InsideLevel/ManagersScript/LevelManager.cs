@@ -2028,7 +2028,7 @@ public class LevelManager : MonoBehaviour
 
                     //Turn Start
                     enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
-                    break;
+                    return;
                 }
 
                 //Si el enemigo esta muerto o dormido y no va aser alertado paso al siguiente
