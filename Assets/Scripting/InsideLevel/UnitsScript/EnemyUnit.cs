@@ -159,7 +159,7 @@ public class EnemyUnit : UnitBase
 
     //Bool que indica si el dark lord está poseyendo a un enemigo ahora mismo
     protected bool currentlyPossesing = false;
-
+    
     //Lista que va guardando las listas de tiles que saco de los calculos del TileManager
     protected List<IndividualTiles> tilesToCheck = new List<IndividualTiles>();
     //El cono es especial porque en tilesToCheck guardo la línea central del cono y en cone tile guardo el cono entero
@@ -314,7 +314,9 @@ public class EnemyUnit : UnitBase
                     buffbonusStateDamage = 0;
                 }
 
-                if (isMarked && FindObjectOfType<Monk>().debuffMark)
+                Monk monk = FindObjectOfType<Monk>();
+
+                if (isMarked && monk != null && monk.debuffMark)
                 {
                     ApplyBuffOrDebuffDamage(this,-1,99);                   
                 }
@@ -327,7 +329,6 @@ public class EnemyUnit : UnitBase
                     SetMovementIcon(0, this, false);
                 }
 
-
                 //Añado esto para stunnear a los enemigos 
                 if (!isStunned)
                 {
@@ -336,7 +337,6 @@ public class EnemyUnit : UnitBase
 
                 else
                 {
-                    
                     if (turnStunned <= 0)
                     {
                         isStunned = false;
@@ -1242,7 +1242,6 @@ public class EnemyUnit : UnitBase
 
     public override void Die()
     {
-        
         Debug.Log("Soy " + gameObject.name + " y he muerto");
         //Animación, sonido y partículas de muerte
         myAnimator.SetTrigger("Death");
@@ -1290,8 +1289,17 @@ public class EnemyUnit : UnitBase
         //Contador de enemigos para logro
         GameManager.Instance.EnemyKilled();
 
+        if (amIBeingPossesed)
+        {
+            if (FindObjectOfType<DarkLord>() != null)
+            {
+                FindObjectOfType<DarkLord>().EndPosesion();
+            }
+        }
+
         //No uso FinishMyActions porque no me interesa que pase turno, sólo que se quede en waiting por si acaso se muere en su turno.
         myCurrentEnemyState = enemyState.Waiting;
+
     }
 
     #endregion

@@ -508,7 +508,7 @@ public class DarkLord : EnemyUnit
 
     }
 
-    private void EndPosesion()
+    public void EndPosesion()
     {
         Debug.Log("EndPosesion");
 
