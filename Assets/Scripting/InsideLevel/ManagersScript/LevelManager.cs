@@ -2034,33 +2034,9 @@ public class LevelManager : MonoBehaviour
                 //Si el enemigo esta muerto o dormido y no va aser alertado paso al siguiente
             }
 
-            
-
-            //if (!enemiesOnTheBoard[counterForEnemiesOrder].isDead)
-            //{
-
-            //    //Si el enemigo esta dormido paso al siguiente
-            //    if (enemiesOnTheBoard[counterForEnemiesOrder].haveIBeenAlerted || enemiesOnTheBoard[counterForEnemiesOrder].isGoingToBeAlertedOnEnemyTurn)
-            //    {
-                    
-            //    }
-
-            //    else
-            //    {
-            //        //Focus en enemigo si está despierto
-            //        camRef.SetCameraMovable(false, true);
-            //        camRef.LockCameraOnEnemy(enemiesOnTheBoard[counterForEnemiesOrder].gameObject);
-
-            //        //Turn Start
-            //        enemiesOnTheBoard[counterForEnemiesOrder].MyTurnStart();
-            //    }
-            //}
-
-            //else
-            //{
-            //    counterForEnemiesOrder = 0;
-            //    currentLevelState = LevelState.PlayerPhase;
-            //}
+            //Si ningun enemigo empieza, se salta a la player phase
+            counterForEnemiesOrder = 0;
+            currentLevelState = LevelState.PlayerPhase;
         }
     }
 
