@@ -1420,7 +1420,7 @@ public class LevelManager : MonoBehaviour
                 //Desmarco las unidades disponibles para atacar
                 for (int i = 0; i < valkyrieRef.currentUnitsAvailableToAttack.Count; i++)
                 {
-                    if (selectedCharacter.currentUnitsAvailableToAttack[i] != null)
+                    if (selectedCharacter != null && selectedCharacter.currentUnitsAvailableToAttack.Count > i && selectedCharacter.currentUnitsAvailableToAttack[i] != null)
                     {
                         valkyrieRef.ChangePositionIconFeedback(false, valkyrieRef.currentUnitsAvailableToAttack[i]);
                     }

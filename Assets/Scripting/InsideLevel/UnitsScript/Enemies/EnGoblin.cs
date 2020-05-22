@@ -391,6 +391,10 @@ public class EnGoblin : EnemyUnit
 
                 Instantiate(tier2AttackHorn, this.transform.position, tier2AttackHorn.transform.rotation);
             }
+
+            hasAttacked = true;
+
+            myCurrentEnemyState = enemyState.Ended;
         }
         
         //Si no he sido alertado, activo mi estado de alerta.
