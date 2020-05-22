@@ -222,14 +222,15 @@ public class MechaBoss : EnemyUnit
 
         for (int i = 0; i < beamTiles.Count; i++)
         {
-            if (beamTiles[i].unitOnTile != null && beamTiles[i].unitOnTile.GetComponent<UnitBase>())
+            if (beamTiles[i].unitOnTile != null && !beamTiles[i].unitOnTile.isDead && beamTiles[i].unitOnTile.GetComponent<UnitBase>())
             {
-                DoDamage(beamTiles[i].unitOnTile);
-
                 //Mostrar numero de daño sobre los personajes
                 CalculateDamagePreviousAttack(beamTiles[i].unitOnTile, GetComponent<UnitBase>(), myCurrentTile, currentFacingDirection);
                 beamTiles[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+
+                DoDamage(beamTiles[i].unitOnTile);
             }
+
             beamTiles[i].ColorDesAttack();
         }
     }

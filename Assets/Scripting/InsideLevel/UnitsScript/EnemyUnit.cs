@@ -267,8 +267,6 @@ public class EnemyUnit : UnitBase
                 && LM.damageTilesInBoard[i].unitToDoDamage.GetComponent<EnemyUnit>() != null
                 && LM.damageTilesInBoard[i].unitToDoDamage.GetComponent<EnemyUnit>() == this)
             {
-
-
                 LM.damageTilesInBoard[i].CheckHasToDoDamage();
                 LM.damageTilesInBoard[i].damageDone = true;
                 UIM.RefreshHealth();
@@ -1164,6 +1162,11 @@ public class EnemyUnit : UnitBase
 
     protected override void DoDamage(UnitBase unitToDealDamage)
     {
+        if (unitToDealDamage.isDead)
+        {
+            return;
+        }
+
         //ES LO MISMO PERO SIN LA INSTANCIACIÓN DE PARTICULAS. EN EL FUTURO HACER QUE LAS PARTÍCULAS VAYAN POR EVENTOS DE ANIMACIÓN
 
         CalculateDamage(unitToDealDamage);
@@ -1900,7 +1903,7 @@ public class EnemyUnit : UnitBase
 
         //Probablemente otros enemigos tambien, pero MechaBoss no implementa la base
 
-        if (currentUnitsAvailableToAttack.Count > 0)
+        if (currentUnitsAvailableToAttack.Count > 0 && currentUnitsAvailableToAttack[0] != null && !currentUnitsAvailableToAttack[0].isDead)
         {
             Debug.Log("AQUI");
 

@@ -215,6 +215,12 @@ public class LevelManager : MonoBehaviour
                     enemiesOnTheBoard.RemoveAt(i);
                     i--;
                 }
+
+                if (enemiesOnTheBoard[i].GetComponent<DarkLord>() && !enemiesOnTheBoard[i].GetComponent<DarkLord>().amITheOriginalDarkLord)
+                {
+                    enemiesOnTheBoard.RemoveAt(i);
+                    i--;
+                }
             }
             UIM.InitializeUI();
             currentLevelState = LevelState.PlayerPhase;
@@ -284,21 +290,18 @@ public class LevelManager : MonoBehaviour
 
         for (int i = 0; i < enemiesOnTheBoard.Count; i++)
         {
-            if (i > 0)
+            enemiesOnTheBoard[i].InitializeUnitOnTile();
+
+            if (enemiesOnTheBoard[i].GetComponent<Crystal>())
             {
-                enemiesOnTheBoard[i].InitializeUnitOnTile();
+                enemiesOnTheBoard.RemoveAt(i);
+                i--;
+            }
 
-                if (enemiesOnTheBoard[i].GetComponent<Crystal>())
-                {
-                    enemiesOnTheBoard.RemoveAt(i);
-                    i--;
-                }
-
-                if (enemiesOnTheBoard[i].GetComponent<DarkLord>() && !enemiesOnTheBoard[i].GetComponent<DarkLord>().amITheOriginalDarkLord)
-                {
-                    enemiesOnTheBoard.RemoveAt(i);
-                    i--;
-                }
+            if (enemiesOnTheBoard[i].GetComponent<DarkLord>() && !enemiesOnTheBoard[i].GetComponent<DarkLord>().amITheOriginalDarkLord)
+            {
+                enemiesOnTheBoard.RemoveAt(i);
+                i--;
             }
         }
 
@@ -313,6 +316,7 @@ public class LevelManager : MonoBehaviour
     //Crea a los personajes del jugador correspondientes
     private void InitializeCharacters()
     {
+        GameManager.Instance.isGamePaused = true;
         //Aparece la caja
         UIM.ActivateHudUnitPlacement();
 
@@ -333,8 +337,6 @@ public class LevelManager : MonoBehaviour
 
             unitInstantiated.GetComponent<UnitBase>().InitializeHealth();
         }
-
-        GameManager.Instance.isGamePaused = false;
     }
 
     //Ordeno la lista de personajes del jugador y la lista de enemigos
@@ -502,11 +504,6 @@ public class LevelManager : MonoBehaviour
     {
         if (selectedCharacter == null)
         {
-            if (hoverUnit.myCurrentTile == null)
-            {
-                hoverUnit.GetComponent<UnitBase>().InitializeUnitOnTile();
-            }
-
             if (hoverUnit.GetComponent<EnBalista>())
             {
                 if (!hoverUnit.GetComponent<EnBalista>().isAttackPrepared)
@@ -1920,7 +1917,8 @@ public class LevelManager : MonoBehaviour
 				tutorialGameObject.SetActive(true);
 			}
 
-			BeginPlayerPhase();
+            GameManager.Instance.isGamePaused = false;
+            BeginPlayerPhase();
         }
     }
 
@@ -1930,6 +1928,14 @@ public class LevelManager : MonoBehaviour
         for (int j = 0; j < unitsToEnableCollider.Count; j++)
         {
             unitsToEnableCollider[j].EnableUnableCollider(true);
+        }
+
+        for (int i = 0; i < enemiesOnTheBoard.Count; i++)
+        {
+            if (enemiesOnTheBoard[i].myCurrentTile == null)
+            {
+                enemiesOnTheBoard[i].GetComponent<UnitBase>().InitializeUnitOnTile();
+            }
         }
 
         //Recoloco la lista de enemigos donde estaba al inicio.
@@ -2150,6 +2156,7 @@ public class LevelManager : MonoBehaviour
             GameManager.Instance.characterDataForCurrentLevel[i].UpdateMyUnitStatsForTheLevel();
         }
 
+        GameManager.Instance.isGamePaused = true;
         currentLevelState = LevelState.PlayerPhase;
 
         UIM.InitializeUI();
