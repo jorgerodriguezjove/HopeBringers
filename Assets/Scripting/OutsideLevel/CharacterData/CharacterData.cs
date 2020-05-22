@@ -123,7 +123,6 @@ public class CharacterData : MonoBehaviour
             //Hacer reaparecer el modelo 
             HideShowMeshCharacterData(true);
 
-            Debug.Log("NEW CHARACTERINO");
             InitializeCharacterToUnlocks();
         }
     }

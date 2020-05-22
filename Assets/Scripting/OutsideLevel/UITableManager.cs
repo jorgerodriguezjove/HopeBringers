@@ -283,7 +283,6 @@ public class UITableManager : MonoBehaviour
             upgrades[i].GetComponent<UpgradeNode>().UpdateIconAndDescription();
         }
 
-        Debug.Log("Unidad clickada: " + unitClicked.name);
         currentSkillTreeObj.GetComponent<SkillTree>().UpdateActiveAndPasive(unitClicked);
 
         //Por cada mejora compruebo si existe en ids compradas un valor en la lista que coincida el id
