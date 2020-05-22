@@ -19411,6 +19411,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 807883654}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &807883656 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8140058677201680838, guid: 8d40f3d77681de74db8a30bd9bbd0b61,
+    type: 3}
+  m_PrefabInstance: {fileID: 807883654}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cabe357e9411f45b0b14d455783df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &808909059
 GameObject:
   m_ObjectHideFlags: 0
@@ -35871,6 +35883,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1574035080}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1574035082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8140058677201680838, guid: 8d40f3d77681de74db8a30bd9bbd0b61,
+    type: 3}
+  m_PrefabInstance: {fileID: 1574035080}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cabe357e9411f45b0b14d455783df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1575486414
 GameObject:
   m_ObjectHideFlags: 0
@@ -45075,6 +45099,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1970088235}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1970088237 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8140058677201680838, guid: 8d40f3d77681de74db8a30bd9bbd0b61,
+    type: 3}
+  m_PrefabInstance: {fileID: 1970088235}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cabe357e9411f45b0b14d455783df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1972665002
 GameObject:
   m_ObjectHideFlags: 0
@@ -47002,6 +47038,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4011981845037421410, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: m_text
+      value: Objective - Destroy all the crystals
+      objectReference: {fileID: 0}
     - target: {fileID: 4094541408651985527, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: m_Layer
@@ -47144,6 +47185,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
+      propertyPath: enemiesNecessaryToWin.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
       propertyPath: FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa
       value: 0
       objectReference: {fileID: 0}
@@ -47152,6 +47198,26 @@ PrefabInstance:
       propertyPath: turnLimit
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: isObjectiveKillSpecificEnemies
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: enemiesNecessaryToWin.Array.data[0]
+      value: 
+      objectReference: {fileID: 807883656}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: enemiesNecessaryToWin.Array.data[1]
+      value: 
+      objectReference: {fileID: 1574035082}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: enemiesNecessaryToWin.Array.data[2]
+      value: 
+      objectReference: {fileID: 1970088237}
     - target: {fileID: 5809797896588658036, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: m_LocalPosition.z

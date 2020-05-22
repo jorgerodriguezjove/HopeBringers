@@ -130,7 +130,6 @@ public class EnGrabber : EnemyUnit
 
     public override void Attack()
     {
-
         List<IndividualTiles> tilesInFront = new List<IndividualTiles>();
 
         tilesInFront = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, attackRange);
@@ -138,7 +137,7 @@ public class EnGrabber : EnemyUnit
         //Particulas
         for (int i = 0; i < tilesInFront.Count; i++)
         {
-            if (tilesInFront[i] != null && tilesInFront[i].unitOnTile != null && currentUnitsAvailableToAttack.Count > 0 && currentUnitsAvailableToAttack[0] != null && tilesInFront[i].unitOnTile == currentUnitsAvailableToAttack[0])
+            if (tilesInFront[i] != null && tilesInFront[i].unitOnTile != null && currentUnitsAvailableToAttack.Count > 0 && currentUnitsAvailableToAttack[0] != null && tilesInFront[i].unitOnTile  == currentUnitsAvailableToAttack[0])
             {
                 if (i == 2)
                 {

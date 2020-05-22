@@ -1383,31 +1383,34 @@ public class UnitBase : MonoBehaviour
 
     public virtual void SetShadowRotation(UnitBase unitToSet, IndividualTiles unitToCheckPos, IndividualTiles otherUnitToCheck)
     {
-        if (unitToCheckPos.tileX == otherUnitToCheck.tileX)
+        if (unitToSet != null && !unitToSet.isDead && unitToCheckPos != null && otherUnitToCheck != null)
         {
-            //Arriba
-            if (unitToCheckPos.tileZ > otherUnitToCheck.tileZ)
+            if (unitToCheckPos.tileX == otherUnitToCheck.tileX)
             {
-                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                //Arriba
+                if (unitToCheckPos.tileZ > otherUnitToCheck.tileZ)
+                {
+                    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 180, 0), timeDurationRotation);
+                }
+                //Abajo
+                else
+                {
+                    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
+                }
             }
-            //Abajo
+            //Izquierda o derecha
             else
             {
-                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 0, 0), timeDurationRotation);
-            }
-        }
-        //Izquierda o derecha
-        else
-        {
-            //Derecha
-            if (unitToCheckPos.tileX > otherUnitToCheck.tileX)
-            {
-                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
-            }
-            //Izquierda
-            else
-            {
-                unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                //Derecha
+                if (unitToCheckPos.tileX > otherUnitToCheck.tileX)
+                {
+                    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, -90, 0), timeDurationRotation);
+                }
+                //Izquierda
+                else
+                {
+                    unitToSet.sombraHoverUnit.transform.DORotate(new Vector3(0, 90, 0), timeDurationRotation);
+                }
             }
         }
     }
