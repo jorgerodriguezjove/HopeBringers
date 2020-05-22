@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Steamworks;
+using System;
 
 public class GameManager : PersistentSingleton<GameManager>
 {
@@ -419,15 +420,25 @@ public class GameManager : PersistentSingleton<GameManager>
             }
 
             allLevelNodes = FindObjectsOfType<LevelNode>();
+
+            List<LevelNode> allLevelNodesList = new List<LevelNode>(allLevelNodes);
+
+            allLevelNodesList.Sort(delegate (LevelNode a, LevelNode b)
+            {
+                return (a.GetComponent<LevelNode>().idLevel).CompareTo(b.GetComponent<LevelNode>().idLevel);
+
+            });
+
+            allLevelNodes = allLevelNodesList.ToArray();
+
             levelIDsUnlocked.Clear();
 
             for (int i = 0; i < save.s_levelIDsUnlocked.Count; i++)
             {
                 levelIDsUnlocked.Add(save.s_levelIDsUnlocked[i]);
                 allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockConnectedLevels();
-
-                Debug.Log(allLevelNodes[save.s_levelIDsUnlocked[i]]);
             }
+
 
 
             #region Characters

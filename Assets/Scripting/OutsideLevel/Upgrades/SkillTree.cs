@@ -59,8 +59,6 @@ public class SkillTree : MonoBehaviour
         activeName = unitData.name + "BaseActive";
         pasiveName = unitData.name + "BasePasive";
 
-
-        Debug.Log("Nombre: " + pasiveName);
         //Icons
         baseActiveIcon.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + activeName);
         basePasiveIcon.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + pasiveName);
@@ -69,12 +67,6 @@ public class SkillTree : MonoBehaviour
         if (unitData.specificStringCharacterUpgrades.ContainsKey(activeName))
         {
             baseActiveText.SetText(unitData.specificStringCharacterUpgrades[activeName]);
-            Debug.Log("si text base");
-        }
-
-        else
-        {
-            Debug.Log("no text base");
         }
         
         if (unitData.specificStringCharacterUpgrades.ContainsKey(pasiveName))
