@@ -710,6 +710,22 @@ public class EnemyUnit : UnitBase
         keepSearching = false;
     }
 
+    public bool CheckIfEnemiesInMyAlertArea()
+    {
+        //Comprobar las unidades que hay en mi rango de acción
+        unitsInRange = LM.TM.GetAllUnitsInRangeWithoutPathfinding(rangeOfAction, GetComponent<UnitBase>());
+
+        for (int i = 0; i < unitsInRange.Count; i++)
+        {
+            if (unitsInRange[i].GetComponent<PlayerUnit>())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     //Para acabar el turno de la unnidad
     public virtual void FinishMyActions()
     {
@@ -850,7 +866,6 @@ public class EnemyUnit : UnitBase
 
     private void OnMouseEnter()
     {
-
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions && !GameManager.Instance.isGamePaused)
         {
             if (LM.selectedEnemy == null && LM.selectedCharacter == null)
@@ -860,6 +875,7 @@ public class EnemyUnit : UnitBase
                     OnHoverEnterFunctionality();
                 }
             }
+
             else if (LM.selectedCharacter != null && LM.selectedCharacter.currentUnitsAvailableToAttack.Contains(this.GetComponent<UnitBase>()))
             {
                 if (!isDead)

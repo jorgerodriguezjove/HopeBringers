@@ -1414,6 +1414,11 @@ public class UnitBase : MonoBehaviour
 
     public void EnableUnableCollider(bool _shouldEnableCollider)
     {
+        if (!GetComponent<Collider>())
+        {
+            Debug.LogError("Esta unidad no tiene collider");
+        }
+
         GetComponent<Collider>().enabled = _shouldEnableCollider;
     }
 

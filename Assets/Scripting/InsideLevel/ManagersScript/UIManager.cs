@@ -553,6 +553,8 @@ public class UIManager : MonoBehaviour
 
     public void SetEnemyOrder()
     {
+        LM.SortEnemiesOrder();
+
 		for (int i = 0; i < panelesEnemigos.Count; i++)
 		{
 			Destroy(panelesEnemigos[i].gameObject);

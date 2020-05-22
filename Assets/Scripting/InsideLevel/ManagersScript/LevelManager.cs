@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine; 
 
 public class LevelManager : MonoBehaviour
 {
@@ -366,31 +366,22 @@ public class LevelManager : MonoBehaviour
                     i--;
                 }
             }
-
-            //Ordenar por despierto
-            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
-            {
-                return (b.GetComponent<EnemyUnit>().haveIBeenAlerted).CompareTo(a.GetComponent<EnemyUnit>().haveIBeenAlerted);
-
-            });
-
-            //Ordenar por velocidad
-            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
-            {
-                return (b.GetComponent<EnemyUnit>().speed).CompareTo(a.GetComponent<EnemyUnit>().speed);
-
-            });
-
-            //Ordenar por alerta
-            enemiesOnTheBoard.Sort(delegate (EnemyUnit a, EnemyUnit b)
-            {
-                return (b.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn).CompareTo(a.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn);
-
-            });
         }
 
 		UIM.SetEnemyOrder();
 	}
+
+    public void SortEnemiesOrder()
+    {
+        enemiesOnTheBoard.Sort((a, b) => {
+            var ret = b.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn.CompareTo(a.GetComponent<EnemyUnit>().isGoingToBeAlertedOnEnemyTurn);
+            if (ret == 0) ret = b.GetComponent<EnemyUnit>().haveIBeenAlerted.CompareTo(a.GetComponent<EnemyUnit>().haveIBeenAlerted);
+            if (ret == 0) ret = b.GetComponent<EnemyUnit>().speed.CompareTo(a.GetComponent<EnemyUnit>().speed);
+            return ret;
+        });
+    }
+
+    
 
     #endregion
 
@@ -2354,12 +2345,17 @@ public class LevelManager : MonoBehaviour
                     enemiesOnTheBoard[i].CheckCharactersInLine(false, null);
                 }
 
-                //Resto de enemigos
+                //Resto de enemigos usan la version rapida que solo comprueba si en los tiles del rango hay unidades player o no
                 else
                 {
-                    enemiesOnTheBoard[i].SearchingObjectivesToAttackShowActionPathFinding();
+                    if (enemiesOnTheBoard[i].CheckIfEnemiesInMyAlertArea())
+                    {
+                        enemiesOnTheBoard[i].EnemyIsGoingToBeAlerted();
+                        continue;
+                    }
                 }
 
+                //Esto es para charger y balista
                 if (enemiesOnTheBoard[i].currentUnitsAvailableToAttack.Count > 0)
                 {
                     enemiesOnTheBoard[i].EnemyIsGoingToBeAlerted();
@@ -2369,7 +2365,7 @@ public class LevelManager : MonoBehaviour
         }
 
         //Al acabar for updateo lista de enemigos
-        UpdateUnitsOrder();
+        UIM.SetEnemyOrder();
     }
 
     public void ClickSound()
