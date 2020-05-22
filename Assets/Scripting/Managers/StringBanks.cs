@@ -246,8 +246,7 @@ public class AppSamuraiUpgrades
 
     ///Textos
     public static readonly string parry1Text = "When attacking a target, Samurai prepares his attack. When is about to get hit, he cancels the damage dealt by the target and deals it back to it";
-    public static readonly string parry2Text = "When attacking a target, Samurai prepares his attack. When is about to get hit, he cancels the damage dealt by the target and deals it back to it. " +
-		"Also, if with his attack prepared recieves damage from his sides, he attacks again to the target in the front";
+    public static readonly string parry2Text = "Samurai also attacks again to the target in his front if recieves any damage from his sides while preparing the attack";
 
     //MULTI ATTACK
     public static readonly string multiAttack1 = "multiAttack1";
@@ -267,10 +266,8 @@ public class AppSamuraiUpgrades
     public static readonly string honor2 = "honor2";
 
     ///Textos
-    public static readonly string honor1Text = "When Samurai and his allies attack enemies from the front, the Honor counter increases one point. " +
-		"Any ally attacking an enemy from the back resets the counter. Each point is a +1 damage buff to Samurai";
-    public static readonly string honor2Text = "When Samurai and his allies attack enemies from the front, the Honor counter increases one point. " +
-		"Any ally attacking an enemy from the back resets the counter. Each point is a +1 damage buff to all the party";
+    public static readonly string honor1Text = "Samurai or his allies attacking enemies from the front gratns Honor points, while doing it from the back resets them. Each Honor point is +1 damage to Samurai";
+    public static readonly string honor2Text = "Samurai or his allies attacking enemies from the front gratns Honor points, while doing it from the back resets them. Each Honor point is +1 damage to all the party";
 
 
     //SOLITARIO
