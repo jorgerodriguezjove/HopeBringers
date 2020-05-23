@@ -306,7 +306,6 @@ public class UIManager : MonoBehaviour
         //He cambiado esta parte para que el end turn también borre los tiles pintados
         if (LM.currentLevelState == LevelManager.LevelState.ProcessingPlayerActions)
         {
-
             if (LM.CheckIfFinishingTilesReached())
             {
                 LM.InstaWin(false);
@@ -318,18 +317,27 @@ public class UIManager : MonoBehaviour
                 {
                     LM.DeselectEnemy();
                 }
+
 				if (tutorialLevel)
 				{
 					turnNumber++;
 				}
 				if(turnNumber == 2)
 				{
-					textTutorial.text = tutorialText2;
+                    if (textTutorial!= null)
+                    {
+                        textTutorial.text = tutorialText2;
+                    }
 				}
+
 				else if(turnNumber == 3)
 				{
-					textTutorial.text = tutorialText3;
+                    if (textTutorial != null)
+                    {
+                        textTutorial.text = tutorialText3;
+                    }
 				}
+
 				else
 				{
                     if (panelTutorial != null)
@@ -340,6 +348,7 @@ public class UIManager : MonoBehaviour
                 RotateButtonEndPhase();
                 LM.ChangePhase();
             }
+
             else if (!LM.selectedCharacter.isMovingorRotating)
             {
                 if (LM.selectedEnemy != null)
@@ -742,6 +751,7 @@ public class UIManager : MonoBehaviour
 		{
 			LM.tutorialGameObject.SetActive(true);
 			firstTimeAction = true;
+            GameManager.Instance.isGamePaused = true;
 		}
 	}
 	public void TooltipAttack()
@@ -753,14 +763,17 @@ public class UIManager : MonoBehaviour
 			LM.tutorialGameObject.SetActive(true);
 			thirdTimeAction = true;
 			secondUnit = true;
-			return;
+            GameManager.Instance.isGamePaused = true;
+            return;
 		}
+
 		if (LM.tutorialLevel1 && !fourthTimeAction && secondUnit)
 		{
 			LM.tutorialGameObject.SetActive(true);
 			fourthTimeAction = true;
-		}
-	}
+            GameManager.Instance.isGamePaused = true;
+        }
+    }
 	public void TooltipNoAttackable()
 	{
 		tooltipAccionesText.text = "Esta unidad no tiene ningún enemigo a rango";
@@ -771,13 +784,15 @@ public class UIManager : MonoBehaviour
 			LM.tutorialGameObject.SetActive(true);
 			thirdTimeAction = true;
 			secondUnit = true;
-			return;
+            GameManager.Instance.isGamePaused = true;
+            return;
 		}
 		if (LM.tutorialLevel1 && !fourthTimeAction && secondUnit)
 		{
 			LM.tutorialGameObject.SetActive(true);
 			fourthTimeAction = true;
-		}
+            GameManager.Instance.isGamePaused = true;
+        }
 	}
 	public void TooltipRotate()
 	{
@@ -795,7 +810,8 @@ public class UIManager : MonoBehaviour
 		{
 			LM.tutorialGameObject.SetActive(true);
 			secondTimeAction = true;
-		}
+            GameManager.Instance.isGamePaused = true;
+        }
 	}
 	public void TooltipDefault()
 	{
@@ -805,6 +821,11 @@ public class UIManager : MonoBehaviour
 	{
 		tooltipAccionesText.text = "Mueve la unidad o ataca a una unidad";
 	}
+
+    public void HideTutorialPanel()
+    {
+        GameManager.Instance.isGamePaused = false;
+    }
 
 	#endregion
 
