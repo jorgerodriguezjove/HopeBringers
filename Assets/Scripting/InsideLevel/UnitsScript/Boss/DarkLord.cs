@@ -7,6 +7,9 @@ using DG.Tweening;
 public class DarkLord : EnemyUnit
 {
     [SerializeField]
+    private int damageReceivedAfterEndingPossesion;
+
+    [SerializeField]
     private GameObject obstacleWhilePossesing;
 
     [SerializeField]
@@ -117,7 +120,8 @@ public class DarkLord : EnemyUnit
                 areaCharged = false;
                 attackCountThisTurn++;
 
-                bossPortrait.FlipAttackTokens();
+                CallWaitCoroutine();
+                return;
             }
 
             if (currentlyPossesing)
@@ -129,7 +133,7 @@ public class DarkLord : EnemyUnit
             }
 
             ///Comprueba si puede hacer el traspaso de alma
-            if (amITheOriginalDarkLord && currentCooldownSoulSkill <= 0 && LM.enemiesOnTheBoard.Count > 1 && !LM.enemiesOnTheBoard[1].isDead)
+            if (amITheOriginalDarkLord && currentCooldownSoulSkill <= 0 && CheckSoul())
             {
                 ///Haz traspaso de alma
                 Debug.Log("0.5 Traspaso de alma");
@@ -312,173 +316,36 @@ public class DarkLord : EnemyUnit
         }
     }
 
+    //LOS ATAQUES Y LOS CHECKS QUE FALTAN ESTAN AL FINAL DE ENEMYUNIT PARA QUE LOS USEN EL GOBLIN,CHARGER Y GIGANTE
+
     #region CHECK_ATTACK_TO_CHOOSE
 
-    bool CheckArea()
+    bool CheckSoul()
     {
-        currentUnitsAvailableToAttack.Clear();
-        tilesToCheck.Clear();
-
-        //Guardo los tiles que rodean al señor oscuro
-        tilesToCheck = LM.TM.GetSurroundingTiles(myCurrentTile, 1, true, false);
-
-        for (int i = 0; i < tilesToCheck.Count; i++)
+        //Elegir enemigo
+        if (LM.enemiesOnTheBoard.Count > 0)
         {
-            if (tilesToCheck[i].unitOnTile != null && tilesToCheck[i].unitOnTile.GetComponent<PlayerUnit>())
+            if (LM.enemiesOnTheBoard[0] != null && !LM.enemiesOnTheBoard[0].isDead && !LM.enemiesOnTheBoard[0].GetComponent<DarkLord>())
             {
-                currentUnitsAvailableToAttack.Add(tilesToCheck[i].unitOnTile);
-            }
-        }
-
-        //Si esta oculto lo quito de la lista de objetivos
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-        {
-            if (currentUnitsAvailableToAttack[i].isHidden)
-            {
-                currentUnitsAvailableToAttack.RemoveAt(i);
-                i--;
-            }
-        }
-
-        ///Comprueba si tiene + de 1 objetivo para hacer área
-        if (currentUnitsAvailableToAttack.Count > 1)
-        {
-            return true;
-        }
-
-        else
-        {
-            return false;
-        }
-    }
-
-    bool CheckNormal()
-    {
-        currentUnitsAvailableToAttack.Clear();
-        tilesToCheck.Clear();
-
-        if (normalAttackUsed)
-        {
-            return false;
-        }
-
-        else
-        {
-            //Guardo los dos tiles en frente del personaje
-            tilesToCheck = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, normalAttackRange);
-
-            //Tengo que pintarlo en otro for, porque el siguiente hace break
-            for (int i = 0; i < tilesToCheck.Count; i++)
-            {
-                tilesToPaint.Add(tilesToCheck[i]);
-                tilesToCheck[i].ColorAttack();
+                chosenEnemy = LM.enemiesOnTheBoard[0];
+                return true;
             }
 
-            //Compruebo si en los 2 tiles de delante hay al menos un enemigo
-            for (int i = 0; i < tilesToCheck.Count; i++)
+            else if (LM.enemiesOnTheBoard.Count > 1 && LM.enemiesOnTheBoard[1] != null && !LM.enemiesOnTheBoard[1].isDead)
             {
-                if (tilesToCheck[i].unitOnTile != null &&
-                    tilesToCheck[i].unitOnTile.GetComponent<PlayerUnit>())
-                {
-                    currentUnitsAvailableToAttack.Add(tilesToCheck[i].unitOnTile);
-                    Debug.Log("El primer enemigo a mi alcance es"+ currentUnitsAvailableToAttack[0]);
-                    break;
-                }
-            }
-
-            //Si esta oculto lo quito de la lista de objetivos
-            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-            {
-                if (currentUnitsAvailableToAttack[i].isHidden)
-                {
-                    currentUnitsAvailableToAttack.RemoveAt(i);
-                    i--;
-                }
-            }
-
-            if (currentUnitsAvailableToAttack.Count >= 1)
-            {
+                chosenEnemy = LM.enemiesOnTheBoard[1];
                 return true;
             }
 
             else
             {
-                for (int i = 0; i < tilesToCheck.Count; i++)
-                {
-                    tilesToPaint.Remove(tilesToCheck[i]);
-                    tilesToCheck[i].ColorDesAttack();
-                }
-
                 return false;
             }
-        }
-    }
-
-    bool CheckCono()
-    {
-        currentUnitsAvailableToAttack.Clear();
-        tilesToCheck.Clear();
-        coneTiles.Clear();
-
-        if (coneUsed)
-        {
-            return false;
         }
 
         else
         {
-            //Guardo los tiles de la línea central del cono
-            tilesToCheck = myCurrentTile.GetTilesInFrontOfTheCharacter(currentFacingDirection, coneRange);
-
-            //Guardo todos los tiles del cono
-            coneTiles = LM.TM.GetConeTiles(tilesToCheck, currentFacingDirection);
-
-            //Compruebo cada tile del área del cono en busca de personajes
-            for (int i = 0; i < coneTiles.Count; i++)
-            {
-                tilesToPaint.Add(coneTiles[i]);
-                coneTiles[i].ColorAttack();
-
-                if (coneTiles[i].unitOnTile != null &&
-                    coneTiles[i].unitOnTile.GetComponent<PlayerUnit>())
-                {
-                    currentUnitsAvailableToAttack.Add(coneTiles[i].unitOnTile);
-                }
-            }
-
-            //Si esta oculto lo quito de la lista de objetivos
-            for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-            {
-                if (currentUnitsAvailableToAttack[i].isHidden)
-                {
-                    currentUnitsAvailableToAttack.RemoveAt(i);
-                    i--;
-                }
-            }
-
-            //Si hay al menos 2 unidades en rango de cono
-            if (currentUnitsAvailableToAttack.Count > 1)
-            {
-                return true;
-            }
-
-            //Si hay sólo 1 unidad pero no está en el rango del ataque normal hago el cono
-            else if (currentUnitsAvailableToAttack.Count == 1 && !CheckNormal())
-            {
-                return true;
-            }
-
-            //Si no hay nadie o sólo hay 1 en rango de normal NO HAGO CONO
-            else
-            {
-                for (int i = 0; i < coneTiles.Count; i++)
-                {
-                    tilesToPaint.Remove(coneTiles[i]);
-                    coneTiles[i].ColorDesAttack();
-                }
-
-                return false;
-            }
+            return false;
         }
     }
 
@@ -491,181 +358,41 @@ public class DarkLord : EnemyUnit
 
     private void DoSoulAttack()
     {
-        //Elegir enemigo
-        chosenEnemy = LM.enemiesOnTheBoard[1];
-
         //Desactivar personaje
         unitModel.SetActive(false);
         GetComponent<Collider>().enabled = false;
         currentlyPossesing = true;
-        particleDisappear.SetActive(true);
+
+        Instantiate(particleDisappear, transform.position, particleDisappear.transform.rotation);
 
         //Aparece bloque en su lugar
         obstacleWhilePossesing.SetActive(true);
 
         //Nuevo enemigo cambia comportamiento y da feedback de que está poseido
+        chosenEnemy.particleWhileBeingPossesedRefernce = Instantiate(particleEnemyPossesed, new Vector3(chosenEnemy.transform.position.x, chosenEnemy.transform.position.y +0.5f, chosenEnemy.transform.position.z) , particleEnemyPossesed.transform.rotation);
         chosenEnemy.StartPosesion();
-
     }
 
     public void EndPosesion()
     {
         Debug.Log("EndPosesion");
 
-        //Curar o Hacer daño al personaje 
+        //Hacer daño al personaje 
+        ReceiveDamage(damageReceivedAfterEndingPossesion, null);
+
+        //Reseteo el cooldown
+        currentCooldownSoulSkill = maxCooldownSoulsSkill;
 
         //Desactivar personaje
         unitModel.SetActive(true);
         GetComponent<Collider>().enabled = true;
-        particleDisappear.SetActive(false);
         currentlyPossesing = false;
 
         //Aparece bloque en su lugar
         obstacleWhilePossesing.SetActive(false);
     }
 
-    private void DoAreaAttack()
-    {
-        //Ataque
-        if (areaCharged)
-        {
-            //Tiles
-            for (int i = 0; i < tilesInArea.Count; i++)
-            {
-                //AQUI FEEDBACK ATAQUE (PARTÍCULAS)
-
-
-                //Quitar feedback tiles
-                tilesInArea[i].ColorDesAttack();
-
-                //Daño
-                if (tilesInArea[i].unitOnTile != null)
-                {
-                    DoDamage(tilesInArea[i].unitOnTile);
-                }
-            }
-
-            tilesInArea.Clear();
-            areaCharged = false;
-        }
-
-        //Carga
-        else
-        {
-            for (int i = 0; i < tilesToCheck.Count; i++)
-            {
-                //Feedback tiles cargados
-                tilesToCheck[i].ColorAttack();
-                tilesInArea.Add(tilesToCheck[i]);
-            }
-
-            areaCharged = true;
-        }
-    }
-
-    private void DoNormalAttack()
-    {
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-        {
-            DoDamage(currentUnitsAvailableToAttack[i]);
-        }
-    }
-
-    private void DoConeAttack()
-    {
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-        {
-            tilesListToPull.Clear();
-            DoDamage(currentUnitsAvailableToAttack[i]);
-
-            #region CheckPullDirection
-            //La función para empujar excluye el primer tile por lo que hay que añadir el tile en el que esta la unidad y luego ya coger la lsita fcon los tiles en esa dirección
-
-            if (currentFacingDirection == FacingDirection.North)
-            {
-                tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
-
-                for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineDown.Count; j++)
-                {
-                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineDown[j]);
-                }
-            }
-
-            if (currentFacingDirection == FacingDirection.South)
-            {
-                tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
-
-                for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineUp.Count; j++)
-                {
-                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineUp[j]);
-                }
-            }
-
-            if (currentFacingDirection == FacingDirection.East)
-            {
-                tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
-
-                for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineLeft.Count; j++)
-                {
-                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineLeft[j]);
-                }
-            }
-
-            if (currentFacingDirection == FacingDirection.West)
-            {
-                tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile);
-
-                for (int j = 0; j < currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineRight.Count; j++)
-                {
-                    tilesListToPull.Add(currentUnitsAvailableToAttack[i].myCurrentTile.tilesInLineRight[j]);
-                }
-            }
-
-            currentUnitsAvailableToAttack[i].ExecutePush(1, tilesListToPull, damageMadeByPush, damageMadeByFall);
-
-            #endregion
-
-        }
-    }
-
-    private void DoStunAttack()
-    {
-        for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
-        {
-             // Stun (currentUnitsAvailableToAttack[i]);
-        }
-
-        Debug.Log("AQUI FALTA FUNCIÓN DE STUN");
-    }
-
     #endregion
-
-
-    private void CallWaitCoroutine()
-    {
-        bossPortrait.FlipAttackTokens();
-        //Salgo de la comprobación de acciones para volver a empezar
-        StartCoroutine("WaitBeforeNextAction");
-        myCurrentEnemyState = enemyState.Waiting;
-    }
-
-    IEnumerator WaitBeforeNextAction()
-    {
-        yield return new WaitForSeconds(2f);
-
-        //Limpiar tiles de ataque anteriores
-
-        for (int i = 0; i < tilesToPaint.Count; i++)
-        {
-            tilesToPaint[i].ColorDesAttack();
-        }
-
-        tilesToPaint.Clear();
-        tilesToCheck.Clear();
-        coneTiles.Clear();
-
-        myCurrentEnemyState = enemyState.Searching;
-    }
 
     public override void Attack()
     {
@@ -937,7 +664,10 @@ public class DarkLord : EnemyUnit
 
         attackCountThisTurn = 0;
         coneUsed = false;
-        normalAttackUsed = false; 
+        normalAttackUsed = false;
+        areaUsed = false;
+
+        currentCooldownSoulSkill--;
     }
 
 }
