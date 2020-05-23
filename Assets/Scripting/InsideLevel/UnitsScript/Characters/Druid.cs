@@ -250,6 +250,12 @@ public class Druid : PlayerUnit
 
                 //IMPORTANTE PARA EL UNDO QUE LA VIDA SE QUITE AL FINAL
                 currentHealth -= 1;
+                if (currentHealth <= 0)
+                {
+                    Die();
+                    isDead = true;
+                }
+
 
                 UIM.RefreshTokens();
                 UIM.RefreshHealth();
@@ -317,6 +323,11 @@ public class Druid : PlayerUnit
                 }
 
                 currentHealth -= 1;
+                if (currentHealth <= 0)
+                {
+                    Die();
+                    isDead = true;
+                }
 
                 RefreshHealth(false);
                 UIM.RefreshTokens();

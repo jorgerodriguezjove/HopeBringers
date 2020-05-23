@@ -96,6 +96,12 @@ public class UITableManager : MonoBehaviour
     [SerializeField]
     TMP_Dropdown qualityDropdown;
 
+    [Header("CRÉDITOS")]
+    [SerializeField]
+    private GameObject credits1Panel;
+    [SerializeField]
+    private GameObject credits2Panel;
+
     [Header("REFERENCIAS")]
     [SerializeField]
     private TableManager TM;
@@ -769,6 +775,23 @@ public class UITableManager : MonoBehaviour
     {
         SoundManager.Instance.PlaySound(AppSounds.BUTTONCLICK);
     }
+
+    public void ChangeCreditsPage(bool isInPage1)
+    {
+        if (isInPage1) 
+        {
+            credits1Panel.SetActive(false);
+            credits2Panel.SetActive(true);
+            isInPage1 = false;
+        }
+        else
+        {
+            credits1Panel.SetActive(true);
+            credits2Panel.SetActive(false);
+            isInPage1 = true;
+        }      
+    }
+
 
     private void Update()
     {

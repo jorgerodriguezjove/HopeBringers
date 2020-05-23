@@ -1601,7 +1601,11 @@ public class LevelManager : MonoBehaviour
                 //Reactivo el collider de las unidades que se les ha quitado antes. Esto es por si hace click en otro tile sin haber rotado.
                 for (int j = 0; j < unitsToEnableCollider.Count; j++)
                 {
-                    unitsToEnableCollider[j].EnableUnableCollider(true);
+                    if (!unitsToEnableCollider[j].isDead)
+                    {
+                        unitsToEnableCollider[j].EnableUnableCollider(true);
+
+                    }
                 }
 
                 unitsToEnableCollider.Clear();
