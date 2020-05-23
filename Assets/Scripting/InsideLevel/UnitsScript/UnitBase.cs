@@ -1326,7 +1326,7 @@ public class UnitBase : MonoBehaviour
 
     public virtual void ApplyBuffOrDebuffMovement(UnitBase unitToApply, int movementAddedOrRemoved, int turnsAdded)
     {
-
+        unitToApply.movementUds = unitToApply.fMovementUds;
         unitToApply.movementUds += movementAddedOrRemoved;
         unitToApply.turnsWithMovementBuffOrDebuff = turnsAdded;
         SetMovementIcon(movementAddedOrRemoved, unitToApply, false);
