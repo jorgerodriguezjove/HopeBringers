@@ -440,7 +440,12 @@ public class GameManager : PersistentSingleton<GameManager>
             }
 
             allLevelNodes[0].UnlockThisLevel();
-            allLevelNodes[0].UnlockConnectedLevels();
+
+            if (allLevelNodes[2].isUnlocked)
+            {
+                allLevelNodes[1].UnlockThisLevel();
+            }
+            
 
             #region Characters
 

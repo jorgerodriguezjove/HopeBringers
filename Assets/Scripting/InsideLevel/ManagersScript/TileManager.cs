@@ -1548,7 +1548,6 @@ public class TileManager : MonoBehaviour
                             {
                                 surroundingTiles.Add(grid2DNode[centerTile.tileX + i, centerTile.tileZ + j]);
                             }
-
                         }
                     }
                }

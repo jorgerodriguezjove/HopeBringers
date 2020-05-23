@@ -423,6 +423,7 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
+
 	public void CheckActionsAvaliable()
 	{
         numberOfCharactersFinished = 0;
