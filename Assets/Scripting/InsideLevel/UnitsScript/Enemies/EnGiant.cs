@@ -498,29 +498,41 @@ public class EnGiant : EnemyUnit
             {
                 //Hago lo mismo con los tiles laterales, los pinto de rojo y los guardo en la lista de bools
 
-                //Tile lateral der
-                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0].isUnderAttack);
-                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0]);
-                myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
+                if (myCurrentObjectiveTile.tilesInLineRight.Count > 0 && myCurrentObjectiveTile.tilesInLineRight[0] != null)
+                {
+                    //Tile lateral der
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0].isUnderAttack);
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineRight[0]);
+                    myCurrentObjectiveTile.tilesInLineRight[0].ColorAttack();
+                }
 
-                //Tile lateral izq
-                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0].isUnderAttack);
-                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0]);
-                myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
+                if (myCurrentObjectiveTile.tilesInLineLeft.Count > 0 && myCurrentObjectiveTile.tilesInLineLeft[0] != null)
+                {
+                    //Tile lateral izq
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0].isUnderAttack);
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineLeft[0]);
+                    myCurrentObjectiveTile.tilesInLineLeft[0].ColorAttack();
+                }
             }
 
             //O pinto tile arriba y debajo, depende de dirección
             else if (pathToObjective.Count > 2 && myCurrentObjectiveTile.tileZ == shadowHoverTile.tileZ || pathToObjective.Count == 2 && myCurrentObjectiveTile.tileZ == myCurrentTile.tileZ)
             {
-                //Tile lateral arriba
-                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0].isUnderAttack);
-                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0]);
-                myCurrentObjectiveTile.tilesInLineUp[0].ColorAttack();
+                if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && myCurrentObjectiveTile.tilesInLineUp[0] != null)
+                {
+                    //Tile lateral arriba
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0].isUnderAttack);
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineUp[0]);
+                    myCurrentObjectiveTile.tilesInLineUp[0].ColorAttack();
+                }
 
-                //Tile lateral abajo
-                wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0].isUnderAttack);
-                tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0]);
-                myCurrentObjectiveTile.tilesInLineDown[0].ColorAttack();
+                if (myCurrentObjectiveTile.tilesInLineDown.Count > 0 && myCurrentObjectiveTile.tilesInLineDown[0] != null)
+                {
+                    //Tile lateral abajo
+                    wereTilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0].isUnderAttack);
+                    tilesAlreadyUnderAttack.Add(myCurrentObjectiveTile.tilesInLineDown[0]);
+                    myCurrentObjectiveTile.tilesInLineDown[0].ColorAttack();
+                }    
             }
         }
     }

@@ -219,6 +219,12 @@ public class EnDuelist : EnemyUnit
         {
             myCurrentEnemyState = enemyState.Moving;
         }
+
+        //Si llega hasta aqui significa que ya se ha movido y no puede atacar
+        if (hasMoved && !hasAttacked)
+        {
+            myCurrentEnemyState = enemyState.Ended;
+        }
     }
 
     public void ShowArrowsOnEnemies(bool _shouldShowArrow)
