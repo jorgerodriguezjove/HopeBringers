@@ -48,6 +48,14 @@ Monk%3
 Monk: .
 Monk%0
 
+King%4
+King:.
+King%0
+
+Scientist%3
+Scientist: .
+Scientist%0
+
 Darklord%4
 Darklord: .
 Darklord%0
