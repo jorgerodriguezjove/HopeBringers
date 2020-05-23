@@ -126,7 +126,7 @@ public class Mage : PlayerUnit
         fTimeElectricityAttackExpands = timeElectricityAttackExpands;
 
         #endregion
-
+        
         #region Pasives
 
         isDecoyBomb = _bombDecoy1;
@@ -411,6 +411,19 @@ public class Mage : PlayerUnit
 
         //Una vez aplicados los multiplicadores efectuo el daño.
         unitToDealDamage.ReceiveDamage(Mathf.RoundToInt(damageWithMultipliersApplied), this);
+    }
+
+    public override void Die()
+    {
+        for (int i = 0; i < myDecoys.Count; i++)
+        {
+            if (myDecoys[i] != null)
+            {
+                myDecoys[i].GetComponent<UnitBase>().ReceiveDamage(1,null);
+            }
+        }
+
+        base.Die();
     }
 
     #region MOVEMENT

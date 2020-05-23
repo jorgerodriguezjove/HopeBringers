@@ -25,6 +25,11 @@ public class MageDecoy : Mage
         myAnimator = GetComponent<Animator>();
         initMaterial = unitMaterialModel.GetComponent<SkinnedMeshRenderer>().material;
         currentHealth = maxHealth;
+
+        if (myMage == null)
+        {
+            myMage = FindObjectOfType<Mage>();
+        }
     }
 
 
@@ -37,7 +42,7 @@ public class MageDecoy : Mage
     protected override void OnMouseDown()
     {
         if (LM.selectedCharacter != null)
-        {
+        {   
             if (LM.selectedCharacter == myMage && !myMage.hasMoved)
             {
                 ChangePosition(myMage);

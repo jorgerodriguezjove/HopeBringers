@@ -13,7 +13,7 @@ public class CharacterInDialog : MonoBehaviour
 
         if (posToMove == 3 || posToMove == 4)
         {
-            this.transform.localRotation = Quaternion.Euler(0, 100 ,0);
+            //this.transform.localRotation = Quaternion.Euler(0, 100 ,0);
         }
     }
 

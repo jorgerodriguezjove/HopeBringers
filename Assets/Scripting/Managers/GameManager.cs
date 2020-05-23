@@ -439,7 +439,8 @@ public class GameManager : PersistentSingleton<GameManager>
                 allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockConnectedLevels();
             }
 
-
+            allLevelNodes[0].UnlockThisLevel();
+            allLevelNodes[0].UnlockConnectedLevels();
 
             #region Characters
 

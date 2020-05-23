@@ -1588,7 +1588,6 @@ public class LevelManager : MonoBehaviour
             //Movimiento de la unidad
             if (selectedCharacter != null && !selectedCharacter.hasAttacked && !selectedCharacter.hasMoved)
             {
-
                 SoundManager.Instance.PlaySound(AppSounds.TILECLICK);
 
                 ///Esta línea comentada estaba antes para calcular los tiles pero daba problemas y no cogía a veces todos los tiles. En principio como al hacer hover ya los calculo una vez y lo hace bien,
@@ -1602,10 +1601,9 @@ public class LevelManager : MonoBehaviour
                 //Reactivo el collider de las unidades que se les ha quitado antes. Esto es por si hace click en otro tile sin haber rotado.
                 for (int j = 0; j < unitsToEnableCollider.Count; j++)
                 {
-                    if (!unitsToEnableCollider[j].isDead)
+                    if (!unitsToEnableCollider[j].isDead && unitsToEnableCollider[j] != null)
                     {
                         unitsToEnableCollider[j].EnableUnableCollider(true);
-
                     }
                 }
 
