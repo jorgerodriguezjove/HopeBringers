@@ -387,40 +387,49 @@ public class Berserker : PlayerUnit
             myAnimator.SetTrigger("Attack");
             for (int i = 0; i < timesCircularAttackRepeats; i++)
             {
-                if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                if (myCurrentTile.tilesInLineUp[0] != null)
                 {
-                    CreateAttackCommand(myCurrentTile.tilesInLineUp[0].unitOnTile);
+                    if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                    {
+                        CreateAttackCommand(myCurrentTile.tilesInLineUp[0].unitOnTile);
 
-                    currentFacingDirection = FacingDirection.North;
-                    DoDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
-                }
-                
-                if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
-                {
-                    CreateAttackCommand(myCurrentTile.tilesInLineDown[0].unitOnTile);
-
-                    currentFacingDirection = FacingDirection.South;
-                    DoDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
+                        currentFacingDirection = FacingDirection.North;
+                        DoDamage(myCurrentTile.tilesInLineUp[0].unitOnTile);
+                    }
                 }
 
-               
-                if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                if (myCurrentTile.tilesInLineDown[0] != null)
                 {
-                    CreateAttackCommand(myCurrentTile.tilesInLineRight[0].unitOnTile);
+                    if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                    {
+                        CreateAttackCommand(myCurrentTile.tilesInLineDown[0].unitOnTile);
 
-                    currentFacingDirection = FacingDirection.East;
-                    DoDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
+                        currentFacingDirection = FacingDirection.South;
+                        DoDamage(myCurrentTile.tilesInLineDown[0].unitOnTile);
+                    }
                 }
 
-               
-                if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                if (myCurrentTile.tilesInLineRight[0] != null)
                 {
-                    CreateAttackCommand(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+                    if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                    {
+                        CreateAttackCommand(myCurrentTile.tilesInLineRight[0].unitOnTile);
 
-                    currentFacingDirection = FacingDirection.West;
-                    DoDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+                        currentFacingDirection = FacingDirection.East;
+                        DoDamage(myCurrentTile.tilesInLineRight[0].unitOnTile);
+                    }
                 }
 
+                if (myCurrentTile.tilesInLineLeft[0] != null)
+                {
+                    if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                    {
+                        CreateAttackCommand(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+
+                        currentFacingDirection = FacingDirection.West;
+                        DoDamage(myCurrentTile.tilesInLineLeft[0].unitOnTile);
+                    }
+                }
                
             }
 
