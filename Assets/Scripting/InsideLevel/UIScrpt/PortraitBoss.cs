@@ -246,7 +246,6 @@ public class PortraitBoss : MonoBehaviour
     //Función que se encarga de actualizar la vida del personaje.
     public void RefreshHealth()
     {
-        Debug.Log("refresh");
         if (assignedBoss != null)
         {
             for (int i = 0; i < assignedBoss.maxHealth; i++)
@@ -258,7 +257,6 @@ public class PortraitBoss : MonoBehaviour
                         if (lifeTokensList[i].GetComponent<LifeToken>())
                         {
                             lifeTokensList[i].GetComponent<LifeToken>().ArmoredToken();
-                            Debug.Log("armor");
                         }
                     }
 
@@ -267,7 +265,6 @@ public class PortraitBoss : MonoBehaviour
                         if (lifeTokensList[i].GetComponent<LifeToken>())
                         {
                             lifeTokensList[i].GetComponent<LifeToken>().ResetToken();
-                            Debug.Log("reset");
                         }
                     }
                 }
@@ -277,7 +274,6 @@ public class PortraitBoss : MonoBehaviour
                     if (lifeTokensList[i].GetComponent<LifeToken>())
                     {
                         lifeTokensList[i].GetComponent<LifeToken>().FlipToken();
-                        Debug.Log("flip"); 
                     }
                 }
             }

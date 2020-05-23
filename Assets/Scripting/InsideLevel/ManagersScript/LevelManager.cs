@@ -1433,12 +1433,13 @@ public class LevelManager : MonoBehaviour
             //Reactivo el collider de las unidades que se les ha quitado al seleccionar tile para rotar.
             for (int j = 0; j < unitsToEnableCollider.Count; j++)
             {
-                unitsToEnableCollider[j].EnableUnableCollider(true);
+                if (unitsToEnableCollider[j] != null)
+                {
+                    unitsToEnableCollider[j].EnableUnableCollider(true);
+                }
             }
 
             unitsToEnableCollider.Clear();
-
-          
         }
 
         else if(selectedEnemy !=null)
@@ -1907,12 +1908,14 @@ public class LevelManager : MonoBehaviour
 
             //Comienza turno player
             UIM.PlayerTurnBanner(false);
-			if (tutorialLevel2 || tutorialLevel3 || tutorialLevel4)
-			{
-				tutorialGameObject.SetActive(true);
-			}
 
             GameManager.Instance.isGamePaused = false;
+
+            if (tutorialLevel2 || tutorialLevel3 || tutorialLevel4)
+			{
+				tutorialGameObject.SetActive(true);
+                GameManager.Instance.isGamePaused = true;
+            }
             BeginPlayerPhase();
         }
     }

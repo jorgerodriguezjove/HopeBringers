@@ -66,8 +66,6 @@ public class MageDecoy : Mage
 
         monkMark.SetActive(false);
         monkMarkUpgrade.SetActive(false);
-
-
         Instantiate(deathParticle, gameObject.transform.position, gameObject.transform.rotation);
 
         //myCurrentTile.unitOnTile = null;
