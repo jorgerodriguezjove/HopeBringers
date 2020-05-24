@@ -735,4 +735,10 @@ public class Samurai : PlayerUnit
         UIM.CheckActionsAvaliable();
     }
 
+    public override void Die()
+    {
+        LM.honorCount = 0;
+        base.Die();
+    }
+
 }

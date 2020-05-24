@@ -151,8 +151,6 @@ public class LevelManager : MonoBehaviour
     #endregion
 
     #region INIT
-
-
     //IMPORTANTE QUE SEA START Y NO AWAKE
     //EL ENEMYUNIT Y EL PLAYERUNIT TIENEN QUE INICIALIZARSE EN EL AWAKE ANTES DE PODER HACER ESTO
     //TANTO EL Start COMO StartGameplayAfterDialog TIENEN UN ORDEN MUY CONCRETO QUE NO SE PUEDE CAMBIAR A LA LIGERA POR EL ORDEN DE INICIALIZACIÓN
@@ -1915,7 +1913,7 @@ public class LevelManager : MonoBehaviour
     {
         GameManager.Instance.isGamePaused = false;
 
-        if (tutorialLevel2 || tutorialLevel3 || tutorialLevel4)
+        if (!UIM.tutorialCompleted && (tutorialLevel2 || tutorialLevel3 || tutorialLevel4))
         {
             tutorialGameObject.SetActive(true);
             GameManager.Instance.isGamePaused = true;

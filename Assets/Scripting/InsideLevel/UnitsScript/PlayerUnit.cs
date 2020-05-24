@@ -580,7 +580,6 @@ public class PlayerUnit : UnitBase
 
         if(myCurrentPath.Count > 0)
         {
-
             //Animación de movimiento
             for (int j = 1; j < myCurrentPath.Count; j++)
             {
@@ -1673,7 +1672,6 @@ public class PlayerUnit : UnitBase
     {
         if (_unitToCheck.isMarked)
         {
-
             Monk monkref = FindObjectOfType<Monk>();
 
             if(monkref != null)

@@ -259,8 +259,6 @@ public class Monk : PlayerUnit
 
     public override void Attack(UnitBase unitToAttack)
     {
-       
-
         if (rotatorTime){
 
             unitToAttack.hoverRotateIcon.SetActive(false);

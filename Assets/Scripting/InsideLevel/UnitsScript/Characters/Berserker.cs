@@ -171,8 +171,16 @@ public class Berserker : PlayerUnit
         myPanelPortrait.GetComponent<Portraits>().specialToken2.SetActive(true);
         myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.enabled = true;
 
-        myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = turnsLeftToRageOff.ToString();
+        if (isInRage)
+        {
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.text = turnsLeftToRageOff.ToString();
+        }
 
+        else
+        {
+            myPanelPortrait.GetComponent<Portraits>().specialSkillTurnsLeft2.enabled = false;
+        }
+        
         myPanelPortrait.GetComponent<Portraits>().specialSkillImage2.sprite = Resources.Load<Sprite>(AppPaths.PATH_RESOURCE_GENERIC_ICONS + "BerserkDataBasePasive");
     }
 

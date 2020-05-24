@@ -146,6 +146,9 @@ public class UIManager : MonoBehaviour
 	[@TextAreaAttribute(5, 10)]
 	string tutorialText3;
 
+    [HideInInspector]
+    public bool tutorialCompleted = false; 
+
     [Header("VICTORIA/DEFEAT")]
     [SerializeField]
     GameObject victoryPanel;
@@ -803,8 +806,13 @@ public class UIManager : MonoBehaviour
 		//	LM.tutorialGameObject.SetActive(true);
 		//	secondTimeAction = true;
 		//}
-
 	}
+
+    public void TutorialCompleted()
+    {
+        tutorialCompleted = true;
+    }
+
 	public void UndoTooltip()
 	{
 		if(LM.tutorialLevel2 && !secondTimeAction)
