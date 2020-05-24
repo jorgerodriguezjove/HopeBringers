@@ -974,8 +974,10 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         Debug.Log("Comprobar si desbloqueo el logro");
 
+        SteamManager steamM = FindObjectOfType<SteamManager>();
+
         //Comprobar si esta el logro
-        if (FindObjectOfType<SteamManager>() != null)
+        if (steamM != null)
         {
             TestAchievementStatus(_achievementId);
             if (!unlockAchievementCheck)

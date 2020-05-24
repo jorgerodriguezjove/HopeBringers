@@ -615,9 +615,12 @@ public class UITableManager : MonoBehaviour
 
     public void SetQuality (int _qualityIndex)
     {
-        QualitySettings.SetQualityLevel(_qualityIndex);
-        qualityDropdown.value = _qualityIndex;
-        qualityDropdown.RefreshShownValue();
+        if (qualityDropdown != null)
+        {
+            QualitySettings.SetQualityLevel(_qualityIndex);
+            qualityDropdown.value = _qualityIndex;
+            qualityDropdown.RefreshShownValue();
+        }
 
         PlayerPrefs.SetInt(AppPlayerPrefKeys.QUALITY_LEVEL, _qualityIndex);
     }

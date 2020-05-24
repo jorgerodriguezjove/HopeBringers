@@ -474,7 +474,8 @@ public class EnemyUnit : UnitBase
 
         if (sleepParticle != null)
         {
-            Destroy(sleepParticle);
+            sleepParticle.SetActive(false);
+            //Destroy(sleepParticle);
         }
         
         rangeOfAction = 1000;
