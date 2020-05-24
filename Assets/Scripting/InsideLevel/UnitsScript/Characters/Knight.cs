@@ -385,12 +385,22 @@ public class Knight : PlayerUnit
            
                 if (currentFacingDirection == FacingDirection.North)
                 {
-                    if (myCurrentTile.tilesInLineUp[tilesToPush].unitOnTile == null
-                        && myCurrentTile.tilesInLineUp[tilesToPush] != null
-                        && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
-                        && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
+                    if (myCurrentTile.tilesInLineUp.Count > tilesToPush)
                     {
-                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        limitantRangePushFarther = tilesToPush;
+                    }
+
+                    else
+                    {
+                        limitantRangePushFarther = myCurrentTile.tilesInLineUp.Count - 1;
+                    }
+
+                    if (myCurrentTile.tilesInLineUp[limitantRangePushFarther].unitOnTile == null
+                        && myCurrentTile.tilesInLineUp[limitantRangePushFarther] != null
+                        && !myCurrentTile.tilesInLineUp[limitantRangePushFarther].isEmpty
+                        && !myCurrentTile.tilesInLineUp[limitantRangePushFarther].isObstacle)
+                    {
+                        for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                         {
                             if (myCurrentTile.tilesInLineUp[i].isObstacle
                                 || myCurrentTile.tilesInLineUp[i].isEmpty)
@@ -409,11 +419,11 @@ public class Knight : PlayerUnit
 
                         if (canDoPush)
                         {
-                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[tilesToPush]);
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[limitantRangePushFarther]);
                         }
                     }
                     
-                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                         {
@@ -433,12 +443,22 @@ public class Knight : PlayerUnit
 
                 else if (currentFacingDirection == FacingDirection.South)
                 {
-                    if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
-                       && myCurrentTile.tilesInLineDown[tilesToPush] != null
-                       && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
-                       && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
+                    if (myCurrentTile.tilesInLineDown.Count > tilesToPush)
                     {
-                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        limitantRangePushFarther = tilesToPush;
+                    }
+
+                    else
+                    {
+                        limitantRangePushFarther = myCurrentTile.tilesInLineDown.Count - 1;
+                    }
+
+                    if (myCurrentTile.tilesInLineDown[limitantRangePushFarther].unitOnTile == null
+                       && myCurrentTile.tilesInLineDown[limitantRangePushFarther] != null
+                       && !myCurrentTile.tilesInLineDown[limitantRangePushFarther].isEmpty
+                       && !myCurrentTile.tilesInLineDown[limitantRangePushFarther].isObstacle)
+                    {
+                        for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                         {
                             if (myCurrentTile.tilesInLineDown[i].isObstacle
                                 || myCurrentTile.tilesInLineDown[i].isEmpty)
@@ -456,12 +476,12 @@ public class Knight : PlayerUnit
 
                         if (canDoPush)
                         {
-                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[tilesToPush]);
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[limitantRangePushFarther]);
 
                         }
                     }
 
-                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                         {
@@ -481,12 +501,22 @@ public class Knight : PlayerUnit
 
                 else if (currentFacingDirection == FacingDirection.East)
                 {
-                    if (myCurrentTile.tilesInLineRight[tilesToPush].unitOnTile == null
-                        && myCurrentTile.tilesInLineRight[tilesToPush] != null
-                        && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
-                        && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
+                    if (myCurrentTile.tilesInLineRight.Count > tilesToPush)
                     {
-                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        limitantRangePushFarther = tilesToPush;
+                    }
+
+                    else
+                    {
+                        limitantRangePushFarther = myCurrentTile.tilesInLineRight.Count - 1;
+                    }
+
+                    if (myCurrentTile.tilesInLineRight[limitantRangePushFarther].unitOnTile == null
+                        && myCurrentTile.tilesInLineRight[limitantRangePushFarther] != null
+                        && !myCurrentTile.tilesInLineRight[limitantRangePushFarther].isEmpty
+                        && !myCurrentTile.tilesInLineRight[limitantRangePushFarther].isObstacle)
+                    {
+                        for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                         {
                             if (myCurrentTile.tilesInLineRight[i].isObstacle
                                 || myCurrentTile.tilesInLineRight[i].isEmpty)
@@ -504,12 +534,12 @@ public class Knight : PlayerUnit
 
                         if (canDoPush)
                         {
-                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[tilesToPush]);
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[limitantRangePushFarther]);
 
                         }
                     }
 
-                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                         {
@@ -529,12 +559,22 @@ public class Knight : PlayerUnit
 
                 else if (currentFacingDirection == FacingDirection.West)
                 {
-                    if (myCurrentTile.tilesInLineLeft[tilesToPush].unitOnTile == null
-                       && myCurrentTile.tilesInLineLeft[tilesToPush] != null
-                       && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
-                       && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
+                    if (myCurrentTile.tilesInLineLeft.Count > tilesToPush)
                     {
-                        for (int i = 0; i - 1 < tilesToPush; i++)
+                        limitantRangePushFarther = tilesToPush;
+                    }
+
+                    else
+                    {
+                        limitantRangePushFarther = myCurrentTile.tilesInLineLeft.Count - 1;
+                    }
+
+                    if (myCurrentTile.tilesInLineLeft[limitantRangePushFarther].unitOnTile == null
+                       && myCurrentTile.tilesInLineLeft[limitantRangePushFarther] != null
+                       && !myCurrentTile.tilesInLineLeft[limitantRangePushFarther].isEmpty
+                       && !myCurrentTile.tilesInLineLeft[limitantRangePushFarther].isObstacle)
+                    {
+                        for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                         {
                             if (myCurrentTile.tilesInLineLeft[i].isObstacle
                                 || myCurrentTile.tilesInLineLeft[i].isEmpty)
@@ -551,11 +591,11 @@ public class Knight : PlayerUnit
                         CreateAttackCommand(unitToAttack);
                         if (canDoPush)
                         {
-                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[tilesToPush]);
+                            unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[limitantRangePushFarther]);
                         }
                     }
 
-                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
                         {
@@ -1261,7 +1301,7 @@ public class Knight : PlayerUnit
 
                 else
                 {
-                    limitantRangePushFarther = myCurrentTile.tilesInLineUp.Count;
+                    limitantRangePushFarther = myCurrentTile.tilesInLineUp.Count-1;
                 }
 
                 if (myCurrentTile.tilesInLineUp[limitantRangePushFarther].unitOnTile == null
@@ -1315,7 +1355,7 @@ public class Knight : PlayerUnit
 
                 else
                 {
-                    limitantRangePushFarther = myCurrentTile.tilesInLineDown.Count;
+                    limitantRangePushFarther = myCurrentTile.tilesInLineDown.Count-1;
                 }
 
                 if (myCurrentTile.tilesInLineDown[limitantRangePushFarther].unitOnTile == null
@@ -1367,7 +1407,7 @@ public class Knight : PlayerUnit
 
                 else
                 {
-                    limitantRangePushFarther = myCurrentTile.tilesInLineRight.Count;
+                    limitantRangePushFarther = myCurrentTile.tilesInLineRight.Count-1;
                 }
 
                 if (myCurrentTile.tilesInLineRight[limitantRangePushFarther].unitOnTile == null
@@ -1421,7 +1461,7 @@ public class Knight : PlayerUnit
 
                 else
                 {
-                    limitantRangePushFarther = myCurrentTile.tilesInLineLeft.Count;
+                    limitantRangePushFarther = myCurrentTile.tilesInLineLeft.Count-1;
                 }
 
                 if (myCurrentTile.tilesInLineLeft[limitantRangePushFarther].unitOnTile == null
