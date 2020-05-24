@@ -132,7 +132,6 @@ public class UITableManager : MonoBehaviour
         }
 
         resolutionDropdown.AddOptions(options);
-        SetResolution(PlayerPrefs.GetInt(AppPlayerPrefKeys.RESOLUTION));
         resolutionDropdown.value = PlayerPrefs.GetInt(AppPlayerPrefKeys.RESOLUTION);
         resolutionDropdown.RefreshShownValue();
 
@@ -581,10 +580,10 @@ public class UITableManager : MonoBehaviour
 
     public void SetResolution(int _resolutionIndex)
     {
-        //Resolution resolution = resolutions[_resolutionIndex];
-        //Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        Resolution resolution = resolutions[_resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 
-        //PlayerPrefs.SetInt(AppPlayerPrefKeys.RESOLUTION, _resolutionIndex);
+        PlayerPrefs.SetInt(AppPlayerPrefKeys.RESOLUTION, _resolutionIndex);
     }
 
 

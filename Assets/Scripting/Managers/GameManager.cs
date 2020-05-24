@@ -980,23 +980,23 @@ public class GameManager : PersistentSingleton<GameManager>
 
     #endregion
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            //inkManRef = FindObjectOfType<InkManager>();
-            //dialogManRef = FindObjectOfType<DialogManager>();
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.F))
+    //    {
+    //        //inkManRef = FindObjectOfType<InkManager>();
+    //        //dialogManRef = FindObjectOfType<DialogManager>();
 
          
-            //StartDialog(true);
-        }
+    //        //StartDialog(true);
+    //    }
 
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            DEBUGDeleteSaveFile();
-            Debug.Log("Archivo de Guardado Borrado DEBUG");
-        }
+    //    if (Input.GetKeyDown(KeyCode.P))
+    //    {
+    //        DEBUGDeleteSaveFile();
+    //        Debug.Log("Archivo de Guardado Borrado DEBUG");
+    //    }
 
-    }
+    //}
 }
