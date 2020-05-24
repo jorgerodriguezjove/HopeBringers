@@ -544,7 +544,7 @@ public class EnGiant : EnemyUnit
     {
         tempLateralTilesToFutureObjective.Clear();
 
-        if (pathToObjective.Count > 0)
+        if (pathToObjective.Count > 0 && pathToObjective.Count <= limitantNumberOfTilesToMove + 1)
         {
             tempLateralTilesToFutureObjective = pathToObjective[limitantNumberOfTilesToMove + 1].GetLateralTilesBasedOnDirection(CheckTileDirection(pathToObjective[limitantNumberOfTilesToMove], pathToObjective[limitantNumberOfTilesToMove + 1], false), 1);
         }
