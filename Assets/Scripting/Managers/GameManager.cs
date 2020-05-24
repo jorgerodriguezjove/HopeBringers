@@ -163,11 +163,24 @@ public class GameManager : PersistentSingleton<GameManager>
         SceneManager.sceneLoaded += RemoveOldCharacterData;
         SceneManager.sceneLoaded += UpdateLevelStates;
         SceneManager.sceneLoaded += WaitForLevelEndChargingToStartDialog;
+        SceneManager.sceneLoaded += UpdateCharacterStates;
     }
 
     #endregion
 
     #region ON_SCENE_MAP_LOADED
+
+    public void UpdateCharacterStates(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == AppScenes.MAP_SCENE)
+        {
+            for (int i = 0; i < allCharacters.Length; i++)
+            {
+                allCharacters[i].AssignCharactersToUnlockToLevels();
+            }
+        }
+           
+    }
 
     public void UpdateLevelStates(Scene scene, LoadSceneMode mode)
     {
@@ -437,16 +450,15 @@ public class GameManager : PersistentSingleton<GameManager>
             for (int i = 0; i < save.s_levelIDsUnlocked.Count; i++)
             {
                 levelIDsUnlocked.Add(save.s_levelIDsUnlocked[i]);
-                allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockConnectedLevels();
+                allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockThisLevel();
             }
+
+            //if (allLevelNodes[2].isUnlocked)
+            //{
+            //    allLevelNodes[1].UnlockThisLevel();
+            //}
 
             allLevelNodes[0].UnlockThisLevel();
-
-            if (allLevelNodes[2].isUnlocked)
-            {
-                allLevelNodes[1].UnlockThisLevel();
-            }
-            
 
             #region Characters
 

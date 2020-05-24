@@ -105,26 +105,26 @@ public class CharacterData : MonoBehaviour
             //Hacer desaparecer el modelo
             HideShowMeshCharacterData(false);
         }
+    }
 
-        else
+    public void AssignCharactersToUnlockToLevels()
+    {
+        GameObject skillTreesParent = FindObjectOfType<CanvasSkillTreesContainer>().gameObject;
+
+        for (int i = 0; i < skillTreesParent.transform.childCount; i++)
         {
-            GameObject skillTreesParent = FindObjectOfType<CanvasSkillTreesContainer>().gameObject;
+            SkillTree tempSkillTree = skillTreesParent.transform.GetChild(i).GetComponent<SkillTree>();
 
-            for (int i = 0; i < skillTreesParent.transform.childCount; i++)
+            if (tempSkillTree.characterId == idCharacter)
             {
-                SkillTree tempSkillTree = skillTreesParent.transform.GetChild(i).GetComponent<SkillTree>();
-
-                if (tempSkillTree.characterId == idCharacter)
-                {
-                    skillTreePrefab = tempSkillTree.gameObject;
-                }
+                skillTreePrefab = tempSkillTree.gameObject;
             }
-
-            //Hacer reaparecer el modelo 
-            HideShowMeshCharacterData(true);
-
-            InitializeCharacterToUnlocks();
         }
+
+        //Hacer reaparecer el modelo 
+        HideShowMeshCharacterData(true);
+
+        InitializeCharacterToUnlocks();
     }
 
     public void InitializeCharacterToUnlocks()
@@ -135,9 +135,10 @@ public class CharacterData : MonoBehaviour
         {
             for (int i = 0; i < allLevelNodes.Length; i++)
             {
-                if (allLevelNodes[i].idLevel == idLevelWhereThisCharacterUnlocks && allLevelNodes[i].newCharacterToUnlock == null)
+                if (allLevelNodes[i].idLevel == idLevelWhereThisCharacterUnlocks)
                 {
                     allLevelNodes[i].newCharacterToUnlock = gameObject;
+                    break;
                 }
             }
         }
