@@ -323,7 +323,7 @@ public class EnCharger : EnemyUnit
         for (int j = 0; j < pathToObjective.Count; j++)
         {
             //Calcula el vector al que se tiene que mover.
-            currentTileVectorToMove = pathToObjective[j].transform.position;
+            currentTileVectorToMove = new Vector3(pathToObjective[j].transform.position.x, this.transform.position.y ,pathToObjective[j].transform.position.z);
 
             //Muevo y roto a la unidad
             transform.DOMove(currentTileVectorToMove, currentTimeForMovement);

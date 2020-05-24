@@ -567,7 +567,7 @@ public class EnBalista : EnemyUnit
                 if (isRightTileOccupied && !isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].transform.position.x, transform.position.y ,myCurrentTile.tilesInLineLeft[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
                     isMovingToHisRight = false;
 
                     return (myCurrentTile.tilesInLineLeft[0]);
@@ -576,7 +576,7 @@ public class EnBalista : EnemyUnit
                 else if (!isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; //new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineRight[0].transform.position.z); //new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
                     return (myCurrentTile.tilesInLineRight[0]);
                 }
 
@@ -592,7 +592,7 @@ public class EnBalista : EnemyUnit
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineRight[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
                     isMovingToHisRight = true;
 
                     return (myCurrentTile.tilesInLineRight[0]);
@@ -601,7 +601,7 @@ public class EnBalista : EnemyUnit
                 else if (!isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineLeft[0].transform.position.z); //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
                     return (myCurrentTile.tilesInLineLeft[0]);
                 }
 
@@ -641,7 +641,7 @@ public class EnBalista : EnemyUnit
                 if (isRightTileOccupied && !isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineRight[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
                     isMovingToHisRight = false;
                     return (myCurrentTile.tilesInLineRight[0]);
                 }
@@ -649,7 +649,7 @@ public class EnBalista : EnemyUnit
                 else if (!isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineLeft[0].transform.position.z); //new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
                     return (myCurrentTile.tilesInLineLeft[0]);
                 }
 
@@ -665,7 +665,7 @@ public class EnBalista : EnemyUnit
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineLeft[0].transform.position; // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineLeft[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineLeft[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineLeft[0].tileX, myCurrentTile.tilesInLineLeft[0].height, myCurrentTile.tilesInLineLeft[0].tileZ);
                     isMovingToHisRight = true;
                     return (myCurrentTile.tilesInLineLeft[0]);
 
@@ -674,7 +674,7 @@ public class EnBalista : EnemyUnit
                 else if (!isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineRight[0].transform.position; // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineRight[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineRight[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineRight[0].tileX, myCurrentTile.tilesInLineRight[0].height, myCurrentTile.tilesInLineRight[0].tileZ);
                     return (myCurrentTile.tilesInLineRight[0]);
                 }
 
@@ -714,7 +714,7 @@ public class EnBalista : EnemyUnit
                 if (isRightTileOccupied && !isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineUp[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                     isMovingToHisRight = false;
 
                     return (myCurrentTile.tilesInLineUp[0]);
@@ -723,7 +723,7 @@ public class EnBalista : EnemyUnit
                 else if (!isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; // new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineDown[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
 
                     return (myCurrentTile.tilesInLineDown[0]);
 
@@ -741,7 +741,7 @@ public class EnBalista : EnemyUnit
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //  new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineDown[0].transform.position.z); //  new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
                     isMovingToHisRight = true;
                     return (myCurrentTile.tilesInLineDown[0]);
 
@@ -750,7 +750,7 @@ public class EnBalista : EnemyUnit
                 else if (!isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineUp[0].transform.position.z); // new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                     return (myCurrentTile.tilesInLineUp[0]);
                 }
 
@@ -790,7 +790,7 @@ public class EnBalista : EnemyUnit
                 if (isRightTileOccupied && !isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineDown[0].transform.position.z); //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
                     isMovingToHisRight = false;
                     return (myCurrentTile.tilesInLineDown[0]);
                 }
@@ -798,7 +798,7 @@ public class EnBalista : EnemyUnit
                 else if (!isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineUp[0].transform.position.z); //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                     return (myCurrentTile.tilesInLineUp[0]);
                 }
 
@@ -814,7 +814,7 @@ public class EnBalista : EnemyUnit
                 if (isLeftTileOccupied && !isRightTileOccupied)
                 {
                     //Muevo a la derecha
-                    currentTileVectorToMove = myCurrentTile.tilesInLineUp[0].transform.position; //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineUp[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineUp[0].transform.position.z); //new Vector3(myCurrentTile.tilesInLineUp[0].tileX, myCurrentTile.tilesInLineUp[0].height, myCurrentTile.tilesInLineUp[0].tileZ);
                     isMovingToHisRight = true;
                     return (myCurrentTile.tilesInLineUp[0]);
 
@@ -823,7 +823,7 @@ public class EnBalista : EnemyUnit
                 else if (!isLeftTileOccupied)
                 {
                     //Muevo a la izquierda
-                    currentTileVectorToMove = myCurrentTile.tilesInLineDown[0].transform.position; //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
+                    currentTileVectorToMove = new Vector3(myCurrentTile.tilesInLineDown[0].transform.position.x, transform.position.y, myCurrentTile.tilesInLineDown[0].transform.position.z); //new Vector3(myCurrentTile.tilesInLineDown[0].tileX, myCurrentTile.tilesInLineDown[0].height, myCurrentTile.tilesInLineDown[0].tileZ);
                     return (myCurrentTile.tilesInLineDown[0]);
                 }
 
