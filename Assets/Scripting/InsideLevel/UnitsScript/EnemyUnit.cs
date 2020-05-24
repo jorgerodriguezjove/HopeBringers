@@ -1214,6 +1214,11 @@ public class EnemyUnit : UnitBase
 
         currentHealth -= damageReceived;
 
+        if (myAnimator == null)
+        {
+            myAnimator = GetComponent<Animator>();
+        }
+
         myAnimator.SetTrigger("Damage");
 
         if (currentHealth <= 0)

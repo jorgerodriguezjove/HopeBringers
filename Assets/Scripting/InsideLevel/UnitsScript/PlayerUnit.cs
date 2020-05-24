@@ -601,7 +601,7 @@ public class PlayerUnit : UnitBase
             //Estas líneas las añado para comprobar si el caballero tiene que defender
             Knight knightDef = FindObjectOfType<Knight>();
 
-            if (knightDef != null && knightDef != this)
+            if (knightDef != null && !GetComponent<Knight>())
             {
                 CheckIfKnightIsDefendingAfterUnitMovement(knightDef, currentFacingDirection);
             }

@@ -964,6 +964,8 @@ public class Knight : PlayerUnit
         base.DoDamage(unitToDealDamage);
     }
 
+    int limitantRangePushFarther;
+
     public override void ShowAttackEffect(UnitBase _unitToAttack)
     {
         base.ShowAttackEffect(_unitToAttack);
@@ -1252,12 +1254,22 @@ public class Knight : PlayerUnit
         {
             if (currentFacingDirection == FacingDirection.North)
             {
-                if (myCurrentTile.tilesInLineUp[tilesToPush].unitOnTile == null
-                    && myCurrentTile.tilesInLineUp[tilesToPush] != null
-                    && !myCurrentTile.tilesInLineUp[tilesToPush].isEmpty
-                    && !myCurrentTile.tilesInLineUp[tilesToPush].isObstacle)
+                if (myCurrentTile.tilesInLineUp.Count > tilesToPush)
                 {
-                    for (int i = 0; i  < tilesToPush; i++)
+                    limitantRangePushFarther = tilesToPush;
+                }
+
+                else
+                {
+                    limitantRangePushFarther = myCurrentTile.tilesInLineUp.Count;
+                }
+
+                if (myCurrentTile.tilesInLineUp[limitantRangePushFarther].unitOnTile == null
+                    && myCurrentTile.tilesInLineUp[limitantRangePushFarther] != null
+                    && !myCurrentTile.tilesInLineUp[limitantRangePushFarther].isEmpty
+                    && !myCurrentTile.tilesInLineUp[limitantRangePushFarther].isObstacle)
+                {
+                    for (int i = 0; i  < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineUp[i].isObstacle
                             || myCurrentTile.tilesInLineUp[i].isEmpty)
@@ -1277,7 +1289,7 @@ public class Knight : PlayerUnit
                         if (!isMovingorRotating)
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
-                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineUp[tilesToPush].transform.position;
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineUp[limitantRangePushFarther].transform.position;
 
                             //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
                             enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
@@ -1285,7 +1297,7 @@ public class Knight : PlayerUnit
                     }
                 }
 
-                for (int i = 0; i - 1 < tilesToPush; i++)
+                for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                 {
                     if (myCurrentTile.tilesInLineUp[i].unitOnTile != null)
                     {
@@ -1296,13 +1308,22 @@ public class Knight : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.South)
             {
-
-                if (myCurrentTile.tilesInLineDown[tilesToPush].unitOnTile == null
-                 && myCurrentTile.tilesInLineDown[tilesToPush] != null
-                 && !myCurrentTile.tilesInLineDown[tilesToPush].isEmpty
-                 && !myCurrentTile.tilesInLineDown[tilesToPush].isObstacle)
+                if (myCurrentTile.tilesInLineDown.Count > tilesToPush)
                 {
-                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    limitantRangePushFarther = tilesToPush;
+                }
+
+                else
+                {
+                    limitantRangePushFarther = myCurrentTile.tilesInLineDown.Count;
+                }
+
+                if (myCurrentTile.tilesInLineDown[limitantRangePushFarther].unitOnTile == null
+                 && myCurrentTile.tilesInLineDown[limitantRangePushFarther] != null
+                 && !myCurrentTile.tilesInLineDown[limitantRangePushFarther].isEmpty
+                 && !myCurrentTile.tilesInLineDown[limitantRangePushFarther].isObstacle)
+                {
+                    for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineDown[i].isObstacle
                             || myCurrentTile.tilesInLineDown[i].isEmpty)
@@ -1320,7 +1341,7 @@ public class Knight : PlayerUnit
                         if (!isMovingorRotating)
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
-                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineDown[tilesToPush].transform.position;
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineDown[limitantRangePushFarther].transform.position;
                             //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
                             enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
                         }
@@ -1328,7 +1349,7 @@ public class Knight : PlayerUnit
                     
                 }
 
-                for (int i = 0; i - 1 < tilesToPush; i++)
+                for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                 {                  
                     if (myCurrentTile.tilesInLineDown[i].unitOnTile != null)
                     {
@@ -1339,12 +1360,22 @@ public class Knight : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.East)
             {
-                if (myCurrentTile.tilesInLineRight[tilesToPush].unitOnTile == null
-                    && myCurrentTile.tilesInLineRight[tilesToPush] != null
-                    && !myCurrentTile.tilesInLineRight[tilesToPush].isEmpty
-                    && !myCurrentTile.tilesInLineRight[tilesToPush].isObstacle)
+                if (myCurrentTile.tilesInLineRight.Count > tilesToPush)
                 {
-                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    limitantRangePushFarther = tilesToPush;
+                }
+
+                else
+                {
+                    limitantRangePushFarther = myCurrentTile.tilesInLineRight.Count;
+                }
+
+                if (myCurrentTile.tilesInLineRight[limitantRangePushFarther].unitOnTile == null
+                    && myCurrentTile.tilesInLineRight[limitantRangePushFarther] != null
+                    && !myCurrentTile.tilesInLineRight[limitantRangePushFarther].isEmpty
+                    && !myCurrentTile.tilesInLineRight[limitantRangePushFarther].isObstacle)
+                {
+                    for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineRight[i].isObstacle
                             || myCurrentTile.tilesInLineRight[i].isEmpty)
@@ -1363,7 +1394,7 @@ public class Knight : PlayerUnit
                         if (!isMovingorRotating)
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
-                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineRight[tilesToPush].transform.position;
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineRight[limitantRangePushFarther].transform.position;
                             //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
                             enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
                         }
@@ -1371,7 +1402,7 @@ public class Knight : PlayerUnit
                     
                 }
 
-                for (int i = 0; i - 1 < tilesToPush; i++)
+                for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                 {
                     if (myCurrentTile.tilesInLineRight[i].unitOnTile != null)
                     {
@@ -1383,12 +1414,22 @@ public class Knight : PlayerUnit
 
             else if (currentFacingDirection == FacingDirection.West)
             {
-                if (myCurrentTile.tilesInLineLeft[tilesToPush].unitOnTile == null
-                   && myCurrentTile.tilesInLineLeft[tilesToPush] != null
-                   && !myCurrentTile.tilesInLineLeft[tilesToPush].isEmpty
-                   && !myCurrentTile.tilesInLineLeft[tilesToPush].isObstacle)
+                if (myCurrentTile.tilesInLineLeft.Count > tilesToPush)
                 {
-                    for (int i = 0; i - 1 < tilesToPush; i++)
+                    limitantRangePushFarther = tilesToPush;
+                }
+
+                else
+                {
+                    limitantRangePushFarther = myCurrentTile.tilesInLineLeft.Count;
+                }
+
+                if (myCurrentTile.tilesInLineLeft[limitantRangePushFarther].unitOnTile == null
+                   && myCurrentTile.tilesInLineLeft[limitantRangePushFarther] != null
+                   && !myCurrentTile.tilesInLineLeft[limitantRangePushFarther].isEmpty
+                   && !myCurrentTile.tilesInLineLeft[limitantRangePushFarther].isObstacle)
+                {
+                    for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                     {
                         if (myCurrentTile.tilesInLineLeft[i].isObstacle
                             || myCurrentTile.tilesInLineLeft[i].isEmpty)
@@ -1407,7 +1448,7 @@ public class Knight : PlayerUnit
                         if (!isMovingorRotating)
                         {
                             _unitToAttack.sombraHoverUnit.SetActive(true);
-                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineLeft[tilesToPush].transform.position;
+                            _unitToAttack.sombraHoverUnit.transform.position = myCurrentTile.tilesInLineLeft[limitantRangePushFarther].transform.position;
                             //Como no usa CalculatePushLogic añado aqui la primera unidad (la que empujo)
                             enemiesThatHaveBeenDamageBecauseHaveBeenPushAgainstObstaclesOrEnemies.Add(_unitToAttack);
                         }
@@ -1415,7 +1456,7 @@ public class Knight : PlayerUnit
                    
                 }
 
-                for (int i = 0; i - 1 < tilesToPush; i++)
+                for (int i = 0; i - 1 < limitantRangePushFarther; i++)
                 {
 
                     if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null)
