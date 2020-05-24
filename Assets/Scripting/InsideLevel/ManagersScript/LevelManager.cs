@@ -924,7 +924,7 @@ public class LevelManager : MonoBehaviour
 
     public void HideEnemyHover(EnemyUnit hoverUnit)
     {
-        if (selectedCharacter == null)
+        if (selectedCharacter == null && hoverUnit != null)
         {
             if (hoverUnit.GetComponent<EnBalista>())
             {
@@ -967,7 +967,6 @@ public class LevelManager : MonoBehaviour
                     hoverUnit.currentUnitsAvailableToAttack[i].ResetColor();
                     hoverUnit.currentUnitsAvailableToAttack[i].HealthBarOn_Off(false);
                 }
-
             }
 
             else if (hoverUnit.GetComponent<EnCharger>())
@@ -988,12 +987,12 @@ public class LevelManager : MonoBehaviour
                     }
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
                 }
+
                 else if (hoverUnit.GetComponent<EnCharger>().currentUnitsAvailableToAttack.Count == 0)
                 {
                     hoverUnit.GetComponent<EnCharger>().FeedbackTilesToAttack(false);
 
                 }
-
 
                 //Desmarco las unidades disponibles para atacar
                 for (int i = 0; i < hoverUnit.currentUnitsAvailableToAttack.Count; i++)
@@ -1059,7 +1058,7 @@ public class LevelManager : MonoBehaviour
                     //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                     for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                     {
-                        if (hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>())
+                        if (hoverUnit.unitsInRange[i] != null && hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>() && hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>())
                         {
                             hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>().ShowHideExclamation(false);
                         }
