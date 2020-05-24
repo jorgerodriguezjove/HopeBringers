@@ -101,6 +101,7 @@ public class TableManager : MonoBehaviour
         {
             level1.SelectLevel();
         }
+
         else
         {
             for (int i = 0; i < allLevelNodesInGame.Count; i++)

@@ -43,6 +43,9 @@ public class LevelNode : MonoBehaviour
     [SerializeField]
     public bool isUnlocked;
 
+    [SerializeField]
+    public bool hasBeenWon;
+
     [Header("NIVELES RELACIONADOS")]
 
     //Niveles que están conectados a este nivel. En el futuro servirá para el movimiento de la ficha
@@ -134,12 +137,27 @@ public class LevelNode : MonoBehaviour
         }
     }
 
+    public void WinLevel()
+    {
+        GetComponent<Image>().enabled = true;
+        GetComponent<Image>().sprite = completedLevel;
+
+        isUnlocked = true;
+        hasBeenWon = true;
+
+        if (dottedLinePath != null)
+        {
+            dottedLinePath.SetActive(true);
+        }
+    }
+
     //Aviso a los niveles conectados que tienen que desbloquearse.
     public void UnlockConnectedLevels()
     {
 		GetComponent<Image>().sprite = completedLevel;
+        hasBeenWon = true;
 
-		for (int i = 0; i <unlockableLevels.Count ; i++)
+        for (int i = 0; i <unlockableLevels.Count ; i++)
         {
             unlockableLevels[i].UnlockThisLevel();
         }

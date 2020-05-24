@@ -14,6 +14,9 @@ public class Save
     //Progresión de niveles
     public List<int> s_levelIDsUnlocked = new List<int>();
 
+    //Progresión de niveles
+    public int s_lastLevelWon;
+
     //Progresión de personajes
     public List<int> s_charactersUnlocked = new List<int>();
     #endregion

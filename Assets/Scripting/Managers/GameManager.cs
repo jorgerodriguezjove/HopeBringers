@@ -79,6 +79,9 @@ public class GameManager : PersistentSingleton<GameManager>
     [SerializeField]
     public List<int> levelIDsUnlocked = new List<int>();
 
+    [SerializeField]
+    public int lastLevelWon;
+
     //Bool que guarda la info del ultimo logro comprobado. Determina si el logro ha sido desbloqueado o no para que salte el aviso al jugar.
     private bool unlockAchievementCheck;
 
@@ -194,6 +197,12 @@ public class GameManager : PersistentSingleton<GameManager>
                 {
                     if (allLevelNodes[i].idLevel == levelIDsUnlocked[j])
                     {
+                        if (lastLevelWon <= allLevelNodes[i].idLevel)
+                        {
+                            lastLevelWon = allLevelNodes[i].idLevel;
+                        }
+
+                        allLevelNodes[i].WinLevel();
                         allLevelNodes[i].UnlockThisLevel();
                         allLevelNodes[i].UnlockConnectedLevels();
                         break;
@@ -418,6 +427,8 @@ public class GameManager : PersistentSingleton<GameManager>
             Save save = (Save)bf.Deserialize(file);
             file.Close();
 
+            lastLevelWon = save.s_lastLevelWon;
+
             //Aqui se hace lo contrario que en el CreateSaveGameObject. Se toman las variables del save y se aplican esos valores a las variables que se usan en código
             currentExp = save.s_currentXp;
 
@@ -435,34 +446,66 @@ public class GameManager : PersistentSingleton<GameManager>
 
             allLevelNodes = FindObjectsOfType<LevelNode>();
 
-            List<LevelNode> allLevelNodesList = new List<LevelNode>(allLevelNodes);
+            //List<LevelNode> allLevelNodesList = new List<LevelNode>(allLevelNodes);
 
-            allLevelNodesList.Sort(delegate (LevelNode a, LevelNode b)
-            {
-                return (a.GetComponent<LevelNode>().idLevel).CompareTo(b.GetComponent<LevelNode>().idLevel);
+            //allLevelNodesList.Sort(delegate (LevelNode a, LevelNode b)
+            //{
+            //    return (a.GetComponent<LevelNode>().idLevel).CompareTo(b.GetComponent<LevelNode>().idLevel);
 
-            });
+            //});
 
-            allLevelNodes = allLevelNodesList.ToArray();
+            //allLevelNodes = allLevelNodesList.ToArray();
 
             levelIDsUnlocked.Clear();
 
-            for (int i = 0; i < save.s_levelIDsUnlocked.Count; i++)
+            levelIDsUnlocked = new List<int>(save.s_levelIDsUnlocked);
+
+            for (int i = 0; i < allLevelNodes.Length; i++)
             {
-                levelIDsUnlocked.Add(save.s_levelIDsUnlocked[i]);
-                allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockThisLevel();
+                for (int j = 0; j < levelIDsUnlocked.Count; j++)
+                {
+                    if (allLevelNodes[i].idLevel == levelIDsUnlocked[j])
+                    {
+                        if (lastLevelWon <= allLevelNodes[i].idLevel)
+                        {
+                            lastLevelWon = allLevelNodes[i].idLevel;
+                        }
+
+                        allLevelNodes[i].WinLevel();
+                        allLevelNodes[i].UnlockThisLevel();
+                        allLevelNodes[i].UnlockConnectedLevels();
+                        break;
+                    }
+                }
             }
+        
 
-            //if (allLevelNodes[2].isUnlocked)
-            //{
-            //    allLevelNodes[1].UnlockThisLevel();
-            //}
+        //for (int i = 0; i < save.s_levelIDsUnlocked.Count; i++)
+        //{
+        //    levelIDsUnlocked.Add(save.s_levelIDsUnlocked[i]);
 
-            allLevelNodes[0].UnlockThisLevel();
+        //    if (allLevelNodes[save.s_levelIDsUnlocked[i-1]].idLevel < lastLevelWon)
+        //    {
+        //        allLevelNodes[save.s_levelIDsUnlocked[i-1]].WinLevel();
+        //    }
 
-            #region Characters
+        //    else if (allLevelNodes[save.s_levelIDsUnlocked[i-1]].idLevel == lastLevelWon-1)
+        //    {
+        //        allLevelNodes[save.s_levelIDsUnlocked[i-1]].UnlockConnectedLevels();
+        //    }
 
-            UITableManager UITM = FindObjectOfType<UITableManager>();
+        //    //allLevelNodes[save.s_levelIDsUnlocked[i]].UnlockThisLevel();
+        //}
+
+        //if (allLevelNodes[2].isUnlocked)
+        //{
+        //    allLevelNodes[1].UnlockThisLevel();
+        //}
+
+
+        #region Characters
+
+        UITableManager UITM = FindObjectOfType<UITableManager>();
             
 
             KnightData _knight = FindObjectOfType<KnightData>();
@@ -626,6 +669,8 @@ public class GameManager : PersistentSingleton<GameManager>
         //Construyo archivo de guardado e inicializo todas las variables en el save
         Save save = new Save();
 
+        save.s_lastLevelWon = lastLevelWon;
+
         save.s_currentXp = currentExp;
 
         for (int i = 0; i < characterDataForCurrentLevel.Count; i++)
@@ -746,6 +791,8 @@ public class GameManager : PersistentSingleton<GameManager>
 
             //Aqui se hace lo contrario que en el CreateSaveGameObject. Se toman las variables del save y se aplican esos valores a las variables que se usan en código
             currentExp = 0;
+
+            lastLevelWon = 0;
 
             characterDataForCurrentLevel.Clear();
 
