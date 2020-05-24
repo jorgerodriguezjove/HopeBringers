@@ -24,6 +24,9 @@ public class BossMultTile : EnemyUnit
     [SerializeField]
     private GameObject particleFire;
 
+    [HideInInspector]
+    private List<GameObject> fireInstantiated = new List<GameObject>();
+
     [Header("CRISTALES")]
     public List<Crystal> crystalList = new List<Crystal>();
 
@@ -462,7 +465,6 @@ public class BossMultTile : EnemyUnit
             //Particulas. Si queremos que sean distinta entre los ataques simplemente if (phase2)
             Instantiate(attackParticle, currentUnitsAvailableToAttack[i].transform);
 
-
             DoDamage(currentUnitsAvailableToAttack[i]);
         }
     }
@@ -471,7 +473,7 @@ public class BossMultTile : EnemyUnit
     {
         for (int i = 0; i < coneTiles.Count; i++)
         {
-            Instantiate(particleFire, coneTiles[i].transform);
+            fireInstantiated.Add(Instantiate(particleFire, coneTiles[i].transform));
         }
 
         for (int i = 0; i < currentUnitsAvailableToAttack.Count; i++)
@@ -573,27 +575,7 @@ public class BossMultTile : EnemyUnit
         
     }
 
-
-    private void CallWaitCoroutine()
-    {
-        //Salgo de la comprobación de acciones para volver a empezar
-
-        bossPortrait.FlipAttackTokens();
-        StartCoroutine("WaitBeforeNextAction");
-        myCurrentEnemyState = enemyState.Waiting;
-    }
-
-    IEnumerator WaitBeforeNextAction()
-    {
-        yield return new WaitForSeconds(2f);
-
-        myCurrentEnemyState = enemyState.Searching;
-    }
-
-
     #endregion
-
-
 
     public override void Attack()
     {
@@ -998,6 +980,13 @@ public class BossMultTile : EnemyUnit
 
         sweepOrStompUsed = false;
         coneUsed = false;
+
+        for (int i = 0; i < fireInstantiated.Count; i++)
+        {
+            Destroy(fireInstantiated[i]);
+        }
+
+        fireInstantiated.Clear();
     }
 
 

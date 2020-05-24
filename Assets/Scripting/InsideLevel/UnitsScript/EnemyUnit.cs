@@ -2307,20 +2307,30 @@ public class EnemyUnit : UnitBase
 
     protected IEnumerator WaitBeforeNextAction()
     {
-        yield return new WaitForSeconds(2f);
-
-        //Limpiar tiles de ataque anteriores
-
-        for (int i = 0; i < tilesToPaint.Count; i++)
+        if (GetComponent<BossMultTile>())
         {
-            tilesToPaint[i].ColorDesAttack();
+            yield return new WaitForSeconds(2f);
+
+            myCurrentEnemyState = enemyState.Searching;
         }
 
-        tilesToPaint.Clear();
-        tilesToCheck.Clear();
-        coneTiles.Clear();
+        else
+        {
+            yield return new WaitForSeconds(2f);
 
-        myCurrentEnemyState = enemyState.Searching;
+            //Limpiar tiles de ataque anteriores
+
+            for (int i = 0; i < tilesToPaint.Count; i++)
+            {
+                tilesToPaint[i].ColorDesAttack();
+            }
+
+            tilesToPaint.Clear();
+            tilesToCheck.Clear();
+            coneTiles.Clear();
+
+            myCurrentEnemyState = enemyState.Searching;
+        } 
     }
 
     #endregion
