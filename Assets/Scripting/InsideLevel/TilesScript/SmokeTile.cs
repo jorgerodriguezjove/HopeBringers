@@ -47,11 +47,14 @@ public class SmokeTile : DamageTile
 
     public override void OnTriggerExit(Collider unitOnTile)
     {
-        if (unitOnTile.GetComponent<UnitBase>())
+        if (unitOnTile != null && unitOnTile.GetComponent<UnitBase>())
         {
-            unitToDoDamage.GetComponent<UnitBase>().isHidden = false;
-            unitToDoDamage = null;
-            hasUnit = false;
+            if (unitToDoDamage != null && unitToDoDamage.GetComponent<UnitBase>())
+            {
+                unitToDoDamage.GetComponent<UnitBase>().isHidden = false;
+                unitToDoDamage = null;
+                hasUnit = false;
+            }
         }
     }
 
@@ -59,15 +62,14 @@ public class SmokeTile : DamageTile
     {
         if (hasUnit && !damageDone)
         {
-            if (unitToDoDamage.GetComponent<Druid>())
+            if (unitToDoDamage != null && unitToDoDamage.GetComponent<Druid>())
             {
                 damageDone = true;
             }
+
             else
-            {
-                Debug.Log(unitToDoDamage);                
+            {       
                 damageDone = true;
-                Debug.Log("DAMAGE DONE");
             }
         }
     }
