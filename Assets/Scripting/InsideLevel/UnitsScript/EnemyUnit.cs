@@ -1018,7 +1018,8 @@ public class EnemyUnit : UnitBase
                         LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
                         LM.selectedCharacter.tilesInEnemyHover[i].ColorMovement();
                     }
-                    else
+
+                    else if (LM.selectedCharacter.tilesInEnemyHover[i] != null)
                     {
                         LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
                     }

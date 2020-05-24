@@ -473,7 +473,8 @@ public class PlayerUnit : UnitBase
                             LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
                             LM.selectedCharacter.tilesInEnemyHover[i].ColorMovement();
                         }
-                        else
+
+                        else if (LM.selectedCharacter.tilesInEnemyHover[i] != null)
                         {
                             LM.selectedCharacter.tilesInEnemyHover[i].ColorDesAttack();
                         }
@@ -1489,8 +1490,11 @@ public class PlayerUnit : UnitBase
         //Para que al quitar el hover si va a explotar una marca que se quite el número de curación
         DisableCanvasHover();
         ResetColor();
-        myCurrentTile.ColorDeselect();
 
+        if (myCurrentTile != null)
+        {
+            myCurrentTile.ColorDeselect();
+        }
     }
 
 

@@ -209,6 +209,11 @@ public class GameManager : PersistentSingleton<GameManager>
                     }
                 }
             }
+
+            SaveGame();
+
+            SoundManager.Instance.StopMusic();
+            SoundManager.Instance.PlayMusic(AppMusic.INTRO_MUSIC);
         }
     }
 

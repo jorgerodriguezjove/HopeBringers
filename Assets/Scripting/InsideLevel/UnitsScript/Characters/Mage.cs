@@ -777,12 +777,15 @@ public class Mage : PlayerUnit
 
             for (int i = 0; i < tilesInEnemyHover.Count; i++)
             {
-                tilesInEnemyHover[i].ColorAttack();
-
                 if (tilesInEnemyHover[i].unitOnTile != null)
                 {
-                    CalculateDamage(tilesInEnemyHover[i].unitOnTile);
-                    tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                    tilesInEnemyHover[i].ColorAttack();
+
+                    if (tilesInEnemyHover[i].unitOnTile != null)
+                    {
+                        CalculateDamage(tilesInEnemyHover[i].unitOnTile);
+                        tilesInEnemyHover[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
+                    }
                 }
             }
         }
