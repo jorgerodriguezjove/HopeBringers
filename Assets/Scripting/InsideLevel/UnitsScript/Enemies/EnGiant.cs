@@ -516,7 +516,7 @@ public class EnGiant : EnemyUnit
             }
 
             //O pinto tile arriba y debajo, depende de dirección
-            else if (pathToObjective.Count > 2 && myCurrentObjectiveTile.tileZ == shadowHoverTile.tileZ || pathToObjective.Count == 2 && myCurrentObjectiveTile.tileZ == myCurrentTile.tileZ)
+            else if ((myCurrentObjectiveTile != null && shadowHoverTile != null) && (pathToObjective.Count > 2 && myCurrentObjectiveTile.tileZ == shadowHoverTile.tileZ || pathToObjective.Count == 2 && myCurrentObjectiveTile.tileZ == myCurrentTile.tileZ))
             {
                 if (myCurrentObjectiveTile.tilesInLineUp.Count > 0 && myCurrentObjectiveTile.tilesInLineUp[0] != null)
                 {
