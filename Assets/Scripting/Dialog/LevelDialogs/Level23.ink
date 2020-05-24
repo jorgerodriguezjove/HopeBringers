@@ -7,6 +7,7 @@ Darklord%4
 
 Darklord: Oh... So you managed to come here despite all my efforts
 Darklord: Well... Im sorry to tell you that it's too late, my power is at it's peak and there's nothing you can do!!!
+Darklord: Im going to obliterate you small ants with my dragon
 Monk: There is no power without restictions, I'm assuming yours comes from those crystals
 Monk: You are far away from being invincible, even tho we can't make you any harm directly
 Valkyrie: Yeah, you and your goddam dragon are doomed moron! You are gonna pay for everything you've done
