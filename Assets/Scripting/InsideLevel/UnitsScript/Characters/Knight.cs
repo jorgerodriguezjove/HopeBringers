@@ -385,6 +385,8 @@ public class Knight : PlayerUnit
            
                 if (currentFacingDirection == FacingDirection.North)
                 {
+                    DoDamage(unitToAttack);
+
                     if (myCurrentTile.tilesInLineUp.Count > tilesToPush)
                     {
                         limitantRangePushFarther = tilesToPush;
@@ -417,7 +419,7 @@ public class Knight : PlayerUnit
                         //UNDO
                         CreateAttackCommand(unitToAttack);
 
-                        if (canDoPush)
+                        if (canDoPush && unitToAttack != null)
                         {
                             unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineUp[limitantRangePushFarther]);
                         }
@@ -437,12 +439,12 @@ public class Knight : PlayerUnit
                             DoDamage(myCurrentTile.tilesInLineUp[i].unitOnTile);
                         }
                     }
-
-                    DoDamage(unitToAttack);
                 }
 
                 else if (currentFacingDirection == FacingDirection.South)
                 {
+                    DoDamage(unitToAttack);
+
                     if (myCurrentTile.tilesInLineDown.Count > tilesToPush)
                     {
                         limitantRangePushFarther = tilesToPush;
@@ -474,7 +476,7 @@ public class Knight : PlayerUnit
                         //UNDO
                         CreateAttackCommand(unitToAttack);
 
-                        if (canDoPush)
+                        if (canDoPush && unitToAttack != null)
                         {
                             unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineDown[limitantRangePushFarther]);
 
@@ -495,12 +497,12 @@ public class Knight : PlayerUnit
                             DoDamage(myCurrentTile.tilesInLineDown[i].unitOnTile);
                         }
                     }
-
-                    DoDamage(unitToAttack);
                 }
 
                 else if (currentFacingDirection == FacingDirection.East)
                 {
+                    DoDamage(unitToAttack);
+
                     if (myCurrentTile.tilesInLineRight.Count > tilesToPush)
                     {
                         limitantRangePushFarther = tilesToPush;
@@ -532,7 +534,7 @@ public class Knight : PlayerUnit
                         //UNDO
                         CreateAttackCommand(unitToAttack);
 
-                        if (canDoPush)
+                        if (canDoPush && unitToAttack != null)
                         {
                             unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineRight[limitantRangePushFarther]);
 
@@ -554,11 +556,12 @@ public class Knight : PlayerUnit
                         }
                     }
 
-                    DoDamage(unitToAttack);
                 }
 
                 else if (currentFacingDirection == FacingDirection.West)
                 {
+                    DoDamage(unitToAttack);
+
                     if (myCurrentTile.tilesInLineLeft.Count > tilesToPush)
                     {
                         limitantRangePushFarther = tilesToPush;
@@ -589,7 +592,7 @@ public class Knight : PlayerUnit
                         }
                         //UNDO
                         CreateAttackCommand(unitToAttack);
-                        if (canDoPush)
+                        if (canDoPush && unitToAttack != null)
                         {
                             unitToAttack.MoveToTilePushed(myCurrentTile.tilesInLineLeft[limitantRangePushFarther]);
                         }
@@ -610,7 +613,6 @@ public class Knight : PlayerUnit
                         }
                     }
 
-                    DoDamage(unitToAttack);
                 }
 
                 SoundManager.Instance.PlaySound(AppSounds.KNIGHT_ATTACK);
