@@ -24,7 +24,6 @@ public class SteamManager : MonoBehaviour {
 
     public bool steamEnabled;
 
-
 	protected static SteamManager s_instance;
 	protected static SteamManager Instance {
 		get {
@@ -51,7 +50,11 @@ public class SteamManager : MonoBehaviour {
 		Debug.LogWarning(pchDebugText);
 	}
 
+
 	protected virtual void Awake() {
+
+        //// We want our SteamManager Instance to persist across scenes.
+        //DontDestroyOnLoad(gameObject);
 
         ///ESTE IF ES MIO. HACE QUE NO FUNCIONE STEAM EN EDITOR PARA QUE NO MOLESTE
         if (steamEnabled)
@@ -72,9 +75,6 @@ public class SteamManager : MonoBehaviour {
                 // You should never call Steamworks functions in OnDestroy, always prefer OnDisable if possible.
                 throw new System.Exception("Tried to Initialize the SteamAPI twice in one session!");
             }
-
-            // We want our SteamManager Instance to persist across scenes.
-            DontDestroyOnLoad(gameObject);
 
             if (!Packsize.Test())
             {
@@ -136,7 +136,10 @@ public class SteamManager : MonoBehaviour {
 
 	// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
 	protected virtual void OnEnable() {
-		if (s_instance == null) {
+
+        DontDestroyOnLoad(gameObject);
+
+        if (s_instance == null) {
 			s_instance = this;
 		}
 

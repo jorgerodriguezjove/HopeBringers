@@ -1058,7 +1058,7 @@ public class GameManager : PersistentSingleton<GameManager>
             DEBUGDeleteSaveFile();
             Debug.Log("Archivo de Guardado Borrado DEBUG");
 
-            //DEBUG_LockSteamAchievement(AppAchievements.ACHV_BEGIN);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_BEGIN);
         }
 
     }
