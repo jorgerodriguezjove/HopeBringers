@@ -5,7 +5,6 @@ using DG.Tweening;
 
 public class BossMultTile : EnemyUnit
 {
-
     [SerializeField]
     GameObject modelBeforeChangedPhase;
 
@@ -129,7 +128,7 @@ public class BossMultTile : EnemyUnit
         //Cambio de modelo
         modelBeforeChangedPhase.SetActive(false);
 
-        modelChangedPhase.SetActive(false);
+        modelChangedPhase.SetActive(true);
 
         //Camara y efecto?
     }
@@ -409,7 +408,9 @@ public class BossMultTile : EnemyUnit
         {
             for (int i = 0; i < LM.charactersOnTheBoard.Count; i++)
             {
-                surroundingPlayerTiles = LM.TM.GetSurroundingTiles(LM.charactersOnTheBoard[i].myCurrentTile, 1, true, false);
+                surroundingPlayerTiles = new List<IndividualTiles>(LM.TM.GetSurroundingTiles(LM.charactersOnTheBoard[i].myCurrentTile, 1, true, false));
+
+                surroundingPlayerTiles.Add(LM.charactersOnTheBoard[i].myCurrentTile);
 
                 for (int j = 0; j < surroundingPlayerTiles.Count; j++)
                 {
@@ -572,7 +573,6 @@ public class BossMultTile : EnemyUnit
         }
 
         isBeamOrMeteoriteCharged = false;
-        
     }
 
     #endregion

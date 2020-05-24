@@ -428,7 +428,7 @@ public class UnitBase : MonoBehaviour
         //Estas líneas las añado para comprobar si el caballero tiene que defender
         Knight knightDef = FindObjectOfType<Knight>();
 
-        if (knightDef != null && knightDef.isBlockingNeighbours)
+        if (knightDef != null && knightDef.isBlockingNeighbours && unitToDealDamage.GetComponent<PlayerUnit>())
         {
             unitToDealDamage.GetComponent<PlayerUnit>().CheckIfKnightIsDefending(knightDef, currentFacingDirection);
             damageWithMultipliersApplied -= knightDef.shieldDef;

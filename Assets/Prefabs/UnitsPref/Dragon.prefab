@@ -772,7 +772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  maxHealth: 20
+  maxHealth: 4
   movementUds: 3
   fMovementUds: 0
   baseDamage: 1
@@ -883,6 +883,8 @@ MonoBehaviour:
   maxCooldownSoulsSkill: 0
   amITheOriginalDarkLord: 0
   amIBeingPossesed: 0
+  particleWhileBeingPossesedRefernce: {fileID: 0}
+  attackParticleDarkLord: {fileID: 0}
   arrowEnemyIndicator: {fileID: 6238210997727036621}
   selectedMaterial: {fileID: 2100000, guid: 138a6284f26a7d6488028cc22d37c737, type: 2}
   myPortrait: {fileID: 0}
@@ -3508,6 +3510,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95117915527138606, guid: af359458027fafe41bb1510988dae6ed,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95117915527138606, guid: af359458027fafe41bb1510988dae6ed,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af359458027fafe41bb1510988dae6ed, type: 3}
 --- !u!1 &2000582732879319607 stripped
@@ -5172,6 +5184,10 @@ PrefabInstance:
     - target: {fileID: 1501762628055696, guid: 7bcb29445a037e844aa28192f4a736a5, type: 3}
       propertyPath: m_Layer
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501762628055696, guid: 7bcb29445a037e844aa28192f4a736a5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1504867370837566, guid: 7bcb29445a037e844aa28192f4a736a5, type: 3}
       propertyPath: m_Layer
