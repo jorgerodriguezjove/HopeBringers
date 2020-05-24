@@ -1112,7 +1112,15 @@ public class PlayerUnit : UnitBase
         SoundManager.Instance.PlaySound(AppSounds.RECEIVEDAMAGE);
 
         //Animación de ataque
-        myAnimator.SetTrigger("Damage");
+        if (myAnimator != null)
+        {
+            myAnimator = GetComponent<Animator>();
+        }
+
+        if (myAnimator != null)
+        {
+            myAnimator.SetTrigger("Damage");
+        }
 
             //Estas líneas las añado para comprobar si el caballero tiene que defender
             Knight knightDef = FindObjectOfType<Knight>();
