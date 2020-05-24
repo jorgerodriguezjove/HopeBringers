@@ -778,7 +778,7 @@ public class LevelManager : MonoBehaviour
                     //Hacer que aparezca el icono de miedo o de rotación en la cabeza del player que va a ser atacado.
                     for (int i = 0; i < hoverUnit.unitsInRange.Count; i++)
                     {
-                        if (hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>())
+                        if (hoverUnit.unitsInRange[i] != null && hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>())
                         {
                             hoverUnit.unitsInRange[i].GetComponent<EnemyUnit>().ShowHideExclamation(true);
                         }
