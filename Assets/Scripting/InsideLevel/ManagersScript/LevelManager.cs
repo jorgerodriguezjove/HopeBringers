@@ -1907,19 +1907,20 @@ public class LevelManager : MonoBehaviour
             //Comienza turno player
             UIM.PlayerTurnBanner(false);
 
-            GameManager.Instance.isGamePaused = false;
-
-            if (tutorialLevel2 || tutorialLevel3 || tutorialLevel4)
-			{
-				tutorialGameObject.SetActive(true);
-                GameManager.Instance.isGamePaused = true;
-            }
             BeginPlayerPhase();
         }
     }
 
     private void BeginPlayerPhase()
     {
+        GameManager.Instance.isGamePaused = false;
+
+        if (tutorialLevel2 || tutorialLevel3 || tutorialLevel4)
+        {
+            tutorialGameObject.SetActive(true);
+            GameManager.Instance.isGamePaused = true;
+        }
+
         //POR SI ACASO, reactivo los colliders de los personajes que se les desactivo antes.
         for (int j = 0; j < unitsToEnableCollider.Count; j++)
         {
