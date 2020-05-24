@@ -816,35 +816,37 @@ public class Valkyrie : PlayerUnit
     {
         if (LM.selectedCharacter == this)
         {
-
-           
             valkHalo.SetActive(false);
 
-             if (myHaloInstancies.Count > 0)
-             {
-                 for (int i = 0; i < myHaloInstancies.Count; i++)
-                 {
-                     Destroy(myHaloInstancies[i]);
-                 }
-                 myHaloInstancies.Clear();
-             }
-             
-             if (myHaloUnits.Count>0)
-             {
-                valkHalo2.SetActive(true);
+            if (myHaloInstancies.Count > 0)
+            {
+                for (int i = 0; i < myHaloInstancies.Count; i++)
+                {
+                    if (myHaloInstancies[i] != null)
+                    {
+                        Destroy(myHaloInstancies[i]);
+                    }   
+                }
+
+                myHaloInstancies.Clear();
+            }
+            
+            if (myHaloUnits.Count>0)
+            {
+               valkHalo2.SetActive(true);
 
                 for (int i = 0; i < myHaloUnits.Count; i++)
-                 {
-                     if(myHaloUnits[i].currentHealth <= numberCanChange)
+                {
+                     if(myHaloUnits[i] != null && myHaloUnits[i].currentHealth <= numberCanChange && unitHalo2 != null)
                      {
-                     GameObject unitHaloRef = Instantiate(unitHalo2, myHaloUnits[i].transform.position, unitHalo2.transform.rotation);
+                        GameObject unitHaloRef = Instantiate(unitHalo2, myHaloUnits[i].transform.position, unitHalo2.transform.rotation);
                         unitHaloRef.SetActive(true);
-                     myHaloInstancies.Add(unitHaloRef);
+                        myHaloInstancies.Add(unitHaloRef);
                      }                   
-                 }
-             }
-                     
+                }
+            }  
         }
+
         else
         {
             

@@ -989,6 +989,12 @@ public class BossMultTile : EnemyUnit
         fireInstantiated.Clear();
     }
 
+    public override void Die()
+    {
+        base.Die();
+
+        LM.CheckIfGameOver();
+    }
 
     #endregion
 

@@ -218,7 +218,7 @@ public class Samurai : PlayerUnit
 
                 if (myCurrentTile.tilesInLineUp[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineUp[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
-                    if (myCurrentTile.tilesInLineUp[i].unitOnTile.currentFacingDirection == FacingDirection.North)
+                    if (myCurrentTile.tilesInLineUp[i].unitOnTile.currentFacingDirection == FacingDirection.North && !myCurrentTile.tilesInLineUp[i].unitOnTile.GetComponent<Crystal>())
                     {
                         UnitsNonAttack.Add(myCurrentTile.tilesInLineUp[i].unitOnTile);
 
@@ -255,7 +255,7 @@ public class Samurai : PlayerUnit
 
                 if (myCurrentTile.tilesInLineDown[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineDown[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
-                    if (myCurrentTile.tilesInLineDown[i].unitOnTile.currentFacingDirection == FacingDirection.South)
+                    if (myCurrentTile.tilesInLineDown[i].unitOnTile.currentFacingDirection == FacingDirection.South && !myCurrentTile.tilesInLineDown[i].unitOnTile.GetComponent<Crystal>())
                     {
                         UnitsNonAttack.Add(myCurrentTile.tilesInLineDown[i].unitOnTile);
 
@@ -292,7 +292,7 @@ public class Samurai : PlayerUnit
 
                 if (myCurrentTile.tilesInLineRight[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineRight[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
-                    if (myCurrentTile.tilesInLineRight[i].unitOnTile.currentFacingDirection == FacingDirection.East)
+                    if (myCurrentTile.tilesInLineRight[i].unitOnTile.currentFacingDirection == FacingDirection.East && !myCurrentTile.tilesInLineRight[i].unitOnTile.GetComponent<Crystal>())
                     {
                         UnitsNonAttack.Add(myCurrentTile.tilesInLineRight[i].unitOnTile);
                         break;
@@ -328,7 +328,7 @@ public class Samurai : PlayerUnit
 
                 if (myCurrentTile.tilesInLineLeft[i].unitOnTile != null && Mathf.Abs(myCurrentTile.tilesInLineLeft[i].height - myCurrentTile.height) <= maxHeightDifferenceToAttack)
                 {
-                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile.currentFacingDirection == FacingDirection.West)
+                    if (myCurrentTile.tilesInLineLeft[i].unitOnTile.currentFacingDirection == FacingDirection.West && !myCurrentTile.tilesInLineLeft[i].unitOnTile.GetComponent<Crystal>())
                     {
                         UnitsNonAttack.Add(myCurrentTile.tilesInLineLeft[i].unitOnTile);
                         break;
@@ -690,7 +690,6 @@ public class Samurai : PlayerUnit
             }
         }
     }
-
      
     protected override void OnMouseEnter()
     {
@@ -738,6 +737,16 @@ public class Samurai : PlayerUnit
     public override void Die()
     {
         LM.honorCount = 0;
+        
+        if (isLonelyIcon != null)
+        {
+            Destroy(isLonelyIcon);
+        }
+
+        if (lonelyBox != null)
+        {
+            Destroy(lonelyBox);
+        }
         base.Die();
     }
 

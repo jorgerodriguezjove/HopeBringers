@@ -221,10 +221,13 @@ public class UIManager : MonoBehaviour
 
     public void ActivateDialogHud(bool _shouldShow)
     {
+        GameManager.Instance.isGamePaused = true;
         hud3DInDialog.SetActive(_shouldShow);
+
+        hideDuringDialogs.SetActive(!_shouldShow);
         hideDuringUnitPlacementHud.SetActive(!_shouldShow);
+        hideDuringUnitPlacement3DHud.SetActive(!_shouldShow);
         hudParentObject.SetActive(!_shouldShow);
-        hideDuringUnitPlacement3DHud.SetActive(_shouldShow);
     }
 
     public void UpdateUnitsPlaced(int _currentUnitsPlaced)

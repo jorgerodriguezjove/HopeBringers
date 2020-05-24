@@ -31,5 +31,17 @@ public class CharacterInDialog : MonoBehaviour
     {
         this.transform.position = positionsToMove[0].position;
         gameObject.SetActive(false);
+
+        UpdateLayer();
+    }
+
+    public void UpdateLayer()
+    {
+        gameObject.layer = 16;
+    }
+
+    private void OnEnable()
+    {
+        UpdateLayer();
     }
 }

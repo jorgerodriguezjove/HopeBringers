@@ -284,6 +284,7 @@ public class GameManager : PersistentSingleton<GameManager>
     //Cargar el nivel
     public void CheckEndLevel(string _levelName)
     {
+        GameManager.Instance.isGamePaused = false;
         SoundManager.Instance.StopMusic();
 
         currentLevelToLoad = _levelName;
@@ -362,10 +363,10 @@ public class GameManager : PersistentSingleton<GameManager>
         else
         {
             inkManRef.inkJSONAsset = currentLevelEndDialog;
+            LM.UIM.ActivateDialogHud(true);
         }
 
         inkManRef.StartStory();
-
 
         inkManRef.story.ChoosePathString(dialogInitializer);
         inkManRef.RefreshView();

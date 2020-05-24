@@ -284,6 +284,8 @@ public class InkManager : MonoBehaviour
             listWithOnlyCharacters.Add(pjInst.GetComponent<CharacterInDialog>());
             currStruct.colorStruct = allCharactersInGame[i].colorTextNPC;
 
+            pjInst.GetComponent<CharacterInDialog>().UpdateLayer();
+
             //Si no está repetido en el diccionario le añado
             if (!nameAndModelDict.ContainsKey(allCharactersInGame[i].nameNPC))
             {

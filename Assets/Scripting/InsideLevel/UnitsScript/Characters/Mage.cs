@@ -277,6 +277,8 @@ public class Mage : PlayerUnit
                 //UNDO
                 CreateAttackCommand(unitToAttack);
 
+                Instantiate(particleLightning, unitToAttack.transform.position, unitToAttack.transform.rotation);
+
                 //Hago daño
                 DoDamage(unitToAttack);
             }
