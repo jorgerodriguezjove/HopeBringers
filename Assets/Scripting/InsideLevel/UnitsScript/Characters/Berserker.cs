@@ -402,7 +402,7 @@ public class Berserker : PlayerUnit
             myAnimator.SetTrigger("Attack");
             for (int i = 0; i < timesCircularAttackRepeats; i++)
             {
-                if (myCurrentTile.tilesInLineUp[0] != null)
+                if (myCurrentTile.tilesInLineUp.Count > 0 && myCurrentTile.tilesInLineUp[0] != null)
                 {
                     if (myCurrentTile.tilesInLineUp[0].unitOnTile != null)
                     {
@@ -413,7 +413,7 @@ public class Berserker : PlayerUnit
                     }
                 }
 
-                if (myCurrentTile.tilesInLineDown[0] != null)
+                if (myCurrentTile.tilesInLineDown.Count > 0 && myCurrentTile.tilesInLineDown[0] != null)
                 {
                     if (myCurrentTile.tilesInLineDown[0].unitOnTile != null)
                     {
@@ -424,7 +424,7 @@ public class Berserker : PlayerUnit
                     }
                 }
 
-                if (myCurrentTile.tilesInLineRight[0] != null)
+                if (myCurrentTile.tilesInLineRight.Count > 0 && myCurrentTile.tilesInLineRight[0] != null)
                 {
                     if (myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                     {
@@ -435,7 +435,7 @@ public class Berserker : PlayerUnit
                     }
                 }
 
-                if (myCurrentTile.tilesInLineLeft[0] != null)
+                if (myCurrentTile.tilesInLineLeft.Count > 0 && myCurrentTile.tilesInLineLeft[0] != null)
                 {
                     if (myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
                     {

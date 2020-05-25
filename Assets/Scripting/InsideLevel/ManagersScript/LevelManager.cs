@@ -1842,15 +1842,19 @@ public class LevelManager : MonoBehaviour
         {
             for (int i = 0; i < selectedCharacter.currentTilesInRangeForAttack.Count; i++)
             {
-                selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
+                if (selectedCharacter.currentTilesInRangeForAttack[i] != null)
+                {
+                    selectedCharacter.currentTilesInRangeForAttack[i].ColorDeselect();
+                }
             }
         }
 
-      
-
         for (int j = 0; j < unitsToEnableCollider.Count; j++)
         {
-            unitsToEnableCollider[j].EnableUnableCollider(true);
+            if (unitsToEnableCollider[j] != null)
+            {
+                unitsToEnableCollider[j].EnableUnableCollider(true);
+            }
         }
     }
 

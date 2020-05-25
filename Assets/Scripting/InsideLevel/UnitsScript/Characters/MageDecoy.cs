@@ -672,7 +672,6 @@ public class MageDecoy : Mage
 
         if (myMage.mirrorDecoy)
         {
-            
             if (myMage.mirrorDecoy2)
             {
                 for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
@@ -681,7 +680,7 @@ public class MageDecoy : Mage
                     {
                         currentTilesInRangeForAttack[i].ColorAttack();
 
-                        if(currentTilesInRangeForAttack[i].unitOnTile != null)
+                        if(currentTilesInRangeForAttack[i] != null && currentTilesInRangeForAttack[i].unitOnTile != null)
                         {
                             CalculateDamage(currentTilesInRangeForAttack[i].unitOnTile);
                             currentTilesInRangeForAttack[i].unitOnTile.ColorAvailableToBeAttackedAndNumberDamage(damageWithMultipliersApplied);
@@ -694,7 +693,7 @@ public class MageDecoy : Mage
             {
                 for (int i = 0; i < currentTilesInRangeForAttack.Count; i++)
                 {
-                    if (currentTilesInRangeForAttack[i].unitOnTile != null)
+                    if (currentTilesInRangeForAttack[i] != null && currentTilesInRangeForAttack[i].unitOnTile != null)
                     {
                         CalculateDamage(currentTilesInRangeForAttack[i].unitOnTile);
                         currentTilesInRangeForAttack[i].ColorAttack();
