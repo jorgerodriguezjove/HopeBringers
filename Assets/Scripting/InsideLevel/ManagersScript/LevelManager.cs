@@ -2164,8 +2164,6 @@ public class LevelManager : MonoBehaviour
 
     int totalXp;
 
-    Crystal crystal;
-
     public void CheckIfGameOver()
     {
         //Derrota
@@ -2205,39 +2203,26 @@ public class LevelManager : MonoBehaviour
             GameManager.Instance.VictoryAchieved(totalXp);
         }
 
-        //Victoria
-        else if (isObjectiveKillSpecificEnemies)
+        if (enemiesOnTheBoard.Count == 0 ||
+           enemiesOnTheBoard.Count == 1 && enemiesOnTheBoard[0].isDead)
         {
-            crystal =  FindObjectOfType<Crystal>();
-            if (crystal != null)
-            {
-                if (enemiesOnTheBoard.Count <= 0)
-                {
-                    UIM.HideGameHud();
-                    GameManager.Instance.VictoryAchieved(totalXp);
-                }
-            }
-
-            else
-            {
-                for (int i = 0; i < enemiesNecessaryToWin.Count; i++)
-                {
-                    if (!enemiesNecessaryToWin[i].isDead)
-                    {
-                        return;
-                    }
-                }
-            }
-
-            Debug.Log("Victory by killing specific enemies");
+            Debug.Log("Victory");
             UIM.HideGameHud();
             GameManager.Instance.VictoryAchieved(totalXp);
         }
 
-        else if (enemiesOnTheBoard.Count == 0 ||
-            enemiesOnTheBoard.Count == 1 && enemiesOnTheBoard[0].isDead)
+        //Victoria
+        if (isObjectiveKillSpecificEnemies)
         {
-            Debug.Log("Victory");
+            for (int i = 0; i < enemiesNecessaryToWin.Count; i++)
+            {
+                if (!enemiesNecessaryToWin[i].isDead)
+                {
+                    return;
+                }
+            }
+
+            Debug.Log("Victory by killing specific enemies");
             UIM.HideGameHud();
             GameManager.Instance.VictoryAchieved(totalXp);
         }
