@@ -160,7 +160,7 @@ public class EnemyUnit : UnitBase
     public bool amIBeingPossesed = false;
 
     //Bool que indica si el dark lord está poseyendo a un enemigo ahora mismo
-    protected bool currentlyPossesing = false;
+    public bool currentlyPossesing = false;
     
     //Lista que va guardando las listas de tiles que saco de los calculos del TileManager
     protected List<IndividualTiles> tilesToCheck = new List<IndividualTiles>();

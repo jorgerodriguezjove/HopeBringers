@@ -699,7 +699,7 @@ public class UnitBase : MonoBehaviour
                 for (int i = 1; i <= numberOfTilesMoved; i++)
                 {
                     //El tile al que empujo está más alto (pared)
-                    if (tilesToCheckForCollision[i].height > myCurrentTile.height)
+                    if (tilesToCheckForCollision.Count >= i && tilesToCheckForCollision[i].height > myCurrentTile.height)
                     {
                         Debug.Log("pared");
                         if (tilesToCheckForCollision.Count > 0)
@@ -712,7 +712,7 @@ public class UnitBase : MonoBehaviour
                     }
 
                     //El tile al que empujo está más bajo (caída)
-                    else if (Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
+                    else if (tilesToCheckForCollision.Count >= i && Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
                     {
                         Debug.Log("caída");
 
@@ -757,7 +757,7 @@ public class UnitBase : MonoBehaviour
                     else
                     {
                         //Es tile vacío u obstáculo
-                        if (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle)
+                        if (tilesToCheckForCollision.Count >= i && (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle))
                         {
                             Debug.Log("vacío");
 
@@ -765,7 +765,7 @@ public class UnitBase : MonoBehaviour
                         }
 
                         //Es tile con unidad
-                        else if (tilesToCheckForCollision[i].unitOnTile != null)
+                        else if (tilesToCheckForCollision.Count >= i && tilesToCheckForCollision[i].unitOnTile != null)
                         {
                             Debug.Log("otra unidad");
                             Debug.Log(gameObject.name);
@@ -839,7 +839,7 @@ public class UnitBase : MonoBehaviour
                 for (int i = 1; i <= numberOfTilesMoved; i++)
                 {
                     //El tile al que empujo está más alto (pared)
-                    if (tilesToCheckForCollision[i].height > myCurrentTile.height)
+                    if (tilesToCheckForCollision.Count >= i && tilesToCheckForCollision[i].height > myCurrentTile.height)
                     {
                         Debug.Log("pared");
                         //Recibo daño 
@@ -856,7 +856,7 @@ public class UnitBase : MonoBehaviour
                     }
 
                     //El tile al que empujo está más bajo (caída)
-                    else if (Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
+                    else if (tilesToCheckForCollision.Count >= i && Mathf.Abs(tilesToCheckForCollision[i].height - myCurrentTile.height) > 1)
                     {
                         Debug.Log("caída");
 
@@ -882,6 +882,7 @@ public class UnitBase : MonoBehaviour
                             {
                                 //Muere la unidad de abajo
                                 tilesToCheckForCollision[i].unitOnTile.Die();
+
                                 if (tilesToCheckForCollision[i].unitOnTile.currentHealth <= 0)
                                 {
                                     tilesToCheckForCollision[i].unitOnTile.healthBar.SetActive(false);
@@ -905,7 +906,7 @@ public class UnitBase : MonoBehaviour
                     else
                     {
                         //Es tile vacío u obstáculo
-                        if (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle)
+                        if (tilesToCheckForCollision.Count >= i && (tilesToCheckForCollision[i].isEmpty || tilesToCheckForCollision[i].isObstacle))
                         {
                             Debug.Log("vacío");
                             //Recibo daño 
@@ -920,7 +921,7 @@ public class UnitBase : MonoBehaviour
                         }
 
                         //Es tile con unidad
-                        else if (tilesToCheckForCollision[i].unitOnTile != null)
+                        else if (tilesToCheckForCollision.Count >= i && tilesToCheckForCollision[i].unitOnTile != null)
                         {
                             Debug.Log("otra unidad");
                             //Recibo daño 
@@ -1428,6 +1429,19 @@ public class UnitBase : MonoBehaviour
         }
 
         GetComponent<Collider>().enabled = _shouldEnableCollider;
+
+        if (GetComponent<DarkLord>())
+        {
+            if (GetComponent<DarkLord>().currentlyPossesing)
+            {
+                GetComponent<Collider>().enabled = false;
+            }
+
+            else
+            {
+                GetComponent<Collider>().enabled = true;
+            }
+        }
     }
 
     public void HideDamageIcons(UnitBase unitToHide)
