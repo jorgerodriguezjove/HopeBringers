@@ -47,15 +47,30 @@ public class Tooltips : MonoBehaviour
 				{
 					UIM.tooltipPanel.SetActive(true);
 
-                    //Actualizar textos
-                    UIM.attackInfoTextInTooltip.SetText(tooltipAssignedPlayer.activeSkillInfo);
-                    UIM.pasiveInfoTextInTooltip.SetText(tooltipAssignedPlayer.pasiveSkillInfo);
+                    if (tooltipAssignedPlayer != null)
+                    {
+                        //Actualizar textos
+                        if (UIM.attackInfoTextInTooltip != null && tooltipAssignedPlayer.activeSkillInfo!= null)
+                        {
+                            UIM.attackInfoTextInTooltip.SetText(tooltipAssignedPlayer.activeSkillInfo);   
+                        }
 
-                    //Actualizar iconos
-                    UIM.activeIconTooltip.sprite = tooltipAssignedPlayer.activeTooltipIcon;
-                    UIM.pasiveIconTooltip.sprite = tooltipAssignedPlayer.pasiveTooltipIcon;
+                        if (UIM.pasiveInfoTextInTooltip != null && tooltipAssignedPlayer.pasiveSkillInfo != null)
+                        {
+                            UIM.pasiveInfoTextInTooltip.SetText(tooltipAssignedPlayer.pasiveSkillInfo);
+                        }
 
-                    
+                        //Actualizar iconos
+                        if (UIM.activeIconTooltip != null && UIM.activeIconTooltip.sprite != null && tooltipAssignedPlayer.activeTooltipIcon != null)
+                        {
+                            UIM.activeIconTooltip.sprite = tooltipAssignedPlayer.activeTooltipIcon;
+                        }
+
+                        if (UIM.pasiveIconTooltip != null && UIM.pasiveIconTooltip.sprite != null && tooltipAssignedPlayer.pasiveTooltipIcon != null )
+                        {
+                            UIM.pasiveIconTooltip.sprite = tooltipAssignedPlayer.pasiveTooltipIcon;
+                        }
+                    }
 
                     //if (tooltipAssignedPlayer.attackTooltipImage != null)
                     //{

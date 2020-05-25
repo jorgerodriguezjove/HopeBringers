@@ -426,13 +426,13 @@ public class UITableManager : MonoBehaviour
         }
 
         debugAllCharacterData = FindObjectsOfType<CharacterData>();
-        for (int i = 0; i < debugAllCharacterData.Length; i++)
-        {
-            Debug.Log("Has desbloqueado a un nuevo pj");
+        //for (int i = 0; i < debugAllCharacterData.Length; i++)
+        //{
+        //    Debug.Log("Has desbloqueado a un nuevo pj");
 
-            GameManager.Instance.newCharacterToUnlock = debugAllCharacterData[i].gameObject;
-            TM.UnlockNewCharacter();
-        }
+        //    GameManager.Instance.newCharacterToUnlock = debugAllCharacterData[i].gameObject;
+        //    TM.UnlockNewCharacter();
+        //}
     }
 
     #endregion
