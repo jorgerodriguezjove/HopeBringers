@@ -478,7 +478,10 @@ public class EnemyUnit : UnitBase
             //Destroy(sleepParticle);
         }
         
-        rangeOfAction = 1000;
+        if (!GetComponent<EnWatcher>())
+        {
+            rangeOfAction = 1000;
+        }
     }
 
     //Función que se encarga de pintar el line renderer + sombra y el número de daño
