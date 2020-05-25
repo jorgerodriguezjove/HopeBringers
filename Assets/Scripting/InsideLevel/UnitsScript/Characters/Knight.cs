@@ -1028,7 +1028,8 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 && 
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight.Count > 0 && 
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null &&
+                            myCurrentTile.tilesInLineRight[0].tilesInLineUp.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineUp, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.myCurrentTile)
                             {
@@ -1052,7 +1053,8 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 &&
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft.Count > 0 &&
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null &&
+                            myCurrentTile.tilesInLineLeft[0].tilesInLineUp.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineUp, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.myCurrentTile)
                             {
@@ -1099,7 +1101,8 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 &&
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft.Count > 0 &&
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile != null &&
+                            myCurrentTile.tilesInLineLeft[0].tilesInLineDown.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineLeft[0].tilesInLineDown, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineLeft[0].unitOnTile.myCurrentTile)
                             {
@@ -1124,7 +1127,9 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 &&
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight.Count > 0 &&
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null
+                            && myCurrentTile.tilesInLineLeft[0].tilesInLineDown.Count > 0 && 
+                            myCurrentTile.tilesInLineRight[0].tilesInLineDown.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineRight[0].tilesInLineDown, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile.myCurrentTile)
                             {
@@ -1168,7 +1173,8 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 &&
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp.Count > 0 &&
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null
+                            && myCurrentTile.tilesInLineUp[0].tilesInLineRight.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineRight, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.myCurrentTile)
                             {
@@ -1191,7 +1197,8 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 &&
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown.Count > 0 &&
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null
+                            && myCurrentTile.tilesInLineDown[0].tilesInLineRight.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineRight, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.myCurrentTile)
                             {
@@ -1235,7 +1242,8 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 &&
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp.Count > 0 &&
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile != null
+                            && myCurrentTile.tilesInLineUp[0].tilesInLineLeft.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineUp[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineUp[0].unitOnTile.myCurrentTile)
                             {
@@ -1258,7 +1266,8 @@ public class Knight : PlayerUnit
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 &&
                             currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown.Count > 0 &&
-                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null)
+                            currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile != null
+                            && myCurrentTile.tilesInLineDown[0].tilesInLineLeft.Count > 0)
                         {
                             if (CalculatePushLogic(tilesToPush, myCurrentTile.tilesInLineDown[0].tilesInLineLeft, damageMadeByPush, damageMadeByFall) == currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineDown[0].unitOnTile.myCurrentTile)
                             {
