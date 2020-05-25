@@ -2164,6 +2164,8 @@ public class LevelManager : MonoBehaviour
 
     int totalXp;
 
+    Crystal crystal;
+
     public void CheckIfGameOver()
     {
         //Derrota
@@ -2206,11 +2208,24 @@ public class LevelManager : MonoBehaviour
         //Victoria
         else if (isObjectiveKillSpecificEnemies)
         {
-            for (int i = 0; i < enemiesNecessaryToWin.Count; i++)
+            crystal =  FindObjectOfType<Crystal>();
+            if (crystal != null)
             {
-                if (!enemiesNecessaryToWin[i].isDead)
+                if (enemiesOnTheBoard.Count <= 0)
                 {
-                    return;
+                    UIM.HideGameHud();
+                    GameManager.Instance.VictoryAchieved(totalXp);
+                }
+            }
+
+            else
+            {
+                for (int i = 0; i < enemiesNecessaryToWin.Count; i++)
+                {
+                    if (!enemiesNecessaryToWin[i].isDead)
+                    {
+                        return;
+                    }
                 }
             }
 

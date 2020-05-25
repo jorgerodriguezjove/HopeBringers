@@ -1065,6 +1065,16 @@ public class GameManager : PersistentSingleton<GameManager>
 
             DEBUG_LockSteamAchievement(AppAchievements.ACHV_BEGIN);
             DEBUG_LockSteamAchievement(AppAchievements.ACHV_KILL1);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_KILL2);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_LEVEL1);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_NOBODY);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_MISS);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_BEGIN);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_KILL1);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_KILL2);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_LEVEL1);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_NOBODY);
+            DEBUG_LockSteamAchievement(AppAchievements.ACHV_MISS);
         }
 
     }
