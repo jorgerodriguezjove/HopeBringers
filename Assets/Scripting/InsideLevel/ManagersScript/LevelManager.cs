@@ -1151,7 +1151,10 @@ public class LevelManager : MonoBehaviour
 
    public void CalculatePreviousActionPlayer(PlayerUnit playerToDo, UnitBase unitToDO)
    {
-       playerToDo.ShowAttackEffect(unitToDO);
+        if (playerToDo != null && unitToDO != null)
+        {
+            playerToDo.ShowAttackEffect(unitToDO);
+        }
    }
 
     #endregion

@@ -1023,7 +1023,7 @@ public class Knight : PlayerUnit
             {
                 if (_unitToAttack.myCurrentTile.tilesInLineRight.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                 {
-                    if (currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
+                    if (currentUnitsAvailableToAttack.Count > 0 && currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0].unitOnTile != null)
                     {
                         tilesInEnemyHover.Add(currentUnitsAvailableToAttack[0].myCurrentTile.tilesInLineRight[0]);
                         if (!isMovingorRotating && currentUnitsAvailableToAttack.Count > 0 && 
