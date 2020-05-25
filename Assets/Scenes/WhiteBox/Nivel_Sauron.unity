@@ -3252,6 +3252,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4011981845037421410, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: m_text
+      value: Objective - Defeat the Lord of Despair
+      objectReference: {fileID: 0}
     - target: {fileID: 4094541408651985527, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: m_Layer
@@ -3394,6 +3399,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
+      propertyPath: enemiesNecessaryToWin.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
       propertyPath: FuncionarSinHaberSeleccionadoPersonajesEnEscenaMapa
       value: 0
       objectReference: {fileID: 0}
@@ -3402,6 +3412,16 @@ PrefabInstance:
       propertyPath: turnLimit
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: isObjectiveKillSpecificEnemies
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5809797896216913893, guid: 0aa1f913d04c21748a29637181344fa8,
+        type: 3}
+      propertyPath: enemiesNecessaryToWin.Array.data[0]
+      value: 
+      objectReference: {fileID: 1189913593}
     - target: {fileID: 5809797896588658036, guid: 0aa1f913d04c21748a29637181344fa8,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -28039,6 +28059,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1189913591}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1189913593 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8212470796899877544, guid: ed633aa768b73874495fd4a9dd8b7602,
+    type: 3}
+  m_PrefabInstance: {fileID: 1189913591}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66dd0f057aa51d247bdd46003846b55c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1191566455
 GameObject:
   m_ObjectHideFlags: 0
