@@ -656,7 +656,10 @@ public class LevelManager : MonoBehaviour
                 //Rango despertar y miedo
                 for (int i = 0; i < tilesAvailableForRangeEnemies.Count; i++)
                 {
-                    tilesAvailableForRangeEnemies[i].ColorActionRange();
+                    if (tilesAvailableForRangeEnemies[i] != null)
+                    {
+                        tilesAvailableForRangeEnemies[i].ColorActionRange();
+                    }
                 }
             }
 
