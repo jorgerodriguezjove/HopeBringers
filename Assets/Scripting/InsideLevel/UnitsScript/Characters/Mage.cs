@@ -904,30 +904,33 @@ public class Mage : PlayerUnit
 
         for (int i = 0; i < tilesInEnemyHover.Count; i++)
         {
-            if(currentTilesInRangeForAttack.Contains(tilesInEnemyHover[i]))
+            if (tilesInEnemyHover[i] != null)
             {
-                 tilesInEnemyHover[i].ColorBorderRed();
+                if (currentTilesInRangeForAttack.Contains(tilesInEnemyHover[i]))
+                {
+                    tilesInEnemyHover[i].ColorBorderRed();
 
-                 if (LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
-                 {
-                     tilesInEnemyHover[i].ColorMovement();
-                 }
-            }
+                    if (LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
+                    {
+                        tilesInEnemyHover[i].ColorMovement();
+                    }
+                }
 
-            else if(LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
-            {
-                 tilesInEnemyHover[i].ColorMovement();
-            }
+                else if (LM.tilesAvailableForMovement.Contains(tilesInEnemyHover[i]))
+                {
+                    tilesInEnemyHover[i].ColorMovement();
+                }
 
-            else
-            {
-                tilesInEnemyHover[i].ColorDesAttack();
-            }
-            
-            if (tilesInEnemyHover[i].unitOnTile != null)
-            {
-                tilesInEnemyHover[i].unitOnTile.ResetColor();
-                tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
+                else
+                {
+                    tilesInEnemyHover[i].ColorDesAttack();
+                }
+
+                if (tilesInEnemyHover[i].unitOnTile != null)
+                {
+                    tilesInEnemyHover[i].unitOnTile.ResetColor();
+                    tilesInEnemyHover[i].unitOnTile.DisableCanvasHover();
+                }
             }
         }
         

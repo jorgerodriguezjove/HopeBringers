@@ -456,9 +456,16 @@ public class IndividualTiles : MonoBehaviour, IHeapItem<IndividualTiles>
     //Quitar el color de ataque y avisar de que ya no está bajo ataque el tile
     public void ColorDesAttack()
     {
-        tileBorder.enabled = false;
-        tileInterior.enabled = false;
+        if (tileBorder != null)
+        {
+            tileBorder.enabled = false;
+        }
 
+        if (tileInterior != null)
+        {
+            tileInterior.enabled = false;
+        }
+        
         isUnderAttack = false;
     }
 
