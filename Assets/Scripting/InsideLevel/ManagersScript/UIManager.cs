@@ -822,7 +822,7 @@ public class UIManager : MonoBehaviour
 		{
 			LM.tutorialGameObject.SetActive(true);
 			secondTimeAction = true;
-            GameManager.Instance.isGamePaused = true;
+            GameManager.Instance.isGamePaused = false;
         }
 	}
 	public void TooltipDefault()
