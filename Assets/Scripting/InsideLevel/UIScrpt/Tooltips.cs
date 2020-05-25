@@ -61,12 +61,12 @@ public class Tooltips : MonoBehaviour
                         }
 
                         //Actualizar iconos
-                        if (UIM.activeIconTooltip != null && UIM.activeIconTooltip.sprite != null && tooltipAssignedPlayer.activeTooltipIcon != null)
+                        if (UIM.activeIconTooltip != null && tooltipAssignedPlayer.activeTooltipIcon != null)
                         {
                             UIM.activeIconTooltip.sprite = tooltipAssignedPlayer.activeTooltipIcon;
                         }
 
-                        if (UIM.pasiveIconTooltip != null && UIM.pasiveIconTooltip.sprite != null && tooltipAssignedPlayer.pasiveTooltipIcon != null )
+                        if (UIM.pasiveIconTooltip != null && tooltipAssignedPlayer.pasiveTooltipIcon != null )
                         {
                             UIM.pasiveIconTooltip.sprite = tooltipAssignedPlayer.pasiveTooltipIcon;
                         }
